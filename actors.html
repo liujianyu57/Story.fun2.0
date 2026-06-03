@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | NFT</title>
+  <style>
+    :root { --bg: #f7fbff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.16); --text: #1a232f; --text-muted: #657586; --border: #e6eff7; --shadow: 0 20px 45px rgba(27, 45, 71, 0.08); font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-login-icon { font-size: 1rem; }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .page-intro { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+    .page-intro h2 { margin: 0; font-size: 2.2rem; line-height: 1.05; }
+    .page-intro p { margin: 0; color: var(--text-muted); line-height: 1.7; }
+    .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
+    .button { background: var(--accent); color: #fff; font-weight: 600; }
+    .button-secondary { background: rgba(15, 22, 42, 0.05); color: var(--text); }
+    .modal-backdrop { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(15, 23, 42, 0.35); z-index: 1000; }
+    .modal-backdrop.active { display: flex; }
+    .modal-dialog { width: min(720px, 100%); background: #fff; border-radius: 28px; box-shadow: 0 35px 80px rgba(15, 23, 42, 0.2); overflow: hidden; }
+    .modal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; padding: 24px 24px 16px; }
+    .modal-header h2 { margin: 0; font-size: 1.45rem; }
+    .modal-close { border: none; background: transparent; color: var(--text); font-size: 1.6rem; line-height: 1; cursor: pointer; }
+    .modal-subtitle { padding: 0 24px 18px; color: var(--text-muted); font-size: 0.96rem; }
+    .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 0 24px 24px; }
+    .modal-preview { border-radius: 24px; overflow: hidden; background: #f5f7ff; position: relative; }
+    .modal-preview img { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+    .preview-tag { position: absolute; left: 16px; bottom: 16px; padding: 10px 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.92); color: var(--text); font-weight: 600; font-size: 0.95rem; backdrop-filter: blur(12px); }
+    .modal-info { display: grid; gap: 12px; }
+    .modal-field { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-radius: 18px; background: #f8fbff; border: 1px solid #eef4ff; }
+    .modal-field span { color: var(--text-muted); font-size: 0.95rem; }
+    .modal-field strong { color: var(--text); font-weight: 600; }
+    .modal-total { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-radius: 20px; background: rgba(76, 222, 204, 0.12); border: 1px solid rgba(76, 222, 204, 0.18); margin-top: 4px; }
+    .modal-total strong { font-size: 1.4rem; color: #0c7f71; }
+    .modal-actions { display: flex; flex-wrap: wrap; gap: 14px; padding: 18px 24px 24px; }
+    .modal-actions .button, .modal-actions .button-secondary { flex: 1; min-width: 0; }
+    .grid { display: grid; gap: 18px; }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 24px 50px rgba(27, 45, 71, 0.12); }
+    .card-banner { position: relative; height: 220px; overflow: hidden; flex-shrink: 0; }
+    .actor-avatar { width: 100%; height: 100%; position: absolute; inset: 0; }
+    .actor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .card-body { padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+    .card h3 { margin: 0; font-size: 1.35rem; line-height: 1.2; }
+    .card p { margin: 0; color: var(--text-muted); line-height: 1.6; font-size: 0.9rem; }
+    .actor-summary { display: flex; gap: 12px; padding: 8px 0 0; border-top: 1px solid var(--border); margin-top: auto; }
+    .metric-item { display: flex; align-items: center; gap: 4px; }
+    .metric-item strong { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+    .card-bottom { display: flex; flex-direction: column; gap: 10px; }
+    .card-price-box { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 0; border-radius: 14px; background: var(--accent-soft); border: 1px solid rgba(0, 179, 136, 0.2); }
+    .card-price-box::before { content: '售价'; font-weight: 500; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0; }
+    .card[data-mint-exhausted="true"] .card-price-box::before { content: '地板价'; }
+    .card-price { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: -0.01em; }
+    .card-actions { display: flex; gap: 8px; }
+    .card-actions .button-secondary { flex: 1; min-width: 0; padding: 10px 14px; font-size: 0.88rem; }
+    .actor-holdings { display: flex; gap: 16px; font-size: 0.72rem; color: var(--text-muted); }
+    .actor-holdings span { display: flex; align-items: center; gap: 3px; }
+    .actor-holdings .num { font-weight: 600; color: var(--text); }
+    .banner-1 { background: linear-gradient(135deg, #e0f7ff 0%, #ffffff 100%); }
+    .banner-2 { background: linear-gradient(135deg, #ffe4e7 0%, #fff9fb 100%); }
+    .banner-3 { background: linear-gradient(135deg, #edeaff 0%, #f9f8ff 100%); }
+    .search-container { margin-bottom: 24px; }
+    .search-input { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; }
+    @media (max-width: 960px) { .grid-3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+
+    <section>
+      <div class="page-intro">
+        <div>
+          <h1>NFT</h1>
+          <p>每张演员NFT都是一个可以聊天、运营、分润的AI IP。</p>
+        </div>
+      </div>
+
+      <div class="search-container">
+        <input type="text" class="search-input" id="actorSearch" placeholder="搜索演员..." />
+      </div>
+
+      <div class="grid grid-3">
+        <article class="card" data-actor="Luna" data-actor-id="1">
+          <div class="card-banner banner-1">
+            <div class="actor-avatar">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
+            </div>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3>Luna</h3>
+              <p>未来偶像型AI演员，适合对话与剧情分润场景。</p>
+            </div>
+            <div class="actor-summary">
+              <div class="metric-item"><strong>已Mint 98</strong></div>
+              <div class="metric-item"><strong>可Mint 10</strong></div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-price-box">10 USDC</div>
+              <div class="card-actions">
+                <button class="button-secondary actor-chat-btn" data-actor="Luna">💬 对话</button>
+                <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              </div>
+              <div class="actor-holdings">
+                <span>我的持有 <span class="num">0</span></span>
+                <span>我的质押 <span class="num">0</span></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-actor="Luna" data-actor-id="2">
+          <div class="card-banner banner-2">
+            <div class="actor-avatar">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
+            </div>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3>Luna</h3>
+              <p>轻社交型NFT演员，支持 AI 聊天、剧情运营与收益分成。</p>
+            </div>
+            <div class="actor-summary">
+              <div class="metric-item"><strong>已Mint 98</strong></div>
+              <div class="metric-item"><strong>可Mint 10</strong></div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-price-box">10 USDC</div>
+              <div class="card-actions">
+                <button class="button-secondary actor-chat-btn" data-actor="Luna">💬 对话</button>
+                <button class="button-secondary actor-mint-btn" data-name="Luna" data-price="19.2 USDT" data-amount="123" data-tag="记忆修复师" data-wallet="0x1234....fods" data-contract="CharacterNFT.mint()" data-balance="999" data-estimate="12.0 USDT">Mint</button>
+              </div>
+              <div class="actor-holdings">
+                <span>我的持有 <span class="num">1</span></span>
+                <span>我的质押 <span class="num">2</span></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-actor="Luna" data-actor-id="3" data-mint-exhausted="true">
+          <div class="card-banner banner-3">
+            <div class="actor-avatar">
+              <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
+            </div>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3>Luna</h3>
+              <p>多场景IP演员，支持创作者分润与粉丝互动。</p>
+            </div>
+            <div class="actor-summary">
+              <div class="metric-item"><strong>已Mint 108</strong></div>
+              <div class="metric-item"><strong>可Mint 0</strong></div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-price-box">10 USDC</div>
+              <div class="card-actions">
+                <button class="button-secondary actor-chat-btn" data-actor="Luna">💬 对话</button>
+                <button class="button-secondary actor-trade-btn" data-actor="Luna">🔄 去交易</button>
+              </div>
+              <div class="actor-holdings">
+                <span>我的持有 <span class="num">3</span></span>
+                <span>我的质押 <span class="num">1</span></span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="modal-backdrop" id="mintModal" aria-hidden="true">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="mintModalTitle">
+        <div class="modal-header">
+          <div>
+            <h2 id="mintModalTitle">确认 Mint 演员 NFT</h2>
+            <div class="modal-subtitle" id="mintModalSubtitle">Luna · 19.2 USDT · 数量123</div>
+          </div>
+          <button class="modal-close" type="button" id="mintModalClose" aria-label="关闭弹窗">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-preview">
+            <img id="mintModalImage" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="演员预览" />
+            <div class="preview-tag" id="mintModalTag">记忆修复师</div>
+          </div>
+          <div class="modal-info">
+            <div class="modal-field"><span>支付钱包</span><strong id="mintWallet">0x1234....fods</strong></div>
+            <div class="modal-field"><span>Mint 合约</span><strong id="mintContract">CharacterNFT.mint()</strong></div>
+            <div class="modal-field"><span>可Mint 余额</span><strong id="mintBalance">999</strong></div>
+            <div class="modal-total"><span>预计支付</span><strong id="mintEstimate">12.0 USDT</strong></div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="button-secondary" type="button" id="mintCancel">取消</button>
+          <button class="button" type="button" id="mintConfirm">确认支付并 Mint</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="ai-chat.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('actorSearch');
+      const cards = document.querySelectorAll('.card');
+      const mintModal = document.getElementById('mintModal');
+      const mintModalClose = document.getElementById('mintModalClose');
+      const mintCancel = document.getElementById('mintCancel');
+      const mintButtons = document.querySelectorAll('.actor-mint-btn');
+      const chatButtons = document.querySelectorAll('.actor-chat-btn');
+      const mintModalSubtitle = document.getElementById('mintModalSubtitle');
+      const mintModalImage = document.getElementById('mintModalImage');
+      const mintModalTag = document.getElementById('mintModalTag');
+      const mintWallet = document.getElementById('mintWallet');
+      const mintContract = document.getElementById('mintContract');
+      const mintBalance = document.getElementById('mintBalance');
+      const mintEstimate = document.getElementById('mintEstimate');
+
+      document.querySelectorAll('.actor-trade-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const actorName = this.dataset.actor || 'Luna';
+          window.open(`https://market.story.fun/trade/${actorName.toLowerCase()}`, '_blank');
+        });
+      });
+
+      chatButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const actorName = this.dataset.actor || 'Luna';
+          const card = this.closest('.card');
+          const avatarSrc = card.querySelector('.actor-avatar img')?.src || '';
+          openAIChat(actorName, avatarSrc);
+        });
+      });
+
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        cards.forEach(card => {
+          const actorName = card.querySelector('h3').textContent.toLowerCase();
+          const actorDescription = card.querySelector('p').textContent.toLowerCase();
+          card.style.display = (actorName.includes(searchTerm) || actorDescription.includes(searchTerm)) ? 'flex' : 'none';
+        });
+      });
+
+      function closeMintModal() {
+        mintModal.classList.remove('active');
+        mintModal.setAttribute('aria-hidden', 'true');
+      }
+
+      function openMintModal(data) {
+        mintModalSubtitle.textContent = `${data.name} · ${data.price} · 数量${data.amount}`;
+        mintModalImage.src = data.image;
+        mintModalTag.textContent = data.tag;
+        mintWallet.textContent = data.wallet;
+        mintContract.textContent = data.contract;
+        mintBalance.textContent = data.balance;
+        mintEstimate.textContent = data.estimate;
+        mintModal.classList.add('active');
+        mintModal.setAttribute('aria-hidden', 'false');
+      }
+
+      mintButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const card = button.closest('.card');
+          const imageSrc = card.querySelector('.actor-avatar img')?.src || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
+          openMintModal({
+            name: button.dataset.name || 'Luna',
+            price: button.dataset.price || '19.2 USDT',
+            amount: button.dataset.amount || '123',
+            tag: button.dataset.tag || '记忆修复师',
+            wallet: button.dataset.wallet || '0x1234....fods',
+            contract: button.dataset.contract || 'CharacterNFT.mint()',
+            balance: button.dataset.balance || '999',
+            estimate: button.dataset.estimate || '12.0 USDT',
+            image: imageSrc
+          });
+        });
+      });
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
+          const actorId = card.dataset.actorId || '1';
+          const avatarSrc = card.querySelector('.actor-avatar img')?.src || '';
+          const description = card.querySelector('p')?.textContent || '';
+          const price = card.querySelector('.card-price')?.textContent || '10 USDC';
+          const minted = card.querySelector('.metric-item:nth-child(1) strong')?.textContent.replace(/[^0-9]/g, '') || '0';
+          const available = card.querySelector('.metric-item:nth-child(2) strong')?.textContent.replace(/[^0-9]/g, '') || '0';
+          const params = new URLSearchParams({
+            id: actorId, name: actorName, avatar: avatarSrc,
+            description: description, price: price,
+            minted: minted, available: available
+          });
+          window.location.href = `actor-profile.html?${params.toString()}`;
+        });
+      });
+
+      mintModalClose.addEventListener('click', closeMintModal);
+      mintCancel.addEventListener('click', closeMintModal);
+      const mintConfirm = document.getElementById('mintConfirm');
+      mintModal.addEventListener('click', event => {
+        if (event.target === mintModal) closeMintModal();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && mintModal.classList.contains('active')) closeMintModal();
+      });
+
+      function setButtonLoading(btn, loading) {
+        if (loading) {
+          btn.dataset.orig = btn.innerHTML;
+          btn.innerHTML = '处理中...';
+          btn.disabled = true;
+        } else {
+          if (btn.dataset.orig) btn.innerHTML = btn.dataset.orig;
+          btn.disabled = false;
+        }
+      }
+
+      function updateCardCounts(card) {
+        try {
+          const mintedEl = card.querySelector('.actor-summary .metric-item:nth-child(1) strong');
+          const availEl = card.querySelector('.actor-summary .metric-item:nth-child(2) strong');
+          const minted = parseInt(mintedEl.textContent.replace(/[^0-9]/g, '')) || 0;
+          const avail = parseInt(availEl.textContent.replace(/[^0-9]/g, '')) || 0;
+          mintedEl.textContent = '已Mint ' + (minted + 1);
+          availEl.textContent = '可Mint ' + Math.max(0, avail - 1);
+        } catch (e) {}
+      }
+
+      function showSuccessInModal(card, data) {
+        const headerTitle = document.getElementById('mintModalTitle');
+        const body = mintModal.querySelector('.modal-body');
+        const actions = mintModal.querySelector('.modal-actions');
+        headerTitle.textContent = 'Mint 成功';
+        body.innerHTML = `<div style="padding:18px 12px;">
+          <p style="margin:0 0 8px;color:var(--text);font-weight:600">已成功为 <strong>${data.name}</strong> 支付并 Mint</p>
+          <p style="margin:0 0 12px;color:var(--text-muted);">交易已提交，若为链上操作请在钱包或区块浏览器查看状态。</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="button" id="viewNftBtn">查看我的 NFT</button>
+            <button class="button-secondary" id="continueBtn">继续浏览</button>
+          </div>
+        </div>`;
+        actions.style.display = 'none';
+        setTimeout(() => {
+          document.getElementById('viewNftBtn')?.addEventListener('click', () => { alert('打开「我的 NFT」页（示意）'); closeMintModal(); });
+          document.getElementById('continueBtn')?.addEventListener('click', () => { closeMintModal(); });
+        }, 50);
+      }
+
+      mintConfirm.addEventListener('click', () => {
+        setButtonLoading(mintConfirm, true);
+        setTimeout(() => {
+          const modalImg = mintModal.querySelector('#mintModalImage');
+          const imgSrc = modalImg?.src || '';
+          let targetCard = null;
+          document.querySelectorAll('.card').forEach(c => {
+            const aImg = c.querySelector('.actor-avatar img');
+            if (aImg && aImg.src === imgSrc) targetCard = c;
+          });
+          if (targetCard) updateCardCounts(targetCard);
+          const data = { name: mintModalSubtitle.textContent.split('·')[0].trim() || 'Luna' };
+          showSuccessInModal(targetCard, data);
+          setButtonLoading(mintConfirm, false);
+        }, 1200);
+      });
+    });
+  </script>
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-bottom-nav.js"></script>
+</body>
+</html>

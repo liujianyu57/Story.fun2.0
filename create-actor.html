@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 创建新演员</title>
+  <style>
+    :root {
+      --bg: #f6f6f6;
+      --surface: #ffffff;
+      --accent: #01bab2;
+      --accent-soft: rgba(1, 186, 178, 0.10);
+      --accent-glow: rgba(1, 186, 178, 0.20);
+      --text: #1c2024;
+      --text-muted: #60646c;
+      --text-hint: #8b8d98;
+      --border: #f0f0f3;
+      --border-dark: #d9d9e0;
+      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.04);
+      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.05);
+      --radius: 24px;
+      --radius-lg: 32px;
+      --danger: #f45b69;
+      font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 96px 200px; }
+
+    /* ===== Auth Styles ===== */
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border-dark); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-login-icon { font-size: 1rem; }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border-dark); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    /* Login Modal */
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #00b388, #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-dark); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-dark); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(1,186,178,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    /* ===== End Auth Styles ===== */
+
+    .page-title {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 36px;
+      letter-spacing: -0.4%;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    .form-panel {
+      background: var(--surface);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    /* ---- Top row: image upload + basic info ---- */
+    .form-top-row {
+      display: flex;
+      gap: 56px;
+      align-items: flex-start;
+    }
+    .upload-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .upload-box {
+      width: 192px;
+      height: 160px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 21px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .upload-box:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .upload-box svg {
+      width: 80px;
+      height: 80px;
+      display: block;
+    }
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      border-radius: 58px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .upload-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .fields-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ---- Form fields ---- */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--text);
+    }
+    .form-group label .hint {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select,
+    .form-group textarea {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 20px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-group input::placeholder,
+    .form-group select::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-hint);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .form-group textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+    .form-group .char-count {
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    /* ---- Select / dropdown wrapper ---- */
+    .select-wrapper {
+      position: relative;
+    }
+    .select-wrapper select {
+      appearance: none;
+      padding-right: 44px;
+      width: 100%;
+      background: var(--surface);
+    }
+    .select-wrapper .chevron {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      width: 24px;
+      height: 24px;
+      color: var(--text-hint);
+    }
+
+    .hint-text {
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.33%;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ---- NFT params section ---- */
+    .nft-section-divider {
+      border: none;
+      border-top: 1px solid var(--border-dark);
+      margin: 0;
+    }
+    .nft-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .nft-section-desc {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .params-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .params-row + .params-row {
+      margin-top: 16px;
+    }
+
+    /* ---- Info card (open mint count) ---- */
+    .info-card {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 16px;
+      background: rgba(1, 186, 178, 0.06);
+      border-radius: 16px;
+      margin-top: 24px;
+    }
+    .info-card .info-card-label {
+      font-weight: 510;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--accent);
+    }
+    .info-card .info-card-value {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--accent);
+    }
+    .info-card .info-card-sub {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    /* ---- Footer ---- */
+    .form-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      padding-top: 24px;
+    }
+    .button-primary, .button-outline {
+      border: none;
+      cursor: pointer;
+      border-radius: 60px;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+    .button-primary {
+      background: var(--text);
+      color: var(--surface);
+      padding: 12px 32px;
+      border: 1px solid var(--text);
+    }
+    .button-primary:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+    .button-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 12px 32px;
+    }
+    .button-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    @media (max-width: 1200px) {
+      .app-shell { padding: 80px 80px; }
+    }
+    @media (max-width: 900px) {
+      .app-shell { padding: 60px 32px; }
+      .form-top-row { flex-direction: column; gap: 32px; }
+      .upload-column { align-items: center; width: 100%; }
+      .params-row { grid-template-columns: 1fr; }
+      .info-card { flex-wrap: wrap; }
+    }
+    @media (max-width: 680px) {
+      .app-shell { padding: 40px 16px; }
+      .form-panel { padding: 20px; gap: 32px; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-footer { flex-direction: column; width: 100%; }
+      .button-outline, .button-primary { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+
+    <h1 class="page-title">创建新演员</h1>
+
+    <div class="form-panel">
+
+      <!-- Top row: image upload + basic info -->
+      <div class="form-top-row">
+        <div class="upload-column">
+          <div class="upload-box" onclick="document.getElementById('actorImageInput').click()">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="12" y="12" width="56" height="56" rx="8" fill="#E5E5E5"/>
+              <path d="M33 35H47" stroke="#8B8D98" stroke-width="2" stroke-linecap="round"/>
+              <path d="M40 28V42" stroke="#8B8D98" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <input type="file" id="actorImageInput" accept="image/*" style="display:none" />
+          <button class="upload-btn" onclick="document.getElementById('actorImageInput').click()">上传形象照</button>
+        </div>
+
+        <div class="fields-column">
+          <div class="form-row">
+            <div class="form-group">
+              <label>演员姓名</label>
+              <input type="text" placeholder="请输入演员姓名" maxlength="20" />
+              <span class="char-count">0/20</span>
+            </div>
+            <div class="form-group">
+              <label>性别</label>
+              <div class="select-wrapper">
+                <select>
+                  <option value="" disabled selected>请选择</option>
+                  <option value="male">男性</option>
+                  <option value="female">女性</option>
+                  <option value="other">不限</option>
+                </select>
+                <svg class="chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9L12 15L18 9" stroke="#8B8D98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group">
+              <label>简介</label>
+              <textarea placeholder="角色背景、性格特点、代表作...&#10;&#10;"></textarea>
+              <span class="char-count">0/500</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NFT 发行参数 -->
+      <hr class="nft-section-divider" />
+
+      <div>
+        <h3 class="nft-section-title">🔗 NFT 发行参数</h3>
+        <p class="nft-section-desc">设定演员 NFT 的链上发行参数，创建后不可修改。</p>
+
+        <div class="params-row">
+          <div class="form-group">
+            <label>NFT发行总量</label>
+            <input type="number" placeholder="请输入" min="1" />
+          </div>
+          <div class="form-group">
+            <label>创作者保留（数量）</label>
+            <input type="number" placeholder="请输入" min="0" />
+          </div>
+        </div>
+        <div class="params-row">
+          <div class="form-group">
+            <label>Mint价格（USDC）</label>
+            <input type="number" placeholder="请输入" step="0.1" min="0" />
+            <span class="hint-text">你需要支付 -- USDC用于创作者保留</span>
+          </div>
+          <div class="form-group">
+            <label>最低持有门槛（数量）</label>
+            <input type="number" placeholder="请输入" min="0" />
+            <span class="hint-text">持有≥该数量才能参与AI演员对话</span>
+          </div>
+        </div>
+
+        <!-- Info card -->
+        <div class="info-card">
+          <span class="info-card-label">开放Mint数量</span>
+          <span class="info-card-value">999</span>
+          <span class="info-card-sub">审核通过之后可铸造演员NFT</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="form-footer">
+      <button class="button-outline" onclick="location.href='narrator.html'">取消</button>
+      <button class="button-primary">提交审核</button>
+    </div>
+
+  </div>
+
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="load-bottom-nav.js"></script>
+</body>
+</html>

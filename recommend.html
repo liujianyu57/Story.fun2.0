@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Story.fun | 推荐</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5faff;--surface:#ffffff;--accent:#00b388;--accent-soft:rgba(0,179,136,0.12);--text:#13202e;--text-muted:#5e6f83;--border:#deeaf7;--radius:24px;font-family:"PingFang SC","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-tap-highlight-color:transparent;user-select:none}
+#app{position:fixed;inset:0;overflow:hidden;background:#0f1825}
+.watch-bar{position:fixed;left:0;right:0;bottom:calc(50px + 6px);z-index:102;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid rgba(255,255,255,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s}
+.watch-bar:active{background:rgba(255,255,255,.15)}
+.watch-bar .wb-left{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.9);font-size:12px;font-weight:500;min-width:0}
+.watch-bar .wb-left svg{width:18px;height:18px;flex-shrink:0}
+.watch-bar .wb-left .wb-text{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.watch-bar .wb-right{display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.6);font-size:12px;font-weight:400;flex-shrink:0;margin-left:8px}
+.watch-bar .wb-right svg{width:16px;height:16px}
+#track{position:absolute;left:0;top:0;width:100%;will-change:transform}
+.slide{position:absolute;left:0;width:100%;height:100vh;overflow:hidden}
+.slide-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.slide-mask{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,24,37,0.1),rgba(15,24,37,0.05) 30%,rgba(15,24,37,0.4) 70%,rgba(15,24,37,0.82));pointer-events:none}
+.play-btn{position:absolute;top:50%;left:50%;z-index:3;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.play-btn.show{opacity:1}
+.play-btn svg{width:30px;height:30px;fill:#fff;margin-left:3px}
+.story-header-wrapper{position:fixed!important;top:0;left:0;right:0;z-index:200!important}.story-header-wrapper .header{background:rgba(18,24,35,.48)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:.5px solid rgba(255,255,255,.08)!important}.story-header-wrapper .hamburger-btn svg path{stroke:rgba(255,255,255,.9)!important}.story-header-wrapper .brand-text{opacity:.9}.story-header-wrapper .nav-link,.story-header-wrapper .lang-btn,.story-header-wrapper .lang-btn span{color:rgba(255,255,255,.75)!important}.story-header-wrapper .lang-btn svg circle,.story-header-wrapper .lang-btn svg path{stroke:rgba(255,255,255,.65)!important}
+.info{position:absolute;left:18px;right:80px;bottom:calc(12px + 44px + 44px + 12px + env(safe-area-inset-bottom,0px));z-index:2;display:flex;flex-direction:column;gap:8px}
+.danmaku-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px 4px 8px;border-radius:999px;font-size:11px;font-weight:500;color:rgba(255,255,255,.95);background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.2);cursor:pointer;transition:background .15s;align-self:flex-start;margin-bottom:2px}
+.danmaku-btn:active{background:rgba(255,255,255,.25)}
+.danmaku-btn svg{width:15px;height:15px;flex-shrink:0}
+.info-title{font-size:20px;font-weight:700;color:#fff;line-height:1.3;text-shadow:0 2px 12px rgba(0,0,0,.5);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.info-title>.gt{color:rgba(255,255,255,.45);font-size:17px;margin-left:1px}
+.info-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.info-tag{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);color:#fff;border:.5px solid rgba(255,255,255,.25)}
+.info-rating{display:inline-flex;align-items:center;gap:2px;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);color:#fff;border:.5px solid rgba(255,255,255,.25)}
+.info-rating .star{color:rgba(255,255,255,.85);margin-right:1px}
+.info-ep{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);color:#fff;border:.5px solid rgba(255,255,255,.25);margin-left:4px}
+.info-desc{font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;display:flex;align-items:center;gap:4px;margin-top:-2px;flex-wrap:wrap}
+.info-desc .desc-ep{color:rgba(255,255,255,.45);font-weight:400}
+.info-desc .desc-sep{color:rgba(255,255,255,.25);margin:0 2px}
+.info-desc .desc-text{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;flex:1;min-width:0;max-width:calc(100% - 60px);color:rgba(255,255,255,.55)}
+.info-desc .desc-expand{color:#00b388;font-weight:500;font-size:11px;cursor:pointer;flex-shrink:0;padding:1px 6px;border-radius:999px;background:rgba(0,179,136,.15);border:.5px solid rgba(0,179,136,.25);transition:background .15s}
+.info-desc .desc-expand:active{background:rgba(0,179,136,.3)}
+.info-crew{font-size:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:-2px}
+.info-crew .c-item{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:11px;line-height:1.3;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.2)}
+.info-crew .c-item .c-label{color:rgba(255,255,255,.55);font-weight:400}
+.info-crew .c-item .c-name{color:rgba(255,255,255,.92);font-weight:600}
+.info-crew .c-div{color:rgba(255,255,255,.25);font-size:10px}
+.info-author{font-size:12px;color:rgba(255,255,255,.75);display:flex;align-items:center;gap:5px;cursor:pointer}
+.info-author img{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.2);object-fit:cover}
+.actions{position:absolute;right:10px;bottom:calc(20px + 44px + 44px + env(safe-area-inset-bottom,0px) + 40px);z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px}
+.act-creator{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;padding:0;color:#fff;-webkit-tap-highlight-color:transparent}
+.act-creator .ac-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);box-shadow:0 2px 12px rgba(0,0,0,.3);transition:transform .15s}
+.act-creator:active .ac-avatar{transform:scale(.85)}
+.act-creator .ac-label{font-size:9px;font-weight:500;color:rgba(255,255,255,.8);line-height:1;padding:1px 6px;border-radius:999px;background:rgba(255,255,255,.12);backdrop-filter:blur(4px);max-width:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act-btn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;padding:0;color:#fff;-webkit-tap-highlight-color:transparent;transition:transform .15s}
+.act-btn:active{transform:scale(.82)}
+.act-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);font-size:18px;transition:all .2s}
+.act-icon.liked{color:#fff;background:var(--accent)}
+.act-icon.bookmarked{color:#fff;background:#ffbb3a}
+.act-label{font-size:10px;font-weight:500;color:rgba(255,255,255,.75);line-height:1}
+/* ---- Player Progress Bar ---- */
+.player-progress{position:fixed;left:0;right:0;bottom:50px;z-index:103;height:6px;background:rgba(0,0,0,.25);cursor:pointer;pointer-events:auto;touch-action:none;border-radius:3px;overflow:hidden}
+.player-progress .pp-fill{height:100%;width:1%;min-width:2px;background:linear-gradient(90deg,#00b388,#34d399);border-radius:3px;position:relative;transition:none}
+.player-progress .pp-fill .pp-thumb{position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:#fff;border:2.5px solid #00b388;box-shadow:0 1px 6px rgba(0,0,0,.4);opacity:0;transition:opacity .2s}
+.player-progress:active .pp-fill .pp-thumb,
+.player-progress:hover .pp-fill .pp-thumb,
+.player-progress.show-thumb .pp-fill .pp-thumb{opacity:1}
+/* ---- Progress Tooltip ---- */
+.pp-tooltip{position:fixed;z-index:105;pointer-events:none;opacity:0;transition:opacity .15s;left:50%;transform:translateX(-50%);bottom:calc(50px + 6px + 24px)}
+
+.pp-tooltip.show{opacity:1}
+.pp-tooltip .pp-tip-img{width:86px;height:130px;border-radius:10px;object-fit:cover;display:block;box-shadow:0 4px 20px rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2)}
+.pp-tooltip .pp-tip-time{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;border:.5px solid rgba(255,255,255,.12)}
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:100;height:50px;padding-bottom:env(safe-area-inset-bottom,0);background:rgba(0,0,0,.65);backdrop-filter:blur(60px);-webkit-backdrop-filter:blur(60px);border-top:.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
+.bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;height:100%;padding:4px 4px 2px;text-decoration:none;color:rgba(255,255,255,.55);transition:color .2s;-webkit-tap-highlight-color:transparent}
+.bnav a.active{color:#fff}
+.bnav svg{width:28px;height:28px;display:block;flex-shrink:0}
+.bnav span{font-weight:400;font-size:10px;line-height:12px;letter-spacing:.008em;text-align:center}
+#loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:99;transition:opacity .4s}
+#loading.hide{opacity:0;pointer-events:none}
+.spinner{width:32px;height:32px;border:3px solid var(--accent-soft);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);z-index:98;background:rgba(15,24,37,.88);backdrop-filter:blur(14px);color:#fff;padding:12px 26px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap}
+#toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.cm-drawer{position:fixed;inset:0;z-index:300;visibility:hidden;transition:visibility .3s}
+.cm-drawer.open{visibility:visible}
+.cm-drawer .cm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .3s}
+.cm-drawer.open .cm-overlay{opacity:1}
+.cm-drawer .cm-panel{position:absolute;left:0;right:0;bottom:0;max-height:70vh;background:#ffffff;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);padding-top:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 -4px 30px rgba(0,0,0,.12)}
+.cm-drawer.open .cm-panel{transform:translateY(0)}
+.cm-drawer .cm-handle{width:36px;height:4px;border-radius:2px;background:rgba(0,0,0,.15);margin:0 auto 8px;flex-shrink:0}
+.cm-drawer .cm-header{display:flex;align-items:center;justify-content:space-between;padding:4px 16px 12px;border-bottom:1px solid rgba(0,0,0,.06);flex-shrink:0}
+.cm-drawer .cm-header .cm-title{font-size:16px;font-weight:600;color:#13202e}
+.cm-drawer .cm-header .cm-close{width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.06);border:none;color:#5e6f83;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.cm-drawer .cm-header .cm-close:active{background:rgba(0,0,0,.12);transform:scale(.9)}
+.cm-drawer .cm-body{flex:1;overflow-y:auto;padding:0 0 env(safe-area-inset-bottom,0);-webkit-overflow-scrolling:touch}
+.cm-drawer .cm-body::-webkit-scrollbar{width:0}
+.cm-item{display:flex;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(0,0,0,.05)}
+.cm-item .cm-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(0,0,0,.08)}
+.cm-item .cm-content{flex:1;min-width:0}
+.cm-item .cm-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.cm-item .cm-meta .cm-name{font-size:13px;font-weight:600;color:#13202e}
+.cm-item .cm-meta .cm-time{font-size:11px;color:rgba(94,111,131,.7)}
+.cm-item .cm-text{font-size:14px;line-height:1.55;color:#2d3e52;word-break:break-word}
+.cm-item.cm-intro{background:rgba(0,179,136,.05);border-radius:0;border-bottom:1px solid rgba(0,179,136,.12)}
+.cm-item.cm-intro .cm-meta .cm-name{color:#00b388}
+/* comment section inside drawer */
+.comment-panel{padding:12px 16px 0}
+.comment-panel .comment-header{display:flex;align-items:center;gap:8px;color:rgba(94,111,131,.8);font-size:13px;margin-bottom:10px;padding:0 4px}
+.comment-panel .comment-header .comment-title{font-weight:600;color:#13202e;font-size:14px}
+.comment-input-wrap{display:flex;gap:8px;margin-bottom:14px;padding:0 4px}
+.comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(0,0,0,.08);background:#f5f7fa;color:#13202e;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.comment-input-wrap input:focus{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
+.comment-input-wrap input::placeholder{color:rgba(94,111,131,.6)}
+.comment-input-wrap .send-btn{border:none;border-radius:999px;padding:10px 20px;background:linear-gradient(135deg,#00b388,#00c9a0);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,179,136,.3)}
+.comment-input-wrap .send-btn:active{transform:scale(.95);box-shadow:0 1px 4px rgba(0,179,136,.2)}
+.c-actions{display:flex;gap:10px;margin-top:8px}
+.c-actions button{background:none;border:none;color:rgba(94,111,131,.7);font-size:12px;cursor:pointer;padding:3px 6px;transition:all .2s;display:inline-flex;align-items:center;gap:4px;border-radius:6px}
+.c-actions button:hover{color:#00b388;background:rgba(0,179,136,.06)}
+.cm-item .cm-actions{margin-top:6px;display:flex;gap:8px}
+.cm-item .cm-actions button{background:none;border:none;color:rgba(94,111,131,.7);font-size:11px;cursor:pointer;padding:3px 8px;border-radius:999px;transition:all .2s;display:inline-flex;align-items:center;gap:3px;background:rgba(0,0,0,.03)}
+.cm-item .cm-actions button:active{background:rgba(0,179,136,.1);color:#00b388}
+.comment-count{font-size:12px;color:rgba(94,111,131,.6)}
+@media(max-width:768px){body{padding-bottom:0!important}}
+@media(min-width:769px){#app{position:relative;max-width:400px;height:100vh;margin:0 auto}body{background:var(--bg);display:flex;align-items:center;justify-content:center}.bnav{max-width:400px;left:50%;transform:translateX(-50%)}.watch-bar{max-width:400px;left:50%!important;transform:translateX(-50%)!important}.player-progress{max-width:400px;left:50%!important;transform:translateX(-50%)}.cm-drawer .cm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.cm-drawer.open .cm-panel{transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<div id="loading"><div class="spinner"></div></div>
+<div id="toast"></div>
+<div id="app">
+  <div id="track"></div>
+  <!-- Player Progress Bar -->
+  <div class="player-progress" id="playerProgress">
+    <div class="pp-fill" id="ppFill">
+      <div class="pp-thumb" id="ppThumb"></div>
+    </div>
+  </div>
+  <!-- Progress Tooltip -->
+  <div class="pp-tooltip" id="ppTooltip">
+    <img class="pp-tip-img" id="ppTipImg" src="" alt="">
+    <span class="pp-tip-time" id="ppTipTime">00:00 / 00:00</span>
+  </div>
+  <div class="watch-bar" id="watchBar">
+    <div class="wb-left">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M10 8l6 4-6 4V8z" fill="currentColor"/></svg>
+      <span class="wb-text">观看完整短剧 · 全44集</span>
+    </div>
+    <div class="wb-right">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+</div>
+
+<nav class="bnav">
+  <a class="active" href="recommend.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14.0013 2.33337C20.3165 2.33337 25.668 7.68487 25.668 14C25.668 20.3152 20.3165 25.6667 14.0013 25.6667C7.68606 25.6667 2.33464 20.3152 2.33464 14C2.33464 7.68487 7.68606 2.33337 14.0013 2.33337Z" stroke="currentColor" stroke-width="1.4"/><path d="M11.668 9.91671L19.8346 14L11.668 18.0834V9.91671Z" fill="currentColor"/></svg><span>推荐</span></a>
+  <a href="index.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M24.8376 14.0001C24.8376 19.9861 19.9849 24.8388 13.9989 24.8388C8.01281 24.8388 3.16016 19.9861 3.16016 14.0001C3.16016 8.014 8.01281 3.16135 13.9989 3.16135C19.9849 3.16135 24.8376 8.014 24.8376 14.0001Z" fill="none" stroke="currentColor" stroke-width="1.49333" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.9263 14.4331C19.2596 14.2407 19.2596 13.7595 18.9263 13.5671L11.9101 9.51633C11.5768 9.32388 11.1601 9.56444 11.1601 9.94934V18.0509C11.1601 18.4358 11.5768 18.6763 11.9101 18.4839L18.9263 14.4331Z" fill="currentColor"/></svg><span>剧场</span></a>
+  <a href="actors.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M13.9053 2.66797C13.9639 2.63382 14.0361 2.63382 14.0947 2.66797L23.6611 8.24805C23.719 8.2818 23.7549 8.34415 23.7549 8.41113V19.5889C23.7549 19.6559 23.719 19.7182 23.6611 19.752L14.0947 25.332C14.0361 25.3662 13.9639 25.3662 13.9053 25.332L4.33887 19.752C4.28101 19.7182 4.24512 19.6558 4.24512 19.5889V8.41113C4.24512 8.34415 4.28101 8.2818 4.33887 8.24805L13.9053 2.66797Z" stroke="currentColor" stroke-width="1.49"/><path d="M22.6563 8.44303C23.016 8.24379 23.4695 8.3734 23.669 8.73307C23.8682 9.09289 23.7377 9.54634 23.3779 9.74576C21.6325 10.7132 20.1068 11.5637 18.5801 12.4137C17.0633 13.2582 15.5452 14.1028 13.8125 15.0631V24.3102C13.8125 24.7217 13.4788 25.0553 13.0674 25.0553C12.656 25.0552 12.3223 24.7216 12.3223 24.3102V14.4225L7.04103 11.3434C6.68599 11.136 6.56634 10.6791 6.77345 10.3239C6.98081 9.96862 7.43763 9.84903 7.79298 10.0563L13.584 13.4333C13.5983 13.4416 13.6115 13.4515 13.625 13.4606C15.1372 12.6218 16.4962 11.8682 17.8545 11.112C19.3813 10.2619 20.9093 9.41129 22.6563 8.44303ZM8.43947 5.54069C8.64694 5.18573 9.10378 5.0659 9.459 5.27311L13.6924 7.74283C14.0472 7.95035 14.1671 8.40721 13.96 8.76237C13.7526 9.11733 13.2957 9.237 12.9404 9.02994L8.70704 6.56022C8.35201 6.35277 8.23224 5.89593 8.43947 5.54069Z" fill="currentColor"/></svg><span>NFT</span></a>
+  <a href="narrator.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M22.168 4.66666H5.83464C5.1903 4.66666 4.66797 5.18899 4.66797 5.83332V8.16666C4.66797 8.81099 5.1903 9.33332 5.83464 9.33332H22.168C22.8123 9.33332 23.3346 8.81099 23.3346 8.16666V5.83332C23.3346 5.18899 22.8123 4.66666 22.168 4.66666Z" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5013 14H5.83464C5.1903 14 4.66797 14.5223 4.66797 15.1667V22.1667C4.66797 22.811 5.1903 23.3333 5.83464 23.3333H10.5013C11.1456 23.3333 11.668 22.811 11.668 22.1667V15.1667C11.668 14.5223 11.1456 14 10.5013 14Z" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.332 14H23.332" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.332 18.6667H23.332" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.332 23.3333H23.332" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/></svg><span>创作</span></a>
+  <a href="profile-center.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M17.6738 14.7305H9.32617C5.687 14.7307 2.74512 17.6443 2.74512 21.1992V21.627C2.74512 21.9042 2.84106 22.0808 3.04688 22.2393C3.29137 22.4274 3.70498 22.5944 4.33105 22.7158C5.5846 22.9589 7.33226 22.9619 9.32617 22.9619H17.6738C19.7503 22.9619 21.4958 22.9583 22.7275 22.7158C23.3418 22.5949 23.7369 22.4302 23.9668 22.2471C24.1582 22.0946 24.2549 21.9177 24.2549 21.627V21.1992C24.2549 17.6433 21.3131 14.7305 17.6738 14.7305ZM13.7178 2.74512C10.9195 2.74521 8.66017 4.9865 8.66016 7.71777C8.66016 10.4489 10.9194 12.6894 13.7178 12.6895C16.5157 12.6895 18.7754 10.448 18.7754 7.71777C18.7754 4.98744 16.5159 2.74512 13.7178 2.74512Z" stroke="currentColor" stroke-width="1.49"/></svg><span>我的</span></a>
+</nav>
+
+<div class="cm-drawer" id="cmDrawer">
+  <div class="cm-overlay" id="cmOverlay"></div>
+  <div class="cm-panel">
+    <div class="cm-handle"></div>
+    <div class="cm-header">
+      <div class="cm-title" id="cmTitle">短剧简介</div>
+      <button class="cm-close" id="cmClose">✕</button>
+    </div>
+    <div class="cm-body" id="cmBody"></div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  {id:'001',title:'重生之我在币圈当大佬',cat:'金融',rt:8.6,ep:'第3集 / 共44集',totalEp:44,author:'JACK',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=JACK',actors:['张三','李四'],cover:'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=800&q=80',likes:12800,cmts:342,fav:false,like:false,desc:'从穷小子到币圈传奇，看他如何玩转加密世界'},
+  {id:'002',title:'深渊回响',cat:'悬疑',rt:9.2,ep:'全12集',totalEp:12,author:'EVA',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=EVA',actors:['王五'],cover:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',likes:24500,cmts:567,fav:true,like:false,desc:'废弃医院连续失踪三人，隐藏着怎样的惊天秘密'},
+  {id:'003',title:'暗流涌动',cat:'真实改编',rt:8.9,ep:'第18集 / 共24集',totalEp:24,author:'LENS',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=LENS',actors:['赵六','钱七','孙八'],cover:'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=800&q=80',likes:18300,cmts:423,fav:false,like:true,desc:'根据真实事件改编，一场权力与正义的殊死较量'},
+  {id:'004',title:'时间管理局',cat:'科幻',rt:9.5,ep:'全16集',totalEp:16,author:'NOVA',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=NOVA',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',likes:32100,cmts:891,fav:false,like:false,desc:'穿梭时空，修复那些被篡改的历史关键节点'},
+  {id:'005',title:'迷途恋人',cat:'爱情',rt:7.8,ep:'全20集',totalEp:20,author:'ROSE',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=ROSE',actors:['郑一','冯二'],cover:'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80',likes:56000,cmts:1203,fav:true,like:false,desc:'失忆后重遇初恋，命运却开了一个残酷的玩笑'},
+  {id:'006',title:'代码风暴',cat:'动作',rt:8.3,ep:'第7集 / 共30集',totalEp:30,author:'CYPHER',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=CYPHER',actors:['陈三','刘四'],cover:'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80',likes:27800,cmts:654,fav:false,like:false,desc:'天才程序员被诬陷入狱，出狱后展开惊天复仇计划'},
+  {id:'007',title:'笑面人生',cat:'喜剧',rt:9.0,ep:'全36集',totalEp:36,author:'SMILE',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=SMILE',actors:['杨五','朱六'],cover:'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80',likes:42000,cmts:987,fav:false,like:true,desc:'平凡小人物用笑声治愈身边每一个受伤的灵魂'},
+  {id:'008',title:'第七层梦境',cat:'悬疑',rt:8.7,ep:'第2集 / 共18集',totalEp:18,author:'DREAMER',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=DREAMER',actors:['黄七','曹八'],cover:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',likes:31500,cmts:756,fav:false,like:false,desc:'进入他人梦境，却发现再也分不清真假虚实'},
+  {id:'009',title:'金融暗战',cat:'金融',rt:8.1,ep:'全44集',totalEp:44,author:'BULL',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=BULL',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',likes:22000,cmts:534,fav:true,like:false,desc:'华尔街之狼 vs 国内资本大鳄，谁是最后赢家'},
+  {id:'010',title:'星际拓荒者',cat:'科幻',rt:9.4,ep:'全26集',totalEp:26,author:'STELLAR',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=STELLAR',actors:['何九','吕十'],cover:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80',likes:48900,cmts:1123,fav:false,like:false,desc:'人类最后的希望，踏上前所未有的星际征程'}
+];
+
+const total=DATA.length;
+let idx=0,animFlag=false,wh=0,paused=false;
+const track=document.getElementById('track'),toast=document.getElementById('toast'),loading=document.getElementById('loading'),watchBar=document.getElementById('watchBar'),cmDrawer=document.getElementById('cmDrawer'),cmBody=document.getElementById('cmBody'),cmTitle=document.getElementById('cmTitle');
+const playerProg=document.getElementById('playerProgress'),ppFill=document.getElementById('ppFill'),ppThumb=document.getElementById('ppThumb');
+const ppTooltip=document.getElementById('ppTooltip'),ppTipImg=document.getElementById('ppTipImg'),ppTipTime=document.getElementById('ppTipTime');
+
+/* ---- Player Progress Simulation ---- */
+let playProgress = 0;
+let playInterval = null;
+const PROGRESS_SPEED = 0.003;
+const EP_DURATION_SEC = 45;
+
+function startPlayProgress(){
+  if (playInterval) return;
+  playInterval = setInterval(() => {
+    if (paused) return;
+    playProgress = Math.min(1, playProgress + PROGRESS_SPEED);
+    updatePlayProgressUI();
+    if (playProgress >= 1) {
+      clearInterval(playInterval);
+      playInterval = null;
+    }
+  }, 100);
+}
+
+function updatePlayProgressUI(){
+  ppFill.style.width = (playProgress * 100) + '%';
+}
+
+function fmtTime(progress){
+  const t = Math.round(progress * EP_DURATION_SEC);
+  const m = Math.floor(t / 60);
+  const s = t % 60;
+  const tm = Math.floor(EP_DURATION_SEC / 60);
+  const ts = EP_DURATION_SEC % 60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} / ${String(tm).padStart(2,'0')}:${String(ts).padStart(2,'0')}`;
+}
+
+function setPlayProgressFromEvent(e){
+  const rect = playerProg.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  playProgress = Math.max(0, Math.min(1, x / rect.width));
+  updatePlayProgressUI();
+  ppTipImg.src = DATA[idx].cover;
+  ppTipTime.textContent = fmtTime(playProgress);
+}
+
+function onProgressPointerDown(e){
+  e.stopPropagation();
+  playerProg.classList.add('show-thumb');
+  ppTooltip.classList.add('show');
+  setPlayProgressFromEvent(e);
+  document.addEventListener('mousemove', onProgressPointerMove);
+  document.addEventListener('mouseup', onProgressPointerUp);
+  document.addEventListener('touchmove', onProgressPointerMove, {passive: true});
+  document.addEventListener('touchend', onProgressPointerUp);
+}
+
+function onProgressPointerMove(e){
+  e.preventDefault();
+  setPlayProgressFromEvent(e);
+}
+
+function onProgressPointerUp(e){
+  playerProg.classList.remove('show-thumb');
+  ppTooltip.classList.remove('show');
+  document.removeEventListener('mousemove', onProgressPointerMove);
+  document.removeEventListener('mouseup', onProgressPointerUp);
+  document.removeEventListener('touchmove', onProgressPointerMove);
+  document.removeEventListener('touchend', onProgressPointerUp);
+  if (!playInterval && playProgress < 1) startPlayProgress();
+}
+
+function fmt(n){return n>=1e4?(n/1e4).toFixed(1)+'w':n>=1e3?(n/1e3).toFixed(1)+'k':n}
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toast.classList.remove('show'),1600)}
+function updateWatchBar(){const d=DATA[idx];if(!d)return;watchBar.querySelector('.wb-text').textContent=`观看完整短剧 · 全${d.totalEp}集`}
+
+function ensureComments(d){
+  if (d.comments) return;
+  const names=['清风','明月','繁星','晨曦','暮雪','城北','城南','夜雨','晓风','归燕'];
+  const texts=['好剧！剧情节奏把控得太好，已经追起来了。','期待更新🔥 每一集都很有代入感。','这部剧绝了，角色表现都在线。','追剧中…画面太美了！','剧情太精彩了，人物冲突很带感。','赞赞赞👍 这是今年最好看的AI短剧之一。','对白写得很棒，感情线也很细腻。','世界观很有意思，想多看几集。','节奏紧凑，反转不断，强烈推荐。','剧情扎实，演员演技也在线。'];
+  d.comments = Array.from({length:5},(_,i)=>({
+    id: Date.now() + i,
+    name: names[(i + parseInt(d.id,10)) % names.length],
+    avatar: names[(i + 2 + parseInt(d.id,10)) % names.length].slice(0,1),
+    text: texts[(i + parseInt(d.id,10)) % texts.length],
+    time: `${(i + 1) * 3}分钟前`,
+    likes: 5 + i * 3,
+  }));
+}
+
+function renderDrawerComments(d){
+  ensureComments(d);
+  const commentList = document.getElementById('drawerCommentList');
+  const countEl = document.getElementById('drawerCommentCount');
+  if (!commentList || !countEl) return;
+  commentList.innerHTML = d.comments.map(c => `
+    <div class="cm-item">
+      <img class="cm-avatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=${c.name}" alt="${c.name}">
+      <div class="cm-content">
+        <div class="cm-meta"><span class="cm-name">${c.name}</span><span class="cm-time">${c.time}</span></div>
+        <div class="cm-text">${c.text}</div>
+        <div class="cm-actions"><button onclick="showToast('👍 点赞 +1','👍')">👍 ${c.likes}</button><button onclick="showToast('💬 回复功能开发中','💬')">💬 回复</button></div>
+      </div>
+    </div>
+  `).join('');
+  countEl.textContent = d.comments.length;
+}
+
+function postDrawerComment(id){
+  const input = document.getElementById('drawerCommentInput');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text){ showToast('请输入评论内容','✏️'); return; }
+  if (text.length > 200){ showToast('评论不能超过200字','⚠️'); return; }
+  const d = DATA.find(x => x.id === id);
+  if (!d) return;
+  ensureComments(d);
+  const comment = {
+    id: Date.now(),
+    name: '我',
+    avatar: '我',
+    text,
+    time: '刚刚',
+    likes: 0,
+  };
+  d.comments.unshift(comment);
+  input.value = '';
+  renderDrawerComments(d);
+  showToast('✅ 评论已发布','✅');
+}
+
+function openDrawer(id){
+  const d=DATA.find(x=>x.id===id);
+  if(!d)return;
+  const introHtml = `<div class="cm-item cm-intro"><img class="cm-avatar" src="${d.cover}" alt="${d.title}"><div class="cm-content"><div class="cm-meta"><span class="cm-name">${d.title}</span></div><div class="cm-text">${d.desc}</div></div></div>`;
+  cmTitle.textContent=`${d.title} - 讨论`;
+  cmBody.innerHTML = `${introHtml}
+    <div class="comment-panel">
+      <div class="comment-header"><span class="comment-title">用户评论</span><span class="comment-count">(<span id="drawerCommentCount"></span>)</span></div>
+      <div class="comment-input-wrap"><input id="drawerCommentInput" placeholder="写下你的评论..." maxlength="200" /><button class="send-btn" id="drawerSendBtn">发送</button></div>
+      <div id="drawerCommentList"></div>
+    </div>`;
+  renderDrawerComments(d);
+  document.getElementById('drawerSendBtn')?.addEventListener('click', function(e){ e.stopPropagation(); postDrawerComment(d.id); });
+  document.getElementById('drawerCommentInput')?.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); postDrawerComment(d.id); } });
+  cmDrawer.classList.add('open');
+}
+
+function closeDrawer(){
+  cmDrawer.classList.remove('open');
+}
+
+function render(){
+  let h='';
+  for(let i=0;i<total;i++){
+    const d=DATA[i];
+    const acts=d.actors.slice(0,2).map(a=>`<span class="c-name">${a}</span>`).join('<span class="c-div"> / </span>');
+    const epText=d.ep.replace(/ \/ 共\d+集$/,'');
+    h+=`<div class="slide" style="top:${i*100}vh"><img class="slide-img" src="${d.cover}" alt="${d.title}" loading="${i===0?'eager':'lazy'}" onerror="this.style.display='none'"/><div class="slide-mask"></div><div class="play-btn" id="pb_${d.id}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><div class="danmaku-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 6.5h7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 8.5h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 10.5h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>弹幕</div><div class="info-title" onclick="location.href='drama-detail.html'">${d.title}<span class="gt"> ›</span></div><div class="info-tags"><span class="info-rating"><span class="star">★</span>${d.rt}</span><span class="info-tag">${d.cat}</span><span class="info-tag">演员 · ${acts}</span></div><div class="info-desc"><span class="desc-ep">${epText}</span><span class="desc-sep">|</span><span class="desc-text">${d.desc}</span><span class="desc-expand" data-id="${d.id}">展开</span></div></div><div class="actions"><button class="act-creator"><img class="ac-avatar" src="${d.avatar}" alt="${d.author}"><span class="ac-label">${d.author}</span></button><button class="act-btn" data-act="fav" data-id="${d.id}"><div class="act-icon ${d.fav?'bookmarked':''}">${d.fav?'⭐':'☆'}</div><span class="act-label">收藏</span></button><button class="act-btn" data-act="cmt" data-id="${d.id}"><div class="act-icon">💬</div><span class="act-label">${fmt(d.cmts)}</span></button><button class="act-btn" data-act="like" data-id="${d.id}"><div class="act-icon ${d.like?'liked':''}">${d.like?'❤️':'🤍'}</div><span class="act-label">${fmt(d.likes)}</span></button><button class="act-btn" data-act="share" data-id="${d.id}"><div class="act-icon">↗</div><span class="act-label">分享</span></div></div></div>`;
+  }
+  track.innerHTML=h;
+  track.style.height=(total*100)+'vh';
+  wh=window.innerHeight;
+  goTo(0,false);
+  bindEvents();
+  setTimeout(()=>loading.classList.add('hide'),350);
+  updateWatchBar();
+}
+
+function goTo(i,animate){
+  if(animFlag)return;
+  if(animate)animFlag=true;
+  i=Math.max(0,Math.min(total-1,i));idx=i;
+  track.style.transition=animate?'transform .38s cubic-bezier(.22,1,.36,1)':'none';
+  track.style.transform=`translateY(${-i*wh}px)`;
+  updateWatchBar();
+  if(animate)setTimeout(()=>{animFlag=false},400);
+  /* Reset play progress on slide switch */
+  playProgress = 0;
+  updatePlayProgressUI();
+  if (!playInterval) startPlayProgress();
+}
+function nextSlide(){if(idx>=total-1){showToast('— 已经到底啦 —');return}goTo(idx+1,true)}
+function prevSlide(){if(idx<=0){showToast('— 已是最上 —');return}goTo(idx-1,true)}
+
+function togglePause(e){
+  if(e.target.closest('.actions')||e.target.closest('.info')||e.target.closest('.bnav')||e.target.closest('.play-btn')||e.target.closest('.player-progress'))return;
+  paused=!paused;
+  const btn=document.querySelector(`#pb_${DATA[idx].id}`);
+  if(!btn)return;
+  btn.classList.toggle('show',paused);
+}
+
+function bindEvents(){
+  document.querySelectorAll('[data-act="like"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(!d)return;d.like=!d.like;const ic=this.querySelector('.act-icon'),lb=this.querySelector('.act-label');if(d.like){ic.classList.add('liked');ic.textContent='❤️';d.likes++;showToast('已点赞 ❤️')}else{ic.classList.remove('liked');ic.textContent='🤍';d.likes--}lb.textContent=fmt(d.likes)})});
+  document.querySelectorAll('[data-act="fav"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(!d)return;d.fav=!d.fav;const ic=this.querySelector('.act-icon');if(d.fav){ic.classList.add('bookmarked');ic.textContent='⭐';showToast('已收藏 ⭐')}else{ic.classList.remove('bookmarked');ic.textContent='☆'}})});
+  document.querySelectorAll('[data-act="cmt"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(d)openDrawer(d.id)})});
+  document.querySelectorAll('[data-act="share"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();showToast('📋 分享功能开发中')})});
+  document.querySelectorAll('.danmaku-btn').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();showToast('💬 弹幕功能暂未开放')})});
+  document.querySelectorAll('.act-creator').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();showToast('👤 创作者主页')})});
+  document.querySelectorAll('.info-author').forEach(el=>{el.addEventListener('click',function(){showToast(`👤 跳转 ${this.dataset.author} 的主页`)})});
+  document.querySelectorAll('.desc-expand').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();openDrawer(this.dataset.id)})});
+  document.getElementById('cmClose').addEventListener('click',closeDrawer);
+  document.getElementById('cmOverlay').addEventListener('click',closeDrawer);
+  document.querySelectorAll('.slide').forEach(el=>{el.addEventListener('click',togglePause)});
+  watchBar.addEventListener('click',function(){
+    const d=DATA[idx];
+    if(!d)return;
+    location.href=`drama-player.html?id=${d.id}&title=${encodeURIComponent(d.title)}&total=${d.totalEp}&cat=${encodeURIComponent(d.cat)}&author=${encodeURIComponent(d.author)}&avatar=${encodeURIComponent(d.avatar)}&cover=${encodeURIComponent(d.cover)}`;
+  });
+  /* Player progress bar events */
+  playerProg.addEventListener('mousedown', onProgressPointerDown);
+  playerProg.addEventListener('touchstart', onProgressPointerDown, {passive: true});
+}
+
+let ts=0,td=0,sw=0;
+document.addEventListener('touchstart',function(e){
+  if(e.target.closest('.actions')||e.target.closest('.info')||e.target.closest('.bnav')||e.target.closest('.player-progress'))return;
+  ts=e.touches[0].clientY;sw=1;
+},{passive:true});
+document.addEventListener('touchmove',function(e){
+  if(!sw)return;
+  td=e.touches[0].clientY-ts;
+  const max=wh*.12;let dr=Math.max(-max,Math.min(max,td));
+  if((idx===0&&dr>0)||(idx>=total-1&&dr<0))dr*=.25;
+  track.style.transition='none';
+  track.style.transform=`translateY(${-idx*wh+dr}px)`;
+},{passive:true});
+document.addEventListener('touchend',function(){
+  if(!sw)return;sw=0;
+  if(td<-wh*.12)nextSlide();else if(td>wh*.12)prevSlide();else goTo(idx,true);
+  td=0;
+},{passive:true});
+window.addEventListener('resize',function(){wh=window.innerHeight;goTo(idx,false)});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowRight')nextSlide();else if(e.key==='ArrowUp'||e.key==='ArrowLeft')prevSlide()});
+render();
+</script>
+<script src="load-header.js"></script>
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 演员主页</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.12);
+      --accent-glow: rgba(0, 179, 136, 0.25);
+      --text: #13202e;
+      --text-muted: #5e6f83;
+      --border: #deeaf7;
+      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
+      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
+      --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10);
+      --radius: 24px;
+      --radius-lg: 32px;
+      --danger: #f45b69;
+      --warning: #ff9f2c;
+      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+
+    .breadcrumb { display: flex; align-items: center; gap: 8px; margin-top: 40px; margin-bottom: 32px; font-size: 0.92rem; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb .sep { color: var(--border); }
+
+    /* ===== Auth Styles ===== */
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-login-icon { font-size: 1rem; }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    /* Login Modal */
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    /* ===== End Auth Styles ===== */
+
+    /* Hero Section */
+    .actor-hero {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    @media (max-width: 860px) {
+      .actor-hero { grid-template-columns: 1fr; text-align: center; }
+    }
+    .actor-hero-avatar {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e0f7ff, #ffffff);
+      border: 3px solid var(--accent-soft);
+      box-shadow: 0 18px 40px rgba(15, 22, 42, 0.10);
+      margin: 0 auto;
+    }
+    .actor-hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .actor-hero-info { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+    .actor-hero-info .actor-name {
+      margin: 0;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .actor-hero-info .actor-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .actor-hero-info .actor-tags .tag {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .actor-hero-info .actor-tags .tag.muted {
+      background: rgba(15,22,42,0.05);
+      color: var(--text-muted);
+    }
+    .actor-hero-info .actor-desc {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-size: 0.96rem;
+    }
+    .actor-hero-info .actor-nft-id {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-family: monospace;
+      padding: 8px 14px;
+      background: #f8fbff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: inline-block;
+    }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 860px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr; }
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-card .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+    .stat-card .stat-label {
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* NFT Info Panel */
+    .nft-info-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 32px;
+    }
+    .nft-info-panel h3 {
+      margin: 0 0 20px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nft-info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 860px) {
+      .nft-info-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .nft-info-grid { grid-template-columns: 1fr; }
+    }
+    .nft-info-item {
+      padding: 16px 18px;
+      background: #f8fbff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .nft-info-item .info-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .nft-info-item .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .nft-info-item .info-value.accent {
+      color: var(--accent);
+    }
+
+    /* Progress Bar */
+    .progress-section {
+      margin-top: 20px;
+      padding: 20px;
+      background: #f8fbff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .progress-section .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .progress-section .progress-header span {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+    .progress-section .progress-header strong {
+      font-size: 1rem;
+      color: var(--accent);
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: #eaf4ee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #00d9a3);
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+
+    /* Drama Section */
+    .drama-section {
+      margin-bottom: 32px;
+    }
+    .drama-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .drama-section-header h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .drama-section-header .count {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 400;
+    }
+    .drama-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 1024px) {
+      .drama-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .drama-grid { grid-template-columns: 1fr; }
+    }
+    .drama-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .drama-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(0,179,136,0.15);
+    }
+    .drama-card .drama-cover {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      background: #eaf4ff;
+    }
+    .drama-card .drama-body {
+      padding: 18px 20px;
+    }
+    .drama-card .drama-body h4 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+    .drama-card .drama-body .drama-role {
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .drama-card .drama-body .drama-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .drama-card .drama-body .drama-meta span {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .drama-card .drama-body .drama-meta span.muted {
+      background: rgba(15,22,42,0.05);
+      color: var(--text-muted);
+    }
+    .drama-card .drama-body .drama-desc {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .drama-card .drama-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fafcff;
+    }
+    .drama-card .drama-footer .royalty-info {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .drama-card .drama-footer .royalty-info strong {
+      color: var(--accent);
+    }
+    .drama-card .drama-footer .view-btn {
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+    .drama-card .drama-footer .view-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Action Buttons */
+    .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .action-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .action-btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px rgba(0,179,136,0.30);
+    }
+    .action-btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,179,136,0.40);
+    }
+    .action-btn .icon { font-size: 1.1rem; }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+    .empty-state p { font-size: 1rem; line-height: 1.7; margin: 0; }
+
+    /* Toast */
+    .toast-notification {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      z-index: 9999;
+      background: rgba(26, 35, 47, 0.95);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      max-width: 420px;
+      text-align: center;
+      font-weight: 500;
+    }
+    .toast-notification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="actors.html">NFT</a>
+      <span class="sep">›</span>
+      <span id="breadcrumbActor">演员主页</span>
+    </div>
+
+    <!-- Actor Hero -->
+    <section class="actor-hero" id="actorHero">
+      <div class="actor-hero-avatar">
+        <img id="actorAvatar" src="" alt="演员头像" />
+      </div>
+      <div class="actor-hero-info">
+        <div>
+          <h1 class="actor-name" id="actorName">—</h1>
+          <div class="actor-tags" id="actorTags">
+            <span class="tag" id="actorGender">—</span>
+            <span class="tag muted" id="actorNftBadge">演员 NFT</span>
+          </div>
+        </div>
+        <p class="actor-desc" id="actorDesc">—</p>
+        <span class="actor-nft-id" id="actorNftId">#—</span>
+        <div class="action-row">
+          <a class="action-btn primary" href="actors.html" id="mintBtn">
+            <span class="icon">🎭</span> Mint 此演员
+          </a>
+          <button class="action-btn" id="aiChatBtn">
+            <span class="icon">💬</span> AI 对话
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Row -->
+    <section class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <div class="stat-value" id="statTotalSupply">—</div>
+        <div class="stat-label">发行总量</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statMinted">—</div>
+        <div class="stat-label">已 Mint</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statAvailable">—</div>
+        <div class="stat-label">可 Mint</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statHolders">—</div>
+        <div class="stat-label">持有人</div>
+      </div>
+    </section>
+
+    <!-- NFT Info Panel -->
+    <section class="nft-info-panel">
+      <h3>🔗 NFT 详细信息</h3>
+      <div class="nft-info-grid">
+        <div class="nft-info-item">
+          <div class="info-label">Mint 价格</div>
+          <div class="info-value accent" id="infoPrice">—</div>
+        </div>
+        <div class="nft-info-item">
+          <div class="info-label">创作者保留</div>
+          <div class="info-value" id="infoReserved">—</div>
+        </div>
+        <div class="nft-info-item">
+          <div class="info-label">合约地址</div>
+          <div class="info-value" id="infoContract" style="font-size:0.9rem;font-family:monospace;">—</div>
+        </div>
+        <div class="nft-info-item">
+          <div class="info-label">Token 标准</div>
+          <div class="info-value" id="infoStandard">ERC-1155</div>
+        </div>
+      </div>
+      <div class="progress-section">
+        <div class="progress-header">
+          <span>铸造进度</span>
+          <strong id="progressText">—</strong>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Drama Section -->
+    <section class="drama-section">
+      <div class="drama-section-header">
+        <h3>🎬 参演短剧 <span class="count" id="dramaCount">(0)</span></h3>
+      </div>
+      <div class="drama-grid" id="dramaGrid">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-icon">🎭</div>
+        <p>该演员暂未参演任何短剧</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-notification" id="toastNotification">
+    <span class="toast-icon">💡</span>
+    <span id="toastMessage"></span>
+  </div>
+
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="ai-chat.js"></script>
+  <script>
+    // ============================================================
+    //  演员数据（模拟链上数据）
+    // ============================================================
+    const ACTORS_DATA = {
+      '苏婉清': {
+        id: '#A-001',
+        name: '苏婉清',
+        gender: '♀ 女性',
+        desc: '温婉端庄的江南女子，琴棋书画样样精通，性格外柔内刚。出生于江南书香门第，自幼受传统文化熏陶，举手投足间尽显大家闺秀风范。',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+        totalSupply: 10000,
+        minted: 1000,
+        available: 9000,
+        holders: 900,
+        price: '10 USDC',
+        reserved: 1000,
+        contract: '0x7A2b...3fD8',
+        standard: 'ERC-1155',
+        dramas: [
+          { title: '江南烟雨', role: '茶女·陆小曼', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '8%', category: '古装', link: 'drama-detail.html' },
+          { title: '长安如梦', role: '才女·沈清荷', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '6%', category: '古装', link: 'drama-detail.html' },
+          { title: '迷雾之城', role: '记者·林薇', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
+        ]
+      },
+      '李云飞': {
+        id: '#A-002',
+        name: '李云飞',
+        gender: '♂ 男性',
+        desc: '身手矫健的侠客，性格豪爽仗义。自幼习武，练就一身好本领，行走江湖路见不平拔刀相助。',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+        totalSupply: 8000,
+        minted: 500,
+        available: 7500,
+        holders: 450,
+        price: '8 USDC',
+        reserved: 500,
+        contract: '0x7A2b...3fD8',
+        standard: 'ERC-1155',
+        dramas: [
+          { title: '星际迷航', role: '工程师·赵刚', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '7%', category: '科幻', link: 'drama-detail.html' },
+          { title: '迷雾之城', role: '侦探·陈默', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
+        ]
+      },
+      '林梦瑶': {
+        id: '#A-003',
+        name: '林梦瑶',
+        gender: '♀ 女性',
+        desc: '聪慧机敏的现代女性，擅长推理分析。毕业于顶尖学府，拥有敏锐的洞察力和出色的逻辑思维能力。',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
+        totalSupply: 10000,
+        minted: 1000,
+        available: 9000,
+        holders: 800,
+        price: '10 USDC',
+        reserved: 1000,
+        contract: '0x7A2b...3fD8',
+        standard: 'ERC-1155',
+        dramas: [
+          { title: '江南烟雨', role: '画师·白露', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '6%', category: '古装', link: 'drama-detail.html' },
+          { title: '星际迷航', role: '科学官·艾琳', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '8%', category: '科幻', link: 'drama-detail.html' },
+        ]
+      },
+      '赵无极': {
+        id: '#A-004',
+        name: '赵无极',
+        gender: '♂ 男性',
+        desc: '深不可测的武林高手，亦正亦邪。武功深不可测，行事风格独特，令人难以捉摸。',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
+        totalSupply: 6000,
+        minted: 500,
+        available: 5500,
+        holders: 300,
+        price: '15 USDC',
+        reserved: 500,
+        contract: '0x7A2b...3fD8',
+        standard: 'ERC-1155',
+        dramas: [
+          { title: '长安如梦', role: '太子·李承钰', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '10%', category: '古装', link: 'drama-detail.html' },
+        ]
+      },
+      '上官婉儿': {
+        id: '#A-005',
+        name: '上官婉儿',
+        gender: '♀ 女性',
+        desc: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+        totalSupply: 12000,
+        minted: 2000,
+        available: 10000,
+        holders: 1500,
+        price: '12 USDC',
+        reserved: 2000,
+        contract: '0x7A2b...3fD8',
+        standard: 'ERC-1155',
+        dramas: [
+          { title: '江南烟雨', role: '知府·周明远', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '4%', category: '古装', link: 'drama-detail.html' },
+        ]
+      },
+      'Luna': {
+        id: '#A-006',
+        name: 'Luna',
+        gender: '♀ 女性',
+        desc: '未来偶像型AI演员，适合对话与剧情分润场景。拥有独特的未来感和科技气质。',
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+        totalSupply: 5000,
+        minted: 98,
+        available: 10,
+        holders: 900,
+        price: '10 USDC',
+        reserved: 500,
+        contract: '0x7A2b...3fD8',
+        standard: 'ERC-1155',
+        dramas: [
+          { title: '重生之我在币圈当大佬', role: 'AI 助手·Luna', cover: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80', episodes: 44, royalty: '12%', category: '金融', link: 'drama-detail.html' },
+        ]
+      }
+    };
+
+    // ============================================================
+    //  Toast
+    // ============================================================
+    let toastTimer = null;
+    function showToast(msg, icon) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      if (icon) t.querySelector('.toast-icon').textContent = icon;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ============================================================
+    //  页面初始化
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // 从 URL 参数获取演员名称
+      const params = new URLSearchParams(window.location.search);
+      const actorName = params.get('name') || '苏婉清';
+
+      const actor = ACTORS_DATA[actorName];
+      if (!actor) {
+        document.getElementById('actorName').textContent = '未知演员';
+        document.getElementById('actorDesc').textContent = '未找到该演员的信息';
+        return;
+      }
+
+      // 更新面包屑
+      document.getElementById('breadcrumbActor').textContent = actor.name;
+
+      // 更新 Hero 区域
+      document.getElementById('actorAvatar').src = actor.avatar;
+      document.getElementById('actorAvatar').alt = actor.name;
+      document.getElementById('actorName').textContent = actor.name;
+      document.getElementById('actorGender').textContent = actor.gender;
+      document.getElementById('actorNftBadge').textContent = '演员 NFT';
+      document.getElementById('actorDesc').textContent = actor.desc;
+      document.getElementById('actorNftId').textContent = actor.id + ' · ' + actor.standard;
+
+      // 更新 Mint 按钮链接
+      const mintBtn = document.getElementById('mintBtn');
+      mintBtn.href = 'actors.html?mint=' + encodeURIComponent(actor.name);
+
+      // 更新统计数据
+      document.getElementById('statTotalSupply').textContent = actor.totalSupply.toLocaleString();
+      document.getElementById('statMinted').textContent = actor.minted.toLocaleString();
+      document.getElementById('statAvailable').textContent = actor.available.toLocaleString();
+      document.getElementById('statHolders').textContent = actor.holders.toLocaleString();
+
+      // 更新 NFT 信息
+      document.getElementById('infoPrice').textContent = actor.price;
+      document.getElementById('infoReserved').textContent = actor.reserved.toLocaleString();
+      document.getElementById('infoContract').textContent = actor.contract;
+      document.getElementById('infoStandard').textContent = actor.standard;
+
+      // 更新铸造进度
+      const progressPct = (actor.minted / actor.totalSupply) * 100;
+      document.getElementById('progressFill').style.width = progressPct.toFixed(2) + '%';
+      document.getElementById('progressText').textContent = `已铸造 ${progressPct.toFixed(1)}% (${actor.minted.toLocaleString()} / ${actor.totalSupply.toLocaleString()})`;
+
+      // 绑定 AI 对话按钮
+      const chatBtn = document.getElementById('aiChatBtn');
+      chatBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openAIChat(actor.name, actor.avatar);
+      });
+
+      // 更新参演短剧
+      renderDramas(actor);
+    });
+
+    // ============================================================
+    //  渲染参演短剧
+    // ============================================================
+    function renderDramas(actor) {
+      const grid = document.getElementById('dramaGrid');
+      const empty = document.getElementById('emptyState');
+      const count = document.getElementById('dramaCount');
+
+      if (!actor.dramas || actor.dramas.length === 0) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        count.textContent = '(0)';
+        return;
+      }
+
+      empty.style.display = 'none';
+      count.textContent = `(${actor.dramas.length})`;
+
+      grid.innerHTML = actor.dramas.map(d => `
+        <div class="drama-card" onclick="location.href='${d.link}'">
+          <img class="drama-cover" src="${d.cover}" alt="${d.title}" />
+          <div class="drama-body">
+            <h4>${d.title}</h4>
+            <div class="drama-role">🎭 饰演：${d.role}</div>
+            <div class="drama-meta">
+              <span>${d.category}</span>
+              <span class="muted">全 ${d.episodes} 集</span>
+            </div>
+            <p class="drama-desc">AI 生成的精彩短剧，${d.title} 带你进入不一样的叙事世界。</p>
+          </div>
+          <div class="drama-footer">
+            <span class="royalty-info">分润比例 <strong>${d.royalty}</strong></span>
+            <button class="view-btn" onclick="event.stopPropagation();location.href='${d.link}'">查看详情</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-bottom-nav.js"></script>
+</body>
+</html>

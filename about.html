@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 首页</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.12);
+      --accent-glow: rgba(0, 179, 136, 0.25);
+      --text: #13202e;
+      --text-muted: #5e6f83;
+      --border: #deeaf7;
+      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
+      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
+      --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10);
+      --radius: 24px;
+      --radius-lg: 32px;
+      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-login-icon { font-size: 1rem; }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    /* Login Modal */
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ===== HERO Section (Figma-aligned) ===== */
+    .hero {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 72px;
+      padding: 140px 88px 120px;
+      align-self: stretch;
+    }
+    .hero-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 560px;
+    }
+    .hero-label {
+      color: #60646C;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    .hero-title {
+      margin: 0;
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 140%;
+      letter-spacing: -0.21%;
+      background: linear-gradient(46deg, #05DF72 0%, #00BBA7 45%, #00B8DB 92%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: center;
+    }
+    .hero-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 32px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+      text-decoration: none;
+      background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+    .hero-btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+    .hero-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 32px;
+      border-radius: 88px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+      text-decoration: none;
+      background: #fff;
+      color: #1C2024;
+      border: 1px solid #1C2024;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .hero-btn-secondary:hover {
+      background: #f5f5f5;
+      transform: translateY(-1px);
+    }
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      color: #60646C;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+    }
+    .hero-tagline-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #05DF72;
+      flex-shrink: 0;
+    }
+    .hero-banner {
+      position: relative;
+      width: 534px;
+      height: 416px;
+      flex-shrink: 0;
+    }
+    .hero-banner-blur {
+      position: absolute;
+      top: 16px;
+      left: 0;
+      width: 534px;
+      height: 400px;
+      border-radius: 24px;
+      overflow: hidden;
+      filter: blur(71.8px);
+    }
+    .hero-banner-blur img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-banner-main {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 533px;
+      height: 400px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(27,45,71,0.10);
+    }
+    .hero-banner-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-banner-main::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
+      pointer-events: none;
+    }
+
+    /* ===== Stats Row (Figma Frame 2085663668) ===== */
+    .hero-stats {
+      display: flex;
+      flex-direction: row;
+      align-self: stretch;
+      gap: 52px;
+      padding: 88px;
+      align-items: center;
+    }
+    .hero-stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+    .hero-stat-number {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.3%;
+      text-align: center;
+      color: #1C2024;
+      line-height: 1.2;
+    }
+    .hero-stat-label {
+      color: #1C2024;
+      font-size: 20px;
+      font-weight: 510;
+      line-height: 28px;
+      letter-spacing: -0.4%;
+      text-align: center;
+    }
+    .hero-stat-divider {
+      width: 0;
+      height: 48px;
+      border-left: 1px solid #D9D9E0;
+      flex-shrink: 0;
+    }
+
+    /* ===== Second Screen — AI · Web3 · 协议 (Figma node 4359:12302) ===== */
+    .second-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 44px;
+      padding: 120px 88px;
+      align-self: stretch;
+    }
+    .second-screen-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      align-self: stretch;
+    }
+    .second-screen-title {
+      margin: 0;
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -0.21%;
+      text-align: center;
+      color: #1C2024;
+      line-height: 1.2;
+    }
+    .second-screen-subtitle {
+      margin: 0;
+      color: #60646C;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 30px;
+      letter-spacing: -0.42%;
+      text-align: center;
+      max-width: 700px;
+    }
+    .second-screen-visual {
+      width: 100%;
+      height: 560px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.05), 0px 12px 32px -16px rgba(0, 0, 51, 0.06);
+    }
+    .second-screen-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .second-screen-cards {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 16px;
+      align-self: stretch;
+    }
+    .second-screen-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 24px 32px 32px;
+      background: #FFFFFF;
+      border: 2px solid #F0F0F3;
+      border-radius: 24px;
+    }
+    .second-screen-card-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 9999px;
+      padding: 12px;
+      box-shadow: 0px 2px 3px -2px rgba(0, 0, 51, 0.06), 0px 3px 12px -4px rgba(0, 0, 0, 0.10), 0px 4px 16px -8px rgba(0, 0, 0, 0.10);
+    }
+    .second-screen-card-title {
+      margin: 0;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.33%;
+      text-align: center;
+      color: #111827;
+      line-height: 1.2;
+    }
+    .second-screen-card-desc {
+      margin: 0;
+      color: #60646C;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 22px;
+      text-align: center;
+    }
+    /* ===== Third Screen — 你的叙事身份 (Figma node 4359:12339) ===== */
+    .third-screen {
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 120px;
+      padding: 120px 88px;
+      align-self: stretch;
+    }
+    .third-screen-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 72px;
+      align-self: stretch;
+    }
+    .third-screen-header {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      align-self: stretch;
+      gap: 24px;
+    }
+    .third-screen-header-group {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      align-self: stretch;
+      gap: 16px;
+    }
+    .third-screen-title {
+      margin: 0;
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -0.21%;
+      text-align: center;
+      color: #1C2024;
+      line-height: 1.2;
+    }
+    .third-screen-subtitle {
+      margin: 0;
+      color: #60646C;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 30px;
+      letter-spacing: -0.42%;
+      text-align: center;
+    }
+    .third-screen-cards {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      align-self: stretch;
+    }
+    .third-screen-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: stretch;
+      gap: 32px;
+      padding: 32px;
+      height: 576px;
+      background: #FFFFFF;
+      border-radius: 24px;
+      box-shadow: 3px 4px 12px 0px rgba(0, 0, 0, 0.08);
+    }
+    .third-screen-card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      align-self: stretch;
+    }
+    .third-screen-card-title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      align-self: stretch;
+    }
+    .third-screen-card-title h3 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 36px;
+      letter-spacing: -0.4%;
+      text-align: left;
+      color: #111827;
+    }
+    .third-screen-card-desc {
+      margin: 0;
+      color: #4B5563;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      text-align: left;
+    }
+    .third-screen-card-image {
+      width: 100%;
+      height: 376px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .third-screen-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ===== Fourth Screen — $STORY：叙事权通证 (Figma node 4359:12373) ===== */
+    .story-section {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 72px;
+      padding: 120px 88px;
+      align-self: stretch;
+    }
+    .story-section-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 0px 200px;
+      align-self: stretch;
+    }
+    .story-section-header-group {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      align-self: stretch;
+      gap: 16px;
+    }
+    .story-section-title {
+      margin: 0;
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -0.21%;
+      text-align: center;
+      color: #1C2024;
+      line-height: 1.2;
+    }
+    .story-section-subtitle {
+      margin: 0;
+      color: #60646C;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 30px;
+      letter-spacing: -0.42%;
+      text-align: center;
+    }
+    .story-section-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 32px;
+      border-radius: 88px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+      text-decoration: none;
+      background: #FFFFFF;
+      color: #1C2024;
+      border: 1px solid #1C2024;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .story-section-btn:hover {
+      background: #f5f5f5;
+      transform: translateY(-1px);
+    }
+    .story-section-cards {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      align-self: stretch;
+    }
+    .story-section-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 32px;
+      background: #FFFFFF;
+      border-radius: 24px;
+      box-shadow: 3px 4px 12px 0px rgba(0, 0, 0, 0.08);
+    }
+    .story-section-card-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background: #1C2024;
+      box-shadow: 0px 9.23px 13.85px -2.77px rgba(0, 0, 0, 0.10), 0px 3.69px 5.54px -3.69px rgba(0, 0, 0, 0.10);
+    }
+    .story-section-card-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 30px;
+      letter-spacing: -0.42%;
+      text-align: center;
+      color: #1C2024;
+    }
+    .story-section-card-desc {
+      margin: 0;
+      color: #60646C;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 22px;
+      text-align: center;
+    }
+    .story-section-flow {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 56px;
+      padding: 44px 88px;
+      background: #FFFFFF;
+      border: 2px solid #F0F0F3;
+      border-radius: 24px;
+    }
+    .story-section-flow-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .story-section-flow-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background: #F0F0F0;
+    }
+    .story-section-flow-label {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 28px;
+      letter-spacing: -0.4%;
+      text-align: center;
+      color: #1C2024;
+      white-space: nowrap;
+    }
+    .story-section-flow-sublabel {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 22px;
+      text-align: center;
+      color: #1C2024;
+    }
+    .story-section-flow-arrow {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .site-footer { margin-top: 64px; padding: 48px 0 32px; border-top: 1px solid var(--border); }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+    .footer-brand .icon { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, rgba(0,179,136,0.18), rgba(0,179,136,0.06)); display: grid; place-items: center; color: var(--accent); font-weight: 700; font-size: 1rem; border: 1px solid rgba(0, 179, 136, 0.30); margin-bottom: 16px; }
+    .footer-brand h3 { margin: 0 0 8px; font-size: 1.15rem; }
+    .footer-brand p { margin: 0 0 16px; color: var(--text-muted); line-height: 1.7; font-size: 0.92rem; max-width: 300px; }
+    .footer-social { display: flex; gap: 12px; }
+    .footer-social a { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); display: grid; place-items: center; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: all 0.2s ease; }
+    .footer-social a:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .footer-col h4 { margin: 0 0 16px; font-size: 0.95rem; }
+    .footer-col a { display: block; padding: 5px 0; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom { padding: 20px 0 0; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+    .footer-bottom p { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: var(--accent); }
+    @media (max-width: 1060px) {
+      .hero { flex-direction: column; padding: 60px 40px; gap: 48px; }
+      .hero-banner { width: 100%; max-width: 534px; height: auto; position: relative; display: inline-block; }
+      .hero-banner-blur { width: 100%; height: auto; aspect-ratio: 534/400; position: absolute; top: 12px; left: 0; filter: blur(30px); }
+      .hero-banner-main { width: 100%; height: auto; aspect-ratio: 534/400; position: relative; top: auto; left: auto; }
+      .hero-stats { flex-direction: column; gap: 24px; padding: 40px; }
+      .hero-stat-divider { width: 48px; height: 0; border-left: none; border-top: 1px solid #D9D9E0; }
+      .second-screen { padding: 60px 40px; }
+      .second-screen-title { font-size: 40px; }
+      .second-screen-subtitle { font-size: 20px; }
+      .second-screen-visual { height: 360px; }
+      .second-screen-cards { flex-direction: column; }
+      .third-screen { padding: 80px 40px; }
+      .third-screen-inner { gap: 48px; }
+      .third-screen-title { font-size: 40px; }
+      .third-screen-subtitle { font-size: 20px; }
+      .third-screen-cards { flex-direction: column; }
+      .third-screen-card { height: auto; min-height: 460px; }
+      .third-screen-card-image { height: 280px; }
+      .story-section { padding: 80px 40px; gap: 48px; }
+      .story-section-title { font-size: 40px; }
+      .story-section-subtitle { font-size: 20px; }
+      .story-section-header { padding: 0; }
+      .story-section-cards { flex-direction: column; }
+      .story-section-flow { flex-wrap: wrap; gap: 32px; padding: 32px; }
+
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+
+    }
+    @media (max-width: 680px) {
+      .hero { padding: 32px 20px; gap: 32px; }
+      .hero-title { font-size: 32px; }
+      .hero-actions { flex-direction: column; width: 100%; }
+      .hero-btn-primary, .hero-btn-secondary { width: 100%; text-align: center; }
+      .second-screen { padding: 40px 20px; gap: 32px; }
+      .second-screen-title { font-size: 32px; }
+      .second-screen-subtitle { font-size: 18px; }
+      .second-screen-visual { height: 240px; }
+      .second-screen-card-title { font-size: 28px; }
+      .third-screen { padding: 60px 20px; }
+      .third-screen-title { font-size: 32px; }
+      .third-screen-subtitle { font-size: 18px; }
+      .third-screen-card { height: auto; min-height: 380px; padding: 24px; }
+      .third-screen-card-image { height: 220px; }
+      .third-screen-card-title h3 { font-size: 24px; }
+      .story-section { padding: 60px 20px; gap: 40px; }
+      .story-section-title { font-size: 32px; }
+      .story-section-subtitle { font-size: 18px; }
+      .story-section-flow { flex-direction: column; gap: 24px; padding: 24px; }
+      .story-section-flow-arrow { transform: rotate(90deg); }
+      .section-title, .third-title { font-size: 2rem; }
+
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .hero-stats { padding: 24px; gap: 16px; }
+      .hero-stat-number { font-size: 32px; }
+      .hero-stat-label { font-size: 16px; }
+
+    }
+
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+
+    <!-- ===== HERO — 第一屏 (Figma node 1453:3288) ===== -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-label">创造属于你的故事</div>
+        <h1 class="hero-title">你的人生不是被体验的剧本，而是正在被你书写的叙事</h1>
+        <div class="hero-actions">
+          <a class="hero-btn-primary" href="whitepaper.html">白皮书</a>
+          <a class="hero-btn-secondary" href="#">购买STORY</a>
+        </div>
+        <div class="hero-tagline">
+          <span class="hero-tagline-dot"></span>
+          首部AI金融史诗《1011》即将上线
+        </div>
+      </div>
+      <div class="hero-banner">
+        <div class="hero-banner-blur">
+          <img src="image/hero-bg-blur.png" alt="" />
+
+        </div>
+        <div class="hero-banner-main">
+          <img src="image/hero-main.png" alt="Story.fun" />
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Stats Row (Figma node 1453:3307) ===== -->
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <div class="hero-stat-number">10亿+</div>
+        <div class="hero-stat-label">潜在观众</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-number">10000x</div>
+        <div class="hero-stat-label">效率提升</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-number">0门槛</div>
+        <div class="hero-stat-label">人人可参与</div>
+      </div>
+    </div>
+
+    <!-- ===== 第二屏 — AI · Web3 · 协议 (Figma node 4359:12302) ===== -->
+    <section class="second-screen">
+      <div class="second-screen-header">
+        <h2 class="second-screen-title">AI · Web3 · 协议</h2>
+        <p class="second-screen-subtitle">三种力量驱动，将叙事从被动体验转化为主动生成</p>
+      </div>
+      <div class="second-screen-visual">
+        <img src="image/protocol-visual.png" alt="AI · Web3 · 协议" />
+
+      </div>
+      <div class="second-screen-cards">
+        <div class="second-screen-card">
+          <div class="second-screen-card-icon" style="background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip_ai)">
+                <path d="M15.75 2.33329C15.75 2.85129 15.5248 3.31679 15.1667 3.63763V5.83329H21C21.9283 5.83329 22.8185 6.20204 23.4749 6.85842C24.1313 7.5148 24.5 8.40503 24.5 9.33329V21C24.5 21.9282 24.1313 22.8185 23.4749 23.4748C22.8185 24.1312 21.9283 24.5 21 24.5H7C6.07174 24.5 5.1815 24.1312 4.52513 23.4748C3.86875 22.8185 3.5 21.9282 3.5 21V9.33329C3.5 8.40503 3.86875 7.5148 4.52513 6.85842C5.1815 6.20204 6.07174 5.83329 7 5.83329H12.8333V3.63763C12.6158 3.44302 12.4503 3.19707 12.3521 2.92219C12.2538 2.6473 12.2259 2.35221 12.2709 2.06377C12.3158 1.77534 12.4322 1.50274 12.6094 1.27078C12.7867 1.03883 13.0191 0.85489 13.2856 0.73572C13.5521 0.61655 13.8441 0.565934 14.1352 0.58848C14.4262 0.611026 14.707 0.706018 14.9519 0.864807C15.1969 1.0236 15.3982 1.24114 15.5376 1.49762C15.677 1.7541 15.75 2.04138 15.75 2.33329ZM0 11.6666H2.33333V18.6666H0V11.6666ZM28 11.6666H25.6667V18.6666H28V11.6666ZM10.5 16.9166C10.9641 16.9166 11.4092 16.7323 11.7374 16.4041C12.0656 16.0759 12.25 15.6308 12.25 15.1666C12.25 14.7025 12.0656 14.2574 11.7374 13.9292C11.4092 13.601 10.9641 13.4166 10.5 13.4166C10.0359 13.4166 9.59075 13.601 9.26256 13.9292C8.93437 14.2574 8.75 14.7025 8.75 15.1666C8.75 15.6308 8.93437 16.0759 9.26256 16.4041C9.59075 16.7323 10.0359 16.9166 10.5 16.9166ZM19.25 15.1666C19.25 14.7025 19.0656 14.2574 18.7374 13.9292C18.4092 13.601 17.9641 13.4166 17.5 13.4166C17.0359 13.4166 16.5908 13.601 16.2626 13.9292C15.9344 14.2574 15.75 14.7025 15.75 15.1666C15.75 15.6308 15.9344 16.0759 16.2626 16.4041C16.5908 16.7323 17.0359 16.9166 17.5 16.9166C17.9641 16.9166 18.4092 16.7323 18.7374 16.4041C19.0656 16.0759 19.25 15.6308 19.25 15.1666Z" fill="white"/>
+              </g>
+              <defs>
+                <clipPath id="clip_ai">
+                  <rect width="28" height="28" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <h3 class="second-screen-card-title">AI</h3>
+          <p class="second-screen-card-desc">你的想法，自动变成故事</p>
+        </div>
+        <div class="second-screen-card">
+          <div class="second-screen-card-icon" style="background: linear-gradient(90deg, #F59E0B 0%, #F97316 100%);">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.78484 25.2459C7.65385 24.4486 5.79124 23.0659 4.41137 21.2568C3.03532 19.4525 2.19918 17.2949 2 15.0345H7.17011C7.15088 18.6067 8.05134 22.1237 9.78484 25.2471V25.2459ZM18.7672 15.0332C18.5499 21.5435 16.1651 26.0012 14.0126 26.0012C11.8577 26.0012 9.47411 21.5423 9.25558 15.0332H18.7672ZM26 15.0332C25.8054 17.2972 24.9694 19.4587 23.5899 21.2644C22.2074 23.0744 20.3397 24.455 18.2038 25.2459C19.9468 22.1257 20.8516 18.6071 20.8299 15.0332H26ZM26 12.9705H20.8299C20.8538 9.39613 19.9484 5.87692 18.2025 2.75785C20.3393 3.54703 22.2081 4.92688 23.5912 6.7368C24.9712 8.54299 25.8069 10.7056 26 12.9705ZM18.7672 12.9705H9.25558C9.47411 6.4488 11.8577 2.00122 14.0114 2.00122C16.1651 2.00122 18.5373 6.44754 18.7672 12.9705ZM9.78484 2.81596C8.04952 5.93821 7.14893 9.4553 7.17011 13.0273H2C2.19523 10.7651 3.03028 8.60518 4.40758 6.79996C5.7878 4.9908 7.65215 3.6095 9.78484 2.81596Z" fill="white"/>
+            </svg>
+          </div>
+          <h3 class="second-screen-card-title">Web3</h3>
+          <p class="second-screen-card-desc">你的创作，永远属于你</p>
+        </div>
+        <div class="second-screen-card">
+          <div class="second-screen-card-icon" style="background: linear-gradient(90deg, #A855F7 0%, #EC4899 100%);">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip_inf)">
+                <path d="M4.59375 14.0001C4.59375 15.1317 5.04325 16.2169 5.84338 17.017C6.6435 17.8171 7.7287 18.2666 8.86025 18.2666C9.9918 18.2666 11.077 17.8171 11.8771 17.017C12.6772 16.2169 13.1267 15.1317 13.1267 14.0001C13.1267 13.4399 13.0164 12.8851 12.802 12.3674C12.5876 11.8498 12.2733 11.3795 11.8771 10.9833C11.4809 10.5871 11.0106 10.2728 10.493 10.0584C9.97533 9.844 9.42054 9.73364 8.86025 9.73364C8.29997 9.73364 7.74517 9.844 7.22753 10.0584C6.7099 10.2728 6.23956 10.5871 5.84338 10.9833C5.4472 11.3795 5.13293 11.8498 4.91852 12.3674C4.70411 12.8851 4.59375 13.4399 4.59375 14.0001Z" fill="white"/>
+                <path d="M14.875 14.0001C14.875 14.5604 14.9854 15.1152 15.1998 15.6329C15.4142 16.1505 15.7284 16.6208 16.1246 17.017C16.5208 17.4132 16.9911 17.7275 17.5088 17.9419C18.0264 18.1563 18.5812 18.2666 19.1415 18.2666C19.7018 18.2666 20.2566 18.1563 20.7742 17.9419C21.2919 17.7275 21.7622 17.4132 22.1584 17.017C22.5546 16.6208 22.8688 16.1505 23.0832 15.6329C23.2976 15.1152 23.408 14.5604 23.408 14.0001C23.408 13.4399 23.2976 12.8851 23.0832 12.3674C22.8688 11.8498 22.5546 11.3795 22.1584 10.9833C21.7622 10.5871 21.2919 10.2728 20.7742 10.0584C20.2566 9.844 19.7018 9.73364 19.1415 9.73364C18.5812 9.73364 18.0264 9.844 17.5088 10.0584C16.9911 10.2728 16.5208 10.5871 16.1246 10.9833C15.7284 11.3795 15.4142 11.8498 15.1998 12.3674C14.9854 12.8851 14.875 13.4399 14.875 14.0001Z" fill="white"/>
+                <path d="M14 0C6.2685 0 0 6.2685 0 14C0 21.7315 6.2685 28 14 28C21.7315 28 28 21.7315 28 14C28 6.2685 21.7315 0 14 0ZM19.1415 20.0165C16.954 20.0165 15.0535 18.83 14 17.08C12.9465 18.8318 11.0477 20.0165 8.8585 20.0165C5.5405 20.0165 2.842 17.318 2.842 14C2.842 10.682 5.5405 7.9835 8.8585 7.9835C11.046 7.9835 12.9465 9.17 14 10.92C15.0535 9.16825 16.9522 7.9835 19.1415 7.9835C22.4595 7.9835 25.158 10.682 25.158 14C25.158 17.318 22.4578 20.0165 19.1415 20.0165Z" fill="white"/>
+              </g>
+              <defs>
+                <clipPath id="clip_inf">
+                  <rect width="28" height="28" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <h3 class="second-screen-card-title">∞ 协议</h3>
+          <p class="second-screen-card-desc">你的故事，可以无限延续</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第三屏 — 你的叙事身份 (Figma node 4359:12339) ===== -->
+    <section class="third-screen">
+      <div class="third-screen-inner">
+        <div class="third-screen-header">
+          <div class="third-screen-header-group">
+            <h2 class="third-screen-title">你的叙事身份</h2>
+            <p class="third-screen-subtitle">你本身，就是一个正在展开的叙事宇宙</p>
+          </div>
+        </div>
+        <div class="third-screen-cards">
+          <div class="third-screen-card">
+            <div class="third-screen-card-content">
+              <div class="third-screen-card-title">
+                <h3>创造者</h3>
+              </div>
+              <p class="third-screen-card-desc">主动书写自身的叙事</p>
+            </div>
+            <div class="third-screen-card-image">
+              <img src="image/identity-creator.png" alt="创造者" />
+
+            </div>
+          </div>
+          <div class="third-screen-card">
+            <div class="third-screen-card-content">
+              <div class="third-screen-card-title">
+                <h3>见证者</h3>
+              </div>
+              <p class="third-screen-card-desc">参与并验证他人叙事</p>
+            </div>
+            <div class="third-screen-card-image">
+              <img src="image/identity-witness.png" alt="见证者" />
+
+            </div>
+          </div>
+          <div class="third-screen-card">
+            <div class="third-screen-card-content">
+              <div class="third-screen-card-title">
+                <h3>共创者</h3>
+              </div>
+              <p class="third-screen-card-desc">进入叙事结构并进行改写</p>
+            </div>
+            <div class="third-screen-card-image">
+              <img src="image/identity-cocreator.png" alt="共创者" />
+
+            </div>
+          </div>
+          <div class="third-screen-card">
+            <div class="third-screen-card-content">
+              <div class="third-screen-card-title">
+                <h3>传播者</h3>
+              </div>
+              <p class="third-screen-card-desc">传播你值得的叙事</p>
+            </div>
+            <div class="third-screen-card-image">
+              <img src="image/identity-spreader.png" alt="传播者" />
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 第四屏 — $STORY：叙事权通证 (Figma node 4359:12373) ===== -->
+    <section class="story-section">
+      <div class="story-section-header">
+        <div class="story-section-header-group">
+          <h2 class="story-section-title">$STORY：叙事权通证</h2>
+          <p class="story-section-subtitle">成为AI短剧的联合出品人，重构影视行业的利益分配格局</p>
+        </div>
+        <a class="story-section-btn" href="#">购买STORY</a>
+      </div>
+
+      <div class="story-section-cards">
+        <div class="story-section-card">
+          <div class="story-section-card-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.33336 13.3332H13.3334V9.33324L8.6667 4.66657C10.1595 3.95361 11.8367 3.72098 13.4672 4.00074C15.0978 4.28049 16.6015 5.05886 17.7713 6.22867C18.9411 7.39848 19.7194 8.90218 19.9992 10.5327C20.279 12.1632 20.0463 13.8404 19.3334 15.3332L27.3334 23.3332C27.8638 23.8637 28.1618 24.5831 28.1618 25.3332C28.1618 26.0834 27.8638 26.8028 27.3334 27.3332C26.8029 27.8637 26.0835 28.1617 25.3334 28.1617C24.5832 28.1617 23.8638 27.8637 23.3334 27.3332L15.3334 19.3332C13.8405 20.0462 12.1634 20.2788 10.5328 19.9991C8.9023 19.7193 7.3986 18.9409 6.2288 17.7711C5.05899 16.6013 4.28062 15.0976 4.00086 13.4671C3.72111 11.8366 3.95373 10.1594 4.6667 8.66657L9.33336 13.3332Z" stroke="white" stroke-width="1.94118" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="story-section-card-title">治理权</h3>
+          <p class="story-section-card-desc">投票决定下一部 AI 短剧的题材与走向</p>
+        </div>
+        <div class="story-section-card">
+          <div class="story-section-card-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.8896 19.3682H15.3811C14.8325 19.3682 14.3882 18.9238 14.3882 18.3753C14.3882 17.8267 14.8325 17.3824 15.3811 17.3824H18.0361C18.3982 17.3824 18.6944 17.0861 18.6944 16.7241C18.6944 16.362 18.3982 16.0658 18.0361 16.0658H16.7909V15.1497C16.7909 14.7876 16.4947 14.4914 16.1326 14.4914C15.7705 14.4914 15.4743 14.7876 15.4743 15.1497V16.0658H15.3811C14.1084 16.0658 13.0716 17.1026 13.0716 18.3753C13.0716 19.6479 14.1084 20.6847 15.3811 20.6847H16.8896C17.4382 20.6847 17.8825 21.1291 17.8825 21.6776C17.8825 22.2262 17.4382 22.6706 16.8896 22.6706H14.1852C13.8231 22.6706 13.5269 22.9668 13.5269 23.3288C13.5269 23.6909 13.8231 23.9871 14.1852 23.9871H15.4798V24.9252C15.4798 25.2872 15.776 25.5834 16.1381 25.5834C16.5001 25.5834 16.7964 25.2872 16.7964 24.9252V23.9871H16.9061C16.9116 23.9871 16.917 23.9871 16.9225 23.9871C18.1842 23.9707 19.1991 22.9393 19.1991 21.6776C19.1991 20.405 18.1623 19.3682 16.8896 19.3682Z" fill="white" stroke="white" stroke-width="0.529412"/>
+              <path d="M26.0279 17.8761C25.3367 16.2852 24.3822 14.7438 23.1754 13.301C21.7162 11.5456 20.2625 10.3717 19.5219 9.82859L22.3196 4.63914C22.4567 4.38131 22.4129 4.06314 22.1989 3.86017C21.4748 3.15252 20.7068 2.80692 19.851 2.80692C19.0666 2.80692 18.348 3.10315 17.7226 3.36646C17.2289 3.56943 16.7626 3.76691 16.3841 3.76691C16.2689 3.76691 16.1701 3.75046 16.0714 3.71206C14.7658 3.2348 13.7619 2.93858 12.791 2.93858C11.5622 2.93858 10.5144 3.43229 9.48859 4.48554C9.27465 4.70497 9.24173 5.05056 9.41179 5.30839L12.4289 9.86699C11.6829 10.421 10.2566 11.584 8.82482 13.301C7.62345 14.7438 6.66346 16.2852 5.97226 17.8761C5.10553 19.8784 4.66667 21.9684 4.66667 24.0859C4.66667 26.9 6.95969 29.1931 9.77384 29.1931H22.2263C25.0405 29.1931 27.3335 26.9 27.3335 24.0859C27.3335 21.9684 26.8947 19.8784 26.0279 17.8761ZM10.8161 5.03411C11.4525 4.48554 12.0614 4.24417 12.791 4.24417C13.5699 4.24417 14.4476 4.50748 15.6161 4.94085C15.8575 5.02862 16.1153 5.07251 16.3786 5.07251C17.0204 5.07251 17.6348 4.82017 18.2218 4.57331C18.7868 4.33743 19.3244 4.11251 19.8456 4.11251C20.0979 4.11251 20.4545 4.1564 20.9043 4.47457L18.2712 9.3678H13.6851L10.8161 5.03411ZM22.2263 27.8765H9.77384C7.6838 27.8765 5.98324 26.1759 5.98324 24.0859C5.98324 20.5696 7.27237 17.2343 9.80676 14.1733C11.4086 12.2368 13.0378 11.0354 13.5315 10.6844H18.4577C18.9569 11.03 20.5806 12.2368 22.1825 14.1733C24.7223 17.2343 26.006 20.5641 26.006 24.0859C26.0169 26.1759 24.3164 27.8765 22.2263 27.8765Z" fill="white" stroke="white" stroke-width="0.529412"/>
+            </svg>
+          </div>
+          <h3 class="story-section-card-title">收益权</h3>
+          <p class="story-section-card-desc">分享平台订阅、版权授权及周边销售红利</p>
+        </div>
+        <div class="story-section-card">
+          <div class="story-section-card-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 16L14.6666 18.6666L20 13.3333" stroke="white" stroke-width="1.94118" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16.0011 3.99997C19.1155 6.7554 23.1803 8.19006 27.3344 7.99997C27.9392 10.0573 28.1242 12.2153 27.8785 14.3455C27.6329 16.4758 26.9615 18.535 25.9043 20.4007C24.847 22.2663 23.4256 23.9005 21.7243 25.2059C20.0231 26.5114 18.0768 27.4616 16.0011 28C13.9253 27.4616 11.979 26.5114 10.2778 25.2059C8.57654 23.9005 7.15507 22.2663 6.09785 20.4007C5.04063 18.535 4.36924 16.4758 4.12356 14.3455C3.87788 12.2153 4.06293 10.0573 4.66772 7.99997C8.82176 8.19006 12.8866 6.7554 16.0011 3.99997" stroke="white" stroke-width="1.94118" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="story-section-card-title">访问权</h3>
+          <p class="story-section-card-desc">抢先观看最新剧集，解锁独家内容</p>
+        </div>
+      </div>
+
+      <div class="story-section-flow">
+        <div class="story-section-flow-item">
+          <div class="story-section-flow-icon">
+            <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.58333 14.3748H3.83333C3.57917 14.3748 3.33541 14.2739 3.15569 14.0941C2.97597 13.9144 2.875 13.6707 2.875 13.4165V5.74984C2.875 5.49567 2.97597 5.25192 3.15569 5.07219C3.33541 4.89247 3.57917 4.7915 3.83333 4.7915H9.58333" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19.1667 3.8335H13.4167C12.8874 3.8335 12.4584 4.26256 12.4584 4.79183V18.2085C12.4584 18.7378 12.8874 19.1668 13.4167 19.1668H19.1667C19.696 19.1668 20.125 18.7378 20.125 18.2085V4.79183C20.125 4.26256 19.696 3.8335 19.1667 3.8335Z" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6.70837 18.2085H9.58337" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16.2916 7.6665V7.67609" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16.2917 16.2917C16.821 16.2917 17.25 15.8626 17.25 15.3333C17.25 14.8041 16.821 14.375 16.2917 14.375C15.7624 14.375 15.3334 14.8041 15.3334 15.3333C15.3334 15.8626 15.7624 16.2917 16.2917 16.2917Z" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.625 14.375V18.2083" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="story-section-flow-label">$STORY + AI</div>
+          <div class="story-section-flow-sublabel">AI 制作加持</div>
+        </div>
+        <div class="story-section-flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19" stroke="#8B8D98" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 16L19 12" stroke="#8B8D98" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 8L19 12" stroke="#8B8D98" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="story-section-flow-item">
+          <div class="story-section-flow-icon">
+            <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.5 20.125C16.2635 20.125 20.125 16.2635 20.125 11.5C20.125 6.73654 16.2635 2.875 11.5 2.875C6.73654 2.875 2.875 6.73654 2.875 11.5C2.875 16.2635 6.73654 20.125 11.5 20.125Z" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.5 20.125C13.6171 20.125 15.3333 16.2635 15.3333 11.5C15.3333 6.73654 13.6171 2.875 11.5 2.875C9.38287 2.875 7.66663 6.73654 7.66663 11.5C7.66663 16.2635 9.38287 20.125 11.5 20.125Z" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2.875 11.4998C2.875 13.6169 6.73654 15.3332 11.5 15.3332C16.2635 15.3332 20.125 13.6169 20.125 11.4998C20.125 9.38275 16.2635 7.6665 11.5 7.6665C6.73654 7.6665 2.875 9.38275 2.875 11.4998Z" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="story-section-flow-label">吸引用户</div>
+          <div class="story-section-flow-sublabel">全球增长</div>
+        </div>
+        <div class="story-section-flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19" stroke="#8B8D98" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 16L19 12" stroke="#8B8D98" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 8L19 12" stroke="#8B8D98" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="story-section-flow-item">
+          <div class="story-section-flow-icon">
+            <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.125 16.2915H2.875" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5.75 9.5835L2.875 6.7085L5.75 3.8335" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2.875 6.7085H20.125" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17.25 19.1665L20.125 16.2915L17.25 13.4165" stroke="#1C2024" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="story-section-flow-label">回购销毁</div>
+          <div class="story-section-flow-sublabel">价值攀升</div>
+        </div>
+      </div>
+    </section>
+
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="icon">AI</div>
+          <h3>Story.fun</h3>
+          <p>将叙事从被动体验转化为主动生成。AI · Web3 · 协议，三种力量驱动你的叙事身份。</p>
+          <div class="footer-social">
+            <a href="#" aria-label="X (Twitter)">𝕏</a>
+            <a href="#" aria-label="Discord">◆</a>
+            <a href="#" aria-label="GitHub">⌘</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>产品</h4>
+          <a href="index.html">剧场</a>
+          <a href="actors.html">演员</a>
+          <a href="narrator.html">叙事者中心</a>
+          <a href="publish.html">发布故事</a>
+        </div>
+        <div class="footer-col">
+          <h4>生态</h4>
+          <a href="mining.html">挖矿</a>
+          <a href="rewards.html">收益</a>
+          <a href="whitepaper.html">白皮书</a>
+          <a href="#">代币经济</a>
+        </div>
+        <div class="footer-col">
+          <h4>关于</h4>
+          <a href="#">团队</a>
+          <a href="#">常见问题</a>
+          <a href="#">服务条款</a>
+          <a href="#">隐私政策</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Story.fun. 你的叙事，由你书写。</p>
+        <div class="footer-bottom-links">
+          <a href="#">隐私</a>
+          <a href="#">条款</a>
+          <a href="#">联系</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="auth-toast" id="toastNotification" aria-live="polite">
+    <span class="toast-icon">💡</span>
+    <span id="toastMessage">欢迎来到 Story.fun</span>
+  </div>
+
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="load-bottom-nav.js"></script>
+</body>
+</html>

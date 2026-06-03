@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 剧场</title>
+  <style>
+    :root {
+      --bg: #0a1428;
+      --surface: #141f33;
+      --accent: #00d4a3;
+      --accent-soft: rgba(0, 212, 163, 0.12);
+      --text: #e8edf5;
+      --text-muted: #8896a8;
+      --border: #1e2d42;
+      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+
+    /* ===== Auth Styles ===== */
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ============================================================
+       首页特有：Header 透明化（banner 背景透出）
+       ============================================================ */
+    .story-header-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+    .story-header-wrapper .header {
+      background: rgba(10, 20, 35, 0.45) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.10) !important;
+    }
+    .story-header-wrapper .nav-link { color: rgba(255,255,255,0.80) !important; }
+    .story-header-wrapper .nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.10) !important; }
+    .story-header-wrapper .nav-link.active { color: #00d4a3 !important; }
+    .story-header-wrapper .lang-btn { color: rgba(255,255,255,0.75) !important; }
+    .story-header-wrapper .lang-btn:hover { background: rgba(255,255,255,0.08) !important; }
+    .story-header-wrapper .lang-btn svg * { stroke: rgba(255,255,255,0.75); }
+    .story-header-wrapper .auth-login-btn {
+      border-color: rgba(255,255,255,0.25) !important;
+      background: rgba(255,255,255,0.12) !important;
+      color: #fff !important;
+    }
+    .story-header-wrapper .auth-login-btn:hover {
+      background: rgba(255,255,255,0.20) !important;
+      border-color: var(--accent) !important;
+    }
+    .story-header-wrapper .hamburger-btn svg path { stroke: #fff; }
+    .story-header-wrapper .brand-text {
+      background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ============================================================
+       编辑精选 Banner — 全宽背景，从 header 下方延伸到背后
+       ============================================================ */
+    .featured-wrapper {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      margin-top: -80px;        /* 往上拉到 header 背后 */
+      padding-top: 80px;        /* 内容从 header 底部开始 */
+      margin-bottom: 32px;
+      overflow: hidden;         /* 裁切背景动画溢出部分 */
+    }
+
+    /* 背景图 — 全宽，覆盖整个区域包括 header 背后 */
+    .featured-banner-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.6s ease;
+    }
+    .featured-banner-bg.old { opacity: 0; }
+
+    /* 视频背景 — 保留原始画面比例（含黑边） */
+    .featured-video-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      transition: opacity 0.6s ease;
+    }
+    .featured-video-bg.hidden { opacity: 0; pointer-events: none; }
+
+    /* 视频音量按钮 — 右下角 */
+    .featured-video-btn {
+      position: absolute;
+      z-index: 2;
+      bottom: 180px;
+      right: 40px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.45);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(6px);
+      pointer-events: auto;
+    }
+    .featured-video-btn .vol-icon { width: 22px; height: 22px; display: block; }
+    .featured-video-btn:hover {
+      background: rgba(0,0,0,0.70);
+      transform: scale(1.10);
+    }
+    .featured-video-btn.hidden { opacity: 0; pointer-events: none; }
+
+    @media (max-width: 760px) {
+      .featured-video-btn { bottom: 140px; right: 16px; width: 38px; height: 38px; font-size: 1.1rem; }
+    }
+
+    /* 渐变遮罩 */
+    .featured-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(0deg,   rgba(10,20,35,0.92) 0%,   rgba(10,20,35,0.40) 40%, transparent 70%),
+        linear-gradient(90deg,  rgba(10,20,35,0.65) 0%,   rgba(10,20,35,0.10) 60%, transparent 85%),
+        linear-gradient(180deg, rgba(10,20,35,0.30) 0%,   transparent 45%);
+      pointer-events: none;
+    }
+
+    /* 内容容器 */
+    .featured-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 24px;
+      min-height: 650px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== Banner 内容区 ===== */
+    .featured-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 64px 0 56px;
+      color: #fff;
+    }
+    .featured-content-inner { max-width: 680px; }
+
+    .featured-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f5b042, #f5923e);
+      color: #1a1a1a;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 7px 18px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+    .featured-content h2 {
+      margin: 0 0 10px;
+      font-size: 3.6rem;
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.40);
+    }
+    .featured-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .featured-meta .badge, .featured-meta .episode { font-size: 0.85rem; padding: 6px 14px; }
+    .featured-meta .badge { background: rgba(0,179,136,0.20); color: #00d4a3; }
+    .featured-meta .episode { background: rgba(255,255,255,0.12); color: #eee; }
+    .featured-meta .meta-text { color: rgba(255,255,255,0.75); font-size: 0.92rem; }
+    .featured-content p {
+      margin: 0 0 24px;
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.85);
+      max-width: 560px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .featured-content .button {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      padding: 14px 36px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(0,179,136,0.45);
+      transition: all 0.3s ease;
+      display: inline-block;
+      width: fit-content;
+    }
+    .featured-content .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(0,179,136,0.55);
+    }
+
+    /* 缩略图导航 */
+    .featured-thumbnails {
+      display: flex;
+      gap: 12px;
+      padding-bottom: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .featured-thumbnails::-webkit-scrollbar { display: none; }
+    .featured-thumb-item {
+      flex-shrink: 0;
+      width: 200px;
+      height: 112px;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      border: 2.5px solid transparent;
+      transition: all 0.3s ease;
+      opacity: 0.5;
+    }
+    .featured-thumb-item.active { border-color: var(--accent); opacity: 1; }
+    .featured-thumb-item:hover:not(.active) { opacity: 0.8; border-color: rgba(0,179,136,0.4); }
+    .featured-thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .featured-thumb-item .thumb-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 6px 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ===== 搜索与筛选 ===== */
+    .hero { margin-bottom: 34px; }
+    .hero-panel h2 { margin: 0 0 18px; font-size: clamp(2rem, 3vw, 3.2rem); line-height: 1.05; letter-spacing: -0.03em; }
+    .hero-panel p { margin: 0 0 24px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; max-width: 640px; }
+    .search-container { margin-top: 20px; }
+    .search-box { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; background: var(--surface); }
+    .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,179,136,0.15); }
+    .filter-container { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+    .filter-tag { padding: 8px 16px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; font-size: 0.9rem; cursor: pointer; transition: all 0.25s ease; }
+    .filter-tag:hover { background: rgba(0,179,136,0.2); }
+    .filter-tag.active { background: var(--accent); color: white; }
+
+    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; margin-bottom: 34px; }
+    .card { border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 12px 30px rgba(0,0,0,0.25); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+    .card-thumb { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid var(--border); display: block; }
+    .card-body { padding: 24px 26px 20px; flex-grow: 1; }
+    .card-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .badge, .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
+    .badge { background: var(--accent-soft); color: var(--accent); }
+    .episode { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .card h3 { margin: 0; font-size: 1.4rem; line-height: 1.25; }
+    .card p { margin: 0; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+    .card-foot { padding: 20px 26px 26px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .info-row { display: flex; flex-wrap: wrap; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
+    .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.25s ease; }
+    .button { background: var(--accent); color: #fff; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
+    .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
+
+    @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 760px) {
+      .app-shell { padding: 20px 16px 32px; }
+      .featured-wrapper { margin-top: -68px; padding-top: 68px; }
+      .featured-section { padding: 0 16px; min-height: 500px; }
+      .gallery { grid-template-columns: 1fr; }
+      .card-foot { flex-direction: column; align-items: flex-start; }
+      .card { min-height: auto; }
+      .featured-content h2 { font-size: 2rem; }
+      .featured-content p { font-size: 0.95rem; }
+      .featured-content .button { padding: 12px 28px; font-size: 0.95rem; }
+      .featured-thumb-item { width: 110px; height: 62px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header 完全保持与其他页面一致的位置和宽度 ===== -->
+  <div id="header-placeholder"></div>
+
+  <!-- ===== 编辑精选 Banner（全宽背景，延伸到 Header 背后） ===== -->
+  <div class="featured-wrapper">
+    <div class="featured-banner-bg" id="featured-bg"></div>
+    <video class="featured-video-bg hidden" id="featured-video" src="video/凤骨琉璃.mp4" loop playsinline preload="metadata" poster="image/fenggu_cover.jpg"></video>
+    <button class="featured-video-btn" id="featured-video-btn" aria-label="切换声音">
+      <svg id="vol-icon-off" class="vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <line x1="22" y1="9" x2="16" y2="15" />
+        <line x1="16" y1="9" x2="22" y2="15" />
+      </svg>
+      <svg id="vol-icon-on" class="vol-icon" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      </svg>
+    </button>
+    <div class="featured-overlay"></div>
+
+    <div class="featured-section">
+      <div class="featured-content">
+        <div class="featured-content-inner">
+          <h2 id="featured-title">凤骨琉璃</h2>
+          <div class="featured-meta" id="featured-meta">
+            <span class="badge" id="featured-category">古风</span>
+            <span class="episode" id="featured-episodes">全44集</span>
+            <span class="meta-text" id="featured-creator">JACK</span>
+            <span class="meta-text" id="featured-views">1.2k 观看</span>
+            <span class="meta-text" id="featured-rating">4.9 ★</span>
+          </div>
+          <p id="featured-desc">一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
+          <button class="button" onclick="event.stopPropagation(); location.href='drama-detail.html'">立即观看 ▸</button>
+        </div>
+      </div>
+      <div class="featured-thumbnails" id="featured-thumbnails"></div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <section class="hero">
+      <div class="hero-panel">
+        <h2>全部短剧</h2>
+        <p>精选AI短剧，开启叙事新体验</p>
+        <div class="search-container">
+          <input type="text" id="searchInput" class="search-box" placeholder="搜索短剧名称..." />
+        </div>
+        <div class="filter-container">
+          <span class="filter-tag active" data-filter="all">全部</span>
+          <span class="filter-tag" data-filter="古风">古风</span>
+          <span class="filter-tag" data-filter="金融">金融</span>
+          <span class="filter-tag" data-filter="悬疑">悬疑</span>
+          <span class="filter-tag" data-filter="真实改编">真实改编</span>
+          <span class="filter-tag" data-filter="爱情">爱情</span>
+          <span class="filter-tag" data-filter="科幻">科幻</span>
+          <span class="filter-tag" data-filter="剧情">剧情</span>
+          <span class="filter-tag" data-filter="喜剧">喜剧</span>
+          <span class="filter-tag" data-filter="动作">动作</span>
+        </div>
+        <div class="filter-container" style="margin-top:15px;">
+          <span class="filter-tag active" data-filter="hot">最高热度</span>
+          <span class="filter-tag" data-filter="newest">最新上架</span>
+          <span class="filter-tag" data-filter="favorites">最高收藏</span>
+        </div>
+      </div>
+    </section>
+
+    <div id="noResults" class="no-results" style="display:none; text-align:center; padding:60px 20px; margin-bottom:34px; background:rgba(20,31,51,0.8); border-radius:32px; border:2px dashed var(--border);">
+      <div style="font-size:3rem; margin-bottom:16px;">🔍</div>
+      <h3 style="margin:0 0 8px; color:var(--text); font-size:1.3rem;">没有找到结果</h3>
+      <p style="margin:0; color:var(--text-muted); font-size:0.95rem;">试试更换搜索关键词或筛选条件</p>
+    </div>
+
+    <section class="gallery">
+      <article class="card" data-category="古风" data-sort="recommended" onclick="location.href='drama-detail.html'">
+        <img class="card-thumb" src="image/fenggu_cover.jpg" alt="凤骨琉璃" />
+        <div class="card-body">
+          <div class="card-meta"><span class="badge">古风</span><span class="episode">全44集</span></div>
+          <h3>凤骨琉璃</h3>
+          <p>一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
+        </div>
+        <div class="card-foot"><div class="info-row"><span>JACK</span><span>1.2k</span><span>4.9★</span></div></div>
+      </article>
+      <article class="card" data-category="古风" data-sort="newest" onclick="location.href='drama-detail.html'">
+        <img class="card-thumb" src="image/xiejia_cover.jpg" alt="我卸甲后天下大乱了" />
+        <div class="card-body">
+          <div class="card-meta"><span class="badge">古风</span><span class="episode">全12集</span></div>
+          <h3>我卸甲后天下大乱了</h3>
+          <p>卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。</p>
+        </div>
+        <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k</span><span>4.8★</span></div></div>
+      </article>
+      <article class="card" data-category="喜剧" data-sort="hot" onclick="location.href='drama-detail.html'">
+        <img class="card-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" />
+        <div class="card-body">
+          <div class="card-meta"><span class="badge">喜剧</span><span class="episode">全24集</span></div>
+          <h3>丞相府今日开饭</h3>
+          <p>丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。</p>
+        </div>
+        <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k</span><span>4.7★</span></div></div>
+      </article>
+    </section>
+  </div>
+
+  <div id="bottom-nav-placeholder"></div>
+
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="load-bottom-nav.js"></script>
+
+  <script>
+    const featuredDramas = [
+      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg', video: 'video/凤骨琉璃.mp4' },
+      { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4' },
+      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4' },
+      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80' },
+      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80' }
+    ];
+
+    function switchFeatured(index) {
+      const drama = featuredDramas[index];
+      if (!drama) return;
+      const bg = document.getElementById('featured-bg');
+      const video = document.getElementById('featured-video');
+      // 有 video 属性的短剧播放视频，其余显示图片
+      if (drama.video) {
+        bg.classList.add('old');
+        video.src = drama.video;
+        video.poster = drama.img;
+        video.classList.remove('hidden');
+        video.muted = true;
+        video.currentTime = 0;
+        video.play().catch(function(){});
+        document.getElementById('featured-video-btn').classList.remove('hidden');
+      } else {
+        video.classList.add('hidden');
+        video.pause();
+        document.getElementById('featured-video-btn').classList.add('hidden');
+        bg.classList.add('old');
+        setTimeout(() => { bg.style.backgroundImage = 'url(' + drama.img + ')'; bg.classList.remove('old'); }, 300);
+      }
+      document.getElementById('featured-title').textContent = drama.title;
+      document.getElementById('featured-category').textContent = drama.category;
+      document.getElementById('featured-episodes').textContent = drama.episodes;
+      document.getElementById('featured-creator').textContent = drama.creator;
+      document.getElementById('featured-views').textContent = drama.views;
+      document.getElementById('featured-rating').textContent = drama.rating;
+      document.getElementById('featured-desc').textContent = drama.desc;
+      document.querySelectorAll('.featured-thumb-item').forEach((item, i) => item.classList.toggle('active', i === index));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const tc = document.getElementById('featured-thumbnails');
+      // 首页加载时：第一个短剧显示视频背景（无声音静音播放）
+      const video = document.getElementById('featured-video');
+      video.muted = true;
+      video.classList.remove('hidden');
+      video.play().catch(function(){});
+      // 音量按钮：点击切换静音/取消静音（SVG 图标切换）
+      const volBtn = document.getElementById('featured-video-btn');
+      const iconOff = document.getElementById('vol-icon-off');
+      const iconOn = document.getElementById('vol-icon-on');
+      volBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        video.muted = !video.muted;
+        iconOff.style.display = video.muted ? '' : 'none';
+        iconOn.style.display = video.muted ? 'none' : '';
+        if (!video.muted) {
+          video.play().catch(function(){});
+        }
+      });
+      featuredDramas.forEach((d, i) => {
+        const el = document.createElement('div');
+        el.className = 'featured-thumb-item' + (i === 0 ? ' active' : '');
+        el.setAttribute('onclick', 'switchFeatured(' + i + ')');
+        el.innerHTML = '<img src="' + d.img + '" alt="' + d.title + '" loading="lazy" /><div class="thumb-label">' + d.title + '</div>';
+        tc.appendChild(el);
+      });
+
+      function updateNoResults() {
+        const cards = document.querySelectorAll('.card');
+        let c = 0;
+        cards.forEach(card => { if (card.style.display !== 'none') c++; });
+        document.getElementById('noResults').style.display = c === 0 ? 'block' : 'none';
+      }
+
+      document.getElementById('searchInput').addEventListener('input', function() {
+        const term = this.value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+          const t = card.querySelector('h3').textContent.toLowerCase();
+          const d = card.querySelector('p').textContent.toLowerCase();
+          card.style.display = (t.includes(term) || d.includes(term)) ? 'flex' : 'none';
+        });
+        updateNoResults();
+      });
+
+      document.querySelectorAll('.filter-tag').forEach(tag => {
+        tag.addEventListener('click', function() {
+          document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          const val = this.getAttribute('data-filter');
+          document.querySelectorAll('.card').forEach(card => {
+            if (val === 'all') card.style.display = 'flex';
+            else if (['recommended','newest','hot','favorites'].includes(val))
+              card.style.display = card.getAttribute('data-sort') === val ? 'flex' : 'none';
+            else
+              card.style.display = card.getAttribute('data-category') === val ? 'flex' : 'none';
+          });
+          updateNoResults();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

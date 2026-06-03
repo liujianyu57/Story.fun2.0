@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 编辑演员</title>
+  <style>
+    :root {
+      --bg: #f6f6f6;
+      --surface: #ffffff;
+      --accent: #01bab2;
+      --accent-soft: rgba(1, 186, 178, 0.10);
+      --accent-glow: rgba(1, 186, 178, 0.20);
+      --text: #1c2024;
+      --text-muted: #60646c;
+      --text-hint: #8b8d98;
+      --border: #f0f0f3;
+      --border-dark: #d9d9e0;
+      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.04);
+      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.05);
+      --radius: 24px;
+      --radius-lg: 32px;
+      --danger: #f45b69;
+      font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 96px 200px; }
+
+    /* ===== Auth Styles ===== */
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border-dark); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-login-icon { font-size: 1rem; }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border-dark); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    /* Login Modal */
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #00b388, #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-dark); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-dark); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(1,186,178,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    /* ===== End Auth Styles ===== */
+
+    /* ---- Page header ---- */
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .page-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .page-header a.back-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .page-header a.back-link:hover {
+      color: var(--accent);
+    }
+    .page-title {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 36px;
+      letter-spacing: -0.4%;
+      color: var(--text);
+    }
+
+    /* ---- Page header right: status badge ---- */
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .status-indicator.approved {
+      background: rgba(1, 186, 178, 0.12);
+      color: var(--accent);
+    }
+    .status-indicator.pending {
+      background: rgba(255, 159, 44, 0.12);
+      color: #b87a1a;
+    }
+    .status-indicator.rejected {
+      background: rgba(244, 91, 105, 0.12);
+      color: #f45b69;
+    }
+    .status-indicator .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .status-indicator.approved .status-dot {
+      background: var(--accent);
+    }
+    .status-indicator.pending .status-dot {
+      background: #f59e0b;
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+    .status-indicator.rejected .status-dot {
+      background: #f45b69;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* ---- Form panel ---- */
+    .form-panel {
+      background: var(--surface);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    /* ---- Top row: image upload + basic info ---- */
+    .form-top-row {
+      display: flex;
+      gap: 56px;
+      align-items: flex-start;
+    }
+    .upload-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .upload-box {
+      width: 192px;
+      height: 160px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 21px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .upload-box:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .upload-box svg {
+      width: 80px;
+      height: 80px;
+      display: block;
+    }
+    .upload-box .preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      position: absolute;
+      inset: 0;
+      border-radius: 11px;
+    }
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      border-radius: 58px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .upload-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .fields-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ---- Form fields ---- */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--text);
+    }
+    .form-group label .hint {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select,
+    .form-group textarea {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 20px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-group input::placeholder,
+    .form-group select::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-hint);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .form-group textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+    .form-group .char-count {
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    /* ---- Select / dropdown wrapper ---- */
+    .select-wrapper {
+      position: relative;
+    }
+    .select-wrapper select {
+      appearance: none;
+      padding-right: 44px;
+      width: 100%;
+      background: var(--surface);
+    }
+    .select-wrapper .chevron {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      width: 24px;
+      height: 24px;
+      color: var(--text-hint);
+    }
+
+    .hint-text {
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.33%;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ---- Gender options (custom) ---- */
+    .gender-options {
+      display: flex;
+      gap: 12px;
+    }
+    .gender-option {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+    }
+    .gender-option:hover {
+      border-color: var(--accent);
+    }
+    .gender-option.selected {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .gender-option .gender-icon {
+      display: block;
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+
+    /* ---- NFT params section ---- */
+    .nft-section-divider {
+      border: none;
+      border-top: 1px solid var(--border-dark);
+      margin: 0;
+    }
+    .nft-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .nft-section-desc {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .params-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .params-row + .params-row {
+      margin-top: 16px;
+    }
+
+    /* ---- NFT Preview card ---- */
+    .nft-preview-card {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 16px;
+      background: rgba(1, 186, 178, 0.06);
+      border-radius: 16px;
+      margin-top: 24px;
+    }
+    .nft-preview-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #00d4a3);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+    .nft-preview-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .nft-preview-info .preview-label {
+      font-weight: 510;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--accent);
+    }
+    .nft-preview-info .preview-detail {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .nft-preview-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 20px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* ---- Info note ---- */
+    .info-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 16px;
+      background: rgba(1, 186, 178, 0.06);
+      border-radius: 16px;
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-muted);
+    }
+
+    /* ---- Footer ---- */
+    .form-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      padding-top: 0;
+    }
+    .button-primary, .button-outline, .button-danger {
+      border: none;
+      cursor: pointer;
+      border-radius: 60px;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+    .button-primary {
+      background: var(--text);
+      color: var(--surface);
+      padding: 12px 32px;
+      border: 1px solid var(--text);
+    }
+    .button-primary:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+    .button-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .button-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 12px 32px;
+    }
+    .button-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .button-danger {
+      background: transparent;
+      color: #f45b69;
+      border: 1px solid rgba(244, 91, 105, 0.3);
+      padding: 12px 24px;
+    }
+    .button-danger:hover {
+      background: rgba(244, 91, 105, 0.06);
+      border-color: #f45b69;
+      transform: translateY(-1px);
+    }
+
+    /* ---- Toast notification ---- */
+    .toast-notification {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      z-index: 10000;
+      background: rgba(26, 35, 47, 0.95);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      max-width: 400px;
+      text-align: center;
+      font-weight: 500;
+    }
+    .toast-notification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1200px) {
+      .app-shell { padding: 80px 80px; }
+    }
+    @media (max-width: 900px) {
+      .app-shell { padding: 60px 32px; }
+      .form-top-row { flex-direction: column; gap: 32px; }
+      .upload-column { align-items: center; width: 100%; }
+      .params-row { grid-template-columns: 1fr; }
+      .nft-preview-card { flex-wrap: wrap; }
+      .page-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 680px) {
+      .app-shell { padding: 40px 16px; }
+      .form-panel { padding: 20px; gap: 32px; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-footer { flex-direction: column; width: 100%; }
+      .button-outline, .button-primary, .button-danger { width: 100%; }
+      .gender-options { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+
+    <!-- Page header with back link, title and status -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <a class="back-link" href="narrator.html">← 返回</a>
+        <h1 class="page-title" id="pageTitle">编辑演员</h1>
+      </div>
+      <span id="statusBadge" class="status-indicator approved" style="display:none;">
+        <span class="status-dot"></span>
+        <span id="statusText">已通过</span>
+      </span>
+    </div>
+
+    <div class="form-panel">
+
+      <!-- Top row: image upload + basic info -->
+      <div class="form-top-row">
+        <div class="upload-column">
+          <div class="upload-box" id="uploadBox" onclick="document.getElementById('actorImageInput').click()">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="12" y="12" width="56" height="56" rx="8" fill="#E5E5E5"/>
+              <path d="M33 35H47" stroke="#8B8D98" stroke-width="2" stroke-linecap="round"/>
+              <path d="M40 28V42" stroke="#8B8D98" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <img class="preview-image" id="coverPreview" src="" alt="当前形象" />
+          </div>
+          <input type="file" id="actorImageInput" accept="image/*" style="display:none" />
+          <button class="upload-btn" onclick="document.getElementById('actorImageInput').click()">替换形象照</button>
+        </div>
+
+        <div class="fields-column">
+          <div class="form-row">
+            <div class="form-group">
+              <label>演员姓名</label>
+              <input type="text" id="actorName" placeholder="请输入演员姓名" maxlength="20" />
+              <span class="char-count" id="nameCount">0/20</span>
+            </div>
+            <div class="form-group">
+              <label>性别</label>
+              <div class="gender-options" id="genderOptions">
+                <div class="gender-option" data-gender="male">
+                  <span class="gender-icon">♂</span>
+                  男性
+                </div>
+                <div class="gender-option" data-gender="female">
+                  <span class="gender-icon">♀</span>
+                  女性
+                </div>
+                <div class="gender-option" data-gender="other">
+                  <span class="gender-icon">⚧</span>
+                  不限
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group">
+              <label>简介</label>
+              <textarea id="actorDesc" placeholder="角色背景、性格特点、代表作..."></textarea>
+              <span class="char-count" id="descCount">0/500</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NFT 发行参数 -->
+      <hr class="nft-section-divider" />
+
+      <div>
+        <h3 class="nft-section-title">🔗 NFT 发行参数</h3>
+        <p class="nft-section-desc">设定演员 NFT 的链上发行参数，发布后重新提交审核。</p>
+
+        <div class="params-row">
+          <div class="form-group">
+            <label>NFT发行总量</label>
+            <input type="number" id="totalSupply" placeholder="请输入" min="1" />
+          </div>
+          <div class="form-group">
+            <label>创作者保留（数量）</label>
+            <input type="number" id="reserved" placeholder="请输入" min="0" />
+          </div>
+        </div>
+        <div class="params-row">
+          <div class="form-group">
+            <label>Mint价格（USDC）</label>
+            <input type="number" id="mintPrice" placeholder="请输入" step="0.1" min="0" />
+            <span class="hint-text" id="costHint">你需要支付 -- USDC 用于创作者保留</span>
+          </div>
+          <div class="form-group">
+            <label>最低持有门槛（数量）</label>
+            <input type="number" id="holdThreshold" placeholder="请输入" min="0" />
+            <span class="hint-text">持有≥该数量才能参与AI演员对话</span>
+          </div>
+        </div>
+
+        <!-- NFT Preview card -->
+        <div class="nft-preview-card">
+          <div class="nft-preview-avatar" id="previewAvatar">AI</div>
+          <div class="nft-preview-info">
+            <span class="preview-label">开放Mint数量</span>
+            <div class="preview-detail" id="previewText">发行总量：<strong>--</strong> · 开放 Mint：<strong>--</strong> · Mint 价格：<strong>--</strong> · 创作者保留：<strong>--</strong></div>
+          </div>
+          <span class="nft-preview-badge" id="nftStatusBadge">待审核</span>
+        </div>
+
+        <!-- Info note -->
+        <div class="info-note">
+          <span>修改发行参数后，演员需重新提交审核。审核通过之后可铸造演员 NFT。</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="form-footer">
+      <button class="button-danger" onclick="confirmDeleteActor()" id="deleteBtn">
+        🗑️ 删除演员
+      </button>
+      <button class="button-outline" onclick="location.href='narrator.html'">取消</button>
+      <button class="button-primary" id="saveBtn">保存修改</button>
+    </div>
+
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast-notification" id="toastNotification">
+    <span id="toastMessage"></span>
+  </div>
+
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="load-bottom-nav.js"></script>
+
+  <script>
+    // === Toast ===
+    let toastTimer = null;
+    function showToast(msg) {
+      const t = document.getElementById('toastNotification');
+      if (!t) return;
+      document.getElementById('toastMessage').textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // === 实时计算开放 Mint 数量和创作者保留成本 ===
+    function updatePreview() {
+      const totalSupply = parseInt(document.getElementById('totalSupply').value) || 0;
+      const reserved = parseInt(document.getElementById('reserved').value) || 0;
+      const mintPrice = parseFloat(document.getElementById('mintPrice').value) || 0;
+      const holdThreshold = parseInt(document.getElementById('holdThreshold').value) || 0;
+
+      const openMint = Math.max(0, totalSupply - reserved);
+
+      // Update preview card
+      document.getElementById('previewText').innerHTML =
+        '发行总量：<strong>' + (totalSupply || '--') + '</strong> · ' +
+        '开放 Mint：<strong>' + (openMint || '--') + '</strong> · ' +
+        'Mint 价格：<strong>' + (mintPrice || '--') + ' USDC</strong> · ' +
+        '创作者保留：<strong>' + (reserved || '--') + '</strong>';
+
+      // Update cost hint
+      const cost = (reserved * mintPrice).toFixed(2);
+      document.getElementById('costHint').textContent =
+        '你需要支付 ' + (cost > 0 ? cost : '--') + ' USDC 用于创作者保留';
+    }
+
+    // === 模拟演员数据（未铸造，无 readonly） ===
+    const actorData = {
+      '苏婉清': {
+        name: '苏婉清',
+        gender: 'female',
+        desc: '温婉端庄的江南女子，琴棋书画样样精通',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80',
+        status: 'approved',
+        totalSupply: 10000,
+        openMint: 9000,
+        mintPrice: 10,
+        reserved: 1000,
+        holdThreshold: 1
+      },
+      '李云飞': {
+        name: '李云飞',
+        gender: 'male',
+        desc: '身手矫健的侠客，性格豪爽仗义',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80',
+        status: 'pending',
+        totalSupply: 8000,
+        openMint: 7500,
+        mintPrice: 8,
+        reserved: 500,
+        holdThreshold: 2
+      },
+      '林梦瑶': {
+        name: '林梦瑶',
+        gender: 'female',
+        desc: '聪慧机敏的现代女性，擅长推理分析',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80',
+        status: 'approved',
+        totalSupply: 10000,
+        openMint: 9000,
+        mintPrice: 10,
+        reserved: 1000,
+        holdThreshold: 1
+      },
+      '赵无极': {
+        name: '赵无极',
+        gender: 'male',
+        desc: '深不可测的武林高手，亦正亦邪',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=900&q=80',
+        status: 'rejected',
+        totalSupply: 6000,
+        openMint: 5500,
+        mintPrice: 15,
+        reserved: 500,
+        holdThreshold: 3
+      }
+    };
+
+    // === 初始化 ===
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get('name');
+      const data = name && actorData[name] ? actorData[name] : null;
+
+      if (data) {
+        loadActorData(data);
+      } else if (name) {
+        document.getElementById('pageTitle').textContent = '编辑演员';
+        document.getElementById('statusBadge').style.display = 'none';
+      } else {
+        document.getElementById('pageTitle').textContent = '编辑演员';
+        document.getElementById('statusBadge').style.display = 'none';
+      }
+
+      // 性别选择
+      document.querySelectorAll('.gender-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+          document.querySelectorAll('.gender-option').forEach(o => o.classList.remove('selected'));
+          this.classList.add('selected');
+        });
+      });
+
+      // 姓名计数
+      const nameInput = document.getElementById('actorName');
+      nameInput.addEventListener('input', function() {
+        document.getElementById('nameCount').textContent = this.value.length + '/20';
+      });
+
+      // 简介计数
+      const descInput = document.getElementById('actorDesc');
+      descInput.addEventListener('input', function() {
+        document.getElementById('descCount').textContent = this.value.length + '/500';
+      });
+
+      // NFT 参数实时预览
+      ['totalSupply', 'reserved', 'mintPrice', 'holdThreshold'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updatePreview);
+      });
+
+      // 形象点击
+      document.getElementById('uploadBox').addEventListener('click', function() {
+        const preview = document.getElementById('coverPreview');
+        if (preview.src && preview.style.display !== 'none') {
+          showToast('点击以替换形象图片（演示模式）');
+        }
+      });
+    });
+
+    function loadActorData(data) {
+      // 页面标题
+      document.getElementById('pageTitle').textContent = '编辑演员 · ' + data.name;
+
+      // 姓名
+      document.getElementById('actorName').value = data.name;
+      document.getElementById('nameCount').textContent = data.name.length + '/20';
+
+      // 性别
+      document.querySelectorAll('.gender-option').forEach(o => {
+        o.classList.toggle('selected', o.dataset.gender === data.gender);
+      });
+
+      // 简介
+      document.getElementById('actorDesc').value = data.desc;
+      document.getElementById('descCount').textContent = data.desc.length + '/500';
+
+      // 形象
+      const preview = document.getElementById('coverPreview');
+      preview.src = data.avatar;
+      preview.style.display = 'block';
+
+      // 状态徽章
+      const badge = document.getElementById('statusBadge');
+      const statusText = document.getElementById('statusText');
+      badge.style.display = 'inline-flex';
+      badge.className = 'status-indicator ' + data.status;
+      const statusMap = { approved: '已通过', pending: '审核中', rejected: '未通过' };
+      statusText.textContent = statusMap[data.status] || data.status;
+
+      // NFT 参数（可编辑，无 readonly）
+      document.getElementById('totalSupply').value = data.totalSupply;
+      document.getElementById('reserved').value = data.reserved;
+      document.getElementById('mintPrice').value = data.mintPrice;
+      document.getElementById('holdThreshold').value = data.holdThreshold;
+
+      // 更新预览
+      updatePreview();
+
+      // 审核中不允许编辑
+      if (data.status === 'pending') {
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = true;
+        saveBtn.textContent = '⏳ 审核中暂不可编辑';
+        // 禁用所有可编辑字段
+        document.querySelectorAll('.form-panel input, .form-panel textarea, .gender-option').forEach(el => {
+          el.style.pointerEvents = 'none';
+          el.style.opacity = '0.5';
+        });
+      }
+    }
+
+    // === 保存修改 ===
+    document.getElementById('saveBtn').addEventListener('click', function() {
+      if (this.disabled) return;
+      const name = document.getElementById('actorName').value.trim();
+      if (!name) {
+        showToast('请输入演员姓名');
+        return;
+      }
+      this.textContent = '保存中...';
+      this.disabled = true;
+      setTimeout(() => {
+        showToast('✅ 演员「' + name + '」信息已保存成功');
+        this.textContent = '保存修改';
+        this.disabled = false;
+      }, 1000);
+    });
+
+    // === 删除演员 ===
+    function confirmDeleteActor() {
+      const name = document.getElementById('actorName').value.trim();
+      if (!name) {
+        showToast('请先加载演员数据');
+        return;
+      }
+      if (confirm('确定要删除演员「' + name + '」吗？删除后将不可恢复。')) {
+        showToast('✅ 演员「' + name + '」已删除');
+        setTimeout(() => {
+          location.href = 'narrator.html';
+        }, 800);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun 白皮书</title>
+  <style>
+    :root {
+      font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f7fbff;
+      color: #1C2024;
+    }
+
+    /* ===== Whitepaper Hero (Figma node 1583:5114) ===== */
+    .whitepaper-hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      gap: 48px;
+      padding: 105px 88px;
+      width: 100%;
+      min-height: 715px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.60) 100%),
+        url('image/whitepaper-bg.png') center / cover no-repeat;
+      position: relative;
+    }
+
+    .whitepaper-hero-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      align-self: stretch;
+      gap: 16px;
+    }
+
+    /* Logo row — matching Header exactly */
+    .whitepaper-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .whitepaper-logo-icon {
+      width: 29px;
+      height: 29px;
+      display: block;
+    }
+    .whitepaper-logo-text {
+      font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 590;
+      font-size: 19.64px;
+      background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+    }
+
+    /* Title */
+    .whitepaper-title {
+      font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 700;
+      font-size: 56px;
+      line-height: 130%;
+      letter-spacing: -0.21%;
+      text-align: center;
+      color: #000000;
+      align-self: stretch;
+    }
+
+    /* ===== Content Section ===== */
+    .whitepaper-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+    .whitepaper-section {
+      margin-bottom: 48px;
+    }
+    .whitepaper-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      color: #1C2024;
+    }
+    .whitepaper-section h3 {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      color: #1C2024;
+    }
+    .whitepaper-section p {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: #60646C;
+      margin-bottom: 16px;
+    }
+    .whitepaper-section ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 16px;
+    }
+    .whitepaper-section ul li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #60646C;
+    }
+    .whitepaper-section ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 16px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #05DF72, #00BBA7, #00B8DB);
+    }
+    .whitepaper-section .highlight {
+      background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+    .whitepaper-divider {
+      height: 1px;
+      background: #D9D9E0;
+      margin: 48px 0;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1024px) {
+      .whitepaper-hero {
+        padding: 80px 40px;
+        min-height: auto;
+      }
+      .whitepaper-title {
+        font-size: 42px;
+      }
+      .whitepaper-content {
+        padding: 60px 24px 80px;
+      }
+    }
+    @media (max-width: 680px) {
+      .whitepaper-hero {
+        padding: 48px 20px;
+        gap: 32px;
+      }
+      .whitepaper-title {
+        font-size: 32px;
+      }
+      .whitepaper-content {
+        padding: 40px 20px 60px;
+      }
+      .whitepaper-section h2 {
+        font-size: 24px;
+      }
+      .whitepaper-section h3 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <!-- app-shell matches other pages for consistent header width -->
+  <div class="app-shell" style="max-width:1440px;margin:0 auto;padding:24px;">
+
+  <!-- ===== Hero (Figma node 1583:5114) ===== -->
+  <section class="whitepaper-hero">
+    <div class="whitepaper-hero-inner">
+      <div class="whitepaper-logo">
+        <img class="whitepaper-logo-icon" src="image/storyfun-logo-icon.png" width="29" height="29" alt="Story.fun" />
+        <span class="whitepaper-logo-text">Story.fun</span>
+      </div>
+      <h1 class="whitepaper-title">Story.fun 白皮书</h1>
+    </div>
+  </section>
+
+  <!-- ===== Content ===== -->
+  <article class="whitepaper-content">
+    <div class="whitepaper-section">
+      <h2>摘要</h2>
+      <p>
+        Story.fun 是一个基于 <span class="highlight">AI · Web3 · 协议</span> 三大支柱构建的叙事共创平台。
+        我们相信，每个人的人生不是被体验的剧本，而是正在被书写的叙事。
+        Story.fun 通过 AI 技术将想法自动转化为故事，利用 Web3 确保创作永远属于你，
+        并通过开放的协议让故事可以无限延续。
+      </p>
+    </div>
+
+    <div class="whitepaper-divider"></div>
+
+    <div class="whitepaper-section">
+      <h2>1. 愿景与使命</h2>
+      <h3>1.1 叙事权的回归</h3>
+      <p>
+        在传统影视行业中，叙事权掌握在少数制片厂和平台手中。Story.fun 致力于将叙事权归还给每一个个体，
+        让每个人都能成为自己故事的创造者、见证者、共创者和传播者。
+      </p>
+      <h3>1.2 使命</h3>
+      <p>将叙事从被动体验转化为主动生成，让 AI 短剧成为人人可参与、人人可受益的新文化形态。</p>
+    </div>
+
+    <div class="whitepaper-divider"></div>
+
+    <div class="whitepaper-section">
+      <h2>2. 核心架构</h2>
+      <h3>2.1 AI 驱动的内容生成</h3>
+      <p>
+        基于先进的大语言模型和多模态 AI 技术，Story.fun 能够将用户的想法、提示词或简单剧本，
+        自动生成为高质量 AI 短剧。无需专业影视制作团队，人人皆可成为导演。
+      </p>
+      <h3>2.2 Web3 确权与激励</h3>
+      <p>
+        所有创作内容通过区块链技术进行确权，确保创作者的版权和收益权得到保护。
+        $STORY 通证作为生态的核心价值载体，连接创作者、观众和生态建设者。
+      </p>
+      <h3>2.3 开放协议</h3>
+      <p>
+        Story.fun 协议支持角色、场景、故事线的跨作品复用和组合，形成一个无限扩展的叙事宇宙。
+        任何第三方开发者都可以基于协议构建自己的应用和服务。
+      </p>
+    </div>
+
+    <div class="whitepaper-divider"></div>
+
+    <div class="whitepaper-section">
+      <h2>3. 叙事身份体系</h2>
+      <ul>
+        <li><strong>创造者</strong> — 主动书写自身的叙事，发起新的故事线</li>
+        <li><strong>见证者</strong> — 参与并验证他人叙事，为优质内容提供共识</li>
+        <li><strong>共创者</strong> — 进入叙事结构并进行改写，与其他创造者协作</li>
+        <li><strong>传播者</strong> — 传播有价值的叙事，扩大生态影响力</li>
+      </ul>
+    </div>
+
+    <div class="whitepaper-divider"></div>
+
+    <div class="whitepaper-section">
+      <h2>4. $STORY 通证经济</h2>
+      <p>
+        $STORY 是 Story.fun 生态的原生通证，总供应量有限，通过以下机制实现价值循环：
+      </p>
+      <ul>
+        <li><strong>治理权</strong> — 投票决定下一部 AI 短剧的题材与走向</li>
+        <li><strong>收益权</strong> — 分享平台订阅、版权授权及周边销售红利</li>
+        <li><strong>访问权</strong> — 抢先观看最新剧集，解锁独家内容</li>
+        <li><strong>回购销毁</strong> — 平台收入定期回购并销毁 $STORY，实现通缩</li>
+      </ul>
+    </div>
+
+    <div class="whitepaper-divider"></div>
+
+    <div class="whitepaper-section">
+      <h2>5. 发展路线图</h2>
+      <h3>阶段一：基础建设</h3>
+      <p>完成 AI 短剧生成引擎开发，上线 Story.fun 平台原型，发布 $STORY 通证。</p>
+      <h3>阶段二：生态启动</h3>
+      <p>首部 AI 金融史诗《1011》上线，吸引首批创作者和观众，建立叙事身份体系。</p>
+      <h3>阶段三：协议开放</h3>
+      <p>开放 Story.fun 协议，引入第三方开发者，构建应用生态。</p>
+      <h3>阶段四：全球化</h3>
+      <p>支持多语言、多文化叙事，成为全球最大的 AI 叙事共创平台。</p>
+    </div>
+
+    <div class="whitepaper-divider"></div>
+
+    <div class="whitepaper-section">
+      <h2>6. 结语</h2>
+      <p>
+        Story.fun 不仅仅是一个平台，更是一场叙事权的革命。
+        我们邀请你加入这场变革，成为叙事新纪元的共建者。
+        你的故事，由你书写。
+      </p>
+    </div>
+  </article>
+
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="load-bottom-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 短剧详情</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.12);
+      --accent-glow: rgba(0, 179, 136, 0.25);
+      --text: #13202e;
+      --text-muted: #5e6f83;
+      --border: #deeaf7;
+      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
+      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
+      --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10);
+      --radius: 24px;
+      --radius-lg: 32px;
+      --danger: #f45b69;
+      --warning: #ff9f2c;
+      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; margin-top: 40px; margin-bottom: 20px; font-size: 0.92rem; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb .sep { color: var(--border); }
+
+    /* ===== Auth Styles ===== */
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-login-icon { font-size: 1rem; }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    /* Login Modal */
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    /* ===== End Auth Styles ===== */
+    .detail-layout { display: grid; grid-template-columns: 1fr 380px; gap: 28px; margin-bottom: 32px; }
+    @media (max-width: 1024px) { .detail-layout { grid-template-columns: 1fr; } }
+    .player-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: #0a0e17; box-shadow: var(--shadow-lg); }
+    .player-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); gap: 16px; cursor: pointer; transition: all 0.3s ease; position: relative; }
+    .player-placeholder:hover { background: rgba(255,255,255,0.03); }
+    .player-placeholder .play-icon { width: 72px; height: 72px; border-radius: 50%; background: rgba(0,179,136,0.85); display: grid; place-items: center; font-size: 2rem; color: #fff; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 8px 32px rgba(0,179,136,0.35); }
+    .player-placeholder:hover .play-icon { transform: scale(1.08); box-shadow: 0 12px 40px rgba(0,179,136,0.50); }
+    .player-placeholder .episode-label { font-size: 0.95rem; color: rgba(255,255,255,0.6); }
+    .player-placeholder .bg-gradient { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,179,136,0.08), rgba(0,0,0,0.4)); pointer-events: none; }
+    .player-placeholder img.bg-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
+    .player-controls { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); display: flex; align-items: center; gap: 14px; opacity: 0; transition: opacity 0.3s ease; }
+    .player-wrapper:hover .player-controls { opacity: 1; }
+    .player-controls .ctrl-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.12); color: #fff; cursor: pointer; display: grid; place-items: center; font-size: 1rem; transition: background 0.2s; }
+    .player-controls .ctrl-btn:hover { background: rgba(255,255,255,0.25); }
+    .player-controls .progress-bar { flex: 1; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.2); cursor: pointer; position: relative; }
+    .player-controls .progress-bar .fill { height: 100%; width: 0%; border-radius: 4px; background: var(--accent); transition: width 0.3s ease; }
+    .player-controls .time { color: rgba(255,255,255,0.7); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .info-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); }
+    .info-card .drama-title { margin: 0 0 6px; font-size: 1.6rem; line-height: 1.2; }
+    .info-card .drama-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .info-card .drama-meta .tag { padding: 4px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.82rem; font-weight: 600; }
+    .info-card .drama-meta .tag.muted { background: rgba(15,22,42,0.05); color: var(--text-muted); }
+    .info-card .drama-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .info-card .drama-stats .stat { text-align: center; }
+    .info-card .drama-stats .stat .num { display: block; font-size: 1.15rem; font-weight: 700; color: var(--text); }
+    .info-card .drama-stats .stat .label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+    .action-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .action-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .action-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .action-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .action-btn .icon { font-size: 1.1rem; }
+    .action-btn .count { font-size: 0.82rem; color: var(--text-muted); font-weight: 400; }
+    .action-btn.active .count { color: rgba(255,255,255,0.7); }
+    .unlock-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 24px; font-size: 0.95rem; transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+    .button { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
+    .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
+    .button-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .button-secondary:hover { border-color: var(--accent); color: var(--accent); }
+    .button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .synopsis { margin-bottom: 16px; }
+    .synopsis h4 { margin: 0 0 8px; font-size: 1rem; }
+    .synopsis p { margin: 0; color: var(--text-muted); line-height: 1.8; font-size: 0.92rem; }
+    .synopsis .expand-btn { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 0.88rem; padding: 4px 0; font-weight: 600; }
+    .episode-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .episode-panel .panel-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+    .episode-panel .panel-header h3 { margin: 0; font-size: 1.05rem; }
+    .episode-panel .panel-header .ep-count { color: var(--text-muted); font-size: 0.88rem; }
+    .episode-tabs { display: flex; gap: 4px; padding: 12px 20px; border-bottom: 1px solid var(--border); background: #fafcff; }
+    .episode-tab { padding: 6px 14px; border-radius: 999px; border: none; background: transparent; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+    .episode-tab.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+    .episode-tab:hover:not(.active) { background: rgba(0,0,0,0.03); }
+    .episode-list { max-height: 420px; overflow-y: auto; padding: 8px 12px; }
+    .episode-list::-webkit-scrollbar { width: 4px; }
+    .episode-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .episode-item { display: flex; align-items: center; gap: 12px; padding: 12px 10px; border-radius: 14px; cursor: pointer; transition: all 0.2s ease; }
+    .episode-item:hover { background: rgba(0,179,136,0.04); }
+    .episode-item.active { background: var(--accent-soft); }
+    .episode-item .ep-num { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 0.82rem; font-weight: 700; flex-shrink: 0; }
+    .episode-item .ep-num.locked { background: rgba(15,22,42,0.06); color: var(--text-muted); }
+    .episode-item .ep-num.unlocked { background: var(--accent-soft); color: var(--accent); }
+    .episode-item .ep-num.playing { background: var(--accent); color: #fff; }
+    .episode-item .ep-info { flex: 1; min-width: 0; }
+    .episode-item .ep-info .ep-title { font-size: 0.92rem; font-weight: 600; }
+    .episode-item .ep-info .ep-desc { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .episode-item .ep-status { flex-shrink: 0; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; }
+    .episode-item .ep-status.locked { background: rgba(15,22,42,0.05); color: var(--text-muted); }
+    .episode-item .ep-status.unlocked { background: var(--accent-soft); color: var(--accent); }
+    .episode-item .ep-status.free { background: rgba(255,159,44,0.12); color: #b87a1a; }
+    .cast-section { margin-top: 28px; }
+    .cast-section h3 { margin: 0 0 16px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
+    .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+    .cast-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; text-align: center; box-shadow: var(--shadow-sm); transition: all 0.3s ease; }
+    .cast-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .cast-card .cast-avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; background: #eaf4ff; }
+    .cast-card .cast-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .cast-card .cast-avatar .placeholder { width: 100%; height: 100%; display: grid; place-items: center; font-size: 1.5rem; color: var(--text-muted); }
+    .cast-card h4 { margin: 0 0 2px; font-size: 0.95rem; }
+    .cast-card .cast-role { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 6px; }
+    .cast-card .cast-actor { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .cast-card .cast-actor:hover { background: var(--accent); color: #fff; }
+    .cast-card .cast-actor.unbound { background: rgba(15,22,42,0.05); color: var(--text-muted); cursor: default; }
+    .comments-section { margin-top: 28px; }
+    .comments-section h3 { margin: 0 0 16px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
+    .comment-input-wrap { display: flex; gap: 12px; margin-bottom: 20px; }
+    .comment-input-wrap .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .comment-input-wrap .input-group { flex: 1; display: flex; gap: 10px; }
+    .comment-input-wrap input { flex: 1; padding: 12px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.92rem; outline: none; transition: border-color 0.2s; font-family: inherit; }
+    .comment-input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .comment-input-wrap .send-btn { padding: 10px 20px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .comment-input-wrap .send-btn:hover { background: #009a75; }
+    .comment-list { display: flex; flex-direction: column; gap: 14px; }
+    .comment-item { display: flex; gap: 12px; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; }
+    .comment-item .c-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; color: var(--accent); font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+    .comment-item .c-body { flex: 1; min-width: 0; }
+    .comment-item .c-body .c-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .comment-item .c-body .c-header .c-name { font-weight: 600; font-size: 0.9rem; }
+    .comment-item .c-body .c-header .c-time { color: var(--text-muted); font-size: 0.78rem; }
+    .comment-item .c-body .c-text { color: var(--text); line-height: 1.6; font-size: 0.9rem; }
+    .comment-item .c-body .c-actions { display: flex; gap: 14px; margin-top: 8px; }
+    .comment-item .c-body .c-actions button { background: none; border: none; color: var(--text-muted); font-size: 0.82rem; cursor: pointer; padding: 2px 4px; transition: color 0.2s; display: flex; align-items: center; gap: 4px; }
+    .comment-item .c-body .c-actions button:hover { color: var(--accent); }
+    .rating-section { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 20px; }
+    .rating-section .rating-avg { text-align: center; }
+    .rating-section .rating-avg .big { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+    .rating-section .rating-avg .small { font-size: 0.82rem; color: var(--text-muted); }
+    .rating-section .rating-stars { display: flex; gap: 4px; }
+    .rating-section .rating-stars .star { font-size: 1.6rem; cursor: pointer; color: #d0d8e0; transition: color 0.2s, transform 0.2s; }
+    .rating-section .rating-stars .star:hover { transform: scale(1.15); }
+    .rating-section .rating-stars .star.active { color: #f5b342; }
+    .rating-section .rating-stars .star.hover { color: #f5b342; }
+    .rating-section .rating-info { color: var(--text-muted); font-size: 0.85rem; }
+    .modal-overlay { display: none; position: fixed; z-index: 1000; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface); border-radius: var(--radius-lg); box-shadow: 0 40px 80px rgba(27,45,71,0.18); width: 100%; max-width: 520px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; animation: modalIn 0.25s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 28px 16px; border-bottom: 1px solid var(--border); }
+    .modal-header h3 { margin: 0; font-size: 1.25rem; }
+    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.2rem; color: var(--text-muted); transition: all 0.2s; }
+    .modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .modal-body { padding: 20px 28px 28px; overflow-y: auto; flex: 1; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 28px; border-top: 1px solid var(--border); background: #fafcff; }
+    .modal-footer .button { padding: 10px 24px; }
+    .unlock-ep-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+    .unlock-ep-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.2s; }
+    .unlock-ep-item:hover { border-color: var(--accent); background: rgba(0,179,136,0.03); }
+    .unlock-ep-item.selected { border-color: var(--accent); background: var(--accent-soft); }
+    .unlock-ep-item .uep-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; transition: all 0.2s; flex-shrink: 0; }
+    .unlock-ep-item.selected .uep-check { background: var(--accent); border-color: var(--accent); color: #fff; font-size: 0.75rem; }
+    .unlock-ep-item .uep-info { flex: 1; }
+    .unlock-ep-item .uep-info .uep-title { font-size: 0.92rem; font-weight: 600; }
+    .unlock-ep-item .uep-price { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
+    .unlock-summary { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; background: rgba(0,179,136,0.06); border: 1px solid rgba(0,179,136,0.12); border-radius: 14px; margin: 16px 0; }
+    .unlock-summary .total-label { color: var(--text-muted); font-size: 0.92rem; }
+    .unlock-summary .total-price { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    .toast-notification { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 9999; background: rgba(26, 35, 47, 0.95); backdrop-filter: blur(8px); color: #fff; padding: 16px 24px; border-radius: 16px; font-size: 0.92rem; line-height: 1.6; box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 420px; text-align: center; font-weight: 500; }
+    .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
+    @media (max-width: 680px) {
+      .app-shell { padding: 16px; }
+      .detail-layout { grid-template-columns: 1fr; }
+      .info-card .drama-stats { grid-template-columns: repeat(2, 1fr); }
+      .cast-grid { grid-template-columns: repeat(2, 1fr); }
+      .action-row { gap: 8px; }
+      .action-btn { padding: 8px 14px; font-size: 0.85rem; }
+      .comment-input-wrap { flex-direction: column; }
+      .comment-input-wrap .input-group { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+    <div class="breadcrumb">
+      <a href="index.html">剧场</a>
+      <span class="sep">›</span>
+      <span id="breadcrumbDrama">重生之我在币圈当大佬</span>
+    </div>
+    <div class="detail-layout">
+      <!-- 左侧：播放器 -->
+      <div class="player-section">
+        <div class="player-wrapper" id="playerWrapper">
+          <div class="player-placeholder" id="playerPlaceholder" onclick="playEpisode()">
+            <img class="bg-cover" src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80" alt="短剧封面" />
+            <div class="bg-gradient"></div>
+            <div class="play-icon">▶</div>
+            <div class="episode-label" id="currentEpLabel">第 1 集 · 免费试看</div>
+          </div>
+          <div class="player-controls" id="playerControls">
+            <button class="ctrl-btn" onclick="togglePlay()">⏸</button>
+            <div class="progress-bar" onclick="seekProgress(event)">
+              <div class="fill" id="progressFill" style="width:0%"></div>
+            </div>
+            <span class="time" id="timeDisplay">00:00 / 10:00</span>
+            <button class="ctrl-btn" onclick="toggleFullscreen()">⛶</button>
+          </div>
+        </div>
+        <!-- 评分 -->
+        <div class="rating-section">
+          <div class="rating-avg">
+            <div class="big" id="ratingAvg">4.8</div>
+            <div class="small">综合评分</div>
+          </div>
+          <div class="rating-stars" id="ratingStars">
+            <span class="star" data-val="1" onclick="setRating(1)">★</span>
+            <span class="star" data-val="2" onclick="setRating(2)">★</span>
+            <span class="star" data-val="3" onclick="setRating(3)">★</span>
+            <span class="star" data-val="4" onclick="setRating(4)">★</span>
+            <span class="star" data-val="5" onclick="setRating(5)">★</span>
+          </div>
+          <div class="rating-info" id="ratingInfo">点击星星评分</div>
+        </div>
+        <!-- 评论 -->
+        <div class="comments-section">
+          <h3>💬 评论 <span style="color:var(--text-muted);font-weight:400;font-size:0.9rem;" id="commentCount">(12)</span></h3>
+          <div class="comment-input-wrap">
+            <div class="avatar">我</div>
+            <div class="input-group">
+              <input type="text" id="commentInput" placeholder="写下你的评论..." maxlength="200" />
+              <button class="send-btn" onclick="postComment()">发送</button>
+            </div>
+          </div>
+          <div class="comment-list" id="commentList"></div>
+        </div>
+      </div>
+      <!-- 右侧 -->
+      <div class="sidebar">
+        <div class="info-card">
+          <h1 class="drama-title" id="dramaTitle">重生之我在币圈当大佬</h1>
+          <div class="drama-meta">
+            <span class="tag">金融</span>
+            <span class="tag">悬疑</span>
+            <span class="tag muted">全 44 集</span>
+            <span class="tag muted">更新至 12 集</span>
+          </div>
+          <div class="drama-stats">
+            <div class="stat"><span class="num" id="statViews">12.8k</span><span class="label">播放</span></div>
+            <div class="stat"><span class="num" id="statLikes">2.3k</span><span class="label">点赞</span></div>
+            <div class="stat"><span class="num" id="statFavs">856</span><span class="label">收藏</span></div>
+            <div class="stat"><span class="num" id="statRating">4.8</span><span class="label">评分</span></div>
+          </div>
+          <div class="action-row">
+            <button class="action-btn" id="likeBtn" onclick="toggleLike()"><span class="icon">👍</span> 点赞 <span class="count" id="likeCount">2.3k</span></button>
+            <button class="action-btn" id="favBtn" onclick="toggleFav()"><span class="icon">❤️</span> 收藏 <span class="count" id="favCount">856</span></button>
+          </div>
+          <div class="unlock-row">
+            <button class="button" onclick="openUnlockModal('single')">🔓 解锁单集</button>
+            <button class="button-secondary" onclick="openUnlockModal('batch')">📦 批量解锁</button>
+          </div>
+          <div class="synopsis">
+            <h4>📖 简介</h4>
+            <p id="synopsisText">加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，带着未来记忆的他，如何在币圈从一个小白成长为呼风唤雨的大佬？每一步抉择都关乎生死，每一次交易都是人性的考验。</p>
+            <button class="expand-btn" onclick="toggleSynopsis()">展开全部</button>
+          </div>
+        </div>
+
+        <!-- 选集面板 -->
+        <div class="episode-panel">
+          <div class="panel-header">
+            <h3>📺 选集</h3>
+            <span class="ep-count">共 44 集 · 已解锁 3 集</span>
+          </div>
+          <div class="episode-tabs">
+            <button class="episode-tab active" onclick="switchEpTab('all', this)">全部</button>
+            <button class="episode-tab" onclick="switchEpTab('free', this)">免费</button>
+            <button class="episode-tab" onclick="switchEpTab('locked', this)">未解锁</button>
+            <button class="episode-tab" onclick="switchEpTab('unlocked', this)">已解锁</button>
+          </div>
+          <div class="episode-list" id="episodeList"></div>
+        </div>
+
+        <!-- 主要角色 -->
+        <div class="cast-section">
+          <h3>🎭 主要角色</h3>
+          <div class="cast-grid" id="castGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 解锁弹窗 ===== -->
+    <div class="modal-overlay" id="unlockModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="unlockModalTitle">🔓 解锁剧集</h3>
+          <button class="modal-close" onclick="closeUnlockModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:12px;" id="unlockModalDesc">选择需要解锁的剧集，单集 0.5 USDC。</p>
+          <div class="unlock-ep-list" id="unlockEpList"></div>
+          <div class="unlock-summary">
+            <span class="total-label">合计</span>
+            <span class="total-price" id="unlockTotal">0 USDC</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="button-secondary" onclick="closeUnlockModal()">取消</button>
+          <button class="button" id="unlockConfirmBtn" onclick="confirmUnlock()" disabled>确认支付并解锁</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Toast ===== -->
+    <div class="toast-notification" id="toastNotification">
+      <span class="toast-icon">💡</span>
+      <span id="toastMessage"></span>
+    </div>
+  </div>
+
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    // ============================================================
+    //  数据
+    // ============================================================
+    const DRAMA_DATA = {
+      title: '重生之我在币圈当大佬',
+      synopsis: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，带着未来记忆的他，如何在币圈从一个小白成长为呼风唤雨的大佬？每一步抉择都关乎生死，每一次交易都是人性的考验。',
+      synopsisFull: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，带着未来记忆的他，如何在币圈从一个小白成长为呼风唤雨的大佬？每一步抉择都关乎生死，每一次交易都是人性的考验。\n\n从比特币的早期挖矿，到以太坊智能合约的爆发，再到DeFi浪潮和NFT狂潮，主角凭借先知先觉一步步布局。然而蝴蝶效应让历史悄然改变，新的对手、新的危机接踵而至。他不仅要与市场博弈，更要与人性中的贪婪和恐惧抗争。',
+      totalEpisodes: 44,
+      unlockedCount: 3,
+      pricePerEp: 0.5,
+      batchDiscount: 0.85, // 批量85折
+      cover: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80',
+      categories: ['金融', '悬疑'],
+      stats: { views: '12.8k', likes: 2300, favs: 856, rating: 4.8 },
+      episodes: [],
+      cast: [
+        { name: '林逸', role: '主角', actor: '苏婉清', actorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', bound: true },
+        { name: '陈峰', role: '对手', actor: '李云飞', actorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', bound: true },
+        { name: '苏晴', role: '盟友', actor: '林梦瑶', actorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', bound: true },
+        { name: '赵老四', role: '反派', actor: null, actorAvatar: null, bound: false },
+        { name: '王教授', role: '导师', actor: null, actorAvatar: null, bound: false },
+      ],
+      comments: [
+        { id: 1, name: '加密小白', avatar: '加', text: '太精彩了！每一集都让人欲罢不能，特别是主角重生后的第一次交易，紧张刺激！', time: '2小时前', likes: 24 },
+        { id: 2, name: '币圈老韭菜', avatar: '币', text: '作为真实经历过2015年牛市的老玩家，这部剧的细节还原度很高，强烈推荐！', time: '5小时前', likes: 18 },
+        { id: 3, name: 'AI短剧迷', avatar: 'A', text: 'AI生成的剧情居然这么流畅，角色塑造也很立体，期待后续更新！', time: '1天前', likes: 12 },
+      ]
+    };
+
+    // 生成剧集数据
+    for (let i = 1; i <= DRAMA_DATA.totalEpisodes; i++) {
+      const isFree = i <= 2;
+      const isUnlocked = i <= DRAMA_DATA.unlockedCount;
+      DRAMA_DATA.episodes.push({
+        id: i,
+        title: isFree ? `第 ${i} 集 · 免费试看` : `第 ${i} 集`,
+        desc: isFree ? '免费试看' : (isUnlocked ? '已解锁' : '需解锁'),
+        free: isFree,
+        unlocked: isUnlocked,
+        price: isFree ? 0 : DRAMA_DATA.pricePerEp,
+      });
+    }
+
+    // ============================================================
+    //  状态
+    // ============================================================
+    let currentEp = 1;
+    let isPlaying = false;
+    let isLiked = false;
+    let isFaved = false;
+    let userRating = 0;
+    let synopsisExpanded = false;
+    let selectedUnlockEps = new Set();
+    let unlockMode = 'single'; // 'single' | 'batch'
+
+    // ============================================================
+    //  Toast
+    // ============================================================
+    let toastTimer = null;
+    function showToast(msg, icon) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      if (icon) t.querySelector('.toast-icon').textContent = icon;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ============================================================
+    //  播放器
+    // ============================================================
+    function playEpisode(epId) {
+      const ep = epId || currentEp;
+      currentEp = ep;
+      const data = DRAMA_DATA.episodes[ep - 1];
+      if (!data) return;
+
+      if (!data.free && !data.unlocked) {
+        // 打开解锁弹窗并预选中该集
+        openUnlockModal('single', ep);
+        return;
+      }
+
+      const label = document.getElementById('currentEpLabel');
+      label.textContent = `第 ${ep} 集${data.free ? ' · 免费试看' : ''}`;
+
+      // 模拟播放
+      isPlaying = true;
+      document.querySelector('.ctrl-btn').textContent = '⏸';
+      showToast(`▶ 开始播放第 ${ep} 集`, '▶');
+
+      // 更新选集高亮
+      renderEpisodeList();
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      document.querySelector('.ctrl-btn').textContent = isPlaying ? '⏸' : '▶';
+    }
+
+    function seekProgress(e) {
+      const bar = e.currentTarget;
+      const rect = bar.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      document.getElementById('progressFill').style.width = pct + '%';
+    }
+
+    function toggleFullscreen() {
+      const el = document.getElementById('playerWrapper');
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        el.requestFullscreen();
+      }
+    }
+
+    // ============================================================
+    //  点赞 / 收藏
+    // ============================================================
+    function toggleLike() {
+      isLiked = !isLiked;
+      const btn = document.getElementById('likeBtn');
+      const count = document.getElementById('likeCount');
+      btn.classList.toggle('active', isLiked);
+      let val = DRAMA_DATA.stats.likes + (isLiked ? 1 : -1);
+      count.textContent = val >= 1000 ? (val / 1000).toFixed(1) + 'k' : val;
+      showToast(isLiked ? '👍 已点赞' : '👎 已取消点赞', isLiked ? '👍' : '👎');
+    }
+
+    function toggleFav() {
+      isFaved = !isFaved;
+      const btn = document.getElementById('favBtn');
+      const count = document.getElementById('favCount');
+      btn.classList.toggle('active', isFaved);
+      let val = DRAMA_DATA.stats.favs + (isFaved ? 1 : -1);
+      count.textContent = val >= 1000 ? (val / 1000).toFixed(1) + 'k' : val;
+      showToast(isFaved ? '❤️ 已收藏' : '💔 已取消收藏', isFaved ? '❤️' : '💔');
+    }
+
+    // ============================================================
+    //  评分
+    // ============================================================
+    function setRating(val) {
+      userRating = val;
+      const stars = document.querySelectorAll('#ratingStars .star');
+      stars.forEach(s => {
+        const v = parseInt(s.dataset.val);
+        s.classList.toggle('active', v <= val);
+      });
+      document.getElementById('ratingInfo').textContent = `你已评分：${val} 星`;
+      showToast(`⭐ 你给出了 ${val} 星评价`, '⭐');
+    }
+
+    // ============================================================
+    //  简介展开
+    // ============================================================
+    function toggleSynopsis() {
+      synopsisExpanded = !synopsisExpanded;
+      const p = document.getElementById('synopsisText');
+      const btn = document.querySelector('.synopsis .expand-btn');
+      p.textContent = synopsisExpanded ? DRAMA_DATA.synopsisFull : DRAMA_DATA.synopsis;
+      btn.textContent = synopsisExpanded ? '收起' : '展开全部';
+    }
+
+    // ============================================================
+    //  选集渲染
+    // ============================================================
+    let epFilter = 'all';
+
+    function switchEpTab(filter, btn) {
+      epFilter = filter;
+      document.querySelectorAll('.episode-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderEpisodeList();
+    }
+
+    function renderEpisodeList() {
+      const list = document.getElementById('episodeList');
+      let filtered = DRAMA_DATA.episodes;
+
+      if (epFilter === 'free') filtered = filtered.filter(e => e.free);
+      else if (epFilter === 'locked') filtered = filtered.filter(e => !e.unlocked && !e.free);
+      else if (epFilter === 'unlocked') filtered = filtered.filter(e => e.unlocked || e.free);
+
+      list.innerHTML = filtered.map(ep => {
+        let statusClass = 'locked';
+        let statusText = '🔒 未解锁';
+        let numClass = 'locked';
+        if (ep.free) { statusClass = 'free'; statusText = '🆓 免费'; numClass = 'unlocked'; }
+        else if (ep.unlocked) { statusClass = 'unlocked'; statusText = '✅ 已解锁'; numClass = 'unlocked'; }
+
+        const isActive = ep.id === currentEp;
+
+        return `
+          <div class="episode-item ${isActive ? 'active' : ''}" onclick="playEpisode(${ep.id})">
+            <span class="ep-num ${numClass} ${isActive ? 'playing' : ''}">${ep.id}</span>
+            <div class="ep-info">
+              <div class="ep-title">${ep.title}</div>
+              <div class="ep-desc">${ep.desc}</div>
+            </div>
+            <span class="ep-status ${statusClass}">${statusText}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============================================================
+    //  角色渲染
+    // ============================================================
+    function renderCast() {
+      const grid = document.getElementById('castGrid');
+      grid.innerHTML = DRAMA_DATA.cast.map(c => `
+        <div class="cast-card">
+          <div class="cast-avatar">
+            ${c.actorAvatar
+              ? `<img src="${c.actorAvatar}" alt="${c.name}" />`
+              : `<div class="placeholder">🎭</div>`
+            }
+          </div>
+          <h4>${c.name}</h4>
+          <div class="cast-role">${c.role}</div>
+          ${c.bound && c.actor
+            ? `<span class="cast-actor" onclick="location.href='actor-profile.html'">🎭 ${c.actor}</span>`
+            : `<span class="cast-actor unbound">未绑定演员</span>`
+          }
+
+        </div>
+      `).join('');
+    }
+
+    // ============================================================
+    //  评论
+    // ============================================================
+    function renderComments() {
+      const list = document.getElementById('commentList');
+      list.innerHTML = DRAMA_DATA.comments.map(c => `
+        <div class="comment-item">
+          <div class="c-avatar">${c.avatar}</div>
+          <div class="c-body">
+            <div class="c-header">
+              <span class="c-name">${c.name}</span>
+              <span class="c-time">${c.time}</span>
+            </div>
+            <div class="c-text">${c.text}</div>
+            <div class="c-actions">
+              <button onclick="showToast('👍 点赞 +1','👍')">👍 ${c.likes}</button>
+              <button onclick="showToast('💬 回复功能开发中','💬')">💬 回复</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('commentCount').textContent = `(${DRAMA_DATA.comments.length})`;
+    }
+
+    function postComment() {
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+      if (!text) { showToast('请输入评论内容', '✏️'); return; }
+      if (text.length > 200) { showToast('评论不能超过200字', '⚠️'); return; }
+
+      DRAMA_DATA.comments.unshift({
+        id: Date.now(),
+        name: '我',
+        avatar: '我',
+        text: text,
+        time: '刚刚',
+        likes: 0,
+      });
+      input.value = '';
+      renderComments();
+      showToast('✅ 评论已发布', '✅');
+    }
+
+    // ============================================================
+    //  解锁弹窗
+    // ============================================================
+    function openUnlockModal(mode, preselectEp) {
+      unlockMode = mode;
+      selectedUnlockEps.clear();
+
+      const title = document.getElementById('unlockModalTitle');
+      const desc = document.getElementById('unlockModalDesc');
+      const list = document.getElementById('unlockEpList');
+
+      // 找出所有未解锁的非免费剧集，按顺序排列
+      const locked = DRAMA_DATA.episodes.filter(e => !e.unlocked && !e.free);
+      const firstLockedId = locked.length > 0 ? locked[0].id : null;
+
+      if (!firstLockedId) {
+        showToast('🎉 所有剧集已解锁！', '🎉');
+        return;
+      }
+
+      if (mode === 'single') {
+        title.textContent = '🔓 解锁单集';
+        // 按顺序解锁：只能解锁第一个未解锁的剧集
+        const nextEp = DRAMA_DATA.episodes[firstLockedId - 1];
+        desc.textContent = `按顺序解锁，当前可解锁：第 ${firstLockedId} 集（${nextEp.price} USDC）`;
+
+        // 预选当前可解锁的剧集
+        selectedUnlockEps.add(firstLockedId);
+
+        list.innerHTML = `
+          <div class="unlock-ep-item selected" data-ep="${firstLockedId}">
+            <div class="uep-check">✓</div>
+            <div class="uep-info">
+              <div class="uep-title">第 ${firstLockedId} 集</div>
+              <div class="uep-desc" style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">按顺序解锁中</div>
+            </div>
+            <div class="uep-price">${nextEp.price} USDC</div>
+          </div>
+        `;
+
+        // 如果还有后续未解锁的剧集，显示提示
+        if (locked.length > 1) {
+          const moreCount = locked.length - 1;
+          const remainingInfo = document.createElement('p');
+          remainingInfo.style.cssText = 'color:var(--text-muted);font-size:0.85rem;text-align:center;margin:0;padding:8px 0 0;border-top:1px solid var(--border);';
+          remainingInfo.textContent = `还有 ${moreCount} 集待解锁（第 ${firstLockedId + 1} ~ ${locked[locked.length - 1].id} 集）`;
+          list.appendChild(remainingInfo);
+        }
+      } else {
+        // 批量解锁
+        title.textContent = '📦 批量解锁';
+        desc.textContent = '按顺序批量解锁剩余剧集，享受 85 折优惠。可以取消选择靠后的剧集，但不能跳过前面的。';
+
+        // 默认全选
+        locked.forEach(ep => selectedUnlockEps.add(ep.id));
+        list.innerHTML = locked.map(ep => {
+          const isFirst = ep.id === firstLockedId;
+          return `
+          <div class="unlock-ep-item selected" data-ep="${ep.id}" onclick="toggleUnlockEp(${ep.id})">
+            <div class="uep-check">✓</div>
+            <div class="uep-info">
+              <div class="uep-title">第 ${ep.id} 集${isFirst ? ' · 必选' : ''}</div>
+            </div>
+            <div class="uep-price">${(ep.price * DRAMA_DATA.batchDiscount).toFixed(2)} USDC</div>
+          </div>
+        `}).join('');
+      }
+
+      updateUnlockTotal();
+      document.getElementById('unlockModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeUnlockModal() {
+      document.getElementById('unlockModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // 辅助函数：获取所有未解锁剧集按顺序排列
+    function getLockedEpisodes() {
+      return DRAMA_DATA.episodes.filter(e => !e.unlocked && !e.free);
+    }
+
+    // 辅助函数：检查从第一个未解锁到指定 id 的剧集是否全部处于目标状态
+    function checkSequentialState(upToId, inSet) {
+      const locked = getLockedEpisodes();
+      for (const ep of locked) {
+        if (ep.id > upToId) break;
+        if (inSet ? !selectedUnlockEps.has(ep.id) : selectedUnlockEps.has(ep.id)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function toggleUnlockEp(epId) {
+      const locked = getLockedEpisodes();
+      const firstLockedId = locked.length > 0 ? locked[0].id : null;
+      if (!firstLockedId) return;
+
+      if (unlockMode === 'batch') {
+        const isFirst = epId === firstLockedId;
+
+        // 第一个未解锁的剧集不可取消
+        if (isFirst && selectedUnlockEps.has(epId)) {
+          showToast('⚠️ 第一个未解锁的剧集必须选择', '⚠️');
+          return;
+        }
+
+        if (selectedUnlockEps.has(epId)) {
+          // 取消选择：该集及其之后的所有集都取消
+          // 但要检查前面的集是否已被取消（理论上不会，因为不能跳过）
+          // 直接将该集及之后的所有集取消
+          locked.forEach(ep => {
+            if (ep.id >= epId && selectedUnlockEps.has(ep.id)) {
+              selectedUnlockEps.delete(ep.id);
+              const el = document.querySelector(`.unlock-ep-item[data-ep="${ep.id}"]`);
+              if (el) {
+                el.classList.remove('selected');
+                el.querySelector('.uep-check').textContent = '';
+              }
+            }
+          });
+        } else {
+          // 选择该集：需要检查前面的所有集是否都已选中
+          if (!checkSequentialState(epId - 1, true)) {
+            showToast('⚠️ 请按顺序解锁，必须先选择前面的剧集', '⚠️');
+            return;
+          }
+          selectedUnlockEps.add(epId);
+          document.querySelector(`.unlock-ep-item[data-ep="${epId}"]`).classList.add('selected');
+          document.querySelector(`.unlock-ep-item[data-ep="${epId}"] .uep-check`).textContent = '✓';
+        }
+      }
+      updateUnlockTotal();
+    }
+
+    function updateUnlockTotal() {
+      let total = 0;
+      selectedUnlockEps.forEach(epId => {
+        const ep = DRAMA_DATA.episodes.find(e => e.id === epId);
+        if (ep) {
+          total += unlockMode === 'batch' ? ep.price * DRAMA_DATA.batchDiscount : ep.price;
+        }
+      });
+      document.getElementById('unlockTotal').textContent = total.toFixed(2) + ' USDC';
+      document.getElementById('unlockConfirmBtn').disabled = selectedUnlockEps.size === 0;
+    }
+
+    function confirmUnlock() {
+      if (selectedUnlockEps.size === 0) return;
+      const btn = document.getElementById('unlockConfirmBtn');
+      btn.textContent = '处理中...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        // 解锁选中的剧集
+        selectedUnlockEps.forEach(epId => {
+          const ep = DRAMA_DATA.episodes.find(e => e.id === epId);
+          if (ep) {
+            ep.unlocked = true;
+            ep.desc = '已解锁';
+          }
+        });
+
+        DRAMA_DATA.unlockedCount = DRAMA_DATA.episodes.filter(e => e.unlocked).length;
+        const count = selectedUnlockEps.size;
+        selectedUnlockEps.clear();
+        closeUnlockModal();
+        renderEpisodeList();
+
+        // 更新侧边栏已解锁数量
+        document.querySelector('.episode-panel .ep-count').textContent =
+          `共 ${DRAMA_DATA.totalEpisodes} 集 · 已解锁 ${DRAMA_DATA.unlockedCount} 集`;
+
+        showToast(`✅ 成功解锁 ${count} 集！`, '✅');
+        btn.textContent = '确认支付并解锁';
+        btn.disabled = false;
+      }, 1200);
+    }
+
+    // 点击弹窗外部关闭
+    document.getElementById('unlockModal').addEventListener('click', function(e) {
+      if (e.target === this) closeUnlockModal();
+    });
+
+    // ============================================================
+    //  初始化
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      renderEpisodeList();
+      renderCast();
+      renderComments();
+    });
+  </script>
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-bottom-nav.js"></script>
+</body>
+</html>
