@@ -503,7 +503,8 @@
         </div>`;
         actions.style.display = 'none';
         setTimeout(() => {
-          document.getElementById('viewNftBtn')?.addEventListener('click', () => { alert('打开「我的 NFT」页（示意）'); closeMintModal(); });
+          document.getElementById('viewNftBtn')?.addEventListener('click', () => { window.location.href = 'studio.html'; });
+
           document.getElementById('continueBtn')?.addEventListener('click', () => { closeMintModal(); });
         }, 50);
       }

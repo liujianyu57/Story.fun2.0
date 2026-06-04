@@ -267,8 +267,12 @@ body {
     <button class="back-btn" onclick="goBack()">← 返回</button>
     <span class="tb-title">我的演员 NFT</span>
   </div>
-  <span class="tb-count" id="nft-count">0 个</span>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="tb-right-btn" onclick="window.open('../studio.html','_blank')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:6px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">进入经纪工坊 →</button>
+    <span class="tb-count" id="nft-count">0 个</span>
+  </div>
 </div>
+
 
 <!-- Body -->
 <div class="body" id="page-body"></div>
