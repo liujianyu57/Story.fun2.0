@@ -1029,9 +1029,10 @@
 
         // 判断是否可升级：非满级 + 累计完播 >= 下一级门槛
         const canUpgrade = actor.level < 5 && (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || Infinity);
+        const profileLink = 'sub-actor-profile.html?id=' + encodeURIComponent(actor.id);
 
         return `
-        <div class="actor-card" data-actor-id="${actor.id}">
+        <div class="actor-card" data-actor-id="${actor.id}" onclick="location.href='${profileLink}'" style="cursor:pointer;">
           <!-- Hero Avatar -->
           <div class="actor-card-hero">
             <img src="${actor.avatar}" alt="${actor.name}" />
@@ -1093,7 +1094,7 @@
             </div>
           </div>
 
-          <div class="actor-card-footer">
+          <div class="actor-card-footer" onclick="event.stopPropagation();">
             <a class="card-action-btn film" href="dramaos.html?actor=${encodeURIComponent(actor.name)}" target="_blank">
               去拍剧
             </a>
@@ -1102,8 +1103,10 @@
               : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">派遣演出</button>`
             }
           </div>
+
         </div>`;
       }).join('');
+
     }
 
     // ============================================================
