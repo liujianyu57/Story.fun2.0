@@ -648,10 +648,21 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
       <button class="modal-close" onclick="closeModal('char-modal')">×</button>
     </div>
     <div class="modal-body" style="display:flex;flex-direction:column;gap:16px">
-      <div><div class="form-label">NAME 角色名</div><input class="form-input" type="text" placeholder="陈一鸣" style="margin-bottom:0"></div>
+      <!-- 从持有的演员 NFT 中选择 -->
+      <div id="char-select-nft-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div class="form-label" style="margin-bottom:0">从您持有的演员 NFT 中选择</div>
+          <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(255,170,0,.12);color:var(--amber);border:1px solid rgba(255,170,0,.2)">快速填充</span>
+        </div>
+        <div id="char-nft-list" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;min-height:48px">
+          <!-- 由 JS 动态渲染 -->
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--bs)"></div>
+      <div><div class="form-label">NAME 角色名</div><input class="form-input" type="text" id="char-name-input" placeholder="陈一鸣" style="margin-bottom:0"></div>
       <div>
         <div class="form-label">PROMPT 外形描述</div>
-        <textarea class="form-input" rows="4" placeholder="用自然语言描述角色外貌和气质。例如：25岁男性，外卖员，冷白皮，丹凤眼，身高183，略显疲惫的眼神。" style="resize:none;line-height:1.7;margin-bottom:0"></textarea>
+        <textarea class="form-input" id="char-desc-input" rows="4" placeholder="用自然语言描述角色外貌和气质。例如：25岁男性，外卖员，冷白皮，丹凤眼，身高183，略显疲惫的眼神。" style="resize:none;line-height:1.7;margin-bottom:0"></textarea>
         <div style="font-size:11px;color:var(--t3);margin-top:4px">描述越具体，生成结果越接近预期</div>
       </div>
       <div style="border-top:1px solid var(--bs)"></div>
@@ -677,6 +688,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
     </div>
   </div>
 </div>
+
 <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleUpload(this)">
 
 <!-- ═══ PRIVY LOGIN MODAL ═══ -->
@@ -978,7 +990,65 @@ function closeModal(id) { document.getElementById(id).classList.remove('show'); 
 document.querySelectorAll('.modal-wrap').forEach(function(m) {
   m.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
 });
-function openCharModal() { openModal('char-modal'); }
+// ── Actor NFT Database (for char modal quick-fill) ──
+const ACTOR_NFT_DB = {
+  'Luna': { image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。' },
+  '苏婉清': { image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。' },
+  '李云飞': { image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。' },
+  '林梦瑶': { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。' },
+  '赵无极': { image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。' },
+  '上官婉儿': { image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。' },
+  '叶倾城': { image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80', description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。' },
+  '慕容云': { image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80', description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。' },
+  '花木兰': { image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80', description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。' },
+  '东方朔': { image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。' },
+  '柳如是': { image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80', description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。' },
+  '萧景琰': { image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80', description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。' },
+  '江小鱼': { image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80', description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。' }
+};
+
+function openCharModal() {
+  // 渲染持有的演员 NFT 列表
+  var listEl = document.getElementById('char-nft-list');
+  var heldNames = [];
+  try {
+    var s = localStorage.getItem('storyfun_user');
+    if (s) { var p = JSON.parse(s); if (p && p.actorNfts) heldNames = p.actorNfts; }
+  } catch(e) {}
+
+  if (heldNames.length > 0) {
+    var html = '';
+    heldNames.forEach(function(name) {
+      var actor = ACTOR_NFT_DB[name];
+      if (!actor) return;
+      html += '<div class="char-nft-item" onclick="selectActorNft(\'' + name + '\')" style="flex-shrink:0;width:72px;cursor:pointer;border-radius:8px;border:1px solid var(--bs);overflow:hidden;transition:border-color .15s;background:var(--ink-700)" onmouseover="this.style.borderColor=\'rgba(255,170,0,.4)\'" onmouseout="this.style.borderColor=\'var(--bs)\'">';
+      html += '  <img src="' + actor.image + '" alt="' + name + '" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" loading="lazy">';
+      html += '  <div style="font-size:9px;color:var(--t2);text-align:center;padding:3px 2px 4px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + name + '</div>';
+      html += '</div>';
+    });
+    listEl.innerHTML = html;
+    document.getElementById('char-select-nft-section').style.display = 'block';
+  } else {
+    listEl.innerHTML = '<div style="font-size:11px;color:var(--t3);padding:4px 0">暂未持有演员 NFT</div>';
+  }
+
+  openModal('char-modal');
+}
+
+function selectActorNft(name) {
+  var actor = ACTOR_NFT_DB[name];
+  if (!actor) return;
+  document.getElementById('char-name-input').value = name;
+  document.getElementById('char-desc-input').value = actor.description;
+  // 尝试把演员头像作为参考图放入第一个 slot
+  var slot0 = document.getElementById('slot-0');
+  if (slot0 && slot0.textContent === '+') {
+    slot0.innerHTML = '<img src="' + actor.image + '" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block">';
+    slot0.style.border = '1px solid var(--amber)';
+    slot0.onclick = null;
+  }
+}
+
 
 // ── PROJECTS ──
 function newProject() {
