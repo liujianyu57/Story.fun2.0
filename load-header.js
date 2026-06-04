@@ -304,6 +304,7 @@
       { href: 'index.html', label: '剧场' },
       { href: 'actors.html', label: 'NFT' },
       { href: 'narrator.html', label: '创作' },
+      { href: 'studio.html', label: '工坊' },
       { href: 'rewards.html', label: '收益' },
       { href: 'mining.html', label: '挖矿' },
       { href: 'about.html', label: '关于我们' },
@@ -422,6 +423,7 @@
       <a class="nav-link" href="index.html">剧场</a>
       <a class="nav-link" href="actors.html">NFT</a>
       <a class="nav-link" href="narrator.html">创作</a>
+      <a class="nav-link" href="studio.html">工坊</a>
       <a class="nav-link" href="rewards.html">收益</a>
       <a class="nav-link" href="mining.html">挖矿</a>
       <a class="nav-link" href="about.html">关于我们</a>

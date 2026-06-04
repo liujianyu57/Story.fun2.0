@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 经纪工坊</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.12);
+      --accent-glow: rgba(0, 179, 136, 0.25);
+      --text: #13202e;
+      --text-muted: #5e6f83;
+      --text-sub: #8b8d98;
+      --border: #deeaf7;
+      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
+      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
+      --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10);
+      --radius: 20px;
+      --radius-lg: 28px;
+      --danger: #f45b69;
+      --warning: #ff9f2c;
+      --gold: #f5b042;
+      --lv1: #8a9bb5;
+      --lv2: #5bc0de;
+      --lv3: #5cb85c;
+      --lv4: #f0ad4e;
+      --lv5: #d9534f;
+      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+
+    /* ===== Auth Styles (reuse) ===== */
+    .auth-container { display: flex; align-items: center; }
+    .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .auth-login-icon { font-size: 1rem; }
+    .auth-user-menu { position: relative; }
+    .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
+    .auth-avatar:hover { border-color: var(--accent); }
+    .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
+    .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+    .auth-dropdown-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .auth-dropdown-name { font-weight: 600; font-size: 0.92rem; color: var(--text); }
+    .auth-dropdown-wallet { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+    .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
+    .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
+    .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
+    .auth-dropdown-item span { font-size: 1.1rem; }
+    .auth-dropdown-logout { color: #f45b69; }
+    .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay.active { opacity: 1; visibility: visible; }
+    .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
+    .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
+    .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+    .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
+    .auth-modal-tos a { color: var(--accent); text-decoration: none; }
+    .auth-modal-tos a:hover { text-decoration: underline; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ===== Page Header ===== */
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 28px;
+      margin-bottom: 28px;
+    }
+    .page-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .page-header-left h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .page-header-left p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .page-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,179,136,0.3);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ===== Summary Bar ===== */
+    .summary-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 960px) {
+      .summary-bar { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    }
+    @media (max-width: 560px) {
+      .summary-bar { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .summary-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #00d9a3);
+      opacity: 0.5;
+    }
+    .summary-card:nth-child(1)::before { background: linear-gradient(90deg, #4a9eff, #7bb8ff); }
+    .summary-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent), #00d9a3); }
+    .summary-card:nth-child(3)::before { background: linear-gradient(90deg, #f5b042, #f7c35e); }
+    .summary-card:nth-child(4)::before { background: linear-gradient(90deg, var(--accent), #00d9a3); }
+    .summary-card:nth-child(5)::before { background: linear-gradient(90deg, var(--gold), #f7c35e); }
+    .summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .summary-card .sc-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .summary-card .sc-icon {
+      font-size: 1.6rem;
+      opacity: 0.7;
+    }
+    .summary-card .sc-value-wrap {
+      text-align: right;
+    }
+    .summary-card .sc-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .summary-card .sc-value.green { color: var(--accent); }
+    .summary-card .sc-value.gold { color: var(--gold); }
+    .summary-card .sc-value.blue { color: #4a9eff; }
+    .summary-card .sc-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 3px;
+    }
+
+    /* ===== Section Header ===== */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-header .count-badge {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* ===== Actor Grid ===== */
+    .actor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 1024px) {
+      .actor-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .actor-grid { grid-template-columns: 1fr; }
+    }
+
+    .actor-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+    .actor-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(0,179,136,0.15);
+    }
+
+    /* ── Actor Card: Hero Avatar Layout ── */
+    .actor-card-hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e8f5ef, #d4ece5);
+    }
+    .actor-card-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .actor-card:hover .actor-card-hero img {
+      transform: scale(1.05);
+    }
+    /* Gradient overlay for readability */
+    .actor-card-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    /* Hero's bottom info bar (level badge + status dot) */
+    .actor-card-hero-info {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: none;
+    }
+    .actor-hero-lv {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+    .actor-hero-lv span {
+      background: rgba(255,255,255,0.2);
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+    }
+    .actor-hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.25);
+    }
+    .actor-hero-status .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+    .actor-hero-status .dot.active { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.6); }
+    .actor-hero-status .dot.paused { background: var(--gold); }
+    .actor-hero-status .dot.idle { background: rgba(255,255,255,0.5); }
+
+    /* Card Name Row */
+    .actor-card-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 18px 0;
+    }
+    .actor-card-name-row .actor-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .actor-card-name-row .charge-name-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left:auto;
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      border:none;
+      background:rgba(255,159,44,0.15);
+      color:var(--warning);
+      font-size:0.8rem;
+      cursor:pointer;
+      flex-shrink:0;
+      transition:all 0.2s ease;
+    }
+    .actor-card-name-row .charge-name-btn:hover {
+      background:var(--warning);
+      color:#fff;
+      transform:scale(1.1);
+    }
+
+    /* Card Body: stats */
+    .actor-card-body {
+      padding: 12px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Energy Bar */
+    .energy-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .energy-icon { font-size: 0.9rem; flex-shrink: 0; }
+    .energy-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: #eaf4ee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .energy-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+    .energy-bar-fill.high { background: linear-gradient(90deg, var(--accent), #00d9a3); }
+    .energy-bar-fill.medium { background: linear-gradient(90deg, var(--gold), #f5d042); }
+    .energy-bar-fill.low { background: linear-gradient(90deg, var(--danger), #f45b69); }
+    .energy-text {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 44px;
+      text-align: right;
+    }
+
+    /* Mining Stats - 3 column grid for icon + label */
+    .mining-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 12px 10px;
+    }
+    .ms-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      text-align: center;
+    }
+    .ms-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    .ms-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .ms-value.green { color: var(--accent); }
+    .ms-value.blue { color: #4a9eff; }
+
+    /* Card Footer: actions */
+    .actor-card-footer {
+      display: flex;
+      gap: 8px;
+      padding: 0 18px 16px;
+      flex-wrap: wrap;
+    }
+    .card-action-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .card-action-btn.film {
+      background: linear-gradient(135deg, #05DF72, #00BBA7);
+      color: #fff;
+    }
+    .card-action-btn.film:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0,187,167,0.35);
+    }
+    .card-action-btn.detail {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .card-action-btn.detail:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .card-action-btn.stake {
+      background: rgba(74,158,255,0.1);
+      color: #4a9eff;
+      border: 1px solid rgba(74,158,255,0.2);
+    }
+    .card-action-btn.stake:hover {
+      background: #4a9eff;
+      color: #fff;
+    }
+    .card-action-btn.unstake {
+      background: rgba(244,91,105,0.1);
+      color: var(--danger);
+      border: 1px solid rgba(244,91,105,0.2);
+    }
+    .card-action-btn.unstake:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+    .card-action-btn.charge {
+      background: rgba(255,159,44,0.1);
+      color: var(--warning);
+      border: 1px solid rgba(255,159,44,0.2);
+    }
+    .card-action-btn.charge:hover {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    /* Mining Status Dot */
+    .mining-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .mining-status .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+    .mining-status .dot.active {
+      background: #22c55e;
+      box-shadow: 0 0 6px rgba(34,197,94,0.5);
+    }
+    .mining-status .dot.paused {
+      background: var(--gold);
+    }
+    .mining-status .dot.idle {
+      background: var(--text-sub);
+    }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    .empty-state .empty-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+    .empty-state h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+    .empty-state p {
+      margin: 0 0 20px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ===== Toast ===== */
+    .toast-notification {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      z-index: 9999;
+      background: rgba(26, 35, 47, 0.95);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      max-width: 420px;
+      text-align: center;
+      font-weight: 500;
+    }
+    .toast-notification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
+
+    /* ===== Staking Modal ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      background: rgba(15,23,42,0.5);
+      backdrop-filter: blur(6px);
+      opacity: 0; visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card {
+      background: var(--surface);
+      border-radius: 28px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 40px 80px rgba(27,45,71,0.2);
+      overflow: hidden;
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s ease;
+      padding: 28px;
+    }
+    .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+    .modal-card h2 { margin: 0 0 8px; font-size: 1.25rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .modal-card .modal-sub { color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 20px; }
+    .modal-card .modal-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .modal-card .modal-btn.confirm {
+      background: linear-gradient(135deg, #05DF72, #00BBA7);
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .modal-card .modal-btn.confirm:hover { transform: translateY(-2px); }
+    .modal-card .modal-btn.cancel {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .modal-card .modal-btn.cancel:hover { background: rgba(0,0,0,0.03); }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+
+    <!-- ===== Page Header ===== -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1>🏢 经纪工坊</h1>
+        <p>管理你的演员阵容，监控挖矿收益，调度演出计划</p>
+      </div>
+      <div class="page-header-actions">
+        <a class="btn-secondary" href="actors.html">🎭 去市场挖掘新星</a>
+        <button class="btn-primary" onclick="claimStory()" style="border:none;">🤑 领取收益</button>
+      </div>
+    </div>
+
+    <!-- ===== Summary Bar ===== -->
+    <div class="summary-bar" id="summaryBar">
+      <div class="summary-card">
+        <div class="sc-row">
+          <div class="sc-icon">🎭</div>
+          <div class="sc-value-wrap">
+            <div class="sc-value blue" id="totalActors">0</div>
+            <div class="sc-label">签约演员</div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-row">
+          <div class="sc-icon">⛏️</div>
+          <div class="sc-value-wrap">
+            <div class="sc-value green" id="stakingActors">0</div>
+            <div class="sc-label">常驻质押中</div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-row">
+          <div class="sc-icon">💰</div>
+          <div class="sc-value-wrap">
+            <div class="sc-value green" id="totalCumulative">0</div>
+            <div class="sc-label">累计总产出 STORY</div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-row">
+          <div class="sc-icon">📈</div>
+          <div class="sc-value-wrap">
+            <div class="sc-value green" id="dailyEarnings">0</div>
+            <div class="sc-label">今日总产出 STORY</div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-row">
+          <div class="sc-icon">🤑</div>
+          <div class="sc-value-wrap">
+            <div class="sc-value gold" id="claimableStory">0 STORY</div>
+            <div class="sc-label">可领取</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Actor Grid Section ===== -->
+    <div class="section-header">
+      <h2>🎭 我的演员阵容 <span class="count-badge" id="actorCount">(0)</span></h2>
+      <!-- sort removed -->
+    </div>
+
+    <div class="actor-grid" id="actorGrid">
+      <!-- 由 JS 动态渲染 -->
+    </div>
+
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-icon">🎬</div>
+      <h3>还没有签约演员</h3>
+      <p>去 NFT 市场浏览演员形象，Mint 一个属于你自己的演员 NFT，开始经营经纪公司。</p>
+      <a class="btn-primary" href="actors.html" style="text-decoration:none;">🎭 去市场挖掘新星</a>
+    </div>
+
+  </div>
+
+  <!-- ===== Staking Modal ===== -->
+  <div class="modal-overlay" id="stakeModal">
+    <div class="modal-card">
+      <h2>⛏️ 常驻质押</h2>
+      <p class="modal-sub" id="modalStakeActor">选择质押时长</p>
+      <div style="display:flex;gap:10px;margin-bottom:18px;">
+        <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(1)">1 天</button>
+        <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(3)">3 天</button>
+        <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(7)">7 天</button>
+      </div>
+      <div style="background:var(--accent-soft);border-radius:14px;padding:14px;margin-bottom:18px;text-align:center;">
+        <div style="font-size:0.85rem;color:var(--text-muted);">预估每日产出</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--accent);" id="modalStakeEstimate">— STORY</div>
+      </div>
+      <button class="modal-btn confirm" onclick="confirmStake()">确认质押</button>
+      <button class="modal-btn cancel" onclick="closeStakeModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- ===== Level Detail Modal (咖位升级) ===== -->
+  <div class="modal-overlay" id="levelModal">
+    <div class="modal-card">
+      <h2>🏅 咖位详情</h2>
+      <p class="modal-sub" id="modalLevelActor">了解升级路径</p>
+
+      <!-- Current Level -->
+      <div style="display:flex;align-items:center;gap:14px;background:var(--bg);border-radius:16px;padding:16px;margin-bottom:16px;">
+        <span style="font-size:2rem;font-weight:800;" id="modalLevelCurrent">Lv1</span>
+        <div>
+          <div style="font-weight:700;font-size:1rem;" id="modalLevelName">群演</div>
+          <div style="font-size:0.82rem;color:var(--text-muted);">挖矿系数 ×<span id="modalLevelCoeff">1.0</span></div>
+        </div>
+      </div>
+
+      <!-- Next Level Requirement -->
+      <div style="background:rgba(255,159,44,0.06);border-radius:16px;padding:16px;margin-bottom:16px;border:1px dashed rgba(255,159,44,0.2);">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;">⬆️ 下一级升级要求</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
+            <span style="color:var(--text-muted);">📊 累计完播</span>
+            <span><span id="modalLevelPlays">0</span> / <span id="modalLevelPlaysReq">0</span></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
+            <span style="color:var(--text-muted);">💰 升级费用</span>
+            <span id="modalLevelCost" style="font-weight:700;color:var(--accent);">0 STORY</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;" id="modalLevelProgressWrap">
+          <div style="height:6px;background:#eaf4ee;border-radius:999px;overflow:hidden;">
+            <div id="modalLevelProgress" style="height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold),#f5d042);width:0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upgrade Button (hidden if max level) -->
+      <button class="modal-btn confirm" id="modalLevelUpBtn" onclick="upgradeLevel()" style="display:none;">⬆️ 升级到下一级</button>
+      <div id="modalLevelMaxMsg" style="text-align:center;padding:12px;color:var(--text-muted);font-size:0.9rem;display:none;">🏆 已达到顶级咖位</div>
+
+      <button class="modal-btn cancel" onclick="closeLevelModal()">关闭</button>
+    </div>
+  </div>
+
+  <!-- ===== Charge Modal (付费片酬恢复) ===== -->
+  <div class="modal-overlay" id="chargeModal">
+    <div class="modal-card">
+      <h2>⚡ 付费片酬恢复</h2>
+      <p class="modal-sub" id="modalChargeActor">为演员补充体力</p>
+      <div style="background:rgba(255,159,44,0.08);border-radius:14px;padding:18px;margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:0.85rem;color:var(--text-muted);">当前能量</span>
+          <span style="font-weight:700;" id="modalChargeCurrent">0 / 0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:0.85rem;color:var(--text-muted);">恢复费用</span>
+          <span style="font-weight:700;color:var(--warning);" id="modalChargeCost">— STORY</span>
+        </div>
+      </div>
+      <button class="modal-btn confirm" onclick="confirmCharge()">⚡ 恢复全部体力</button>
+      <button class="modal-btn cancel" onclick="closeChargeModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-notification" id="toastNotification">
+    <span class="toast-icon">💡</span>
+    <span id="toastMessage"></span>
+  </div>
+
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    // ============================================================
+    //  咖位配置 (同 v2.2 经济模型)
+    // ============================================================
+    const LEVEL_CONFIG = [
+      null,
+      { level: 1, name: '群演',  miningCoeff: 1.0,  costCoeff: 1.0,  energyMax: 100,  color: '#8a9bb5' },
+      { level: 2, name: '配角',  miningCoeff: 2.2,  costCoeff: 2.4,  energyMax: 240,  color: '#5bc0de' },
+      { level: 3, name: '主角',  miningCoeff: 5.0,  costCoeff: 5.8,  energyMax: 580,  color: '#5cb85c' },
+      { level: 4, name: '巨星',  miningCoeff: 11,   costCoeff: 13.5, energyMax: 1350, color: '#f0ad4e' },
+      { level: 5, name: '顶流',  miningCoeff: 24,   costCoeff: 31,   energyMax: 3100, color: '#d9534f' },
+    ];
+
+    // ============================================================
+    //  模拟数据：用户持有的子级演员 NFT
+    // ============================================================
+    // 每个子演员 = 用户从母版 Mint 出来的独立资产
+    const MY_ACTORS = [
+      {
+        id: '#C-001',
+        name: '苏婉清',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
+        level: 2,
+        energy: 180,
+        energyMax: 240,
+        heat: 2.4,
+        dailyStory: 18.5,
+        cumulativeStory: 342.8,
+        cumulativePlays: 12000,
+        isStaking: true,
+        stakingDays: 5,
+        status: 'active',
+      },
+      {
+        id: '#C-002',
+        name: '李云飞',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=400&q=80',
+        level: 1,
+        energy: 30,
+        energyMax: 100,
+        heat: 0.8,
+        dailyStory: 0.8,
+        cumulativeStory: 15.2,
+        cumulativePlays: 3200,
+        isStaking: true,
+        stakingDays: 2,
+        status: 'active',
+      },
+      {
+        id: '#C-003',
+        name: '林梦瑶',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=400&q=80',
+        level: 3,
+        energy: 420,
+        energyMax: 580,
+        heat: 3.5,
+        dailyStory: 87.5,
+        cumulativeStory: 2150.0,
+        cumulativePlays: 68000,
+        isStaking: true,
+        stakingDays: 12,
+        status: 'active',
+      },
+      {
+        id: '#C-004',
+        name: '赵无极',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80',
+        level: 4,
+        energy: 1100,
+        energyMax: 1350,
+        heat: 5.2,
+        dailyStory: 286.0,
+        cumulativeStory: 8200.0,
+        cumulativePlays: 350000,
+        isStaking: false,
+        stakingDays: 0,
+        status: 'idle',
+      },
+      {
+        id: '#C-005',
+        name: '上官婉儿',
+        avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&h=400&q=80',
+        level: 1,
+        energy: 65,
+        energyMax: 100,
+        heat: 0.6,
+        dailyStory: 0,
+        cumulativeStory: 0,
+        cumulativePlays: 200,
+        isStaking: false,
+        stakingDays: 0,
+        status: 'paused',
+      },
+      {
+        id: '#C-006',
+        name: 'Luna',
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&h=400&q=80',
+        level: 1,
+        energy: 50,
+        energyMax: 100,
+        heat: 1.0,
+        dailyStory: 12.5,
+        cumulativeStory: 38.0,
+        cumulativePlays: 5000,
+        isStaking: false,
+        stakingDays: 0,
+        status: 'paused',
+      },
+    ];
+
+    let toastTimer = null;
+
+    // ============================================================
+    //  可领取收益（模拟）
+    // ============================================================
+    let pendingClaimable = 316.5; // 模拟累计可领取 STORY
+
+    // ============================================================
+    //  Toast
+    // ============================================================
+    function showToast(msg, icon) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      if (icon) t.querySelector('.toast-icon').textContent = icon;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ============================================================
+    //  格式化数字
+    // ============================================================
+    function formatNumber(n) {
+      if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+      return n.toLocaleString();
+    }
+
+    // ============================================================
+    //  获取能量状态
+    // ============================================================
+    function getEnergyState(energy, max) {
+      const pct = max > 0 ? (energy / max) * 100 : 0;
+      if (pct >= 50) return { cls: 'high' };
+      if (pct > 0) return { cls: 'medium' };
+      return { cls: 'low' };
+    }
+
+    function getStatusInfo(status) {
+      switch(status) {
+        case 'active': return { label: '挖矿中', dot: 'active' };
+        case 'paused': return { label: '暂停中', dot: 'paused' };
+        default: return { label: '闲置', dot: 'idle' };
+      }
+    }
+
+    // ============================================================
+    //  页面初始化
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      renderActors();
+      updateSummary();
+    });
+
+    function renderActors() {
+      const grid = document.getElementById('actorGrid');
+      const empty = document.getElementById('emptyState');
+      const count = document.getElementById('actorCount');
+
+      if (!MY_ACTORS || MY_ACTORS.length === 0) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        count.textContent = '(0)';
+        document.getElementById('totalActors').textContent = '0';
+        return;
+      }
+
+      empty.style.display = 'none';
+      count.textContent = '(' + MY_ACTORS.length + ')';
+
+      grid.innerHTML = MY_ACTORS.map(actor => {
+        const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+        const energyState = getEnergyState(actor.energy, actor.energyMax);
+        const pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+        const statusInfo = getStatusInfo(actor.status);
+
+        return `
+        <div class="actor-card" data-actor-id="${actor.id}">
+          <!-- Hero Avatar -->
+          <div class="actor-card-hero">
+            <img src="${actor.avatar}" alt="${actor.name}" />
+            <div class="actor-card-hero-overlay"></div>
+            <div class="actor-card-hero-info">
+              <div class="actor-hero-lv" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
+                Lv${actor.level} <span>${levelCfg.name}</span>
+              </div>
+              <div class="actor-hero-status">
+                <span class="dot ${statusInfo.dot}"></span>
+                ${statusInfo.label}
+              </div>
+            </div>
+          </div>
+
+          <!-- Name Row -->
+          <div class="actor-card-name-row">
+            <span class="actor-name">${actor.name}</span>
+            ${actor.energy < actor.energyMax ? `<button class="charge-name-btn" onclick="event.stopPropagation();openChargeModal('${actor.id}')" title="付费片酬恢复">⚡</button>` : ''}
+          </div>
+
+          <div class="actor-card-body">
+            <!-- Energy Bar -->
+            <div class="energy-row">
+              <span class="energy-icon">⚡</span>
+              <div class="energy-bar-bg">
+                <div class="energy-bar-fill ${energyState.cls}" style="width:${pct}%;"></div>
+              </div>
+              <span class="energy-text">${actor.energy}/${actor.energyMax}</span>
+            </div>
+
+            <!-- Mining Stats -->
+            <div class="mining-stats">
+              <div class="ms-item">
+                <span class="ms-label">🔥 热度</span>
+                <span class="ms-value">${actor.heat}x</span>
+              </div>
+              <div class="ms-item">
+                <span class="ms-label">📅 产出率</span>
+                <span class="ms-value green">${actor.dailyStory > 0 ? actor.dailyStory.toFixed(1) : '0'} STORY/天${pct < 50 && pct > 0 ? ' ⚠️' : ''}</span>
+              </div>
+              <div class="ms-item">
+                <span class="ms-label">⛏️ 已产</span>
+                <span class="ms-value blue">${formatNumber(actor.cumulativeStory)} STORY</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="actor-card-footer">
+            <a class="card-action-btn film" href="narrator.html?actor=${encodeURIComponent(actor.name)}">
+              🎬 去拍剧
+            </a>
+            ${actor.isStaking
+              ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">⏹ 解除质押</button>`
+              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">⛏️ 常驻质押</button>`
+            }
+            <a class="card-action-btn detail" href="actor-profile.html?name=${encodeURIComponent(actor.name)}">
+              📋 详情
+            </a>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    // ============================================================
+    //  更新 Summary Bar
+    // ============================================================
+    function updateSummary() {
+      const total = MY_ACTORS.length;
+      const staking = MY_ACTORS.filter(a => a.isStaking).length;
+      let cumulativeTotal = 0;
+      let dailyTotal = 0;
+
+      MY_ACTORS.forEach(a => {
+        cumulativeTotal += a.cumulativeStory;
+        dailyTotal += a.dailyStory;
+      });
+
+      document.getElementById('totalActors').textContent = total;
+      document.getElementById('stakingActors').textContent = staking;
+      document.getElementById('totalCumulative').textContent = formatNumber(cumulativeTotal) + ' STORY';
+      document.getElementById('dailyEarnings').textContent = dailyTotal.toFixed(1) + ' STORY';
+      document.getElementById('claimableStory').textContent = formatNumber(pendingClaimable) + ' STORY';
+    }
+
+    // ============================================================
+    //  Staking Modal
+    // ============================================================
+    let pendingStakeActorId = null;
+    let selectedDuration = 1;
+
+    function openStakeModal(actorId) {
+      pendingStakeActorId = actorId;
+      const actor = MY_ACTORS.find(a => a.id === actorId);
+      if (!actor) return;
+
+      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+      const baseDaily = 5; // 基础每日产出
+      const estimatedDaily = baseDaily * levelCfg.miningCoeff * actor.heat;
+
+      document.getElementById('modalStakeActor').textContent = actor.name + ' · ' + levelCfg.name + ' Lv' + actor.level;
+      document.getElementById('modalStakeEstimate').textContent = estimatedDaily.toFixed(1) + ' STORY/天';
+
+      selectedDuration = 1;
+      document.getElementById('stakeModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStakeModal() {
+      document.getElementById('stakeModal').classList.remove('active');
+      document.body.style.overflow = '';
+      pendingStakeActorId = null;
+    }
+
+    function setStakeDuration(days) {
+      selectedDuration = days;
+      const actor = MY_ACTORS.find(a => a.id === pendingStakeActorId);
+      if (!actor) return;
+      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+      const baseDaily = 5;
+      const estimatedDaily = baseDaily * levelCfg.miningCoeff * actor.heat;
+      document.getElementById('modalStakeEstimate').textContent =
+        estimatedDaily.toFixed(1) + ' STORY/天 × ' + days + '天';
+    }
+
+    function confirmStake() {
+      if (!pendingStakeActorId) return;
+      const actor = MY_ACTORS.find(a => a.id === pendingStakeActorId);
+      if (actor) {
+        actor.isStaking = true;
+        actor.stakingDays = selectedDuration;
+        actor.status = 'active';
+        showToast('✅ ' + actor.name + ' 已常驻质押 ' + selectedDuration + ' 天', '⛏️');
+      }
+      closeStakeModal();
+      renderActors();
+      updateSummary();
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    // ============================================================
+    //  Unstake
+    // ============================================================
+    function unstakeActor(actorId) {
+      const actor = MY_ACTORS.find(a => a.id === actorId);
+      if (!actor) return;
+      if (confirm('确定解除 ' + actor.name + ' 的常驻质押？')) {
+        actor.isStaking = false;
+        actor.stakingDays = 0;
+        actor.status = 'idle';
+        showToast('⏹ ' + actor.name + ' 已解除质押', '⏹');
+        renderActors();
+        updateSummary();
+      }
+    }
+
+    // ============================================================
+    //  Charge Modal (付费片酬恢复)
+    // ============================================================
+    let pendingChargeActorId = null;
+
+    function openChargeModal(actorId) {
+      pendingChargeActorId = actorId;
+      const actor = MY_ACTORS.find(a => a.id === actorId);
+      if (!actor) return;
+
+      const shortage = actor.energyMax - actor.energy;
+      // 简单定价：每缺 1 点能量 = 0.5 STORY
+      const cost = shortage * 0.5;
+
+      document.getElementById('modalChargeActor').textContent = actor.name + ' · ⚡' + actor.energy + '/' + actor.energyMax;
+      document.getElementById('modalChargeCurrent').textContent = actor.energy + ' / ' + actor.energyMax;
+      document.getElementById('modalChargeCost').textContent = cost.toFixed(1) + ' STORY';
+
+      document.getElementById('chargeModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeChargeModal() {
+      document.getElementById('chargeModal').classList.remove('active');
+      document.body.style.overflow = '';
+      pendingChargeActorId = null;
+    }
+
+    function confirmCharge() {
+      if (!pendingChargeActorId) return;
+      const actor = MY_ACTORS.find(a => a.id === pendingChargeActorId);
+      if (actor) {
+        const shortage = actor.energyMax - actor.energy;
+        const cost = shortage * 0.5;
+        actor.energy = actor.energyMax;
+        showToast('⚡ ' + actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' STORY）', '⚡');
+      }
+      closeChargeModal();
+      renderActors();
+      updateSummary();
+    }
+
+    // ============================================================
+    //  Level Modal (咖位升级详情)
+    // ============================================================
+    // 升级门槛 (同 v2.2 经济模型)
+    const LEVEL_UP_THRESHOLDS = [
+      null,
+      { playsRequired: 0,     cost: 0     },
+      { playsRequired: 10000,   cost: 500   },
+      { playsRequired: 50000,   cost: 2000  },
+      { playsRequired: 200000,  cost: 8000  },
+      { playsRequired: 1000000, cost: 30000 },
+    ];
+
+    let pendingLevelActorId = null;
+
+    function openLevelModal(actorId) {
+      pendingLevelActorId = actorId;
+      const actor = MY_ACTORS.find(a => a.id === actorId);
+      if (!actor) return;
+
+      const currentCfg = LEVEL_CONFIG[actor.level];
+      const nextLevel = actor.level < 5 ? actor.level + 1 : null;
+      const nextCfg = nextLevel ? LEVEL_CONFIG[nextLevel] : null;
+      const threshold = nextLevel ? LEVEL_UP_THRESHOLDS[nextLevel] : null;
+
+      document.getElementById('modalLevelActor').textContent = actor.name + ' · 成长路径';
+
+      // Current level info
+      document.getElementById('modalLevelCurrent').textContent = 'Lv' + actor.level;
+      document.getElementById('modalLevelName').textContent = currentCfg.name;
+      document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
+
+      if (nextLevel && threshold) {
+        const plays = actor.cumulativePlays || 0;
+        const progress = Math.min(100, (plays / threshold.playsRequired) * 100);
+        const meetsPlayReq = plays >= threshold.playsRequired;
+
+        document.getElementById('modalLevelPlays').textContent = formatNumber(plays);
+        document.getElementById('modalLevelPlaysReq').textContent = formatNumber(threshold.playsRequired);
+        document.getElementById('modalLevelCost').textContent = threshold.cost + ' STORY';
+        document.getElementById('modalLevelProgress').style.width = progress + '%';
+
+        document.getElementById('modalLevelUpBtn').style.display = 'block';
+        document.getElementById('modalLevelUpBtn').textContent = '⬆️ 升级到 Lv' + nextLevel + ' ' + nextCfg.name;
+
+        if (meetsPlayReq) {
+          document.getElementById('modalLevelUpBtn').style.background = 'linear-gradient(135deg, #05DF72, #00BBA7)';
+          document.getElementById('modalLevelUpBtn').disabled = false;
+        } else {
+          document.getElementById('modalLevelUpBtn').style.background = 'rgba(0,0,0,0.08)';
+          document.getElementById('modalLevelUpBtn').style.color = 'var(--text-muted)';
+          document.getElementById('modalLevelUpBtn').disabled = true;
+        }
+
+        document.getElementById('modalLevelMaxMsg').style.display = 'none';
+      } else {
+        // Already max level
+        document.getElementById('modalLevelUpBtn').style.display = 'none';
+        document.getElementById('modalLevelMaxMsg').style.display = 'block';
+      }
+
+      document.getElementById('levelModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLevelModal() {
+      document.getElementById('levelModal').classList.remove('active');
+      document.body.style.overflow = '';
+      pendingLevelActorId = null;
+    }
+
+    function upgradeLevel() {
+      // stubbed - will integrate with real contract later
+      showToast('🛠️ 升级功能即将上线，敬请期待', '🏅');
+    }
+
+    // ============================================================
+    //  Claim （领取 STORY 到钱包）
+    // ============================================================
+    function claimStory() {
+      if (pendingClaimable <= 0) {
+        showToast('💸 没有可领取的收益', '🤑');
+        return;
+      }
+      const amount = pendingClaimable;
+      // stub — 后续接入合约
+      showToast('✅ 已领取 ' + formatNumber(amount) + ' STORY 到钱包！', '🤑');
+      pendingClaimable = 0;
+      updateSummary();
+    }
+  </script>
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-bottom-nav.js"></script>
+</body>
+</html>
