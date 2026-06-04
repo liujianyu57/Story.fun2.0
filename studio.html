@@ -195,15 +195,9 @@
     }
     .summary-card .sc-row {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .summary-card .sc-icon {
-      font-size: 1.6rem;
-      opacity: 0.7;
-    }
-    .summary-card .sc-value-wrap {
-      text-align: right;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
     }
     .summary-card .sc-value {
       font-size: 1.75rem;
@@ -429,24 +423,8 @@
       padding: 14px 16px;
     }
     .ms-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
       text-align: left;
     }
-    .ms-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      font-size: 0.8rem;
-      flex-shrink: 0;
-    }
-    .ms-icon.heat { background: rgba(255,87,34,0.12); }
-    .ms-icon.coeff { background: rgba(33,150,243,0.12); }
-    .ms-icon.output { background: rgba(0,179,136,0.12); }
-    .ms-icon.mined { background: rgba(156,39,176,0.10); }
     .ms-info {
       display: flex;
       flex-direction: column;
@@ -724,47 +702,32 @@
     <div class="summary-bar" id="summaryBar">
       <div class="summary-card">
         <div class="sc-row">
-          <div class="sc-icon">🎭</div>
-          <div class="sc-value-wrap">
-            <div class="sc-value blue" id="totalActors">0</div>
-            <div class="sc-label">签约演员</div>
-          </div>
+          <div class="sc-value blue" id="totalActors">0</div>
+          <div class="sc-label">签约演员</div>
         </div>
       </div>
       <div class="summary-card">
         <div class="sc-row">
-          <div class="sc-icon">⛏️</div>
-          <div class="sc-value-wrap">
-            <div class="sc-value green" id="stakingActors">0</div>
-            <div class="sc-label">派遣中</div>
-          </div>
+          <div class="sc-value green" id="stakingActors">0</div>
+          <div class="sc-label">派遣中</div>
         </div>
       </div>
       <div class="summary-card">
         <div class="sc-row">
-          <div class="sc-icon">💰</div>
-          <div class="sc-value-wrap">
-            <div class="sc-value green" id="totalCumulative">0</div>
-            <div class="sc-label">累计总产出 STORY</div>
-          </div>
+          <div class="sc-value green" id="totalCumulative">0</div>
+          <div class="sc-label">累计总产出</div>
         </div>
       </div>
       <div class="summary-card">
         <div class="sc-row">
-          <div class="sc-icon">📈</div>
-          <div class="sc-value-wrap">
-            <div class="sc-value green" id="dailyEarnings">0</div>
-            <div class="sc-label">今日总产出 STORY</div>
-          </div>
+          <div class="sc-value green" id="dailyEarnings">0</div>
+          <div class="sc-label">今日总产出</div>
         </div>
       </div>
       <div class="summary-card">
         <div class="sc-row">
-          <div class="sc-icon">🤑</div>
-          <div class="sc-value-wrap">
-            <div class="sc-value gold" id="claimableStory">0 STORY</div>
-            <div class="sc-label">可领取</div>
-          </div>
+          <div class="sc-value gold" id="claimableStory">0 STORY</div>
+          <div class="sc-label">可领取</div>
         </div>
       </div>
     </div>
@@ -1072,7 +1035,7 @@
           <!-- Hero Avatar -->
           <div class="actor-card-hero">
             <img src="${actor.avatar}" alt="${actor.name}" />
-            ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">⬆️ 升级</div>` : ''}
+            ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
             <div class="actor-card-hero-overlay"></div>
             <div class="actor-card-hero-info">
               <div class="actor-hero-lv${canUpgrade ? ' can-upgrade' : ''}" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
@@ -1101,31 +1064,27 @@
               <span class="energy-text">${actor.energy}/${actor.energyMax}</span>
             </div>
 
-            <!-- Mining Stats: 2×2 with icons -->
+            <!-- Mining Stats: 2×2 -->
             <div class="mining-stats">
               <div class="ms-item">
-                <div class="ms-icon heat">🔥</div>
                 <div class="ms-info">
                   <span class="ms-label">热度</span>
                   <span class="ms-value">${actor.heat}x</span>
                 </div>
               </div>
               <div class="ms-item">
-                <div class="ms-icon coeff">⚙️</div>
                 <div class="ms-info">
                   <span class="ms-label">挖矿系数</span>
                   <span class="ms-value">${levelCfg.miningCoeff}x</span>
                 </div>
               </div>
               <div class="ms-item">
-                <div class="ms-icon output">📅</div>
                 <div class="ms-info">
                   <span class="ms-label">过去30天产出</span>
                   <span class="ms-value green">${(actor.dailyStory * 30).toFixed(1)} STORY</span>
                 </div>
               </div>
               <div class="ms-item">
-                <div class="ms-icon mined">⛏️</div>
                 <div class="ms-info">
                   <span class="ms-label">已产</span>
                   <span class="ms-value blue">${formatNumber(actor.cumulativeStory)} STORY</span>
@@ -1136,14 +1095,14 @@
 
           <div class="actor-card-footer">
             <a class="card-action-btn film" href="dramaos.html?actor=${encodeURIComponent(actor.name)}" target="_blank">
-              🎬 去拍剧
+              去拍剧
             </a>
             ${actor.isStaking
-              ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">☕ 休息</button>`
-              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">🎬 派遣演出</button>`
+              ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">休息</button>`
+              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">派遣演出</button>`
             }
             <a class="card-action-btn detail" href="actor-profile.html?name=${encodeURIComponent(actor.name)}">
-              📋 详情
+              详情
             </a>
           </div>
         </div>`;
