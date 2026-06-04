@@ -338,8 +338,10 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
           <div class="ud-nav-item" onclick="goToActorNFT()">
             <span class="ud-nav-icon">🎭</span>
             <span>演员 NFT</span>
-            <span class="ud-nav-badge">2</span>
+            <span class="ud-nav-badge">13</span>
+
           </div>
+
         </div>
         <div class="ud-ft">
           <div class="ud-logout" onclick="logout()">
@@ -741,7 +743,22 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
 // ── Privy 模拟登录（仅邮箱 + 钱包）
 // ══════════════════════════════════════════
 
-var currentUser = { isLoggedIn: false, email: null, address: null };
+// 优先从 localStorage 恢复登录状态（与 auth.js 共用 storyfun_user）
+var _storedUser = (function() {
+  try {
+    var s = localStorage.getItem('storyfun_user');
+    if (s) { var p = JSON.parse(s); if (p && p.isLoggedIn) return p; }
+  } catch(e) {}
+  return null;
+})();
+
+var currentUser = _storedUser ? {
+  isLoggedIn: true,
+  email: _storedUser.email || null,
+  address: _storedUser.wallet || null,
+  displayName: _storedUser.name || _storedUser.email ? _storedUser.email.split('@')[0] : '用户'
+} : { isLoggedIn: false, email: null, address: null };
+
 
 function openPrivyModal() {
   document.getElementById('privy-error').style.display = 'none';
@@ -839,8 +856,9 @@ function privyLoginSuccess(info) {
       wallet: currentUser.address || '0x7A2b...3fD8',
       isLoggedIn: true,
       authMethod: info.email ? 'email' : 'wallet',
-      actorNfts: ['Luna'],
+      actorNfts: ['Luna', '苏婉清', '李云飞', '林梦瑶', '赵无极', '上官婉儿', '叶倾城', '慕容云', '花木兰', '东方朔', '柳如是', '萧景琰', '江小鱼'],
       balances: { story: 10123, usdc: 100.23 }
+
     };
     localStorage.setItem('storyfun_user', JSON.stringify(syncUser));
   } catch (e) {}
@@ -1197,10 +1215,28 @@ window.addEventListener('resize', initCinema);
 initCinema();
 drawCinema();
 
-// ── INIT ──
-pages.forEach(function(p) {
-  if (!p.classList.contains('active')) p.style.display = 'none';
+// ── 页面加载后恢复 UI 登录状态 ──
+function restoreLoginUI() {
+  if (!currentUser.isLoggedIn) return;
+  var loginBtn = document.getElementById('login-btn');
+  var userAv = document.getElementById('user-av');
+  loginBtn.style.display = 'none';
+  userAv.style.display = 'flex';
+  userAv.textContent = (currentUser.displayName || '用户').slice(0, 2).toLowerCase();
+  document.getElementById('main-cta').textContent = '进入创作 →';
+  updateDropdown();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // 恢复 UI 登录状态（如果 localStorage 中有登录态）
+  restoreLoginUI();
+
+  // 原有 init
+  pages.forEach(function(p) {
+    if (!p.classList.contains('active')) p.style.display = 'none';
+  });
 });
 </script>
+
 </body>
 </html>
