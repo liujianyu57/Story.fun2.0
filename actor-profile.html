@@ -498,12 +498,11 @@
         <span class="actor-nft-id" id="actorNftId">#—</span>
         <div class="action-row">
           <a class="action-btn primary" href="actors.html" id="mintBtn">
-            <span class="icon">🎭</span> Mint 此演员
+            <span class="icon">🎭</span> 签约此演员
+
           </a>
-          <button class="action-btn" id="aiChatBtn">
-            <span class="icon">💬</span> AI 对话
-          </button>
         </div>
+
       </div>
     </section>
 
@@ -536,17 +535,14 @@
           <div class="info-value accent" id="infoPrice">—</div>
         </div>
         <div class="nft-info-item">
-          <div class="info-label">创作者保留</div>
-          <div class="info-value" id="infoReserved">—</div>
-        </div>
-        <div class="nft-info-item">
           <div class="info-label">合约地址</div>
           <div class="info-value" id="infoContract" style="font-size:0.9rem;font-family:monospace;">—</div>
         </div>
         <div class="nft-info-item">
           <div class="info-label">Token 标准</div>
-          <div class="info-value" id="infoStandard">ERC-1155</div>
+          <div class="info-value" id="infoStandard">Solana SPL</div>
         </div>
+
       </div>
       <div class="progress-section">
         <div class="progress-header">
@@ -562,16 +558,19 @@
     <!-- Drama Section -->
     <section class="drama-section">
       <div class="drama-section-header">
-        <h3>🎬 参演短剧 <span class="count" id="dramaCount">(0)</span></h3>
+        <h3>🎭 签约艺人 · 参演短剧 <span class="count" id="dramaCount">(0)</span></h3>
+
       </div>
       <div class="drama-grid" id="dramaGrid">
         <!-- 由 JS 动态渲染 -->
       </div>
       <div class="empty-state" id="emptyState" style="display:none;">
         <div class="empty-icon">🎭</div>
-        <p>该演员暂未参演任何短剧</p>
+        <p>暂无签约艺人参演任何短剧</p>
+
       </div>
     </section>
+
   </div>
 
   <!-- Toast -->
@@ -601,11 +600,21 @@
         price: '10 USDC',
         reserved: 1000,
         contract: '0x7A2b...3fD8',
-        standard: 'ERC-1155',
-        dramas: [
-          { title: '江南烟雨', role: '茶女·陆小曼', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '8%', category: '古装', link: 'drama-detail.html' },
-          { title: '长安如梦', role: '才女·沈清荷', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '6%', category: '古装', link: 'drama-detail.html' },
-          { title: '迷雾之城', role: '记者·林薇', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
+        standard: 'Solana SPL',
+
+        childActors: [
+          { childId: '#C-001', name: '陆小曼', holder: '0x8f3A...bE12', dramas: [
+            { title: '江南烟雨', role: '茶女·陆小曼', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '8%', category: '古装', link: 'drama-detail.html' },
+            { title: '梅花烙', role: '绣娘·云锦', cover: 'https://images.unsplash.com/photo-1449206474058-bcac4c28a371?auto=format&fit=crop&w=600&q=80', episodes: 18, royalty: '8%', category: '古装', link: 'drama-detail.html' },
+          ]},
+
+          { childId: '#C-002', name: '沈清荷', holder: '0x4dC7...9aF3', dramas: [
+            { title: '长安如梦', role: '才女·沈清荷', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '6%', category: '古装', link: 'drama-detail.html' },
+          ]},
+          { childId: '#C-003', name: '林薇', holder: '0x2bF9...6cD1', dramas: [
+            { title: '迷雾之城', role: '记者·林薇', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
+          ]},
+
         ]
       },
       '李云飞': {
@@ -621,10 +630,15 @@
         price: '8 USDC',
         reserved: 500,
         contract: '0x7A2b...3fD8',
-        standard: 'ERC-1155',
-        dramas: [
-          { title: '星际迷航', role: '工程师·赵刚', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '7%', category: '科幻', link: 'drama-detail.html' },
-          { title: '迷雾之城', role: '侦探·陈默', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
+        standard: 'Solana SPL',
+        childActors: [
+          { childId: '#C-004', name: '赵刚', holder: '0x1aE4...fB77', dramas: [
+            { title: '星际迷航', role: '工程师·赵刚', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '7%', category: '科幻', link: 'drama-detail.html' },
+          ]},
+          { childId: '#C-005', name: '陈默', holder: '0x9cD2...3eA5', dramas: [
+            { title: '迷雾之城', role: '侦探·陈默', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
+          ]},
+
         ]
       },
       '林梦瑶': {
@@ -640,10 +654,16 @@
         price: '10 USDC',
         reserved: 1000,
         contract: '0x7A2b...3fD8',
-        standard: 'ERC-1155',
-        dramas: [
-          { title: '江南烟雨', role: '画师·白露', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '6%', category: '古装', link: 'drama-detail.html' },
-          { title: '星际迷航', role: '科学官·艾琳', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '8%', category: '科幻', link: 'drama-detail.html' },
+        standard: 'Solana SPL',
+
+        childActors: [
+          { childId: '#C-006', name: '白露', holder: '0x5fB8...2dC4', dramas: [
+            { title: '江南烟雨', role: '画师·白露', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '6%', category: '古装', link: 'drama-detail.html' },
+          ]},
+          { childId: '#C-007', name: '艾琳', holder: '0x7eA1...4bF6', dramas: [
+            { title: '星际迷航', role: '科学官·艾琳', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '8%', category: '科幻', link: 'drama-detail.html' },
+          ]},
+
         ]
       },
       '赵无极': {
@@ -659,9 +679,12 @@
         price: '15 USDC',
         reserved: 500,
         contract: '0x7A2b...3fD8',
-        standard: 'ERC-1155',
-        dramas: [
-          { title: '长安如梦', role: '太子·李承钰', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '10%', category: '古装', link: 'drama-detail.html' },
+        standard: 'Solana SPL',
+        childActors: [
+          { childId: '#C-008', name: '李承钰', holder: '0x3dE7...8aC2', dramas: [
+
+            { title: '长安如梦', role: '太子·李承钰', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '10%', category: '古装', link: 'drama-detail.html' },
+          ]},
         ]
       },
       '上官婉儿': {
@@ -677,9 +700,13 @@
         price: '12 USDC',
         reserved: 2000,
         contract: '0x7A2b...3fD8',
-        standard: 'ERC-1155',
-        dramas: [
-          { title: '江南烟雨', role: '知府·周明远', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '4%', category: '古装', link: 'drama-detail.html' },
+        standard: 'Solana SPL',
+
+        childActors: [
+          { childId: '#C-009', name: '周明远', holder: '0x6cF4...1bD8', dramas: [
+            { title: '江南烟雨', role: '知府·周明远', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '4%', category: '古装', link: 'drama-detail.html' },
+          ]},
+
         ]
       },
       'Luna': {
@@ -695,12 +722,17 @@
         price: '10 USDC',
         reserved: 500,
         contract: '0x7A2b...3fD8',
-        standard: 'ERC-1155',
-        dramas: [
-          { title: '重生之我在币圈当大佬', role: 'AI 助手·Luna', cover: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80', episodes: 44, royalty: '12%', category: '金融', link: 'drama-detail.html' },
+        standard: 'Solana SPL',
+        childActors: [
+          { childId: '#C-010', name: 'AI 助手', holder: '0xdE4a...7cF1', dramas: [
+            { title: '重生之我在币圈当大佬', role: 'AI 助手·Luna', cover: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80', episodes: 44, royalty: '12%', category: '金融', link: 'drama-detail.html' },
+          ]},
+
         ]
       }
+
     };
+
 
     // ============================================================
     //  Toast
@@ -754,48 +786,59 @@
 
       // 更新 NFT 信息
       document.getElementById('infoPrice').textContent = actor.price;
-      document.getElementById('infoReserved').textContent = actor.reserved.toLocaleString();
       document.getElementById('infoContract').textContent = actor.contract;
-      document.getElementById('infoStandard').textContent = actor.standard;
 
       // 更新铸造进度
       const progressPct = (actor.minted / actor.totalSupply) * 100;
       document.getElementById('progressFill').style.width = progressPct.toFixed(2) + '%';
       document.getElementById('progressText').textContent = `已铸造 ${progressPct.toFixed(1)}% (${actor.minted.toLocaleString()} / ${actor.totalSupply.toLocaleString()})`;
 
-      // 绑定 AI 对话按钮
-      const chatBtn = document.getElementById('aiChatBtn');
-      chatBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        openAIChat(actor.name, actor.avatar);
-      });
-
       // 更新参演短剧
+
       renderDramas(actor);
     });
 
     // ============================================================
-    //  渲染参演短剧
+    //  渲染签约艺人参演短剧
     // ============================================================
     function renderDramas(actor) {
       const grid = document.getElementById('dramaGrid');
       const empty = document.getElementById('emptyState');
       const count = document.getElementById('dramaCount');
 
-      if (!actor.dramas || actor.dramas.length === 0) {
+      if (!actor.childActors || actor.childActors.length === 0) {
         grid.innerHTML = '';
         empty.style.display = 'block';
         count.textContent = '(0)';
         return;
       }
 
-      empty.style.display = 'none';
-      count.textContent = `(${actor.dramas.length})`;
-
-      grid.innerHTML = actor.dramas.map(d => `
+      // 统计所有签约艺人的短剧总数
+      let totalDramas = 0;
+      let html = '';
+      actor.childActors.forEach(child => {
+        if (child.dramas && child.dramas.length > 0) {
+          totalDramas += child.dramas.length;
+          html += child.dramas.map(d => `
         <div class="drama-card" onclick="location.href='${d.link}'">
           <img class="drama-cover" src="${d.cover}" alt="${d.title}" />
           <div class="drama-body">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+              <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--accent-soft);flex-shrink:0;background:linear-gradient(135deg,#e0f7ff,#fff)">
+                <img src="${actor.avatar}" alt="${actor.name}" style="width:100%;height:100%;object-fit:cover" />
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:0.9rem;font-weight:700;color:var(--text)">${actor.name}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px 10px;font-size:0.72rem;color:var(--text-muted);margin-top:2px">
+                  <span>NFT ID: ${child.childId}</span>
+                  <span>经纪人: ${child.holder}</span>
+
+                </div>
+
+              </div>
+            </div>
+
+
             <h4>${d.title}</h4>
             <div class="drama-role">🎭 饰演：${d.role}</div>
             <div class="drama-meta">
@@ -809,8 +852,23 @@
             <button class="view-btn" onclick="event.stopPropagation();location.href='${d.link}'">查看详情</button>
           </div>
         </div>
-      `).join('');
+          `).join('');
+        }
+      });
+
+      empty.style.display = 'none';
+      count.textContent = `(${totalDramas})`;
+
+      if (html === '') {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        count.textContent = '(0)';
+        return;
+      }
+      grid.innerHTML = html;
     }
+
+
   </script>
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
