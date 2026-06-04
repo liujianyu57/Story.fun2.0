@@ -3,8 +3,472 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的演员 · DramaOS</title>
+<title>我的演员 NFT · DramaOS</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --amber: #FFAA00; --teal: #00B8B8;
+  --ink-900: #0D1017; --ink-800: #141820; --ink-700: #1C2230;
+  --t1: #F0F3F8; --t2: #8899B2; --t3: #5E6E88;
+  --b: rgba(255,255,255,.1); --bs: rgba(255,255,255,.06)
+}
+* { box-sizing: border-box; margin: 0; padding: 0 }
+html, body { height: 100% }
+body {
+  font-family: "DM Mono", monospace;
+  background: var(--ink-900);
+  color: var(--t1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar (matching DramaOS style) */
+.topbar {
+  height: 48px;
+  background: var(--ink-800);
+  border-bottom: 1px solid var(--b);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  flex-shrink: 0;
+}
+.tb-left { display: flex; align-items: center; gap: 12px }
+.back-btn {
+  font-size: 11px; color: var(--t3); cursor: pointer;
+  background: none; border: none; font-family: "DM Mono", monospace;
+  padding: 0; transition: color .15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.back-btn:hover { color: var(--amber) }
+.tb-title {
+  font-family: "EB Garamond", serif;
+  font-style: italic; font-size: 18px; color: var(--t1)
+}
+.tb-count {
+  font-size: 10px; color: var(--t3);
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--bs);
+  padding: 2px 10px; border-radius: 99px;
+}
+
+/* Body */
+.body {
+  flex: 1; overflow-y: auto;
+  padding: 48px 32px 80px;
+  max-width: 960px; margin: 0 auto; width: 100%;
+}
+
+/* Section header */
+.sec-ey {
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-ey::before {
+  content: ""; display: block; width: 28px; height: 1px;
+  background: var(--amber)
+}
+.sec-name {
+  font-family: "EB Garamond", serif;
+  font-style: italic; font-size: 36px; color: var(--t1);
+  margin-bottom: 24px;
+}
+.sec-div { border: none; border-top: 1px solid var(--b); margin-bottom: 36px }
+
+/* Actor NFT Card Grid */
+.actor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.actor-card {
+  background: var(--ink-800);
+  border: 1px solid var(--b);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .2s, background .2s;
+}
+.actor-card:hover {
+  border-color: rgba(255,170,0,.3);
+  background: var(--ink-700);
+}
+
+.actor-card-avatar {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--ink-700);
+  position: relative;
+}
+.actor-card-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.actor-card-avatar .nft-badge {
+  position: absolute;
+  bottom: 10px; left: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(13,16,23,.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.1);
+  font-size: 10px;
+  color: var(--amber);
+  font-family: "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+
+.actor-card-body {
+  padding: 16px 18px 18px;
+}
+
+.actor-card-name {
+  font-family: "EB Garamond", serif;
+  font-size: 20px;
+  color: var(--t1);
+  margin-bottom: 6px;
+}
+
+.actor-card-desc {
+  font-size: 11px;
+  color: var(--t2);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.actor-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--bs);
+}
+.actor-card-nftid {
+  font-size: 10px;
+  color: var(--t3);
+  font-family: "DM Mono", monospace;
+}
+.actor-card-nftid em {
+  color: var(--teal);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  opacity: .5;
+}
+.empty-title {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--t2);
+  margin-bottom: 10px;
+}
+.empty-desc {
+  font-size: 12px;
+  color: var(--t3);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.empty-btn {
+  display: inline-flex;
+  align-items: center; gap: 8px;
+  padding: 10px 24px;
+  border-radius: 7px;
+  background: var(--amber);
+  color: var(--ink-900);
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  transition: opacity .15s;
+}
+.empty-btn:hover { opacity: .85 }
+
+/* Login prompt */
+.login-prompt {
+  text-align: center;
+  padding: 100px 20px;
+}
+.login-prompt .prompt-icon { font-size: 40px; margin-bottom: 16px }
+.login-prompt .prompt-title {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 28px;
+  color: var(--t2);
+  margin-bottom: 10px;
+}
+.login-prompt .prompt-desc {
+  font-size: 12px;
+  color: var(--t3);
+  margin-bottom: 24px;
+}
+.login-prompt .prompt-btn {
+  padding: 10px 28px;
+  border-radius: 7px;
+  background: var(--amber);
+  color: var(--ink-900);
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  transition: opacity .15s;
+}
+.login-prompt .prompt-btn:hover { opacity: .85 }
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 24px; left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  z-index: 99999;
+  background: rgba(13,16,23,.95);
+  backdrop-filter: blur(12px);
+  color: var(--t1);
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 12px;
+  border: 1px solid var(--b);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+  opacity: 0; pointer-events: none;
+  max-width: 420px; text-align: center;
+  font-family: "DM Mono", monospace;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1 }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .body { padding: 24px 16px 60px }
+  .actor-grid { grid-template-columns: 1fr }
+  .sec-name { font-size: 28px }
+}
+</style>
 </head>
 <body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="tb-left">
+    <button class="back-btn" onclick="goBack()">← 返回</button>
+    <span class="tb-title">我的演员 NFT</span>
+  </div>
+  <span class="tb-count" id="nft-count">0 个</span>
+</div>
+
+<!-- Body -->
+<div class="body" id="page-body"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../auth.js"></script>
+<script>
+// ══════════════════════════════════════════════
+//  Mock Actor NFT Database
+//  (In production, this would come from a smart
+//   contract or API. Here we mirror the actors
+//   from the main site for demo consistency.)
+// ══════════════════════════════════════════════
+const ACTOR_NFT_DB = {
+  'Luna': {
+    name: 'Luna',
+    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80',
+    description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。',
+    defaultNftId: '#0042'
+  },
+  '苏婉清': {
+    name: '苏婉清',
+    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80',
+    description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。',
+    defaultNftId: '#0128'
+  },
+  '李云飞': {
+    name: '李云飞',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80',
+    description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。',
+    defaultNftId: '#0503'
+  },
+  '林梦瑶': {
+    name: '林梦瑶',
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80',
+    description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。',
+    defaultNftId: '#0788'
+  },
+  '赵无极': {
+    name: '赵无极',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80',
+    description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。',
+    defaultNftId: '#0315'
+  },
+  '上官婉儿': {
+    name: '上官婉儿',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80',
+    description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
+    defaultNftId: '#2016'
+  }
+};
+
+// ══════════════════════════════════════════════
+//  Render Logic
+// ══════════════════════════════════════════════
+
+function renderPage() {
+  const body = document.getElementById('page-body');
+
+  // ── Not logged in ──
+  if (!currentUser || !currentUser.isLoggedIn) {
+    body.innerHTML = `
+      <div class="login-prompt">
+        <div class="prompt-icon">🎭</div>
+        <div class="prompt-title">登录后查看持有的演员</div>
+        <div class="prompt-desc">请先登录 DramaOS / Story.fun 账户，查看你拥有的演员 NFT。</div>
+        <button class="prompt-btn" onclick="goLogin()">去登录 →</button>
+      </div>
+    `;
+    document.getElementById('nft-count').textContent = '未登录';
+    return;
+  }
+
+  // ── Get user's actor NFTs ──
+  const heldNames = currentUser.actorNfts || [];
+  const heldActors = heldNames
+    .map(function(name) { return ACTOR_NFT_DB[name] })
+    .filter(function(a) { return a != null });
+
+  // Update count
+  document.getElementById('nft-count').textContent = heldActors.length + ' 个';
+
+  // ── Empty state ──
+  if (heldActors.length === 0) {
+    body.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🎭</div>
+        <div class="empty-title">还没有持有演员 NFT</div>
+        <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员席位，即可在这里查看你持有的演员 NFT。</div>
+        <button class="empty-btn" onclick="goMarket()">去市场看看 →</button>
+      </div>
+    `;
+    return;
+  }
+
+  // ── Render cards ──
+  var html = '';
+  html += '<div class="sec-ey">我的数字资产</div>';
+  html += '<div class="sec-name">演员 NFT</div>';
+  html += '<hr class="sec-div">';
+  html += '<div class="actor-grid">';
+
+  for (var i = 0; i < heldActors.length; i++) {
+    var actor = heldActors[i];
+    // Generate a unique NFT ID per user per actor (simulated)
+    var nftSuffix = String(Number(actor.defaultNftId.replace(/[^0-9]/g, '')) + i).padStart(4, '0');
+    var nftId = '#' + nftSuffix;
+
+    html += '<div class="actor-card">';
+    html += '  <div class="actor-card-avatar">';
+    html += '    <img src="' + actor.image + '" alt="' + actor.name + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div style=display:flex;align-items:center;justify-content:center;height:100%;font-size:48px;opacity:.15>🎭</div>\'">';
+    html += '    <span class="nft-badge">NFT ' + nftId + '</span>';
+    html += '  </div>';
+    html += '  <div class="actor-card-body">';
+    html += '    <div class="actor-card-name">' + actor.name + '</div>';
+    html += '    <div class="actor-card-desc">' + actor.description + '</div>';
+    html += '    <div class="actor-card-meta">';
+    html += '      <span class="actor-card-nftid">NFT ID <em>' + nftId + '</em></span>';
+    html += '      <span class="actor-card-nftid" style="color:var(--t3)">持有中</span>';
+    html += '    </div>';
+    html += '  </div>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  Navigation
+// ══════════════════════════════════════════════
+
+function goBack() {
+  window.location.href = 'dramaos.html';
+}
+
+function goLogin() {
+  window.location.href = 'dramaos.html';
+}
+
+function goMarket() {
+  // Open the main site's actors marketplace
+  window.open('../actors.html', '_blank');
+}
+
+// ══════════════════════════════════════════════
+//  Toast
+// ══════════════════════════════════════════════
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(function() { t.classList.remove('show') }, 2500);
+}
+
+// ══════════════════════════════════════════════
+//  Init
+// ══════════════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Small delay to ensure auth.js has fully initialized currentUser
+  setTimeout(renderPage, 100);
+});
+
+// Also listen for auth-ready events
+document.addEventListener('auth-ready', function() {
+  renderPage();
+});
+
+// ══════════════════════════════════════════════
+//  Debug helpers (remove in production)
+// ══════════════════════════════════════════════
+
+// Expose to window for console debugging
+window.__debug = {
+  currentUser: function() { return currentUser },
+  addNft: function(name) {
+    if (!currentUser.actorNfts) currentUser.actorNfts = [];
+    if (currentUser.actorNfts.indexOf(name) === -1) {
+      currentUser.actorNfts.push(name);
+      renderPage();
+      showToast('✅ 已添加 ' + name + ' 到持有列表（调试）');
+    } else {
+      showToast('⚠️ 已持有该 NFT');
+    }
+  },
+  removeNft: function(name) {
+    if (!currentUser.actorNfts) return;
+    var idx = currentUser.actorNfts.indexOf(name);
+    if (idx !== -1) {
+      currentUser.actorNfts.splice(idx, 1);
+      renderPage();
+      showToast('已移除 ' + name + '（调试）');
+    }
+  }
+};
+</script>
 </body>
 </html>
