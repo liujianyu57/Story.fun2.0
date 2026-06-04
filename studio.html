@@ -755,20 +755,16 @@
   <div class="modal-overlay" id="stakeModal">
     <div class="modal-card">
       <h2>🎭 派遣演员</h2>
-      <p class="modal-sub" id="modalStakeActor">选择派遣期限</p>
-      <div style="display:flex;gap:10px;margin-bottom:18px;">
-        <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(1)">1 天</button>
-        <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(3)">3 天</button>
-        <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(7)">7 天</button>
+      <div style="text-align:center;margin-bottom:4px;">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="modalStakeActorName">—</div>
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="modalStakeActorLevel">—</div>
       </div>
-      <div style="background:var(--accent-soft);border-radius:14px;padding:14px;margin-bottom:18px;text-align:center;">
-        <div style="font-size:0.85rem;color:var(--text-muted);">预估每日产出</div>
-        <div style="font-size:1.5rem;font-weight:700;color:var(--accent);" id="modalStakeEstimate">— STORY</div>
-      </div>
+      <p class="modal-sub" style="font-size:0.88rem;color:var(--text-muted);margin-bottom:22px;border-top:1px solid var(--border);padding-top:16px;">该演员将自动进行质押挖矿，持续为你产出 STORY 收益。</p>
       <button class="modal-btn confirm" onclick="confirmStake()">确认派遣</button>
       <button class="modal-btn cancel" onclick="closeStakeModal()">取消</button>
     </div>
   </div>
+
 
   <!-- ===== Level Detail Modal (咖位升级) ===== -->
   <div class="modal-overlay" id="levelModal">
@@ -1142,13 +1138,9 @@
       if (!actor) return;
 
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      const baseDaily = 5; // 基础每日产出
-      const estimatedDaily = baseDaily * levelCfg.miningCoeff * actor.heat;
+      document.getElementById('modalStakeActorName').textContent = actor.name;
+      document.getElementById('modalStakeActorLevel').textContent = levelCfg.name + ' · Lv' + actor.level;
 
-      document.getElementById('modalStakeActor').textContent = actor.name + ' · ' + levelCfg.name + ' Lv' + actor.level;
-      document.getElementById('modalStakeEstimate').textContent = estimatedDaily.toFixed(1) + ' STORY/天';
-
-      selectedDuration = 1;
       document.getElementById('stakeModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
@@ -1159,30 +1151,19 @@
       pendingStakeActorId = null;
     }
 
-    function setStakeDuration(days) {
-      selectedDuration = days;
-      const actor = MY_ACTORS.find(a => a.id === pendingStakeActorId);
-      if (!actor) return;
-      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      const baseDaily = 5;
-      const estimatedDaily = baseDaily * levelCfg.miningCoeff * actor.heat;
-      document.getElementById('modalStakeEstimate').textContent =
-        estimatedDaily.toFixed(1) + ' STORY/天 × ' + days + '天';
-    }
-
     function confirmStake() {
       if (!pendingStakeActorId) return;
       const actor = MY_ACTORS.find(a => a.id === pendingStakeActorId);
       if (actor) {
         actor.isStaking = true;
-        actor.stakingDays = selectedDuration;
         actor.status = 'active';
-        showToast('✅ ' + actor.name + ' 已派遣 ' + selectedDuration + ' 天', '⛏️');
+        showToast('✅ ' + actor.name + ' 已派遣', '⛏️');
       }
       closeStakeModal();
       renderActors();
       updateSummary();
     }
+
 
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', function(e) {
