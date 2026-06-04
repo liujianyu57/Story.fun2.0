@@ -594,7 +594,7 @@
     }
     .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
 
-    /* ===== Staking Modal ===== */
+    /* ===== 派遣演员 Modal ===== */
     .modal-overlay {
       position: fixed; inset: 0; z-index: 9999;
       display: flex; align-items: center; justify-content: center;
@@ -675,7 +675,7 @@
           <div class="sc-icon">⛏️</div>
           <div class="sc-value-wrap">
             <div class="sc-value green" id="stakingActors">0</div>
-            <div class="sc-label">常驻质押中</div>
+            <div class="sc-label">派遣中</div>
           </div>
         </div>
       </div>
@@ -727,11 +727,11 @@
 
   </div>
 
-  <!-- ===== Staking Modal ===== -->
+  <!-- ===== 派遣演员 Modal ===== -->
   <div class="modal-overlay" id="stakeModal">
     <div class="modal-card">
-      <h2>⛏️ 常驻质押</h2>
-      <p class="modal-sub" id="modalStakeActor">选择质押时长</p>
+      <h2>🎭 派遣演员</h2>
+      <p class="modal-sub" id="modalStakeActor">选择派遣期限</p>
       <div style="display:flex;gap:10px;margin-bottom:18px;">
         <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(1)">1 天</button>
         <button class="card-action-btn film" style="flex:1;" onclick="setStakeDuration(3)">3 天</button>
@@ -741,7 +741,7 @@
         <div style="font-size:0.85rem;color:var(--text-muted);">预估每日产出</div>
         <div style="font-size:1.5rem;font-weight:700;color:var(--accent);" id="modalStakeEstimate">— STORY</div>
       </div>
-      <button class="modal-btn confirm" onclick="confirmStake()">确认质押</button>
+      <button class="modal-btn confirm" onclick="confirmStake()">确认派遣</button>
       <button class="modal-btn cancel" onclick="closeStakeModal()">取消</button>
     </div>
   </div>
@@ -1058,8 +1058,8 @@
               🎬 去拍剧
             </a>
             ${actor.isStaking
-              ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">⏹ 解除质押</button>`
-              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">⛏️ 常驻质押</button>`
+              ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">☕ 休息</button>`
+              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">🎬 派遣演出</button>`
             }
             <a class="card-action-btn detail" href="actor-profile.html?name=${encodeURIComponent(actor.name)}">
               📋 详情
@@ -1091,7 +1091,7 @@
     }
 
     // ============================================================
-    //  Staking Modal
+    //  派遣 Modal
     // ============================================================
     let pendingStakeActorId = null;
     let selectedDuration = 1;
@@ -1137,7 +1137,7 @@
         actor.isStaking = true;
         actor.stakingDays = selectedDuration;
         actor.status = 'active';
-        showToast('✅ ' + actor.name + ' 已常驻质押 ' + selectedDuration + ' 天', '⛏️');
+        showToast('✅ ' + actor.name + ' 已派遣 ' + selectedDuration + ' 天', '⛏️');
       }
       closeStakeModal();
       renderActors();
@@ -1154,16 +1154,16 @@
     });
 
     // ============================================================
-    //  Unstake
+    //  休息
     // ============================================================
     function unstakeActor(actorId) {
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
-      if (confirm('确定解除 ' + actor.name + ' 的常驻质押？')) {
+      if (confirm('确定让 ' + actor.name + ' 休息？')) {
         actor.isStaking = false;
         actor.stakingDays = 0;
         actor.status = 'idle';
-        showToast('⏹ ' + actor.name + ' 已解除质押', '⏹');
+        showToast('⏹ ' + actor.name + ' 已休息', '⏹');
         renderActors();
         updateSummary();
       }
