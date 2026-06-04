@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DramaOS · AI 短剧制作系统</title>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #131926;
+      --surface2: #1c2438;
+      --accent: #7c3aed;
+      --accent-soft: rgba(124,58,237,0.15);
+      --text: #e2e8f0;
+      --text-muted: #8892a8;
+      --border: #252e42;
+      --danger: #ef4444;
+      --success: #22c55e;
+      font-family: "PingFang SC", "Segoe UI", Roboto, system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Header */
+    .dos-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .dos-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .dos-logo .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+    }
+    .dos-header-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .dos-header-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .dos-header-nav a:hover { color: var(--text); }
+    .dos-header-nav .active { color: var(--accent); }
+
+    /* Main */
+    .dos-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* Actor Info Bar */
+    .dos-actor-bar {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 28px;
+    }
+    .dos-actor-bar img {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .dos-actor-bar .info { flex: 1; }
+    .dos-actor-bar .info .name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+    .dos-actor-bar .info .meta {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .dos-actor-bar .badge {
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    /* Studio Panel */
+    .dos-studio {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 720px) {
+      .dos-studio { grid-template-columns: 1fr; }
+    }
+
+    .dos-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    .dos-panel h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .dos-path-option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dos-path-option:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .dos-path-option .path-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+    .dos-path-option .path-info { flex: 1; }
+    .dos-path-option .path-info .path-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+    .dos-path-option .path-info .path-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Mock Controls */
+    .dos-mock-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .dos-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dos-btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .dos-btn.primary:hover {
+      filter: brightness(1.15);
+    }
+    .dos-btn.secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .dos-btn.secondary:hover {
+      border-color: var(--accent);
+    }
+    .dos-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Status Badge */
+    .dos-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: rgba(34,197,94,0.1);
+      color: var(--success);
+      margin-top: 16px;
+    }
+
+    .dos-footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--border);
+    }
+    .dos-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="dos-header">
+    <div class="dos-logo">
+      <div class="logo-icon">🎬</div>
+      <span>DramaOS</span>
+    </div>
+    <nav class="dos-header-nav">
+      <a href="#" class="active">制作台</a>
+      <a href="#">我的作品</a>
+      <a href="#">素材库</a>
+      <a href="#">模板</a>
+      <a href="#">设置</a>
+    </nav>
+  </header>
+
+  <main class="dos-main">
+
+    <!-- Actor Info (parsed from URL) -->
+    <div class="dos-actor-bar" id="actorBar">
+      <img id="actorAvatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80" alt="">
+      <div class="info">
+        <div class="name" id="actorName">—</div>
+        <div class="meta" id="actorMeta">NFT #— · 来自 Story.fun</div>
+      </div>
+      <span class="badge">✅ 已授权</span>
+    </div>
+
+    <h2 style="margin-bottom:8px;">🎬 AI 短剧制作</h2>
+    <p style="color:var(--text-muted);margin-bottom:28px;">选择制作路径，输入提示词，AI 自动生成你的下一部爆款短剧</p>
+
+    <div class="dos-studio">
+      <!-- 路径 A -->
+      <div class="dos-panel">
+        <h3>📋 路径 A · 快速起量</h3>
+        <div class="dos-path-option">
+          <div class="path-icon">⚡</div>
+          <div class="path-info">
+            <div class="path-name">闪电模式</div>
+            <div class="path-desc">低门槛快速出片，适合测试市场反应 · 基础 AI 生成</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:6px;">提示词 / 故事梗概</label>
+          <textarea style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:0.9rem;resize:vertical;min-height:80px;font-family:inherit;" placeholder="例如：古装甜宠，女主角穿越成丞相府丫鬟..."></textarea>
+        </div>
+        <div class="dos-mock-controls">
+          <button class="dos-btn primary" onclick="showToast('⚡ 闪电模式制作中... 预计 30s 完成')">🚀 生成短剧</button>
+        </div>
+        <div class="dos-status" style="display:none;" id="statusA">⏳ 生成中...</div>
+      </div>
+
+      <!-- 路径 B -->
+      <div class="dos-panel">
+        <h3>🎯 路径 B · 高品质制作</h3>
+        <div class="dos-path-option">
+          <div class="path-icon">🌟</div>
+          <div class="path-info">
+            <div class="path-name">精制模式</div>
+            <div class="path-desc">高质量 AI 制作，更强剧本能力 · 回报更高</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <label style="font-size:0.82rem;color:var(--text-muted);display:block;margin-bottom:6px;">详细剧本 / 分镜描述</label>
+          <textarea style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:0.9rem;resize:vertical;min-height:80px;font-family:inherit;" placeholder="详细描述剧情走向、角色对白、场景切换..."></textarea>
+        </div>
+        <div class="dos-mock-controls">
+          <button class="dos-btn primary" onclick="showToast('🎯 精制模式制作中... 预计 2min 完成')">🎬 开始精制</button>
+        </div>
+        <div class="dos-status" style="display:none;" id="statusB">⏳ 生成中...</div>
+      </div>
+    </div>
+
+    <!-- Back to Studio -->
+    <div style="text-align:center;padding:12px;">
+      <a href="studio.html" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">← 返回经纪工坊</a>
+    </div>
+
+  </main>
+
+  <footer class="dos-footer">
+    DramaOS · AI Short Drama Production System · <a href="#">v0.1.0</a>
+  </footer>
+
+  <script>
+    // 解析 URL 参数：拿到 actor name
+    const params = new URLSearchParams(window.location.search);
+    const actorName = params.get('actor') || '—';
+
+    document.getElementById('actorName').textContent = actorName;
+    document.getElementById('actorMeta').textContent = 'NFT #— · 来自 Story.fun · 已授权 AI 出演';
+
+    // Toast 模拟
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      Object.assign(t.style, {
+        position: 'fixed', top: '24px', left: '50%', transform: 'translateX(-50%)',
+        background: 'rgba(124,58,237,0.95)', backdropFilter: 'blur(8px)',
+        color: '#fff', padding: '14px 24px', borderRadius: '14px',
+        fontSize: '0.92rem', zIndex: '9999', boxShadow: '0 12px 40px rgba(0,0,0,0.3)',
+        transition: 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s',
+        maxWidth: '420px', textAlign: 'center', fontWeight: '500'
+      });
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+  </script>
+
+</body>
+</html>
