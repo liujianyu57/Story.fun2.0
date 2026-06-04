@@ -419,30 +419,50 @@
       text-align: right;
     }
 
-    /* Mining Stats - 3 column grid for icon + label */
+    /* Mining Stats - 2×2 grid for readability */
     .mining-stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
       background: var(--bg);
       border-radius: 14px;
-      padding: 12px 10px;
+      padding: 14px 16px;
     }
     .ms-item {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+    .ms-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .ms-icon.heat { background: rgba(255,87,34,0.12); }
+    .ms-icon.coeff { background: rgba(33,150,243,0.12); }
+    .ms-icon.output { background: rgba(0,179,136,0.12); }
+    .ms-icon.mined { background: rgba(156,39,176,0.10); }
+    .ms-info {
+      display: flex;
+      flex-direction: column;
       gap: 1px;
-      text-align: center;
+      min-width: 0;
     }
     .ms-label {
       font-size: 0.68rem;
       color: var(--text-muted);
       letter-spacing: 0.02em;
+      line-height: 1.2;
     }
     .ms-value {
       font-size: 0.95rem;
       font-weight: 700;
+      line-height: 1.3;
     }
     .ms-value.green { color: var(--accent); }
     .ms-value.blue { color: #4a9eff; }
@@ -593,6 +613,47 @@
       opacity: 1;
     }
     .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
+
+    /* ===== Can Upgrade Badge ===== */
+    .actor-hero-lv.can-upgrade {
+      box-shadow: 0 0 12px rgba(245, 176, 66, 0.5), 0 0 25px rgba(245, 176, 66, 0.2);
+      animation: breathe-gold 2s ease-in-out infinite;
+    }
+    @keyframes breathe-gold {
+      0%, 100% { box-shadow: 0 0 10px rgba(245, 176, 66, 0.4), 0 0 20px rgba(245, 176, 66, 0.15); }
+      50% { box-shadow: 0 0 18px rgba(245, 176, 66, 0.7), 0 0 35px rgba(245, 176, 66, 0.35); }
+    }
+    .upgrade-float-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, #f5b042, #f7d06a, #f5b042);
+      background-size: 200% 200%;
+      color: #5a3e00;
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 6px 14px 6px 12px;
+      border-radius: 0 12px 0 14px;
+      box-shadow: 0 4px 16px rgba(245, 176, 66, 0.5);
+      z-index: 5;
+      cursor: pointer;
+      pointer-events: auto;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+      animation: shine-gold 2s ease-in-out infinite, pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    @keyframes shine-gold {
+      0%, 100% { background-position: 0% 50%; box-shadow: 0 4px 16px rgba(245, 176, 66, 0.5); }
+      50% { background-position: 100% 50%; box-shadow: 0 4px 24px rgba(245, 176, 66, 0.8), 0 0 40px rgba(245, 176, 66, 0.3); }
+    }
+    @keyframes pop-in {
+      0% { transform: scale(0) rotate(-5deg); opacity: 0; }
+      70% { transform: scale(1.08) rotate(1deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
 
     /* ===== 派遣演员 Modal ===== */
     .modal-overlay {
@@ -845,7 +906,7 @@
         heat: 2.4,
         dailyStory: 18.5,
         cumulativeStory: 342.8,
-        cumulativePlays: 12000,
+        cumulativePlays: 50000,
         isStaking: true,
         stakingDays: 5,
         status: 'active',
@@ -860,7 +921,7 @@
         heat: 0.8,
         dailyStory: 0.8,
         cumulativeStory: 15.2,
-        cumulativePlays: 3200,
+        cumulativePlays: 10000,
         isStaking: true,
         stakingDays: 2,
         status: 'active',
@@ -1003,14 +1064,18 @@
         const pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
         const statusInfo = getStatusInfo(actor.status);
 
+        // 判断是否可升级：非满级 + 累计完播 >= 下一级门槛
+        const canUpgrade = actor.level < 5 && (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || Infinity);
+
         return `
         <div class="actor-card" data-actor-id="${actor.id}">
           <!-- Hero Avatar -->
           <div class="actor-card-hero">
             <img src="${actor.avatar}" alt="${actor.name}" />
+            ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">⬆️ 升级</div>` : ''}
             <div class="actor-card-hero-overlay"></div>
             <div class="actor-card-hero-info">
-              <div class="actor-hero-lv" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
+              <div class="actor-hero-lv${canUpgrade ? ' can-upgrade' : ''}" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
                 Lv${actor.level} <span>${levelCfg.name}</span>
               </div>
               <div class="actor-hero-status">
@@ -1036,19 +1101,35 @@
               <span class="energy-text">${actor.energy}/${actor.energyMax}</span>
             </div>
 
-            <!-- Mining Stats -->
+            <!-- Mining Stats: 2×2 with icons -->
             <div class="mining-stats">
               <div class="ms-item">
-                <span class="ms-label">🔥 热度</span>
-                <span class="ms-value">${actor.heat}x</span>
+                <div class="ms-icon heat">🔥</div>
+                <div class="ms-info">
+                  <span class="ms-label">热度</span>
+                  <span class="ms-value">${actor.heat}x</span>
+                </div>
               </div>
               <div class="ms-item">
-                <span class="ms-label">📅 产出率</span>
-                <span class="ms-value green">${actor.dailyStory > 0 ? actor.dailyStory.toFixed(1) : '0'} STORY/天${pct < 50 && pct > 0 ? ' ⚠️' : ''}</span>
+                <div class="ms-icon coeff">⚙️</div>
+                <div class="ms-info">
+                  <span class="ms-label">挖矿系数</span>
+                  <span class="ms-value">${levelCfg.miningCoeff}x</span>
+                </div>
               </div>
               <div class="ms-item">
-                <span class="ms-label">⛏️ 已产</span>
-                <span class="ms-value blue">${formatNumber(actor.cumulativeStory)} STORY</span>
+                <div class="ms-icon output">📅</div>
+                <div class="ms-info">
+                  <span class="ms-label">过去30天产出</span>
+                  <span class="ms-value green">${(actor.dailyStory * 30).toFixed(1)} STORY</span>
+                </div>
+              </div>
+              <div class="ms-item">
+                <div class="ms-icon mined">⛏️</div>
+                <div class="ms-info">
+                  <span class="ms-label">已产</span>
+                  <span class="ms-value blue">${formatNumber(actor.cumulativeStory)} STORY</span>
+                </div>
               </div>
             </div>
           </div>
