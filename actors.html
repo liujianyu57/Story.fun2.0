@@ -96,8 +96,9 @@
     .metric-item strong { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
     .card-bottom { display: flex; flex-direction: column; gap: 10px; }
     .card-price-box { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 0; border-radius: 14px; background: var(--accent-soft); border: 1px solid rgba(0, 179, 136, 0.2); }
-    .card-price-box::before { content: '售价'; font-weight: 500; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0; }
+    .card-price-box::before { content: '签约(铸造)价格'; font-weight: 500; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0; }
     .card[data-mint-exhausted="true"] .card-price-box::before { content: '地板价'; }
+
     .card-price { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: -0.01em; }
     .card-actions { display: flex; gap: 8px; }
     .card-actions .button-secondary { flex: 1; min-width: 0; padding: 10px 14px; font-size: 0.88rem; }
@@ -119,22 +120,22 @@
     <section>
       <div class="page-intro">
         <div>
-          <h1>🎬 经纪席位</h1>
-          <p style="max-width:560px">每张经纪席位代表一个由创作者发行的演员 IP 名额。Mint 即签约，获得专属演员去拍剧、涨咖位、挖矿。</p>
+          <h1>🎬 演员席位</h1>
+          <p style="max-width:560px">每张演员席位代表一个由创作者发行的演员 IP 名额。Mint 即签约，获得专属演员去拍剧、涨咖位、挖矿。</p>
         </div>
       </div>
 
 
 
       <div class="search-container">
-        <input type="text" class="search-input" id="actorSearch" placeholder="搜索经纪席位..." />
+        <input type="text" class="search-input" id="actorSearch" placeholder="搜索演员席位..." />
 
       </div>
 
       <div class="grid grid-3">
         <article class="card" data-actor="Luna" data-actor-id="1" data-total="5000" data-minted="98" data-available="10" data-holders="90" data-price="10 USDC" data-creator="storyfun_labs">
           <div class="card-banner banner-1">
-            <div class="card-badge">经纪席位</div>
+            <div class="card-badge">演员席位</div>
             <div class="actor-avatar">
               <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
             </div>
@@ -153,10 +154,10 @@
               <div class="metric-item"><strong>可 Mint 10</strong></div>
             </div>
             <div class="card-bottom" style="margin-top:8px">
-              <div class="card-price-box">Mint 价格 10 USDC</div>
+              <div class="card-price-box">10 USDC</div>
               <div class="card-actions">
-                <button class="button-secondary actor-chat-btn" data-actor="Luna">💬 AI 对话</button>
-                <button class="button-secondary actor-mint-btn" data-actor="Luna" data-total-supply="5000" data-minted="98" data-available="10" data-price="10 USDC" data-creator="storyfun_labs">🎭 Mint</button>
+                <button class="button-secondary actor-mint-btn" data-actor="Luna" data-total-supply="5000" data-minted="98" data-available="10" data-price="10 USDC" data-creator="storyfun_labs">🎭 签约(铸造)</button>
+
               </div>
               <div class="actor-holdings">
                 <span>持有人 <span class="num">90</span></span>
@@ -167,9 +168,10 @@
 
         <article class="card" data-actor="苏婉清" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio">
           <div class="card-banner banner-2">
-            <div class="card-badge">经纪席位</div>
+            <div class="card-badge">演员席位</div>
             <div class="actor-avatar">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="演员 苏婉清" />
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80" alt="演员 苏婉清" />
+
             </div>
             <div class="creator-badge" style="position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--text);font-size:0.75rem;font-weight:600;backdrop-filter:blur(8px)">发行者 👤 @wanqing_studio</div>
 
@@ -186,10 +188,10 @@
               <div class="metric-item"><strong>可 Mint 9,000</strong></div>
             </div>
             <div class="card-bottom" style="margin-top:8px">
-              <div class="card-price-box">Mint 价格 10 USDC</div>
+              <div class="card-price-box">10 USDC</div>
               <div class="card-actions">
-                <button class="button-secondary actor-chat-btn" data-actor="苏婉清">💬 AI 对话</button>
-                <button class="button-secondary actor-mint-btn" data-actor="苏婉清" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="wanqing_studio">🎭 Mint</button>
+                <button class="button-secondary actor-mint-btn" data-actor="苏婉清" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="wanqing_studio">🎭 签约(铸造)</button>
+
               </div>
               <div class="actor-holdings">
                 <span>持有人 <span class="num">820</span></span>
@@ -200,7 +202,7 @@
 
         <article class="card" data-actor="李云飞" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs">
           <div class="card-banner banner-3">
-            <div class="card-badge">经纪席位</div>
+            <div class="card-badge">演员席位</div>
             <div class="actor-avatar">
               <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="演员 李云飞" />
 
@@ -219,10 +221,10 @@
               <div class="metric-item"><strong>可 Mint 7,500</strong></div>
             </div>
             <div class="card-bottom" style="margin-top:8px">
-              <div class="card-price-box">Mint 价格 8 USDC</div>
+              <div class="card-price-box">8 USDC</div>
               <div class="card-actions">
-                <button class="button-secondary actor-chat-btn" data-actor="李云飞">💬 AI 对话</button>
-                <button class="button-secondary actor-mint-btn" data-actor="李云飞" data-total-supply="8000" data-minted="500" data-available="7500" data-price="8 USDC" data-creator="feige_labs">🎭 Mint</button>
+                <button class="button-secondary actor-mint-btn" data-actor="李云飞" data-total-supply="8000" data-minted="500" data-available="7500" data-price="8 USDC" data-creator="feige_labs">🎭 签约(铸造)</button>
+
               </div>
               <div class="actor-holdings">
                 <span>持有人 <span class="num">450</span></span>
@@ -233,7 +235,7 @@
 
         <article class="card" data-actor="林梦瑶" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art">
           <div class="card-banner" style="background:linear-gradient(135deg, #e6e0ff, #ffffff)">
-            <div class="card-badge">经纪席位</div>
+            <div class="card-badge">演员席位</div>
             <div class="actor-avatar">
               <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" alt="演员 林梦瑶" />
             </div>
@@ -252,10 +254,10 @@
               <div class="metric-item"><strong>可 Mint 9,000</strong></div>
             </div>
             <div class="card-bottom" style="margin-top:8px">
-              <div class="card-price-box">Mint 价格 10 USDC</div>
+              <div class="card-price-box">10 USDC</div>
               <div class="card-actions">
-                <button class="button-secondary actor-chat-btn" data-actor="林梦瑶">💬 AI 对话</button>
-                <button class="button-secondary actor-mint-btn" data-actor="林梦瑶" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="mengyao_art">🎭 Mint</button>
+                <button class="button-secondary actor-mint-btn" data-actor="林梦瑶" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="mengyao_art">🎭 签约(铸造)</button>
+
               </div>
               <div class="actor-holdings">
                 <span>持有人 <span class="num">700</span></span>
@@ -266,7 +268,7 @@
 
         <article class="card" data-actor="赵无极" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art">
           <div class="card-banner" style="background:linear-gradient(135deg, #ffe4e0, #fffaf8)">
-            <div class="card-badge">经纪席位</div>
+            <div class="card-badge">演员席位</div>
             <div class="actor-avatar">
               <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80" alt="演员 赵无极" />
 
@@ -285,10 +287,10 @@
               <div class="metric-item"><strong>可 Mint 5,500</strong></div>
             </div>
             <div class="card-bottom" style="margin-top:8px">
-              <div class="card-price-box">Mint 价格 15 USDC</div>
+              <div class="card-price-box">15 USDC</div>
               <div class="card-actions">
-                <button class="button-secondary actor-chat-btn" data-actor="赵无极">💬 AI 对话</button>
-                <button class="button-secondary actor-mint-btn" data-actor="赵无极" data-total-supply="6000" data-minted="500" data-available="5500" data-price="15 USDC" data-creator="wuji_art">🎭 Mint</button>
+                <button class="button-secondary actor-mint-btn" data-actor="赵无极" data-total-supply="6000" data-minted="500" data-available="5500" data-price="15 USDC" data-creator="wuji_art">🎭 签约(铸造)</button>
+
               </div>
               <div class="actor-holdings">
                 <span>持有人 <span class="num">280</span></span>
@@ -299,7 +301,7 @@
 
         <article class="card" data-actor="上官婉儿" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio">
           <div class="card-banner" style="background:linear-gradient(135deg, #f5e6ff, #fffaff)">
-            <div class="card-badge">经纪席位</div>
+            <div class="card-badge">演员席位</div>
             <div class="actor-avatar">
               <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="演员 上官婉儿" />
 
@@ -318,10 +320,10 @@
               <div class="metric-item"><strong>可 Mint 10,000</strong></div>
             </div>
             <div class="card-bottom" style="margin-top:8px">
-              <div class="card-price-box">Mint 价格 12 USDC</div>
+              <div class="card-price-box">12 USDC</div>
               <div class="card-actions">
-                <button class="button-secondary actor-chat-btn" data-actor="上官婉儿">💬 AI 对话</button>
-                <button class="button-secondary actor-mint-btn" data-actor="上官婉儿" data-total-supply="12000" data-minted="2000" data-available="10000" data-price="12 USDC" data-creator="palace_studio">🎭 Mint</button>
+                <button class="button-secondary actor-mint-btn" data-actor="上官婉儿" data-total-supply="12000" data-minted="2000" data-available="10000" data-price="12 USDC" data-creator="palace_studio">🎭 签约(铸造)</button>
+
               </div>
               <div class="actor-holdings">
                 <span>持有人 <span class="num">1,400</span></span>
@@ -373,8 +375,8 @@
       const mintModalClose = document.getElementById('mintModalClose');
       const mintCancel = document.getElementById('mintCancel');
       const mintButtons = document.querySelectorAll('.actor-mint-btn');
-      const chatButtons = document.querySelectorAll('.actor-chat-btn');
       const mintModalSubtitle = document.getElementById('mintModalSubtitle');
+
       const mintModalImage = document.getElementById('mintModalImage');
       const mintModalTag = document.getElementById('mintModalTag');
       const mintWallet = document.getElementById('mintWallet');
@@ -387,16 +389,6 @@
           e.stopPropagation();
           const actorName = this.dataset.actor || 'Luna';
           window.open(`https://market.story.fun/trade/${actorName.toLowerCase()}`, '_blank');
-        });
-      });
-
-      chatButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const actorName = this.dataset.actor || 'Luna';
-          const card = this.closest('.card');
-          const avatarSrc = card.querySelector('.actor-avatar img')?.src || '';
-          openAIChat(actorName, avatarSrc);
         });
       });
 

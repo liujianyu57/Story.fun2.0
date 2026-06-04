@@ -302,7 +302,7 @@
   function buildMobileDrawerHtml() {
     const navItems = [
       { href: 'index.html', label: '剧场' },
-      { href: 'actors.html', label: 'NFT' },
+      { href: 'actors.html', label: '演员' },
       { href: 'narrator.html', label: '创作' },
       { href: 'studio.html', label: '工坊' },
       { href: 'rewards.html', label: '收益' },
@@ -421,7 +421,7 @@
 
     <nav class="nav-links">
       <a class="nav-link" href="index.html">剧场</a>
-      <a class="nav-link" href="actors.html">NFT</a>
+      <a class="nav-link" href="actors.html">演员</a>
       <a class="nav-link" href="narrator.html">创作</a>
       <a class="nav-link" href="studio.html">工坊</a>
       <a class="nav-link" href="rewards.html">收益</a>
