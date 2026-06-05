@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Story.fun | 收益</title>
   <style>
-    :root { --bg: #f7fbff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.16); --text: #1a232f; --text-muted: #657586; --border: #e6eff7; --shadow: 0 20px 45px rgba(27, 45, 71, 0.08); font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
-    * { box-sizing: border-box; }
+    :root { --bg: #f5faff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.12); --accent-glow: rgba(0, 179, 136, 0.25); --text: #13202e; --text-muted: #5e6f83; --text-sub: #8b8d98; --border: #deeaf7; --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06); --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07); --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10); --radius: 20px; --radius-lg: 28px; --danger: #f45b69; --warning: #ff9f2c; --gold: #f5b042; font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    * { box-sizing: border-box; margin: 0; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
-    /* ===== Auth Styles ===== */
+
+    /* ===== Auth Styles (unchanged) ===== */
     .auth-container { display: flex; align-items: center; }
     .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
     .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
@@ -28,10 +29,8 @@
     .auth-dropdown-divider { height: 1px; background: var(--border); margin: 0; }
     .auth-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; color: var(--text); text-decoration: none; font-size: 0.9rem; transition: background 0.15s; cursor: pointer; }
     .auth-dropdown-item:hover { background: rgba(0,0,0,0.03); }
-    .auth-dropdown-item span { font-size: 1.1rem; }
     .auth-dropdown-logout { color: #f45b69; }
     .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
-    /* Login Modal */
     .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .auth-modal-overlay.active { opacity: 1; visibility: visible; }
     .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
@@ -55,566 +54,490 @@
     .auth-modal-tos a:hover { text-decoration: underline; }
     .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .page-intro { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
-    .page-intro h2 { margin: 0; font-size: 2.2rem; line-height: 1.05; }
-    .page-intro p { margin: 0; color: var(--text-muted); line-height: 1.7; }
-    .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.2s ease; }
-    .button { background: var(--accent); color: #fff; font-weight: 600; }
-    .button-secondary { background: rgba(15, 22, 42, 0.05); color: var(--text); }
-    .grid { display: grid; gap: 18px; }
-    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 24px; box-shadow: var(--shadow); }
-    .panel-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
-    .panel h2 { margin: 0; font-size: 1.3rem; }
-    .panel .small { color: var(--text-muted); margin-top: 8px; }
-    .stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .stat { padding: 20px; background: #f8fbff; border-radius: 20px; border: 1px solid #e6eff7; }
-    .stat h4 { margin: 0 0 10px; font-size: 0.95rem; color: var(--text-muted); }
-    .stat strong { display: block; font-size: 1.8rem; }
-    .table { width: 100%; border-collapse: collapse; margin-top: 18px; }
-    .table th, .table td { padding: 14px 12px; text-align: left; }
-    .table th { color: var(--text-muted); font-size: 0.92rem; border-bottom: 1px solid #e6eff7; }
-    .table td { color: var(--text); border-bottom: 1px solid #f0f5fb; }
-    @media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
-    
-    /* 新增样式：优化收益统计区域 */
-    .rewards-summary {
+
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 28px;
+      margin-bottom: 28px;
+    }
+    .page-header-left h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; line-height: 1.15; }
+    .page-header-left p { margin: 0; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+    .page-header-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,179,136,0.3); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .summary-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 1024px) { .summary-bar { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .summary-bar { grid-template-columns: repeat(2, 1fr); } }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .summary-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 3px;
+    }
+    .summary-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent), #00d9a3); }
+    .summary-card:nth-child(2)::before { background: linear-gradient(90deg, var(--gold), #f7c35e); }
+    .summary-card:nth-child(3)::before { background: linear-gradient(90deg, var(--danger), #f45b69); }
+    .summary-card:nth-child(4)::before { background: linear-gradient(90deg, #4a9eff, #7bb8ff); }
+    .summary-card:nth-child(5)::before { background: linear-gradient(90deg, var(--accent), #00d9a3); }
+    .summary-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .sc-block { display: flex; flex-direction: column; gap: 2px; }
+    .sc-value { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+    .sc-value.green { color: var(--accent); }
+    .sc-value.gold { color: var(--gold); }
+    .sc-value.blue { color: #4a9eff; }
+    .sc-value.red { color: var(--danger); }
+    .sc-label { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; margin-top: 3px; }
+    .sc-sub { color: var(--text-sub); font-size: 0.78rem; margin-top: 2px; }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 24px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
-    }
-    
-    .rewards-stat {
-      flex: 1;
-      min-width: 200px;
-      text-align: center;
-    }
-    
-    .rewards-stat h3 {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      color: var(--text);
-    }
-    
-    .rewards-stat .amount {
-      font-size: 2.4rem;
-      font-weight: 700;
-      margin: 8px 0;
-    }
-    
-    .rewards-stat .info {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      margin-top: 6px;
-    }
-    
-    /* 新增样式：增强页签样式 */
-    .rewards-tabs {
-      display: flex;
       gap: 12px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
     }
-    
-    .rewards-tab {
-      background: transparent;
-      color: var(--text);
-      border-radius: 12px;
-      padding: 10px 20px;
-      font-weight: 600;
-      border: 2px solid transparent;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    
-    .rewards-tab.active {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-    
-    .rewards-tab:hover:not(.active) {
-      background: rgba(0, 179, 136, 0.1);
-      color: var(--accent);
-    }
-    
-    /* 子页签样式 */
-    .rewards-tabs-sub {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    
-    .rewards-tab-sub {
-      background: transparent;
-      color: var(--text-muted);
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: 1px solid var(--border);
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    
-    .rewards-tab-sub.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-    
-    .rewards-tab-sub:hover:not(.active) {
-      background: rgba(0, 179, 136, 0.08);
-      color: var(--accent);
-      border-color: var(--accent);
-    }
+    .section-header h2 { margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
 
-    /* ===== 页签内容容器 ===== */
+    .source-list { display: flex; flex-direction: column; gap: 16px; }
+    .source-item { display: flex; flex-direction: column; gap: 6px; }
+    .source-row { display: flex; justify-content: space-between; align-items: center; }
+    .source-row .src-name { font-weight: 600; font-size: 0.92rem; display: flex; align-items: center; gap: 8px; }
+    .source-row .src-amount { font-weight: 700; font-size: 0.95rem; color: var(--accent); }
+    .source-row .src-pct { color: var(--text-muted); font-size: 0.85rem; margin-left: 8px; }
+    .source-bar-bg { height: 8px; background: #eaf4ee; border-radius: 999px; overflow: hidden; }
+    .source-bar-fill { height: 100%; border-radius: 999px; transition: width 0.8s ease; }
+
+    .trend-chart-placeholder {
+      width: 100%; height: 200px;
+      background: linear-gradient(135deg, #f0f9f6 0%, #e8f5ef 50%, #f5faff 100%);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px;
+      border: 1px dashed var(--border); color: var(--text-muted); font-size: 0.9rem;
+    }
+    .trend-chart-placeholder .chart-icon { font-size: 2.5rem; opacity: 0.4; }
+
+    .quick-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quick-tab {
+      padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted); font-size: 0.82rem;
+      font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+    }
+    .quick-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .quick-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+    .tx-table { width: 100%; border-collapse: collapse; }
+    .tx-table th, .tx-table td { padding: 12px 10px; text-align: left; font-size: 0.9rem; }
+    .tx-table th { color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .tx-table td { border-bottom: 1px solid #f0f5fb; }
+    .tx-tag { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+    .tx-tag.staking { background: rgba(0,179,136,0.1); color: var(--accent); }
+    .tx-tag.ai { background: rgba(74,158,255,0.1); color: #4a9eff; }
+    .tx-tag.mint { background: rgba(245,176,66,0.1); color: var(--gold); }
+    .tx-tag.referral { background: rgba(244,91,105,0.1); color: var(--danger); }
+    .tx-status-claimed { color: var(--accent); font-weight: 600; }
+    .tx-status-pending { color: var(--gold); font-weight: 600; }
+    .tx-status-settling { color: var(--text-muted); }
+
+    .pool-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 720px) { .pool-grid { grid-template-columns: repeat(2, 1fr); } }
+    .pool-stat { text-align: center; padding: 16px; background: #f8fbff; border-radius: 16px; border: 1px solid var(--border); }
+    .pool-stat h4 { margin: 0 0 6px; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+    .pool-stat .value { font-size: 1.4rem; font-weight: 700; }
+    .pool-stat .value.green { color: var(--accent); }
+    .pool-progress { margin-top: 12px; height: 6px; background: #eaf4ee; border-radius: 999px; overflow: hidden; }
+    .pool-progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #00d9a3); }
+
+    .detail-modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px);
+      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+    }
+    .detail-modal-overlay.active { opacity: 1; visibility: visible; }
+    .detail-modal {
+      background: var(--surface); border-radius: 24px;
+      width: 100%; max-width: 720px; max-height: 80vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 40px 80px rgba(27,45,71,0.2);
+      transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; overflow: hidden;
+    }
+    .detail-modal-overlay.active .detail-modal { transform: scale(1) translateY(0); }
+    .detail-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .detail-modal-header h3 { margin: 0; font-size: 1.1rem; }
+    .detail-modal-close {
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center;
+      font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s;
+    }
+    .detail-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .detail-modal-body { padding: 16px 24px 24px; overflow-y: auto; flex: 1; }
+    .detail-table { width: 100%; border-collapse: collapse; }
+    .detail-table th, .detail-table td { padding: 12px; text-align: left; font-size: 0.9rem; }
+    .detail-table th { color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border); }
+    .detail-table td { border-bottom: 1px solid #f0f5fb; }
+    .address-tag { font-family: monospace; color: var(--text-muted); font-size: 0.85rem; }
+    .detail-btn {
+      background: transparent; border: 1px solid var(--border); border-radius: 8px;
+      padding: 6px 14px; font-size: 0.85rem; color: var(--accent); cursor: pointer; transition: all 0.2s;
+    }
+    .detail-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* ===== 铸造分润样式 ===== */
-    .nft-profit-summary {
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
+    .nft-profit-summary { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; }
     .nft-profit-stat {
-      flex: 1;
-      min-width: 180px;
-      background: #f8fbff;
-      border: 1px solid #e6eff7;
-      border-radius: 16px;
-      padding: 18px;
-      text-align: center;
+      flex: 1; min-width: 150px;
+      background: #f8fbff; border: 1px solid var(--border); border-radius: 16px; padding: 18px; text-align: center;
     }
-    .nft-profit-stat h4 {
-      margin: 0 0 6px;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-    .nft-profit-stat .amount {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-top: 4px;
-    }
-    .detail-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 0.85rem;
-      color: var(--accent);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .detail-btn:hover {
-      background: var(--accent-soft);
-      border-color: var(--accent);
-    }
-    .detail-btn.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-
-    /* ===== 明细弹窗 ===== */
-    .detail-modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(15,23,42,0.4);
-      backdrop-filter: blur(4px);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    .detail-modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .detail-modal {
-      background: var(--surface);
-      border-radius: 24px;
-      width: 100%;
-      max-width: 720px;
-      max-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 40px 80px rgba(27,45,71,0.2);
-      transform: scale(0.95) translateY(10px);
-      transition: transform 0.3s ease;
-      overflow: hidden;
-    }
-    .detail-modal-overlay.active .detail-modal {
-      transform: scale(1) translateY(0);
-    }
-    .detail-modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .detail-modal-header h3 {
-      margin: 0;
-      font-size: 1.1rem;
-    }
-    .detail-modal-close {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(0,0,0,0.04);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      transition: all 0.2s;
-    }
-    .detail-modal-close:hover {
-      background: rgba(0,0,0,0.08);
-      color: var(--text);
-    }
-    .detail-modal-body {
-      padding: 16px 24px 24px;
-      overflow-y: auto;
-      flex: 1;
-    }
-    .detail-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .detail-table th, .detail-table td {
-      padding: 12px 12px;
-      text-align: left;
-      font-size: 0.9rem;
-    }
-    .detail-table th {
-      color: var(--text-muted);
-      font-weight: 500;
-      border-bottom: 1px solid #e6eff7;
-    }
-    .detail-table td {
-      border-bottom: 1px solid #f0f5fb;
-    }
-    .address-tag {
-      font-family: monospace;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
+    .nft-profit-stat h4 { margin: 0 0 6px; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+    .nft-profit-stat .amount { font-size: 1.6rem; font-weight: 700; margin-top: 4px; }
   </style>
-
 </head>
 <body>
   <div id="header-placeholder"></div>
   <div class="app-shell">
 
-    <section>
-      <div class="page-intro">
-        <div>
-          <h1>收益</h1>
-          <p>质押收益、邀请返佣与铸造分润，快速掌握当前收益状态。</p>
+    <!-- ===== Page Header ===== -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1>💰 收益总览</h1>
+        <p>聚合所有收益来源，掌握全局财务状态</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn-primary" onclick="claimAll()">🤑 一键领取</button>
+      </div>
+    </div>
+
+    <!-- ===== Summary Bar: 5 cards, every card is self-explanatory ===== -->
+    <div class="summary-bar">
+      <!-- 1. 累计挖矿产出 -->
+      <div class="summary-card">
+        <div class="sc-block">
+          <div class="sc-value green"><span id="sTotalEarned">0</span> <span style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">STORY</span></div>
+          <div class="sc-label">累计挖矿产出</div>
+          <div class="sc-sub">≈ $<span id="sEarnedUsd">0</span></div>
+        </div>
+      </div>
+      <!-- 2. 待领取收益 -->
+      <div class="summary-card">
+        <div class="sc-block">
+          <div class="sc-value gold"><span id="sClaimable">0</span> <span style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">STORY</span></div>
+          <div class="sc-label">待领取收益</div>
+          <div class="sc-sub">≈ $<span id="sClaimableUsd">0</span></div>
+        </div>
+      </div>
+      <!-- 3. 累计片酬成本 -->
+      <div class="summary-card">
+        <div class="sc-block">
+          <div class="sc-value red"><span style="font-size:1rem;">$</span><span id="sTotalCost">0</span></div>
+          <div class="sc-label">累计片酬成本</div>
+          <div class="sc-sub">体力恢复费用 (USDC)</div>
+        </div>
+      </div>
+      <!-- 4. 净收益估值 -->
+      <div class="summary-card">
+        <div class="sc-block">
+          <div class="sc-value blue"><span style="font-size:1rem;">$</span><span id="sNetProfit">0</span></div>
+          <div class="sc-label">净收益估值</div>
+          <div class="sc-sub">挖矿价值 − 片酬成本</div>
+        </div>
+      </div>
+      <!-- 5. 今日预估产出 -->
+      <div class="summary-card">
+        <div class="sc-block">
+          <div class="sc-value green"><span id="sTodayEstimate">0</span> <span style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">STORY</span></div>
+          <div class="sc-label">今日预估产出</div>
+          <div class="sc-sub">基于演员当前热度估算</div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ===== Tabs ===== -->
+    <div class="quick-tabs" style="margin-bottom:24px;">
+      <button class="quick-tab active" onclick="switchTab('overview')">📊 收益总览</button>
+      <button class="quick-tab" onclick="switchTab('mint')">🖨️ 铸造分润</button>
+      <button class="quick-tab" onclick="switchTab('referral')">🤝 邀请返佣</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  TAB 1: 收益总览                                              -->
+    <!-- ============================================================ -->
+    <div id="tab-overview" class="tab-content active">
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px;">
+        <!-- 收益来源分布 -->
+        <div class="section-card">
+          <div class="section-header">
+            <h2>📊 收益来源分布</h2>
+          </div>
+          <div class="source-list" id="sourceList">
+            <!-- 由 JS 动态渲染 -->
+          </div>
+        </div>
+
+        <!-- 份额制清算 -->
+        <div class="section-card">
+          <div class="section-header">
+            <h2>⛏️ 份额制清算</h2>
+          </div>
+          <div class="pool-grid">
+            <div class="pool-stat">
+              <h4>周挖矿池硬顶</h4>
+              <div class="value" id="poolCap">50,000</div>
+              <div style="color:var(--text-muted);font-size:0.8rem;margin-top:4px;">STORY</div>
+            </div>
+            <div class="pool-stat">
+              <h4>已消耗额度</h4>
+              <div class="value" id="poolUsed">32,450</div>
+              <div style="color:var(--text-muted);font-size:0.8rem;margin-top:4px;">STORY</div>
+            </div>
+            <div class="pool-stat">
+              <h4>我的权重占比</h4>
+              <div class="value green" id="myWeight">2.3%</div>
+            </div>
+            <div class="pool-stat">
+              <h4>预计本周实得</h4>
+              <div class="value green" id="expectedReward">1,150</div>
+              <div style="color:var(--text-muted);font-size:0.8rem;margin-top:4px;">STORY</div>
+            </div>
+          </div>
+          <div class="pool-progress">
+            <div class="pool-progress-fill" id="poolProgress" style="width:64.9%;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.8rem;color:var(--text-muted);">
+            <span>已消耗 64.9%</span>
+            <span>余额 17,550 STORY</span>
+          </div>
+          <div style="margin-top:16px;padding:12px 16px;background:rgba(0,179,136,0.06);border-radius:12px;border:1px dashed rgba(0,179,136,0.2);font-size:0.85rem;color:var(--text-muted);">
+            💡 未触顶时挖多少发多少，余额不增发；触顶后按权重清算，永不超发。
+          </div>
         </div>
       </div>
 
-      <div class="panel" style="padding:18px 20px 20px; background:var(--surface); color: #000; border-radius:20px; box-shadow: 0 30px 80px rgba(11,11,13,0.12); margin-bottom:18px;">
-        <div class="rewards-summary">
-          <div class="rewards-stat">
-            <h3>累计收益 (USDC)</h3>
-            <div class="amount">125.30</div>
-            <div class="info">UTC 0 点统计并累加收益</div>
+      <!-- 历史收益趋势 -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2>📈 历史收益趋势</h2>
+          <div class="quick-tabs">
+            <button class="quick-tab active" data-trend="7d" onclick="switchTrend('7d')">近 7 天</button>
+            <button class="quick-tab" data-trend="30d" onclick="switchTrend('30d')">近 30 天</button>
+            <button class="quick-tab" data-trend="all" onclick="switchTrend('all')">全部</button>
           </div>
-          <div class="rewards-stat">
-            <h3>可领取资产 (USDC)</h3>
-            <div class="amount">25.30</div>
-          </div>
-          <div style="margin-left:auto">
-            <button class="button" style="background:#00b388; padding:12px 20px; border-radius:18px;">一键领取收益</button>
-          </div>
+        </div>
+        <div class="trend-chart-placeholder">
+          <div class="chart-icon">📈</div>
+          <div>收益趋势图表（接入数据源后显示）</div>
+          <div style="font-size:0.8rem;opacity:0.7;">日收益 STORY 波动曲线</div>
         </div>
       </div>
 
-      <div class="rewards-tabs">
-        <button class="rewards-tab active" onclick="switchTab('质押分润')">质押分润</button>
-        <button class="rewards-tab" onclick="switchTab('邀请返佣')">邀请返佣</button>
-        <button class="rewards-tab" onclick="switchTab('铸造分润')">铸造分润</button>
-      </div>
-
-      <!-- ===== 质押分润 ===== -->
-      <div id="tab-content-质押分润" class="tab-content active">
-        <div class="panel" style="margin-bottom:20px; border-radius:18px; padding:18px;">
-          <div style="display:flex; gap:18px;">
-            <div style="flex:1; background:#fff; border-radius:12px; padding:18px; text-align:center; box-shadow:none; border:1px solid #f0f6fb;">
-              <div style="color:var(--text-muted); font-size:0.92rem;">已质押短剧NFT</div>
-              <div style="font-size:1.6rem; font-weight:700; margin-top:8px;">3</div>
-            </div>
-            <div style="flex:1; background:#fff; border-radius:12px; padding:18px; text-align:center; box-shadow:none; border:1px solid #f0f6fb;">
-              <div style="color:var(--text-muted); font-size:0.92rem;">已质押演员NFT</div>
-              <div style="font-size:1.6rem; font-weight:700; margin-top:8px;">22</div>
-            </div>
-            <div style="flex:1; background:#fff; border-radius:12px; padding:18px; text-align:center; box-shadow:none; border:1px solid #f0f6fb;">
-              <div style="color:var(--text-muted); font-size:0.92rem;">已质押STORY</div>
-              <div style="font-size:1.6rem; font-weight:700; margin-top:8px;">3</div>
-            </div>
-          </div>
+      <!-- 收益流水明细 -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2>📋 最近收益流水</h2>
+          <span style="color:var(--text-muted);font-size:0.85rem;">近 30 条</span>
         </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <h2 id="rewards-sub-title">短剧收益</h2>
-              <p class="small" id="rewards-sub-desc">只有持有并质押对应短剧 NFT 的创作者，才会展示该剧的收益情况。</p>
-            </div>
-            <div class="rewards-tabs-sub" style="display:flex; gap:8px;">
-              <button class="rewards-tab-sub active" data-tab="drama" onclick="switchSubTab('drama')">短剧收益</button>
-              <button class="rewards-tab-sub" data-tab="actor" onclick="switchSubTab('actor')">演员收益</button>
-              <button class="rewards-tab-sub" data-tab="token" onclick="switchSubTab('token')">代币收益</button>
-            </div>
-          </div>
-
-          <!-- 短剧收益表格 -->
-          <table class="table" id="table-drama">
+        <div style="overflow-x:auto;">
+          <table class="tx-table" id="txTable">
             <thead>
-              <tr><th>短剧 NFT</th><th>质押</th><th>付费观看 (USDC)</th><th>分润比例</th><th>累计收益(USDC)</th><th>操作</th></tr>
+              <tr><th>时间</th><th>来源</th><th>来源详情</th><th>数量 (STORY)</th><th>状态</th></tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><strong>星穹之眼</strong><div style="color:var(--text-muted); font-size:0.9rem;">DramaNFT#2101</div></td>
-                <td>1</td>
-                <td>123</td>
-                <td>33%</td>
-                <td>234</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
-              <tr>
-                <td><strong>长安如梦</strong><div style="color:var(--text-muted); font-size:0.9rem;">DramaNFT#2101</div></td>
-                <td>1</td>
-                <td>123</td>
-                <td>33%</td>
-                <td>234</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
+            <tbody id="txBody">
+              <!-- 由 JS 动态渲染 -->
             </tbody>
           </table>
+        </div>
+      </div>
 
-          <!-- 演员收益表格 -->
-          <table class="table" id="table-actor" style="display:none;">
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  TAB 2: 铸造分润                                              -->
+    <!-- ============================================================ -->
+    <div id="tab-mint" class="tab-content">
+      <div class="nft-profit-summary">
+        <div class="nft-profit-stat">
+          <h4>累计铸造分润 (USDC)</h4>
+          <div class="amount" style="color:var(--accent);">890.50</div>
+        </div>
+        <div class="nft-profit-stat">
+          <h4>可领取铸造分润 (USDC)</h4>
+          <div class="amount" style="color:var(--gold);">210.30</div>
+        </div>
+        <div class="nft-profit-stat">
+          <h4>创建的演员NFT</h4>
+          <div class="amount" style="color:#4a9eff;">5</div>
+        </div>
+        <div class="nft-profit-stat">
+          <h4>总铸造次数</h4>
+          <div class="amount">47</div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div>
+            <h2>铸造分润明细</h2>
+            <p style="color:var(--text-muted);font-size:0.85rem;margin-top:4px;">其他用户铸造您创建的演员 NFT 时，您将获得 50% 的分润收益。</p>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tx-table">
             <thead>
-              <tr><th>演员</th><th>质押</th><th>持有占比</th><th>身价 (USDC)</th><th>累计收益(USDC)</th><th>操作</th></tr>
+              <tr><th>演员</th><th>NFT编号</th><th>铸造次数</th><th>单次分润 (USDC)</th><th>分润比例</th><th>累计分润 (USDC)</th><th>操作</th></tr>
             </thead>
             <tbody>
-              <tr>
-                <td><strong>林雪儿</strong><div style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3102</div></td>
-                <td>3</td>
-                <td>2.5%</td>
-                <td>1,250</td>
-                <td>89.50</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
-              <tr>
-                <td><strong>江辰</strong><div style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3107</div></td>
-                <td>2</td>
-                <td>1.8%</td>
-                <td>980</td>
-                <td>56.20</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
-              <tr>
-                <td><strong>苏晚晴</strong><div style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3115</div></td>
-                <td>5</td>
-                <td>4.2%</td>
-                <td>2,100</td>
-                <td>134.80</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <!-- 代币收益表格 -->
-          <table class="table" id="table-token" style="display:none;">
-            <thead>
-              <tr><th>代币</th><th>短剧</th><th>质押</th><th>质押占比</th><th>累计收益(USDC)</th><th>操作</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>STORY</strong></td>
-                <td>星穹之眼</td>
-                <td>1,500</td>
-                <td>3.2%</td>
-                <td>45.60</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
-              <tr>
-                <td><strong>STORY</strong></td>
-                <td>长安如梦</td>
-                <td>2,000</td>
-                <td>4.8%</td>
-                <td>72.30</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
-              <tr>
-                <td><strong>STORY</strong></td>
-                <td>深海迷踪</td>
-                <td>800</td>
-                <td>1.5%</td>
-                <td>22.10</td>
-                <td><button class="button-secondary">解质押</button></td>
-              </tr>
+              <tr><td><strong>林雪儿</strong></td><td><span class="address-tag">ActorNFT#3102</span></td><td>12</td><td>5.00</td><td>50%</td><td>60.00</td><td><button class="detail-btn" onclick="showDetail('林雪儿','ActorNFT#3102')">查看明细</button></td></tr>
+              <tr><td><strong>江辰</strong></td><td><span class="address-tag">ActorNFT#3107</span></td><td>8</td><td>5.00</td><td>50%</td><td>40.00</td><td><button class="detail-btn" onclick="showDetail('江辰','ActorNFT#3107')">查看明细</button></td></tr>
+              <tr><td><strong>苏晚晴</strong></td><td><span class="address-tag">ActorNFT#3115</span></td><td>15</td><td>5.00</td><td>50%</td><td>75.00</td><td><button class="detail-btn" onclick="showDetail('苏晚晴','ActorNFT#3115')">查看明细</button></td></tr>
+              <tr><td><strong>沈千雪</strong></td><td><span class="address-tag">ActorNFT#3123</span></td><td>7</td><td>5.00</td><td>50%</td><td>35.00</td><td><button class="detail-btn" onclick="showDetail('沈千雪','ActorNFT#3123')">查看明细</button></td></tr>
+              <tr><td><strong>陆逸风</strong></td><td><span class="address-tag">ActorNFT#3138</span></td><td>5</td><td>5.00</td><td>50%</td><td>25.00</td><td><button class="detail-btn" onclick="showDetail('陆逸风','ActorNFT#3138')">查看明细</button></td></tr>
             </tbody>
           </table>
         </div>
       </div>
+    </div>
 
-      <!-- ===== 邀请返佣（预留） ===== -->
-      <div id="tab-content-邀请返佣" class="tab-content">
-        <div class="panel" style="text-align:center; padding:60px 24px;">
-          <div style="font-size:3rem; margin-bottom:16px;">🤝</div>
-          <h3 style="margin:0 0 8px; font-size:1.1rem; color:var(--text-muted);">邀请返佣数据即将上线</h3>
-          <p style="color:var(--text-muted); font-size:0.92rem; margin:0;">邀请好友注册并质押，可获得持续返佣收益。</p>
-        </div>
+    <!-- ============================================================ -->
+    <!--  TAB 3: 邀请返佣                                              -->
+    <!-- ============================================================ -->
+    <div id="tab-referral" class="tab-content">
+      <div class="section-card" style="text-align:center;padding:60px 24px;">
+        <div style="font-size:3rem;margin-bottom:16px;">🤝</div>
+        <h3 style="margin:0 0 8px;font-size:1.1rem;color:var(--text-muted);">邀请返佣即将上线</h3>
+        <p style="color:var(--text-muted);font-size:0.92rem;margin:0;">邀请好友注册并参与挖矿，可获得持续返佣收益。</p>
       </div>
+    </div>
 
-      <!-- ===== 铸造分润 ===== -->
-      <div id="tab-content-铸造分润" class="tab-content">
-        <!-- 统计概览 -->
-        <div class="nft-profit-summary">
-          <div class="nft-profit-stat">
-            <h4>累计铸造分润 (USDC)</h4>
-            <div class="amount">890.50</div>
-          </div>
-          <div class="nft-profit-stat">
-            <h4>可领取铸造分润 (USDC)</h4>
-            <div class="amount">210.30</div>
-          </div>
-          <div class="nft-profit-stat">
-            <h4>创建的演员NFT</h4>
-            <div class="amount">5</div>
-          </div>
-          <div class="nft-profit-stat">
-            <h4>总铸造次数</h4>
-            <div class="amount">47</div>
-          </div>
-        </div>
-
-        <!-- 铸造分润明细表格 -->
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <h2>铸造分润明细</h2>
-              <p class="small">其他用户铸造您创建的演员NFT时，您将获得50%的分润收益。</p>
-            </div>
-          </div>
-
-          <table class="table" id="table-nft-profit">
-            <thead>
-              <tr>
-                <th>演员</th>
-                <th>NFT编号</th>
-                <th>铸造次数</th>
-                <th>单次分润 (USDC)</th>
-                <th>分润比例</th>
-                <th>累计分润 (USDC)</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>林雪儿</strong></td>
-                <td><span style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3102</span></td>
-                <td>12</td>
-                <td>5.00</td>
-                <td>50%</td>
-                <td>60.00</td>
-                <td><button class="detail-btn" onclick="showDetail('林雪儿', 'ActorNFT#3102')">查看明细</button></td>
-              </tr>
-              <tr>
-                <td><strong>江辰</strong></td>
-                <td><span style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3107</span></td>
-                <td>8</td>
-                <td>5.00</td>
-                <td>50%</td>
-                <td>40.00</td>
-                <td><button class="detail-btn" onclick="showDetail('江辰', 'ActorNFT#3107')">查看明细</button></td>
-              </tr>
-              <tr>
-                <td><strong>苏晚晴</strong></td>
-                <td><span style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3115</span></td>
-                <td>15</td>
-                <td>5.00</td>
-                <td>50%</td>
-                <td>75.00</td>
-                <td><button class="detail-btn" onclick="showDetail('苏晚晴', 'ActorNFT#3115')">查看明细</button></td>
-              </tr>
-              <tr>
-                <td><strong>沈千雪</strong></td>
-                <td><span style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3123</span></td>
-                <td>7</td>
-                <td>5.00</td>
-                <td>50%</td>
-                <td>35.00</td>
-                <td><button class="detail-btn" onclick="showDetail('沈千雪', 'ActorNFT#3123')">查看明细</button></td>
-              </tr>
-              <tr>
-                <td><strong>陆逸风</strong></td>
-                <td><span style="color:var(--text-muted); font-size:0.9rem;">ActorNFT#3138</span></td>
-                <td>5</td>
-                <td>5.00</td>
-                <td>50%</td>
-                <td>25.00</td>
-                <td><button class="detail-btn" onclick="showDetail('陆逸风', 'ActorNFT#3138')">查看明细</button></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-
-    </section>
   </div>
 
-  <!-- ===== 明细弹窗 ===== -->
-  <div class="detail-modal-overlay" id="detail-modal-overlay" onclick="closeDetail(event)">
+  <!-- ===== 铸造分润明细弹窗 ===== -->
+  <div class="detail-modal-overlay" id="detailModalOverlay" onclick="closeDetail(event)">
     <div class="detail-modal">
       <div class="detail-modal-header">
-        <h3 id="detail-modal-title">林雪儿 (ActorNFT#3102) — 铸造明细</h3>
+        <h3 id="detailModalTitle">林雪儿 (ActorNFT#3102) — 铸造明细</h3>
         <button class="detail-modal-close" onclick="closeDetail(event)">✕</button>
       </div>
       <div class="detail-modal-body">
         <table class="detail-table">
-          <thead>
-            <tr>
-              <th>铸造者</th>
-              <th>时间</th>
-              <th>铸造数量</th>
-              <th>分润金额 (USDC)</th>
-            </tr>
-          </thead>
-          <tbody id="detail-records-body">
-            <!-- 由 JS 动态填充 -->
-          </tbody>
+          <thead><tr><th>铸造者</th><th>时间</th><th>铸造数量</th><th>分润金额 (USDC)</th></tr></thead>
+          <tbody id="detailRecordsBody"></tbody>
         </table>
       </div>
     </div>
   </div>
 
+  <!-- Toast -->
+  <div class="toast-notification" id="toastNotification">
+    <span style="display:inline-block;margin-right:8px;font-size:1.1rem;">💡</span>
+    <span id="toastMessage"></span>
+  </div>
+
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
   <script>
-    /**
-     * 模拟明细数据
-     * 实际项目中应由后端 API 返回
-     */
+    // ============================================================
+    //  模拟数据
+    // ============================================================
+    const USER_FINANCE = {
+      totalEarned: 12500,          // 累计挖矿产出 STORY
+      claimable: 2350,             // 待领取 STORY
+      totalCost: 485.50,           // 片酬 USDC 消耗
+      stakingActors: 4,            // 当前质押挖矿的演员数（保留备用）
+      storyPrice: 0.10,            // STORY = $0.10
+    };
+    // 今日预估产出（模拟）
+    const TODAY_ESTIMATE = 185;     // STORY
+
+    const INCOME_SOURCES = [
+      { name: '常驻质押', icon: '⛏️', amount: 5625, pct: 45, color: '#00b388' },
+      { name: 'AI 出演',  icon: '🎬', amount: 3750, pct: 30, color: '#4a9eff' },
+      { name: '铸造分润', icon: '🖨️', amount: 1875, pct: 15, color: '#f5b042' },
+      { name: '邀请返佣', icon: '🤝', amount: 1250, pct: 10, color: '#f45b69' },
+    ];
+
+    const RECENT_TXS = [
+      { time: '06-04 14:30', type: 'staking',  typeLabel: '常驻质押', detail: '林梦瑶 · Lv3',         amount: 87.5,  status: 'claimed' },
+      { time: '06-04 09:15', type: 'ai',       typeLabel: 'AI 出演',  detail: '星穹之眼 · 表现奖励',  amount: 320,   status: 'settling' },
+      { time: '06-03 16:40', type: 'mint',     typeLabel: '铸造分润', detail: '林雪儿 · 铸造 ×1',     amount: 5.0,   status: 'claimed' },
+      { time: '06-03 11:00', type: 'staking',  typeLabel: '常驻质押', detail: '苏婉清 · Lv2',         amount: 18.5,  status: 'claimed' },
+      { time: '06-02 20:30', type: 'ai',       typeLabel: 'AI 出演',  detail: '长安如梦 · 即时奖励',  amount: 25,    status: 'claimed' },
+      { time: '06-02 14:00', type: 'referral', typeLabel: '邀请返佣', detail: '来自 0x3m4N...5o6P',   amount: 12.0,  status: 'pending' },
+      { time: '06-01 22:10', type: 'staking',  typeLabel: '常驻质押', detail: '赵无极 · Lv4',         amount: 286,   status: 'claimed' },
+      { time: '06-01 08:00', type: 'mint',     typeLabel: '铸造分润', detail: '江辰 · 铸造 ×2',       amount: 10.0,  status: 'claimed' },
+      { time: '05-31 19:30', type: 'staking',  typeLabel: '常驻质押', detail: '李云飞 · Lv1',         amount: 0.8,   status: 'claimed' },
+      { time: '05-31 12:00', type: 'ai',       typeLabel: 'AI 出演',  detail: '深海迷踪 · 表现奖励',  amount: 180,   status: 'settling' },
+      { time: '05-30 15:20', type: 'referral', typeLabel: '邀请返佣', detail: '来自 0x9i0J...1k2L',   amount: 8.5,   status: 'pending' },
+      { time: '05-30 09:00', type: 'staking',  typeLabel: '常驻质押', detail: 'Luna · Lv1',           amount: 12.5,  status: 'claimed' },
+    ];
+
     const mockDetailRecords = {
       'ActorNFT#3102': [
         { minter: '0x1a2B...3c4D', time: '2025-05-28 14:30', quantity: 1, amount: 5.00 },
@@ -659,110 +582,165 @@
       ]
     };
 
-    /**
-     * 切换主页签：质押分润 / 邀请返佣 / 铸造分润
-     */
-    function switchTab(tabName) {
-      // 更新页签按钮状态
-      const tabs = document.querySelectorAll('.rewards-tab');
-      tabs.forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.textContent.trim() === tabName) {
-          tab.classList.add('active');
-        }
-      });
+    let toastTimer = null;
 
-      // 切换内容区域
-      const contents = document.querySelectorAll('.tab-content');
-      contents.forEach(content => {
-        content.classList.remove('active');
-        if (content.id === 'tab-content-' + tabName) {
-          content.classList.add('active');
-        }
-      });
+    function formatNumber(n) {
+      if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+      return n.toLocaleString();
     }
 
-    /**
-     * 切换子页签：短剧收益 / 演员收益 / 代币收益
-     */
-    function switchSubTab(tabName) {
-      // 1. 更新子页签按钮的 active 状态
-      const subTabs = document.querySelectorAll('.rewards-tab-sub');
-      subTabs.forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.getAttribute('data-tab') === tabName) {
-          tab.classList.add('active');
-        }
-      });
+    function formatDecimal(n, d) {
+      return Number(n).toFixed(d == null ? 2 : d);
+    }
 
-      // 2. 切换表格显示
-      const tables = ['drama', 'actor', 'token'];
-      tables.forEach(name => {
-        const table = document.getElementById('table-' + name);
-        if (table) {
-          table.style.display = (name === tabName) ? '' : 'none';
-        }
-      });
+    function showToast(msg, icon) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      const iconEl = t.querySelector('span');
+      if (icon) iconEl.textContent = icon;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
 
-      // 3. 更新标题和描述
-      const titleMap = {
-        drama: { title: '短剧收益', desc: '只有持有并质押对应短剧 NFT 的创作者，才会展示该剧的收益情况。' },
-        actor: { title: '演员收益', desc: '只有持有并质押演员 NFT 时，才会展示该演员的收益情况。' },
-        token: { title: '代币收益', desc: '只有在短剧中质押 STORY 时，才会展示质押代币的收益情况。' }
+    // ============================================================
+    //  页面初始化
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      updateSummary();
+      renderSources();
+      renderTxs();
+    });
+
+    // ============================================================
+    //  Summary Bar — 每个卡片含义清晰，一看就懂
+    // ============================================================
+    function updateSummary() {
+      const f = USER_FINANCE;
+      const price = f.storyPrice || 0.10;
+      const earnedUsd = f.totalEarned * price;
+      const claimableUsd = f.claimable * price;
+      const netProfit = earnedUsd - f.totalCost;
+
+      document.getElementById('sTotalEarned').textContent = formatNumber(f.totalEarned);
+      document.getElementById('sEarnedUsd').textContent = formatDecimal(earnedUsd);
+      document.getElementById('sClaimable').textContent = formatNumber(f.claimable);
+      document.getElementById('sClaimableUsd').textContent = formatDecimal(claimableUsd);
+      document.getElementById('sTotalCost').textContent = formatDecimal(f.totalCost);
+      document.getElementById('sNetProfit').textContent = formatDecimal(netProfit);
+
+      document.getElementById('sTodayEstimate').textContent = formatNumber(TODAY_ESTIMATE);
+    }
+
+    // ============================================================
+    //  收益来源分布
+    // ============================================================
+    function renderSources() {
+      const list = document.getElementById('sourceList');
+      const total = INCOME_SOURCES.reduce((s, src) => s + src.amount, 0);
+
+      list.innerHTML = INCOME_SOURCES.map(src => {
+        const pct = total > 0 ? ((src.amount / total) * 100).toFixed(1) : 0;
+        return `
+        <div class="source-item">
+          <div class="source-row">
+            <span class="src-name">${src.icon} ${src.name}</span>
+            <span>
+              <span class="src-amount">${formatNumber(src.amount)} STORY</span>
+              <span class="src-pct">${pct}%</span>
+            </span>
+          </div>
+          <div class="source-bar-bg">
+            <div class="source-bar-fill" style="width:${pct}%;background:${src.color};"></div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    // ============================================================
+    //  收益流水
+    // ============================================================
+    function renderTxs() {
+      const tbody = document.getElementById('txBody');
+      const statusMap = {
+        claimed:  { cls: 'tx-status-claimed', label: '✅ 已领取' },
+        pending:  { cls: 'tx-status-pending', label: '⏳ 待领取' },
+        settling: { cls: 'tx-status-settling', label: '⏱ 结算中' },
       };
 
-      const info = titleMap[tabName];
-      document.getElementById('rewards-sub-title').textContent = info.title;
-      document.getElementById('rewards-sub-desc').textContent = info.desc;
+      tbody.innerHTML = RECENT_TXS.map(tx => {
+        const st = statusMap[tx.status] || statusMap.settling;
+        return `
+        <tr>
+          <td style="white-space:nowrap;">${tx.time}</td>
+          <td><span class="tx-tag ${tx.type}">${tx.typeLabel}</span></td>
+          <td style="color:var(--text-muted);font-size:0.88rem;">${tx.detail}</td>
+          <td style="font-weight:700;">${formatDecimal(tx.amount)}</td>
+          <td><span class="${st.cls}">${st.label}</span></td>
+        </tr>`;
+      }).join('');
     }
 
-    /**
-     * 打开铸造分润明细弹窗
-     */
+    // ============================================================
+    //  Tab 切换
+    // ============================================================
+    function switchTab(tabName) {
+      const tabLabels = { overview: '收益总览', mint: '铸造分润', referral: '邀请返佣' };
+      document.querySelectorAll('.quick-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.textContent.includes(tabLabels[tabName])) tab.classList.add('active');
+      });
+      ['overview', 'mint', 'referral'].forEach(name => {
+        const el = document.getElementById('tab-' + name);
+        if (el) el.classList.toggle('active', name === tabName);
+      });
+    }
+
+    function switchTrend(period) {
+      document.querySelectorAll('[data-trend]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.trend === period);
+      });
+      showToast('📊 趋势图数据接入中', '📈');
+    }
+
+    function claimAll() {
+      if (USER_FINANCE.claimable <= 0) {
+        showToast('💸 没有可领取的收益', '🤑');
+        return;
+      }
+      const amount = USER_FINANCE.claimable;
+      showToast('✅ 已领取 ' + formatNumber(amount) + ' STORY 到钱包！', '🤑');
+      USER_FINANCE.claimable = 0;
+      updateSummary();
+    }
+
     function showDetail(actorName, nftId) {
-      const overlay = document.getElementById('detail-modal-overlay');
-      const title = document.getElementById('detail-modal-title');
-      const body = document.getElementById('detail-records-body');
-
-      // 更新标题
-      title.textContent = actorName + ' (' + nftId + ') — 铸造明细';
-
-      // 获取明细数据（模拟）
+      const overlay = document.getElementById('detailModalOverlay');
+      document.getElementById('detailModalTitle').textContent = actorName + ' (' + nftId + ') — 铸造明细';
       const records = mockDetailRecords[nftId] || [];
-
-      // 渲染明细行
+      const body = document.getElementById('detailRecordsBody');
       body.innerHTML = '';
       if (records.length === 0) {
         body.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">暂无明细记录</td></tr>';
       } else {
-        records.forEach(function(record) {
+        records.forEach(function(r) {
           var row = document.createElement('tr');
-          row.innerHTML =
-            '<td><span class="address-tag">' + record.minter + '</span></td>' +
-            '<td>' + record.time + '</td>' +
-            '<td>' + record.quantity + '</td>' +
-            '<td>' + record.amount.toFixed(2) + '</td>';
+          row.innerHTML = '<td><span class="address-tag">' + r.minter + '</span></td><td>' + r.time + '</td><td>' + r.quantity + '</td><td>' + r.amount.toFixed(2) + '</td>';
           body.appendChild(row);
         });
       }
-
-      // 显示弹窗
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
-    /**
-     * 关闭明细弹窗
-     */
     function closeDetail(event) {
-      // 点击遮罩层或关闭按钮才关闭
-      if (event && event.target !== event.currentTarget && !event.target.classList.contains('detail-modal-close')) {
-        return;
-      }
-      document.getElementById('detail-modal-overlay').classList.remove('active');
+      if (event && event.target !== event.currentTarget && !event.target.classList.contains('detail-modal-close')) return;
+      document.getElementById('detailModalOverlay').classList.remove('active');
       document.body.style.overflow = '';
     }
   </script>
-
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-bottom-nav.js"></script>
 </body>
 </html>

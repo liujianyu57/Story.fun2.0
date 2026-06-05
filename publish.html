@@ -181,6 +181,19 @@
     .batch-toolbar .btn-tool.danger:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
     .batch-toolbar .btn-tool:disabled { opacity: 0.4; cursor: not-allowed; }
 
+    /* Video Preview Modal */
+    .video-preview-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: all 0.3s ease; padding: 24px; }
+    .video-preview-overlay.active { opacity: 1; visibility: visible; }
+    .video-preview-overlay .preview-close { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,0.15); color: #fff; font-size: 1.4rem; cursor: pointer; display: grid; place-items: center; transition: background 0.2s; z-index: 10; }
+    .video-preview-overlay .preview-close:hover { background: rgba(255,255,255,0.25); }
+    .video-preview-overlay .preview-container { width: 100%; max-width: 900px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); background: #000; transform: scale(0.9); transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+    .video-preview-overlay.active .preview-container { transform: scale(1); }
+    .video-preview-overlay .preview-container video { width: 100%; display: block; max-height: 80vh; outline: none; }
+    .video-preview-overlay .preview-info { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(0,0,0,0.6); color: #fff; font-size: 0.92rem; }
+    .video-preview-overlay .preview-info .preview-title { font-weight: 600; }
+    .video-preview-overlay .preview-info .preview-close-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 16px; border-radius: 999px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
+    .video-preview-overlay .preview-info .preview-close-btn:hover { background: rgba(255,255,255,0.1); }
+
     /* Sortable dragging */
     .upload-item.dragging { opacity: 0.4; border-color: var(--accent); }
     .upload-item.drag-over-target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
@@ -559,6 +572,18 @@
       </div>
     </div>
   </div>
+
+<!-- Video Preview Modal -->
+<div class="video-preview-overlay" id="videoPreviewOverlay">
+  <button class="preview-close" onclick="batchUpload.closePreview()">✕</button>
+  <div class="preview-container">
+    <video id="previewVideo" controls autoplay playsinline></video>
+    <div class="preview-info">
+      <span class="preview-title" id="previewTitle">播放预览</span>
+      <button class="preview-close-btn" onclick="batchUpload.closePreview()">关闭</button>
+    </div>
+  </div>
+</div>
 
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
@@ -941,6 +966,29 @@ const batchUpload = {
     setTimeout(() => input.remove(), 1000);
   },
 
+  openPreview(id) {
+    const item = this.files.find(f => f.id === id);
+    if (!item || !item.url) {
+      this.showToast('视频尚未准备好，请等待上传完成');
+      return;
+    }
+    const overlay = document.getElementById('videoPreviewOverlay');
+    const video = document.getElementById('previewVideo');
+    const title = document.getElementById('previewTitle');
+    title.textContent = `第 ${item.order} 集：${item.title || item.name}`;
+    video.src = item.url;
+    overlay.classList.add('active');
+  },
+
+  closePreview() {
+    const overlay = document.getElementById('videoPreviewOverlay');
+    const video = document.getElementById('previewVideo');
+    overlay.classList.remove('active');
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+  },
+
   formatSize(bytes) {
     if (bytes === 0) return '0 B';
     const units = ['B', 'KB', 'MB', 'GB'];
@@ -1100,24 +1148,30 @@ const batchUpload = {
       ? `<span class="progress-text">${this.formatSize(item.uploadedBytes || 0)} / ${this.formatSize(item.size)}</span>`
       : '';
 
-    return `<div class="upload-item" data-file-id="${item.id}">
+    const isPlayable = item.status === 'done' && item.url;
+    const playAttr = isPlayable ? ' style="cursor:pointer;" onclick="batchUpload.openPreview(' + item.id + ')"' : '';
+
+    return `<div class="upload-item" data-file-id="${item.id}"${playAttr}>
       <span class="episode-num">${episodeNum}</span>
-      <div class="thumb">${thumbContent}</div>
+      <div class="thumb">
+        ${thumbContent}
+        ${isPlayable ? '<span style="position:absolute;inset:0;display:grid;place-items:center;font-size:1.2rem;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);">▶</span>' : ''}
+      </div>
       <div class="info">
         <div class="name">
-          <span class="title-edit"><input type="text" value="${this.escapeHtml(item.title || item.name)}" placeholder="可选的标题" onchange="batchUpload.setTitle(${item.id}, this.value)" /></span>
+          <span class="title-edit"><input type="text" value="${this.escapeHtml(item.title || item.name)}" placeholder="可选的标题" onclick="event.stopPropagation()" onchange="batchUpload.setTitle(${item.id}, this.value)" /></span>
         </div>
         <div class="meta">
           <span class="file-size">${this.formatSize(item.size)}</span>
           ${item.duration ? `<span class="duration">⏱ ${this.formatDuration(item.duration)}</span>` : ''}
           ${progressText}
-          <span class="status-badge ${statusClass}">${statusText[item.status]}</span>
+          <span class="status-badge ${statusClass}" onclick="event.stopPropagation()">${statusText[item.status]}</span>
         </div>
 
         ${progressHTML}
       </div>
 
-      <div class="item-actions">
+      <div class="item-actions" onclick="event.stopPropagation()">
         ${item.status === 'failed' ? `<button class="btn-icon" title="重试" onclick="batchUpload.retryUpload(${item.id})">↻</button>` : ''}
         <button class="btn-icon" title="替换视频" onclick="batchUpload.replaceFile(${item.id})">🔄</button>
         <button class="btn-icon danger" title="删除" onclick="batchUpload.removeFile(${item.id})">✕</button>
