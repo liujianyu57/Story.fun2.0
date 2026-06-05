@@ -299,6 +299,75 @@
     .info-item.full-width .info-value {
       font-size: 0.95rem;
     }
+    /* Drama description */
+    .drama-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 2px 0 0;
+    }
+    /* Actor avatars in card */
+    .card-actors {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .card-actors-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+    .card-actors-list {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .card-actor-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--surface);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+      position: relative;
+      cursor: default;
+      transition: transform 0.2s;
+    }
+    .card-actor-avatar:hover {
+      transform: scale(1.15);
+      z-index: 2;
+    }
+    .card-actor-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-actor-avatar .actor-tooltip {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.8);
+      background: rgba(26,35,47,0.92);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.65rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+    }
+    .card-actor-avatar:hover .actor-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
     .card-divider {
       height: 1px;
       background: var(--border);
@@ -892,24 +961,23 @@
               <h3>长安如梦</h3>
               <div class="card-sub">
                 <span>30 集</span>
-                <span class="sub-divider"></span>
-                <span>0 个角色</span>
               </div>
               <div class="props-row">
-                <span class="props-pill"><span class="pill-icon">📺</span> 古装 · 爱情</span>
+                <span class="props-pill"><span class="pill-icon">📺</span> 古装</span>
+                <span class="props-pill"><span class="pill-icon">📺</span> 爱情</span>
               </div>
-              <div class="info-grid">
-                <div class="info-item">
-                  <span class="info-label">单价 USDC</span>
-                  <span class="info-value accent">9.8</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">10%</span>
-                </div>
-                <div class="info-item full-width">
-                  <span class="info-label">创作者分润</span>
-                  <span class="info-value accent">70%</span>
+              <div class="drama-desc">一曲长歌诉尽长安繁华梦，宫廷权谋与爱恨纠葛</div>
+              <div class="card-actors">
+                <span class="card-actors-label">参演演员 IP</span>
+                <div class="card-actors-list">
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" />
+                    <span class="actor-tooltip">苏婉清</span>
+                  </div>
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="赵无极" />
+                    <span class="actor-tooltip">赵无极</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -941,20 +1009,25 @@
                 <span>4 个角色</span>
               </div>
               <div class="props-row">
-                <span class="props-pill"><span class="pill-icon">🎭</span> 古装 · 剧情</span>
+                <span class="props-pill"><span class="pill-icon">🎭</span> 古装</span>
+                <span class="props-pill"><span class="pill-icon">🎭</span> 剧情</span>
               </div>
-              <div class="info-grid">
-                <div class="info-item">
-                  <span class="info-label">单价 USDC</span>
-                  <span class="info-value accent">12.5</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">15%</span>
-                </div>
-                <div class="info-item full-width">
-                  <span class="info-label">创作者分润</span>
-                  <span class="info-value accent">70%</span>
+              <div class="drama-desc">烟雨江南中一段凄美爱情故事，茶楼酒肆间的人间百态</div>
+              <div class="card-actors">
+                <span class="card-actors-label">参演演员 IP</span>
+                <div class="card-actors-list">
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" />
+                    <span class="actor-tooltip">苏婉清</span>
+                  </div>
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="林梦瑶" />
+                    <span class="actor-tooltip">林梦瑶</span>
+                  </div>
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="上官婉儿" />
+                    <span class="actor-tooltip">上官婉儿</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -989,20 +1062,21 @@
                 <span>6 个角色</span>
               </div>
               <div class="props-row">
-                <span class="props-pill"><span class="pill-icon">🚀</span> 科幻 · 冒险</span>
+                <span class="props-pill"><span class="pill-icon">🚀</span> 科幻</span>
+                <span class="props-pill"><span class="pill-icon">🚀</span> 冒险</span>
               </div>
-              <div class="info-grid">
-                <div class="info-item">
-                  <span class="info-label">单价 USDC</span>
-                  <span class="info-value accent">8.0</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">10%</span>
-                </div>
-                <div class="info-item full-width">
-                  <span class="info-label">创作者分润</span>
-                  <span class="info-value accent">70%</span>
+              <div class="drama-desc">浩瀚星空中的人类冒险传奇，探索未知的星际文明</div>
+              <div class="card-actors">
+                <span class="card-actors-label">参演演员 IP</span>
+                <div class="card-actors-list">
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="李云飞" />
+                    <span class="actor-tooltip">李云飞</span>
+                  </div>
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="林梦瑶" />
+                    <span class="actor-tooltip">林梦瑶</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1037,20 +1111,21 @@
                 <span>2 个角色</span>
               </div>
               <div class="props-row">
-                <span class="props-pill"><span class="pill-icon">🔍</span> 悬疑 · 推理</span>
+                <span class="props-pill"><span class="pill-icon">🔍</span> 悬疑</span>
+                <span class="props-pill"><span class="pill-icon">🔍</span> 推理</span>
               </div>
-              <div class="info-grid">
-                <div class="info-item">
-                  <span class="info-label">单价 USDC</span>
-                  <span class="info-value accent">6.5</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">批量折扣</span>
-                  <span class="info-value">5%</span>
-                </div>
-                <div class="info-item full-width">
-                  <span class="info-label">创作者分润</span>
-                  <span class="info-value accent">70%</span>
+              <div class="drama-desc">迷雾笼罩的城市中隐藏着惊天秘密，真相扑朔迷离</div>
+              <div class="card-actors">
+                <span class="card-actors-label">参演演员 IP</span>
+                <div class="card-actors-list">
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" />
+                    <span class="actor-tooltip">苏婉清</span>
+                  </div>
+                  <div class="card-actor-avatar">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="李云飞" />
+                    <span class="actor-tooltip">李云飞</span>
+                  </div>
                 </div>
               </div>
             </div>
