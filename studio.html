@@ -640,6 +640,82 @@
     .consume-item .ci-name { font-size:0.85rem; font-weight:600; flex:1; }
     .consume-item .ci-lv { font-size:0.72rem; color:var(--text-muted); }
     .consume-empty { text-align:center; color:var(--text-muted); font-size:0.82rem; padding:16px 0; }
+
+    /* ===== 体力效率状态标签 ===== */
+    .energy-efficiency {
+      display:flex;
+      align-items:center;
+      gap:4px;
+      font-size:0.72rem;
+      font-weight:600;
+      padding:3px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .energy-efficiency.full { background:rgba(0,179,136,0.1); color:var(--accent); }
+    .energy-efficiency.decay { background:rgba(255,159,44,0.12); color:var(--warning); }
+    .energy-efficiency.strike { background:rgba(244,91,105,0.1); color:var(--danger); }
+
+    /* ===== 体力问号 tooltip ===== */
+    .energy-help-wrap {
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+    .energy-help-btn {
+      width:18px;height:18px;border-radius:50%;
+      background:rgba(0,0,0,0.05);border:none;
+      font-size:0.65rem;color:var(--text-muted);
+      cursor:pointer;display:grid;place-items:center;
+      transition:all 0.2s;
+    }
+    .energy-help-btn:hover { background:var(--accent-soft); color:var(--accent); }
+    .energy-help-tip {
+      position:absolute;
+      bottom:calc(100% + 8px);
+      right:-8px;
+      width:260px;
+      padding:14px 16px;
+      border-radius:14px;
+      background:rgba(26,35,47,0.95);
+      backdrop-filter:blur(8px);
+      color:#e8edf4;
+      font-size:0.78rem;
+      line-height:1.7;
+      font-weight:500;
+      box-shadow:0 8px 28px rgba(27,45,71,0.25);
+      opacity:0;
+      visibility:hidden;
+      transition:all 0.2s ease;
+      pointer-events:none;
+      z-index:20;
+      text-align:left;
+    }
+    .energy-help-tip::after {
+      content:'';
+      position:absolute;
+      bottom:-6px;
+      right:12px;
+      width:0;height:0;
+      border-left:6px solid transparent;
+      border-right:6px solid transparent;
+      border-top:6px solid rgba(26,35,47,0.95);
+    }
+    .energy-help-wrap:hover .energy-help-tip {
+      opacity:1;
+      visibility:visible;
+    }
+
+    /* ===== 体力行改进 ===== */
+    .energy-row-ext {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      margin-top:2px;
+    }
   </style>
 </head>
 <body>
@@ -780,11 +856,11 @@
     // ============================================================
     const LEVEL_CONFIG = [
       null,
-      { level: 1, name: '群演',  miningCoeff: 1.0,  costCoeff: 1.0,  energyMax: 100,  color: '#8a9bb5' },
-      { level: 2, name: '配角',  miningCoeff: 2.2,  costCoeff: 2.4,  energyMax: 240,  color: '#5bc0de' },
-      { level: 3, name: '主角',  miningCoeff: 5.0,  costCoeff: 5.8,  energyMax: 580,  color: '#5cb85c' },
-      { level: 4, name: '巨星',  miningCoeff: 11,   costCoeff: 13.5, energyMax: 1350, color: '#f0ad4e' },
-      { level: 5, name: '顶流',  miningCoeff: 24,   costCoeff: 31,   energyMax: 3100, color: '#d9534f' },
+      { level: 1, name: '群演',  miningCoeff: 1.0,  costCoeff: 1.0,  energyMax: 168,  color: '#8a9bb5' },
+      { level: 2, name: '配角',  miningCoeff: 2.2,  costCoeff: 2.4,  energyMax: 168,  color: '#5bc0de' },
+      { level: 3, name: '主角',  miningCoeff: 5.0,  costCoeff: 5.8,  energyMax: 168,  color: '#5cb85c' },
+      { level: 4, name: '巨星',  miningCoeff: 11,   costCoeff: 13.5, energyMax: 168,  color: '#f0ad4e' },
+      { level: 5, name: '顶流',  miningCoeff: 24,   costCoeff: 31,   energyMax: 168,  color: '#d9534f' },
     ];
 
     // ============================================================
@@ -1063,6 +1139,22 @@
                 <div class="energy-bar-fill ${energyState.cls}" style="width:${pct}%;"></div>
               </div>
               <span class="energy-text">${actor.energy}/${actor.energyMax}</span>
+              <div class="energy-help-wrap">
+                <button class="energy-help-btn" onclick="event.stopPropagation();">?</button>
+                <div class="energy-help-tip">
+                  <b>⛽ 体力机制（7挖7休）</b><br>
+                  每挖矿 1 小时消耗 1 点体力。体力 ≥50%（≥84）→ 全功率 1.0× 产出；<br>
+                  体力 <50% → 产出线性衰减至 0；体力 = 0 → 罢工。<br>
+                  满体力可连挖 7 天，休息 7 天自动回满。<br>
+                  可用 USDC 买体力（加班）即时补充。
+                </div>
+              </div>
+            </div>
+            <div class="energy-row-ext">
+              <span class="energy-efficiency ${pct >= 50 ? 'full' : pct > 0 ? 'decay' : 'strike'}">
+                ${pct >= 50 ? '✅ 全功率 1.0×' : pct > 0 ? '⚠️ 衰减 ' + (pct / 50).toFixed(2) + '×' : '❌ 已罢工 0×'}
+              </span>
+              ${actor.energy < actor.energyMax && pct < 50 ? `<button class="card-action-btn charge" style="flex:none;padding:3px 14px;font-size:0.72rem;" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充</button>` : ''}
             </div>
 
             <!-- Mining Stats: 2×2 -->
