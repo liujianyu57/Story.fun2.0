@@ -203,8 +203,50 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
 .ai-ov-opt{padding:8px 12px;border-radius:6px;border:1px solid var(--b);font-size:11px;color:var(--t2);cursor:pointer;background:none;font-family:"DM Mono",monospace;text-align:left;transition:all .15s}
 .ai-ov-opt:hover{border-color:rgba(0,184,184,.4);color:var(--teal);background:rgba(0,184,184,.05)}
 
+/* ═══ VIDEO SIDEBAR ═══ */
+.vs-toggle{position:absolute;top:14px;right:14px;z-index:60;width:40px;height:40px;border-radius:8px;background:var(--ink-800);border:1px solid var(--b);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s;gap:1px}
+.vs-toggle:hover{border-color:rgba(255,170,0,.35)}
+.vs-toggle .vs-t-icon{font-size:14px;line-height:1}
+.vs-count{font-size:8px;color:var(--amber);background:rgba(255,170,0,.15);padding:0 4px;border-radius:3px;line-height:1.4;margin-top:0}
+.video-sidebar{position:fixed;top:0;right:0;z-index:999;width:280px;height:100%;background:var(--ink-800);border-left:1px solid var(--b);transform:translateX(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;overflow:hidden}
+
+.video-sidebar.open{transform:translateX(0)}
+.vs-hd{padding:14px 16px;border-bottom:1px solid var(--bs);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.vs-hd span{font-size:12px;color:var(--t1);display:flex;align-items:center;gap:6px}
+.vs-close{background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;line-height:1}
+.vs-close:hover{color:var(--t1)}
+.vs-body{flex:1;overflow-y:auto;padding:10px 0}
+.vs-section-title{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:0 16px 6px;border-bottom:1px solid var(--bs);margin:0 0 6px}
+.vs-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:background .1s}
+.vs-item:hover{background:rgba(255,255,255,.04)}
+.vs-item-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.vs-item-icon.done{background:rgba(0,184,184,.12);color:var(--teal)}
+.vs-item-icon.pending{background:rgba(255,255,255,.04);color:var(--t3)}
+.vs-item-info{flex:1;min-width:0}
+.vs-item-title{font-size:11px;color:var(--t1);margin-bottom:2px;line-height:1.3}
+.vs-item-meta{font-size:9px;color:var(--t3)}
+.vs-item-arr{font-size:10px;color:var(--t3);opacity:0;transition:opacity .15s}
+.vs-item:hover .vs-item-arr{opacity:1}
+.vs-empty{padding:40px 20px;text-align:center;font-size:11px;color:var(--t3);line-height:1.7}
+
+/* VIDEO PREVIEW MODAL */
+.vp-box{background:var(--ink-800);border:1px solid var(--b);border-radius:14px;width:520px;overflow:hidden}
+.vp-video{width:100%;aspect-ratio:9/16;background:#000;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.vp-play-btn{width:56px;height:56px;border-radius:50%;background:rgba(255,170,0,.9);border:none;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;color:var(--ink-900);transition:transform .15s;box-shadow:0 4px 20px rgba(255,170,0,.3)}
+.vp-play-btn:hover{transform:scale(1.08)}
+.vp-info{padding:16px 20px}
+.vp-info-title{font-family:"EB Garamond",serif;font-style:italic;font-size:18px;color:var(--t1);margin-bottom:4px}
+.vp-info-meta{font-size:10px;color:var(--t3);margin-bottom:12px}
+.vp-info-actions{display:flex;gap:8px}
+.vp-info-actions button{flex:1;padding:9px;border-radius:6px;font-size:11px;cursor:pointer;font-family:"DM Mono",monospace;text-align:center}
+.vp-info-actions .vp-pri{background:var(--amber);color:var(--ink-900);border:none;font-weight:500}
+.vp-info-actions .vp-pri:hover{opacity:.85}
+.vp-info-actions .vp-sec{background:none;border:1px solid var(--b);color:var(--t2)}
+.vp-info-actions .vp-sec:hover{color:var(--t1)}
+
 /* ZOOM CONTROLS */
 .zoom-ctrl{position:absolute;bottom:76px;right:148px;display:flex;align-items:center;gap:6px;z-index:50}
+
 .zoom-btn{width:28px;height:28px;border-radius:5px;background:var(--ink-800);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:var(--t2)}
 .zoom-btn:hover{color:var(--t1)}
 .zoom-lbl{font-size:10px;color:var(--t3);padding:0 4px;min-width:36px;text-align:center}
@@ -548,14 +590,25 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
         <button class="zoom-btn" id="cz-in">+</button>
       </div>
       <div class="minimap"><div class="minimap-vp"></div></div>
+      <!-- VIDEO SIDEBAR toggle (core) -->
+      <div class="vs-toggle" onclick="toggleVideoSidebar()" title="已生成视频">
+        <span class="vs-t-icon">📺</span>
+        <span class="vs-count" id="vs-count">0</span>
+      </div>
     </div>
   </div>
+
   <div class="bottom-bar">
+
+
+
+
     <span class="bb-ctx" id="core-ctx">● 核心资产画布</span>
     <input class="bb-input" id="core-input" placeholder="点击剧本节点，在这里输入故事想法，按 Enter 生成剧本…">
     <button class="bb-send">↑</button>
   </div>
 </div>
+
 
 <!-- ═══ EP CANVAS ═══ -->
 <div id="pg-ep" class="page">
@@ -632,14 +685,21 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
         <button class="zoom-btn" id="ez-in">+</button>
       </div>
       <div class="minimap"><div class="minimap-vp"></div></div>
+      <!-- VIDEO SIDEBAR toggle -->
+      <div class="vs-toggle" onclick="toggleVideoSidebar()" title="已生成视频">
+        <span class="vs-t-icon">📺</span>
+        <span class="vs-count" id="vs-count">0</span>
+      </div>
     </div>
   </div>
   <div class="bottom-bar">
+
     <span class="bb-ctx" id="ep-ctx">● EP 01 · 雨夜初遇</span>
     <input class="bb-input" placeholder="描述想要的镜头，或让 AI 调整分镜风格…">
     <button class="bb-send">↑</button>
   </div>
 </div>
+
 
 <!-- ═══ CHAR MODAL ═══ -->
 <div class="modal-wrap" id="char-modal">
@@ -1337,7 +1397,12 @@ function generateVideo() {
 }
 
 // ── PUBLISH MODAL ──
+var _currentEpForPublish = '';
+
 function openPublishModal() {
+  // Capture current episode name
+  _currentEpForPublish = document.getElementById('ep-bc').textContent.trim();
+
   // If modal doesn't exist yet, create it
   var existing = document.getElementById('publish-modal');
   if (existing) {
@@ -1363,14 +1428,27 @@ function openPublishModal() {
     '    </div>' +
     '  </div>' +
     '  <div style="display:flex;gap:8px">' +
-    '    <button onclick="closePublishModal();showToast(\'📺 已发布到平台\')" style="flex:1;padding:11px;border-radius:7px;background:var(--amber);color:var(--ink-900);border:none;font-size:12px;font-weight:500;cursor:pointer;font-family:\'DM Mono\',monospace">发布到平台</button>' +
-    '    <button onclick="closePublishModal();showToast(\'📄 已保存为草稿\')" style="flex:1;padding:11px;border-radius:7px;background:none;border:1px solid var(--b);color:var(--t2);font-size:12px;cursor:pointer;font-family:\'DM Mono\',monospace">保存草稿</button>' +
+    '    <button onclick="confirmPublish()" style="flex:1;padding:11px;border-radius:7px;background:var(--amber);color:var(--ink-900);border:none;font-size:12px;font-weight:500;cursor:pointer;font-family:\'DM Mono\',monospace">发布到平台</button>' +
+    '    <button onclick="saveAsDraft()" style="flex:1;padding:11px;border-radius:7px;background:none;border:1px solid var(--b);color:var(--t2);font-size:12px;cursor:pointer;font-family:\'DM Mono\',monospace">保存草稿</button>' +
     '  </div>' +
     '</div></div>';
   div.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
   document.body.appendChild(div);
   setTimeout(function() { div.classList.add('show'); }, 50);
 }
+
+function confirmPublish() {
+  closePublishModal();
+  markEpAsGenerated(_currentEpForPublish);
+  showToast('📺 已发布到平台 · 视频已记录');
+}
+
+function saveAsDraft() {
+  closePublishModal();
+  markEpAsGenerated(_currentEpForPublish);
+  showToast('📄 已保存为草稿');
+}
+
 
 function closePublishModal() {
   var m = document.getElementById('publish-modal');
@@ -1428,7 +1506,163 @@ function generateChar() {
   showToast('✅ 角色「' + name + '」已生成');
 }
 
+// ═══ VIDEO SIDEBAR ═══
+function getProjectName() {
+  var el = document.getElementById('core-proj-name');
+  return el ? el.textContent.trim() : '默认项目';
+}
+
+function getVideoStorage() {
+  try {
+    var s = localStorage.getItem('dramaos_videos');
+    return s ? JSON.parse(s) : {};
+  } catch(e) { return {}; }
+}
+
+function saveVideoStorage(data) {
+  try { localStorage.setItem('dramaos_videos', JSON.stringify(data)); } catch(e) {}
+}
+
+function markEpAsGenerated(epName) {
+  var proj = getProjectName();
+  var data = getVideoStorage();
+  if (!data[proj]) data[proj] = {};
+  data[proj][epName] = { generated: true, time: new Date().toISOString() };
+  saveVideoStorage(data);
+  refreshVideoSidebar();
+}
+
+function refreshVideoSidebar() {
+  var proj = getProjectName();
+  var data = getVideoStorage();
+  var projVideos = data[proj] || {};
+  var body = document.getElementById('vs-body');
+  if (!body) return;
+
+  // Update count badge
+  var countEl = document.getElementById('vs-count');
+  var total = Object.keys(projVideos).length;
+  if (countEl) countEl.textContent = total;
+
+  // Build list
+  var html = '';
+
+  // Done episodes
+  var doneEps = Object.keys(projVideos).sort();
+  if (doneEps.length > 0) {
+    html += '<div style="padding:0 16px 4px"><div class="vs-section-title">已完成</div></div>';
+    doneEps.forEach(function(ep) {
+      var info = projVideos[ep];
+      var timeStr = '';
+      if (info.time) {
+        var d = new Date(info.time);
+        timeStr = d.toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      }
+      html += '<div class="vs-item" onclick="openVideoPreview(\'' + ep.replace(/'/g, "\\'") + '\')">' +
+        '<div class="vs-item-icon done">▶</div>' +
+        '<div class="vs-item-info"><div class="vs-item-title">' + ep + '</div><div class="vs-item-meta">' + timeStr + '</div></div>' +
+        '<span class="vs-item-arr">→</span></div>';
+    });
+  }
+
+  // Pending episodes (from the script node ep list)
+  var allEps = [];
+  var epRows = document.querySelectorAll('#s3 .ep-list-row');
+  epRows.forEach(function(row) {
+    var numEl = row.querySelector('.ep-row-num');
+    var titleEl = row.querySelector('.ep-row-title');
+    if (numEl && titleEl) {
+      allEps.push(numEl.textContent.trim() + ' · ' + titleEl.textContent.trim());
+    }
+  });
+
+  if (allEps.length > 0) {
+    var pendingEps = allEps.filter(function(ep) { return !projVideos[ep]; });
+    if (pendingEps.length > 0) {
+      html += '<div style="padding:0 16px 4px;margin-top:8px"><div class="vs-section-title">未生成</div></div>';
+      pendingEps.forEach(function(ep) {
+        html += '<div class="vs-item" onclick="navigateToEp(\'' + ep.replace(/'/g, "\\'") + '\')">' +
+          '<div class="vs-item-icon pending">○</div>' +
+          '<div class="vs-item-info"><div class="vs-item-title" style="color:var(--t3)">' + ep + '</div><div class="vs-item-meta">尚未生成</div></div>' +
+          '<span class="vs-item-arr">→</span></div>';
+      });
+    }
+  }
+
+  if (!html) {
+    html = '<div class="vs-empty">📺 还没有生成视频<br>在分镜画布中点击「✦ 生成视频」即可</div>';
+  }
+
+  body.innerHTML = html;
+}
+
+// ═══ TOGGLE SIDEBAR ═══
+function toggleVideoSidebar() {
+  var sb = document.getElementById('video-sidebar');
+  sb.classList.toggle('open');
+  if (sb.classList.contains('open')) {
+    refreshVideoSidebar();
+  }
+}
+
+// ═══ OPEN VIDEO PREVIEW ═══
+function openVideoPreview(epName) {
+  // Create or show video preview modal
+  var existing = document.getElementById('video-preview-modal');
+  if (existing) {
+    existing.classList.add('show');
+    var titleEl = existing.querySelector('.vp-info-title');
+    if (titleEl) titleEl.textContent = epName;
+    return;
+  }
+
+  var div = document.createElement('div');
+  div.id = 'video-preview-modal';
+  div.className = 'modal-wrap';
+  div.innerHTML = '<div class="vp-box">' +
+    '<div class="modal-hd"><span class="modal-hd-title">🎬 预览</span><button class="modal-close" onclick="closeVideoPreview()">×</button></div>' +
+    '<div class="vp-video">' +
+    '  <button class="vp-play-btn" onclick="this.innerHTML=\'⏸\'">▶</button>' +
+    '</div>' +
+    '<div class="vp-info">' +
+    '  <div class="vp-info-title" id="vp-title">' + epName + '</div>' +
+    '  <div class="vp-info-meta">2026 · 竖屏短剧 · 已生成</div>' +
+    '  <div class="vp-info-actions">' +
+    '    <button class="vp-pri">✦ 发布到平台</button>' +
+    '    <button class="vp-sec">重新生成</button>' +
+    '  </div>' +
+    '</div></div>';
+  div.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
+  document.body.appendChild(div);
+  setTimeout(function() { div.classList.add('show'); }, 50);
+}
+
+function closeVideoPreview() {
+  var m = document.getElementById('video-preview-modal');
+  if (m) m.classList.remove('show');
+}
+
+// ═══ NAVIGATE TO EP ═══
+function navigateToEp(epName) {
+  // Try to find matching ep row and click it
+  var epRows = document.querySelectorAll('#s3 .ep-list-row');
+  epRows.forEach(function(row) {
+    var numEl = row.querySelector('.ep-row-num');
+    var titleEl = row.querySelector('.ep-row-title');
+    if (numEl && titleEl) {
+      var full = numEl.textContent.trim() + ' · ' + titleEl.textContent.trim();
+      if (full === epName) {
+        row.click();
+        // Close sidebar
+        var sb = document.getElementById('video-sidebar');
+        if (sb) sb.classList.remove('open');
+      }
+    }
+  });
+}
+
 function deleteChar() {
+
   if (_editingCharNodeId) {
     var node = document.getElementById(_editingCharNodeId);
     if (node) node.remove();
@@ -1459,6 +1693,15 @@ function showToast(msg) {
 
 </script>
 
+<!-- ═══ GLOBAL VIDEO SIDEBAR PANEL ═══ -->
+<div class="video-sidebar" id="video-sidebar">
+  <div class="vs-hd">
+    <span>📺 已生成视频</span>
+    <button class="vs-close" onclick="toggleVideoSidebar()">×</button>
+  </div>
+  <div class="vs-body" id="vs-body"></div>
+</div>
 
 </body>
+
 </html>
