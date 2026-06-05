@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Story.fun | 创作</title>
   <style>
-    :root { --bg: #f7fbff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.16); --text: #1a232f; --text-muted: #657586; --border: #e6eff7; --shadow: 0 20px 45px rgba(27, 45, 71, 0.08); font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
+    :root { --bg: #f7fbff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.16); --text: #1a232f; --text-muted: #657586; --danger: #f45b69; --border: #e6eff7; --shadow: 0 20px 45px rgba(27, 45, 71, 0.08); font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
@@ -689,6 +689,36 @@
     }
     .actor-card .actor-body .actor-field.full-width .field-value {
       font-size: 0.85rem;
+    }
+    /* Face upload status line on actor cards */
+    .actor-face-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #f7fbff;
+      border: 1px solid #eaf1f9;
+      margin-top: 4px;
+    }
+    .actor-face-status .face-icon {
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .actor-face-status .face-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      flex: 1;
+    }
+    .actor-face-status .face-text.ok {
+      color: var(--accent);
+    }
+    .actor-face-status .face-text.warn {
+      color: #f59e0b;
+    }
+    .actor-face-status .face-text.fail {
+      color: var(--danger);
     }
     .actor-card .actor-divider {
       height: 1px;
@@ -1415,22 +1445,23 @@
                   <span class="field-value">10 USDC</span>
                 </div>
                 <div class="actor-field">
-                  <span class="field-label">创作者保留</span>
-                  <span class="field-value">1,000</span>
+                  <span class="field-label">NFT发行总量</span>
+                  <span class="field-value">10,000</span>
                 </div>
                 <div class="actor-field full-width">
-                  <span class="field-label">可Mint数量</span>
-                  <span class="field-value">9,000</span>
+                  <span class="field-label">最低持有门槛</span>
+                  <span class="field-value">≥ 1 个</span>
                 </div>
+              </div>
+              <div class="actor-face-status">
+                <span class="face-icon">📸</span>
+                <span class="face-text ok">面部照片 5/5 · 检测通过</span>
               </div>
             </div>
             <div class="actor-divider"></div>
             <div class="actor-footer">
-              <button class="button" onclick="openActorMintModal('苏婉清', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1000)">
+              <button class="button" onclick="openActorMintModal('苏婉清', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1)">
                 <span class="btn-icon">🎭</span> 铸造NFT
-              </button>
-              <button class="button" style="background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-actor.html?name=' + encodeURIComponent('苏婉清')">
-                <span class="btn-icon">✏️</span> 编辑
               </button>
             </div>
           </div>
@@ -1455,13 +1486,17 @@
                   <span class="field-value">8 USDC</span>
                 </div>
                 <div class="actor-field">
-                  <span class="field-label">创作者保留</span>
-                  <span class="field-value">500</span>
+                  <span class="field-label">NFT发行总量</span>
+                  <span class="field-value">8,000</span>
                 </div>
                 <div class="actor-field full-width">
-                  <span class="field-label">可Mint数量</span>
-                  <span class="field-value">7,500</span>
+                  <span class="field-label">最低持有门槛</span>
+                  <span class="field-value">≥ 1 个</span>
                 </div>
+              </div>
+              <div class="actor-face-status">
+                <span class="face-icon">📸</span>
+                <span class="face-text warn">面部照片 3/5 · 请继续上传</span>
               </div>
             </div>
             <div class="actor-divider"></div>
@@ -1492,22 +1527,23 @@
                   <span class="field-value">10 USDC</span>
                 </div>
                 <div class="actor-field">
-                  <span class="field-label">创作者保留</span>
-                  <span class="field-value">1,000</span>
+                  <span class="field-label">NFT发行总量</span>
+                  <span class="field-value">10,000</span>
                 </div>
                 <div class="actor-field full-width">
-                  <span class="field-label">可Mint数量</span>
-                  <span class="field-value">9,000</span>
+                  <span class="field-label">最低持有门槛</span>
+                  <span class="field-value">≥ 1 个</span>
                 </div>
+              </div>
+              <div class="actor-face-status">
+                <span class="face-icon">📸</span>
+                <span class="face-text ok">面部照片 5/5 · 检测通过</span>
               </div>
             </div>
             <div class="actor-divider"></div>
             <div class="actor-footer">
-              <button class="button" onclick="openActorMintModal('林梦瑶', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1000)">
+              <button class="button" onclick="openActorMintModal('林梦瑶', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1)">
                 <span class="btn-icon">🎭</span> 铸造NFT
-              </button>
-              <button class="button" style="background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-actor.html?name=' + encodeURIComponent('林梦瑶')">
-                <span class="btn-icon">✏️</span> 编辑
               </button>
             </div>
           </div>
@@ -1533,13 +1569,17 @@
                   <span class="field-value">15 USDC</span>
                 </div>
                 <div class="actor-field">
-                  <span class="field-label">创作者保留</span>
-                  <span class="field-value">500</span>
+                  <span class="field-label">NFT发行总量</span>
+                  <span class="field-value">6,000</span>
                 </div>
                 <div class="actor-field full-width">
-                  <span class="field-label">可Mint数量</span>
-                  <span class="field-value">5,500</span>
+                  <span class="field-label">最低持有门槛</span>
+                  <span class="field-value">≥ 1 个</span>
                 </div>
+              </div>
+              <div class="actor-face-status">
+                <span class="face-icon">📸</span>
+                <span class="face-text fail">面部照片 2/5 · 检测未通过</span>
               </div>
             </div>
             <div class="actor-divider"></div>
@@ -1578,6 +1618,8 @@
                 <span>ERC-1155</span>
                 <span class="sub-divider"></span>
                 <span>发行中</span>
+                <span class="sub-divider"></span>
+                <span style="color:var(--accent);font-weight:600;">最低持有 ≥ 1</span>
               </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
@@ -1642,6 +1684,8 @@
                 <span>ERC-1155</span>
                 <span class="sub-divider"></span>
                 <span>发行中</span>
+                <span class="sub-divider"></span>
+                <span style="color:var(--accent);font-weight:600;">最低持有 ≥ 1</span>
               </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
@@ -1706,6 +1750,8 @@
                 <span>ERC-1155</span>
                 <span class="sub-divider"></span>
                 <span>发行中</span>
+                <span class="sub-divider"></span>
+                <span style="color:var(--accent);font-weight:600;">最低持有 ≥ 1</span>
               </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
@@ -1771,6 +1817,8 @@
                 <span>ERC-1155</span>
                 <span class="sub-divider"></span>
                 <span>发行中</span>
+                <span class="sub-divider"></span>
+                <span style="color:var(--accent);font-weight:600;">最低持有 ≥ 1</span>
               </div>
               <div class="actor-nft-stats">
                 <div class="actor-nft-stat">
