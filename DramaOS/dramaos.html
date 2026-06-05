@@ -1564,7 +1564,9 @@ function refreshVideoSidebar() {
         '<div class="vs-item-info" onclick="navigateToEp(\'' + ep.replace(/'/g, "\\'") + '\')" style="cursor:pointer">' +
           '<div class="vs-item-title">' + ep + '</div><div class="vs-item-meta">' + timeStr + '</div></div>' +
         (info.published ? '<span style="font-size:8px;padding:1px 6px;border-radius:3px;background:rgba(0,184,184,.12);color:var(--teal)">已发布</span>' : '<span style="font-size:8px;padding:1px 6px;border-radius:3px;background:rgba(255,170,0,.08);color:var(--t3)">待发布</span>') +
+        '<button onclick="event.stopPropagation();downloadSingleVideo(\'' + ep.replace(/'/g, "\\'") + '\')" style="flex-shrink:0;margin-left:4px;width:26px;height:26px;border-radius:5px;background:rgba(255,255,255,.04);border:1px solid var(--bs);color:var(--t3);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s" onmouseover="this.style.color=\'var(--amber)\';this.style.borderColor=\'rgba(255,170,0,.3)\'" onmouseout="this.style.color=\'var(--t3)\';this.style.borderColor=\'var(--bs)\'" title="下载视频">↓</button>' +
         '</div>';
+
 
 
 
@@ -1645,6 +1647,50 @@ function closeVideoPreview() {
   var m = document.getElementById('video-preview-modal');
   if (m) m.classList.remove('show');
 }
+
+// ═══ DOWNLOAD FUNCTIONS ═══
+function downloadSingleVideo(epName) {
+  // 模拟下载：创建一个虚拟的 Blob 下载
+  showToast('⏬ 正在准备下载「' + epName + '」...');
+  setTimeout(function() {
+    simulateDownload(epName, 'mp4');
+  }, 800);
+}
+
+function downloadAllVideos() {
+  var data = getVideoStorage();
+  var proj = getProjectName();
+  var projVideos = data[proj] || {};
+  var doneEps = Object.keys(projVideos).sort();
+  if (doneEps.length === 0) {
+    showToast('暂无已生成的视频可下载');
+    return;
+  }
+  showToast('⏬ 正在打包 ' + doneEps.length + ' 个视频...');
+  doneEps.forEach(function(ep, i) {
+    setTimeout(function() {
+      simulateDownload(ep, 'mp4');
+    }, i * 1000);
+  });
+  setTimeout(function() {
+    showToast('✅ 已开始下载全部 ' + doneEps.length + ' 个视频');
+  }, doneEps.length * 1000 + 200);
+}
+
+function simulateDownload(name, ext) {
+  // 创建一个模拟的文本文件作为下载（真实场景会替换为实际视频 URL）
+  var content = 'DramaOS 视频下载占位\n项目：' + getProjectName() + '\n集数：' + name + '\n格式：' + ext + '\n时间：' + new Date().toISOString() + '\n\n（实际部署时此文件会被真实视频文件替代）';
+  var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = getProjectName() + '-' + name.replace(/[·\s]+/g, '-') + '.' + ext;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 
 // ═══ PUBLISH TO Story.fun (整剧发布) ═══
 function openPublishWholeDrama() {
@@ -1888,6 +1934,10 @@ function showToast(msg) {
   </div>
 
   <div class="vs-body" id="vs-body"></div>
+  <div style="padding:10px 14px 14px;border-top:1px solid var(--bs);flex-shrink:0">
+    <button onclick="downloadAllVideos()" style="width:100%;padding:10px 0;border-radius:7px;background:none;border:1px solid var(--b);color:var(--t2);font-size:11px;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px" onmouseover="this.style.borderColor='rgba(255,170,0,.3)';this.style.color='var(--amber)'" onmouseout="this.style.borderColor='var(--b)';this.style.color='var(--t2)'">⏬ 下载全部视频</button>
+  </div>
+
 </div>
 
 
