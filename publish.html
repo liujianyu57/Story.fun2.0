@@ -329,11 +329,6 @@
         <span class="step-circle">3</span>
         <span class="step-label">角色管理</span>
       </div>
-      <span style="color:#deeaf7;font-size:1.2rem;">›</span>
-      <div class="step-item">
-        <span class="step-circle">4</span>
-        <span class="step-label">定价 & 收益</span>
-      </div>
     </div>
 
     <!-- Step 1: 基本信息 -->
@@ -459,7 +454,7 @@
         </div>
         <div style="display:flex;gap:10px;">
           <button class="button-ghost" onclick="goToStep(2)">← 上一步</button>
-          <button class="button" onclick="goToStep(4)">下一步 →</button>
+          <button class="button" style="padding:12px 36px;" onclick="submitForReview()">提交审核</button>
         </div>
       </div>
     </div>
@@ -498,79 +493,6 @@
     </div>
 
 
-    <!-- Step 4: 定价 & 收益 - Figma Style -->
-    <div class="form-panel" id="step4" style="display:none;">
-      <div class="form-panel-header">
-        <h3>💰 定价 & 收益</h3>
-        <p>设定短剧的定价与收益分成。</p>
-      </div>
-      <div class="form-panel-body">
-        <div class="pricing-panel">
-          <!-- Hint -->
-          <div class="pricing-subtitle">
-            单集解锁 / 批量优惠解锁，观众可自由选择
-          </div>
-
-          <!-- 单集解锁 -->
-          <div class="pricing-section">
-            <div class="pricing-section-title">单集解锁</div>
-            <div class="pricing-row">
-              <div class="pricing-field" style="max-width:240px;">
-                <label>单集定价</label>
-                <div class="input-wrap">
-                  <input type="number" placeholder="9.8" step="0.1" min="0" />
-                  <span class="unit">USDC</span>
-                </div>
-              </div>
-              <div class="pricing-field" style="max-width:240px;">
-                <label>免费集数</label>
-                <div class="input-wrap">
-                  <input type="number" placeholder="1" step="1" min="1" />
-                  <span class="unit">集</span>
-                </div>
-              </div>
-            </div>
-            <div class="pricing-hint">观众可直接按单集付费解锁内容。设置免费集数可吸引用户试看。</div>
-          </div>
-
-          <!-- 批量解锁 -->
-          <div class="pricing-section">
-            <div class="pricing-section-title">批量解锁（设置优惠）</div>
-            <div class="pricing-row">
-              <div class="pricing-field" style="max-width:240px;">
-                <label>设置优惠</label>
-                <div class="input-wrap">
-                  <input type="number" placeholder="20" min="0" max="100" style="max-width:200px;" />
-                  <span class="unit">% OFF（优惠）</span>
-                </div>
-              </div>
-            </div>
-            <div class="pricing-hint">例如设置 20%，观众批量解锁全部剧集时享受 20% 优惠，按单集总价计算后减免。</div>
-          </div>
-
-          <!-- 收益分成预览 -->
-          <div class="pricing-section">
-            <div class="pricing-section-title">收益分成预览</div>
-            <div class="revenue-preview">
-              <div class="revenue-header">
-                <span class="label">创作者收入</span>
-                <span class="value">70%</span>
-              </div>
-              <div class="revenue-note">平台协议费将用于生态销毁与激励池，具体比例可参考官方文档。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-panel-footer">
-        <div style="display:flex;gap:10px;">
-          <button class="button-outline">💾 保存草稿</button>
-        </div>
-        <div style="display:flex;gap:10px;">
-          <button class="button-ghost" onclick="goToStep(3)">← 上一步</button>
-          <button class="button" style="padding:12px 36px;" onclick="submitForReview()">提交审核</button>
-        </div>
-      </div>
-    </div>
   </div>
 
 <!-- Video Preview Modal -->
@@ -614,7 +536,7 @@ function submitForReview() {
  * Step Navigation
  */
 function goToStep(num) {
-  const steps = ['step1','step2','step3','step4'];
+  const steps = ['step1','step2','step3'];
   const stepItems = document.querySelectorAll('.step-item');
   steps.forEach((id, i) => {
     document.getElementById(id).style.display = i + 1 === num ? 'block' : 'none';
