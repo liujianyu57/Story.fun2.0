@@ -1668,9 +1668,17 @@ function openPublishToStoryFun(showName) {
     '  <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:12px">📋 基本信息</div>' +
     '  <div class="form-group"><label style="font-size:10px;color:var(--t2);margin-bottom:4px;display:block">短剧名称</label>' +
     '    <input class="form-input" id="psf-name" value="' + safeName + '" style="margin-bottom:12px"></div>' +
+    '  <div class="form-group"><label style="font-size:10px;color:var(--t2);margin-bottom:4px;display:block">封面图</label>' +
+    '    <div id="psf-cover-zone" onclick="document.getElementById(\'psf-cover-input\').click()" style="border:2px dashed var(--bs);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:12px;background:rgba(255,255,255,.02)" onmouseover="this.style.borderColor=\'rgba(255,170,0,.4)\';this.style.background=\'rgba(255,170,0,.04)\'" onmouseout="this.style.borderColor=\'var(--bs)\';this.style.background=\'rgba(255,255,255,.02)\'">' +
+    '      <div style="font-size:28px;margin-bottom:6px;color:var(--t3)">🖼️</div>' +
+    '      <div style="font-size:10px;color:var(--t3);line-height:1.6">点击上传封面图<br><strong style="color:var(--t2)">支持 JPG、PNG，建议比例 6:5</strong></div>' +
+    '    </div>' +
+    '    <input type="file" id="psf-cover-input" accept="image/png,image/jpeg" style="display:none" onchange="handlePublishCoverUpload(this)">' +
+    '  </div>' +
     '  <div class="form-group"><label style="font-size:10px;color:var(--t2);margin-bottom:4px;display:block">短剧简介</label>' +
     '    <textarea class="form-input" id="psf-desc" rows="3" style="resize:none;margin-bottom:12px;line-height:1.6" placeholder="描述短剧的核心剧情、风格特色与亮点……"></textarea></div>' +
     '  <div class="form-group"><label style="font-size:10px;color:var(--t2);margin-bottom:4px;display:block">标签</label>' +
+
     '    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">' +
     '      <span class="tag-chip" data-tag="AI 生成">AI 生成</span>' +
     '      <span class="tag-chip" data-tag="原创剧本">原创剧本</span>' +
@@ -1719,10 +1727,33 @@ function openPublishToStoryFun(showName) {
   }, 50);
 }
 
+// ═══ PUBLISH COVER UPLOAD ═══
+function handlePublishCoverUpload(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  if (!file.type.startsWith('image/')) {
+    showToast('请选择图片文件');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var zone = document.getElementById('psf-cover-zone');
+    if (zone) {
+      zone.innerHTML = '<img src="' + e.target.result + '" style="width:100%;max-height:160px;object-fit:cover;border-radius:8px;display:block">';
+      zone.style.border = '2px solid var(--amber)';
+      zone.style.padding = '4px';
+      zone.dataset.cover = e.target.result;
+    }
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
 function closePublishToStoryFun() {
   var m = document.getElementById('publish-storyfun-modal');
   if (m) m.classList.remove('show');
 }
+
 
 function confirmPublishWholeDrama() {
   var name = document.getElementById('psf-name').value.trim() || getProjectName();
@@ -1730,6 +1761,8 @@ function confirmPublishWholeDrama() {
   var price = document.getElementById('psf-price').value || '9.8';
   var free = document.getElementById('psf-free').value || '1';
   var discount = document.getElementById('psf-discount').value || '20';
+  var coverEl = document.getElementById('psf-cover-zone');
+  var cover = coverEl && coverEl.dataset.cover ? coverEl.dataset.cover : '';
 
   var proj = getProjectName();
   var data = getVideoStorage();
@@ -1750,14 +1783,46 @@ function confirmPublishWholeDrama() {
     desc: desc,
     price: price,
     free: free,
-    discount: discount
+    discount: discount,
+    cover: cover
   };
   saveVideoStorage(data);
 
   closePublishToStoryFun();
   refreshVideoSidebar();
-  showToast('🚀 整剧已发布到 Story.fun · 等待审核');
+  showPublishSuccessModal(name);
 }
+
+// ═══ PUBLISH SUCCESS MODAL ═══
+function showPublishSuccessModal(dramaName) {
+  var existing = document.getElementById('publish-success-modal');
+  if (existing) existing.remove();
+
+  var div = document.createElement('div');
+  div.id = 'publish-success-modal';
+  div.className = 'modal-wrap';
+  div.innerHTML = '<div style="background:var(--ink-800);border:1px solid var(--b);border-radius:14px;width:380px;overflow:hidden">' +
+    '<div class="modal-hd"><span class="modal-hd-title">🚀 提交发布成功</span><button class="modal-close" onclick="closePublishSuccessModal()">×</button></div>' +
+    '<div class="modal-body" style="text-align:center;padding:32px 24px">' +
+    '  <div style="font-size:48px;margin-bottom:16px">✅</div>' +
+    '  <div style="font-family:\'EB Garamond\',serif;font-style:italic;font-size:20px;color:var(--t1);margin-bottom:8px">发布成功</div>' +
+    '  <div style="font-size:11px;color:var(--t2);line-height:1.7;margin-bottom:20px">「' + dramaName + '」已提交至 Story.fun<br>平台审核通过后将正式上线</div>' +
+    '  <div style="display:flex;flex-direction:column;gap:8px">' +
+    '    <button onclick="window.open(\'../narrator.html\',\'_blank\');closePublishSuccessModal()" style="width:100%;padding:12px;border-radius:8px;background:var(--amber);color:var(--ink-900);border:none;font-size:12px;font-weight:500;cursor:pointer;font-family:\'DM Mono\',monospace">去 Story.fun 查看 →</button>' +
+
+    '    <button onclick="closePublishSuccessModal()" style="width:100%;padding:10px;border-radius:8px;background:none;border:1px solid var(--b);color:var(--t2);font-size:11px;cursor:pointer;font-family:\'DM Mono\',monospace">留在 DramaOS</button>' +
+    '  </div>' +
+    '</div></div>';
+  div.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
+  document.body.appendChild(div);
+  setTimeout(function() { div.classList.add('show'); }, 50);
+}
+
+function closePublishSuccessModal() {
+  var m = document.getElementById('publish-success-modal');
+  if (m) m.classList.remove('show');
+}
+
 
 
 
