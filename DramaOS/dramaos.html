@@ -724,10 +724,16 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
         <div id="char-nft-list" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;min-height:48px">
           <!-- 由 JS 动态渲染 -->
         </div>
+        <div style="margin-top:6px">
+          <button id="btn-clear-nft" onclick="clearActorNftSelection()" style="font-size:10px;padding:4px 12px;border-radius:5px;background:none;border:1px solid var(--bs);color:var(--t3);cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s;display:none" onmouseover="this.style.borderColor='rgba(255,92,92,.4)';this.style.color='#FF5C5C'" onmouseout="this.style.borderColor='var(--bs)';this.style.color='var(--t3)'">✕ 不使用演员 NFT，手动输入</button>
+        </div>
       </div>
       <div style="border-top:1px solid var(--bs)"></div>
       <div><div class="form-label">NAME 角色名</div><input class="form-input" type="text" id="char-name-input" placeholder="陈一鸣" style="margin-bottom:0"></div>
       <div>
+        <div id="lora-prompt-hint" style="display:none;font-size:10px;color:var(--teal);margin-bottom:6px;padding:6px 10px;background:rgba(0,184,184,.06);border:1px solid rgba(0,184,184,.2);border-radius:5px;line-height:1.5">
+          🧬 LoRA 触发词已自动注入，最终生成 Prompt 将以此锁定面容
+        </div>
         <div class="form-label">PROMPT 外形描述</div>
         <textarea class="form-input" id="char-desc-input" rows="4" placeholder="用自然语言描述角色外貌和气质。例如：25岁男性，外卖员，冷白皮，丹凤眼，身高183，略显疲惫的眼神。" style="resize:none;line-height:1.7;margin-bottom:0"></textarea>
         <div style="font-size:11px;color:var(--t3);margin-top:4px">描述越具体，生成结果越接近预期</div>
@@ -747,7 +753,9 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
         </div>
         <div style="font-size:11px;color:var(--t3)">上传参考图可减少重新生成次数</div>
       </div>
-      <div class="lora-note"><span style="flex-shrink:0">ⓘ</span><div>生成后可训练专属 <strong style="color:var(--t1)">LoRA 模型</strong>，让这个角色在所有集数中保持面部一致。参考图越多，训练效果越好。</div></div>
+      <div class="lora-note" id="lora-status-area" style="display:none"><span style="flex-shrink:0">🧬</span><div id="lora-status-text">LoRA 面部一致性模型已就绪</div></div>
+      <div class="lora-note" id="lora-info-area" style="display:none"><span style="flex-shrink:0">ⓘ</span><div id="lora-info-text"></div></div>
+      <div class="lora-note" id="lora-train-hint"><span style="flex-shrink:0">ⓘ</span><div>生成后可训练专属 <strong style="color:var(--t1)">LoRA 模型</strong>，让这个角色在所有集数中保持面部一致。参考图越多，训练效果越好。</div></div>
     </div>
     <div class="char-modal-ft">
       <button onclick="deleteChar()" style="background:none;border:none;font-size:12px;color:var(--t3);cursor:pointer;font-family:'DM Mono',monospace;text-decoration:underline">删除角色</button>
@@ -1060,19 +1068,19 @@ document.querySelectorAll('.modal-wrap').forEach(function(m) {
 });
 // ── Actor NFT Database (for char modal quick-fill) ──
 const ACTOR_NFT_DB = {
-  'Luna': { image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。' },
-  '苏婉清': { image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。' },
-  '李云飞': { image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。' },
-  '林梦瑶': { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。' },
-  '赵无极': { image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。' },
-  '上官婉儿': { image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。' },
-  '叶倾城': { image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80', description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。' },
-  '慕容云': { image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80', description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。' },
-  '花木兰': { image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80', description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。' },
-  '东方朔': { image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。' },
-  '柳如是': { image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80', description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。' },
-  '萧景琰': { image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80', description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。' },
-  '江小鱼': { image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80', description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。' }
+      'Luna': { image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。', face_lora_cid: 'ipfs://QmXa...luna_lora.safetensors', face_lora_trigger: 'luna_face', face_samples: 5, face_verified: true },
+      '苏婉清': { image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。', face_lora_cid: 'ipfs://QmYb...swq_lora.safetensors', face_lora_trigger: 'swq_face', face_samples: 5, face_verified: true },
+      '李云飞': { image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。', face_lora_cid: 'ipfs://QmZc...lyf_lora.safetensors', face_lora_trigger: 'lyf_face', face_samples: 4, face_verified: true },
+      '林梦瑶': { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。', face_lora_cid: 'ipfs://QmAd...lmy_lora.safetensors', face_lora_trigger: 'lmy_face', face_samples: 3, face_verified: true },
+      '赵无极': { image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。', face_lora_cid: 'ipfs://QmBe...zwj_lora.safetensors', face_lora_trigger: 'zwj_face', face_samples: 4, face_verified: true },
+      '上官婉儿': { image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。', face_lora_cid: 'ipfs://QmCf...sgw_lora.safetensors', face_lora_trigger: 'sgw_face', face_samples: 5, face_verified: true },
+      '叶倾城': { image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80', description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。', face_lora_cid: 'ipfs://QmDg...yqc_lora.safetensors', face_lora_trigger: 'yqc_face', face_samples: 3, face_verified: true },
+      '慕容云': { image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80', description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。', face_lora_cid: 'ipfs://QmEh...mry_lora.safetensors', face_lora_trigger: 'mry_face', face_samples: 4, face_verified: true },
+      '花木兰': { image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80', description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。', face_lora_cid: 'ipfs://QmFi...hml_lora.safetensors', face_lora_trigger: 'hml_face', face_samples: 5, face_verified: true },
+      '东方朔': { image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。', face_lora_cid: 'ipfs://QmGj...dfs_lora.safetensors', face_lora_trigger: 'dfs_face', face_samples: 4, face_verified: true },
+      '柳如是': { image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80', description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。', face_lora_cid: 'ipfs://QmHk...lrs_lora.safetensors', face_lora_trigger: 'lrs_face', face_samples: 5, face_verified: true },
+      '萧景琰': { image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80', description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。', face_lora_cid: 'ipfs://QmIl...xjy_lora.safetensors', face_lora_trigger: 'xjy_face', face_samples: 3, face_verified: true },
+      '江小鱼': { image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80', description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。', face_lora_cid: 'ipfs://QmJm...jxy_lora.safetensors', face_lora_trigger: 'jxy_face', face_samples: 4, face_verified: true }
 };
 
 function openCharModal() {
@@ -1107,6 +1115,10 @@ function selectActorNft(name) {
   var actor = ACTOR_NFT_DB[name];
   if (!actor) return;
   _selectedActorNft = name;
+  // 显示"不使用演员 NFT"按钮
+  document.getElementById('btn-clear-nft').style.display = '';
+  // 显示 LoRA 提示
+  document.getElementById('lora-prompt-hint').style.display = 'block';
   document.getElementById('char-name-input').value = name;
   document.getElementById('char-desc-input').value = actor.description;
   // 尝试把演员头像作为参考图放入第一个 slot
@@ -1126,8 +1138,66 @@ function selectActorNft(name) {
       it.style.boxShadow = '0 0 0 1px rgba(255,170,0,.3)';
     }
   });
+
+  // ── 显示 LoRA 面部一致性模型状态 ──
+  if (actor.face_lora_cid && actor.face_lora_trigger) {
+    var statusArea = document.getElementById('lora-status-area');
+    var statusText = document.getElementById('lora-status-text');
+    var infoArea = document.getElementById('lora-info-area');
+    var infoText = document.getElementById('lora-info-text');
+
+    statusArea.style.display = 'flex';
+    statusText.innerHTML = '🧬 LoRA 面部一致性模型<span style="color:var(--teal);margin-left:8px">● 已就绪</span><br><span style="font-size:10px;color:var(--t3)">' + name + ' 的面部已在所有剧集中锁定</span>';
+    statusArea.style.border = '1px solid rgba(0,184,184,.25)';
+    statusArea.style.background = 'rgba(0,184,184,.06)';
+
+    // 拼接带触发词的 Prompt
+    var triggerDesc = '[' + actor.face_lora_trigger + '], ' + actor.description;
+    document.getElementById('char-desc-input').value = triggerDesc;
+
+    infoArea.style.display = 'flex';
+    infoText.innerHTML = '<strong style="color:var(--t1)">面部 LoRA 信息</strong><br>' +
+      '· 触发词: <code style="background:var(--ink-700);padding:1px 6px;border-radius:3px;color:var(--amber)">' + actor.face_lora_trigger + '</code><br>' +
+      '· 训练样本: ' + actor.face_samples + ' 张多角度面部照<br>' +
+      '· 面部验证: ' + (actor.face_verified ? '✅ 已通过' : '⏳ 待验证') + '<br>' +
+      '· LoRA 权重: <span style="font-size:9px;color:var(--t3)">' + (actor.face_lora_cid ? actor.face_lora_cid.slice(0, 20) + '...' : '—') + '</span>';
+  } else {
+    document.getElementById('lora-status-area').style.display = 'none';
+    document.getElementById('lora-info-area').style.display = 'none';
+  }
 }
 
+// ── 取消选择演员 NFT（回退到手动输入模式）──
+function clearActorNftSelection() {
+  _selectedActorNft = null;
+  document.getElementById('btn-clear-nft').style.display = 'none';
+  document.getElementById('lora-prompt-hint').style.display = 'none';
+
+  // 清除高亮
+  var items = document.querySelectorAll('#char-nft-list .char-nft-item');
+  items.forEach(function(it) {
+    it.style.borderColor = 'var(--bs)';
+    it.style.boxShadow = 'none';
+  });
+
+  // 隐藏 LoRA 状态区域
+  document.getElementById('lora-status-area').style.display = 'none';
+  document.getElementById('lora-info-area').style.display = 'none';
+
+  // 清空 slot-0（如果是自动填入的那张）
+  var slot0 = document.getElementById('slot-0');
+  if (slot0 && slot0.querySelector('img')) {
+    slot0.innerHTML = '+';
+    slot0.style.border = '1px dashed var(--bs)';
+    slot0.style.borderColor = ''; // 恢复默认
+    slot0.onclick = function() { triggerUpload(0); };
+  }
+
+  document.getElementById('char-name-input').value = '';
+  document.getElementById('char-desc-input').value = '';
+
+  showToast('已切换为手动输入模式');
+}
 
 
 // ── PROJECTS ──
@@ -1466,6 +1536,15 @@ function generateChar() {
   var inner = document.getElementById('core-inner');
   var actorNftName = _selectedActorNft;
 
+  // ── 获取 LoRA 信息 ──
+  var loraTrigger = '';
+  var loraCid = '';
+  if (actorNftName && ACTOR_NFT_DB[actorNftName]) {
+    var actor = ACTOR_NFT_DB[actorNftName];
+    if (actor.face_lora_trigger) loraTrigger = actor.face_lora_trigger;
+    if (actor.face_lora_cid) loraCid = actor.face_lora_cid;
+  }
+
 
   // If editing an existing node, update it
   if (_editingCharNodeId) {
@@ -1473,11 +1552,28 @@ function generateChar() {
     if (node) {
       var hd = node.querySelector('.node-hd');
       var body = node.querySelector('.node-body');
-      if (hd) hd.innerHTML = '<div class="node-type"><span class="node-dot" style="background:#D47B8F"></span><span style="color:#D47B8F">' + name + '</span></div>';
-      if (body) {
-        body.innerHTML = '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:6px">' + desc + '</div>' +
-          '<div style="font-size:9px;color:var(--t3);padding:6px 8px;background:rgba(255,255,255,.03);border:1px solid var(--bs);border-radius:5px;line-height:1.5">' + desc + '</div>';
+      if (hd) {
+        var hdHtml = '<div class="node-type"><span class="node-dot" style="background:#D47B8F"></span><span style="color:#D47B8F">' + name + '</span></div>';
+        if (actorNftName) {
+          hdHtml += '<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(255,170,0,.12);color:var(--amber);border:1px solid rgba(255,170,0,.2)">🎭 ' + actorNftName + '</span>';
+        }
+        if (loraTrigger) {
+          hdHtml += '<span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(0,184,184,.12);color:var(--teal);border:1px solid rgba(0,184,184,.2);margin-left:4px">🧬 LoRA</span>';
+        }
+        hd.innerHTML = hdHtml;
       }
+      if (body) {
+        var promptHtml = desc;
+        if (loraTrigger) {
+          promptHtml = '<span style="color:var(--teal)">[' + loraTrigger + ']</span>, ' + desc;
+        }
+        body.innerHTML = '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:6px">' + desc + '</div>' +
+          '<div class="char-prompt" style="font-size:10px">' + promptHtml + '</div>';
+      }
+      // 存储 LoRA 数据到节点 dataset
+      if (loraTrigger) node.dataset.loraTrigger = loraTrigger;
+      if (loraCid) node.dataset.loraCid = loraCid;
+      if (actorNftName) node.dataset.actorNft = actorNftName;
     }
     _editingCharNodeId = null;
   } else {
@@ -1490,14 +1586,26 @@ function generateChar() {
     if (actorNftName) {
       ndHdHtml += '<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(255,170,0,.12);color:var(--amber);border:1px solid rgba(255,170,0,.2)">🎭 ' + actorNftName + '</span>';
     }
+    if (loraTrigger) {
+      ndHdHtml += '<span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(0,184,184,.12);color:var(--teal);border:1px solid rgba(0,184,184,.2);margin-left:4px">🧬 LoRA</span>';
+    }
+    var promptHtml = desc;
+    if (loraTrigger) {
+      promptHtml = '<span style="color:var(--teal)">[' + loraTrigger + ']</span>, ' + desc;
+    }
     nd.innerHTML = '<div class="node-hd">' + ndHdHtml + '</div>' +
       '<div class="node-body">' +
       '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:6px">' + desc + '</div>' +
-      '<div class="char-prompt" style="font-size:10px">' + desc + '</div></div>';
+      '<div class="char-prompt" style="font-size:10px">' + promptHtml + '</div></div>';
     nd.onclick = function() { selectNode(this); };
     nd.ondblclick = function() { _editingCharNodeId = nd.id; openCharModal(); };
 
     nd.id = 'char-' + Date.now();
+    // 存储 LoRA 数据到节点 dataset
+    if (loraTrigger) nd.dataset.loraTrigger = loraTrigger;
+    if (loraCid) nd.dataset.loraCid = loraCid;
+    if (actorNftName) nd.dataset.actorNft = actorNftName;
+
     inner.appendChild(nd);
     makeDraggable(nd, inner);
     selectNode(nd);
