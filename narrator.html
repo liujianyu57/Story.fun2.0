@@ -1399,9 +1399,7 @@
           <button class="modal-close" onclick="closeMintModal()">✕</button>
         </div>
         <div class="modal-body">
-          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">确认铸造该短剧为链上 NFT。铸造后该短剧将可进行交易与分润。</p>
-
-          <!-- 短剧预览 -->
+          <!-- 短剧预览（上） -->
           <div id="mintPreview" style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
             <img id="mintDramaCover" src="" alt="" style="width:72px;height:72px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
             <div>
@@ -1409,7 +1407,8 @@
             </div>
           </div>
 
-          
+          <!-- 提示文案（下） -->
+          <p style="color:var(--text-muted);line-height:1.7;">确认铸造该短剧为链上 NFT，铸造后该短剧将可产生 STORY 挖矿收益。</p>
         </div>
         <div class="modal-footer">
           <button class="button-secondary" onclick="closeMintModal()">取消</button>
@@ -1709,7 +1708,7 @@
       confirmBtn.disabled = true;
 
       setTimeout(() => {
-        alert(`✅ 「${currentMintDrama.title}」短剧 NFT 铸造成功！\n\nNFT 详情：\n- 短剧：${currentMintDrama.title}\n- 集数：${currentMintDrama.episodes}\n- 单价：${currentMintDrama.price} USDC\n- 平台手续费：10 USDC\n\n手续费将分配给平台的创建者作为收益分润。\n可在「短剧NFT」标签中查看。`);
+        alert('✅ 铸造成功！');
         closeMintModal();
         confirmBtn.textContent = '确认铸造';
         confirmBtn.disabled = false;
