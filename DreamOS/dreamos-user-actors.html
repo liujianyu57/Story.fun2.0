@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的演员 NFT · DreamOS</title>
+<title>我的演员 IP · DreamOS</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -72,11 +72,15 @@ body {
 .sec-name {
   font-family: "EB Garamond", serif;
   font-style: italic; font-size: 36px; color: var(--t1);
+  margin-bottom: 8px;
+}
+.sec-sub {
+  font-size: 12px; color: var(--t2); line-height: 1.6;
   margin-bottom: 24px;
 }
 .sec-div { border: none; border-top: 1px solid var(--b); margin-bottom: 36px }
 
-/* Actor NFT Card Grid */
+/* Actor IP Card Grid */
 .actor-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -89,6 +93,7 @@ body {
   border-radius: 12px;
   overflow: hidden;
   transition: border-color .2s, background .2s;
+  position: relative;
 }
 .actor-card:hover {
   border-color: rgba(255,170,0,.3);
@@ -106,18 +111,33 @@ body {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
 }
-.actor-card-avatar .nft-badge {
+
+/* ℹ️ info button on card */
+.actor-card-info-btn {
   position: absolute;
-  bottom: 10px; left: 10px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: rgba(13,16,23,.85);
+  top: 10px; right: 10px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(13,16,23,.75);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,.1);
-  font-size: 10px;
-  color: var(--amber);
-  font-family: "DM Mono", monospace;
-  letter-spacing: .04em;
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--t2);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, color .2s, border-color .2s;
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1;
+  z-index: 2;
+}
+.actor-card-info-btn:hover {
+  background: var(--amber);
+  color: var(--ink-900);
+  border-color: var(--amber);
 }
 
 .actor-card-body {
@@ -135,25 +155,7 @@ body {
   font-size: 11px;
   color: var(--t2);
   line-height: 1.6;
-  margin-bottom: 12px;
-}
-
-.actor-card-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 12px;
-  border-top: 1px solid var(--bs);
-}
-.actor-card-nftid {
-  font-size: 10px;
-  color: var(--t3);
-  font-family: "DM Mono", monospace;
-}
-.actor-card-nftid em {
-  color: var(--teal);
-  font-style: normal;
-  font-weight: 500;
+  margin-bottom: 0;
 }
 
 /* Empty state */
@@ -230,6 +232,216 @@ body {
 }
 .login-prompt .prompt-btn:hover { opacity: .85 }
 
+/* ═══ Modal ═══ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-card {
+  background: var(--ink-800);
+  border: 1px solid var(--b);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  transform: translateY(12px) scale(.97);
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.modal-overlay.active .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  flex-shrink: 0;
+}
+.modal-header h2 {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--t1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--bs);
+  background: transparent;
+  color: var(--t3);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, color .2s;
+  font-family: "DM Mono", monospace;
+}
+.modal-close:hover {
+  background: rgba(255,255,255,.08);
+  color: var(--t1);
+}
+
+.modal-body {
+  padding: 0 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Contract address row */
+.modal-contract-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--ink-900);
+  border-radius: 10px;
+  border: 1px solid var(--bs);
+  margin-bottom: 20px;
+}
+.modal-contract-label {
+  font-size: 10px;
+  color: var(--t3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.modal-contract-addr {
+  font-size: 11px;
+  color: var(--teal);
+  font-family: "DM Mono", monospace;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.modal-copy-btn {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--bs);
+  background: transparent;
+  color: var(--t3);
+  font-size: 10px;
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  transition: all .2s;
+}
+.modal-copy-btn:hover {
+  background: var(--amber);
+  color: var(--ink-900);
+  border-color: var(--amber);
+}
+.modal-copy-btn.copied {
+  background: var(--teal);
+  color: var(--ink-900);
+  border-color: var(--teal);
+}
+
+/* Clone list section */
+.modal-clone-section {
+  margin-bottom: 20px;
+}
+.modal-clone-label {
+  font-size: 11px;
+  color: var(--t2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modal-clone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.modal-clone-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--ink-900);
+  border-radius: 8px;
+  border: 1px solid var(--bs);
+}
+.modal-clone-id {
+  font-size: 12px;
+  color: var(--t1);
+  font-family: "DM Mono", monospace;
+  font-weight: 500;
+}
+.modal-clone-status {
+  font-size: 10px;
+  color: var(--t3);
+}
+.modal-clone-load-more {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px dashed var(--bs);
+  background: transparent;
+  color: var(--t3);
+  font-size: 11px;
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  transition: all .2s;
+  text-align: center;
+}
+.modal-clone-load-more:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+/* Modal footer */
+.modal-footer {
+  padding: 16px 24px 20px;
+  flex-shrink: 0;
+  display: flex;
+  gap: 10px;
+}
+.modal-btn-primary {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: var(--amber);
+  color: var(--ink-900);
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  transition: opacity .15s;
+  text-decoration: none;
+}
+.modal-btn-primary:hover { opacity: .85 }
+
 /* Toast */
 .toast {
   position: fixed;
@@ -256,6 +468,7 @@ body {
   .body { padding: 24px 16px 60px }
   .actor-grid { grid-template-columns: 1fr }
   .sec-name { font-size: 28px }
+  .modal-card { max-width: 100%; max-height: 90vh; border-radius: 12px; margin: 12px }
 }
 </style>
 </head>
@@ -265,7 +478,7 @@ body {
 <div class="topbar">
   <div class="tb-left">
     <button class="back-btn" onclick="goBack()">← 返回</button>
-    <span class="tb-title">我的演员 NFT</span>
+    <span class="tb-title">我的演员 IP</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button class="tb-right-btn" onclick="window.open('../studio.html','_blank')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:6px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">进入经纪工坊 →</button>
@@ -273,9 +486,36 @@ body {
   </div>
 </div>
 
-
 <!-- Body -->
 <div class="body" id="page-body"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="actorModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 id="modalActorTitle">🎭</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Contract address -->
+      <div class="modal-contract-row">
+        <span class="modal-contract-label">合约地址</span>
+        <span class="modal-contract-addr" id="modalContractAddr">—</span>
+        <button class="modal-copy-btn" id="modalCopyBtn" onclick="copyContract()">复制</button>
+      </div>
+
+      <!-- Clone list -->
+      <div class="modal-clone-section">
+        <div class="modal-clone-label">📦 持有的演员分身</div>
+        <div class="modal-clone-list" id="modalCloneList"></div>
+        <button class="modal-clone-load-more" id="modalLoadMore" onclick="loadMoreClones()" style="display:none">加载更多 ↓</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-btn-primary" id="modalStudioBtn" href="../studio.html" target="_blank">🏢 进入经纪工坊</a>
+    </div>
+  </div>
+</div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
@@ -283,92 +523,100 @@ body {
 <script src="../auth.js"></script>
 <script>
 // ══════════════════════════════════════════════
-//  Mock Actor NFT Database
-//  (In production, this would come from a smart
-//   contract or API. Here we mirror the actors
-//   from the main site for demo consistency.)
+//  Mock Actor IP Database
+//  (In production, this would come from smart
+//   contract on-chain data.)
 // ══════════════════════════════════════════════
-const ACTOR_NFT_DB = {
+const ACTOR_IP_DB = {
   'Luna': {
     name: 'Luna',
     image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80',
     description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。',
-    defaultNftId: '#0042'
+    contractAddress: '0x8F3C...9A2B'
   },
   '苏婉清': {
     name: '苏婉清',
     image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80',
     description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。',
-    defaultNftId: '#0128'
+    contractAddress: '0x7B3D...A8F2'
   },
   '李云飞': {
     name: '李云飞',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80',
     description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。',
-    defaultNftId: '#0503'
+    contractAddress: '0x9E1A...B4C7'
   },
   '林梦瑶': {
     name: '林梦瑶',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80',
     description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。',
-    defaultNftId: '#0788'
+    contractAddress: '0x2D5F...E8A1'
   },
   '赵无极': {
     name: '赵无极',
     image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80',
     description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。',
-    defaultNftId: '#0315'
+    contractAddress: '0x4C8B...F3E6'
   },
   '上官婉儿': {
     name: '上官婉儿',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80',
     description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
-    defaultNftId: '#2016'
+    contractAddress: '0x5D9C...20F7'
   },
   '叶倾城': {
     name: '叶倾城',
     image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=80',
     description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。',
-    defaultNftId: '#0921'
+    contractAddress: '0x6E0D...31G8'
   },
   '慕容云': {
     name: '慕容云',
     image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80',
     description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。',
-    defaultNftId: '#0448'
+    contractAddress: '0x7F1E...42H9'
   },
   '花木兰': {
     name: '花木兰',
     image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=500&q=80',
     description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。',
-    defaultNftId: '#1156'
+    contractAddress: '0xA0B1...C2D3'
   },
   '东方朔': {
     name: '东方朔',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80',
     description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。',
-    defaultNftId: '#0237'
+    contractAddress: '0xB1C2...D3E4'
   },
   '柳如是': {
     name: '柳如是',
     image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=500&q=80',
     description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。',
-    defaultNftId: '#0689'
+    contractAddress: '0xC2D3...E4F5'
   },
   '萧景琰': {
     name: '萧景琰',
     image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=500&q=80',
     description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。',
-    defaultNftId: '#1532'
+    contractAddress: '0xD3E4...F5A6'
   },
   '江小鱼': {
     name: '江小鱼',
     image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=500&q=80',
     description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。',
-    defaultNftId: '#0318'
+    contractAddress: '0xE4F5...A6B7'
   }
 };
 
+
+// ══════════════════════════════════════════════
+//  Modal State
+// ══════════════════════════════════════════════
+
+let _modalActorName = null;       // current actor IP name
+let _modalAllClones = [];         // all clone IDs for this IP
+let _modalPageSize = 8;           // clones per page
+let _modalCurrentPage = 0;
 
 // ══════════════════════════════════════════════
 //  Render Logic
@@ -382,8 +630,8 @@ function renderPage() {
     body.innerHTML = `
       <div class="login-prompt">
         <div class="prompt-icon">🎭</div>
-        <div class="prompt-title">登录后查看持有的演员</div>
-        <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员 NFT。</div>
+        <div class="prompt-title">登录后查看持有的演员 IP</div>
+        <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员分身。</div>
         <button class="prompt-btn" onclick="goLogin()">去登录 →</button>
       </div>
     `;
@@ -391,53 +639,61 @@ function renderPage() {
     return;
   }
 
-  // ── Get user's actor NFTs ──
+  // ── 获取用户持有的所有分身，按 IP 名称分组 ──
   const heldNames = currentUser.actorNfts || [];
-  const heldActors = heldNames
-    .map(function(name) { return ACTOR_NFT_DB[name] })
-    .filter(function(a) { return a != null });
 
-  // Update count
-  document.getElementById('nft-count').textContent = heldActors.length + ' 个';
+  // Build a map: actorName -> { count, info }
+  const ipMap = {};
+  for (var i = 0; i < heldNames.length; i++) {
+    var name = heldNames[i];
+    if (!ACTOR_IP_DB[name]) continue;
+    if (!ipMap[name]) {
+      ipMap[name] = {
+        info: ACTOR_IP_DB[name],
+        indices: []
+      };
+    }
+    ipMap[name].indices.push(i);
+  }
+
+  var ipNames = Object.keys(ipMap);
+
+  // Update count (number of unique IPs)
+  document.getElementById('nft-count').textContent = ipNames.length + ' 个 IP';
 
   // ── Empty state ──
-  if (heldActors.length === 0) {
+  if (ipNames.length === 0) {
     body.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">🎭</div>
-        <div class="empty-title">还没有持有演员 NFT</div>
-        <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员 IP，即可在这里查看你持有的演员 NFT。</div>
+        <div class="empty-title">还没有持有演员分身</div>
+        <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员 IP，即可在这里查看你持有的演员分身。</div>
         <button class="empty-btn" onclick="goMarket()">去市场看看 →</button>
       </div>
     `;
     return;
   }
 
-  // ── Render cards ──
+  // ── Render cards (one per IP) ──
   var html = '';
-  html += '<div class="sec-ey">我的数字资产</div>';
-  html += '<div class="sec-name">演员 NFT</div>';
+  html += '<div class="sec-name">我的演员 IP</div>';
+  html += '<div class="sec-sub">持有演员分身可使用该演员 IP 形象参演短剧。</div>';
   html += '<hr class="sec-div">';
   html += '<div class="actor-grid">';
 
-  for (var i = 0; i < heldActors.length; i++) {
-    var actor = heldActors[i];
-    // Generate a unique NFT ID per user per actor (simulated)
-    var nftSuffix = String(Number(actor.defaultNftId.replace(/[^0-9]/g, '')) + i).padStart(4, '0');
-    var nftId = '#' + nftSuffix;
+  for (var k = 0; k < ipNames.length; k++) {
+    var actorName = ipNames[k];
+    var ipData = ipMap[actorName];
+    var actor = ipData.info;
 
     html += '<div class="actor-card">';
     html += '  <div class="actor-card-avatar">';
     html += '    <img src="' + actor.image + '" alt="' + actor.name + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div style=display:flex;align-items:center;justify-content:center;height:100%;font-size:48px;opacity:.15>🎭</div>\'">';
-    html += '    <span class="nft-badge">NFT ' + nftId + '</span>';
+    html += '    <button class="actor-card-info-btn" onclick="event.stopPropagation();openModal(\'' + actorName.replace(/'/g, "\\'") + '\')">ⓘ</button>';
     html += '  </div>';
     html += '  <div class="actor-card-body">';
     html += '    <div class="actor-card-name">' + actor.name + '</div>';
     html += '    <div class="actor-card-desc">' + actor.description + '</div>';
-    html += '    <div class="actor-card-meta">';
-    html += '      <span class="actor-card-nftid">NFT ID <em>' + nftId + '</em></span>';
-    html += '      <span class="actor-card-nftid" style="color:var(--t3)">持有中</span>';
-    html += '    </div>';
     html += '  </div>';
     html += '</div>';
   }
@@ -445,6 +701,169 @@ function renderPage() {
   html += '</div>';
   body.innerHTML = html;
 }
+
+// ══════════════════════════════════════════════
+//  Modal: open / close / clone pagination
+// ══════════════════════════════════════════════
+
+function openModal(actorName) {
+  var ipData = ACTOR_IP_DB[actorName];
+  if (!ipData) return;
+
+  _modalActorName = actorName;
+  _modalCurrentPage = 0;
+
+  // Build the clone list for this IP from currentUser.actorNfts
+  var heldNames = (currentUser && currentUser.actorNfts) || [];
+  var indices = [];
+  for (var i = 0; i < heldNames.length; i++) {
+    if (heldNames[i] === actorName) {
+      indices.push(i);
+    }
+  }
+
+  // Generate clone IDs
+  _modalAllClones = indices.map(function(idx) {
+    var baseNum = Number(ipData.defaultNftId ? ipData.defaultNftId.replace(/[^0-9]/g, '') : '0');
+    var suffix = String(baseNum + idx).padStart(4, '0');
+    return '#' + suffix;
+  });
+
+  // Set title
+  document.getElementById('modalActorTitle').textContent = '🎭 ' + actorName;
+
+  // Set contract address
+  document.getElementById('modalContractAddr').textContent = ipData.contractAddress || '—';
+  document.getElementById('modalCopyBtn').textContent = '复制';
+  document.getElementById('modalCopyBtn').className = 'modal-copy-btn';
+
+  // Render first page
+  _modalCurrentPage = 0;
+  renderClonePage();
+
+  // Show modal
+  document.getElementById('actorModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('actorModal').classList.remove('active');
+  document.body.style.overflow = '';
+  _modalActorName = null;
+  _modalAllClones = [];
+  _modalCurrentPage = 0;
+}
+
+function renderClonePage() {
+  var listEl = document.getElementById('modalCloneList');
+  var loadMoreEl = document.getElementById('modalLoadMore');
+
+  if (_modalCurrentPage === 0) {
+    listEl.innerHTML = '';
+  }
+
+  var startIdx = 0;
+  if (_modalCurrentPage > 0) {
+    // Count already rendered items
+    startIdx = _modalCurrentPage * _modalPageSize - _modalPageSize;
+    // But if this is a fresh render, start from 0
+    var existingItems = listEl.querySelectorAll('.modal-clone-item').length;
+    startIdx = existingItems;
+  }
+
+  var endIdx = Math.min(startIdx + _modalPageSize, _modalAllClones.length);
+  var pageItems = _modalAllClones.slice(startIdx, endIdx);
+
+  var pageHtml = '';
+  for (var i = 0; i < pageItems.length; i++) {
+    pageHtml += '<div class="modal-clone-item">';
+    pageHtml += '  <span class="modal-clone-id">' + pageItems[i] + '</span>';
+    pageHtml += '  <span class="modal-clone-status">分身</span>';
+    pageHtml += '</div>';
+  }
+
+  // If first page, replace; otherwise append
+  if (_modalCurrentPage === 0) {
+    listEl.innerHTML = pageHtml;
+  } else {
+    listEl.insertAdjacentHTML('beforeend', pageHtml);
+  }
+
+  // Show/hide load more
+  var renderedCount = listEl.querySelectorAll('.modal-clone-item').length;
+  if (renderedCount < _modalAllClones.length) {
+    loadMoreEl.style.display = 'block';
+    loadMoreEl.textContent = '加载更多 (' + renderedCount + ' / ' + _modalAllClones.length + ') ↓';
+  } else {
+    loadMoreEl.style.display = 'none';
+  }
+
+  _modalCurrentPage++;
+}
+
+function loadMoreClones() {
+  renderClonePage();
+}
+
+// Copy contract address
+function copyContract() {
+  var addr = document.getElementById('modalContractAddr').textContent;
+  if (!addr || addr === '—') return;
+
+  // Use the modern clipboard API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(addr).then(function() {
+      var btn = document.getElementById('modalCopyBtn');
+      btn.textContent = '已复制';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = '复制';
+        btn.classList.remove('copied');
+      }, 1500);
+    }).catch(function() {
+      fallbackCopy(addr);
+    });
+  } else {
+    fallbackCopy(addr);
+  }
+}
+
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    var btn = document.getElementById('modalCopyBtn');
+    btn.textContent = '已复制';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = '复制';
+      btn.classList.remove('copied');
+    }, 1500);
+  } catch (e) {
+    showToast('复制失败，请手动复制');
+  }
+  document.body.removeChild(ta);
+}
+
+// Close modal on overlay click
+document.addEventListener('click', function(e) {
+  var overlay = document.getElementById('actorModal');
+  if (e.target === overlay) {
+    closeModal();
+  }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+});
 
 // ══════════════════════════════════════════════
 //  Navigation
@@ -459,7 +878,6 @@ function goLogin() {
 }
 
 function goMarket() {
-  // Open the main site's actors marketplace
   window.open('../actors.html', '_blank');
 }
 
@@ -480,11 +898,9 @@ function showToast(msg) {
 // ══════════════════════════════════════════════
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Small delay to ensure auth.js has fully initialized currentUser
   setTimeout(renderPage, 100);
 });
 
-// Also listen for auth-ready events
 document.addEventListener('auth-ready', function() {
   renderPage();
 });
@@ -493,7 +909,6 @@ document.addEventListener('auth-ready', function() {
 //  Debug helpers (remove in production)
 // ══════════════════════════════════════════════
 
-// Expose to window for console debugging
 window.__debug = {
   currentUser: function() { return currentUser },
   addNft: function(name) {
@@ -503,7 +918,7 @@ window.__debug = {
       renderPage();
       showToast('✅ 已添加 ' + name + ' 到持有列表（调试）');
     } else {
-      showToast('⚠️ 已持有该 NFT');
+      showToast('⚠️ 已持有该分身');
     }
   },
   removeNft: function(name) {
@@ -514,7 +929,9 @@ window.__debug = {
       renderPage();
       showToast('已移除 ' + name + '（调试）');
     }
-  }
+  },
+  openModal: function(name) { openModal(name) },
+  closeModal: function() { closeModal() }
 };
 </script>
 </body>
