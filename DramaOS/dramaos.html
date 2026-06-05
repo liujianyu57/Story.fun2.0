@@ -572,8 +572,9 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
       <span class="ep-badge" id="ep-badge">EP 01 · 雨夜初遇</span>
       <span class="sdot" style="margin-left:6px"></span>
       <span style="font-size:10px;color:var(--t3)">已自动保存</span>
-      <button class="cv-btn hi">✦ 生成视频</button>
+      <button class="cv-btn hi" onclick="generateVideo()">✦ 生成视频</button>
     </div>
+
   </div>
   <div class="cv-body">
     <div class="lab" style="width:52px;min-width:52px;align-items:center;padding:10px 0;gap:6px">
@@ -683,8 +684,9 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
       <div class="lora-note"><span style="flex-shrink:0">ⓘ</span><div>生成后可训练专属 <strong style="color:var(--t1)">LoRA 模型</strong>，让这个角色在所有集数中保持面部一致。参考图越多，训练效果越好。</div></div>
     </div>
     <div class="char-modal-ft">
-      <button onclick="closeModal('char-modal')" style="background:none;border:none;font-size:12px;color:var(--t3);cursor:pointer;font-family:'DM Mono',monospace;text-decoration:underline">删除角色</button>
-      <button style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:7px;background:var(--amber);color:var(--ink-900);border:none;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace">✦ 生成角色 Generate</button>
+      <button onclick="deleteChar()" style="background:none;border:none;font-size:12px;color:var(--t3);cursor:pointer;font-family:'DM Mono',monospace;text-decoration:underline">删除角色</button>
+      <button onclick="generateChar()" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:7px;background:var(--amber);color:var(--ink-900);border:none;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace">✦ 生成角色 Generate</button>
+
     </div>
   </div>
 </div>
@@ -1038,6 +1040,7 @@ function openCharModal() {
 function selectActorNft(name) {
   var actor = ACTOR_NFT_DB[name];
   if (!actor) return;
+  _selectedActorNft = name;
   document.getElementById('char-name-input').value = name;
   document.getElementById('char-desc-input').value = actor.description;
   // 尝试把演员头像作为参考图放入第一个 slot
@@ -1047,7 +1050,18 @@ function selectActorNft(name) {
     slot0.style.border = '1px solid var(--amber)';
     slot0.onclick = null;
   }
+  // 高亮选中的 NFT
+  var items = document.querySelectorAll('#char-nft-list .char-nft-item');
+  items.forEach(function(it) {
+    it.style.borderColor = 'var(--bs)';
+    it.style.boxShadow = 'none';
+    if (it.querySelector('div') && it.querySelector('div').textContent.trim() === name) {
+      it.style.borderColor = 'var(--amber)';
+      it.style.boxShadow = '0 0 0 1px rgba(255,170,0,.3)';
+    }
+  });
 }
+
 
 
 // ── PROJECTS ──
@@ -1306,7 +1320,145 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!p.classList.contains('active')) p.style.display = 'none';
   });
 });
+// ── GENERATE VIDEO ──
+function generateVideo() {
+  // Mark all "生成中" cards as done
+  var genCards = document.querySelectorAll('#pg-ep .shot-card.gen');
+  genCards.forEach(function(c) {
+    c.classList.remove('gen');
+    var thumb = c.querySelector('.shot-thumb');
+    if (thumb) {
+      thumb.innerHTML = '<div style="font-size:20px">🎬</div>';
+      thumb.style.background = 'linear-gradient(135deg,#0a1520,#1a2535)';
+    }
+  });
+  // Show publish modal
+  openPublishModal();
+}
+
+// ── PUBLISH MODAL ──
+function openPublishModal() {
+  // If modal doesn't exist yet, create it
+  var existing = document.getElementById('publish-modal');
+  if (existing) {
+    existing.classList.add('show');
+    return;
+  }
+
+  var div = document.createElement('div');
+  div.id = 'publish-modal';
+  div.className = 'modal-wrap';
+  div.innerHTML = '<div class="publish-box" style="background:var(--ink-800);border:1px solid var(--b);border-radius:14px;width:440px;overflow:hidden">' +
+    '<div class="modal-hd"><span class="modal-hd-title">🎬 视频已生成</span><button class="modal-close" onclick="closePublishModal()">×</button></div>' +
+    '<div class="modal-body">' +
+    '  <div style="text-align:center;padding:20px 0 16px">' +
+    '    <div style="font-size:48px;margin-bottom:12px">✅</div>' +
+    '    <div style="font-family:\'EB Garamond\',serif;font-style:italic;font-size:22px;color:var(--t1);margin-bottom:6px">生成完成</div>' +
+    '    <div style="font-size:11px;color:var(--t2);line-height:1.6">视频已自动保存到项目文件夹<br>演员参演数据将计入累计完播与热度系数</div>' +
+    '  </div>' +
+    '  <div style="background:var(--ink-700);border-radius:8px;padding:14px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start">' +
+    '    <span style="font-size:14px;flex-shrink:0">🎭</span>' +
+    '    <div style="font-size:10px;color:var(--t2);line-height:1.7">' +
+    '      参演演员的完播数据将计入 <strong style="color:var(--t1)">累计完播</strong>（升咖资格）和 <strong style="color:var(--t1)">热度系数</strong>（挖矿产出）' +
+    '    </div>' +
+    '  </div>' +
+    '  <div style="display:flex;gap:8px">' +
+    '    <button onclick="closePublishModal();showToast(\'📺 已发布到平台\')" style="flex:1;padding:11px;border-radius:7px;background:var(--amber);color:var(--ink-900);border:none;font-size:12px;font-weight:500;cursor:pointer;font-family:\'DM Mono\',monospace">发布到平台</button>' +
+    '    <button onclick="closePublishModal();showToast(\'📄 已保存为草稿\')" style="flex:1;padding:11px;border-radius:7px;background:none;border:1px solid var(--b);color:var(--t2);font-size:12px;cursor:pointer;font-family:\'DM Mono\',monospace">保存草稿</button>' +
+    '  </div>' +
+    '</div></div>';
+  div.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
+  document.body.appendChild(div);
+  setTimeout(function() { div.classList.add('show'); }, 50);
+}
+
+function closePublishModal() {
+  var m = document.getElementById('publish-modal');
+  if (m) m.classList.remove('show');
+}
+
+// ── GENERATE CHAR ──
+var _editingCharNodeId = null;
+var _selectedActorNft = null;
+
+function generateChar() {
+  var name = document.getElementById('char-name-input').value.trim() || '新角色';
+  var desc = document.getElementById('char-desc-input').value.trim() || '暂无描述';
+  var inner = document.getElementById('core-inner');
+  var actorNftName = _selectedActorNft;
+
+
+  // If editing an existing node, update it
+  if (_editingCharNodeId) {
+    var node = document.getElementById(_editingCharNodeId);
+    if (node) {
+      var hd = node.querySelector('.node-hd');
+      var body = node.querySelector('.node-body');
+      if (hd) hd.innerHTML = '<div class="node-type"><span class="node-dot" style="background:#D47B8F"></span><span style="color:#D47B8F">' + name + '</span></div>';
+      if (body) {
+        body.innerHTML = '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:6px">' + desc + '</div>' +
+          '<div style="font-size:9px;color:var(--t3);padding:6px 8px;background:rgba(255,255,255,.03);border:1px solid var(--bs);border-radius:5px;line-height:1.5">' + desc + '</div>';
+      }
+    }
+    _editingCharNodeId = null;
+  } else {
+    // Create new node
+    var nd = document.createElement('div');
+    nd.className = 'node node-char';
+    var x = 60 + Math.random() * 300, y = 60 + Math.random() * 300;
+    nd.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:260px';
+    var ndHdHtml = '<div class="node-type"><span class="node-dot" style="background:#D47B8F"></span><span style="color:#D47B8F">' + name + '</span></div>';
+    if (actorNftName) {
+      ndHdHtml += '<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(255,170,0,.12);color:var(--amber);border:1px solid rgba(255,170,0,.2)">🎭 ' + actorNftName + '</span>';
+    }
+    nd.innerHTML = '<div class="node-hd">' + ndHdHtml + '</div>' +
+      '<div class="node-body">' +
+      '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:6px">' + desc + '</div>' +
+      '<div class="char-prompt" style="font-size:10px">' + desc + '</div></div>';
+    nd.onclick = function() { selectNode(this); };
+    nd.ondblclick = function() { _editingCharNodeId = nd.id; openCharModal(); };
+
+    nd.id = 'char-' + Date.now();
+    inner.appendChild(nd);
+    makeDraggable(nd, inner);
+    selectNode(nd);
+  }
+
+  closeModal('char-modal');
+  showToast('✅ 角色「' + name + '」已生成');
+}
+
+function deleteChar() {
+  if (_editingCharNodeId) {
+    var node = document.getElementById(_editingCharNodeId);
+    if (node) node.remove();
+    _editingCharNodeId = null;
+  }
+  closeModal('char-modal');
+  showToast('角色已删除');
+}
+
+// ═══ TOAST ═══
+function showToast(msg) {
+  var t = document.getElementById('toast-el');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-el';
+    t.style.cssText = 'position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-100px);z-index:99999;background:rgba(13,16,23,.95);backdrop-filter:blur(12px);color:var(--t1);padding:14px 24px;border-radius:10px;font-size:12px;border:1px solid var(--b);box-shadow:0 12px 40px rgba(0,0,0,.5);transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;opacity:0;pointer-events:none;max-width:420px;text-align:center;font-family:"DM Mono",monospace';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(window._toastTimer2);
+  window._toastTimer2 = setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(-100px)';
+  }, 2500);
+}
+
 </script>
+
 
 </body>
 </html>
