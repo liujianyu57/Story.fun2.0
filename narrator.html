@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Story.fun | 创作</title>
   <style>
-    :root { --bg: #f7fbff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.16); --text: #1a232f; --text-muted: #657586; --danger: #f45b69; --border: #e6eff7; --shadow: 0 20px 45px rgba(27, 45, 71, 0.08); font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
+    :root { --bg: #f7fbff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.16); --text: #1a232f; --text-muted: #657586; --border: #e6eff7; --shadow: 0 20px 45px rgba(27, 45, 71, 0.08); font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
@@ -20,260 +20,52 @@
     .filter-pill { border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); padding: 10px 16px; border-radius: 999px; cursor: pointer; font-size: 0.92rem; }
     .filter-pill.active { background: var(--accent); color: #fff; border-color: transparent; }
     .card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-    /* ===== Card Redesign for Drama Management ===== */
+
     .card-list-item {
-      overflow: hidden;
-      border-radius: 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 25px rgba(27, 45, 71, 0.06);
-      display: flex;
-      flex-direction: column;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      will-change: transform;
+      overflow: hidden; border-radius: 24px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 8px 25px rgba(27, 45, 71, 0.06); display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform;
     }
-    .card-list-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 45px rgba(27, 45, 71, 0.12);
-      border-color: rgba(0, 179, 136, 0.20);
-    }
-    .card-header {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 16 / 9;
-      background: #eaf4ee;
-    }
-    .card-header img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .card-list-item:hover .card-header img {
-      transform: scale(1.06);
-    }
-    .card-header::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%);
-      pointer-events: none;
-    }
-    .card-header .badge-row {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      z-index: 2;
-    }
-    .status-badge {
-      padding: 6px 14px 6px 10px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      letter-spacing: 0.02em;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    }
-    .status-badge:hover {
-      transform: scale(1.06);
-    }
+    .card-list-item:hover { transform: translateY(-4px); box-shadow: 0 20px 45px rgba(27, 45, 71, 0.12); border-color: rgba(0, 179, 136, 0.20); }
+    .card-header { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #eaf4ee; }
+    .card-header img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .card-list-item:hover .card-header img { transform: scale(1.06); }
+    .card-header::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%); pointer-events: none; }
+    .card-header .badge-row { position: absolute; top: 14px; left: 14px; display: flex; align-items: center; gap: 8px; z-index: 2; }
+    .status-badge { padding: 6px 14px 6px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; color: #fff; cursor: pointer; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.02em; backdrop-filter: blur(4px); box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
+    .status-badge:hover { transform: scale(1.06); }
     .status-pending { background: linear-gradient(135deg, #ff9f2c, #f59e0b); }
     .status-approved { background: linear-gradient(135deg, #00b388, #00c797); }
     .status-rejected { background: linear-gradient(135deg, #f45b69, #e74c5a); }
-    .status-badge .status-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.7);
-      flex-shrink: 0;
-      animation: statusPulse 2s ease-in-out infinite;
-    }
-    .status-approved .status-dot,
-    .status-rejected .status-dot {
-      animation: none;
-    }
-    @keyframes statusPulse {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.3); }
-    }
-    .status-badge .hint-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-      font-size: 0.6rem;
-      font-weight: 700;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .status-badge .hint-icon:hover {
-      background: rgba(255,255,255,0.45);
-    }
+    .status-badge .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.7); flex-shrink: 0; animation: statusPulse 2s ease-in-out infinite; }
+    .status-approved .status-dot, .status-rejected .status-dot { animation: none; }
+    @keyframes statusPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } }
+    .status-badge .hint-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.25); font-size: 0.6rem; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: background 0.2s; }
+    .status-badge .hint-icon:hover { background: rgba(255,255,255,0.45); }
 
-    /* Toast notification */
     .toast-notification { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 9999; background: rgba(26, 35, 47, 0.95); backdrop-filter: blur(8px); color: #fff; padding: 16px 24px; border-radius: 16px; font-size: 0.92rem; line-height: 1.6; box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 420px; text-align: center; font-weight: 500; }
     .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
 
-    .card-body {
-      padding: 20px 22px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-    }
-    .card-body h3 {
-      margin: 0;
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-    .card-body .card-sub {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      margin-top: -4px;
-    }
-    .card-body .card-sub .sub-divider {
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-    .props-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .props-pill {
-      border-radius: 999px;
-      background: #f4faf6;
-      color: var(--accent);
-      padding: 6px 12px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      border: 1px solid rgba(0, 179, 136, 0.12);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    /* Actor avatars in card */
-    .card-actors {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border);
-    }
-    .card-actors-label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      flex-shrink: 0;
-      letter-spacing: 0.03em;
-    }
-    .card-actors-list {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .card-actor-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid var(--surface);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      flex-shrink: 0;
-      position: relative;
-      cursor: default;
-      transition: transform 0.2s;
-    }
-    .card-actor-avatar:hover {
-      transform: scale(1.15);
-      z-index: 2;
-    }
-    .card-actor-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .card-actor-avatar .actor-tooltip {
-      position: absolute;
-      bottom: calc(100% + 6px);
-      left: 50%;
-      transform: translateX(-50%) scale(0.8);
-      background: rgba(26,35,47,0.92);
-      color: #fff;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.65rem;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.2s ease;
-    }
-    .card-actor-avatar:hover .actor-tooltip {
-      opacity: 1;
-      transform: translateX(-50%) scale(1);
-    }
-    .card-action {
-      padding: 16px 22px 18px;
-      border-top: 1px solid var(--border);
-      background: #fafcff;
-      display: flex;
-      gap: 10px;
-    }
-    .card-action .button {
-      flex: 1;
-      padding: 11px 16px;
-      font-size: 0.88rem;
-      border-radius: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .card-action .button .btn-icon {
-      font-size: 0.95rem;
-    }
-    .card-action .button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-    .card-action .button-danger {
-      background: transparent;
-      color: #f45b69;
-      border: 1px solid rgba(244, 91, 105, 0.25);
-      font-weight: 600;
-    }
-    .card-action .button-danger:hover {
-      background: rgba(244, 91, 105, 0.06);
-      transform: translateY(-1px);
-    }
+    .card-body { padding: 20px 22px 18px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .card-body h3 { margin: 0; font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
+    .card-body .card-sub { display: flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.82rem; margin-top: -4px; }
+    .card-body .card-sub .sub-divider { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+    .props-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .props-pill { border-radius: 999px; background: #f4faf6; color: var(--accent); padding: 6px 12px; font-size: 0.82rem; font-weight: 600; border: 1px solid rgba(0, 179, 136, 0.12); display: inline-flex; align-items: center; gap: 4px; }
+    .card-actors { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .card-actors-label { font-size: 0.7rem; color: var(--text-muted); flex-shrink: 0; letter-spacing: 0.03em; }
+    .card-actors-list { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .card-actor-avatar { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 2px solid var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,0.08); flex-shrink: 0; position: relative; cursor: default; transition: transform 0.2s; }
+    .card-actor-avatar:hover { transform: scale(1.15); z-index: 2; }
+    .card-actor-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-actor-avatar .actor-tooltip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%) scale(0.8); background: rgba(26,35,47,0.92); color: #fff; padding: 3px 8px; border-radius: 6px; font-size: 0.65rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: all 0.2s ease; }
+    .card-actor-avatar:hover .actor-tooltip { opacity: 1; transform: translateX(-50%) scale(1); }
+    .card-action { padding: 16px 22px 18px; border-top: 1px solid var(--border); background: #fafcff; display: flex; gap: 10px; }
+    .card-action .button { flex: 1; padding: 11px 16px; font-size: 0.88rem; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .card-action .button .btn-icon { font-size: 0.95rem; }
+    .card-action .button:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .card-action .button-danger { background: transparent; color: #f45b69; border: 1px solid rgba(244, 91, 105, 0.25); font-weight: 600; }
+    .card-action .button-danger:hover { background: rgba(244, 91, 105, 0.06); transform: translateY(-1px); }
 
-    /* Modal overlay system */
     .modal-overlay { display: none; position: fixed; z-index: 1000; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
     .modal-overlay.open { display: flex; }
     .modal { background: var(--surface); border-radius: 32px; box-shadow: 0 40px 80px rgba(27,45,71,0.18); width: 100%; max-width: 720px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; animation: modalIn 0.25s ease; }
@@ -281,7 +73,7 @@
     .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 28px 16px; border-bottom: 1px solid var(--border); }
     .modal-header h3 { margin: 0; font-size: 1.35rem; }
     .modal-header h2 { margin: 0; font-size: 1.45rem; }
-    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.2rem; color: var(--text-muted); transition: all 0.2s; }
+    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.2rem; color: var(--text-muted); transition: all 0.2s; flex-shrink: 0; }
     .modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
     .modal-body { padding: 20px 28px 28px; overflow-y: auto; flex: 1; }
     .modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 28px; border-top: 1px solid var(--border); background: #fafcff; }
@@ -293,17 +85,20 @@
     .modal-subtitle { padding: 0 24px 18px; color: var(--text-muted); font-size: 0.96rem; }
     .modal-body .modal-preview { border-radius: 24px; overflow: hidden; background: #f5f7ff; position: relative; }
     .modal-body .modal-preview img { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
-    .modal-body .preview-tag { position: absolute; left: 16px; bottom: 16px; padding: 10px 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.92); color: var(--text); font-weight: 600; font-size: 0.95rem; backdrop-filter: blur(12px); }
-    .modal-body .modal-info { display: grid; gap: 12px; }
-    .modal-body .modal-field { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-radius: 18px; background: #f8fbff; border: 1px solid #eef4ff; }
-    .modal-body .modal-field span { color: var(--text-muted); font-size: 0.95rem; }
-    .modal-body .modal-field strong { color: var(--text); font-weight: 600; }
-    .modal-body .modal-total { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-radius: 20px; background: rgba(76, 222, 204, 0.12); border: 1px solid rgba(76, 222, 204, 0.18); margin-top: 4px; }
-    .modal-body .modal-total strong { font-size: 1.4rem; color: #0c7f71; }
+    .modal-preview .preview-tag { position: absolute; left: 16px; bottom: 16px; padding: 10px 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.92); color: var(--text); font-weight: 600; font-size: 0.95rem; backdrop-filter: blur(12px); }
+    .modal-info { display: grid; gap: 12px; }
+    .modal-field { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-radius: 18px; background: #f8fbff; border: 1px solid #eef4ff; }
+    .modal-field span { color: var(--text-muted); font-size: 0.95rem; }
+    .modal-field strong { color: var(--text); font-weight: 600; }
+    .modal-total { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-radius: 20px; background: rgba(76, 222, 204, 0.12); border: 1px solid rgba(76, 222, 204, 0.18); margin-top: 4px; }
+    .modal-total strong { font-size: 1.4rem; color: #0c7f71; }
     .modal-actions { display: flex; flex-wrap: wrap; gap: 14px; padding: 18px 24px 24px; }
     .modal-actions .button, .modal-actions .button-secondary { flex: 1; min-width: 0; }
+    .modal-mint-preview { display:flex;align-items:center;gap:18px;margin-bottom:20px; }
+    .modal-mint-preview img { width:72px;height:72px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0; }
+    .modal-mint-preview h4 { margin:0;font-size:1.1rem; }
 
-    .mintable-list { display: flex; flex-direction: column; gap: 12px; }
+    .modal.error .mintable-list { display: flex; flex-direction: column; gap: 12px; }
     .mintable-item { display: flex; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 18px; cursor: pointer; transition: all 0.2s ease; }
     .mintable-item:hover { border-color: var(--accent); background: rgba(0,179,136,0.03); }
     .mintable-item.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(0,179,136,0.20); }
@@ -319,222 +114,27 @@
     .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
     .empty-state p { font-size: 1rem; line-height: 1.7; }
 
-    /* ===== NFT Card Redesign ===== */
     .nft-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
     .nft-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: 0 8px 25px rgba(27, 45, 71, 0.06);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      will-change: transform;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 8px 25px rgba(27, 45, 71, 0.06); overflow: hidden; display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform;
     }
-    .nft-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 45px rgba(27, 45, 71, 0.12);
-      border-color: rgba(0, 179, 136, 0.20);
-    }
-    .nft-card .nft-cover-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 16 / 9;
-      background: #eaf4ee;
-    }
-    .nft-card .nft-cover {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .nft-card:hover .nft-cover {
-      transform: scale(1.06);
-    }
-    .nft-card .nft-cover-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%);
-      pointer-events: none;
-    }
-    .nft-card .nft-id-badge {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: rgba(26, 35, 47, 0.75);
-      backdrop-filter: blur(6px);
-      color: #fff;
-      padding: 5px 11px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      z-index: 2;
-    }
-    .nft-card .nft-stake-status {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      padding: 5px 11px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.03em;
-      backdrop-filter: blur(4px);
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .nft-card .nft-stake-status.pledged {
-      background: linear-gradient(135deg, var(--accent), #00c797);
-      box-shadow: 0 2px 10px rgba(0, 179, 136, 0.30);
-    }
-    .nft-card .nft-stake-status .status-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.8);
-    }
-    .nft-card .nft-stake-status.unpledged { background: var(--text-muted); }
-    .nft-card .nft-body {
-      padding: 18px 20px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex: 1;
-    }
-    .nft-card .nft-body h4 {
-      margin: 0;
-      font-size: 1.05rem;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-    .nft-card .nft-body .nft-sub {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      margin-top: -4px;
-    }
-    .nft-card .nft-body .nft-sub .sub-divider {
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-    .nft-card .nft-body .nft-desc { margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
-    .nft-card .nft-meta { display: flex; flex-wrap: wrap; gap: 6px; }
-    .nft-card .nft-meta span {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #f4faf6;
-      color: var(--accent);
-      font-size: 0.72rem;
-      border: 1px solid rgba(0,179,136,0.12);
-      font-weight: 600;
-    }
-    .nft-card .nft-detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
-    .nft-card .nft-detail-item {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      padding: 9px 10px;
-      border-radius: 12px;
-      background: #f7fbff;
-      border: 1px solid #eaf1f9;
-    }
-    .nft-card .nft-detail-item .detail-label {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      font-weight: 500;
-      letter-spacing: 0.03em;
-    }
-    .nft-card .nft-detail-item .detail-value {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .nft-card .nft-royalty {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 12px;
-      background: #f9fcfb;
-      border-radius: 12px;
-      border: 1px solid rgba(0, 179, 136, 0.08);
-      margin-top: 2px;
-    }
-    .nft-card .nft-royalty .r-item {
-      flex: 1;
-      text-align: center;
-    }
-    .nft-card .nft-royalty .royalty-label {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      margin-bottom: 1px;
-      font-weight: 500;
-    }
-    .nft-card .nft-royalty .royalty-value {
-      font-size: 0.88rem;
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .nft-card .nft-royalty .royalty-divider {
-      width: 1px;
-      height: 24px;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-    .nft-card .nft-footer {
-      padding: 14px 20px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #fafcff;
-    }
-    .nft-card .nft-footer .button {
-      flex: 1;
-      padding: 10px 16px;
-      font-size: 0.85rem;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-    }
-    .nft-card .nft-footer .button .btn-icon {
-      font-size: 0.9rem;
-    }
-    .nft-card .nft-footer .button-amber {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #fff;
-    }
-    .nft-card .nft-footer .button-amber:hover {
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.30);
-    }
+    .nft-card:hover { transform: translateY(-4px); box-shadow: 0 20px 45px rgba(27, 45, 71, 0.12); border-color: rgba(0, 179, 136, 0.20); }
+    .nft-card .nft-cover-wrap { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #eaf4ee; }
+    .nft-card .nft-cover { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nft-card:hover .nft-cover { transform: scale(1.06); }
+    .nft-card .nft-cover-wrap::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%); pointer-events: none; }
+    .nft-card .nft-id-badge { position: absolute; top: 12px; left: 12px; background: rgba(26, 35, 47, 0.75); backdrop-filter: blur(6px); color: #fff; padding: 5px 11px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; z-index: 2; }
+    .nft-card .nft-body { padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .nft-card .nft-body h4 { margin: 0; font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+    .nft-card .nft-body .nft-sub { display: flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.8rem; margin-top: -4px; }
+    .nft-card .nft-body .nft-sub .sub-divider { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
 
-    /* Tab content containers */
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-
     .narrator-tabs { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding: 18px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 22px; box-shadow: var(--shadow); }
     .narrator-tab { border: none; background: transparent; color: var(--text); cursor: pointer; padding: 10px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 600; transition: background 0.2s ease; }
     .narrator-tab.active { background: var(--accent-soft); color: var(--accent); }
 
-    /* Actor drama list modal */
     .actor-drama-list { display: flex; flex-direction: column; gap: 12px; }
     .actor-drama-item { display: flex; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 18px; transition: all 0.2s ease; }
     .actor-drama-item:hover { border-color: var(--accent); background: rgba(0,179,136,0.03); }
@@ -547,11 +147,10 @@
     .actor-drama-item .drama-royalty .royalty-pct { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
     .actor-drama-item .drama-royalty .royalty-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
 
-    @media (max-width: 1280px) { .card-grid, .nft-grid, .actor-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    @media (max-width: 1080px) { .card-grid, .nft-grid, .actor-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 1280px) { .card-grid, .nft-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 1080px) { .card-grid, .nft-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 680px) {
-      .card-grid, .nft-grid, .actor-grid { grid-template-columns: 1fr; }
-      .card-grid { gap: 16px; }
+      .card-grid, .nft-grid { grid-template-columns: 1fr; gap: 16px; }
       .card-body { padding: 16px 18px 14px; }
       .card-action { padding: 12px 18px 14px; flex-direction: column; }
       .card-action .button { width: 100%; }
@@ -561,7 +160,6 @@
 <body>
   <div id="header-placeholder"></div>
   <div class="app-shell">
-
     <section>
       <div class="page-intro">
         <div>
@@ -572,18 +170,16 @@
           <a class="button" href="publish.html">发布新短剧</a>
         </div>
       </div>
-      <div class="dashboard-summary" style="grid-template-columns: 1fr; display: block;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px;">
-          <div style="padding: 28px 26px; background: linear-gradient(135deg, rgba(0, 179, 136, 0.12), rgba(255, 255, 255, 0.96)); border: 1px solid rgba(0, 179, 136, 0.18); border-radius: 28px; box-shadow: var(--shadow); text-align: left;">
-            <p style="margin:0;color:var(--text-muted);font-size:0.92rem;letter-spacing:0.08em;">发布短剧</p>
-            <h3 style="margin: 12px 0 0; font-size: 2.8rem;">4</h3>
-          </div>
-          <div style="padding: 28px 26px; background: linear-gradient(135deg, rgba(0, 179, 136, 0.12), rgba(255, 255, 255, 0.96)); border: 1px solid rgba(0, 179, 136, 0.18); border-radius: 28px; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: center; gap: 16px;">
-            <div style="display: flex; gap: 16px;">
-              <div style="flex: 1;">
-                <p style="margin:0;color:var(--text-muted);font-size:0.85rem;">持有短剧NFT</p>
-                <h4 style="margin: 6px 0 0; font-size: 1.8rem; color: var(--accent);">3</h4>
-              </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px;">
+        <div style="padding: 28px 26px; background: linear-gradient(135deg, rgba(0, 179, 136, 0.12), rgba(255, 255, 255, 0.96)); border: 1px solid rgba(0, 179, 136, 0.18); border-radius: 28px; box-shadow: var(--shadow); text-align: left;">
+          <p style="margin:0;color:var(--text-muted);font-size:0.92rem;letter-spacing:0.08em;">发布短剧</p>
+          <h3 style="margin: 12px 0 0; font-size: 2.8rem;">4</h3>
+        </div>
+        <div style="padding: 28px 26px; background: linear-gradient(135deg, rgba(0, 179, 136, 0.12), rgba(255, 255, 255, 0.96)); border: 1px solid rgba(0, 179, 136, 0.18); border-radius: 28px; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: center; gap: 16px;">
+          <div style="display: flex; gap: 16px;">
+            <div style="flex: 1;">
+              <p style="margin:0;color:var(--text-muted);font-size:0.85rem;">持有短剧NFT</p>
+              <h4 style="margin: 6px 0 0; font-size: 1.8rem; color: var(--accent);">3</h4>
             </div>
           </div>
         </div>
@@ -600,191 +196,124 @@
         <button class="filter-pill" onclick="filterCards('rejected',this)">未通过</button>
       </div>
 
-      <!-- Tab 1: 短剧管理 -->
+      <!-- Tab 1 -->
       <div class="tab-content active" id="tab1">
         <div class="card-grid" id="dramaGrid">
-
-          <!-- 卡片 1: 审核中 -->
           <article class="card-list-item" data-status="pending">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="长安如梦" />
               <div class="badge-row">
                 <span class="status-badge status-pending">
-                  <span class="status-dot"></span>
-                  审核中
+                  <span class="status-dot"></span> 审核中
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('审核通过后可铸造短剧NFT并上架短剧')">?</span>
                 </span>
               </div>
             </div>
             <div class="card-body">
               <h3>长安如梦</h3>
-              <div class="card-sub">
-                <span>30 集 ｜ 一曲长歌诉尽长安繁华梦，宫廷权谋与爱恨纠葛</span>
-              </div>
-              <div class="props-row">
-                <span class="props-pill">古装</span>
-                <span class="props-pill">爱情</span>
-              </div>
+              <div class="card-sub"><span>30 集 ｜ 一曲长歌诉尽长安繁华梦，宫廷权谋与爱恨纠葛</span></div>
+              <div class="props-row"><span class="props-pill">古装</span><span class="props-pill">爱情</span></div>
               <div class="card-actors">
                 <span class="card-actors-label">参演演员 IP</span>
                 <div class="card-actors-list">
-                  <div class="card-actor-avatar">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" />
-                    <span class="actor-tooltip">苏婉清</span>
-                  </div>
-                  <div class="card-actor-avatar">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="赵无极" />
-                    <span class="actor-tooltip">赵无极</span>
-                  </div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" /><span class="actor-tooltip">苏婉清</span></div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="赵无极" /><span class="actor-tooltip">赵无极</span></div>
                 </div>
               </div>
             </div>
             <div class="card-action" data-status="pending">
-              <button class="button" disabled>
-                <span class="btn-icon">⏳</span> 等待审核
-              </button>
+              <button class="button" disabled><span class="btn-icon">⏳</span> 等待审核</button>
             </div>
           </article>
 
-          <!-- 卡片 2: 已通过 -->
           <article class="card-list-item" data-status="approved">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80" alt="江南烟雨" />
               <div class="badge-row">
                 <span class="status-badge status-approved">
-                  <span class="status-dot"></span>
-                  已通过
+                  <span class="status-dot"></span> 已通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('铸造NFT后自动上架短剧')">?</span>
                 </span>
               </div>
             </div>
             <div class="card-body">
               <h3>江南烟雨</h3>
-              <div class="card-sub">
-                <span>24 集 ｜ 烟雨江南中一段凄美爱情故事，茶楼酒肆间的人间百态</span>
-              </div>
-              <div class="props-row">
-                <span class="props-pill">古装</span>
-                <span class="props-pill">剧情</span>
-              </div>
+              <div class="card-sub"><span>24 集 ｜ 烟雨江南中一段凄美爱情故事，茶楼酒肆间的人间百态</span></div>
+              <div class="props-row"><span class="props-pill">古装</span><span class="props-pill">剧情</span></div>
               <div class="card-actors">
                 <span class="card-actors-label">参演演员 IP</span>
                 <div class="card-actors-list">
-                  <div class="card-actor-avatar">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" />
-                    <span class="actor-tooltip">苏婉清</span>
-                  </div>
-                  <div class="card-actor-avatar">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="林梦瑶" />
-                    <span class="actor-tooltip">林梦瑶</span>
-                  </div>
-                  <div class="card-actor-avatar">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="上官婉儿" />
-                    <span class="actor-tooltip">上官婉儿</span>
-                  </div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" /><span class="actor-tooltip">苏婉清</span></div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="林梦瑶" /><span class="actor-tooltip">林梦瑶</span></div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="上官婉儿" /><span class="actor-tooltip">上官婉儿</span></div>
                 </div>
               </div>
             </div>
             <div class="card-action" data-status="approved">
-              <button class="button" style="flex:0.7;">
-                <span class="btn-icon">🔨</span> 铸造短剧NFT
-              </button>
-              <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
-                <span class="btn-icon">✏️</span> 编辑
-              </button>
+              <button class="button" style="flex:0.7;"><span class="btn-icon">🔨</span> 铸造短剧NFT</button>
+              <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
             </div>
           </article>
 
-          <!-- 卡片 3: 已通过 -->
           <article class="card-list-item" data-status="approved">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80" alt="星际迷航" />
               <div class="badge-row">
                 <span class="status-badge status-approved">
-                  <span class="status-dot"></span>
-                  已通过
+                  <span class="status-dot"></span> 已通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('铸造NFT后自动上架短剧')">?</span>
                 </span>
               </div>
             </div>
             <div class="card-body">
               <h3>星际迷航</h3>
-              <div class="card-sub">
-                <span>16 集 ｜ 浩瀚星空中的人类冒险传奇，探索未知的星际文明</span>
-              </div>
-              <div class="props-row">
-                <span class="props-pill">科幻</span>
-                <span class="props-pill">冒险</span>
-              </div>
+              <div class="card-sub"><span>16 集 ｜ 浩瀚星空中的人类冒险传奇，探索未知的星际文明</span></div>
+              <div class="props-row"><span class="props-pill">科幻</span><span class="props-pill">冒险</span></div>
             </div>
             <div class="card-action" data-status="approved">
-              <button class="button" style="flex:0.7;">
-                <span class="btn-icon">🔨</span> 铸造短剧NFT
-              </button>
-              <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
-                <span class="btn-icon">✏️</span> 编辑
-              </button>
+              <button class="button" style="flex:0.7;"><span class="btn-icon">🔨</span> 铸造短剧NFT</button>
+              <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
             </div>
           </article>
 
-          <!-- 卡片 4: 未通过 -->
           <article class="card-list-item" data-status="rejected">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="迷雾之城" />
               <div class="badge-row">
                 <span class="status-badge status-rejected">
-                  <span class="status-dot"></span>
-                  未通过
+                  <span class="status-dot"></span> 未通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('内容存在敏感词汇，无法通过审核')">?</span>
                 </span>
               </div>
             </div>
             <div class="card-body">
               <h3>迷雾之城</h3>
-              <div class="card-sub">
-                <span>12 集 ｜ 迷雾笼罩的城市中隐藏着惊天秘密，真相扑朔迷离</span>
-              </div>
-              <div class="props-row">
-                <span class="props-pill">悬疑</span>
-                <span class="props-pill">推理</span>
-              </div>
+              <div class="card-sub"><span>12 集 ｜ 迷雾笼罩的城市中隐藏着惊天秘密，真相扑朔迷离</span></div>
+              <div class="props-row"><span class="props-pill">悬疑</span><span class="props-pill">推理</span></div>
               <div class="card-actors">
                 <span class="card-actors-label">参演演员 IP</span>
                 <div class="card-actors-list">
-                  <div class="card-actor-avatar">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" />
-                    <span class="actor-tooltip">苏婉清</span>
-                  </div>
-                  <div class="card-actor-avatar">
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="李云飞" />
-                    <span class="actor-tooltip">李云飞</span>
-                  </div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="苏婉清" /><span class="actor-tooltip">苏婉清</span></div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="李云飞" /><span class="actor-tooltip">李云飞</span></div>
                 </div>
               </div>
             </div>
             <div class="card-action">
-              <button class="button button-danger" style="flex:0.5;" onclick="confirmDelete('迷雾之城')">
-                <span class="btn-icon">🗑️</span> 删除短剧
-              </button>
-              <button class="button" style="flex:0.5;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
-                <span class="btn-icon">✏️</span> 编辑
-              </button>
+              <button class="button button-danger" style="flex:0.5;" onclick="confirmDelete('迷雾之城')"><span class="btn-icon">🗑️</span> 删除短剧</button>
+              <button class="button" style="flex:0.5;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
             </div>
           </article>
-
         </div>
       </div>
 
-    <!-- Tab 2: 短剧NFT -->
-    <div class="tab-content" id="tab2">
+      <!-- Tab 2 -->
+      <div class="tab-content" id="tab2">
         <div class="filter-row" style="margin-bottom: 24px;">
           <button class="filter-pill active" onclick="filterNFTs('all',this)">全部</button>
           <button class="filter-pill" onclick="filterNFTs('staked',this)">已质押</button>
           <button class="filter-pill" onclick="filterNFTs('unstaked',this)">未质押</button>
         </div>
         <div class="nft-grid">
-
-          <!-- NFT-001: 未质押 -->
           <div class="nft-card" data-staked="false">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80" alt="江南烟雨 NFT" />
@@ -792,164 +321,29 @@
             </div>
             <div class="nft-body">
               <h4>江南烟雨</h4>
-              <div class="nft-sub">
-                <span>24 集</span>
-                <span class="sub-divider"></span>
-                <span>4 个角色</span>
-                <span class="sub-divider"></span>
-                <span>4 个演员NFT</span>
-              </div>
-              <div class="nft-detail-grid">
-                <div class="nft-detail-item">
-                  <span class="detail-label">单价</span>
-                  <span class="detail-value">12.5 USDC</span>
-                </div>
-                <div class="nft-detail-item">
-                  <span class="detail-label">批量折扣</span>
-                  <span class="detail-value">15%</span>
-                </div>
-              </div>
-              <div class="nft-royalty">
-                <div class="r-item">
-                  <div class="royalty-label">创作者分润</div>
-                  <div class="royalty-value">70%</div>
-                </div>
-                <div class="royalty-divider"></div>
-                <div class="r-item">
-                  <div class="royalty-label">演员NFT分润</div>
-                  <div class="royalty-value">20%</div>
-                </div>
-              </div>
-            </div>
-            <div class="nft-footer" style="flex-direction:column;gap:6px;">
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button" style="flex:1;">
-                  <span class="btn-icon">🔒</span> 质押NFT
-                </button>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('江南烟雨')">
-                  <span class="btn-icon">✏️</span> 编辑
-                </button>
-              </div>
+              <div class="nft-sub"><span>24 集</span></div>
             </div>
           </div>
-
-          <!-- NFT-002: 已质押 -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80" alt="星际迷航 NFT" />
               <span class="nft-id-badge">#NFT-002</span>
-              <span class="nft-stake-status pledged">
-                <span class="status-dot"></span> 已质押
-              </span>
             </div>
             <div class="nft-body">
               <h4>星际迷航</h4>
-              <div class="nft-sub">
-                <span>16 集</span>
-                <span class="sub-divider"></span>
-                <span>6 个角色</span>
-                <span class="sub-divider"></span>
-                <span>6 个演员NFT</span>
-              </div>
-              <div class="nft-detail-grid">
-                <div class="nft-detail-item">
-                  <span class="detail-label">单价</span>
-                  <span class="detail-value">8.0 USDC</span>
-                </div>
-                <div class="nft-detail-item">
-                  <span class="detail-label">批量折扣</span>
-                  <span class="detail-value">10%</span>
-                </div>
-              </div>
-              <div class="nft-royalty">
-                <div class="r-item">
-                  <div class="royalty-label">创作者分润</div>
-                  <div class="royalty-value">70%</div>
-                </div>
-                <div class="royalty-divider"></div>
-                <div class="r-item">
-                  <div class="royalty-label">演员NFT分润</div>
-                  <div class="royalty-value">20%</div>
-                </div>
-              </div>
-            </div>
-            <div class="nft-footer" style="flex-direction:column;gap:6px;">
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button button-amber" style="flex:1;">
-                  <span class="btn-icon">🔓</span> 解质押
-                </button>
-                <button class="button" style="flex:1;" onclick="handleBindActorClick(this)">
-                  <span class="btn-icon">🎬</span> 绑定演员
-                </button>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('星际迷航')">
-                  <span class="btn-icon">✏️</span> 编辑
-                </button>
-              </div>
+              <div class="nft-sub"><span>16 集</span></div>
             </div>
           </div>
-
-          <!-- NFT-003: 已质押 -->
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="长安如梦 NFT" />
               <span class="nft-id-badge">#NFT-003</span>
-              <span class="nft-stake-status pledged">
-                <span class="status-dot"></span> 已质押
-              </span>
             </div>
             <div class="nft-body">
               <h4>长安如梦</h4>
-              <div class="nft-sub">
-                <span>30 集</span>
-                <span class="sub-divider"></span>
-                <span>0 个角色</span>
-                <span class="sub-divider"></span>
-                <span>0 个演员NFT</span>
-              </div>
-              <div class="nft-detail-grid">
-                <div class="nft-detail-item">
-                  <span class="detail-label">单价</span>
-                  <span class="detail-value">9.8 USDC</span>
-                </div>
-                <div class="nft-detail-item">
-                  <span class="detail-label">批量折扣</span>
-                  <span class="detail-value">10%</span>
-                </div>
-              </div>
-              <div class="nft-royalty">
-                <div class="r-item">
-                  <div class="royalty-label">创作者分润</div>
-                  <div class="royalty-value">70%</div>
-                </div>
-                <div class="royalty-divider"></div>
-                <div class="r-item">
-                  <div class="royalty-label">演员NFT分润</div>
-                  <div class="royalty-value">20%</div>
-                </div>
-              </div>
-            </div>
-            <div class="nft-footer" style="flex-direction:column;gap:6px;">
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button button-amber" style="flex:1;">
-                  <span class="btn-icon">🔓</span> 解质押
-                </button>
-                <button class="button" style="flex:1;" onclick="handleBindActorClick(this)">
-                  <span class="btn-icon">🎬</span> 绑定演员
-                </button>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('长安如梦')">
-                  <span class="btn-icon">✏️</span> 编辑
-                </button>
-              </div>
+              <div class="nft-sub"><span>30 集</span></div>
             </div>
           </div>
-
-          <!-- NFT-005: 未质押 -->
           <div class="nft-card" data-staked="false">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="迷雾之城 NFT" />
@@ -957,67 +351,24 @@
             </div>
             <div class="nft-body">
               <h4>迷雾之城</h4>
-              <div class="nft-sub">
-                <span>12 集</span>
-                <span class="sub-divider"></span>
-                <span>2 个角色</span>
-                <span class="sub-divider"></span>
-                <span>2 个演员NFT</span>
-              </div>
-              <div class="nft-detail-grid">
-                <div class="nft-detail-item">
-                  <span class="detail-label">单价</span>
-                  <span class="detail-value">6.5 USDC</span>
-                </div>
-                <div class="nft-detail-item">
-                  <span class="detail-label">批量折扣</span>
-                  <span class="detail-value">5%</span>
-                </div>
-              </div>
-              <div class="nft-royalty">
-                <div class="r-item">
-                  <div class="royalty-label">创作者分润</div>
-                  <div class="royalty-value">70%</div>
-                </div>
-                <div class="royalty-divider"></div>
-                <div class="r-item">
-                  <div class="royalty-label">演员NFT分润</div>
-                  <div class="royalty-value">20%</div>
-                </div>
-              </div>
-            </div>
-            <div class="nft-footer" style="flex-direction:column;gap:6px;">
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button" style="flex:1;">
-                  <span class="btn-icon">🔒</span> 质押NFT
-                </button>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;width:100%;">
-                <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('迷雾之城')">
-                  <span class="btn-icon">✏️</span> 编辑
-                </button>
-              </div>
+              <div class="nft-sub"><span>12 集</span></div>
             </div>
           </div>
-
         </div>
       </div>
-
     </section>
 
-    <!-- Modal: 铸造短剧NFT -->
+    <!-- Mint Modal -->
     <div class="modal-overlay" id="mintModal">
-      <div class="modal">
+      <div class="modal" style="max-width:480px;">
         <div class="modal-header">
           <h3>🔨 铸造短剧 NFT</h3>
           <button class="modal-close" onclick="closeMintModal()">✕</button>
         </div>
         <div class="modal-body">
-          <div id="mintPreview" style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
-            <img id="mintDramaCover" src="" alt="" style="width:72px;height:72px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
-            <div>
-              <h4 id="mintDramaTitle" style="margin:0;font-size:1.1rem;">—</h4>
-            </div>
+          <div class="modal-mint-preview">
+            <img id="mintDramaCover" src="" alt="" />
+            <h4 id="mintDramaTitle">—</h4>
           </div>
           <p style="color:var(--text-muted);line-height:1.7;">确认铸造该短剧为链上 NFT，铸造后该短剧将可产生 STORY 挖矿收益。</p>
         </div>
@@ -1028,7 +379,7 @@
       </div>
     </div>
 
-    <!-- Modal: 铸造演员NFT（确认Mint弹窗） -->
+    <!-- Actor Mint Modal -->
     <div class="modal-backdrop" id="actorMintModal" aria-hidden="true">
       <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="actorMintTitle">
         <div class="modal-header">
@@ -1057,7 +408,7 @@
       </div>
     </div>
 
-    <!-- Modal: 质押短剧NFT -->
+    <!-- Stake Modal -->
     <div class="modal-overlay" id="stakeModal">
       <div class="modal" style="max-width: 520px;">
         <div class="modal-header">
@@ -1119,7 +470,8 @@
         </div>
       </div>
     </div>
-    <!-- Modal: 绑定演员 -->
+
+    <!-- Bind Actor Modal -->
     <div class="modal-overlay" id="bindActorModal">
       <div class="modal" style="max-width: 640px;">
         <div class="modal-header">
@@ -1127,9 +479,7 @@
           <button class="modal-close" onclick="closeBindActorModal()">✕</button>
         </div>
         <div class="modal-body">
-          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">选择短剧中的一个角色，再选择您持有的演员 NFT 进行绑定。演员 NFT 持有者将按持有数量占比瓜分该角色的分润。</p>
-
-          <!-- 短剧信息 -->
+          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">选择短剧中的一个角色，再选择您持有的演员 NFT 进行绑定。</p>
           <div id="bindDramaPreview" style="display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:24px;">
             <img id="bindDramaCover" src="" alt="" style="width:60px;height:60px;border-radius:12px;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
             <div style="flex:1;min-width:0;">
@@ -1141,39 +491,20 @@
               <p id="bindDramaTotalRoyalty" style="margin:0;font-size:1.15rem;font-weight:700;color:var(--accent);">70%</p>
             </div>
           </div>
-
-          <!-- 步骤 1: 选择角色 -->
           <div style="margin-bottom:20px;">
-            <h4 style="margin:0 0 10px;font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:8px;">
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.75rem;font-weight:700;">1</span>
-              选择短剧角色
-            </h4>
-            <div id="bindRoleList" class="mintable-list">
-              <!-- 由 JS 动态渲染 -->
-            </div>
+            <h4 style="margin:0 0 10px;font-size:0.95rem;">1 选择短剧角色</h4>
+            <div id="bindRoleList" class="mintable-list"></div>
           </div>
-
-          <!-- 步骤 2: 选择演员NFT -->
           <div style="margin-bottom:20px;">
-            <h4 style="margin:0 0 10px;font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:8px;">
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.75rem;font-weight:700;">2</span>
-              选择演员 NFT（ERC-1155）
-            </h4>
-            <div id="bindActorList" class="mintable-list">
-              <!-- 由 JS 动态渲染 -->
-            </div>
+            <h4 style="margin:0 0 10px;font-size:0.95rem;">2 选择演员 NFT</h4>
+            <div id="bindActorList" class="mintable-list"></div>
             <div class="empty-state" id="bindActorEmpty" style="display:none;padding:24px;">
               <div class="empty-icon">🎭</div>
               <p style="font-size:0.95rem;">暂无可绑定的演员 NFT<br />请先在「演员 IP」中铸造演员 NFT</p>
             </div>
           </div>
-
-          <!-- 步骤 3: 设置分润比例 -->
           <div style="margin-bottom:16px;">
-            <h4 style="margin:0 0 10px;font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:8px;">
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.75rem;font-weight:700;">3</span>
-              设置角色分润比例
-            </h4>
+            <h4 style="margin:0 0 10px;font-size:0.95rem;">3 设置角色分润比例</h4>
             <div style="display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:16px;border:1px solid var(--border);background:#fafcff;">
               <div style="flex:1;">
                 <p style="margin:0 0 4px;font-size:0.82rem;color:var(--text-muted);">该角色占用短剧NFT总收入的</p>
@@ -1194,10 +525,6 @@
               </div>
             </div>
           </div>
-
-          <div style="padding:12px 16px;border-radius:12px;background:#fff8e6;border:1px solid rgba(255,159,44,0.20);">
-            <p style="margin:0;color:#b87a1a;font-size:0.88rem;line-height:1.6;">💡 演员 NFT 为 ERC-1155 标准，持有该 NFT 的所有用户将按持有数量占比瓜分该角色的分润比例。</p>
-          </div>
         </div>
         <div class="modal-footer">
           <button class="button-secondary" onclick="closeBindActorModal()">取消</button>
@@ -1206,45 +533,40 @@
       </div>
     </div>
 
-  <!-- Modal: 参演短剧列表 -->
-  <div class="modal-overlay" id="actorDramaModal">
-    <div class="modal" style="max-width: 600px;">
-      <div class="modal-header">
-        <h3>🎬 参演短剧</h3>
-        <button class="modal-close" onclick="closeActorDramaModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div id="actorDramaPreview" style="display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
-          <img id="actorDramaAvatar" src="" alt="" style="width:56px;height:56px;border-radius:50%;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
-          <div>
-            <h4 id="actorDramaName" style="margin:0 0 3px;font-size:1.1rem;">—</h4>
-            <p id="actorDramaNftId" style="margin:0;color:var(--text-muted);font-size:0.85rem;">演员 NFT</p>
+    <!-- Actor Drama Modal -->
+    <div class="modal-overlay" id="actorDramaModal">
+      <div class="modal" style="max-width: 600px;">
+        <div class="modal-header">
+          <h3>🎬 参演短剧</h3>
+          <button class="modal-close" onclick="closeActorDramaModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div id="actorDramaPreview" style="display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
+            <img id="actorDramaAvatar" src="" alt="" style="width:56px;height:56px;border-radius:50%;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
+            <div>
+              <h4 id="actorDramaName" style="margin:0 0 3px;font-size:1.1rem;">—</h4>
+              <p id="actorDramaNftId" style="margin:0;color:var(--text-muted);font-size:0.85rem;">演员 NFT</p>
+            </div>
+          </div>
+          <div class="actor-drama-list" id="actorDramaList"></div>
+          <div class="empty-state" id="actorDramaEmpty" style="display:none;">
+            <div class="empty-icon">🎭</div>
+            <p>该演员暂未参演任何短剧</p>
           </div>
         </div>
-        <div class="actor-drama-list" id="actorDramaList">
-          <!-- 由 JS 动态渲染 -->
+        <div class="modal-footer">
+          <button class="button-secondary" onclick="closeActorDramaModal()">关闭</button>
         </div>
-        <div class="empty-state" id="actorDramaEmpty" style="display:none;">
-          <div class="empty-icon">🎭</div>
-          <p>该演员暂未参演任何短剧</p>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="button-secondary" onclick="closeActorDramaModal()">关闭</button>
       </div>
     </div>
-  </div>
 
-  <!-- Toast notification -->
-  <div class="toast-notification" id="toastNotification">
-    <span class="toast-icon">💡</span>
-    <span id="toastMessage"></span>
-  </div>
+    <div class="toast-notification" id="toastNotification">
+      <span class="toast-icon">💡</span>
+      <span id="toastMessage"></span>
+    </div>
 
   <script>
-    // === Toast notification ===
     let toastTimer = null;
-
     function showToast(message) {
       const toast = document.getElementById('toastNotification');
       const msgEl = document.getElementById('toastMessage');
@@ -1252,17 +574,13 @@
       msgEl.textContent = message;
       toast.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
+      toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 
-    // 模拟已通过审核的短剧数据
     let currentMintDrama = null;
     const mintModal = document.getElementById('mintModal');
     const confirmBtn = document.getElementById('mintConfirmBtn');
 
-    // === 页签切换 ===
     function switchTab(tabId, btn) {
       document.querySelectorAll('.narrator-tab').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
@@ -1272,21 +590,15 @@
       filterRow.style.display = tabId === 'tab1' ? 'flex' : 'none';
     }
 
-    // === 短剧筛选 ===
     function filterCards(filter, btn) {
       document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       document.querySelectorAll('#dramaGrid .card-list-item').forEach(card => {
         const status = card.dataset.status;
-        if (filter === 'all') {
-          card.style.display = '';
-        } else {
-          card.style.display = status === filter ? '' : 'none';
-        }
+        card.style.display = (filter === 'all' || status === filter) ? '' : 'none';
       });
     }
 
-    // === 弹窗 ===
     function openMintModal(drama) {
       if (!drama) return;
       currentMintDrama = drama;
@@ -1315,29 +627,23 @@
       }, 1500);
     }
 
-    mintModal.addEventListener('click', function(e) {
-      if (e.target === this) closeMintModal();
-    });
+    mintModal.addEventListener('click', function(e) { if (e.target === this) closeMintModal(); });
 
     document.addEventListener('click', function(e) {
       const btn = e.target.closest('.card-list-item .card-action .button');
-      if (btn) {
-        const text = btn.textContent.trim();
-        if (text.includes('铸造短剧NFT')) {
-          e.preventDefault();
-          const card = btn.closest('.card-list-item');
-          if (card && card.dataset.status === 'approved') {
-            const title = card.querySelector('.card-body h3').textContent.trim();
-            const cover = card.querySelector('.card-header img').src;
-            openMintModal({ title: title, cover: cover, episodes: '-', price: '-', discount: '-', royalty: '-' });
-          } else if (card && card.dataset.status === 'rejected') {
-            alert('❌ 该短剧未通过审核，无法铸造。请修改后重新提交。');
-          }
+      if (btn && btn.textContent.trim().includes('铸造短剧NFT')) {
+        e.preventDefault();
+        const card = btn.closest('.card-list-item');
+        if (card && card.dataset.status === 'approved') {
+          const title = card.querySelector('.card-body h3').textContent.trim();
+          const cover = card.querySelector('.card-header img').src;
+          openMintModal({ title, cover });
+        } else if (card && card.dataset.status === 'rejected') {
+          alert('❌ 该短剧未通过审核，无法铸造。');
         }
       }
     });
 
-    // === 质押弹窗 ===
     let currentStakeNft = null;
     const stakeModal = document.getElementById('stakeModal');
     const stakedNftIds = new Set();
@@ -1382,19 +688,12 @@
         stakeInfo.style.display = 'none';
         stakedInfo.style.display = 'block';
         document.getElementById('stakePendingEarned').textContent = drama.earned + ' USDC';
-        footer.innerHTML = `
-          <button class="button-secondary" onclick="closeStakeModal()">取消</button>
-          <button class="button" style="background:#f59e0b;" onclick="confirmUnstake()">解质押</button>
-        `;
+        footer.innerHTML = '<button class="button-secondary" onclick="closeStakeModal()">取消</button><button class="button" style="background:#f59e0b;" onclick="confirmUnstake()">解质押</button>';
       } else {
         stakeInfo.style.display = 'block';
         stakedInfo.style.display = 'none';
-        footer.innerHTML = `
-          <button class="button-secondary" onclick="closeStakeModal()">取消</button>
-          <button class="button" onclick="confirmStake()">确认质押</button>
-        `;
+        footer.innerHTML = '<button class="button-secondary" onclick="closeStakeModal()">取消</button><button class="button" onclick="confirmStake()">确认质押</button>';
       }
-
       stakeModal.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -1410,100 +709,37 @@
       const btn = document.querySelector('#stakeModalFooter .button');
       btn.textContent = '质押中...';
       btn.disabled = true;
-
       setTimeout(() => {
-        const card = currentStakeNft.card;
-        card.dataset.staked = 'true';
+        currentStakeNft.card.dataset.staked = 'true';
         stakedNftIds.add(currentStakeNft.nftId);
-
-        const coverWrap = card.querySelector('.nft-cover-wrap');
-        let statusEl = coverWrap.querySelector('.nft-stake-status');
-        if (!statusEl) {
-          statusEl = document.createElement('span');
-          statusEl.className = 'nft-stake-status';
-          coverWrap.appendChild(statusEl);
-        }
-        statusEl.innerHTML = '<span class="status-dot"></span> 已质押';
-        statusEl.className = 'nft-stake-status pledged';
-
-        const footer = card.querySelector('.nft-footer');
-        if (footer) {
-          footer.style.flexDirection = 'column';
-          footer.style.gap = '6px';
-          footer.innerHTML = `
-            <div style="display:flex;align-items:center;gap:8px;width:100%;">
-              <button class="button button-amber" style="flex:1;"><span class="btn-icon">🔓</span> 解质押</button>
-              <button class="button" style="flex:1;" onclick="handleBindActorClick(this)"><span class="btn-icon">🎬</span> 绑定演员</button>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;width:100%;">
-              <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('${currentStakeNft.name}')">
-                <span class="btn-icon">✏️</span> 编辑
-              </button>
-            </div>
-          `;
-        }
-
-        alert(`✅ 「${currentStakeNft.name}」质押成功！\n\n从此刻起，「${currentStakeNft.name}」短剧每笔销售的 70% 分润将自动累计至您的账户。\n\n可在「短剧NFT」标签页查看质押状态。`);
+        alert(`✅ 「${currentStakeNft.name}」质押成功！`);
         closeStakeModal();
       }, 1000);
     }
 
     function confirmUnstake() {
       if (!currentStakeNft) return;
-      if (!confirm(`确定要解质押「${currentStakeNft.name}」吗？解质押后将不再享受该短剧的 70% 分润权益。`)) return;
-
+      if (!confirm(`确定要解质押「${currentStakeNft.name}」吗？`)) return;
       const btn = document.querySelector('#stakeModalFooter .button');
       btn.textContent = '解质押中...';
       btn.disabled = true;
-
       setTimeout(() => {
-        const card = currentStakeNft.card;
-        card.dataset.staked = 'false';
+        currentStakeNft.card.dataset.staked = 'false';
         stakedNftIds.delete(currentStakeNft.nftId);
-
-        const statusEl = card.querySelector('.nft-stake-status');
-        if (statusEl) statusEl.remove();
-
-        const footer = card.querySelector('.nft-footer');
-        if (footer) {
-          footer.style.flexDirection = 'column';
-          footer.style.gap = '6px';
-          footer.innerHTML = `
-            <div style="display:flex;align-items:center;gap:8px;width:100%;">
-              <button class="button" style="flex:1;"><span class="btn-icon">🔒</span> 质押NFT</button>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;width:100%;">
-              <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-drama.html?title=' + encodeURIComponent('${currentStakeNft.name}')">
-                <span class="btn-icon">✏️</span> 编辑
-              </button>
-            </div>
-          `;
-        }
-
-        alert(`✅ 「${currentStakeNft.name}」解质押成功！\n\n已累计分润：${document.getElementById('stakePendingEarned').textContent}\n\n可在收益页中领取累计的分润。`);
+        alert(`✅ 「${currentStakeNft.name}」解质押成功！`);
         closeStakeModal();
       }, 1000);
     }
 
-    stakeModal.addEventListener('click', function(e) {
-      if (e.target === this) closeStakeModal();
-    });
+    stakeModal.addEventListener('click', function(e) { if (e.target === this) closeStakeModal(); });
 
     document.addEventListener('click', function(e) {
-      const btn = e.target.closest('.nft-card .nft-footer .button');
-      if (btn) {
-        const text = btn.textContent.trim();
-        if (text.includes('质押NFT') || text.includes('解质押')) {
-          e.preventDefault();
-          const card = btn.closest('.nft-card');
-          if (card) {
-            openStakeModal(card);
-          }
-        }
-      }
+      const btn = e.target.closest('.nft-card .nft-body, .nft-card .nft-cover-wrap');
+      if (!btn) return;
+      const card = btn.closest('.nft-card');
+      if (card) openStakeModal(card);
     });
 
-    // === 演员铸造弹窗（确认 Mint 弹窗） ===
     let currentActor = null;
     const actorMintModal = document.getElementById('actorMintModal');
 
@@ -1535,7 +771,6 @@
       const origText = btn.textContent;
       btn.textContent = '处理中...';
       btn.disabled = true;
-
       setTimeout(() => {
         alert(`✅ 「${currentActor.name}」演员 NFT 铸造成功！`);
         closeActorMintModal();
@@ -1547,16 +782,9 @@
     document.getElementById('actorMintClose').addEventListener('click', closeActorMintModal);
     document.getElementById('actorMintCancel').addEventListener('click', closeActorMintModal);
     document.getElementById('actorMintConfirm').addEventListener('click', confirmActorMint);
+    actorMintModal.addEventListener('click', function(e) { if (e.target === this) closeActorMintModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && actorMintModal.classList.contains('active')) closeActorMintModal(); });
 
-    actorMintModal.addEventListener('click', function(e) {
-      if (e.target === this) closeActorMintModal();
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && actorMintModal.classList.contains('active')) closeActorMintModal();
-    });
-
-    // === 绑定演员弹窗 ===
     let currentBindDrama = null;
     let selectedBindRole = null;
     let selectedBindActor = null;
@@ -1564,26 +792,26 @@
 
     const dramaRoles = {
       '星际迷航': [
-        { id: 'role-1', name: '舰长·杰克', gender: '♂ 男性', desc: '星舰指挥官，冷静果断' },
-        { id: 'role-2', name: '科学官·艾琳', gender: '♀ 女性', desc: '首席科学官，博学睿智' },
-        { id: 'role-3', name: '工程师·赵刚', gender: '♂ 男性', desc: '引擎总工程师，技术狂人' },
-        { id: 'role-4', name: '医疗官·苏珊', gender: '♀ 女性', desc: '舰载医生，温柔坚韧' },
+        { id: 'role-1', name: '舰长·杰克', gender: '♂ 男性', desc: '星舰指挥官' },
+        { id: 'role-2', name: '科学官·艾琳', gender: '♀ 女性', desc: '首席科学官' },
+        { id: 'role-3', name: '工程师·赵刚', gender: '♂ 男性', desc: '引擎总工程师' },
+        { id: 'role-4', name: '医疗官·苏珊', gender: '♀ 女性', desc: '舰载医生' },
         { id: 'role-5', name: '通讯官·王磊', gender: '♂ 男性', desc: '通讯与战术分析' },
         { id: 'role-6', name: '领航员·小林', gender: '♀ 女性', desc: '导航与星际航线规划' },
       ],
       '长安如梦': [
-        { id: 'role-c-1', name: '太子·李承钰', gender: '♂ 男性', desc: '东宫太子，温文尔雅' },
-        { id: 'role-c-2', name: '才女·沈清荷', gender: '♀ 女性', desc: '名门闺秀，诗词歌赋' },
+        { id: 'role-c-1', name: '太子·李承钰', gender: '♂ 男性', desc: '东宫太子' },
+        { id: 'role-c-2', name: '才女·沈清荷', gender: '♀ 女性', desc: '名门闺秀' },
       ],
       '江南烟雨': [
         { id: 'role-j-1', name: '书生·顾言', gender: '♂ 男性', desc: '赴京赶考的书生' },
-        { id: 'role-j-2', name: '茶女·陆小曼', gender: '♀ 女性', desc: '茶楼女主人，聪慧机敏' },
-        { id: 'role-j-3', name: '知府·周明远', gender: '♂ 男性', desc: '清正廉明的知府大人' },
-        { id: 'role-j-4', name: '画师·白露', gender: '♀ 女性', desc: '流浪画师，神秘莫测' },
+        { id: 'role-j-2', name: '茶女·陆小曼', gender: '♀ 女性', desc: '茶楼女主人' },
+        { id: 'role-j-3', name: '知府·周明远', gender: '♂ 男性', desc: '清正廉明' },
+        { id: 'role-j-4', name: '画师·白露', gender: '♀ 女性', desc: '流浪画师' },
       ],
       '迷雾之城': [
-        { id: 'role-m-1', name: '侦探·陈默', gender: '♂ 男性', desc: '私家侦探，沉默寡言' },
-        { id: 'role-m-2', name: '记者·林薇', gender: '♀ 女性', desc: '调查记者，勇敢执着' },
+        { id: 'role-m-1', name: '侦探·陈默', gender: '♂ 男性', desc: '私家侦探' },
+        { id: 'role-m-2', name: '记者·林薇', gender: '♀ 女性', desc: '调查记者' },
       ],
     };
 
@@ -1598,11 +826,9 @@
       const cover = nftCard.querySelector('.nft-cover').src;
       const name = nftCard.querySelector('.nft-body h4').textContent;
       const nftId = nftCard.querySelector('.nft-id-badge').textContent;
-
       currentBindDrama = { cover, name, nftId, card: nftCard };
       selectedBindRole = null;
       selectedBindActor = null;
-
       document.getElementById('bindDramaCover').src = cover;
       document.getElementById('bindDramaCover').alt = name;
       document.getElementById('bindDramaName').textContent = name;
@@ -1610,19 +836,9 @@
 
       const roles = dramaRoles[name] || [];
       const roleList = document.getElementById('bindRoleList');
-      if (roles.length === 0) {
-        roleList.innerHTML = `<div class="empty-state" style="display:block;padding:24px;"><div class="empty-icon">📋</div><p>该短剧暂无角色数据</p></div>`;
-      } else {
-        roleList.innerHTML = roles.map(r => `
-          <div class="mintable-item" data-role-id="${r.id}" onclick="selectBindRole('${r.id}')">
-            <div class="mint-info">
-              <h4>${r.name}</h4>
-              <p>${r.gender} · ${r.desc}</p>
-            </div>
-            <div class="mint-check"></div>
-          </div>
-        `).join('');
-      }
+      roleList.innerHTML = roles.length === 0
+        ? '<div class="empty-state" style="display:block;padding:24px;"><div class="empty-icon">📋</div><p>该短剧暂无角色数据</p></div>'
+        : roles.map(r => `<div class="mintable-item" data-role-id="${r.id}" onclick="selectBindRole('${r.id}')"><div class="mint-info"><h4>${r.name}</h4><p>${r.gender} · ${r.desc}</p></div><div class="mint-check"></div></div>`).join('');
 
       renderBindableActors();
       document.getElementById('bindRoyaltySlider').value = 10;
@@ -1643,24 +859,12 @@
     function renderBindableActors() {
       const list = document.getElementById('bindActorList');
       const empty = document.getElementById('bindActorEmpty');
-
       if (bindableActors.length === 0) {
         list.innerHTML = '';
         empty.style.display = 'block';
       } else {
         empty.style.display = 'none';
-        list.innerHTML = bindableActors.map(a => `
-          <div class="mintable-item" data-actor-id="${a.id}" onclick="selectBindActor('${a.id}')">
-            <div class="mint-thumb">
-              <img src="${a.avatar}" alt="${a.name}" />
-            </div>
-            <div class="mint-info">
-              <h4>${a.name}</h4>
-              <p>${a.gender} · 发行总量 ${a.totalSupply.toLocaleString()} · 我持有 ${a.myHolding} 个</p>
-            </div>
-            <div class="mint-check"></div>
-          </div>
-        `).join('');
+        list.innerHTML = bindableActors.map(a => `<div class="mintable-item" data-actor-id="${a.id}" onclick="selectBindActor('${a.id}')"><div class="mint-thumb"><img src="${a.avatar}" alt="${a.name}" /></div><div class="mint-info"><h4>${a.name}</h4><p>${a.gender} · 发行总量 ${a.totalSupply.toLocaleString()} · 我持有 ${a.myHolding} 个</p></div><div class="mint-check"></div></div>`).join('');
       }
     }
 
@@ -1687,21 +891,17 @@
     function updateBindRoyaltyDisplay() {
       const val = parseInt(document.getElementById('bindRoyaltySlider').value);
       document.getElementById('bindRoyaltyValue').textContent = val + '%';
-      const remaining = 70 - val;
-      document.getElementById('bindDramaRemaining').textContent = remaining + '%';
+      document.getElementById('bindDramaRemaining').textContent = (70 - val) + '%';
       document.getElementById('bindActorRoyalty').textContent = val + '%';
     }
 
     function updateBindConfirmBtn() {
-      const btn = document.getElementById('bindActorConfirmBtn');
-      btn.disabled = !(selectedBindRole && selectedBindActor);
+      document.getElementById('bindActorConfirmBtn').disabled = !(selectedBindRole && selectedBindActor);
     }
 
     function confirmBindActor() {
       if (!selectedBindRole || !selectedBindActor || !currentBindDrama) return;
-
-      const roles = dramaRoles[currentBindDrama.name] || [];
-      const role = roles.find(r => r.id === selectedBindRole);
+      const role = (dramaRoles[currentBindDrama.name] || []).find(r => r.id === selectedBindRole);
       const roleName = role ? role.name : '未知角色';
       const actor = bindableActors.find(a => a.id === selectedBindActor);
       const actorName = actor ? actor.name : '未知演员';
@@ -1710,46 +910,26 @@
       const btn = document.getElementById('bindActorConfirmBtn');
       btn.textContent = '绑定中...';
       btn.disabled = true;
-
       setTimeout(() => {
-        alert(`✅ 绑定成功！\n\n绑定详情：\n- 短剧：${currentBindDrama.name}\n- 角色：${roleName}\n- 演员 NFT：${actorName}\n- 角色分润比例：${royaltyVal}%\n  - 短剧NFT分润：${70 - royaltyVal}%\n  - 演员NFT分润：${royaltyVal}%\n\n持有「${actorName}」NFT 的所有用户将按持有数量占比瓜分 ${royaltyVal}% 的分润。`);
-
-        const card = currentBindDrama.card;
-        const meta = card.querySelector('.nft-meta');
-        if (meta) {
-          const actorNftSpans = meta.querySelectorAll('span');
-          if (actorNftSpans.length >= 3) {
-            const currentCount = parseInt(actorNftSpans[2].textContent.replace('演员NFT ', '')) || 0;
-            actorNftSpans[2].textContent = '演员NFT ' + (currentCount + 1);
-          }
-        }
-
+        alert(`✅ 绑定成功！\n\n- 短剧：${currentBindDrama.name}\n- 角色：${roleName}\n- 演员 NFT：${actorName}\n- 演员NFT分润：${royaltyVal}%`);
         closeBindActorModal();
         btn.textContent = '确认绑定';
         btn.disabled = false;
       }, 1000);
     }
 
-    bindActorModal.addEventListener('click', function(e) {
-      if (e.target === this) closeBindActorModal();
-    });
+    bindActorModal.addEventListener('click', function(e) { if (e.target === this) closeBindActorModal(); });
 
     function handleBindActorClick(btn) {
       const card = btn.closest('.nft-card');
-      if (card) {
-        openBindActorModal(card);
-      }
+      if (card) openBindActorModal(card);
     }
 
     document.addEventListener('click', function(e) {
-      const btn = e.target.closest('.nft-footer .button');
-      if (btn && btn.textContent.trim() === '绑定演员') {
-        e.preventDefault();
-        handleBindActorClick(btn);
-      }
+      const btn = e.target.closest('.nft-body .button');
+      if (btn && btn.textContent.trim() === '绑定演员') { e.preventDefault(); handleBindActorClick(btn); }
     });
 
-    // === 删除短剧 ===
     function confirmDelete(title) {
       if (confirm(`确定要删除「${title}」吗？删除后将不可恢复。`)) {
         const cards = document.querySelectorAll('#dramaGrid .card-list-item');
@@ -1766,24 +946,17 @@
       }
     }
 
-    // === 短剧NFT筛选 ===
     function filterNFTs(filter, btn) {
       document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      const nftCards = document.querySelectorAll('#tab2 .nft-card');
-      nftCards.forEach(card => {
+      document.querySelectorAll('#tab2 .nft-card').forEach(card => {
         const isStaked = card.dataset.staked === 'true';
-        if (filter === 'all') {
-          card.style.display = '';
-        } else if (filter === 'staked') {
-          card.style.display = isStaked ? '' : 'none';
-        } else if (filter === 'unstaked') {
-          card.style.display = !isStaked ? '' : 'none';
-        }
+        if (filter === 'all') { card.style.display = ''; }
+        else if (filter === 'staked') { card.style.display = isStaked ? '' : 'none'; }
+        else if (filter === 'unstaked') { card.style.display = !isStaked ? '' : 'none'; }
       });
     }
 
-    // === 参演短剧弹窗 ===
     const actorDramaData = {
       '苏婉清': [
         { drama: '江南烟雨', role: '茶女·陆小曼', royalty: '8%', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80' },
@@ -1819,7 +992,6 @@
     function openActorDramaModal(actorName) {
       const dramas = actorDramaData[actorName] || [];
       const avatar = actorAvatarMap[actorName] || '';
-
       document.getElementById('actorDramaAvatar').src = avatar;
       document.getElementById('actorDramaAvatar').alt = actorName;
       document.getElementById('actorDramaName').textContent = actorName;
@@ -1827,29 +999,13 @@
 
       const list = document.getElementById('actorDramaList');
       const empty = document.getElementById('actorDramaEmpty');
-
       if (dramas.length === 0) {
         list.innerHTML = '';
         empty.style.display = 'block';
       } else {
         empty.style.display = 'none';
-        list.innerHTML = dramas.map(d => `
-          <div class="actor-drama-item">
-            <div class="drama-thumb">
-              <img src="${d.cover}" alt="${d.drama}" />
-            </div>
-            <div class="drama-info">
-              <h4>${d.drama}</h4>
-              <p class="drama-role">饰演角色：${d.role}</p>
-            </div>
-            <div class="drama-royalty">
-              <div class="royalty-pct">${d.royalty}</div>
-              <div class="royalty-label">分润比例</div>
-            </div>
-          </div>
-        `).join('');
+        list.innerHTML = dramas.map(d => `<div class="actor-drama-item"><div class="drama-thumb"><img src="${d.cover}" alt="${d.drama}" /></div><div class="drama-info"><h4>${d.drama}</h4><p class="drama-role">饰演角色：${d.role}</p></div><div class="drama-royalty"><div class="royalty-pct">${d.royalty}</div><div class="royalty-label">分润比例</div></div></div>`).join('');
       }
-
       actorDramaModal.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -1859,17 +1015,13 @@
       document.body.style.overflow = '';
     }
 
-    actorDramaModal.addEventListener('click', function(e) {
-      if (e.target === this) closeActorDramaModal();
-    });
+    actorDramaModal.addEventListener('click', function(e) { if (e.target === this) closeActorDramaModal(); });
 
-    // === 编辑短剧 - 跳转到独立编辑页面 ===
     function openEditDramaModal(btn) {
       const card = btn.closest('.card-list-item');
       if (!card) return;
       const title = card.querySelector('.card-body h3').textContent.trim();
-      const target = 'edit-drama.html?title=' + encodeURIComponent(title);
-      window.location.href = target;
+      window.location.href = 'edit-drama.html?title=' + encodeURIComponent(title);
     }
   </script>
 
