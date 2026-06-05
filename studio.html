@@ -694,6 +694,10 @@
             <span style="color:var(--text-muted);">💰 升级费用</span>
             <span id="modalLevelCost" style="font-weight:700;color:var(--accent);">0 STORY</span>
           </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
+            <span style="color:var(--text-muted);">🎭 消耗同IP同等级演员</span>
+            <span id="modalLevelConsume" style="font-weight:700;color:var(--danger);">0 / 2</span>
+          </div>
         </div>
         <div style="margin-top:12px;" id="modalLevelProgressWrap">
           <div style="height:6px;background:#eaf4ee;border-radius:999px;overflow:hidden;">
@@ -756,10 +760,12 @@
     // ============================================================
     // 每个子演员 = 用户从母版 Mint 出来的独立资产
     const MY_ACTORS = [
+      // === 苏婉清 IP × 3 个分身（前3张卡片一模一样，仅ID后缀不同） ===
       {
-        id: '#C-001',
+        id: '#Su-001',
         name: '苏婉清',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'suvanqing',
         level: 2,
         energy: 180,
         energyMax: 240,
@@ -772,24 +778,59 @@
         status: 'active',
       },
       {
-        id: '#C-002',
+        id: '#Su-002',
+        name: '苏婉清',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'suvanqing',
+        level: 2,
+        energy: 120,
+        energyMax: 240,
+        heat: 2.0,
+        dailyStory: 15.0,
+        cumulativeStory: 120.0,
+        cumulativePlays: 30000,
+        isStaking: false,
+        stakingDays: 0,
+        status: 'idle',
+      },
+      {
+        id: '#Su-003',
+        name: '苏婉清',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'suvanqing',
+        level: 2,
+        energy: 80,
+        energyMax: 240,
+        heat: 1.8,
+        dailyStory: 12.0,
+        cumulativeStory: 95.0,
+        cumulativePlays: 20000,
+        isStaking: false,
+        stakingDays: 0,
+        status: 'idle',
+      },
+      // === 其他演员 ===
+      {
+        id: '#Li-001',
         name: '李云飞',
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'liyunfei',
         level: 1,
         energy: 30,
         energyMax: 100,
         heat: 0.8,
         dailyStory: 0.8,
         cumulativeStory: 15.2,
-        cumulativePlays: 10000,
+        cumulativePlays: 8000,
         isStaking: true,
         stakingDays: 2,
         status: 'active',
       },
       {
-        id: '#C-003',
+        id: '#Lin-001',
         name: '林梦瑶',
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'linmengyao',
         level: 3,
         energy: 420,
         energyMax: 580,
@@ -802,9 +843,10 @@
         status: 'active',
       },
       {
-        id: '#C-004',
+        id: '#Zhao-001',
         name: '赵无极',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'zhaowuji',
         level: 4,
         energy: 1100,
         energyMax: 1350,
@@ -817,9 +859,10 @@
         status: 'idle',
       },
       {
-        id: '#C-005',
+        id: '#Shang-001',
         name: '上官婉儿',
         avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'shangguan',
         level: 1,
         energy: 65,
         energyMax: 100,
@@ -832,9 +875,10 @@
         status: 'paused',
       },
       {
-        id: '#C-006',
+        id: '#Luna-001',
         name: 'Luna',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'shangguan',
         level: 1,
         energy: 50,
         energyMax: 100,
@@ -845,6 +889,39 @@
         isStaking: false,
         stakingDays: 0,
         status: 'paused',
+      },
+      // 李云飞（liyunfei）同IP同等级分身，供升级消耗
+      {
+        id: '#Li-002',
+        name: '李云飞·贰',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'liyunfei',
+        level: 1,
+        energy: 60,
+        energyMax: 100,
+        heat: 0.7,
+        dailyStory: 0.5,
+        cumulativeStory: 3.0,
+        cumulativePlays: 5000,
+        isStaking: false,
+        stakingDays: 0,
+        status: 'idle',
+      },
+      {
+        id: '#Li-003',
+        name: '李云飞·叁',
+        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&h=400&q=80',
+        parentIP: 'liyunfei',
+        level: 1,
+        energy: 45,
+        energyMax: 100,
+        heat: 0.6,
+        dailyStory: 0.3,
+        cumulativeStory: 1.5,
+        cumulativePlays: 3000,
+        isStaking: false,
+        stakingDays: 0,
+        status: 'idle',
       },
     ];
 
@@ -928,6 +1005,7 @@
             <img src="${actor.avatar}" alt="${actor.name}" />
             ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
             <div class="actor-card-hero-overlay"></div>
+            <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);color:#fff;font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:999px;pointer-events:none;z-index:5;">${actor.id}</div>
             <div class="actor-card-hero-info">
               <div class="actor-hero-lv${canUpgrade ? ' can-upgrade' : ''}" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
                 Lv${actor.level} <span>${levelCfg.name}</span>
@@ -1134,6 +1212,11 @@
       document.getElementById('modalLevelName').textContent = currentCfg.name;
       document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
 
+      // 计算可用作消耗的同IP同等级演员（不含自身）
+      const sameIpSameLevel = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
+      const availableCount = sameIpSameLevel.length;
+      const meetsConsumeReq = availableCount >= 2;
+
       if (nextLevel && threshold) {
         const plays = actor.cumulativePlays || 0;
         const progress = Math.min(100, (plays / threshold.playsRequired) * 100);
@@ -1143,11 +1226,13 @@
         document.getElementById('modalLevelPlaysReq').textContent = formatNumber(threshold.playsRequired);
         document.getElementById('modalLevelCost').textContent = threshold.cost + ' STORY';
         document.getElementById('modalLevelProgress').style.width = progress + '%';
+        document.getElementById('modalLevelConsume').textContent = Math.min(availableCount, 2) + ' / 2';
+        document.getElementById('modalLevelConsume').style.color = meetsConsumeReq ? 'var(--accent)' : 'var(--danger)';
 
         document.getElementById('modalLevelUpBtn').style.display = 'block';
         document.getElementById('modalLevelUpBtn').textContent = '⬆️ 升级到 Lv' + nextLevel + ' ' + nextCfg.name;
 
-        if (meetsPlayReq) {
+        if (meetsPlayReq && meetsConsumeReq) {
           document.getElementById('modalLevelUpBtn').style.background = 'linear-gradient(135deg, #05DF72, #00BBA7)';
           document.getElementById('modalLevelUpBtn').disabled = false;
         } else {
@@ -1174,8 +1259,42 @@
     }
 
     function upgradeLevel() {
-      // stubbed - will integrate with real contract later
-      showToast('🛠️ 升级功能即将上线，敬请期待', '🏅');
+      const actor = MY_ACTORS.find(a => a.id === pendingLevelActorId);
+      if (!actor) return;
+
+      const nextLevel = actor.level < 5 ? actor.level + 1 : null;
+      if (!nextLevel) return;
+
+      // 查找同IP同等级的可用演员（不含自身）
+      const consumable = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
+      const meetsPlayReq = (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[nextLevel]?.playsRequired || Infinity);
+      const meetsConsumeReq = consumable.length >= 2;
+      const threshold = LEVEL_UP_THRESHOLDS[nextLevel];
+
+      if (!meetsPlayReq) {
+        showToast('📊 累计完播不足，无法升级', '🏅');
+        return;
+      }
+      if (!meetsConsumeReq) {
+        showToast('🎭 需要消耗 2 个同IP同等级演员分身（当前有 ' + consumable.length + ' 个）', '🏅');
+        return;
+      }
+
+      // 消耗 2 个同IP同等级演员（从数组中移除）
+      const toRemove = consumable.slice(0, 2);
+      toRemove.forEach(c => {
+        const idx = MY_ACTORS.indexOf(c);
+        if (idx !== -1) MY_ACTORS.splice(idx, 1);
+      });
+
+      // 升级
+      actor.level = nextLevel;
+      actor.energyMax = LEVEL_CONFIG[nextLevel].energyMax;
+      actor.energy = LEVEL_CONFIG[nextLevel].energyMax;
+
+      closeLevelModal();
+      renderActors();
+      showToast('🏆 ' + actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name + '！消耗 2 个同等级分身', '🎉');
     }
 
   </script>
