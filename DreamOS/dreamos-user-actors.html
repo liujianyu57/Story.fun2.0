@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的演员 IP · DreamOS</title>
+<title>我的演员素材 · DreamOS</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -707,13 +707,14 @@ body {
 <div class="topbar">
   <div class="tb-left">
     <button class="back-btn" onclick="goBack()">← 返回</button>
-    <span class="tb-title">我的演员 IP</span>
+    <span class="tb-title">我的演员素材</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button class="tb-right-btn" onclick="window.open('../studio.html','_blank')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:6px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">进入经纪工坊 →</button>
     <span class="tb-count" id="nft-count">0 个</span>
   </div>
 </div>
+
 
 <!-- Body -->
 <div class="body" id="page-body"></div>
@@ -732,7 +733,7 @@ body {
         <button class="modal-copy-btn" id="modalCopyBtn" onclick="copyContract()">复制</button>
       </div>
       <div class="modal-clone-section">
-        <div class="modal-clone-label">持有的演员分身</div>
+        <div class="modal-clone-label">持有的演员素材</div>
         <div class="modal-clone-list" id="modalCloneList"></div>
         <button class="modal-clone-load-more" id="modalLoadMore" onclick="loadMoreClones()" style="display:none">加载更多 ↓</button>
       </div>
@@ -743,11 +744,11 @@ body {
   </div>
 </div>
 
-<!-- Modal: Create IP -->
+<!-- Modal: Create -->
 <div class="modal-overlay" id="createModal">
   <div class="modal-card">
     <div class="modal-header">
-      <h2 style="font-size:20px">创建演员 IP</h2>
+      <h2 style="font-size:20px">创建演员素材</h2>
       <button class="modal-close" onclick="closeCreateModal()">✕</button>
     </div>
     <div class="modal-body create-form">
@@ -793,16 +794,16 @@ body {
         <div class="form-label">发行总量</div>
         <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid var(--bs);background:var(--ink-900);font-size:12px;color:var(--t2)">
           <span style="font-weight:500;color:var(--t1)">10,000</span>
-          <span style="color:var(--t3)">个分身</span>
+          <span style="color:var(--t3)">个素材</span>
         </div>
         <input type="hidden" id="createTotalSupply" value="10000">
       </div>
       <div class="form-group">
-        <div class="form-label">分身价格 <span class="form-hint">！每个分身的售价 USDC</span></div>
+        <div class="form-label">素材价格 <span class="form-hint">！每个素材的售价 USDC</span></div>
         <input class="form-input" id="createPrice" type="number" min="0" step="0.01" placeholder="10" oninput="calcFee()">
       </div>
       <div class="form-group">
-        <div class="form-label">自留数量 <span class="form-hint">！创建者预留的分身数量</span></div>
+        <div class="form-label">自留数量 <span class="form-hint">！创建者预留的素材数量</span></div>
         <input class="form-input" id="createSelfReserve" type="number" min="1" max="10000" placeholder="1" oninput="calcFee()">
       </div>
       <!-- Fee -->
@@ -834,7 +835,7 @@ body {
 <script src="../auth.js"></script>
 <script>
 // ══════════════════════════════════════════════
-//  Mock Actor IP Database
+//  Mock Actor Material Database
 // ══════════════════════════════════════════════
 const ACTOR_IP_DB = {
   'Luna': {
@@ -941,8 +942,8 @@ function renderPage() {
     body.innerHTML =
       '<div class="login-prompt">' +
       '  <div class="prompt-icon">🎭</div>' +
-      '  <div class="prompt-title">登录后查看持有的演员 IP</div>' +
-      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员分身。</div>' +
+      '  <div class="prompt-title">登录后查看持有的演员素材</div>' +
+      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员素材。</div>' +
       '  <button class="prompt-btn" onclick="goLogin()">去登录 →</button>' +
       '</div>';
     document.getElementById('nft-count').textContent = '未登录';
@@ -962,16 +963,16 @@ function renderPage() {
   }
 
   var ipNames = Object.keys(ipMap);
-  document.getElementById('nft-count').textContent = ipNames.length + ' 个 IP';
+  document.getElementById('nft-count').textContent = ipNames.length + ' 个素材';
 
   // ── Empty state ──
   if (ipNames.length === 0) {
     body.innerHTML =
       '<div class="empty-state">' +
       '  <div class="empty-icon">🎭</div>' +
-      '  <div class="empty-title">还没有持有演员分身</div>' +
-      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员 IP，即可在这里查看你持有的演员分身。</div>' +
-      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建演员 IP</button>' +
+      '  <div class="empty-title">还没有持有演员素材</div>' +
+      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员素材，即可在这里查看你持有的演员素材。</div>' +
+      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建演员素材</button>' +
       '</div>';
     return;
   }
@@ -979,10 +980,10 @@ function renderPage() {
   // ── Render cards (one per IP) ──
   var html = '';
   html += '<div class="sec-name-row">';
-  html += '  <div class="sec-name">我的演员 IP</div>';
-  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建演员 IP</button>';
+  html += '  <div class="sec-name">我的演员素材</div>';
+  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建演员素材</button>';
   html += '</div>';
-  html += '<div class="sec-sub">持有演员分身可使用该演员 IP 形象参演短剧。</div>';
+  html += '<div class="sec-sub">持有演员素材即可使用该素材形象参与短剧。</div>';
   html += '<hr class="sec-div">';
   html += '<div class="actor-grid">';
 
@@ -1068,7 +1069,7 @@ function renderClonePage() {
   for (var i = 0; i < pageItems.length; i++) {
     pageHtml += '<div class="modal-clone-item">';
     pageHtml += '  <span class="modal-clone-id">' + pageItems[i] + '</span>';
-    pageHtml += '  <span class="modal-clone-status">分身</span>';
+    pageHtml += '  <span class="modal-clone-status">素材</span>';
     pageHtml += '</div>';
   }
 
@@ -1137,7 +1138,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ══════════════════════════════════════════════
-//  Create IP Modal
+//  Create Modal
 // ══════════════════════════════════════════════
 
 function openCreateModal() {
@@ -1219,9 +1220,9 @@ function confirmCreate() {
 
   // Validation
   if (!name) { showToast('请输入演员姓名'); return; }
-  if (ACTOR_IP_DB[name]) { showToast('该演员 IP 已存在'); return; }
+  if (ACTOR_IP_DB[name]) { showToast('该演员素材已存在'); return; }
   if (!desc) { showToast('请输入演员简介'); return; }
-  if (price < 0) { showToast('请输入有效的分身价格'); return; }
+  if (price < 0) { showToast('请输入有效的素材价格'); return; }
   if (selfReserve < 1) { showToast('自留数量至少为 1'); return; }
   if (selfReserve > totalSupply) { showToast('自留数量不能超过发行总量'); return; }
 
@@ -1258,7 +1259,7 @@ function confirmCreate() {
 
   closeCreateModal();
   renderPage();
-  showToast('✅ 演员 IP「' + name + '」创建成功');
+  showToast('✅ 演员素材「' + name + '」创建成功');
 }
 
 // ══════════════════════════════════════════════
@@ -1335,7 +1336,7 @@ window.__debug = {
       renderPage();
       showToast('✅ 已添加 ' + name + ' 到持有列表（调试）');
     } else {
-      showToast('⚠️ 已持有该分身');
+      showToast('⚠️ 已持有该素材');
     }
   },
   removeNft: function(name) {

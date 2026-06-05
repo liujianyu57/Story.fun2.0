@@ -838,11 +838,10 @@
       <div class="page-intro">
         <div>
           <h1>创作</h1>
-          <p>集中展示短剧创作、演员 IP、NFT持有与分润数据，支持快速发布、审核与铸造。</p>
+          <p>集中展示短剧创作、演员 IP 与数据，支持快速发布、审核与铸造。</p>
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
           <a class="button" href="publish.html">发布新短剧</a>
-          <a class="button-secondary" href="create-actor.html">创建演员 IP</a>
         </div>
       </div>
       <div class="dashboard-summary" style="grid-template-columns: 1fr; display: block;">
@@ -857,22 +856,13 @@
                 <p style="margin:0;color:var(--text-muted);font-size:0.85rem;">持有短剧NFT</p>
                 <h4 style="margin: 6px 0 0; font-size: 1.8rem; color: var(--accent);">3</h4>
               </div>
-              <div style="flex: 1;">
-                <p style="margin:0;color:var(--text-muted);font-size:0.85rem;">持有演员NFT</p>
-                <h4 style="margin: 6px 0 0; font-size: 1.8rem; color: var(--accent);">4</h4>
-              </div>
             </div>
           </div>
-        </div>
-        <div class="summary-grid">
-          <div class="summary-card"><h3>50.77 USDC</h3><p>短剧分润</p><small>短剧累计收益金额</small></div>
-          <div class="summary-card"><h3>78,050.77 USDC</h3><p>演员分润</p><small>演员累计收益金额</small></div>
         </div>
       </div>
       <div class="narrator-tabs">
         <button class="narrator-tab active" data-tab="tab1" onclick="switchTab('tab1', this)">短剧管理</button>
         <button class="narrator-tab" data-tab="tab2" onclick="switchTab('tab2', this)">短剧NFT</button>
-        <button class="narrator-tab" data-tab="tab3" onclick="switchTab('tab3', this)">演员 IP</button>
       </div>
 
       <div class="filter-row" id="filterRow">
@@ -1312,150 +1302,6 @@
         </div>
       </div>
 
-      <!-- Tab 3: 演员管理 -->
-
-
-      <div class="tab-content" id="tab3">
-        <div class="actor-grid">
-
-          <!-- 演员 1: 已通过 -->
-          <div class="actor-card" data-status="approved">
-            <div class="actor-avatar-wrap">
-              <img class="actor-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80" alt="苏婉清" />
-              <span class="status-badge status-approved actor-status-corner">
-                <span class="status-dot"></span> 已通过
-              </span>
-            </div>
-            <div class="actor-body">
-              <div class="actor-name-row">
-                <h4>苏婉清</h4>
-                <span class="actor-gender">♀ 女性</span>
-              </div>
-              <p class="actor-desc">温婉端庄的江南女子，琴棋书画样样精通</p>
-              <div class="actor-fields">
-                <div class="actor-field">
-                  <span class="field-label">Mint价格</span>
-                  <span class="field-value">10 USDC</span>
-                </div>
-                <div class="actor-field">
-                  <span class="field-label">NFT发行总量</span>
-                  <span class="field-value">10,000</span>
-                </div>
-              </div>
-            </div>
-            <div class="actor-divider"></div>
-            <div class="actor-footer">
-              <button class="button" onclick="openActorMintModal('苏婉清', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1)">
-                <span class="btn-icon">🎭</span> 铸造NFT
-              </button>
-            </div>
-          </div>
-
-          <!-- 演员 2: 审核中 -->
-          <div class="actor-card" data-status="pending">
-            <div class="actor-avatar-wrap">
-              <img class="actor-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80" alt="李云飞" />
-              <span class="status-badge status-pending actor-status-corner">
-                <span class="status-dot"></span> 审核中
-              </span>
-            </div>
-            <div class="actor-body">
-              <div class="actor-name-row">
-                <h4>李云飞</h4>
-                <span class="actor-gender">♂ 男性</span>
-              </div>
-              <p class="actor-desc">身手矫健的侠客，性格豪爽仗义</p>
-              <div class="actor-fields">
-                <div class="actor-field">
-                  <span class="field-label">Mint价格</span>
-                  <span class="field-value">8 USDC</span>
-                </div>
-                <div class="actor-field">
-                  <span class="field-label">NFT发行总量</span>
-                  <span class="field-value">8,000</span>
-                </div>
-              </div>
-            </div>
-            <div class="actor-divider"></div>
-            <div class="actor-footer">
-              <button class="button" disabled>
-                <span class="btn-icon">⏳</span> 等待审核
-              </button>
-            </div>
-          </div>
-
-          <!-- 演员 3: 已通过 -->
-          <div class="actor-card" data-status="approved">
-            <div class="actor-avatar-wrap">
-              <img class="actor-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80" alt="林梦瑶" />
-              <span class="status-badge status-approved actor-status-corner">
-                <span class="status-dot"></span> 已通过
-              </span>
-            </div>
-            <div class="actor-body">
-              <div class="actor-name-row">
-                <h4>林梦瑶</h4>
-                <span class="actor-gender">♀ 女性</span>
-              </div>
-              <p class="actor-desc">聪慧机敏的现代女性，擅长推理分析</p>
-              <div class="actor-fields">
-                <div class="actor-field">
-                  <span class="field-label">Mint价格</span>
-                  <span class="field-value">10 USDC</span>
-                </div>
-                <div class="actor-field">
-                  <span class="field-label">NFT发行总量</span>
-                  <span class="field-value">10,000</span>
-                </div>
-              </div>
-            </div>
-            <div class="actor-divider"></div>
-            <div class="actor-footer">
-              <button class="button" onclick="openActorMintModal('林梦瑶', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80', 10000, 9000, 10, 1)">
-                <span class="btn-icon">🎭</span> 铸造NFT
-              </button>
-            </div>
-          </div>
-
-          <!-- 演员 4: 未通过 -->
-          <div class="actor-card" data-status="rejected">
-            <div class="actor-avatar-wrap">
-              <img class="actor-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=900&q=80" alt="赵无极" />
-              <span class="status-badge status-rejected actor-status-corner" onclick="event.stopPropagation();showRejectReason('赵无极')">
-                <span class="status-dot"></span> 未通过
-                <span class="hint-icon">?</span>
-              </span>
-            </div>
-            <div class="actor-body">
-              <div class="actor-name-row">
-                <h4>赵无极</h4>
-                <span class="actor-gender">♂ 男性</span>
-              </div>
-              <p class="actor-desc">深不可测的武林高手，亦正亦邪</p>
-              <div class="actor-fields">
-                <div class="actor-field">
-                  <span class="field-label">Mint价格</span>
-                  <span class="field-value">15 USDC</span>
-                </div>
-                <div class="actor-field">
-                  <span class="field-label">NFT发行总量</span>
-                  <span class="field-value">6,000</span>
-                </div>
-              </div>
-            </div>
-            <div class="actor-divider"></div>
-            <div class="actor-footer">
-              <button class="button button-danger" onclick="confirmDeleteActor('赵无极')">
-                <span class="btn-icon">🗑️</span> 删除演员
-              </button>
-              <button class="button" style="background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="location.href='edit-actor.html?name=' + encodeURIComponent('赵无极')">
-                <span class="btn-icon">✏️</span> 编辑
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
 
     </section>
 
@@ -2301,33 +2147,6 @@
         handleBindActorClick(btn);
       }
     });
-
-    // === 未通过原因弹窗 ===
-    function showRejectReason(name) {
-      const reasons = {
-        '赵无极': '角色设定存在敏感内容（暴力倾向），不符合平台审核规范。请修改后重新提交审核。'
-      };
-      const reason = reasons[name] || '该演员未通过审核，请查看具体原因后修改。';
-      alert(`❌ 「${name}」未通过审核\n\n原因：${reason}`);
-    }
-
-    // === 删除演员 ===
-    function confirmDeleteActor(name) {
-      if (confirm(`确定要删除演员「${name}」吗？删除后将不可恢复。`)) {
-        // 模拟删除动画：找到演员卡片并淡出移除
-        const cards = document.querySelectorAll('#tab3 .actor-card');
-        for (const card of cards) {
-          const h4 = card.querySelector('.actor-body h4');
-          if (h4 && h4.textContent.trim() === name) {
-            card.style.transition = 'all 0.3s ease';
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.95)';
-            setTimeout(() => card.remove(), 300);
-            break;
-          }
-        }
-      }
-    }
 
     // === 删除短剧 ===
     function confirmDelete(title) {

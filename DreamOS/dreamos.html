@@ -718,7 +718,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
       <!-- 从持有的演员 NFT 中选择 -->
       <div id="char-select-nft-section">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <div class="form-label" style="margin-bottom:0">从您持有的演员 NFT 中选择</div>
+          <div class="form-label" style="margin-bottom:0">从您持有的演员 IP 中选择</div>
           <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(255,170,0,.12);color:var(--amber);border:1px solid rgba(255,170,0,.2)">快速填充</span>
         </div>
         <div id="char-nft-list" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;min-height:48px">
@@ -1115,19 +1115,9 @@ function selectActorNft(name) {
   var actor = ACTOR_NFT_DB[name];
   if (!actor) return;
   _selectedActorNft = name;
-  // 显示"不使用演员 NFT"按钮
-  document.getElementById('btn-clear-nft').style.display = '';
-  // 显示 LoRA 提示
-  document.getElementById('lora-prompt-hint').style.display = 'block';
+  // 只填充基本信息到输入框
   document.getElementById('char-name-input').value = name;
   document.getElementById('char-desc-input').value = actor.description;
-  // 尝试把演员头像作为参考图放入第一个 slot
-  var slot0 = document.getElementById('slot-0');
-  if (slot0 && slot0.textContent === '+') {
-    slot0.innerHTML = '<img src="' + actor.image + '" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block">';
-    slot0.style.border = '1px solid var(--amber)';
-    slot0.onclick = null;
-  }
   // 高亮选中的 NFT
   var items = document.querySelectorAll('#char-nft-list .char-nft-item');
   items.forEach(function(it) {
@@ -1138,33 +1128,6 @@ function selectActorNft(name) {
       it.style.boxShadow = '0 0 0 1px rgba(255,170,0,.3)';
     }
   });
-
-  // ── 显示 LoRA 面部一致性模型状态 ──
-  if (actor.face_lora_cid && actor.face_lora_trigger) {
-    var statusArea = document.getElementById('lora-status-area');
-    var statusText = document.getElementById('lora-status-text');
-    var infoArea = document.getElementById('lora-info-area');
-    var infoText = document.getElementById('lora-info-text');
-
-    statusArea.style.display = 'flex';
-    statusText.innerHTML = '🧬 LoRA 面部一致性模型<span style="color:var(--teal);margin-left:8px">● 已就绪</span><br><span style="font-size:10px;color:var(--t3)">' + name + ' 的面部已在所有剧集中锁定</span>';
-    statusArea.style.border = '1px solid rgba(0,184,184,.25)';
-    statusArea.style.background = 'rgba(0,184,184,.06)';
-
-    // 拼接带触发词的 Prompt
-    var triggerDesc = '[' + actor.face_lora_trigger + '], ' + actor.description;
-    document.getElementById('char-desc-input').value = triggerDesc;
-
-    infoArea.style.display = 'flex';
-    infoText.innerHTML = '<strong style="color:var(--t1)">面部 LoRA 信息</strong><br>' +
-      '· 触发词: <code style="background:var(--ink-700);padding:1px 6px;border-radius:3px;color:var(--amber)">' + actor.face_lora_trigger + '</code><br>' +
-      '· 训练样本: ' + actor.face_samples + ' 张多角度面部照<br>' +
-      '· 面部验证: ' + (actor.face_verified ? '✅ 已通过' : '⏳ 待验证') + '<br>' +
-      '· LoRA 权重: <span style="font-size:9px;color:var(--t3)">' + (actor.face_lora_cid ? actor.face_lora_cid.slice(0, 20) + '...' : '—') + '</span>';
-  } else {
-    document.getElementById('lora-status-area').style.display = 'none';
-    document.getElementById('lora-info-area').style.display = 'none';
-  }
 }
 
 // ── 取消选择演员 NFT（回退到手动输入模式）──
@@ -1843,23 +1806,6 @@ function openPublishToStoryFun(showName) {
     '      <span class="tag-chip" data-tag="逆袭">逆袭</span>' +
     '      <span class="tag-chip" data-tag="影视级">影视级</span>' +
     '    </div></div>' +
-    '  <div style="height:1px;background:var(--bs);margin:16px 0"></div>' +
-    '  <div style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:12px">💰 定价 & 收益</div>' +
-    '  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
-    '    <div class="form-group"><label style="font-size:10px;color:var(--t2);margin-bottom:4px;display:block">单集定价</label>' +
-    '      <div style="display:flex;align-items:center;gap:6px"><input class="form-input" id="psf-price" type="number" value="9.8" step="0.1" min="0" style="margin-bottom:0;flex:1"><span style="font-size:10px;color:var(--t3)">USDC</span></div></div>' +
-    '    <div class="form-group"><label style="font-size:10px;color:var(--t2);margin-bottom:4px;display:block">免费集数</label>' +
-    '      <div style="display:flex;align-items:center;gap:6px"><input class="form-input" id="psf-free" type="number" value="1" step="1" min="0" style="margin-bottom:0;flex:1"><span style="font-size:10px;color:var(--t3)">集</span></div></div>' +
-    '  </div>' +
-    '  <div class="form-group"><label style="font-size:10px;color:var(--t2);margin-bottom:4px;display:block">批量解锁优惠</label>' +
-    '    <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px"><input class="form-input" id="psf-discount" type="number" value="20" min="0" max="100" style="margin-bottom:0;flex:1"><span style="font-size:10px;color:var(--t3)">% OFF</span></div></div>' +
-    '  <div style="background:rgba(0,184,184,.06);border-radius:8px;padding:12px;margin-bottom:16px">' +
-    '    <div style="display:flex;justify-content:space-between;align-items:center">' +
-    '      <span style="font-size:11px;color:var(--teal)">创作者收入</span>' +
-    '      <span style="font-size:14px;font-weight:600;color:var(--teal)">70%</span>' +
-    '    </div>' +
-    '    <div style="font-size:9px;color:var(--t3);margin-top:4px">平台协议费将用于生态销毁与激励池</div>' +
-    '  </div>' +
     '  <div style="display:flex;gap:8px">' +
     '    <button onclick="closePublishToStoryFun()" style="flex:1;padding:10px;border-radius:7px;background:none;border:1px solid var(--b);color:var(--t2);font-size:11px;cursor:pointer;font-family:\'DM Mono\',monospace">取消</button>' +
     '    <button onclick="confirmPublishWholeDrama()" style="flex:1;padding:10px;border-radius:7px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:\'DM Mono\',monospace">🚀 提交发布</button>' +
@@ -1912,9 +1858,6 @@ function closePublishToStoryFun() {
 function confirmPublishWholeDrama() {
   var name = document.getElementById('psf-name').value.trim() || getProjectName();
   var desc = document.getElementById('psf-desc').value.trim() || '暂无简介';
-  var price = document.getElementById('psf-price').value || '9.8';
-  var free = document.getElementById('psf-free').value || '1';
-  var discount = document.getElementById('psf-discount').value || '20';
   var coverEl = document.getElementById('psf-cover-zone');
   var cover = coverEl && coverEl.dataset.cover ? coverEl.dataset.cover : '';
 
@@ -1935,9 +1878,6 @@ function confirmPublishWholeDrama() {
     publishTime: new Date().toISOString(),
     name: name,
     desc: desc,
-    price: price,
-    free: free,
-    discount: discount,
     cover: cover
   };
   saveVideoStorage(data);
