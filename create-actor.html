@@ -920,8 +920,6 @@
 
     if (!name) { showToast('请输入演员姓名'); return; }
     if (!gender) { showToast('请选择性别'); return; }
-    if (filled < MIN_FACES) { showToast('请上传至少 ' + MIN_FACES + ' 张面部照片'); return; }
-    if (ok < MIN_FACES) { showToast('有 ' + (filled - ok) + ' 张照片未检测到面部，请重新上传'); return; }
 
     // ── Prepare data for LoRA training ──
     var faceCrops = faceData
