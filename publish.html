@@ -262,6 +262,23 @@
     .char-modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 28px 24px; }
     .char-modal-footer .button { min-width: 100px; justify-content: center; }
 
+    /* ===== Actor Bind Modal ===== */
+    .actor-bind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-height: 360px; overflow-y: auto; padding: 4px 0; }
+    .actor-bind-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.2s ease; background: #fafcff; }
+    .actor-bind-item:hover { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 2px 8px rgba(0,179,136,0.08); }
+    .actor-bind-item .abi-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #f0f4f8; }
+    .actor-bind-item .abi-info { flex: 1; min-width: 0; }
+    .actor-bind-item .abi-name { font-size: 0.92rem; font-weight: 600; color: var(--text); }
+    .actor-bind-item .abi-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; }
+    .actor-bind-empty { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 0.92rem; }
+    .actor-bind-empty .empty-icon { font-size: 2rem; margin-bottom: 10px; }
+    .actor-bind-status { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 500; white-space: nowrap; margin-top: 8px; }
+    .actor-bind-status img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .char-bind-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 80px; border: 1px solid var(--border); background: var(--surface); color: var(--accent); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .char-bind-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .char-bind-btn.bound { border-color: var(--accent); background: rgba(0,179,136,0.06); }
+    .char-bind-actor-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+
     /* ===== End Character Card Grid ===== */
 
     /* ===== Pricing & Revenue (Figma Style) ===== */
@@ -492,6 +509,23 @@
       </div>
     </div>
 
+    <!-- Actor Bind Modal -->
+    <div class="char-modal-overlay" id="actorBindModal">
+      <div class="char-modal">
+        <div class="char-modal-header">
+          <h3 id="actorBindModalTitle">🎭 选择演员 IP</h3>
+          <button class="char-modal-close" onclick="charManager.closeBindModal()">✕</button>
+        </div>
+        <div class="char-modal-body">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;" id="actorBindModalHint">选择一名演员 IP 来饰演该角色</p>
+          <div id="actorBindGrid" class="actor-bind-grid"></div>
+        </div>
+        <div class="char-modal-footer" style="justify-content:space-between;">
+          <span style="font-size:0.82rem;color:var(--text-muted);" id="actorBindCount"></span>
+          <button class="button-ghost" onclick="charManager.closeBindModal()">取消</button>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -553,187 +587,339 @@ function goToStep(num) {
   });
 }
 
-/**
- * Character Manager - Figma Inspired Card Grid
- */
-const charManager = {
-  characters: [],
-  idCounter: 0,
-  editingId: null,
+    // === Actor IP Database ===
+    const ACTOR_IP_DB = {
+      'Luna': { name: 'Luna', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。' },
+      '苏婉清': { name: '苏婉清', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。' },
+      '李云飞': { name: '李云飞', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。' },
+      '林梦瑶': { name: '林梦瑶', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。' },
+      '赵无极': { name: '赵无极', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。' },
+      '上官婉儿': { name: '上官婉儿', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。' },
+      '叶倾城': { name: '叶倾城', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80', description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。' },
+      '慕容云': { name: '慕容云', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80', description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。' },
+      '花木兰': { name: '花木兰', image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80', description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。' },
+      '东方朔': { name: '东方朔', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。' },
+      '柳如是': { name: '柳如是', image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80', description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。' },
+      '萧景琰': { name: '萧景琰', image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80', description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。' },
+      '江小鱼': { name: '江小鱼', image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80', description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。' }
+    };
 
-  defaultChars: [
-    { name: '未命名角色 1', desc: '点击编辑填写角色名称与简介', avatar: null },
-    { name: '未命名角色 2', desc: '点击编辑填写角色名称与简介', avatar: null },
-  ],
+    /**
+     * Character Manager - Figma Inspired Card Grid
+     */
+    const charManager = {
+      characters: [],
+      idCounter: 0,
+      editingId: null,
+      bindCharId: null,
 
-  init() {
-    this.defaultChars.forEach(c => this.addChar(c.name, c.desc, c.avatar));
-    this.render();
+      defaultChars: [
+        { name: '未命名角色 1', desc: '点击编辑填写角色名称与简介', avatar: null },
+        { name: '未命名角色 2', desc: '点击编辑填写角色名称与简介', avatar: null },
+      ],
 
-    // Avatar file input
-    document.getElementById('avatarFileInput').addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        if (!file.type.startsWith('image/')) {
-          this.showToast('请选择图片文件');
+      init() {
+        this.defaultChars.forEach(c => this.addChar(c.name, c.desc, c.avatar));
+        this.render();
+
+        // Avatar file input
+        document.getElementById('avatarFileInput').addEventListener('change', (e) => {
+          if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            if (!file.type.startsWith('image/')) {
+              this.showToast('请选择图片文件');
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              const preview = document.getElementById('avatarPreview');
+              preview.innerHTML = `<img src="${ev.target.result}" alt="" />`;
+              preview.dataset.avatar = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+          }
+        });
+      },
+
+      addChar(name, desc, avatar, actorKey) {
+        this.characters.push({
+          id: ++this.idCounter,
+          name: name || '未命名角色',
+          desc: desc || '',
+          avatar: avatar || null,
+          actorKey: actorKey || null,
+        });
+      },
+
+      removeChar(id) {
+        const char = this.characters.find(c => c.id === id);
+        if (!char) return;
+        if (!confirm(`确定要删除角色"${char.name}"吗？`)) return;
+        this.characters = this.characters.filter(c => c.id !== id);
+        this.render();
+      },
+
+      openAddModal() {
+        this.editingId = null;
+        document.getElementById('charModalTitle').textContent = '添加角色';
+        document.getElementById('editCharId').value = '';
+        document.getElementById('editCharName').value = '';
+        document.getElementById('editCharDesc').value = '';
+        document.getElementById('avatarPreview').innerHTML = '👤';
+        delete document.getElementById('avatarPreview').dataset.avatar;
+        document.getElementById('charModal').classList.add('active');
+      },
+
+      openEditModal(id) {
+        const char = this.characters.find(c => c.id === id);
+        if (!char) return;
+        this.editingId = id;
+        document.getElementById('charModalTitle').textContent = '编辑角色';
+        document.getElementById('editCharId').value = id;
+        document.getElementById('editCharName').value = char.name;
+        document.getElementById('editCharDesc').value = char.desc;
+        if (char.avatar) {
+          document.getElementById('avatarPreview').innerHTML = `<img src="${char.avatar}" alt="" />`;
+        } else {
+          document.getElementById('avatarPreview').innerHTML = '👤';
+        }
+        document.getElementById('charModal').classList.add('active');
+      },
+
+      closeModal() {
+        document.getElementById('charModal').classList.remove('active');
+      },
+
+      uploadAvatar() {
+        document.getElementById('avatarFileInput').click();
+      },
+
+      saveChar() {
+        const name = document.getElementById('editCharName').value.trim();
+        if (!name) {
+          this.showToast('请输入角色名称');
           return;
         }
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const preview = document.getElementById('avatarPreview');
-          preview.innerHTML = `<img src="${ev.target.result}" alt="" />`;
-          preview.dataset.avatar = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-        e.target.value = '';
-      }
-    });
-  },
+        const desc = document.getElementById('editCharDesc').value.trim();
+        const avatarPreview = document.getElementById('avatarPreview');
+        const avatar = avatarPreview.dataset.avatar || null;
 
-  addChar(name, desc, avatar) {
-    this.characters.push({
-      id: ++this.idCounter,
-      name: name || '未命名角色',
-      desc: desc || '',
-      avatar: avatar || null,
-    });
-  },
+        if (this.editingId) {
+          const char = this.characters.find(c => c.id === this.editingId);
+          if (char) {
+            char.name = name;
+            char.desc = desc;
+            char.avatar = avatar;
+          }
+        } else {
+          this.addChar(name, desc, avatar);
+        }
 
-  removeChar(id) {
-    const char = this.characters.find(c => c.id === id);
-    if (!char) return;
-    if (!confirm(`确定要删除角色"${char.name}"吗？`)) return;
-    this.characters = this.characters.filter(c => c.id !== id);
-    this.render();
-  },
+        this.closeModal();
+        this.render();
+        this.showToast(this.editingId ? '角色已更新' : '角色已添加');
+      },
 
-  openAddModal() {
-    this.editingId = null;
-    document.getElementById('charModalTitle').textContent = '添加角色';
-    document.getElementById('editCharId').value = '';
-    document.getElementById('editCharName').value = '';
-    document.getElementById('editCharDesc').value = '';
-    document.getElementById('avatarPreview').innerHTML = '👤';
-    delete document.getElementById('avatarPreview').dataset.avatar;
-    document.getElementById('charModal').classList.add('active');
-  },
+      render() {
+        const grid = document.getElementById('charGrid');
+        grid.innerHTML = this.characters.map(c => this.renderCard(c)).join('');
+        // Add the "add card" at the end
+        grid.insertAdjacentHTML('beforeend', this.renderAddCard());
+        this.bindCardEvents();
+      },
 
-  openEditModal(id) {
-    const char = this.characters.find(c => c.id === id);
-    if (!char) return;
-    this.editingId = id;
-    document.getElementById('charModalTitle').textContent = '编辑角色';
-    document.getElementById('editCharId').value = id;
-    document.getElementById('editCharName').value = char.name;
-    document.getElementById('editCharDesc').value = char.desc;
-    if (char.avatar) {
-      document.getElementById('avatarPreview').innerHTML = `<img src="${char.avatar}" alt="" />`;
-    } else {
-      document.getElementById('avatarPreview').innerHTML = '👤';
-    }
-    document.getElementById('charModal').classList.add('active');
-  },
+      bindCardEvents() {
+        // Bind click events for the actor bind buttons
+        document.querySelectorAll('.js-bind-actor').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const card = btn.closest('.char-card');
+            const id = parseInt(card.dataset.charId);
+            this.openBindModal(id);
+          });
+        });
+        // Bind click events for edit buttons (replacing inline onclick)
+        document.querySelectorAll('.js-edit-char').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const card = btn.closest('.char-card');
+            const id = parseInt(card.dataset.charId);
+            this.openEditModal(id);
+          });
+        });
+        // Bind click events for remove buttons
+        document.querySelectorAll('.js-remove-char').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const card = btn.closest('.char-card');
+            const id = parseInt(card.dataset.charId);
+            this.removeChar(id);
+          });
+        });
+        // Bind click events for add card
+        const addCard = document.querySelector('.js-add-char');
+        if (addCard) {
+          addCard.addEventListener('click', () => this.openAddModal());
+        }
+      },
 
-  closeModal() {
-    document.getElementById('charModal').classList.remove('active');
-  },
+      renderCard(char) {
+        const avatarHtml = char.avatar
+          ? `<img src="${char.avatar}" alt="${char.name}" />`
+          : `<div class="char-avatar-placeholder">${char.name.charAt(0)}</div>`;
 
-  uploadAvatar() {
-    document.getElementById('avatarFileInput').click();
-  },
+        // Build bind button HTML
+        let bindHtml = '';
+        if (char.actorKey && ACTOR_IP_DB[char.actorKey]) {
+          const actor = ACTOR_IP_DB[char.actorKey];
+          bindHtml = '<div style="margin-top:8px;">'
+            + '<button class="char-bind-btn bound js-bind-actor" data-char-id="' + char.id + '">'
+            + '<img class="char-bind-actor-avatar" src="' + actor.image + '" alt="" />'
+            + this.escapeHtml(actor.name)
+            + '</button>'
+            + '</div>';
+        } else {
+          bindHtml = '<div style="margin-top:8px;">'
+            + '<button class="char-bind-btn js-bind-actor" data-char-id="' + char.id + '">🎭 绑定演员 IP</button>'
+            + '</div>';
+        }
 
-  saveChar() {
-    const name = document.getElementById('editCharName').value.trim();
-    if (!name) {
-      this.showToast('请输入角色名称');
-      return;
-    }
-    const desc = document.getElementById('editCharDesc').value.trim();
-    const avatarPreview = document.getElementById('avatarPreview');
-    const avatar = avatarPreview.dataset.avatar || null;
+        return `<div class="char-card" data-char-id="${char.id}">
+          <div class="char-avatar-area">
+            ${avatarHtml}
+          </div>
+          <div class="char-body">
+            <div class="char-name" title="${this.escapeHtml(char.name)}">${this.escapeHtml(char.name)}</div>
+            <div class="char-desc">${this.escapeHtml(char.desc || '暂无简介')}</div>
+            ${bindHtml}
+            <div class="char-actions" style="margin-top:8px;">
+              <button class="char-action-btn js-edit-char">✎ 编辑</button>
+              <button class="char-action-btn danger js-remove-char">✕ 删除</button>
+            </div>
+          </div>
+        </div>`;
+      },
 
-    if (this.editingId) {
-      const char = this.characters.find(c => c.id === this.editingId);
-      if (char) {
-        char.name = name;
-        char.desc = desc;
-        char.avatar = avatar;
-      }
-    } else {
-      this.addChar(name, desc, avatar);
-    }
+      renderAddCard() {
+        return `<div class="char-card add-card js-add-char">
+          <div class="add-card-content">
+            <div class="add-icon">+</div>
+            <p><strong>添加角色</strong></p>
+          </div>
+        </div>`;
+      },
 
-    this.closeModal();
-    this.render();
-    this.showToast(this.editingId ? '角色已更新' : '角色已添加');
-  },
+      // ===== Actor Binding Methods =====
 
-  render() {
-    const grid = document.getElementById('charGrid');
-    grid.innerHTML = this.characters.map(c => this.renderCard(c)).join('');
-    // Add the "add card" at the end
-    grid.insertAdjacentHTML('beforeend', this.renderAddCard());
-  },
+      getUserActorKeys() {
+        // Return the list of actor IP keys that the user holds
+        const held = (typeof currentUser !== 'undefined' && currentUser && currentUser.actorNfts) ? currentUser.actorNfts : [];
+        return held.filter(k => ACTOR_IP_DB[k]);
+      },
 
-  renderCard(char) {
-    const avatarHtml = char.avatar
-      ? `<img src="${char.avatar}" alt="${char.name}" />`
-      : `<div class="char-avatar-placeholder">${char.name.charAt(0)}</div>`;
+      openBindModal(charId) {
+        const char = this.characters.find(c => c.id === charId);
+        if (!char) return;
+        this.bindCharId = charId;
 
-    return `<div class="char-card" data-char-id="${char.id}">
-      <div class="char-avatar-area">
-        ${avatarHtml}
-      </div>
-      <div class="char-body">
-        <div class="char-name" title="${this.escapeHtml(char.name)}">${this.escapeHtml(char.name)}</div>
-        <div class="char-desc">${this.escapeHtml(char.desc || '暂无简介')}</div>
-        <div class="char-actions">
-          <button class="char-action-btn" onclick="charManager.openEditModal(${char.id})">✎ 编辑</button>
-          <button class="char-action-btn danger" onclick="charManager.removeChar(${char.id})">✕ 删除</button>
-        </div>
-      </div>
-    </div>`;
-  },
+        const hint = document.getElementById('actorBindModalHint');
+        hint.textContent = '选择一名演员 IP 来饰演「' + char.name + '」';
 
-  renderAddCard() {
-    return `<div class="char-card add-card" onclick="charManager.openAddModal()">
-      <div class="add-card-content">
-        <div class="add-icon">+</div>
-        <p><strong>添加角色</strong></p>
-      </div>
-    </div>`;
-  },
+        this.renderBindModal();
+        document.getElementById('actorBindModal').classList.add('active');
+      },
 
-  saveDraft() {
-    this.showToast('草稿已保存！');
-  },
+      closeBindModal() {
+        document.getElementById('actorBindModal').classList.remove('active');
+        this.bindCharId = null;
+      },
 
-  escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  },
+      renderBindModal() {
+        const grid = document.getElementById('actorBindGrid');
+        const countEl = document.getElementById('actorBindCount');
+        const actorKeys = this.getUserActorKeys();
 
-  showToast(msg) {
-    const existing = document.querySelector('.batch-toast');
-    if (existing) existing.remove();
-    const toast = document.createElement('div');
-    toast.className = 'batch-toast';
-    toast.textContent = msg;
-    Object.assign(toast.style, {
-      position: 'fixed', bottom: '24px', left: '50%',
-      transform: 'translateX(-50%) translateY(100px)',
-      background: 'rgba(26,35,47,0.92)', backdropFilter: 'blur(8px)',
-      color: '#fff', padding: '12px 24px', borderRadius: '14px',
-      fontSize: '0.92rem', boxShadow: '0 8px 32px rgba(27,45,71,0.25)',
-      zIndex: '10000', transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease',
-      opacity: '0', maxWidth: '400px', textAlign: 'center', fontWeight: '500',
-    });
-    document.body.appendChild(toast);
-    requestAnimationFrame(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; });
-    setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 2500);
-  },
-};
+        if (actorKeys.length === 0) {
+          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何演员 IP<br/>请先前往 DreamOS 创建或购买演员素材</div>';
+          countEl.textContent = '';
+          return;
+        }
+
+        const alreadyBound = this.characters
+          .filter(c => c.actorKey)
+          .map(c => c.actorKey);
+
+        let html = '';
+        actorKeys.forEach(key => {
+          const actor = ACTOR_IP_DB[key];
+          const isBoundToOther = alreadyBound.includes(key);
+          html += '<div class="actor-bind-item js-bind-select" data-actor-key="' + key + '" style="' + (isBoundToOther ? 'opacity:0.5;' : '') + '">'
+            + '<img class="abi-avatar" src="' + actor.image + '" alt="" onerror="this.outerHTML=\'<div class=abi-avatar style=display:grid;place-items:center;font-size:1.2rem;>🎭</div>\'" />'
+            + '<div class="abi-info">'
+            + '<div class="abi-name">' + this.escapeHtml(actor.name) + '</div>'
+            + '<div class="abi-desc">' + this.escapeHtml(actor.description || '') + '</div>'
+            + (isBoundToOther ? '<div style="font-size:0.7rem;color:var(--warning);margin-top:2px;">⚠️ 已被其他角色绑定</div>' : '')
+            + '</div></div>';
+        });
+
+        grid.innerHTML = html;
+        countEl.textContent = '持有 ' + actorKeys.length + ' 个演员 IP';
+
+        // Bind click events
+        grid.querySelectorAll('.js-bind-select').forEach(el => {
+          el.addEventListener('click', () => {
+            const key = el.dataset.actorKey;
+            // Check if already bound to another character
+            const boundChar = this.characters.find(c => c.actorKey === key && c.id !== this.bindCharId);
+            if (boundChar) {
+              this.showToast('该演员 IP 已被角色「' + boundChar.name + '」绑定');
+              return;
+            }
+            this.bindActor(this.bindCharId, key);
+          });
+        });
+      },
+
+      bindActor(charId, actorKey) {
+        const char = this.characters.find(c => c.id === charId);
+        if (!char) return;
+        char.actorKey = actorKey;
+        this.closeBindModal();
+        this.render();
+        this.showToast('✅ 已绑定演员「' + ACTOR_IP_DB[actorKey].name + '」');
+      },
+
+      saveDraft() {
+        this.showToast('草稿已保存！');
+      },
+
+      escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      },
+
+      showToast(msg) {
+        const existing = document.querySelector('.batch-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'batch-toast';
+        toast.textContent = msg;
+        Object.assign(toast.style, {
+          position: 'fixed', bottom: '24px', left: '50%',
+          transform: 'translateX(-50%) translateY(100px)',
+          background: 'rgba(26,35,47,0.92)', backdropFilter: 'blur(8px)',
+          color: '#fff', padding: '12px 24px', borderRadius: '14px',
+          fontSize: '0.92rem', boxShadow: '0 8px 32px rgba(27,45,71,0.25)',
+          zIndex: '10000', transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease',
+          opacity: '0', maxWidth: '400px', textAlign: 'center', fontWeight: '500',
+        });
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; });
+        setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 2500);
+      },
+    };
 
 /**
  * Batch Video Upload Engine
