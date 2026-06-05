@@ -1032,7 +1032,7 @@
               </div>
             </div>
             <div class="card-action" data-status="approved">
-              <button class="button" style="flex:0.7;" onclick="openMintModal(this)">
+              <button class="button" style="flex:0.7;">
                 <span class="btn-icon">🔨</span> 铸造短剧NFT
               </button>
               <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
@@ -1064,7 +1064,7 @@
               </div>
             </div>
             <div class="card-action" data-status="approved">
-              <button class="button" style="flex:0.7;" onclick="openMintModal(this)">
+              <button class="button" style="flex:0.7;">
                 <span class="btn-icon">🔨</span> 铸造短剧NFT
               </button>
               <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)">
@@ -1402,24 +1402,14 @@
           <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">确认铸造该短剧为链上 NFT。铸造后该短剧将可进行交易与分润。</p>
 
           <!-- 短剧预览 -->
-          <div id="mintPreview" style="display:flex;align-items:center;gap:18px;padding:18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
+          <div id="mintPreview" style="display:flex;align-items:center;gap:18px;margin-bottom:20px;">
             <img id="mintDramaCover" src="" alt="" style="width:72px;height:72px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
             <div>
-              <h4 id="mintDramaTitle" style="margin:0 0 4px;font-size:1.1rem;">—</h4>
-              <p id="mintDramaMeta" style="margin:0;color:var(--text-muted);font-size:0.92rem;">—</p>
+              <h4 id="mintDramaTitle" style="margin:0;font-size:1.1rem;">—</h4>
             </div>
           </div>
 
-          <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.85rem;color:var(--text-muted);">创作者分润</span>
-              <span id="mintDramaRoyalty" style="font-size:1.2rem;font-weight:700;color:var(--accent);">—</span>
-            </div>
-          </div>
-
-          <div style="padding:12px 16px;border-radius:12px;background:#fff8e6;border:1px solid rgba(255,159,44,0.20);">
-            <p style="margin:0;color:#b87a1a;font-size:0.88rem;line-height:1.6;">💰 铸造手续费 <strong>10 USDC</strong></p>
-          </div>
+          
         </div>
         <div class="modal-footer">
           <button class="button-secondary" onclick="closeMintModal()">取消</button>
@@ -1701,8 +1691,6 @@
       document.getElementById('mintDramaCover').src = drama.cover;
       document.getElementById('mintDramaCover').alt = drama.title;
       document.getElementById('mintDramaTitle').textContent = drama.title;
-      document.getElementById('mintDramaMeta').textContent = `${drama.episodes} 集`;
-      document.getElementById('mintDramaRoyalty').textContent = drama.royalty || '70%';
 
       mintModal.classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -1743,14 +1731,9 @@
           const card = btn.closest('.card-list-item');
           if (card && card.dataset.status === 'approved') {
             // 从卡片读取数据
-            const title = card.querySelector('.card-body h3').textContent.trim();
-            const cover = card.querySelector('.card-header img').src;
-            const subSpans = card.querySelectorAll('.card-sub span');
-            const episodes = subSpans.length > 0 ? subSpans[0].textContent.trim().replace(' 集', '') : '—';
-            const price = card.querySelector('.info-grid .info-item:first-child .info-value').textContent.trim().replace(' USDC', '');
-            const discount = card.querySelector('.info-grid .info-item:nth-child(2) .info-value').textContent.trim();
-            const royalty = card.querySelector('.info-item.full-width .info-value').textContent.trim();
-            openMintModal({ title, cover, episodes, price, discount, royalty });
+          const title = card.querySelector('.card-body h3').textContent.trim();
+          const cover = card.querySelector('.card-header img').src;
+          openMintModal({ title: title, cover: cover, episodes: '-', price: '-', discount: '-', royalty: '-' });
           } else if (card && card.dataset.status === 'pending') {
             // do nothing, handled by disabled button
           } else if (card && card.dataset.status === 'rejected') {
