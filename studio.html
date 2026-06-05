@@ -616,6 +616,30 @@
       border: 1px solid var(--border);
     }
     .modal-card .modal-btn.cancel:hover { background: rgba(0,0,0,0.03); }
+    .modal-card .modal-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
+
+    /* ===== 升级-可选分身列表 ===== */
+    .consume-list { margin-bottom:16px; }
+    .consume-list-title { font-weight:700; font-size:0.88rem; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+    .consume-list-title .checked-count { color:var(--accent); }
+    .consume-grid { display:flex; flex-direction:column; gap:6px; max-height:160px; overflow-y:auto; }
+    .consume-item {
+      display:flex; align-items:center; gap:10px; padding:8px 12px;
+      border-radius:12px; border:1px solid var(--border); cursor:pointer;
+      transition:all 0.2s ease; user-select:none;
+    }
+    .consume-item:hover { border-color:var(--accent); background:var(--accent-soft); }
+    .consume-item.selected { border-color:var(--accent); background:var(--accent-soft); }
+    .consume-item .check-box {
+      width:18px; height:18px; border-radius:4px; border:2px solid var(--text-sub);
+      display:flex; align-items:center; justify-content:center;
+      transition:all 0.2s ease; flex-shrink:0; font-size:0.7rem;
+    }
+    .consume-item.selected .check-box { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .consume-item .ci-id { font-size:0.75rem; font-weight:600; color:var(--text-muted); }
+    .consume-item .ci-name { font-size:0.85rem; font-weight:600; flex:1; }
+    .consume-item .ci-lv { font-size:0.72rem; color:var(--text-muted); }
+    .consume-empty { text-align:center; color:var(--text-muted); font-size:0.82rem; padding:16px 0; }
   </style>
 </head>
 <body>
@@ -703,6 +727,14 @@
           <div style="height:6px;background:#eaf4ee;border-radius:999px;overflow:hidden;">
             <div id="modalLevelProgress" style="height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold),#f5d042);width:0%;"></div>
           </div>
+        </div>
+      </div>
+
+      <!-- 可选同IP同等级分身列表 -->
+      <div class="consume-list" id="consumeList">
+        <div class="consume-list-title">🎭 选择要消耗的同IP同等级分身 <span class="checked-count" id="consumeCheckedCount">0/2</span></div>
+        <div class="consume-grid" id="consumeGrid">
+          <!-- 由 JS 渲染 -->
         </div>
       </div>
 
@@ -1195,8 +1227,12 @@
 
     let pendingLevelActorId = null;
 
+    // 记录当前弹窗中已选中的消耗分身ID
+    let selectedConsumeIds = [];
+
     function openLevelModal(actorId) {
       pendingLevelActorId = actorId;
+      selectedConsumeIds = [];
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
 
@@ -1212,10 +1248,25 @@
       document.getElementById('modalLevelName').textContent = currentCfg.name;
       document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
 
-      // 计算可用作消耗的同IP同等级演员（不含自身）
+      // 查找同IP同等级演员（不含自身）
       const sameIpSameLevel = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
       const availableCount = sameIpSameLevel.length;
-      const meetsConsumeReq = availableCount >= 2;
+
+      // 渲染可选分身列表
+      const grid = document.getElementById('consumeGrid');
+      if (sameIpSameLevel.length === 0) {
+        grid.innerHTML = '<div class="consume-empty">没有可消耗的同IP同等级分身</div>';
+      } else {
+        grid.innerHTML = sameIpSameLevel.map(a => `
+          <div class="consume-item" data-actor-id="${a.id}" onclick="toggleConsumeActor('${a.id}')">
+            <div class="check-box"></div>
+            <span class="ci-id">${a.id}</span>
+            <span class="ci-name">${a.name}</span>
+            <span class="ci-lv">Lv${a.level}</span>
+          </div>
+        `).join('');
+      }
+      updateConsumeUI();
 
       if (nextLevel && threshold) {
         const plays = actor.cumulativePlays || 0;
@@ -1227,29 +1278,66 @@
         document.getElementById('modalLevelCost').textContent = threshold.cost + ' STORY';
         document.getElementById('modalLevelProgress').style.width = progress + '%';
         document.getElementById('modalLevelConsume').textContent = Math.min(availableCount, 2) + ' / 2';
-        document.getElementById('modalLevelConsume').style.color = meetsConsumeReq ? 'var(--accent)' : 'var(--danger)';
+        document.getElementById('modalLevelConsume').style.color = availableCount >= 2 ? 'var(--accent)' : 'var(--danger)';
 
         document.getElementById('modalLevelUpBtn').style.display = 'block';
         document.getElementById('modalLevelUpBtn').textContent = '⬆️ 升级到 Lv' + nextLevel + ' ' + nextCfg.name;
-
-        if (meetsPlayReq && meetsConsumeReq) {
-          document.getElementById('modalLevelUpBtn').style.background = 'linear-gradient(135deg, #05DF72, #00BBA7)';
-          document.getElementById('modalLevelUpBtn').disabled = false;
-        } else {
-          document.getElementById('modalLevelUpBtn').style.background = 'rgba(0,0,0,0.08)';
-          document.getElementById('modalLevelUpBtn').style.color = 'var(--text-muted)';
-          document.getElementById('modalLevelUpBtn').disabled = true;
-        }
 
         document.getElementById('modalLevelMaxMsg').style.display = 'none';
       } else {
         // Already max level
         document.getElementById('modalLevelUpBtn').style.display = 'none';
         document.getElementById('modalLevelMaxMsg').style.display = 'block';
+        document.getElementById('consumeList').style.display = 'none';
       }
+
+      updateUpgradeBtnState();
 
       document.getElementById('levelModal').classList.add('active');
       document.body.style.overflow = 'hidden';
+    }
+
+    function toggleConsumeActor(actorId) {
+      const idx = selectedConsumeIds.indexOf(actorId);
+      if (idx !== -1) {
+        selectedConsumeIds.splice(idx, 1);
+      } else if (selectedConsumeIds.length < 2) {
+        selectedConsumeIds.push(actorId);
+      } else {
+        showToast('最多选择 2 个消耗分身', '⚠️');
+        return;
+      }
+      updateConsumeUI();
+      updateUpgradeBtnState();
+    }
+
+    function updateConsumeUI() {
+      const items = document.querySelectorAll('#consumeGrid .consume-item');
+      items.forEach(el => {
+        const id = el.dataset.actorId;
+        el.classList.toggle('selected', selectedConsumeIds.includes(id));
+      });
+      document.getElementById('consumeCheckedCount').textContent = selectedConsumeIds.length + '/2';
+    }
+
+    function updateUpgradeBtnState() {
+      const actor = MY_ACTORS.find(a => a.id === pendingLevelActorId);
+      if (!actor) return;
+      const nextLevel = actor.level < 5 ? actor.level + 1 : null;
+      if (!nextLevel) return;
+      const threshold = LEVEL_UP_THRESHOLDS[nextLevel];
+      const meetsPlayReq = (actor.cumulativePlays || 0) >= (threshold?.playsRequired || Infinity);
+      const meetsConsumeReq = selectedConsumeIds.length === 2;
+
+      const btn = document.getElementById('modalLevelUpBtn');
+      if (meetsPlayReq && meetsConsumeReq) {
+        btn.style.background = 'linear-gradient(135deg, #05DF72, #00BBA7)';
+        btn.disabled = false;
+      } else {
+        btn.style.background = 'rgba(0,0,0,0.08)';
+        btn.style.color = 'var(--text-muted)';
+        btn.disabled = true;
+      }
     }
 
     function closeLevelModal() {
@@ -1265,25 +1353,14 @@
       const nextLevel = actor.level < 5 ? actor.level + 1 : null;
       if (!nextLevel) return;
 
-      // 查找同IP同等级的可用演员（不含自身）
-      const consumable = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
-      const meetsPlayReq = (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[nextLevel]?.playsRequired || Infinity);
-      const meetsConsumeReq = consumable.length >= 2;
-      const threshold = LEVEL_UP_THRESHOLDS[nextLevel];
-
-      if (!meetsPlayReq) {
-        showToast('📊 累计完播不足，无法升级', '🏅');
-        return;
-      }
-      if (!meetsConsumeReq) {
-        showToast('🎭 需要消耗 2 个同IP同等级演员分身（当前有 ' + consumable.length + ' 个）', '🏅');
+      if (selectedConsumeIds.length !== 2) {
+        showToast('请选择 2 个同IP同等级分身进行消耗', '🎭');
         return;
       }
 
-      // 消耗 2 个同IP同等级演员（从数组中移除）
-      const toRemove = consumable.slice(0, 2);
-      toRemove.forEach(c => {
-        const idx = MY_ACTORS.indexOf(c);
+      // 消耗选中的 2 个同IP同等级分身
+      selectedConsumeIds.forEach(id => {
+        const idx = MY_ACTORS.findIndex(a => a.id === id);
         if (idx !== -1) MY_ACTORS.splice(idx, 1);
       });
 
@@ -1294,7 +1371,7 @@
 
       closeLevelModal();
       renderActors();
-      showToast('🏆 ' + actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name + '！消耗 2 个同等级分身', '🎉');
+      showToast('🏆 ' + actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name + '！', '🎉');
     }
 
   </script>
