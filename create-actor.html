@@ -102,57 +102,243 @@
       gap: 56px;
       align-items: flex-start;
     }
-    .upload-column {
+
+    /* ═══ Face Upload Module (v2 — Multi-angle Face Capture) ═══ */
+    .face-upload-section {
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 16px;
+      width: 100%;
+    }
+    .face-upload-hd {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .face-upload-hd-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .face-upload-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+    }
+    .face-upload-title .badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 10px;
+      border-radius: 99px;
+      margin-left: 8px;
+      border: 1px solid var(--accent-glow);
+    }
+    .face-upload-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .face-upload-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 6px 16px;
+      border-radius: 99px;
+      border: 1px solid var(--accent-glow);
+      white-space: nowrap;
       flex-shrink: 0;
     }
-    .upload-box {
-      width: 192px;
-      height: 160px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+    .face-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    .face-slot {
+      aspect-ratio: 3/4;
+      border-radius: 14px;
+      border: 2px dashed var(--border-dark);
       background: var(--bg);
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      align-items: center;
-      gap: 21px;
-      cursor: pointer;
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-    .upload-box:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
-    .upload-box svg {
-      width: 80px;
-      height: 80px;
-      display: block;
-    }
-    .upload-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 24px;
-      border-radius: 58px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 700;
-      font-size: 14px;
-      line-height: 20px;
       cursor: pointer;
       transition: all 0.2s ease;
-      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      gap: 8px;
+      user-select: none;
     }
-    .upload-btn:hover {
+    .face-slot:hover {
       border-color: var(--accent);
-      color: var(--accent);
       background: var(--accent-soft);
     }
+    .face-slot.has-image {
+      border-style: solid;
+      border-color: var(--border-dark);
+      cursor: default;
+    }
+    .face-slot.has-image:hover {
+      border-color: var(--accent);
+    }
+    .face-slot.face-ok {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+    .face-slot.face-fail {
+      border-color: var(--border-dark);
+      opacity: 0.7;
+    }
+
+    .face-slot.loading {
+      opacity: 0.6;
+      cursor: wait;
+    }
+    .face-slot .slot-icon {
+      font-size: 28px;
+      color: var(--text-hint);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .face-slot .slot-label {
+      font-size: 11px;
+      color: var(--text-hint);
+      font-weight: 500;
+      pointer-events: none;
+    }
+    .face-slot .slot-angle {
+      font-size: 9px;
+      color: var(--text-hint);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .face-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .face-slot .face-badge {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      right: 6px;
+      padding: 4px 0;
+      border-radius: 6px;
+      font-size: 9px;
+      font-weight: 600;
+      text-align: center;
+      background: rgba(15,23,42,0.75);
+      backdrop-filter: blur(4px);
+      letter-spacing: 0.04em;
+      pointer-events: none;
+    }
+    .face-slot .face-badge.ok {
+      color: var(--accent);
+    }
+    .face-slot .face-badge.fail {
+      color: var(--danger);
+    }
+    .face-slot .face-badge.loading {
+      color: var(--text-muted);
+    }
+    .face-slot .remove-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(15,23,42,0.75);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 2;
+    }
+    .face-slot:hover .remove-btn {
+      opacity: 1;
+    }
+    .face-slot .face-crop-preview {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      border: 2px solid var(--accent);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .face-slot .face-crop-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .face-slot .loading-spinner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--border-dark);
+      border-top-color: var(--accent);
+      animation: faceSpin 0.7s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes faceSpin {
+      to { transform: rotate(360deg); }
+    }
+    .face-upload-status {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--accent-soft);
+      border-radius: 12px;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+    }
+    .face-upload-status.ok {
+      background: rgba(1,186,178,0.08);
+      color: var(--accent);
+    }
+    .face-upload-status.warn {
+      background: rgba(244,91,105,0.06);
+      color: var(--danger);
+    }
+    .face-upload-status .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .face-upload-status.ok .status-dot {
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+    .face-upload-status.warn .status-dot {
+      background: var(--danger);
+      box-shadow: 0 0 6px var(--danger);
+    }
+    .face-upload-status .status-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ---- Basic info fields (mirror original layout) ---- */
     .fields-column {
       flex: 1;
       display: flex;
@@ -342,6 +528,11 @@
       opacity: 0.85;
       transform: translateY(-1px);
     }
+    .button-primary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+    }
     .button-outline {
       background: transparent;
       color: var(--text);
@@ -360,7 +551,7 @@
     @media (max-width: 900px) {
       .app-shell { padding: 60px 32px; }
       .form-top-row { flex-direction: column; gap: 32px; }
-      .upload-column { align-items: center; width: 100%; }
+      .face-grid { grid-template-columns: repeat(3, 1fr); }
       .params-row { grid-template-columns: 1fr; }
       .info-card { flex-wrap: wrap; }
     }
@@ -368,6 +559,7 @@
       .app-shell { padding: 40px 16px; }
       .form-panel { padding: 20px; gap: 32px; }
       .form-row { grid-template-columns: 1fr; }
+      .face-grid { grid-template-columns: repeat(2, 1fr); }
       .form-footer { flex-direction: column; width: 100%; }
       .button-outline, .button-primary { width: 100%; }
     }
@@ -377,35 +569,54 @@
   <div id="header-placeholder"></div>
   <div class="app-shell">
 
-    <h1 class="page-title">创建新演员</h1>
+    <h1 class="page-title">创建演员 IP</h1>
+
 
     <div class="form-panel">
 
-      <!-- Top row: image upload + basic info -->
+      <!-- ═══ Top row: face upload + basic info ═══ -->
       <div class="form-top-row">
-        <div class="upload-column">
-          <div class="upload-box" onclick="document.getElementById('actorImageInput').click()">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="12" y="12" width="56" height="56" rx="8" fill="#E5E5E5"/>
-              <path d="M33 35H47" stroke="#8B8D98" stroke-width="2" stroke-linecap="round"/>
-              <path d="M40 28V42" stroke="#8B8D98" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+        <!-- Face Upload Grid (replaces single image upload) -->
+        <div class="face-upload-section">
+          <div class="face-upload-hd">
+            <div class="face-upload-hd-left">
+              <div class="face-upload-title">
+                面部形象照
+                <span class="badge">Face Anchor</span>
+              </div>
+              <div class="face-upload-hint">
+                <strong>参考图越多</strong>，训练效果越好。至少上传 1 张正面照。
+              </div>
+
+            </div>
+            <div class="face-upload-count" id="face-count">0 / 5</div>
           </div>
-          <input type="file" id="actorImageInput" accept="image/*" style="display:none" />
-          <button class="upload-btn" onclick="document.getElementById('actorImageInput').click()">上传形象照</button>
+
+          <div class="face-grid" id="face-grid">
+            <!-- 5 slots, rendered by JS -->
+          </div>
+
+          <div class="face-upload-status" id="face-status">
+            <span class="status-dot"></span>
+            <span id="face-status-text">上传面部照片可训练专属 LoRA，让角色在各剧集中保持面容一致</span>
+          </div>
+
+
+          <!-- Hidden file input for face uploads -->
+          <input type="file" id="faceFileInput" accept="image/*" multiple style="display:none" />
         </div>
 
         <div class="fields-column">
           <div class="form-row">
             <div class="form-group">
               <label>演员姓名</label>
-              <input type="text" placeholder="请输入演员姓名" maxlength="20" />
-              <span class="char-count">0/20</span>
+              <input type="text" placeholder="请输入演员姓名" maxlength="20" id="actorName" />
+              <span class="char-count" id="nameCount">0/20</span>
             </div>
             <div class="form-group">
               <label>性别</label>
               <div class="select-wrapper">
-                <select>
+                <select id="actorGender">
                   <option value="" disabled selected>请选择</option>
                   <option value="male">男性</option>
                   <option value="female">女性</option>
@@ -420,8 +631,8 @@
           <div class="form-row full">
             <div class="form-group">
               <label>简介</label>
-              <textarea placeholder="角色背景、性格特点、代表作...&#10;&#10;"></textarea>
-              <span class="char-count">0/500</span>
+              <textarea placeholder="角色背景、性格特点、代表作..." id="actorBio"></textarea>
+              <span class="char-count" id="bioCount">0/500</span>
             </div>
           </div>
         </div>
@@ -437,22 +648,22 @@
         <div class="params-row">
           <div class="form-group">
             <label>NFT发行总量</label>
-            <input type="number" placeholder="请输入" min="1" />
+            <input type="number" placeholder="请输入" min="1" id="nftSupply" />
           </div>
           <div class="form-group">
             <label>创作者保留（数量）</label>
-            <input type="number" placeholder="请输入" min="0" />
+            <input type="number" placeholder="请输入" min="0" id="nftReserve" />
           </div>
         </div>
         <div class="params-row">
           <div class="form-group">
             <label>Mint价格（USDC）</label>
-            <input type="number" placeholder="请输入" step="0.1" min="0" />
-            <span class="hint-text">你需要支付 -- USDC用于创作者保留</span>
+            <input type="number" placeholder="请输入" step="0.1" min="0" id="nftPrice" />
+            <span class="hint-text" id="nftCostHint">你需要支付 -- USDC用于创作者保留</span>
           </div>
           <div class="form-group">
             <label>最低持有门槛（数量）</label>
-            <input type="number" placeholder="请输入" min="0" />
+            <input type="number" placeholder="请输入" min="0" id="nftMinHold" />
             <span class="hint-text">持有≥该数量才能参与AI演员对话</span>
           </div>
         </div>
@@ -460,7 +671,7 @@
         <!-- Info card -->
         <div class="info-card">
           <span class="info-card-label">开放Mint数量</span>
-          <span class="info-card-value">999</span>
+          <span class="info-card-value" id="openMintCount">999</span>
           <span class="info-card-sub">审核通过之后可铸造演员NFT</span>
         </div>
       </div>
@@ -470,7 +681,7 @@
     <!-- Footer -->
     <div class="form-footer">
       <button class="button-outline" onclick="location.href='narrator.html'">取消</button>
-      <button class="button-primary">提交审核</button>
+      <button class="button-primary" id="submitBtn" onclick="handleSubmit()">提交审核</button>
     </div>
 
   </div>
@@ -479,5 +690,381 @@
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
   <script src="load-bottom-nav.js"></script>
+
+  <script>
+  // ════════════════════════════════════════════════
+  //  Face Upload Module — Multi-angle Face Capture
+  // ════════════════════════════════════════════════
+
+  var MAX_FACES = 5;
+  var MIN_FACES = 3;
+
+  // faceData[i] = { file: File, dataUrl: string, status: 'pending'|'ok'|'fail', cropDataUrl: string|null }
+  var faceData = [];
+
+  // ── Render 5 slots ──
+  function renderFaceSlots() {
+    var grid = document.getElementById('face-grid');
+    var html = '';
+    for (var i = 0; i < MAX_FACES; i++) {
+      var slot = faceData[i];
+      var classes = 'face-slot';
+      var content = '';
+
+      if (slot) {
+        classes += ' has-image';
+        if (slot.status === 'ok') classes += ' face-ok';
+        else if (slot.status === 'fail') classes += ' face-fail';
+        else if (slot.status === 'pending') classes += ' loading';
+
+        // image
+        content += '<img src="' + slot.dataUrl + '" alt="面部 ' + (i + 1) + '">';
+
+        // crop preview (if face detected)
+        if (slot.cropDataUrl) {
+          content += '<div class="face-crop-preview"><img src="' + slot.cropDataUrl + '" alt="面部裁剪"></div>';
+        }
+
+        // remove button
+        content += '<button class="remove-btn" data-index="' + i + '" onclick="event.stopPropagation();removeFace(' + i + ')">×</button>';
+
+        // loading spinner
+        if (slot.status === 'pending') {
+          content += '<div class="loading-spinner"></div>';
+          content += '<div class="face-badge loading">检测中...</div>';
+        }
+
+        // badge
+        if (slot.status === 'ok') {
+          content += '<div class="face-badge ok">✅ 面部检测通过</div>';
+        } else if (slot.status === 'fail') {
+          content += '<div class="face-badge fail">⚠️ 未检测到面部</div>';
+        }
+      } else {
+        // Empty slot
+        var angleHints = ['正面', '左侧', '右侧', '半侧', '仰/俯'];
+        content += '<div class="slot-icon">📷</div>';
+        content += '<div class="slot-label">点击上传</div>';
+        content += '<div class="slot-angle">' + (angleHints[i] || '') + '</div>';
+      }
+
+      html += '<div class="' + classes + '" data-index="' + i + '" onclick="handleSlotClick(' + i + ')">' + content + '</div>';
+    }
+    grid.innerHTML = html;
+
+    // Update count
+    var filled = faceData.filter(function(s) { return s != null; }).length;
+    document.getElementById('face-count').textContent = filled + ' / ' + MAX_FACES;
+
+    // Update status bar
+    updateFaceStatus();
+
+    // Enable submit always (face upload is optional)
+    var submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = false;
+
+  }
+
+  // ── Status bar ──
+  function updateFaceStatus() {
+    var statusEl = document.getElementById('face-status');
+    var textEl = document.getElementById('face-status-text');
+    var filled = faceData.filter(function(s) { return s != null; }).length;
+    var ok = faceData.filter(function(s) { return s != null && s.status === 'ok'; }).length;
+    var fail = faceData.filter(function(s) { return s != null && s.status === 'fail'; }).length;
+    var pending = faceData.filter(function(s) { return s != null && s.status === 'pending'; }).length;
+
+    statusEl.className = 'face-upload-status';
+
+    if (pending > 0) {
+      statusEl.classList.add('warn');
+      statusEl.querySelector('.status-dot').style.animation = 'faceSpin 0.7s linear infinite';
+      textEl.textContent = '⏳ 正在检测面部 (' + pending + ' 张处理中)...';
+      return;
+    }
+
+    // Reset any animation
+    var dot = statusEl.querySelector('.status-dot');
+    if (dot) dot.style.animation = 'none';
+
+    if (filled === 0) {
+      statusEl.classList.add('warn');
+      textEl.textContent = '上传面部照片可训练专属 LoRA，让角色在各剧集中保持面容一致';
+    } else if (filled < MIN_FACES) {
+      statusEl.classList.add('warn');
+      textEl.textContent = '已上传 ' + filled + ' 张，还需至少 ' + (MIN_FACES - filled) + ' 张（当前 ' + ok + ' 张通过 / ' + (fail > 0 ? fail + ' 张未通过' : '0 张未通过') + '）';
+    } else if (fail > 0) {
+      statusEl.classList.add('warn');
+      textEl.textContent = ok + '/' + filled + ' 张通过面部检测，' + fail + ' 张未检测到面部，请重新上传';
+    } else if (ok >= MIN_FACES) {
+      statusEl.classList.add('ok');
+      textEl.textContent = '✅ ' + ok + ' 张面部检测全部通过！演员 NFT 将包含面部 LoRA 数据，在 DramaOS 中保持面容一致。';
+    } else {
+      statusEl.classList.add('warn');
+      textEl.textContent = ok + '/' + filled + ' 张通过面部检测';
+    }
+  }
+
+  // ── Slot click ──
+  function handleSlotClick(index) {
+    var slot = faceData[index];
+    if (slot) {
+      // If has image, do nothing (remove via X button)
+      return;
+    }
+    // Open file picker
+    var input = document.getElementById('faceFileInput');
+    input.value = '';
+    input.click();
+  }
+
+  // ── File input handler ──
+  document.addEventListener('DOMContentLoaded', function() {
+    var input = document.getElementById('faceFileInput');
+    input.addEventListener('change', function(e) {
+      if (!e.target.files || e.target.files.length === 0) return;
+      var files = Array.from(e.target.files);
+      var emptySlots = [];
+      for (var i = 0; i < MAX_FACES; i++) {
+        if (!faceData[i]) emptySlots.push(i);
+      }
+
+      if (emptySlots.length === 0) {
+        showToast('已达到 5 张上限');
+        return;
+      }
+
+      var toProcess = Math.min(files.length, emptySlots.length);
+
+      for (var j = 0; j < toProcess; j++) {
+        var slotIndex = emptySlots[j];
+        var file = files[j];
+        var reader = new FileReader();
+        reader.index = slotIndex;
+        reader.file = file;
+
+        reader.onload = function(ev) {
+          var idx = ev.target.index;
+          var f = ev.target.file;
+
+          // Place in slot
+          faceData[idx] = {
+            file: f,
+            dataUrl: ev.target.result,
+            status: 'pending',
+            cropDataUrl: null
+          };
+          renderFaceSlots();
+
+          // Run face detection (simulated with canvas)
+          detectFace(idx, ev.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+
+  // ── Face Detection (client-side via canvas analysis) ──
+  function detectFace(index, dataUrl) {
+    var img = new Image();
+    img.onload = function() {
+      // Create a canvas to analyze the image
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      var w = img.width, h = img.height;
+
+      // Downscale for performance
+      var maxDim = 800;
+      if (w > maxDim || h > maxDim) {
+        var scale = Math.min(maxDim / w, maxDim / h);
+        w = Math.round(w * scale);
+        h = Math.round(h * scale);
+      }
+      canvas.width = w;
+      canvas.height = h;
+      ctx.drawImage(img, 0, 0, w, h);
+      var imageData = ctx.getImageData(0, 0, w, h);
+      var data = imageData.data;
+
+      // ── Skin-color face detection heuristic ──
+      // Count pixels that fall within a skin-like color range (YCrCb-like / simple HSV)
+      var skinPixels = 0;
+      var faceRegionFound = false;
+
+      // Use a simple skin color model in RGB
+      for (var py = 0; py < h; py++) {
+        for (var px = 0; px < w; px++) {
+          var idx = (py * w + px) * 4;
+          var r = data[idx];
+          var g = data[idx + 1];
+          var b = data[idx + 2];
+
+          // Simple skin color detection (non-optimized, works for most skin tones)
+          var isSkin = (r > 40 && g > 20 && b > 10) &&
+                       (r > g && r > b) &&
+                       (Math.abs(r - g) > 10) &&
+                       (r - b > 10);
+
+          if (isSkin) skinPixels++;
+        }
+      }
+
+      var totalPixels = w * h;
+      var skinRatio = skinPixels / totalPixels;
+
+      // Heuristic: if skin-like pixels occupy 3%-30% of the image, probably a face is present
+      var hasFace = skinRatio > 0.02 && skinRatio < 0.35;
+
+      // ── Generate crop preview (center 40%) ──
+      var cropCanvas = document.createElement('canvas');
+      var cropSize = Math.min(w, h) * 0.5;
+      var cropX = (w - cropSize) / 2;
+      var cropY = (h - cropSize) * 0.25; // bias upper half (where face usually is)
+      cropCanvas.width = 120;
+      cropCanvas.height = 120;
+      var cropCtx = cropCanvas.getContext('2d');
+      cropCtx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, 120, 120);
+
+      // ── Update slot ──
+      var slot = faceData[index];
+      if (slot) {
+        slot.status = hasFace ? 'ok' : 'fail';
+        if (hasFace) {
+          slot.cropDataUrl = cropCanvas.toDataURL('image/jpeg', 0.8);
+        }
+      }
+
+      // Small delay for visual feedback
+      setTimeout(function() {
+        renderFaceSlots();
+      }, 300);
+    };
+    img.onerror = function() {
+      var slot = faceData[index];
+      if (slot) slot.status = 'fail';
+      renderFaceSlots();
+    };
+    img.src = dataUrl;
+  }
+
+  // ── Remove face ──
+  function removeFace(index) {
+    if (faceData[index]) {
+      faceData[index] = null;
+      renderFaceSlots();
+    }
+  }
+
+  // ── Submit ──
+  function handleSubmit() {
+    var name = document.getElementById('actorName').value.trim();
+    var gender = document.getElementById('actorGender').value;
+    var bio = document.getElementById('actorBio').value.trim();
+    var filled = faceData.filter(function(s) { return s != null; }).length;
+    var ok = faceData.filter(function(s) { return s != null && s.status === 'ok'; }).length;
+
+    if (!name) { showToast('请输入演员姓名'); return; }
+    if (!gender) { showToast('请选择性别'); return; }
+    if (filled < MIN_FACES) { showToast('请上传至少 ' + MIN_FACES + ' 张面部照片'); return; }
+    if (ok < MIN_FACES) { showToast('有 ' + (filled - ok) + ' 张照片未检测到面部，请重新上传'); return; }
+
+    // ── Prepare data for LoRA training ──
+    var faceCrops = faceData
+      .filter(function(s) { return s != null && s.status === 'ok' && s.cropDataUrl; })
+      .map(function(s) { return s.cropDataUrl; });
+
+    var actorData = {
+      name: name,
+      gender: gender,
+      bio: bio,
+      faceSamples: faceCrops,
+      faceSampleCount: faceCrops.length,
+      faceDetected: true
+    };
+
+    // In production, this would:
+    // 1. Send face crops to LoRA training service
+    // 2. Receive LoRA CID back
+    // 3. Submit NFT metadata + LoRA CID for minting
+    console.log('Actor Data for LoRA training:', actorData);
+
+    // Store temporarily for demo
+    try {
+      localStorage.setItem('storyfun_pending_actor', JSON.stringify(actorData));
+    } catch(e) {}
+
+    showToast('✅ 提交成功！面部样本 ' + faceCrops.length + ' 张，将用于训练面部 LoRA');
+    // Redirect after brief delay
+    setTimeout(function() {
+      location.href = 'narrator.html';
+    }, 1200);
+  }
+
+  // ── Char counters ──
+  document.addEventListener('DOMContentLoaded', function() {
+    var nameInput = document.getElementById('actorName');
+    var bioInput = document.getElementById('actorBio');
+
+    if (nameInput) {
+      nameInput.addEventListener('input', function() {
+        document.getElementById('nameCount').textContent = this.value.length + '/20';
+      });
+    }
+    if (bioInput) {
+      bioInput.addEventListener('input', function() {
+        document.getElementById('bioCount').textContent = this.value.length + '/500';
+      });
+    }
+
+    // NFT supply / reserve calculation
+    var supplyInput = document.getElementById('nftSupply');
+    var reserveInput = document.getElementById('nftReserve');
+    var priceInput = document.getElementById('nftPrice');
+
+    function calcOpenMint() {
+      var supply = parseInt(supplyInput.value) || 0;
+      var reserve = parseInt(reserveInput.value) || 0;
+      var open = Math.max(0, supply - reserve);
+      document.getElementById('openMintCount').textContent = open || '-';
+    }
+
+    function calcCost() {
+      var reserve = parseInt(reserveInput.value) || 0;
+      var price = parseFloat(priceInput.value) || 0;
+      var cost = reserve * price;
+      document.getElementById('nftCostHint').textContent = cost > 0
+        ? '你需要支付 ' + cost.toFixed(2) + ' USDC 用于创作者保留'
+        : '你需要支付 -- USDC 用于创作者保留';
+    }
+
+    if (supplyInput) supplyInput.addEventListener('input', calcOpenMint);
+    if (reserveInput) { reserveInput.addEventListener('input', function() { calcOpenMint(); calcCost(); }); }
+    if (priceInput) priceInput.addEventListener('input', calcCost);
+  });
+
+  // ── Toast ──
+  var _toastTimer;
+
+  function showToast(msg) {
+    var t = document.querySelector('.auth-toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.className = 'auth-toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(function() {
+      t.classList.remove('show');
+    }, 2500);
+  }
+
+  // ── Init ──
+  document.addEventListener('DOMContentLoaded', function() {
+    renderFaceSlots();
+  });
+  </script>
+
 </body>
 </html>
