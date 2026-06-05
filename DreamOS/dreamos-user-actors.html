@@ -897,11 +897,36 @@ function showToast(msg) {
 //  Init
 // ══════════════════════════════════════════════
 
+function seedTestData() {
+  // 当用户已登录且持有 Luna 时，自动补充分身数据以便测试滚动分页
+  if (!currentUser || !currentUser.isLoggedIn) return;
+  if (!currentUser.actorNfts) currentUser.actorNfts = [];
+  var hasLuna = currentUser.actorNfts.indexOf('Luna') !== -1;
+  if (!hasLuna) return;
+  // 统计现有 Luna 数量
+  var lunaCount = 0;
+  for (var i = 0; i < currentUser.actorNfts.length; i++) {
+    if (currentUser.actorNfts[i] === 'Luna') lunaCount++;
+  }
+  // 如果少于 20 个，补充到 20 个
+  if (lunaCount < 20) {
+    var need = 20 - lunaCount;
+    for (var j = 0; j < need; j++) {
+      currentUser.actorNfts.push('Luna');
+    }
+    console.log('[Debug] 已补充 ' + need + ' 个 Luna 分身，共 ' + (lunaCount + need) + ' 个');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(renderPage, 100);
+  setTimeout(function() {
+    seedTestData();
+    renderPage();
+  }, 100);
 });
 
 document.addEventListener('auth-ready', function() {
+  seedTestData();
   renderPage();
 });
 
