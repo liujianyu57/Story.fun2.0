@@ -1,7 +1,7 @@
 # 演员 NFT 面部一致性方案：Face Anchor + LoRA 管线
 
-> Story.fun 演员 NFT（生活形象/定妆照）→ DramaOS（剧中形象）
-> 演员 NFT 铸造时训练面部 LoRA → DramaOS 使用时加载 LoRA 锁定面容
+> Story.fun 演员 NFT（生活形象/定妆照）→ DreamOS（剧中形象）
+> 演员 NFT 铸造时训练面部 LoRA → DreamOS 使用时加载 LoRA 锁定面容
 > 不管换什么戏服、场景、发型，脸始终是同一张
 
 ---
@@ -10,7 +10,7 @@
 
 **Story.fun**：用户创建/铸造演员 NFT，上传的是演员的"生活形象照"或"定妆照"
 
-**DramaOS**：用户用 NFT 做短剧时，演员需要穿戏服、换场景，但脸应该和 NFT 形象一致
+**DreamOS**：用户用 NFT 做短剧时，演员需要穿戏服、换场景，但脸应该和 NFT 形象一致
 
 **核心挑战**：AI 生图/生成视频时，如何保证同一个演员在不同剧集中面部一致，同时允许服装、场景、发饰自由变化？
 
@@ -19,7 +19,7 @@
 ## 二、技术架构：Face Anchor + LoRA 管线
 
 ```
-Story.fun 铸造演员 NFT                 DramaOS 制作短剧
+Story.fun 铸造演员 NFT                 DreamOS 制作短剧
 ══════════════════════                 ══════════════════
 用户上传多角度形象照                     用户选演员 NFT → 用其 LoRA
         │                                      │
@@ -79,12 +79,12 @@ Story.fun 铸造演员 NFT                 DramaOS 制作短剧
 
 ---
 
-## 四、Step 2：DramaOS 使用阶段 — 载入 LoRA 锁定面容
+## 四、Step 2：DreamOS 使用阶段 — 载入 LoRA 锁定面容
 
 ### 4.1 选角流程
 
 ```
-用户在 DramaOS 新建角色
+用户在 DreamOS 新建角色
     ↓
 弹出"从我的演员 NFT 中选择"
     ↓
@@ -107,7 +107,7 @@ swq_face, 古装红袍, 长发, 站在城墙上, 夕阳, 黄金光晕, 8k, cinem
 
 ### 4.3 角色视图生成
 
-DramaOS 中的角色卡片（正面/侧面/背面视图）全部使用同一 LoRA：
+DreamOS 中的角色卡片（正面/侧面/背面视图）全部使用同一 LoRA：
 
 - 正面视图：`[trigger], 正面, 半身, 看向镜头`
 - 侧面视图：`[trigger], 侧面, 45度角`
@@ -123,7 +123,7 @@ DramaOS 中的角色卡片（正面/侧面/背面视图）全部使用同一 LoR
 
 ## 五、用户可调整 vs 不可调整
 
-| 维度 | 用户可在 DramaOS 调整 | 锁定方式 |
+| 维度 | 用户可在 DreamOS 调整 | 锁定方式 |
 |---|---|---|
 | 服装/戏服 | ✅ 通过 Prompt 自由描述 | LoRA 不锁定服装 |
 | 发型/发饰 | ✅ 通过 Prompt 自由描述 | LoRA 不锁定发型 |
@@ -154,11 +154,11 @@ DramaOS 中的角色卡片（正面/侧面/背面视图）全部使用同一 LoR
                            │ NFT 元数据（链上+链下）
                            ▼
 ┌─────────────────────────────────────────────────────────┐
-│                    DramaOS 平台                           │
+│                    DreamOS 平台                           │
 │                                                           │
 │  [读取NFT元数据] → [下载LoRA权重] → [注入AI生成管线]       │
 │                                                           │
-│  用户在 DramaOS 中                                        │
+│  用户在 DreamOS 中                                        │
 │   • 选演员 → 自动加载面部 LoRA                             │
 │   • 描述服装/场景 → 拼成完整 Prompt                        │
 │   • 生成角色视图(正/侧/背) → 脸不变                        │
@@ -177,14 +177,14 @@ DramaOS 中的角色卡片（正面/侧面/背面视图）全部使用同一 LoR
 | 1 | **面部检测/裁剪** | `create-actor.html` | 上传后自动面部检测、多角度筛选、裁切 | P0 |
 | 2 | **LoRA 训练服务** | 后端（待建） | 接收面部裁切图 → 训练 LoRA → 上传 IPFS → 返回 CID | P0 |
 | 3 | **NFT 元数据升级** | Metaplex | metadata 扩展 `face_lora_cid` / `face_lora_trigger` | P0 |
-| 4 | **DramaOS 选角 LoRA 加载** | `dramaos.html` | 选演员时读 metadata → 下载 LoRA → 注入生成管线 | P0 |
-| 5 | **Prompt 引擎** | `dramaos.html` | 自动拼接 `[触发词] + [用户描述的服装/场景]` | P1 |
+| 4 | **DreamOS 选角 LoRA 加载** | `dreamos.html` | 选演员时读 metadata → 下载 LoRA → 注入生成管线 | P0 |
+| 5 | **Prompt 引擎** | `dreamos.html` | 自动拼接 `[触发词] + [用户描述的服装/场景]` | P1 |
 | 6 | **批量面部训练** | 后管工具 | 已有演员 NFT 批量训练 LoRA（数据迁移） | P1 |
 
 ---
 
 ## 八、未来扩展
 
-- **跨平台互认**：DramaOS 生成的视频回流 Story.fun 时，自动识别 LoRA 一致性
+- **跨平台互认**：DreamOS 生成的视频回流 Story.fun 时，自动识别 LoRA 一致性
 - **面部微调**：允许用户在一定范围内调整年龄、妆容（LoRA + ControlNet）
 - **多人同框**：多个演员 NFT 的 LoRA 同时加载，保持多人面部各自一致

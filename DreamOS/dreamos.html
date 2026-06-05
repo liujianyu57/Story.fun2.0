@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DramaOS · AI 短剧制作系统</title>
+<title>DreamOS · AI 短剧制作系统</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -362,7 +362,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
 <!-- ═══ LANDING ═══ -->
 <div id="pg-landing" class="page active" style="display:block;overflow-y:auto;height:100vh">
   <nav class="lnav" id="lnav">
-    <div class="l-brand">DramaOS<span class="l-beta">测试版</span></div>
+    <div class="l-brand">DreamOS<span class="l-beta">测试版</span></div>
     <div style="display:flex;align-items:center;gap:16px">
       <button class="l-lang" id="lang-btn" onclick="toggleLang()">中文</button>
       <button class="l-login-btn" id="login-btn" onclick="openPrivyModal()">登录</button>
@@ -402,14 +402,14 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
   </nav>
   <div class="hero">
     <div>
-      <div class="h-ey">DramaOS <span style="color:var(--t3)">· AI 短剧创作平台 · 写剧本 · 做视频 · 发作品</span></div>
+      <div class="h-ey">DreamOS <span style="color:var(--t3)">· AI 短剧创作平台 · 写剧本 · 做视频 · 发作品</span></div>
       <span class="h-t1">写出来，做出来，发出去，</span>
       <span class="h-t2">还能聊起来。</span>
     </div>
     <div>
       <p class="h-sub">写剧本 · 做视频 · 发作品 · AI角色聊天</p>
       <button class="h-cta" id="main-cta" onclick="handleCta()">开始创作 →</button>
-      <p class="h-desc">输入一句剧情脑洞，DramaOS 自动帮你生成整部短剧。从分集到分场、从对白到节奏，AI 一次写完。剧本锁定后，平台自动生成竖屏短剧视频：配音、配乐、转场全部自动完成。</p>
+      <p class="h-desc">输入一句剧情脑洞，DreamOS 自动帮你生成整部短剧。从分集到分场、从对白到节奏，AI 一次写完。剧本锁定后，平台自动生成竖屏短剧视频：配音、配乐、转场全部自动完成。</p>
       <div class="h-pts">
         <div class="h-pt"><span class="h-pt-n">01</span><div><div class="h-pt-t">一句话生成完整剧本</div><div class="h-pt-d">输入故事想法，AI 自动扩展成多集剧本，每一幕随时可改</div></div></div>
         <div class="h-pt"><span class="h-pt-n">02</span><div><div class="h-pt-t">自动生成竖屏短剧视频</div><div class="h-pt-d">配音、BGM、字幕、转场全部自动完成，一键发布</div></div></div>
@@ -429,7 +429,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
   </div>
   <div style="height:1px;background:linear-gradient(90deg,transparent,var(--b) 20%,var(--b) 80%,transparent);margin:0 48px"></div>
   <footer class="l-footer">
-    <div class="l-footer-brand">DramaOS</div>
+    <div class="l-footer-brand">DreamOS</div>
     <div class="l-footer-links"><span class="l-footer-link">写剧本</span>&nbsp;&nbsp;&nbsp;<span class="l-footer-link">做视频</span>&nbsp;&nbsp;&nbsp;<span class="l-footer-link">发作品</span>&nbsp;&nbsp;&nbsp;<span class="l-footer-link">AI角色聊天</span></div>
     <div class="l-footer-flow">脑洞 <em>→</em> 短剧 <em>→</em> 角色在线</div>
   </footer>
@@ -438,7 +438,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
 <!-- ═══ PROFILE ═══ -->
 <div id="pg-profile" class="page" style="background:var(--ink-900)">
   <div class="topbar">
-    <div class="tb-brand" onclick="go('pg-landing')">DramaOS</div>
+    <div class="tb-brand" onclick="go('pg-landing')">DreamOS</div>
     <div class="tb-av">cw</div>
   </div>
   <div class="prof-body">
@@ -773,7 +773,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
     <!-- 步骤1: 选择登录方式 -->
     <div id="privy-step-select">
       <div class="privy-hd">
-        <div class="privy-logo">DramaOS</div>
+        <div class="privy-logo">DreamOS</div>
         <div class="privy-sub">登录以开始创作</div>
       </div>
       <div class="privy-body">
@@ -794,7 +794,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
     <!-- 步骤2: 输入邮箱 -->
     <div id="privy-step-email" style="display:none">
       <div class="privy-hd">
-        <div class="privy-logo">DramaOS</div>
+        <div class="privy-logo">DreamOS</div>
         <div class="privy-sub">使用邮箱验证码登录</div>
       </div>
       <div class="privy-body">
@@ -810,7 +810,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
     <!-- 步骤3: 输入验证码 -->
     <div id="privy-step-code" style="display:none">
       <div class="privy-hd">
-        <div class="privy-logo">DramaOS</div>
+        <div class="privy-logo">DreamOS</div>
         <div class="privy-sub">输入验证码</div>
       </div>
       <div class="privy-body">
@@ -934,7 +934,7 @@ function privyLoginSuccess(info) {
 
   document.getElementById('main-cta').textContent = '进入创作 →';
 
-  // 同步登录态到 localStorage（与 auth.js 共用 storyfun_user），以便 dramaos-user-actors.html 能读取
+  // 同步登录态到 localStorage（与 auth.js 共用 storyfun_user），以便 dreamos-user-actors.html 能读取
   try {
     var syncUser = {
       id: 'user_privy_001',
@@ -968,7 +968,7 @@ function toggleDropdown() {
 
 function goToActorNFT() {
   toggleDropdown();
-  window.location.href = 'dramaos-user-actors.html';
+  window.location.href = 'dreamos-user-actors.html';
 }
 
 function logout() {
@@ -1623,13 +1623,13 @@ function getProjectName() {
 
 function getVideoStorage() {
   try {
-    var s = localStorage.getItem('dramaos_videos');
+    var s = localStorage.getItem('dreamos_videos');
     return s ? JSON.parse(s) : {};
   } catch(e) { return {}; }
 }
 
 function saveVideoStorage(data) {
-  try { localStorage.setItem('dramaos_videos', JSON.stringify(data)); } catch(e) {}
+  try { localStorage.setItem('dreamos_videos', JSON.stringify(data)); } catch(e) {}
 }
 
 function markEpAsGenerated(epName) {
@@ -1787,7 +1787,7 @@ function downloadAllVideos() {
 
 function simulateDownload(name, ext) {
   // 创建一个模拟的文本文件作为下载（真实场景会替换为实际视频 URL）
-  var content = 'DramaOS 视频下载占位\n项目：' + getProjectName() + '\n集数：' + name + '\n格式：' + ext + '\n时间：' + new Date().toISOString() + '\n\n（实际部署时此文件会被真实视频文件替代）';
+  var content = 'DreamOS 视频下载占位\n项目：' + getProjectName() + '\n集数：' + name + '\n格式：' + ext + '\n时间：' + new Date().toISOString() + '\n\n（实际部署时此文件会被真实视频文件替代）';
   var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -1964,7 +1964,7 @@ function showPublishSuccessModal(dramaName) {
     '  <div style="display:flex;flex-direction:column;gap:8px">' +
     '    <button onclick="window.open(\'../narrator.html\',\'_blank\');closePublishSuccessModal()" style="width:100%;padding:12px;border-radius:8px;background:var(--amber);color:var(--ink-900);border:none;font-size:12px;font-weight:500;cursor:pointer;font-family:\'DM Mono\',monospace">去 Story.fun 查看 →</button>' +
 
-    '    <button onclick="closePublishSuccessModal()" style="width:100%;padding:10px;border-radius:8px;background:none;border:1px solid var(--b);color:var(--t2);font-size:11px;cursor:pointer;font-family:\'DM Mono\',monospace">留在 DramaOS</button>' +
+    '    <button onclick="closePublishSuccessModal()" style="width:100%;padding:10px;border-radius:8px;background:none;border:1px solid var(--b);color:var(--t2);font-size:11px;cursor:pointer;font-family:\'DM Mono\',monospace">留在 DreamOS</button>' +
     '  </div>' +
     '</div></div>';
   div.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
