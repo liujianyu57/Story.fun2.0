@@ -151,70 +151,6 @@
       color: var(--accent);
     }
 
-    /* ===== Summary Bar ===== */
-    .summary-bar {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    @media (max-width: 960px) {
-      .summary-bar { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    }
-    @media (max-width: 560px) {
-      .summary-bar { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    }
-    .summary-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px 24px;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.25s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .summary-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), #00d9a3);
-      opacity: 0.5;
-    }
-    .summary-card:nth-child(1)::before { background: linear-gradient(90deg, #4a9eff, #7bb8ff); }
-    .summary-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent), #00d9a3); }
-    .summary-card:nth-child(3)::before { background: linear-gradient(90deg, #f5b042, #f7c35e); }
-    .summary-card:nth-child(4)::before { background: linear-gradient(90deg, var(--accent), #00d9a3); }
-    .summary-card:nth-child(5)::before { background: linear-gradient(90deg, var(--gold), #f7c35e); }
-    .summary-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
-    }
-    .summary-card .sc-row {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 2px;
-    }
-    .summary-card .sc-value {
-      font-size: 1.75rem;
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-    }
-    .summary-card .sc-value.green { color: var(--accent); }
-    .summary-card .sc-value.gold { color: var(--gold); }
-    .summary-card .sc-value.blue { color: #4a9eff; }
-    .summary-card .sc-label {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: 500;
-      margin-top: 3px;
-    }
-
     /* ===== Section Header ===== */
     .section-header {
       display: flex;
@@ -690,51 +626,16 @@
     <div class="page-header">
       <div class="page-header-left">
         <h1>🏢 经纪工坊</h1>
-        <p>管理你的演员阵容，监控挖矿收益，调度演出计划</p>
+        <p>管理你的演员分身，监控挖矿收益，调度演出计划</p>
       </div>
       <div class="page-header-actions">
-        <a class="btn-secondary" href="actors.html">🎭 去市场挖掘新星</a>
-        <button class="btn-primary" onclick="claimStory()" style="border:none;">🤑 领取收益</button>
-      </div>
-    </div>
-
-    <!-- ===== Summary Bar ===== -->
-    <div class="summary-bar" id="summaryBar">
-      <div class="summary-card">
-        <div class="sc-row">
-          <div class="sc-value blue" id="totalActors">0</div>
-          <div class="sc-label">签约演员</div>
-        </div>
-      </div>
-      <div class="summary-card">
-        <div class="sc-row">
-          <div class="sc-value green" id="stakingActors">0</div>
-          <div class="sc-label">派遣中</div>
-        </div>
-      </div>
-      <div class="summary-card">
-        <div class="sc-row">
-          <div class="sc-value green" id="totalCumulative">0</div>
-          <div class="sc-label">累计总产出</div>
-        </div>
-      </div>
-      <div class="summary-card">
-        <div class="sc-row">
-          <div class="sc-value green" id="dailyEarnings">0</div>
-          <div class="sc-label">今日总产出</div>
-        </div>
-      </div>
-      <div class="summary-card">
-        <div class="sc-row">
-          <div class="sc-value gold" id="claimableStory">0 STORY</div>
-          <div class="sc-label">可领取</div>
-        </div>
+        <a class="btn-secondary" href="actors.html">🎭 签约演员</a>
       </div>
     </div>
 
     <!-- ===== Actor Grid Section ===== -->
     <div class="section-header">
-      <h2>🎭 我的演员阵容 <span class="count-badge" id="actorCount">(0)</span></h2>
+      <h2>🎭 我的演员分身 <span class="count-badge" id="actorCount">(0)</span></h2>
       <!-- sort removed -->
     </div>
 
@@ -746,7 +647,7 @@
       <div class="empty-icon">🎬</div>
       <h3>还没有签约演员</h3>
       <p>去 NFT 市场浏览演员形象，Mint 一个属于你自己的演员 NFT，开始经营经纪公司。</p>
-      <a class="btn-primary" href="actors.html" style="text-decoration:none;">🎭 去市场挖掘新星</a>
+      <a class="btn-primary" href="actors.html" style="text-decoration:none;">🎭 签约演员</a>
     </div>
 
   </div>
@@ -950,11 +851,6 @@
     let toastTimer = null;
 
     // ============================================================
-    //  可领取收益（模拟）
-    // ============================================================
-    let pendingClaimable = 316.5; // 模拟累计可领取 STORY
-
-    // ============================================================
     //  Toast
     // ============================================================
     function showToast(msg, icon) {
@@ -998,7 +894,6 @@
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
       renderActors();
-      updateSummary();
     });
 
     function renderActors() {
@@ -1010,7 +905,6 @@
         grid.innerHTML = '';
         empty.style.display = 'block';
         count.textContent = '(0)';
-        document.getElementById('totalActors').textContent = '0';
         return;
       }
 
@@ -1106,27 +1000,6 @@
     }
 
     // ============================================================
-    //  更新 Summary Bar
-    // ============================================================
-    function updateSummary() {
-      const total = MY_ACTORS.length;
-      const staking = MY_ACTORS.filter(a => a.isStaking).length;
-      let cumulativeTotal = 0;
-      let dailyTotal = 0;
-
-      MY_ACTORS.forEach(a => {
-        cumulativeTotal += a.cumulativeStory;
-        dailyTotal += a.dailyStory;
-      });
-
-      document.getElementById('totalActors').textContent = total;
-      document.getElementById('stakingActors').textContent = staking;
-      document.getElementById('totalCumulative').textContent = formatNumber(cumulativeTotal) + ' STORY';
-      document.getElementById('dailyEarnings').textContent = dailyTotal.toFixed(1) + ' STORY';
-      document.getElementById('claimableStory').textContent = formatNumber(pendingClaimable) + ' STORY';
-    }
-
-    // ============================================================
     //  派遣 Modal
     // ============================================================
     let pendingStakeActorId = null;
@@ -1161,7 +1034,6 @@
       }
       closeStakeModal();
       renderActors();
-      updateSummary();
     }
 
 
@@ -1186,7 +1058,6 @@
         actor.status = 'idle';
         showToast('⏹ ' + actor.name + ' 已休息', '⏹');
         renderActors();
-        updateSummary();
       }
     }
 
@@ -1229,7 +1100,6 @@
       }
       closeChargeModal();
       renderActors();
-      updateSummary();
     }
 
     // ============================================================
@@ -1308,20 +1178,6 @@
       showToast('🛠️ 升级功能即将上线，敬请期待', '🏅');
     }
 
-    // ============================================================
-    //  Claim （领取 STORY 到钱包）
-    // ============================================================
-    function claimStory() {
-      if (pendingClaimable <= 0) {
-        showToast('💸 没有可领取的收益', '🤑');
-        return;
-      }
-      const amount = pendingClaimable;
-      // stub — 后续接入合约
-      showToast('✅ 已领取 ' + formatNumber(amount) + ' STORY 到钱包！', '🤑');
-      pendingClaimable = 0;
-      updateSummary();
-    }
   </script>
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
