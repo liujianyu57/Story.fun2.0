@@ -251,8 +251,25 @@
     .drag-handle { cursor: grab; color: var(--text-muted); font-size: 1rem; user-select: none; }
     .drag-handle:active { cursor: grabbing; }
 
+    /* ===== Actor Bind Modal ===== */
+    .actor-bind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-height: 360px; overflow-y: auto; padding: 4px 0; }
+    .actor-bind-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.2s ease; background: #fafcff; }
+    .actor-bind-item:hover { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 2px 8px rgba(0,179,136,0.08); }
+    .actor-bind-item .abi-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #f0f4f8; }
+    .actor-bind-item .abi-info { flex: 1; min-width: 0; }
+    .actor-bind-item .abi-name { font-size: 0.92rem; font-weight: 600; color: var(--text); }
+    .actor-bind-item .abi-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; }
+    .actor-bind-empty { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 0.92rem; }
+    .actor-bind-empty .empty-icon { font-size: 2rem; margin-bottom: 10px; }
+    .actor-bind-status { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 500; white-space: nowrap; margin-top: 8px; }
+    .actor-bind-status img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .char-bind-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 80px; border: 1px solid var(--border); background: var(--surface); color: var(--accent); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .char-bind-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .char-bind-btn.bound { border-color: var(--accent); background: rgba(0,179,136,0.06); }
+    .char-bind-actor-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+
     @media (max-width: 1200px) { .char-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 900px) { .form-row { grid-template-columns: 1fr; } .steps-bar { border-radius: var(--radius); flex-wrap: nowrap; } .char-grid { grid-template-columns: repeat(2, 1fr); } .pricing-panel { padding: 20px; } }
+    @media (max-width: 900px) { .form-row { grid-template-columns: 1fr; } .steps-bar { border-radius: var(--radius); flex-wrap: nowrap; } .char-grid { grid-template-columns: repeat(2, 1fr); } .pricing-panel { padding: 20px; } .actor-bind-grid { grid-template-columns: 1fr; } }
     @media (max-width: 680px) { .form-panel-body, .form-panel-header, .form-panel-footer { padding-left: 20px; padding-right: 20px; } .char-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -283,11 +300,6 @@
       <div class="step-item">
         <span class="step-circle">3</span>
         <span class="step-label">角色管理</span>
-      </div>
-      <span style="color:#deeaf7;font-size:1.2rem;">›</span>
-      <div class="step-item">
-        <span class="step-circle">4</span>
-        <span class="step-label">定价 & 收益</span>
       </div>
     </div>
 
@@ -405,7 +417,7 @@
         </div>
         <div style="display:flex;gap:10px;">
           <button class="button-ghost" onclick="goToStep(2)">← 上一步</button>
-          <button class="button" onclick="goToStep(4)">下一步：定价 →</button>
+          <button class="button" style="padding:12px 36px;" onclick="submitEdit()">保存修改</button>
         </div>
       </div>
     </div>
@@ -443,74 +455,24 @@
       </div>
     </div>
 
-    <!-- Step 4: 定价 & 收益 -->
-    <div class="form-panel" id="step4" style="display:none;">
-      <div class="form-panel-header">
-        <h3>💰 定价 & 收益</h3>
-        <p>设定短剧的定价与收益分成。</p>
-      </div>
-      <div class="form-panel-body">
-        <div class="pricing-panel">
-          <div class="pricing-subtitle">单集解锁 / 批量优惠解锁，观众可自由选择</div>
-
-      <div class="pricing-section">
-        <div class="pricing-section-title">单集解锁</div>
-        <div class="pricing-row">
-          <div class="pricing-field" style="max-width:240px;">
-            <label>单集定价</label>
-            <div class="input-wrap">
-              <input type="number" id="editUnitPrice" placeholder="9.8" step="0.1" min="0" />
-              <span class="unit">USDC</span>
-            </div>
-            <span style="font-size:0.78rem;color:var(--danger);margin-top:4px;" id="priceWarning" data-original=""></span>
-          </div>
-          <div class="pricing-field" style="max-width:240px;">
-            <label>免费集数</label>
-            <div class="input-wrap">
-              <input type="number" id="editFreeEpisodes" placeholder="1" step="1" min="0" />
-              <span class="unit">集</span>
-            </div>
-          </div>
+    <!-- Actor Bind Modal -->
+    <div class="char-modal-overlay" id="actorBindModal">
+      <div class="char-modal">
+        <div class="char-modal-header">
+          <h3 id="actorBindModalTitle">🎭 选择演员 IP</h3>
+          <button class="char-modal-close" onclick="charManager.closeBindModal()">✕</button>
         </div>
-        <div class="pricing-hint">观众可直接按单集付费解锁内容。设置免费集数可吸引用户试看。</div>
-      </div>
-
-          <div class="pricing-section">
-            <div class="pricing-section-title">批量解锁（设置优惠）</div>
-            <div class="pricing-row">
-              <div class="pricing-field" style="max-width:240px;">
-                <label>批量优惠</label>
-                <div class="input-wrap">
-                  <input type="number" id="editDiscount" placeholder="20" min="0" max="100" />
-                  <span class="unit">% OFF</span>
-                </div>
-              </div>
-            </div>
-            <div class="pricing-hint">例如设置 20%，观众批量解锁全部剧集时享受 20% 优惠。</div>
-          </div>
-
-          <div class="pricing-section">
-            <div class="pricing-section-title">收益分成预览</div>
-            <div class="revenue-preview">
-              <div class="revenue-header">
-                <span class="label">创作者收入</span>
-                <span class="value">70%</span>
-              </div>
-              <div class="revenue-note">平台协议费将用于生态销毁与激励池。</div>
-            </div>
-          </div>
+        <div class="char-modal-body">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;" id="actorBindModalHint">选择一名演员 IP 来饰演该角色</p>
+          <div id="actorBindGrid" class="actor-bind-grid"></div>
         </div>
-      </div>
-      <div class="form-panel-footer">
-        <div style="display:flex;gap:10px;">
-          <button class="button-outline" onclick="showToast('草稿已保存！')">💾 保存草稿</button>
-        </div>
-        <div style="display:flex;gap:10px;">
-          <button class="button-ghost" onclick="goToStep(3)">← 上一步</button>
-          <button class="button" style="padding:12px 36px;" onclick="submitEdit()">保存修改</button>
+        <div class="char-modal-footer" style="justify-content:space-between;">
+          <span style="font-size:0.82rem;color:var(--text-muted);" id="actorBindCount"></span>
+          <button class="button-ghost" onclick="charManager.closeBindModal()">取消</button>
         </div>
       </div>
     </div>
+
   </div>
 
   <script src="load-header.js"></script>
@@ -519,7 +481,7 @@
   <script>
     // === Step Navigation ===
     function goToStep(num) {
-      const steps = ['step1','step2','step3','step4'];
+      const steps = ['step1','step2','step3'];
       const stepItems = document.querySelectorAll('.step-item');
       steps.forEach((id, i) => {
         document.getElementById(id).style.display = i + 1 === num ? 'block' : 'none';
@@ -589,11 +551,18 @@
         });
       }
       if (data.price) {
-        document.getElementById('editUnitPrice').value = data.price;
-        document.getElementById('priceWarning').dataset.original = data.price;
+        // pricing data available but step 4 removed
       }
-      if (data.free !== undefined) document.getElementById('editFreeEpisodes').value = data.free;
-      if (data.discount) document.getElementById('editDiscount').value = data.discount;
+      // Restore characters with actor bindings
+      if (data.characters && Array.isArray(data.characters)) {
+        // Clear default characters and load saved ones
+        charManager.characters = [];
+        charManager.idCounter = 0;
+        data.characters.forEach(c => {
+          charManager.addChar(c.name, c.desc, c.avatar, c.actorKey || null);
+        });
+        charManager.render();
+      }
     }
 
     // === Cover file upload (drag & drop + file picker) ===
@@ -673,8 +642,28 @@
       }
     });
 
+    // === Actor IP Database ===
+    const ACTOR_IP_DB = {
+      'Luna': { name: 'Luna', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。' },
+      '苏婉清': { name: '苏婉清', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。' },
+      '李云飞': { name: '李云飞', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。' },
+      '林梦瑶': { name: '林梦瑶', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。' },
+      '赵无极': { name: '赵无极', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。' },
+      '上官婉儿': { name: '上官婉儿', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。' },
+      '叶倾城': { name: '叶倾城', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80', description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。' },
+      '慕容云': { name: '慕容云', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80', description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。' },
+      '花木兰': { name: '花木兰', image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80', description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。' },
+      '东方朔': { name: '东方朔', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。' },
+      '柳如是': { name: '柳如是', image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80', description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。' },
+      '萧景琰': { name: '萧景琰', image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80', description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。' },
+      '江小鱼': { name: '江小鱼', image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80', description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。' }
+    };
+
     // === Character Manager ===
     const charManager = {
+      bindCharId: null,
+      bindActorKey: null,
+
       characters: [],
       idCounter: 0,
       editingId: null,
@@ -703,8 +692,8 @@
         });
       },
 
-      addChar(name, desc, avatar) {
-        this.characters.push({ id: ++this.idCounter, name: name || '未命名角色', desc: desc || '', avatar: avatar || null });
+      addChar(name, desc, avatar, actorKey) {
+        this.characters.push({ id: ++this.idCounter, name: name || '未命名角色', desc: desc || '', avatar: avatar || null, actorKey: actorKey || null });
       },
 
       removeChar(id) {
@@ -763,19 +752,44 @@
         showToast(this.editingId ? '角色已更新' : '角色已添加');
       },
 
+      getUserActorKeys() {
+        // Return the list of actor IP keys that the user holds
+        const held = (typeof currentUser !== 'undefined' && currentUser && currentUser.actorNfts) ? currentUser.actorNfts : [];
+        return held.filter(k => ACTOR_IP_DB[k]);
+      },
+
       render() {
         const grid = document.getElementById('charGrid');
         grid.innerHTML = '';
+        const self = this;
         this.characters.forEach(c => {
           const avatarHtml = c.avatar
             ? '<img src="' + c.avatar + '" alt="' + c.name + '" />'
             : '<div class="char-avatar-placeholder">' + c.name.charAt(0) + '</div>';
+
+          // Build bind button HTML
+          let bindHtml = '';
+          if (c.actorKey && ACTOR_IP_DB[c.actorKey]) {
+            const actor = ACTOR_IP_DB[c.actorKey];
+            bindHtml = '<div style="margin-top:8px;">'
+              + '<button class="char-bind-btn bound js-bind-actor" data-char-id="' + c.id + '">'
+              + '<img class="char-bind-actor-avatar" src="' + actor.image + '" alt="" />'
+              + this.escapeHtml(actor.name)
+              + '</button>'
+              + '</div>';
+          } else {
+            bindHtml = '<div style="margin-top:8px;">'
+              + '<button class="char-bind-btn js-bind-actor" data-char-id="' + c.id + '">🎭 绑定演员 IP</button>'
+              + '</div>';
+          }
+
           grid.insertAdjacentHTML('beforeend', '<div class="char-card" data-char-id="' + c.id + '">'
             + '<div class="char-avatar-area">' + avatarHtml + '</div>'
             + '<div class="char-body">'
             + '<div class="char-name">' + this.escapeHtml(c.name) + '</div>'
             + '<div class="char-desc">' + this.escapeHtml(c.desc || '暂无简介') + '</div>'
-            + '<div class="char-actions">'
+            + bindHtml
+            + '<div class="char-actions" style="margin-top:8px;">'
             + '<button class="char-action-btn js-edit-char">✎ 编辑</button>'
             + '</div></div></div>');
         });
@@ -795,6 +809,7 @@
         newGrid.addEventListener('click', (e) => {
           const editBtn = e.target.closest('.js-edit-char');
           const addCard = e.target.closest('.js-add-char');
+          const bindBtn = e.target.closest('.js-bind-actor');
 
           if (editBtn) {
             const card = editBtn.closest('.char-card');
@@ -802,12 +817,102 @@
             this.openEditModal(id);
           } else if (addCard) {
             this.openAddModal();
+          } else if (bindBtn) {
+            const card = bindBtn.closest('.char-card');
+            const id = parseInt(card.dataset.charId);
+            this.openBindModal(id);
           }
         });
       },
 
       removeChar(id) {
         showToast('角色管理不支持删除操作');
+      },
+
+      // ===== Actor Binding Methods =====
+
+      openBindModal(charId) {
+        const char = this.characters.find(c => c.id === charId);
+        if (!char) return;
+        this.bindCharId = charId;
+
+        const hint = document.getElementById('actorBindModalHint');
+        hint.textContent = '选择一名演员 IP 来饰演「' + char.name + '」';
+
+        this.renderBindModal();
+        document.getElementById('actorBindModal').classList.add('active');
+      },
+
+      closeBindModal() {
+        document.getElementById('actorBindModal').classList.remove('active');
+        this.bindCharId = null;
+      },
+
+      renderBindModal() {
+        const grid = document.getElementById('actorBindGrid');
+        const countEl = document.getElementById('actorBindCount');
+        const actorKeys = this.getUserActorKeys();
+
+        if (actorKeys.length === 0) {
+          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何演员 IP<br/>请先前往 DreamOS 创建或购买演员素材</div>';
+          countEl.textContent = '';
+          return;
+        }
+
+        const alreadyBound = this.characters
+          .filter(c => c.actorKey)
+          .map(c => c.actorKey);
+
+        let html = '';
+        actorKeys.forEach(key => {
+          const actor = ACTOR_IP_DB[key];
+          const isBoundToOther = alreadyBound.includes(key);
+          html += '<div class="actor-bind-item js-bind-select" data-actor-key="' + key + '" style="' + (isBoundToOther ? 'opacity:0.5;' : '') + '">'
+            + '<img class="abi-avatar" src="' + actor.image + '" alt="" onerror="this.outerHTML=\'<div class=abi-avatar style=display:grid;place-items:center;font-size:1.2rem;>🎭</div>\'" />'
+            + '<div class="abi-info">'
+            + '<div class="abi-name">' + this.escapeHtml(actor.name) + '</div>'
+            + '<div class="abi-desc">' + this.escapeHtml(actor.description || '') + '</div>'
+            + (isBoundToOther ? '<div style="font-size:0.7rem;color:var(--warning);margin-top:2px;">⚠️ 已被其他角色绑定</div>' : '')
+            + '</div></div>';
+        });
+
+        grid.innerHTML = html;
+        countEl.textContent = '持有 ' + actorKeys.length + ' 个演员 IP';
+
+        // Bind click events
+        grid.querySelectorAll('.js-bind-select').forEach(el => {
+          el.addEventListener('click', () => {
+            const key = el.dataset.actorKey;
+            // Check if already bound to another character
+            const boundChar = this.characters.find(c => c.actorKey === key && c.id !== this.bindCharId);
+            if (boundChar) {
+              showToast('该演员 IP 已被角色「' + boundChar.name + '」绑定');
+              return;
+            }
+            this.bindActor(this.bindCharId, key);
+          });
+        });
+      },
+
+      bindActor(charId, actorKey) {
+        const char = this.characters.find(c => c.id === charId);
+        if (!char) return;
+        char.actorKey = actorKey;
+        this.closeBindModal();
+        this.render();
+        showToast('✅ 已绑定演员「' + ACTOR_IP_DB[actorKey].name + '」');
+      },
+
+      unBindActor(charId) {
+        const char = this.characters.find(c => c.id === charId);
+        if (!char) return;
+        if (char.actorKey) {
+          const name = ACTOR_IP_DB[char.actorKey] ? ACTOR_IP_DB[char.actorKey].name : char.actorKey;
+          if (!confirm('确定要解除演员「' + name + '」与角色「' + char.name + '」的绑定吗？')) return;
+          char.actorKey = null;
+          this.render();
+          showToast('已解除绑定');
+        }
       },
 
       escapeHtml(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
@@ -1267,10 +1372,16 @@
       const desc = document.getElementById('editDescription').value.trim();
       const tags = Array.from(document.querySelectorAll('.tag-option.selected')).map(el => el.dataset.tag);
 
-      const newPrice = parseFloat(document.getElementById('editUnitPrice').value);
+      // Save characters with their actor bindings
+      const chars = charManager.characters.map(c => ({
+        name: c.name,
+        desc: c.desc,
+        avatar: c.avatar,
+        actorKey: c.actorKey
+      }));
 
       // Save to localStorage
-      const data = { cover, desc, tags, price: newPrice, free: document.getElementById('editFreeEpisodes').value, discount: document.getElementById('editDiscount').value };
+      const data = { cover, desc, tags, characters: chars };
       try {
         localStorage.setItem('editDrama_' + name, JSON.stringify(data));
       } catch(e) {}

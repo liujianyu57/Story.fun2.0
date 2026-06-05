@@ -98,7 +98,7 @@
     .modal-mint-preview img { width:72px;height:72px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0; }
     .modal-mint-preview h4 { margin:0;font-size:1.1rem; }
 
-    .modal.error .mintable-list { display: flex; flex-direction: column; gap: 12px; }
+    .mintable-list { display: flex; flex-direction: column; gap: 12px; }
     .mintable-item { display: flex; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 18px; cursor: pointer; transition: all 0.2s ease; }
     .mintable-item:hover { border-color: var(--accent); background: rgba(0,179,136,0.03); }
     .mintable-item.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(0,179,136,0.20); }
@@ -308,11 +308,6 @@
 
       <!-- Tab 2 -->
       <div class="tab-content" id="tab2">
-        <div class="filter-row" style="margin-bottom: 24px;">
-          <button class="filter-pill active" onclick="filterNFTs('all',this)">全部</button>
-          <button class="filter-pill" onclick="filterNFTs('staked',this)">已质押</button>
-          <button class="filter-pill" onclick="filterNFTs('unstaked',this)">未质押</button>
-        </div>
         <div class="nft-grid">
           <div class="nft-card" data-staked="false">
             <div class="nft-cover-wrap">
@@ -321,7 +316,7 @@
             </div>
             <div class="nft-body">
               <h4>江南烟雨</h4>
-              <div class="nft-sub"><span>24 集</span></div>
+              <div class="nft-sub"><span>24 集 ｜ 烟雨江南中一段凄美爱情故事</span></div>
             </div>
           </div>
           <div class="nft-card" data-staked="true">
@@ -331,7 +326,7 @@
             </div>
             <div class="nft-body">
               <h4>星际迷航</h4>
-              <div class="nft-sub"><span>16 集</span></div>
+              <div class="nft-sub"><span>16 集 ｜ 浩瀚星空中的人类冒险传奇</span></div>
             </div>
           </div>
           <div class="nft-card" data-staked="true">
@@ -341,7 +336,7 @@
             </div>
             <div class="nft-body">
               <h4>长安如梦</h4>
-              <div class="nft-sub"><span>30 集</span></div>
+              <div class="nft-sub"><span>30 集 ｜ 一曲长歌诉尽长安繁华梦</span></div>
             </div>
           </div>
           <div class="nft-card" data-staked="false">
@@ -351,7 +346,7 @@
             </div>
             <div class="nft-body">
               <h4>迷雾之城</h4>
-              <div class="nft-sub"><span>12 集</span></div>
+              <div class="nft-sub"><span>12 集 ｜ 迷雾笼罩的城市中隐藏着惊天秘密</span></div>
             </div>
           </div>
         </div>
@@ -733,10 +728,11 @@
 
     stakeModal.addEventListener('click', function(e) { if (e.target === this) closeStakeModal(); });
 
+    // NFT 卡片区域点击打开质押详情弹窗
     document.addEventListener('click', function(e) {
-      const btn = e.target.closest('.nft-card .nft-body, .nft-card .nft-cover-wrap');
-      if (!btn) return;
-      const card = btn.closest('.nft-card');
+      const bodyArea = e.target.closest('.nft-card .nft-body, .nft-card .nft-cover-wrap');
+      if (!bodyArea) return;
+      const card = bodyArea.closest('.nft-card');
       if (card) openStakeModal(card);
     });
 
@@ -1023,6 +1019,24 @@
       const title = card.querySelector('.card-body h3').textContent.trim();
       window.location.href = 'edit-drama.html?title=' + encodeURIComponent(title);
     }
+
+    // === 统一 Escape 键关闭所有弹窗 ===
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'Escape') return;
+      const overlays = [
+        { el: document.getElementById('mintModal'), close: closeMintModal },
+        { el: document.getElementById('stakeModal'), close: closeStakeModal },
+        { el: document.getElementById('bindActorModal'), close: closeBindActorModal },
+        { el: document.getElementById('actorDramaModal'), close: closeActorDramaModal },
+      ];
+      for (const { el, close } of overlays) {
+        if (el && el.classList.contains('open')) {
+          e.preventDefault();
+          close();
+          break;
+        }
+      }
+    });
   </script>
 
   <div id="bottom-nav-placeholder"></div>
