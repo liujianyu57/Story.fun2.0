@@ -77,6 +77,25 @@
     .narrator-tab.active { background: var(--accent-soft); color: var(--accent); }
     .filter-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
     .filter-pill { border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); padding: 10px 16px; border-radius: 999px; cursor: pointer; font-size: 0.92rem; }
+    .modal-backdrop { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(15, 23, 42, 0.35); z-index: 1000; }
+    .modal-backdrop.active { display: flex; }
+    .modal-dialog { width: min(720px, 100%); background: #fff; border-radius: 28px; box-shadow: 0 35px 80px rgba(15, 23, 42, 0.2); overflow: hidden; }
+    .modal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; padding: 24px 24px 16px; }
+    .modal-header h2 { margin: 0; font-size: 1.45rem; }
+    .modal-close { border: none; background: transparent; color: var(--text); font-size: 1.6rem; line-height: 1; cursor: pointer; }
+    .modal-subtitle { padding: 0 24px 18px; color: var(--text-muted); font-size: 0.96rem; }
+    .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 0 24px 24px; }
+    .modal-preview { border-radius: 24px; overflow: hidden; background: #f5f7ff; position: relative; }
+    .modal-preview img { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+    .preview-tag { position: absolute; left: 16px; bottom: 16px; padding: 10px 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.92); color: var(--text); font-weight: 600; font-size: 0.95rem; backdrop-filter: blur(12px); }
+    .modal-info { display: grid; gap: 12px; }
+    .modal-field { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-radius: 18px; background: #f8fbff; border: 1px solid #eef4ff; }
+    .modal-field span { color: var(--text-muted); font-size: 0.95rem; }
+    .modal-field strong { color: var(--text); font-weight: 600; }
+    .modal-total { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-radius: 20px; background: rgba(76, 222, 204, 0.12); border: 1px solid rgba(76, 222, 204, 0.18); margin-top: 4px; }
+    .modal-total strong { font-size: 1.4rem; color: #0c7f71; }
+    .modal-actions { display: flex; flex-wrap: wrap; gap: 14px; padding: 18px 24px 24px; }
+    .modal-actions .button, .modal-actions .button-secondary { flex: 1; min-width: 0; }
     .filter-pill.active { background: var(--accent); color: #fff; border-color: transparent; }
     .card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
     /* ===== Card Redesign for Drama Management ===== */
@@ -1510,68 +1529,31 @@
       </div>
     </div>
 
-    <!-- Modal: 铸造演员NFT -->
-    <div class="modal-overlay" id="actorMintModal">
-      <div class="modal" style="max-width: 560px;">
+    <!-- Modal: 铸造演员NFT（确认Mint弹窗） -->
+    <div class="modal-backdrop" id="actorMintModal" aria-hidden="true">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="actorMintTitle">
         <div class="modal-header">
-          <h3>🎭 铸造演员 NFT</h3>
-          <button class="modal-close" onclick="closeActorMintModal()">✕</button>
+          <div>
+            <h2 id="actorMintTitle">确认 Mint 演员 NFT</h2>
+            <div class="modal-subtitle" id="actorMintSubtitle">苏婉清 · 10 USDC · 数量1</div>
+          </div>
+          <button class="modal-close" type="button" id="actorMintClose" aria-label="关闭弹窗">×</button>
         </div>
         <div class="modal-body">
-          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">铸造后演员NFT可绑定角色并参与短剧收入分润。</p>
-
-          <div id="actorPreview" style="display:flex;align-items:center;gap:18px;padding:18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
-            <img id="actorMintAvatar" src="" alt="" style="width:72px;height:72px;border-radius:50%;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
-            <div>
-              <h4 id="actorMintName" style="margin:0 0 4px;font-size:1.1rem;">—</h4>
-              <p style="margin:0;color:var(--text-muted);font-size:0.92rem;">这是演员的简介这是演员的简介这是演员的简介</p>
-            </div>
+          <div class="modal-preview">
+            <img id="actorMintImage" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="演员预览" />
+            <div class="preview-tag" id="actorMintTag">AI 演员</div>
           </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">发行总量</p>
-              <p id="actorTotalSupply" style="margin:4px 0 0;font-size:1.2rem;font-weight:700;">—</p>
-            </div>
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">公开可 Mint 数量</p>
-              <p id="actorOpenMint" style="margin:4px 0 0;font-size:1.2rem;font-weight:700;">—</p>
-            </div>
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">Mint 价格</p>
-              <p id="actorMintPrice" style="margin:4px 0 0;font-size:1.2rem;font-weight:700;color:var(--accent);">—</p>
-            </div>
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">创建者保留</p>
-              <p id="actorReserved" style="margin:4px 0 0;font-size:1.2rem;font-weight:700;">—</p>
-            </div>
-          </div>
-
-          <div style="padding:16px 18px;border-radius:14px;background:rgba(0,179,136,0.06);border:1px solid rgba(0,179,136,0.12);margin-bottom:20px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="color:var(--text-muted);font-size:0.95rem;">创作者保留需支付</span>
-              <span id="actorTotalCost" style="font-size:1.35rem;font-weight:700;color:var(--accent);">0 USDC</span>
-            </div>
-            <div style="margin:10px 0 0;padding-top:12px;border-top:1px solid rgba(0,179,136,0.15);">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <span style="color:var(--text-muted);font-size:0.88rem;">铸造手续费</span>
-                <span style="font-size:1rem;font-weight:600;color:var(--text);">10 USDC</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed rgba(0,179,136,0.20);">
-                <span style="font-weight:700;font-size:1rem;">合计</span>
-                <span id="actorTotalWithFee" style="font-size:1.35rem;font-weight:700;color:var(--accent);">0 USDC</span>
-              </div>
-            </div>
-            <p style="margin:12px 0 0;color:var(--text-muted);font-size:0.88rem;line-height:1.6;">创作者保留的 NFT 将直接空投至您的钱包，需按 Mint 价格支付对应费用。</p>
-          </div>
-
-          <div style="padding:12px 16px;border-radius:12px;background:#fff8e6;border:1px solid rgba(255,159,44,0.20);">
-            <p style="margin:0;color:#b87a1a;font-size:0.88rem;line-height:1.6;">💡 其他用户可通过付费Mint铸造剩余的 9,000 个，每次铸造你将获得50%的分润。</p>
+          <div class="modal-info">
+            <div class="modal-field"><span>支付钱包</span><strong id="actorMintWallet">0x1234....fods</strong></div>
+            <div class="modal-field"><span>Mint 合约</span><strong id="actorMintContract">ActorNFT.mint()</strong></div>
+            <div class="modal-field"><span>可Mint 余额</span><strong id="actorMintBalance">9,000</strong></div>
+            <div class="modal-total"><span>预计支付</span><strong id="actorMintEstimate">10.0 USDC</strong></div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="button-secondary" onclick="closeActorMintModal()">取消</button>
-          <button class="button" id="actorMintConfirmBtn" onclick="confirmActorMint()">确认铸造</button>
+        <div class="modal-actions">
+          <button class="button-secondary" type="button" id="actorMintCancel">取消</button>
+          <button class="button" type="button" id="actorMintConfirm">确认支付并 Mint</button>
         </div>
       </div>
     </div>
@@ -2055,48 +2037,61 @@
       }
     });
 
-    // === 演员铸造弹窗 ===
+    // === 演员铸造弹窗（确认 Mint 弹窗） ===
     let currentActor = null;
     const actorMintModal = document.getElementById('actorMintModal');
 
     function openActorMintModal(name, avatar, totalSupply, openMint, mintPrice, reserved) {
       currentActor = { name, avatar, totalSupply, openMint, mintPrice, reserved };
-      document.getElementById('actorMintAvatar').src = avatar;
-      document.getElementById('actorMintAvatar').alt = name;
-      document.getElementById('actorMintName').textContent = name;
-      document.getElementById('actorTotalSupply').textContent = totalSupply.toLocaleString();
-      document.getElementById('actorOpenMint').textContent = openMint.toLocaleString();
-      document.getElementById('actorMintPrice').textContent = mintPrice + ' USDC';
-      document.getElementById('actorReserved').textContent = reserved.toLocaleString();
-      document.getElementById('actorTotalCost').textContent = (reserved * mintPrice).toLocaleString() + ' USDC';
-      document.getElementById('actorTotalWithFee').textContent = (reserved * mintPrice + 10).toLocaleString() + ' USDC';
-      actorMintModal.classList.add('open');
+      // 填充弹窗数据
+      document.getElementById('actorMintSubtitle').textContent = `${name} · ${mintPrice} USDC · 数量${reserved}`;
+      document.getElementById('actorMintImage').src = avatar;
+      document.getElementById('actorMintImage').alt = name;
+      document.getElementById('actorMintTag').textContent = 'AI 演员';
+      document.getElementById('actorMintWallet').textContent = '0x1234....fods';
+      document.getElementById('actorMintContract').textContent = 'ActorNFT.mint()';
+      document.getElementById('actorMintBalance').textContent = openMint.toLocaleString();
+      document.getElementById('actorMintEstimate').textContent = (mintPrice * reserved).toFixed(1) + ' USDC';
+      actorMintModal.classList.add('active');
+      actorMintModal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
     }
 
     function closeActorMintModal() {
-      actorMintModal.classList.remove('open');
+      actorMintModal.classList.remove('active');
+      actorMintModal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
       currentActor = null;
     }
 
     function confirmActorMint() {
       if (!currentActor) return;
-      const btn = document.getElementById('actorMintConfirmBtn');
-      btn.textContent = '铸造中...';
+      const btn = document.getElementById('actorMintConfirm');
+      const origText = btn.textContent;
+      btn.textContent = '处理中...';
       btn.disabled = true;
 
       setTimeout(() => {
         alert(`✅ 「${currentActor.name}」演员 NFT 铸造成功！\n\n铸造详情：\n- 演员：${currentActor.name}\n- 发行总量：${currentActor.totalSupply.toLocaleString()}\n- 开放 Mint：${currentActor.openMint.toLocaleString()}\n- Mint 价格：${currentActor.mintPrice} USDC\n- 创作者保留：${currentActor.reserved.toLocaleString()} 个\n- 保留需支付：${(currentActor.reserved * currentActor.mintPrice).toLocaleString()} USDC\n\n保留的 NFT 已空投至您的钱包，可在「持有演员NFT」标签中查看。`);
         closeActorMintModal();
-        btn.textContent = '确认铸造';
+        btn.textContent = origText;
         btn.disabled = false;
       }, 1500);
     }
 
+    // 关闭按钮事件
+    document.getElementById('actorMintClose').addEventListener('click', closeActorMintModal);
+    document.getElementById('actorMintCancel').addEventListener('click', closeActorMintModal);
+    document.getElementById('actorMintConfirm').addEventListener('click', confirmActorMint);
+
     // 点击弹窗外部关闭
     actorMintModal.addEventListener('click', function(e) {
       if (e.target === this) closeActorMintModal();
+    });
+
+    // Escape 键关闭
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && actorMintModal.classList.contains('active')) closeActorMintModal();
     });
 
     // === 绑定演员弹窗 ===
