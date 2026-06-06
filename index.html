@@ -259,6 +259,75 @@
       box-shadow: 0 10px 32px rgba(0,179,136,0.55);
     }
 
+    /* ===== 参演演员 IP 大头像 ===== */
+    .featured-cast {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .featured-cast-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      writing-mode: vertical-lr;
+      text-orientation: mixed;
+      height: 62px;
+      line-height: 1;
+      padding-right: 2px;
+    }
+    .featured-cast-list {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .featured-cast-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+    .featured-cast-item:hover {
+      transform: translateY(-4px);
+    }
+    .featured-cast-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2.5px solid rgba(255,255,255,0.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.30);
+      transition: border-color 0.3s ease;
+      flex-shrink: 0;
+    }
+    .featured-cast-item:hover .featured-cast-avatar {
+      border-color: var(--accent);
+    }
+    .featured-cast-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .featured-cast-name {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.80);
+      white-space: nowrap;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.40);
+    }
+    @media (max-width: 760px) {
+      .featured-cast { gap: 12px; }
+      .featured-cast-avatar { width: 48px; height: 48px; }
+      .featured-cast-name { font-size: 0.65rem; }
+      .featured-cast-list { gap: 10px; }
+      .featured-cast-label { font-size: 0.68rem; height: 48px; }
+    }
+
     /* 缩略图导航 */
     .featured-thumbnails {
       display: flex;
@@ -374,6 +443,10 @@
             <span class="meta-text" id="featured-views">1.2k 观看</span>
             <span class="meta-text" id="featured-rating">4.9 ★</span>
           </div>
+          <div class="featured-cast" id="featured-cast">
+            <span class="featured-cast-label">主演</span>
+            <div class="featured-cast-list" id="featured-cast-list"></div>
+          </div>
           <p id="featured-desc">一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
           <button class="button" onclick="event.stopPropagation(); location.href='drama-detail.html'">立即观看 ▸</button>
         </div>
@@ -454,13 +527,42 @@
   <script src="load-bottom-nav.js"></script>
 
   <script>
+    // 演员 IP 数据库（与 actors.html 保持一致）
+    const ACTOR_AVATARS = {
+      'Luna': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+      '苏婉清': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+      '李云飞': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+      '林梦瑶': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+      '赵无极': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      '上官婉儿': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+    };
+
     const featuredDramas = [
-      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg', video: 'video/凤骨琉璃.mp4' },
-      { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4' },
-      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4' },
-      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80' },
-      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80' }
+      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '1.2k 观看', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg', video: 'video/凤骨琉璃.mp4', actors: ['苏婉清', '李云飞', '林梦瑶', '上官婉儿'] },
+      { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', rating: '4.8 ★', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4', actors: ['李云飞', '赵无极', '林梦瑶'] },
+      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', rating: '4.7 ★', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4', actors: ['苏婉清', '上官婉儿', 'Luna'] },
+      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80', actors: ['林梦瑶', '赵无极', '李云飞'] },
+      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80', actors: ['Luna', '林梦瑶', '上官婉儿'] }
     ];
+
+    // 渲染演员阵容
+    function renderFeaturedCast(actors) {
+      const list = document.getElementById('featured-cast-list');
+      list.innerHTML = '';
+      if (!actors || actors.length === 0) {
+        document.getElementById('featured-cast').style.display = 'none';
+        return;
+      }
+      document.getElementById('featured-cast').style.display = 'flex';
+      actors.forEach(function(name) {
+        const avatarUrl = ACTOR_AVATARS[name] || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80';
+        const item = document.createElement('div');
+        item.className = 'featured-cast-item';
+        item.setAttribute('onclick', 'event.stopPropagation(); location.href="actor-profile.html?name=' + encodeURIComponent(name) + '"');
+        item.innerHTML = '<div class="featured-cast-avatar"><img src="' + avatarUrl + '" alt="' + name + '" loading="lazy" /></div><span class="featured-cast-name">' + name + '</span>';
+        list.appendChild(item);
+      });
+    }
 
     function switchFeatured(index) {
       const drama = featuredDramas[index];
@@ -491,6 +593,8 @@
       document.getElementById('featured-views').textContent = drama.views;
       document.getElementById('featured-rating').textContent = drama.rating;
       document.getElementById('featured-desc').textContent = drama.desc;
+      // 同步切换演员阵容
+      renderFeaturedCast(drama.actors);
       document.querySelectorAll('.featured-thumb-item').forEach((item, i) => item.classList.toggle('active', i === index));
     }
 
@@ -521,6 +625,9 @@
         el.innerHTML = '<img src="' + d.img + '" alt="' + d.title + '" loading="lazy" /><div class="thumb-label">' + d.title + '</div>';
         tc.appendChild(el);
       });
+
+      // 初始渲染第一个短剧的演员阵容
+      renderFeaturedCast(featuredDramas[0].actors);
 
       function updateNoResults() {
         const cards = document.querySelectorAll('.card');
