@@ -112,7 +112,6 @@
     .action-btn .icon { font-size: 1.1rem; }
     .action-btn .count { font-size: 0.82rem; color: var(--text-muted); font-weight: 400; }
     .action-btn.active .count { color: rgba(255,255,255,0.7); }
-    .unlock-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 24px; font-size: 0.95rem; transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
     .button { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
     .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
@@ -191,29 +190,6 @@
     .rating-section .rating-stars .star.active { color: #f5b342; }
     .rating-section .rating-stars .star.hover { color: #f5b342; }
     .rating-section .rating-info { color: var(--text-muted); font-size: 0.85rem; }
-    .modal-overlay { display: none; position: fixed; z-index: 1000; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 24px; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: var(--surface); border-radius: var(--radius-lg); box-shadow: 0 40px 80px rgba(27,45,71,0.18); width: 100%; max-width: 520px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; animation: modalIn 0.25s ease; }
-    @keyframes modalIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 28px 16px; border-bottom: 1px solid var(--border); }
-    .modal-header h3 { margin: 0; font-size: 1.25rem; }
-    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.2rem; color: var(--text-muted); transition: all 0.2s; }
-    .modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
-    .modal-body { padding: 20px 28px 28px; overflow-y: auto; flex: 1; }
-    .modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 28px; border-top: 1px solid var(--border); background: #fafcff; }
-    .modal-footer .button { padding: 10px 24px; }
-    .unlock-ep-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
-    .unlock-ep-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.2s; }
-    .unlock-ep-item:hover { border-color: var(--accent); background: rgba(0,179,136,0.03); }
-    .unlock-ep-item.selected { border-color: var(--accent); background: var(--accent-soft); }
-    .unlock-ep-item .uep-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; transition: all 0.2s; flex-shrink: 0; }
-    .unlock-ep-item.selected .uep-check { background: var(--accent); border-color: var(--accent); color: #fff; font-size: 0.75rem; }
-    .unlock-ep-item .uep-info { flex: 1; }
-    .unlock-ep-item .uep-info .uep-title { font-size: 0.92rem; font-weight: 600; }
-    .unlock-ep-item .uep-price { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
-    .unlock-summary { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; background: rgba(0,179,136,0.06); border: 1px solid rgba(0,179,136,0.12); border-radius: 14px; margin: 16px 0; }
-    .unlock-summary .total-label { color: var(--text-muted); font-size: 0.92rem; }
-    .unlock-summary .total-price { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
     .toast-notification { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 9999; background: rgba(26, 35, 47, 0.95); backdrop-filter: blur(8px); color: #fff; padding: 16px 24px; border-radius: 16px; font-size: 0.92rem; line-height: 1.6; box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 420px; text-align: center; font-weight: 500; }
     .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
@@ -304,10 +280,6 @@
             <button class="action-btn" id="likeBtn" onclick="toggleLike()"><span class="icon">👍</span> 点赞 <span class="count" id="likeCount">2.3k</span></button>
             <button class="action-btn" id="favBtn" onclick="toggleFav()"><span class="icon">❤️</span> 收藏 <span class="count" id="favCount">856</span></button>
           </div>
-          <div class="unlock-row">
-            <button class="button" onclick="openUnlockModal('single')">🔓 解锁单集</button>
-            <button class="button-secondary" onclick="openUnlockModal('batch')">📦 批量解锁</button>
-          </div>
           <div class="synopsis">
             <h4>📖 简介</h4>
             <p id="synopsisText">加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，带着未来记忆的他，如何在币圈从一个小白成长为呼风唤雨的大佬？每一步抉择都关乎生死，每一次交易都是人性的考验。</p>
@@ -319,13 +291,10 @@
         <div class="episode-panel">
           <div class="panel-header">
             <h3>📺 选集</h3>
-            <span class="ep-count">共 44 集 · 已解锁 3 集</span>
-          </div>
-          <div class="episode-tabs">
-            <button class="episode-tab active" onclick="switchEpTab('all', this)">全部</button>
-            <button class="episode-tab" onclick="switchEpTab('free', this)">免费</button>
-            <button class="episode-tab" onclick="switchEpTab('locked', this)">未解锁</button>
-            <button class="episode-tab" onclick="switchEpTab('unlocked', this)">已解锁</button>
+          <span class="ep-count">共 44 集</span>
+        </div>
+        <div class="episode-tabs">
+          <button class="episode-tab active" onclick="switchEpTab('all', this)">全部</button>
           </div>
           <div class="episode-list" id="episodeList"></div>
         </div>
@@ -334,28 +303,6 @@
         <div class="cast-section">
           <h3>🎭 主要角色</h3>
           <div class="cast-grid" id="castGrid"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== 解锁弹窗 ===== -->
-    <div class="modal-overlay" id="unlockModal">
-      <div class="modal">
-        <div class="modal-header">
-          <h3 id="unlockModalTitle">🔓 解锁剧集</h3>
-          <button class="modal-close" onclick="closeUnlockModal()">✕</button>
-        </div>
-        <div class="modal-body">
-          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:12px;" id="unlockModalDesc">选择需要解锁的剧集，单集 0.5 USDC。</p>
-          <div class="unlock-ep-list" id="unlockEpList"></div>
-          <div class="unlock-summary">
-            <span class="total-label">合计</span>
-            <span class="total-price" id="unlockTotal">0 USDC</span>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="button-secondary" onclick="closeUnlockModal()">取消</button>
-          <button class="button" id="unlockConfirmBtn" onclick="confirmUnlock()" disabled>确认支付并解锁</button>
         </div>
       </div>
     </div>
@@ -378,9 +325,6 @@
       synopsis: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，带着未来记忆的他，如何在币圈从一个小白成长为呼风唤雨的大佬？每一步抉择都关乎生死，每一次交易都是人性的考验。',
       synopsisFull: '加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，带着未来记忆的他，如何在币圈从一个小白成长为呼风唤雨的大佬？每一步抉择都关乎生死，每一次交易都是人性的考验。\n\n从比特币的早期挖矿，到以太坊智能合约的爆发，再到DeFi浪潮和NFT狂潮，主角凭借先知先觉一步步布局。然而蝴蝶效应让历史悄然改变，新的对手、新的危机接踵而至。他不仅要与市场博弈，更要与人性中的贪婪和恐惧抗争。',
       totalEpisodes: 44,
-      unlockedCount: 3,
-      pricePerEp: 0.5,
-      batchDiscount: 0.85, // 批量85折
       cover: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80',
       categories: ['金融', '悬疑'],
       stats: { views: '12.8k', likes: 2300, favs: 856, rating: 4.8 },
@@ -399,17 +343,14 @@
       ]
     };
 
-    // 生成剧集数据
+    // 生成剧集数据 - 全部免费播放，无需解锁
     for (let i = 1; i <= DRAMA_DATA.totalEpisodes; i++) {
-      const isFree = i <= 2;
-      const isUnlocked = i <= DRAMA_DATA.unlockedCount;
       DRAMA_DATA.episodes.push({
         id: i,
-        title: isFree ? `第 ${i} 集 · 免费试看` : `第 ${i} 集`,
-        desc: isFree ? '免费试看' : (isUnlocked ? '已解锁' : '需解锁'),
-        free: isFree,
-        unlocked: isUnlocked,
-        price: isFree ? 0 : DRAMA_DATA.pricePerEp,
+        title: `第 ${i} 集`,
+        desc: '',
+        free: true,
+        unlocked: true,
       });
     }
 
@@ -422,8 +363,6 @@
     let isFaved = false;
     let userRating = 0;
     let synopsisExpanded = false;
-    let selectedUnlockEps = new Set();
-    let unlockMode = 'single'; // 'single' | 'batch'
 
     // ============================================================
     //  Toast
@@ -447,14 +386,8 @@
       const data = DRAMA_DATA.episodes[ep - 1];
       if (!data) return;
 
-      if (!data.free && !data.unlocked) {
-        // 打开解锁弹窗并预选中该集
-        openUnlockModal('single', ep);
-        return;
-      }
-
       const label = document.getElementById('currentEpLabel');
-      label.textContent = `第 ${ep} 集${data.free ? ' · 免费试看' : ''}`;
+      label.textContent = `第 ${ep} 集`;
 
       // 模拟播放
       isPlaying = true;
@@ -550,27 +483,18 @@
       const list = document.getElementById('episodeList');
       let filtered = DRAMA_DATA.episodes;
 
-      if (epFilter === 'free') filtered = filtered.filter(e => e.free);
-      else if (epFilter === 'locked') filtered = filtered.filter(e => !e.unlocked && !e.free);
-      else if (epFilter === 'unlocked') filtered = filtered.filter(e => e.unlocked || e.free);
+      if (epFilter === 'all') filtered = DRAMA_DATA.episodes;
 
       list.innerHTML = filtered.map(ep => {
-        let statusClass = 'locked';
-        let statusText = '🔒 未解锁';
-        let numClass = 'locked';
-        if (ep.free) { statusClass = 'free'; statusText = '🆓 免费'; numClass = 'unlocked'; }
-        else if (ep.unlocked) { statusClass = 'unlocked'; statusText = '✅ 已解锁'; numClass = 'unlocked'; }
-
         const isActive = ep.id === currentEp;
 
         return `
           <div class="episode-item ${isActive ? 'active' : ''}" onclick="playEpisode(${ep.id})">
-            <span class="ep-num ${numClass} ${isActive ? 'playing' : ''}">${ep.id}</span>
+            <span class="ep-num ${isActive ? 'playing' : 'unlocked'}">${ep.id}</span>
             <div class="ep-info">
               <div class="ep-title">${ep.title}</div>
-              <div class="ep-desc">${ep.desc}</div>
             </div>
-            <span class="ep-status ${statusClass}">${statusText}</span>
+            <span class="ep-status unlocked">✅ 可播放</span>
           </div>
         `;
       }).join('');
@@ -642,192 +566,6 @@
       renderComments();
       showToast('✅ 评论已发布', '✅');
     }
-
-    // ============================================================
-    //  解锁弹窗
-    // ============================================================
-    function openUnlockModal(mode, preselectEp) {
-      unlockMode = mode;
-      selectedUnlockEps.clear();
-
-      const title = document.getElementById('unlockModalTitle');
-      const desc = document.getElementById('unlockModalDesc');
-      const list = document.getElementById('unlockEpList');
-
-      // 找出所有未解锁的非免费剧集，按顺序排列
-      const locked = DRAMA_DATA.episodes.filter(e => !e.unlocked && !e.free);
-      const firstLockedId = locked.length > 0 ? locked[0].id : null;
-
-      if (!firstLockedId) {
-        showToast('🎉 所有剧集已解锁！', '🎉');
-        return;
-      }
-
-      if (mode === 'single') {
-        title.textContent = '🔓 解锁单集';
-        // 按顺序解锁：只能解锁第一个未解锁的剧集
-        const nextEp = DRAMA_DATA.episodes[firstLockedId - 1];
-        desc.textContent = `按顺序解锁，当前可解锁：第 ${firstLockedId} 集（${nextEp.price} USDC）`;
-
-        // 预选当前可解锁的剧集
-        selectedUnlockEps.add(firstLockedId);
-
-        list.innerHTML = `
-          <div class="unlock-ep-item selected" data-ep="${firstLockedId}">
-            <div class="uep-check">✓</div>
-            <div class="uep-info">
-              <div class="uep-title">第 ${firstLockedId} 集</div>
-              <div class="uep-desc" style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">按顺序解锁中</div>
-            </div>
-            <div class="uep-price">${nextEp.price} USDC</div>
-          </div>
-        `;
-
-        // 如果还有后续未解锁的剧集，显示提示
-        if (locked.length > 1) {
-          const moreCount = locked.length - 1;
-          const remainingInfo = document.createElement('p');
-          remainingInfo.style.cssText = 'color:var(--text-muted);font-size:0.85rem;text-align:center;margin:0;padding:8px 0 0;border-top:1px solid var(--border);';
-          remainingInfo.textContent = `还有 ${moreCount} 集待解锁（第 ${firstLockedId + 1} ~ ${locked[locked.length - 1].id} 集）`;
-          list.appendChild(remainingInfo);
-        }
-      } else {
-        // 批量解锁
-        title.textContent = '📦 批量解锁';
-        desc.textContent = '按顺序批量解锁剩余剧集，享受 85 折优惠。可以取消选择靠后的剧集，但不能跳过前面的。';
-
-        // 默认全选
-        locked.forEach(ep => selectedUnlockEps.add(ep.id));
-        list.innerHTML = locked.map(ep => {
-          const isFirst = ep.id === firstLockedId;
-          return `
-          <div class="unlock-ep-item selected" data-ep="${ep.id}" onclick="toggleUnlockEp(${ep.id})">
-            <div class="uep-check">✓</div>
-            <div class="uep-info">
-              <div class="uep-title">第 ${ep.id} 集${isFirst ? ' · 必选' : ''}</div>
-            </div>
-            <div class="uep-price">${(ep.price * DRAMA_DATA.batchDiscount).toFixed(2)} USDC</div>
-          </div>
-        `}).join('');
-      }
-
-      updateUnlockTotal();
-      document.getElementById('unlockModal').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeUnlockModal() {
-      document.getElementById('unlockModal').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    // 辅助函数：获取所有未解锁剧集按顺序排列
-    function getLockedEpisodes() {
-      return DRAMA_DATA.episodes.filter(e => !e.unlocked && !e.free);
-    }
-
-    // 辅助函数：检查从第一个未解锁到指定 id 的剧集是否全部处于目标状态
-    function checkSequentialState(upToId, inSet) {
-      const locked = getLockedEpisodes();
-      for (const ep of locked) {
-        if (ep.id > upToId) break;
-        if (inSet ? !selectedUnlockEps.has(ep.id) : selectedUnlockEps.has(ep.id)) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    function toggleUnlockEp(epId) {
-      const locked = getLockedEpisodes();
-      const firstLockedId = locked.length > 0 ? locked[0].id : null;
-      if (!firstLockedId) return;
-
-      if (unlockMode === 'batch') {
-        const isFirst = epId === firstLockedId;
-
-        // 第一个未解锁的剧集不可取消
-        if (isFirst && selectedUnlockEps.has(epId)) {
-          showToast('⚠️ 第一个未解锁的剧集必须选择', '⚠️');
-          return;
-        }
-
-        if (selectedUnlockEps.has(epId)) {
-          // 取消选择：该集及其之后的所有集都取消
-          // 但要检查前面的集是否已被取消（理论上不会，因为不能跳过）
-          // 直接将该集及之后的所有集取消
-          locked.forEach(ep => {
-            if (ep.id >= epId && selectedUnlockEps.has(ep.id)) {
-              selectedUnlockEps.delete(ep.id);
-              const el = document.querySelector(`.unlock-ep-item[data-ep="${ep.id}"]`);
-              if (el) {
-                el.classList.remove('selected');
-                el.querySelector('.uep-check').textContent = '';
-              }
-            }
-          });
-        } else {
-          // 选择该集：需要检查前面的所有集是否都已选中
-          if (!checkSequentialState(epId - 1, true)) {
-            showToast('⚠️ 请按顺序解锁，必须先选择前面的剧集', '⚠️');
-            return;
-          }
-          selectedUnlockEps.add(epId);
-          document.querySelector(`.unlock-ep-item[data-ep="${epId}"]`).classList.add('selected');
-          document.querySelector(`.unlock-ep-item[data-ep="${epId}"] .uep-check`).textContent = '✓';
-        }
-      }
-      updateUnlockTotal();
-    }
-
-    function updateUnlockTotal() {
-      let total = 0;
-      selectedUnlockEps.forEach(epId => {
-        const ep = DRAMA_DATA.episodes.find(e => e.id === epId);
-        if (ep) {
-          total += unlockMode === 'batch' ? ep.price * DRAMA_DATA.batchDiscount : ep.price;
-        }
-      });
-      document.getElementById('unlockTotal').textContent = total.toFixed(2) + ' USDC';
-      document.getElementById('unlockConfirmBtn').disabled = selectedUnlockEps.size === 0;
-    }
-
-    function confirmUnlock() {
-      if (selectedUnlockEps.size === 0) return;
-      const btn = document.getElementById('unlockConfirmBtn');
-      btn.textContent = '处理中...';
-      btn.disabled = true;
-
-      setTimeout(() => {
-        // 解锁选中的剧集
-        selectedUnlockEps.forEach(epId => {
-          const ep = DRAMA_DATA.episodes.find(e => e.id === epId);
-          if (ep) {
-            ep.unlocked = true;
-            ep.desc = '已解锁';
-          }
-        });
-
-        DRAMA_DATA.unlockedCount = DRAMA_DATA.episodes.filter(e => e.unlocked).length;
-        const count = selectedUnlockEps.size;
-        selectedUnlockEps.clear();
-        closeUnlockModal();
-        renderEpisodeList();
-
-        // 更新侧边栏已解锁数量
-        document.querySelector('.episode-panel .ep-count').textContent =
-          `共 ${DRAMA_DATA.totalEpisodes} 集 · 已解锁 ${DRAMA_DATA.unlockedCount} 集`;
-
-        showToast(`✅ 成功解锁 ${count} 集！`, '✅');
-        btn.textContent = '确认支付并解锁';
-        btn.disabled = false;
-      }, 1200);
-    }
-
-    // 点击弹窗外部关闭
-    document.getElementById('unlockModal').addEventListener('click', function(e) {
-      if (e.target === this) closeUnlockModal();
-    });
 
     // ============================================================
     //  初始化
