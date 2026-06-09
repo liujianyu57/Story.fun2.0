@@ -128,17 +128,25 @@
     .ep-item.active { background: var(--accent); color: #fff; }
     .cast-section { margin-top: 28px; }
     .cast-section h3 { margin: 0 0 16px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
-    .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
-    .cast-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; text-align: center; box-shadow: var(--shadow-sm); transition: all 0.3s ease; }
-    .cast-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-    .cast-card .cast-avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; background: #eaf4ff; }
-    .cast-card .cast-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .cast-card .cast-avatar .placeholder { width: 100%; height: 100%; display: grid; place-items: center; font-size: 1.5rem; color: var(--text-muted); }
-    .cast-card h4 { margin: 0 0 2px; font-size: 0.95rem; }
-    .cast-card .cast-role { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 6px; }
-    .cast-card .cast-actor { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .cast-card .cast-actor:hover { background: var(--accent); color: #fff; }
-    .cast-card .cast-actor.unbound { background: rgba(15,22,42,0.05); color: var(--text-muted); cursor: default; }
+    .cast-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .cast-scroll::-webkit-scrollbar { display: none; }
+    .cast-card { flex-shrink: 0; width: 130px; text-align: center; cursor: pointer; transition: transform 0.25s ease; }
+    .cast-card:hover { transform: translateY(-4px); }
+    .cast-card.unbound { cursor: default; }
+    .cast-card.unbound:hover { transform: none; }
+    .cast-card.unbound:hover .c-avatar-wrap .c-avatar { border-color: var(--accent-soft); }
+    .cast-card .c-avatar-wrap { position: relative; width: 90px; height: 90px; margin: 0 auto 10px; }
+    .cast-card .c-avatar-wrap .c-avatar { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 2.5px solid var(--accent-soft); transition: border-color 0.25s; }
+    .cast-card:hover .c-avatar-wrap .c-avatar { border-color: var(--accent); }
+    .cast-card .c-avatar-wrap .c-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cast-card .c-avatar-wrap .c-badge { position: absolute; bottom: 2px; right: 2px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 0.7rem; border: 2px solid var(--surface); }
+    .cast-card .c-avatar-wrap .c-badge.bound { background: var(--accent); color: #fff; }
+    .cast-card .c-avatar-wrap .c-badge.unbound { background: var(--text-muted); color: #fff; font-size: 0.65rem; }
+    .cast-card .c-actor-line { font-size: 0.98rem; font-weight: 700; margin-bottom: 2px; }
+    .cast-card .c-actor-line.bound { color: var(--accent); }
+    .cast-card .c-actor-line.unbound { color: var(--text-muted); }
+    .cast-card .c-name { font-size: 0.82rem; font-weight: 500; color: var(--text-muted); }
+    .cast-card .c-name .c-role-suffix { color: var(--text-muted); font-weight: 400; }
     .comments-section { margin-top: 28px; }
     .comments-section h3 { margin: 0 0 16px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
     .comment-input-wrap { display: flex; gap: 12px; margin-bottom: 20px; }
@@ -174,7 +182,6 @@
     @media (max-width: 680px) {
       .app-shell { padding: 16px; }
       .detail-layout { grid-template-columns: 1fr; }
-      .cast-grid { grid-template-columns: repeat(2, 1fr); }
       .comment-input-wrap { flex-direction: column; }
       .comment-input-wrap .input-group { width: 100%; }
     }
@@ -210,7 +217,7 @@
         <!-- 主要角色 -->
         <div class="cast-section">
           <h3>🎭 主要角色</h3>
-          <div class="cast-grid" id="castGrid"></div>
+          <div class="cast-scroll" id="castGrid"></div>
         </div>
         <!-- 评论 -->
         <div class="comments-section">
@@ -295,11 +302,11 @@
       stats: { views: '12.8k', likes: 2300, favs: 856, rating: 4.8 },
       episodes: [],
       cast: [
-        { name: '林逸', role: '主角', actor: '苏婉清', actorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', bound: true },
-        { name: '陈峰', role: '对手', actor: '李云飞', actorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', bound: true },
-        { name: '苏晴', role: '盟友', actor: '林梦瑶', actorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', bound: true },
-        { name: '赵老四', role: '反派', actor: null, actorAvatar: null, bound: false },
-        { name: '王教授', role: '导师', actor: null, actorAvatar: null, bound: false },
+        { name: '林逸', role: '主角', actor: '苏婉清', actorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', characterAvatar: 'https://i.pravatar.cc/200?img=11', bound: true },
+        { name: '陈峰', role: '对手', actor: '李云飞', actorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', characterAvatar: 'https://i.pravatar.cc/200?img=12', bound: true },
+        { name: '苏晴', role: '盟友', actor: '林梦瑶', actorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', characterAvatar: 'https://i.pravatar.cc/200?img=13', bound: true },
+        { name: '赵老四', role: '反派', actor: null, actorAvatar: null, characterAvatar: 'https://i.pravatar.cc/200?img=32', bound: false },
+        { name: '王教授', role: '导师', actor: null, actorAvatar: null, characterAvatar: 'https://i.pravatar.cc/200?img=55', bound: false },
       ],
       comments: [
         { id: 1, name: '加密小白', avatar: '加', text: '太精彩了！每一集都让人欲罢不能，特别是主角重生后的第一次交易，紧张刺激！', time: '2小时前', likes: 24 },
@@ -428,23 +435,31 @@
     // ============================================================
     function renderCast() {
       const grid = document.getElementById('castGrid');
-      grid.innerHTML = DRAMA_DATA.cast.map(c => `
-        <div class="cast-card">
-          <div class="cast-avatar">
-            ${c.actorAvatar
-              ? `<img src="${c.actorAvatar}" alt="${c.name}" />`
-              : `<div class="placeholder">🎭</div>`
-            }
+      grid.innerHTML = DRAMA_DATA.cast.map(c => {
+        const bound = c.bound && c.actor;
+        // 有演员 → 显示演员头像；无演员 → 显示角色自己的动漫形象头像
+        const avatarHtml = `<img src="${c.actorAvatar || c.characterAvatar}" alt="${c.name}" />`;
+        const badgeHtml = bound
+          ? `<div class="c-badge bound">✓</div>`
+          : `<div class="c-badge unbound">⏳</div>`;
+        // 演员名在上面（大字），角色名在下面（"饰" + 角色名）
+        const actorLineHtml = bound
+          ? `<div class="c-actor-line bound">${c.actor}</div>`
+          : `<div class="c-actor-line unbound">待定演员</div>`;
+        const onClick = bound
+          ? `location.href='actor-profile.html?name=${encodeURIComponent(c.actor)}'`
+          : undefined; // 不可点击
+        return `
+          <div class="cast-card${bound ? '' : ' unbound'}"${onClick ? ` onclick="${onClick}"` : ''}>
+            <div class="c-avatar-wrap">
+              <div class="c-avatar">${avatarHtml}</div>
+              ${badgeHtml}
+            </div>
+            ${actorLineHtml}
+            <div class="c-name">${bound ? `<span class="c-role-suffix">饰 </span>` : ''}${c.name}</div>
           </div>
-          <h4>${c.name}</h4>
-          <div class="cast-role">${c.role}</div>
-          ${c.bound && c.actor
-            ? `<span class="cast-actor" onclick="location.href='actor-profile.html'">🎭 ${c.actor}</span>`
-            : `<span class="cast-actor unbound">未绑定演员</span>`
-          }
-
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     // ============================================================
