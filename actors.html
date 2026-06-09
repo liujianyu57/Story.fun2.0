@@ -740,6 +740,75 @@
       background: rgba(0,179,136,.92);
       color: #fff;
     }
+
+    /* Search dropdown */
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .search-input { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; }
+    .search-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(27,45,71,0.12);
+      z-index: 50;
+      overflow: hidden;
+      display: none;
+    }
+    .search-dropdown.show { display: block; }
+    .search-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .search-dropdown-item:hover { background: var(--accent-soft); }
+    .search-dropdown-item img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .search-dropdown-item .sdi-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+    .search-dropdown-item .sdi-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .search-dropdown-item .sdi-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .search-dropdown-item .sdi-collection {
+      margin-left: auto;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(0,179,136,.12);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .search-dropdown-empty {
+      padding: 20px 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
     @media (max-width: 960px) { .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -757,8 +826,9 @@
       </div>
     </div>
 
-    <div class="search-container">
-      <input type="text" class="search-input" id="actorSearch" placeholder="搜索演员 IP..." />
+    <div class="search-wrapper">
+      <input type="text" class="search-input" id="actorSearch" placeholder="搜索演员姓名或形象ID" autocomplete="off" />
+      <div class="search-dropdown" id="searchDropdown"></div>
     </div>
 
     <div class="sort-container" id="sortContainer">
@@ -1109,8 +1179,53 @@
         });
       });
 
+      // ═══ Search dropdown ═══
+      const searchDropdown = document.getElementById('searchDropdown');
+
+      function renderSearchDropdown(query) {
+        const q = query.toLowerCase().trim();
+        if (!q) {
+          searchDropdown.classList.remove('show');
+          return;
+        }
+        const results = Array.from(cards).filter(card => {
+          const name = card.dataset.actor || card.querySelector('h3')?.textContent || '';
+          const collection = card.dataset.collection || '';
+          return name.toLowerCase().includes(q) || collection.toLowerCase().includes(q);
+        });
+        // 最多返回6个
+        const limited = results.slice(0, 6);
+        if (limited.length === 0) {
+          searchDropdown.innerHTML = '<div class="search-dropdown-empty">未找到匹配的演员</div>';
+          searchDropdown.classList.add('show');
+          return;
+        }
+        searchDropdown.innerHTML = limited.map(card => {
+          const name = card.dataset.actor || card.querySelector('h3')?.textContent || '';
+          const collection = card.dataset.collection || '';
+          const imgSrc = card.querySelector('.actor-avatar img')?.src || '';
+          const creator = card.dataset.creator || '';
+          return `<a class="search-dropdown-item" href="actor-profile.html?id=${card.dataset.actorId || ''}&name=${encodeURIComponent(name)}&avatar=${encodeURIComponent(imgSrc)}&price=${encodeURIComponent(card.dataset.price || '')}&minted=${encodeURIComponent(card.dataset.minted || '')}&available=${encodeURIComponent(card.dataset.available || '')}&description=${encodeURIComponent(card.querySelector('p')?.textContent || '')}">
+            <img src="${imgSrc}" alt="${name}" onerror="this.style.display='none'" />
+            <div class="sdi-info">
+              <span class="sdi-name">${name}</span>
+              <span class="sdi-sub">发行者 ${creator}</span>
+            </div>
+            <span class="sdi-collection">${collection}</span>
+          </a>`;
+        }).join('');
+        searchDropdown.classList.add('show');
+      }
+
       searchInput.addEventListener('input', function() {
-        applyCurrentSort();
+        renderSearchDropdown(this.value);
+      });
+
+      // 点击页面空白处关闭下拉框
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-wrapper')) {
+          searchDropdown.classList.remove('show');
+        }
       });
 
       // ═══ Sort functionality ═══
