@@ -91,8 +91,16 @@
     .metric-item strong { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
     .card-bottom { display: flex; flex-direction: column; gap: 10px; }
     .actor-price { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--border); margin-top: 4px; }
-    .actor-price-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+    .actor-price-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 6px; }
     .actor-price-value { font-size: 1rem; font-weight: 700; color: var(--accent); }
+    .actor-price-help { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,0.06); color: var(--text-muted); font-size: 0.6rem; font-weight: 700; cursor: pointer; transition: all 0.15s ease; border: none; padding: 0; line-height: 1; }
+    .actor-price-help:hover { background: var(--accent-soft); color: var(--accent); }
+    .price-tooltip-overlay { position: fixed; inset: 0; z-index: 999; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
+    .price-tooltip-overlay.active { display: flex; }
+    .price-tooltip-box { background: #fff; border-radius: 20px; max-width: 380px; width: 90%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
+    .price-tooltip-box h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--text); }
+    .price-tooltip-box p { margin: 0 0 18px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+    .price-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; }
     .card-actions { display: flex; gap: 8px; }
     .card-actions .button-secondary { flex: 1; min-width: 0; padding: 10px 14px; font-size: 0.88rem; }
     .actor-stats { display: flex; gap: 12px; padding: 8px 0 4px; }
@@ -175,7 +183,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">719.7万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格</span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -210,7 +218,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">531.6万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格</span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -245,7 +253,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,032.4万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格</span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
             <span class="actor-price-value">8 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -280,7 +288,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,553.4万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格</span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -315,7 +323,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">699.2万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格</span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
             <span class="actor-price-value">15 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -350,7 +358,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,052.9万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格</span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
             <span class="actor-price-value">12 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -360,6 +368,15 @@
           </div>
         </div>
       </article>
+    </div>
+
+    <!-- 签约价格说明弹窗 -->
+    <div class="price-tooltip-overlay" id="priceTooltip">
+      <div class="price-tooltip-box">
+        <h3>💰 签约价格</h3>
+        <p id="priceTooltipDesc">签约价格说明文案待定</p>
+        <button class="button-secondary" id="priceTooltipClose">知道了</button>
+      </div>
     </div>
 
     <!-- 完播/热度说明弹窗 -->
@@ -591,7 +608,27 @@
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && statTooltip.classList.contains('active')) closeStatTooltip();
       });
+
+      // 签约价格 tooltip
+      const priceTooltip = document.getElementById('priceTooltip');
+      const priceTooltipClose = document.getElementById('priceTooltipClose');
+      function closePriceTooltip() {
+        priceTooltip.classList.remove('active');
+      }
+      priceTooltipClose.addEventListener('click', closePriceTooltip);
+      priceTooltip.addEventListener('click', function(e) {
+        if (e.target === this) closePriceTooltip();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && priceTooltip.classList.contains('active')) closePriceTooltip();
+      });
     });
+
+    // 全局函数供 onclick 使用
+    function openPriceTooltip(e) {
+      e.stopPropagation();
+      document.getElementById('priceTooltip').classList.add('active');
+    }
   </script>
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
