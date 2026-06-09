@@ -56,25 +56,291 @@
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
     .button { background: var(--accent); color: #fff; font-weight: 600; }
     .button-secondary { background: rgba(15, 22, 42, 0.05); color: var(--text); }
-    .modal-backdrop { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(15, 23, 42, 0.35); z-index: 1000; }
-    .modal-backdrop.active { display: flex; }
-    .modal-dialog { width: min(720px, 100%); background: #fff; border-radius: 28px; box-shadow: 0 35px 80px rgba(15, 23, 42, 0.2); overflow: hidden; }
-    .modal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; padding: 24px 24px 16px; }
-    .modal-header h2 { margin: 0; font-size: 1.45rem; }
-    .modal-close { border: none; background: transparent; color: var(--text); font-size: 1.6rem; line-height: 1; cursor: pointer; }
-    .modal-subtitle { padding: 0 24px 18px; color: var(--text-muted); font-size: 0.96rem; }
-    .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 0 24px 24px; }
-    .modal-preview { border-radius: 24px; overflow: hidden; background: #f5f7ff; position: relative; }
-    .modal-preview img { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
-    .preview-tag { position: absolute; left: 16px; bottom: 16px; padding: 10px 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.92); color: var(--text); font-weight: 600; font-size: 0.95rem; backdrop-filter: blur(12px); }
-    .modal-info { display: grid; gap: 12px; }
-    .modal-field { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-radius: 18px; background: #f8fbff; border: 1px solid #eef4ff; }
-    .modal-field span { color: var(--text-muted); font-size: 0.95rem; }
-    .modal-field strong { color: var(--text); font-weight: 600; }
-    .modal-total { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-radius: 20px; background: rgba(76, 222, 204, 0.12); border: 1px solid rgba(76, 222, 204, 0.18); margin-top: 4px; }
-    .modal-total strong { font-size: 1.4rem; color: #0c7f71; }
-    .modal-actions { display: flex; flex-wrap: wrap; gap: 14px; padding: 18px 24px 24px; }
-    .modal-actions .button, .modal-actions .button-secondary { flex: 1; min-width: 0; }
+    /* ═══ Apple-Inspired Sign Modal ═══ */
+    .mint-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15,23,42,0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .mint-modal-overlay.active { display: flex; }
+    .mint-modal {
+      width: min(440px, 100%);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: 0 40px 80px rgba(15,23,42,0.18);
+      overflow: hidden;
+      transform: scale(0.92) translateY(12px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .mint-modal-overlay.active .mint-modal {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    .mint-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.04);
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all 0.2s ease;
+      z-index: 2;
+    }
+    .mint-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .mint-modal-hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background: #f0f5fa;
+    }
+    .mint-modal-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .mint-modal-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.08) 100%);
+    }
+    .mint-modal-badge {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .mint-modal-body {
+      padding: 24px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    /* ═══ Modal Layout — Clean Hierarchy ═══ */
+    .mint-modal-header {
+      display: flex;
+      flex-direction: column;
+    }
+    .mint-modal-actor-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    /* Price row — tag-style compact pill */
+    .mint-price-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .mint-price-bar .mpb-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .mint-price-bar .mpb-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .mint-price-bar .mpb-remain {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+    .mint-price-bar .mpb-remain strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    /* Quantity input */
+    .mint-qty-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px;
+    }
+    .mint-qty-label {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    .mint-qty-controls {
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .mint-qty-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: grid;
+      place-items: center;
+    }
+    .mint-qty-btn:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .mint-qty-input {
+      width: 44px;
+      height: 34px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      outline: none;
+      -moz-appearance: textfield;
+    }
+    .mint-qty-input::-webkit-inner-spin-button,
+    .mint-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+    /* Total divider + amount */
+    .mint-total-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mint-total-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+    .mint-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 4px;
+    }
+    .mint-total-label {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .mint-total-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .mint-modal-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mint-modal-footer .mint-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .mint-modal-footer .mint-btn.primary {
+      background: linear-gradient(135deg, #00b388, #00d4a3);
+      color: #fff;
+    }
+    .mint-modal-footer .mint-btn.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,179,136,0.35);
+    }
+    .mint-modal-footer .mint-btn.primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .mint-modal-footer .mint-btn.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 12px;
+    }
+    .mint-modal-footer .mint-btn.secondary:hover {
+      color: var(--text);
+      background: rgba(0,0,0,0.03);
+    }
+    /* Success state */
+    .mint-modal-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 36px 28px 32px;
+      text-align: center;
+    }
+    .mint-modal-success.show { display: flex; }
+    .mint-modal-success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00b388, #00d4a3);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 4px;
+      box-shadow: 0 8px 24px rgba(0,179,136,0.3);
+    }
+    .mint-modal-success h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .mint-modal-success p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+    .mint-modal-success .success-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+      width: 100%;
+    }
+    .mint-modal-success .success-actions .mint-btn { flex: 1; }
     .grid { display: grid; gap: 20px; }
     .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
@@ -288,7 +554,7 @@
     <div class="page-header">
       <div class="page-header-left">
         <h1>演员 IP</h1>
-        <p>每张演员 IP 代表一个由创作者发行的演员 IP 名额。Mint 即签约，获得专属演员去拍剧、涨咖位、挖矿。</p>
+        <p>每个演员 IP 代表一组由创作者发行的演员形象。铸造即签约，获得专属演员去拍剧、涨咖位、产生收益。</p>
       </div>
       <div class="page-header-actions">
         <a href="DreamOS/dreamos-user-actors.html" target="_blank" class="btn-primary">创建演员 IP</a>
@@ -512,30 +778,60 @@
       </div>
     </div>
 
-    <div class="modal-backdrop" id="mintModal" aria-hidden="true">
-      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="mintModalTitle">
-        <div class="modal-header">
-          <div>
-            <h2 id="mintModalTitle">确认 Mint 演员 NFT</h2>
-            <div class="modal-subtitle" id="mintModalSubtitle">Luna · 19.2 USDT · 数量123</div>
-          </div>
-          <button class="modal-close" type="button" id="mintModalClose" aria-label="关闭弹窗">×</button>
+    <div class="mint-modal-overlay" id="mintModal" aria-hidden="true">
+      <div class="mint-modal" role="dialog" aria-modal="true" aria-labelledby="mintModalTitle">
+        <button class="mint-modal-close" type="button" id="mintModalClose" aria-label="关闭弹窗">✕</button>
+        <!-- Hero Image -->
+        <div class="mint-modal-hero">
+          <img id="mintModalImage" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="演员预览" />
+          <div class="mint-modal-hero-overlay"></div>
+          <div class="mint-modal-badge" id="mintModalTag">记忆修复师</div>
         </div>
-        <div class="modal-body">
-          <div class="modal-preview">
-            <img id="mintModalImage" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="演员预览" />
-            <div class="preview-tag" id="mintModalTag">记忆修复师</div>
+        <!-- Body -->
+        <div class="mint-modal-body">
+          <div class="mint-modal-header">
+            <div class="mint-modal-actor-name" id="mintModalActorName">Luna</div>
+            <h2 id="mintModalTitle">确认签约</h2>
           </div>
-          <div class="modal-info">
-            <div class="modal-field"><span>支付钱包</span><strong id="mintWallet">0x1234....fods</strong></div>
-            <div class="modal-field"><span>Mint 合约</span><strong id="mintContract">CharacterNFT.mint()</strong></div>
-            <div class="modal-field"><span>可Mint 余额</span><strong id="mintBalance">999</strong></div>
-            <div class="modal-total"><span>预计支付</span><strong id="mintEstimate">12.0 USDT</strong></div>
+          <!-- 价格摘要卡片 -->
+          <div class="mint-price-bar">
+            <div>
+              <div class="mpb-label">单价</div>
+              <div class="mpb-price" id="mintEstimate">10.0 USDC</div>
+            </div>
+            <div class="mpb-remain" id="mintBalance">剩余 10 个</div>
+          </div>
+          <!-- 签约数量 -->
+          <div class="mint-qty-row">
+            <span class="mint-qty-label">签约数量</span>
+            <div class="mint-qty-controls">
+              <button class="mint-qty-btn" id="qtyDec">−</button>
+              <input class="mint-qty-input" id="qtyInput" type="number" value="1" min="1" max="999" />
+              <button class="mint-qty-btn" id="qtyInc">+</button>
+            </div>
+          </div>
+          <!-- 合计 -->
+          <div class="mint-total-section">
+            <div class="mint-total-divider"></div>
+            <div class="mint-total-row">
+              <span class="mint-total-label">合计</span>
+              <span class="mint-total-value" id="mintTotal">10.0 USDC</span>
+            </div>
+          </div>
+          <div class="mint-modal-footer">
+            <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
+            <button class="mint-btn secondary" type="button" id="mintCancel">取消</button>
           </div>
         </div>
-        <div class="modal-actions">
-          <button class="button-secondary" type="button" id="mintCancel">取消</button>
-          <button class="button" type="button" id="mintConfirm">确认支付并 Mint</button>
+        <!-- Success State (hidden by default) -->
+        <div class="mint-modal-success" id="mintModalSuccess">
+          <div class="mint-modal-success-icon">✓</div>
+          <h2>签约成功</h2>
+          <p id="successText">该演员已加入你的经纪工坊，快去安排演出吧。</p>
+          <div class="success-actions">
+            <button class="mint-btn primary" id="viewNftBtn">查看我的演员</button>
+            <button class="mint-btn secondary" id="continueBtn">继续浏览</button>
+          </div>
         </div>
       </div>
     </div>
@@ -552,14 +848,16 @@
       const mintModalClose = document.getElementById('mintModalClose');
       const mintCancel = document.getElementById('mintCancel');
       const mintButtons = document.querySelectorAll('.actor-mint-btn');
-      const mintModalSubtitle = document.getElementById('mintModalSubtitle');
+      const mintModalActorName = document.getElementById('mintModalActorName');
 
       const mintModalImage = document.getElementById('mintModalImage');
       const mintModalTag = document.getElementById('mintModalTag');
-      const mintWallet = document.getElementById('mintWallet');
-      const mintContract = document.getElementById('mintContract');
       const mintBalance = document.getElementById('mintBalance');
       const mintEstimate = document.getElementById('mintEstimate');
+      const mintModalSuccess = document.getElementById('mintModalSuccess');
+      const mintModalBody = document.querySelector('.mint-modal-body');
+      const viewNftBtn = document.getElementById('viewNftBtn');
+      const continueBtn = document.getElementById('continueBtn');
 
       document.querySelectorAll('.actor-trade-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -583,14 +881,46 @@
         mintModal.setAttribute('aria-hidden', 'true');
       }
 
+      // Quantity controls
+      const qtyInput = document.getElementById('qtyInput');
+      const qtyDec = document.getElementById('qtyDec');
+      const qtyInc = document.getElementById('qtyInc');
+      const mintTotal = document.getElementById('mintTotal');
+      let currentUnitPrice = 10;
+
+      function updateTotal() {
+        const qty = parseInt(qtyInput.value) || 1;
+        const priceNum = parseFloat(currentUnitPrice.toString().replace(/[^0-9.]/g, '')) || 10;
+        const total = (qty * priceNum).toFixed(1);
+        const unit = currentUnitPrice.toString().replace(/[0-9.]/g, '') || ' USDC';
+        mintTotal.textContent = total + unit;
+      }
+
+      qtyDec.addEventListener('click', () => {
+        let v = parseInt(qtyInput.value) || 1;
+        if (v > 1) qtyInput.value = v - 1;
+        updateTotal();
+      });
+      qtyInc.addEventListener('click', () => {
+        let v = parseInt(qtyInput.value) || 1;
+        qtyInput.value = v + 1;
+        updateTotal();
+      });
+      qtyInput.addEventListener('input', updateTotal);
+
       function openMintModal(data) {
-        mintModalSubtitle.textContent = `${data.name} · ${data.price} · 数量${data.amount}`;
+        mintModalActorName.textContent = data.name;
         mintModalImage.src = data.image;
         mintModalTag.textContent = data.tag;
-        mintWallet.textContent = data.wallet;
-        mintContract.textContent = data.contract;
-        mintBalance.textContent = data.balance;
-        mintEstimate.textContent = data.estimate;
+        mintBalance.textContent = '剩余 ' + data.amount + ' 个';
+        mintEstimate.textContent = data.price;
+        currentUnitPrice = data.price;
+        // Reset quantity
+        qtyInput.value = 1;
+        updateTotal();
+        // Reset success state
+        mintModalSuccess.classList.remove('show');
+        mintModalBody.style.display = 'flex';
         mintModal.classList.add('active');
         mintModal.setAttribute('aria-hidden', 'false');
       }
@@ -600,15 +930,15 @@
           event.stopPropagation();
           const card = button.closest('.card');
           const imageSrc = card.querySelector('.actor-avatar img')?.src || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
+          const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
+          const price = card.dataset.price || '10 USDC';
+          const available = card.dataset.available || '10';
           openMintModal({
-            name: button.dataset.name || 'Luna',
-            price: button.dataset.price || '19.2 USDT',
-            amount: button.dataset.amount || '123',
-            tag: button.dataset.tag || '记忆修复师',
-            wallet: button.dataset.wallet || '0x1234....fods',
-            contract: button.dataset.contract || 'CharacterNFT.mint()',
-            balance: button.dataset.balance || '999',
-            estimate: button.dataset.estimate || '12.0 USDT',
+            name: actorName,
+            price: price,
+            amount: available,
+            tag: '演员 IP',
+            wallet: '0x1234....fods',
             image: imageSrc
           });
         });
@@ -638,7 +968,7 @@
       mintCancel.addEventListener('click', closeMintModal);
       const mintConfirm = document.getElementById('mintConfirm');
       mintModal.addEventListener('click', event => {
-        if (event.target === mintModal) closeMintModal();
+        if (event.target === mintModal || event.target.classList.contains('mint-modal-overlay')) closeMintModal();
       });
       document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && mintModal.classList.contains('active')) closeMintModal();
@@ -670,24 +1000,12 @@
       }
 
       function showSuccessInModal(card, data) {
-        const headerTitle = document.getElementById('mintModalTitle');
-        const body = mintModal.querySelector('.modal-body');
-        const actions = mintModal.querySelector('.modal-actions');
-        headerTitle.textContent = 'Mint 成功';
-        body.innerHTML = `<div style="padding:18px 12px;">
-          <p style="margin:0 0 8px;color:var(--text);font-weight:600">已成功为 <strong>${data.name}</strong> 支付并 Mint</p>
-          <p style="margin:0 0 12px;color:var(--text-muted);">交易已提交，若为链上操作请在钱包或区块浏览器查看状态。</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <button class="button" id="viewNftBtn">查看我的 NFT</button>
-            <button class="button-secondary" id="continueBtn">继续浏览</button>
-          </div>
-        </div>`;
-        actions.style.display = 'none';
-        setTimeout(() => {
-          document.getElementById('viewNftBtn')?.addEventListener('click', () => { window.location.href = 'studio.html'; });
-          document.getElementById('continueBtn')?.addEventListener('click', () => { closeMintModal(); });
-        }, 50);
+        mintModalBody.style.display = 'none';
+        mintModalSuccess.classList.add('show');
       }
+
+      viewNftBtn.addEventListener('click', () => { window.location.href = 'studio.html'; });
+      continueBtn.addEventListener('click', () => { closeMintModal(); });
 
       mintConfirm.addEventListener('click', () => {
         setButtonLoading(mintConfirm, true);
@@ -700,7 +1018,7 @@
             if (aImg && aImg.src === imgSrc) targetCard = c;
           });
           if (targetCard) updateCardCounts(targetCard);
-          const data = { name: mintModalSubtitle.textContent.split('·')[0].trim() || 'Luna' };
+          const data = { name: mintModalActorName.textContent || 'Luna' };
           showSuccessInModal(targetCard, data);
           setButtonLoading(mintConfirm, false);
         }, 1200);
