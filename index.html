@@ -495,7 +495,6 @@
             <span class="meta-text" id="featured-creator">JACK</span>
             <span class="meta-text" id="featured-views">22.3万完播</span>
             <span class="meta-text" id="featured-heat">333.2万热度</span>
-            <span class="meta-text" id="featured-rating">4.9 ★</span>
           </div>
           <div class="featured-cast" id="featured-cast">
             <div class="featured-cast-list" id="featured-cast-list"></div>
@@ -570,7 +569,7 @@
             </div>
           </div>
         </div>
-        <div class="card-foot"><div class="info-row"><span>JACK</span><span>22.3万完播</span><span>333.2万热度</span><span>4.9★</span></div></div>
+        <div class="card-foot"><div class="info-row"><span>JACK</span><span>22.3万完播</span><span>333.2万热度</span></div></div>
       </article>
       <article class="card" data-category="古风" data-sort="newest" onclick="location.href='drama-detail.html'">
         <img class="card-thumb" src="image/xiejia_cover.jpg" alt="我卸甲后天下大乱了" />
@@ -595,7 +594,7 @@
             </div>
           </div>
         </div>
-        <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k 观看</span><span>286.5万热度</span><span>4.8★</span></div></div>
+        <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k 观看</span><span>286.5万热度</span></div></div>
       </article>
       <article class="card" data-category="喜剧" data-sort="hot" onclick="location.href='drama-detail.html'">
         <img class="card-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" />
@@ -620,7 +619,7 @@
             </div>
           </div>
         </div>
-        <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k 观看</span><span>198.4万热度</span><span>4.7★</span></div></div>
+        <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k 观看</span><span>198.4万热度</span></div></div>
       </article>
     </section>
   </div>
@@ -643,11 +642,11 @@
     };
 
     const featuredDramas = [
-      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '22.3万完播', heat: '333.2万热度', rating: '4.9 ★', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg', video: 'video/凤骨琉璃.mp4', actors: ['苏婉清', '李云飞', '林梦瑶', '上官婉儿'] },
-      { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', heat: '286.5万热度', rating: '4.8 ★', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4', actors: ['李云飞', '赵无极', '林梦瑶'] },
-      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', heat: '198.4万热度', rating: '4.7 ★', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4', actors: ['苏婉清', '上官婉儿', 'Luna'] },
-      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', heat: '412.7万热度', rating: '4.9 ★', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80', actors: ['林梦瑶', '赵无极', '李云飞'] },
-      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', heat: '521.3万热度', rating: '4.8 ★', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80', actors: ['Luna', '林梦瑶', '上官婉儿'] }
+      { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '22.3万完播', heat: '333.2万热度', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg', video: 'video/凤骨琉璃.mp4', actors: ['苏婉清', '李云飞', '林梦瑶', '上官婉儿'] },
+      { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', heat: '286.5万热度', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4', actors: ['李云飞', '赵无极', '林梦瑶'] },
+      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', heat: '198.4万热度', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4', actors: ['苏婉清', '上官婉儿', 'Luna'] },
+      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', heat: '412.7万热度', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80', actors: ['林梦瑶', '赵无极', '李云飞'] },
+      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', heat: '521.3万热度', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80', actors: ['Luna', '林梦瑶', '上官婉儿'] }
     ];
 
     // 渲染演员阵容
@@ -697,7 +696,6 @@
       document.getElementById('featured-creator').textContent = drama.creator;
       document.getElementById('featured-views').textContent = drama.views;
       document.getElementById('featured-heat').textContent = drama.heat;
-      document.getElementById('featured-rating').textContent = drama.rating;
       document.getElementById('featured-desc').textContent = drama.desc;
       // 同步切换演员阵容
       renderFeaturedCast(drama.actors);
