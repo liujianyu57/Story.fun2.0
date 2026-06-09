@@ -97,10 +97,20 @@
     .actor-price-help:hover { background: var(--accent-soft); color: var(--accent); }
     .price-tooltip-overlay { position: fixed; inset: 0; z-index: 999; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
     .price-tooltip-overlay.active { display: flex; }
-    .price-tooltip-box { background: #fff; border-radius: 20px; max-width: 380px; width: 90%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
-    .price-tooltip-box h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--text); }
-    .price-tooltip-box p { margin: 0 0 18px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+    .price-tooltip-box { background: #fff; border-radius: 20px; max-width: 560px; width: 94%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
+    .price-tooltip-box h3 { margin: 0 0 4px; font-size: 1.1rem; color: var(--text); }
+    .price-tooltip-box .price-tip-sub { margin: 0 0 10px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
     .price-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; }
+    .price-curve-wrap { position: relative; margin: 0 auto 12px; width: 100%; max-width: 500px; }
+    .price-curve-wrap canvas { display: block; width: 100%; height: auto; border-radius: 12px; background: #fafdff; border: 1px solid var(--border); }
+    .price-curve-info { display: flex; justify-content: space-between; padding: 6px 8px 0; font-size: 0.72rem; color: var(--text-muted); }
+    .price-curve-legend { display: flex; justify-content: center; gap: 18px; margin: -2px 0 10px; font-size: 0.72rem; color: var(--text-muted); }
+    .price-curve-legend span { display: flex; align-items: center; gap: 4px; }
+    .price-curve-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+    .price-curve-legend .dot.current { background: var(--accent); }
+    .price-curve-legend .dot.curve { background: #e65100; }
+    .price-curve-formula { font-size: 0.78rem; color: var(--text-muted); background: var(--bg); border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; line-height: 1.5; }
+    .price-curve-formula code { font-family: inherit; font-weight: 600; color: var(--accent); }
     .card-actions { display: flex; gap: 8px; }
     .card-actions .button-secondary { flex: 1; min-width: 0; padding: 10px 14px; font-size: 0.88rem; }
     .actor-stats { display: flex; gap: 12px; padding: 8px 0 4px; }
@@ -183,7 +193,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">719.7万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button></span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -218,7 +228,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">531.6万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button></span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -253,7 +263,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,032.4万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button></span>
             <span class="actor-price-value">8 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -288,7 +298,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,553.4万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button></span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -323,7 +333,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">699.2万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button></span>
             <span class="actor-price-value">15 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -358,7 +368,7 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,052.9万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help" onclick="event.stopPropagation();openPriceTooltip(event)">?</button></span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button></span>
             <span class="actor-price-value">12 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
@@ -370,11 +380,30 @@
       </article>
     </div>
 
-    <!-- 签约价格说明弹窗 -->
+    <!-- 签约价格说明弹窗（联合曲线） -->
     <div class="price-tooltip-overlay" id="priceTooltip">
       <div class="price-tooltip-box">
         <h3>💰 签约价格</h3>
-        <p id="priceTooltipDesc">签约价格说明文案待定</p>
+        <p class="price-tip-sub">签约价格随已签约数自动上涨，早期签约更优惠</p>
+
+        <div class="price-curve-formula">
+          公式：<code>价格 = 初始价格 × 20<sup>(已签约数 ÷ 发行总量)</sup></code>
+        </div>
+
+        <div class="price-curve-wrap">
+          <canvas id="priceCurveCanvas" width="500" height="270"></canvas>
+          <div class="price-curve-info">
+            <span>已签约 <strong id="curveMintedLabel">0</strong></span>
+            <span>初始价格 <strong id="curveInitialPrice" style="color:var(--text-muted)">—</strong></span>
+            <span>当前价格 <strong id="curveCurrentPrice" style="color:var(--accent)">—</strong></span>
+          </div>
+        </div>
+
+        <div class="price-curve-legend">
+          <span><span class="dot curve"></span> 价格曲线</span>
+          <span><span class="dot current"></span> 当前位置</span>
+        </div>
+
         <button class="button-secondary" id="priceTooltipClose">知道了</button>
       </div>
     </div>
@@ -491,7 +520,9 @@
       });
 
       cards.forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (e) => {
+          // 点击 ? 按钮不跳转详情页
+          if (e.target.closest('.actor-price-help')) return;
           const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
           const actorId = card.dataset.actorId || '1';
           const avatarSrc = card.querySelector('.actor-avatar img')?.src || '';
@@ -609,12 +640,149 @@
         if (e.key === 'Escape' && statTooltip.classList.contains('active')) closeStatTooltip();
       });
 
-      // 签约价格 tooltip
+      // 签约价格 tooltip + 联合曲线
       const priceTooltip = document.getElementById('priceTooltip');
       const priceTooltipClose = document.getElementById('priceTooltipClose');
+      const curveCanvas = document.getElementById('priceCurveCanvas');
+      const curveMintedLabel = document.getElementById('curveMintedLabel');
+      const curveInitialPrice = document.getElementById('curveInitialPrice');
+      const curveCurrentPrice = document.getElementById('curveCurrentPrice');
+
+      function drawBondingCurve(initialPrice, totalSupply, minted) {
+        const canvas = curveCanvas;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        const pad = { top: 16, right: 20, bottom: 42, left: 40 };
+        const plotW = w - pad.left - pad.right;
+        const plotH = h - pad.top - pad.bottom;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Grid lines
+        ctx.strokeStyle = '#eef4ff';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i <= 5; i++) {
+          const y = pad.top + (plotH / 5) * i;
+          ctx.beginPath();
+          ctx.moveTo(pad.left, y);
+          ctx.lineTo(w - pad.right, y);
+          ctx.stroke();
+          // Y label
+          const ratio = 1 - i / 5;
+          const priceVal = initialPrice * Math.pow(20, ratio);
+          ctx.fillStyle = '#aab7c9';
+          ctx.font = '9px sans-serif';
+          ctx.textAlign = 'right';
+          ctx.fillText(priceVal < 1 ? priceVal.toFixed(2) : Math.round(priceVal).toString(), pad.left - 4, y + 3);
+        }
+        // X labels
+        ctx.fillStyle = '#aab7c9';
+        ctx.font = '9px sans-serif';
+        ctx.textAlign = 'center';
+        for (let i = 0; i <= 4; i++) {
+          const x = pad.left + (plotW / 4) * i;
+          const pct = i / 4;
+          ctx.fillText(Math.round(pct * totalSupply), x, h - 8);
+        }
+        // X axis label
+        ctx.fillStyle = '#8b9bb0';
+        ctx.font = '9px sans-serif';
+        ctx.fillText('已签约数', pad.left + plotW / 2, h - 20);
+
+        // Y axis label
+        ctx.save();
+        ctx.translate(10, pad.top + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = '#8b9bb0';
+        ctx.font = '8px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('签约价格 (USDC)', 0, 0);
+        ctx.restore();
+
+        // Draw bonding curve: price = initialPrice * 20^(minted/totalSupply)
+        const maxPrice = initialPrice * 20;
+        ctx.beginPath();
+        ctx.strokeStyle = '#e65100';
+        ctx.lineWidth = 2.5;
+        for (let i = 0; i <= plotW; i++) {
+          const pct = i / plotW;
+          const price = initialPrice * Math.pow(20, pct);
+          const x = pad.left + i;
+          const yNorm = (price - initialPrice) / (maxPrice - initialPrice);
+          const y = pad.top + plotH - yNorm * plotH;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Draw current position dot (价格映射到 Y 轴，与曲线一致)
+        const currentPct = totalSupply > 0 ? Math.min(minted / totalSupply, 1) : 0;
+        const curX = pad.left + currentPct * plotW;
+        const currentPrice = initialPrice * Math.pow(20, currentPct);
+        const curYNorm = (currentPrice - initialPrice) / (maxPrice - initialPrice);
+        const curY = pad.top + plotH - curYNorm * plotH;
+
+        ctx.beginPath();
+        ctx.arc(curX, curY, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#00b388';
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Dashed lines from current position to axes
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = 'rgba(0,179,136,0.4)';
+        ctx.lineWidth = 1;
+        // horizontal
+        ctx.beginPath();
+        ctx.moveTo(pad.left, curY);
+        ctx.lineTo(curX, curY);
+        ctx.stroke();
+        // vertical
+        ctx.beginPath();
+        ctx.moveTo(curX, pad.top + plotH);
+        ctx.lineTo(curX, curY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Update labels
+        curveMintedLabel.textContent = minted.toLocaleString();
+        curveInitialPrice.textContent = initialPrice.toFixed(2) + ' USDC';
+        curveCurrentPrice.textContent = currentPrice.toFixed(2) + ' USDC';
+      }
+
+      function openBondingCurveTooltip(cardElement) {
+        const total = parseInt(cardElement.dataset.total) || 10000;
+        const minted = parseInt(cardElement.dataset.minted) || 0;
+        const currentPrice = parseFloat((cardElement.dataset.price || '10').replace(/[^0-9.]/g, '')) || 10;
+        const ratio = total > 0 ? minted / total : 0;
+        const initialPrice = currentPrice / Math.pow(20, ratio);
+        drawBondingCurve(initialPrice, total, minted);
+      }
+
+      function openPriceTooltip(e) {
+        e.stopPropagation();
+        const card = e.target.closest('.card');
+        if (card) {
+          openBondingCurveTooltip(card);
+        }
+        document.getElementById('priceTooltip').classList.add('active');
+      }
+
       function closePriceTooltip() {
         priceTooltip.classList.remove('active');
       }
+
+      // 使用事件委托监听所有 .actor-price-help 按钮
+      document.querySelector('.grid').addEventListener('click', function(e) {
+        const helpBtn = e.target.closest('.actor-price-help');
+        if (helpBtn) {
+          openPriceTooltip(e);
+        }
+      });
+
       priceTooltipClose.addEventListener('click', closePriceTooltip);
       priceTooltip.addEventListener('click', function(e) {
         if (e.target === this) closePriceTooltip();
@@ -623,12 +791,6 @@
         if (e.key === 'Escape' && priceTooltip.classList.contains('active')) closePriceTooltip();
       });
     });
-
-    // 全局函数供 onclick 使用
-    function openPriceTooltip(e) {
-      e.stopPropagation();
-      document.getElementById('priceTooltip').classList.add('active');
-    }
   </script>
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
