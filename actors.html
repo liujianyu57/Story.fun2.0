@@ -705,6 +705,41 @@
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,179,136,0.3); }
     .search-container { margin-bottom: 24px; }
     .search-input { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; }
+
+    /* Sort bar — match index.html filter-tag style */
+    .sort-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .sort-tag { padding: 8px 16px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; font-size: 0.9rem; cursor: pointer; transition: all 0.25s ease; user-select: none; }
+    .sort-tag:hover { background: rgba(0,179,136,0.2); }
+    .sort-tag.active { background: var(--accent); color: white; }
+
+    /* Banner badges */
+    .banner-bottom-badges {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .badge {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: var(--text);
+      font-size: 0.75rem;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+      pointer-events: auto;
+      white-space: nowrap;
+    }
+    .badge-collection {
+      background: rgba(0,179,136,.92);
+      color: #fff;
+    }
     @media (max-width: 960px) { .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -715,7 +750,7 @@
     <div class="page-header">
       <div class="page-header-left">
         <h1>演员 IP</h1>
-        <p>每个演员 IP 代表一组由创作者发行的演员形象。铸造即签约，获得专属演员去拍剧、涨咖位、产生收益。</p>
+        <p>每个演员 IP 代表一组由创作者发行的演员形象。签约即获得专属演员去拍剧、涨咖位、产生收益。</p>
       </div>
       <div class="page-header-actions">
         <a href="DreamOS/dreamos-user-actors.html" target="_blank" class="btn-primary">创建演员 IP</a>
@@ -726,14 +761,24 @@
       <input type="text" class="search-input" id="actorSearch" placeholder="搜索演员 IP..." />
     </div>
 
+    <div class="sort-container" id="sortContainer">
+      <span class="sort-tag active" data-sort="price-asc">价格最低</span>
+      <span class="sort-tag" data-sort="price-desc">价格最高</span>
+      <span class="sort-tag" data-sort="views-desc">完播最高</span>
+      <span class="sort-tag" data-sort="heat-desc">热度最高</span>
+    </div>
+
     <div class="grid grid-3">
       <!-- Luna -->
-      <article class="card" data-actor="Luna" data-actor-id="1" data-total="5000" data-minted="98" data-available="10" data-holders="90" data-price="10 USDC" data-creator="storyfun_labs" data-views="2.6万" data-heat="719.7万">
+      <article class="card" data-actor="Luna" data-actor-id="1" data-total="5000" data-minted="98" data-available="10" data-holders="90" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="719.7万">
         <div class="card-banner banner-1">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
           </div>
-          <div class="creator-badge" style="position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--text);font-size:0.75rem;font-weight:600;backdrop-filter:blur(8px)">发行者 storyfun_labs</div>
+          <div class="banner-bottom-badges">
+            <span class="badge">发行者 storyfun_labs</span>
+            <span class="badge badge-collection">形象 ID C001</span>
+          </div>
         </div>
         <div class="card-body">
           <div>
@@ -757,12 +802,15 @@
       </article>
 
       <!-- 苏婉清 -->
-      <article class="card" data-actor="苏婉清" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio" data-views="24.1万" data-heat="531.6万">
+      <article class="card" data-actor="苏婉清" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio" data-collection="C002" data-views="24.1万" data-heat="531.6万">
         <div class="card-banner banner-2">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80" alt="演员 苏婉清" />
           </div>
-          <div class="creator-badge" style="position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--text);font-size:0.75rem;font-weight:600;backdrop-filter:blur(8px)">发行者 wanqing_studio</div>
+          <div class="banner-bottom-badges">
+            <span class="badge">发行者 wanqing_studio</span>
+            <span class="badge badge-collection">形象 ID C002</span>
+          </div>
         </div>
         <div class="card-body">
           <div>
@@ -786,12 +834,15 @@
       </article>
 
       <!-- 李云飞 -->
-      <article class="card" data-actor="李云飞" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs" data-views="24.7万" data-heat="1,032.4万">
+      <article class="card" data-actor="李云飞" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs" data-collection="C003" data-views="24.7万" data-heat="1,032.4万">
         <div class="card-banner banner-3">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="演员 李云飞" />
           </div>
-          <div class="creator-badge" style="position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--text);font-size:0.75rem;font-weight:600;backdrop-filter:blur(8px)">发行者 feige_labs</div>
+          <div class="banner-bottom-badges">
+            <span class="badge">发行者 feige_labs</span>
+            <span class="badge badge-collection">形象 ID C003</span>
+          </div>
         </div>
         <div class="card-body">
           <div>
@@ -815,12 +866,15 @@
       </article>
 
       <!-- 林梦瑶 -->
-      <article class="card" data-actor="林梦瑶" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art" data-views="27.7万" data-heat="1,553.4万">
+      <article class="card" data-actor="林梦瑶" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art" data-collection="C004" data-views="27.7万" data-heat="1,553.4万">
         <div class="card-banner" style="background:linear-gradient(135deg, #e6e0ff, #ffffff)">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" alt="演员 林梦瑶" />
           </div>
-          <div class="creator-badge" style="position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--text);font-size:0.75rem;font-weight:600;backdrop-filter:blur(8px)">发行者 mengyao_art</div>
+          <div class="banner-bottom-badges">
+            <span class="badge">发行者 mengyao_art</span>
+            <span class="badge badge-collection">形象 ID C004</span>
+          </div>
         </div>
         <div class="card-body">
           <div>
@@ -844,12 +898,15 @@
       </article>
 
       <!-- 赵无极 -->
-      <article class="card" data-actor="赵无极" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art" data-views="5.5万" data-heat="699.2万">
+      <article class="card" data-actor="赵无极" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art" data-collection="C005" data-views="5.5万" data-heat="699.2万">
         <div class="card-banner" style="background:linear-gradient(135deg, #ffe4e0, #fffaf8)">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80" alt="演员 赵无极" />
           </div>
-          <div class="creator-badge" style="position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--text);font-size:0.75rem;font-weight:600;backdrop-filter:blur(8px)">发行者 wuji_art</div>
+          <div class="banner-bottom-badges">
+            <span class="badge">发行者 wuji_art</span>
+            <span class="badge badge-collection">形象 ID C005</span>
+          </div>
         </div>
         <div class="card-body">
           <div>
@@ -873,12 +930,15 @@
       </article>
 
       <!-- 上官婉儿 -->
-      <article class="card" data-actor="上官婉儿" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio" data-views="24.1万" data-heat="1,052.9万">
+      <article class="card" data-actor="上官婉儿" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio" data-collection="C006" data-views="24.1万" data-heat="1,052.9万">
         <div class="card-banner" style="background:linear-gradient(135deg, #f5e6ff, #fffaff)">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="演员 上官婉儿" />
           </div>
-          <div class="creator-badge" style="position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--text);font-size:0.75rem;font-weight:600;backdrop-filter:blur(8px)">发行者 palace_studio</div>
+          <div class="banner-bottom-badges">
+            <span class="badge">发行者 palace_studio</span>
+            <span class="badge badge-collection">形象 ID C006</span>
+          </div>
         </div>
         <div class="card-body">
           <div>
@@ -1050,14 +1110,77 @@
       });
 
       searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        cards.forEach(card => {
-          const actorName = card.querySelector('h3').textContent.toLowerCase();
-          const actorDescription = card.querySelector('p').textContent.toLowerCase();
-          card.style.display = (actorName.includes(searchTerm) || actorDescription.includes(searchTerm)) ? 'flex' : 'none';
+        applyCurrentSort();
+      });
+
+      // ═══ Sort functionality ═══
+      let currentSort = 'price-asc';
+
+      /** Parse Chinese-formatted number like "2.6万", "1,032.4万", "5.5万" */
+      function parseChineseNum(str) {
+        if (!str) return 0;
+        const s = str.replace(/,/g, '');
+        const match = s.match(/^([\d.]+)万$/);
+        if (match) return parseFloat(match[1]) * 10000;
+        return parseFloat(s) || 0;
+      }
+
+      /** Get sort value from a card element based on sort key */
+      function getSortVal(card, sortKey) {
+        switch (sortKey) {
+          case 'price-asc':
+          case 'price-desc':
+            return parseFloat((card.dataset.price || '0').replace(/[^0-9.]/g, '')) || 0;
+          case 'views-desc':
+            return parseChineseNum(card.dataset.views);
+          case 'heat-desc':
+            return parseChineseNum(card.dataset.heat);
+          default:
+            return 0;
+        }
+      }
+
+      function applyCurrentSort() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        // Filter visible cards
+        const visible = Array.from(cards).filter(card => {
+          if (!searchTerm) return true;
+          const name = card.querySelector('h3').textContent.toLowerCase();
+          const desc = card.querySelector('p').textContent.toLowerCase();
+          return name.includes(searchTerm) || desc.includes(searchTerm);
+        });
+
+        // Sort visible cards
+        const sorted = visible.sort((a, b) => {
+          const valA = getSortVal(a, currentSort);
+          const valB = getSortVal(b, currentSort);
+          const multi = (currentSort === 'price-asc') ? 1 : -1;
+          return (valA - valB) * multi;
+        });
+
+        // Hide all first
+        cards.forEach(c => c.style.display = 'none');
+
+        // Append sorted cards back to grid
+        const grid = document.querySelector('.grid');
+        sorted.forEach(card => {
+          card.style.display = 'flex';
+          grid.appendChild(card);
+        });
+      }
+
+      // Sort tag click handler
+      document.querySelectorAll('.sort-tag').forEach(tag => {
+        tag.addEventListener('click', function() {
+          document.querySelectorAll('.sort-tag').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          currentSort = this.dataset.sort;
+          applyCurrentSort();
         });
       });
 
+      // Apply default sort on page load
+      applyCurrentSort();
       function closeMintModal() {
         mintModal.classList.remove('active');
         mintModal.setAttribute('aria-hidden', 'true');
