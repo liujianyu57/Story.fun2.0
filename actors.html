@@ -151,34 +151,81 @@
       line-height: 1.2;
     }
 
-    /* Price row — tag-style compact pill */
+    /* Price row — tiered pricing display */
     .mint-price-bar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 10px;
       background: var(--bg);
       border-radius: 14px;
       padding: 14px 16px;
     }
+    .mint-price-bar .mpb-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .mint-price-bar .mpb-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
     .mint-price-bar .mpb-label {
-      font-size: 0.82rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
       font-weight: 500;
     }
     .mint-price-bar .mpb-price {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: var(--accent);
       letter-spacing: -0.02em;
+      line-height: 1.2;
     }
     .mint-price-bar .mpb-remain {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       text-align: right;
+      line-height: 1.4;
     }
     .mint-price-bar .mpb-remain strong {
       color: var(--text);
       font-weight: 700;
+    }
+    /* Final unit price — only visible when qty > 1 */
+    .mint-price-bar .mpb-final-row {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .mint-price-bar .mpb-final-row.show { display: flex; }
+    .mint-price-bar .mpb-final-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mint-price-bar .mpb-final-label .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(245,176,66,0.12);
+      color: #c98900;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: help;
+    }
+    .mint-price-bar .mpb-final-price {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--warning);
+      letter-spacing: -0.01em;
     }
 
     /* Quantity input */
@@ -306,41 +353,68 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
-      padding: 36px 28px 32px;
+      gap: 10px;
+      padding: 40px 28px 32px;
       text-align: center;
     }
     .mint-modal-success.show { display: flex; }
     .mint-modal-success-icon {
-      width: 64px;
-      height: 64px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       background: linear-gradient(135deg, #00b388, #00d4a3);
       display: grid;
       place-items: center;
       color: #fff;
-      font-size: 2rem;
-      margin-bottom: 4px;
-      box-shadow: 0 8px 24px rgba(0,179,136,0.3);
+      font-size: 1.6rem;
+      box-shadow: 0 6px 20px rgba(0,179,136,0.3);
     }
     .mint-modal-success h2 {
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
     }
     .mint-modal-success p {
-      margin: 0;
+      margin: 4px 0 0;
       color: var(--text-muted);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       line-height: 1.6;
     }
     .mint-modal-success .success-actions {
       display: flex;
-      gap: 12px;
-      margin-top: 8px;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
       width: 100%;
     }
-    .mint-modal-success .success-actions .mint-btn { flex: 1; }
+    .mint-modal-success .success-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .mint-modal-success .success-btn.primary {
+      background: linear-gradient(135deg, #00b388, #00d4a3);
+      color: #fff;
+    }
+    .mint-modal-success .success-btn.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,179,136,0.35);
+    }
+    .mint-modal-success .success-btn.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 12px;
+    }
+    .mint-modal-success .success-btn.secondary:hover {
+      color: var(--text);
+      background: rgba(0,0,0,0.03);
+    }
     .grid { display: grid; gap: 20px; }
     .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
@@ -794,12 +868,22 @@
             <h2 id="mintModalTitle">确认签约</h2>
           </div>
           <!-- 价格摘要卡片 -->
-          <div class="mint-price-bar">
-            <div>
-              <div class="mpb-label">单价</div>
-              <div class="mpb-price" id="mintEstimate">10.0 USDC</div>
+          <div class="mint-price-bar" id="mintPriceBar">
+            <div class="mpb-top">
+              <div class="mpb-left">
+                <div class="mpb-label">当前单价</div>
+                <div class="mpb-price" id="mintEstimate">10.0 USDC</div>
+              </div>
+              <div class="mpb-remain" id="mintBalance">剩余 <strong>10</strong> 个</div>
             </div>
-            <div class="mpb-remain" id="mintBalance">剩余 10 个</div>
+            <!-- 最终单价（数量>1时显示） -->
+            <div class="mpb-final-row" id="mintFinalRow">
+              <div class="mpb-final-label">
+                最终单价
+                <span class="step-badge" title="价格按联合曲线阶梯递增，越往后单价越高">📈 阶梯定价</span>
+              </div>
+              <div class="mpb-final-price" id="mintFinalPrice">—</div>
+            </div>
           </div>
           <!-- 签约数量 -->
           <div class="mint-qty-row">
@@ -829,8 +913,8 @@
           <h2>签约成功</h2>
           <p id="successText">该演员已加入你的经纪工坊，快去安排演出吧。</p>
           <div class="success-actions">
-            <button class="mint-btn primary" id="viewNftBtn">查看我的演员</button>
-            <button class="mint-btn secondary" id="continueBtn">继续浏览</button>
+            <button class="success-btn primary" id="viewNftBtn">查看我的演员</button>
+            <button class="success-btn secondary" id="continueBtn">继续浏览</button>
           </div>
         </div>
       </div>
@@ -881,19 +965,53 @@
         mintModal.setAttribute('aria-hidden', 'true');
       }
 
-      // Quantity controls
+      // Quantity controls — with bonding curve pricing
       const qtyInput = document.getElementById('qtyInput');
       const qtyDec = document.getElementById('qtyDec');
       const qtyInc = document.getElementById('qtyInc');
       const mintTotal = document.getElementById('mintTotal');
-      let currentUnitPrice = 10;
+      const mintFinalRow = document.getElementById('mintFinalRow');
+      const mintFinalPrice = document.getElementById('mintFinalPrice');
+      let currentActorPrice = 10;       // current price string e.g. "10 USDC"
+      let currentActorMinted = 0;       // already minted count
+      let currentActorTotal = 10000;    // total supply
+
+      /** Calculate price at index k (0-based from current) using bonding curve */
+      function calcTieredPrice(initialPrice, totalSupply, minted, k) {
+        const ratio = (minted + k) / totalSupply;
+        return initialPrice * Math.pow(20, ratio);
+      }
 
       function updateTotal() {
         const qty = parseInt(qtyInput.value) || 1;
-        const priceNum = parseFloat(currentUnitPrice.toString().replace(/[^0-9.]/g, '')) || 10;
-        const total = (qty * priceNum).toFixed(1);
-        const unit = currentUnitPrice.toString().replace(/[0-9.]/g, '') || ' USDC';
-        mintTotal.textContent = total + unit;
+        const curPriceNum = parseFloat(currentActorPrice.toString().replace(/[^0-9.]/g, '')) || 10;
+        const unit = currentActorPrice.toString().replace(/[0-9.]/g, '') || ' USDC';
+        const totalSupply = currentActorTotal;
+        const minted = currentActorMinted;
+
+        // Derive initial price: currentPrice = initialPrice * 20 ^ (minted / totalSupply)
+        const ratio = totalSupply > 0 ? minted / totalSupply : 0;
+        const initialPrice = curPriceNum / Math.pow(20, ratio);
+
+        if (qty === 1) {
+          mintFinalRow.classList.remove('show');
+          mintTotal.textContent = curPriceNum.toFixed(1) + unit;
+          return;
+        }
+
+        // Calculate total across all qty units
+        let total = 0;
+        let lastPrice = 0;
+        for (let k = 0; k < qty; k++) {
+          const price = calcTieredPrice(initialPrice, totalSupply, minted, k);
+          total += price;
+          lastPrice = price;
+        }
+
+        // Show final unit price
+        mintFinalRow.classList.add('show');
+        mintFinalPrice.textContent = lastPrice.toFixed(2) + unit;
+        mintTotal.textContent = total.toFixed(2) + unit;
       }
 
       qtyDec.addEventListener('click', () => {
@@ -914,7 +1032,9 @@
         mintModalTag.textContent = data.tag;
         mintBalance.textContent = '剩余 ' + data.amount + ' 个';
         mintEstimate.textContent = data.price;
-        currentUnitPrice = data.price;
+        currentActorPrice = data.price;
+        currentActorMinted = data.minted || 0;
+        currentActorTotal = data.total || 10000;
         // Reset quantity
         qtyInput.value = 1;
         updateTotal();
@@ -933,12 +1053,15 @@
           const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
           const price = card.dataset.price || '10 USDC';
           const available = card.dataset.available || '10';
+          const minted = card.dataset.minted || '0';
+          const total = card.dataset.total || '10000';
           openMintModal({
             name: actorName,
             price: price,
             amount: available,
+            minted: parseInt(minted),
+            total: parseInt(total),
             tag: '演员 IP',
-            wallet: '0x1234....fods',
             image: imageSrc
           });
         });
