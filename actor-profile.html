@@ -955,12 +955,6 @@
             <span class="tag soldout" id="actorSoldoutTag" style="display:none">已售罄</span>
           </div>
         </div>
-        <!-- 发行概要（灰色小字） -->
-        <div style="font-size:0.78rem;color:var(--text-muted);line-height:1.6;display:flex;gap:16px;flex-wrap:wrap;">
-          <span>发行总量 <strong id="heroTotal" style="font-weight:600;color:var(--text)">—</strong></span>
-          <span>已签约 <strong id="heroMinted" style="font-weight:600;color:var(--text)">—</strong></span>
-          <span>可签约 <strong id="heroAvailable" style="font-weight:600;color:var(--accent)">—</strong></span>
-        </div>
         <p class="actor-desc" id="actorDesc">—</p>
         <!-- 完播 / 热度 -->
         <div class="actor-hero-stats">
@@ -1193,6 +1187,7 @@
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 800,
         price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        views: '27.7万', heat: '1,553.4万',
         creator: 'mengyao_art', collection: 'C004',
         childActors: [
           { childId: '#C-006', name: '白露', holder: '0x5fB8...2dC4', dramas: [
@@ -1282,9 +1277,6 @@
       document.getElementById('actorCreatorTag').textContent = '发行者 ' + (actor.creator || '—');
       document.getElementById('actorCollectionTag').textContent = '形象ID ' + (actor.collection || actor.id || '—');
       document.getElementById('actorDesc').textContent = actor.desc;
-      document.getElementById('heroTotal').textContent = actor.totalSupply.toLocaleString();
-      document.getElementById('heroMinted').textContent = actor.minted.toLocaleString();
-      document.getElementById('heroAvailable').textContent = actor.available.toLocaleString();
       document.getElementById('heroViews').textContent = actor.views || '—';
       document.getElementById('heroHeat').textContent = actor.heat || '—';
       document.getElementById('pricePillValue').textContent = actor.price;
