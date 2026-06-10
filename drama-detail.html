@@ -179,7 +179,34 @@
     .toast-notification { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 9999; background: rgba(26, 35, 47, 0.95); backdrop-filter: blur(8px); color: #fff; padding: 16px 24px; border-radius: 16px; font-size: 0.92rem; line-height: 1.6; box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 420px; text-align: center; font-weight: 500; }
     .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
+
+    /* ===== Rating Modal ===== */
+    .rating-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .rating-modal-overlay.active { opacity: 1; visibility: visible; }
+    .rating-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 400px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
+    .rating-modal-overlay.active .rating-modal { transform: scale(1) translateY(0); }
+    .rating-modal-header { text-align: center; padding: 32px 24px 8px; position: relative; }
+    .rating-modal-header h2 { margin: 0 0 4px; font-size: 1.25rem; }
+    .rating-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.88rem; }
+    .rating-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
+    .rating-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .rating-modal-body { padding: 16px 28px 28px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .rating-stars { display: flex; gap: 8px; }
+    .rating-star { cursor: pointer; width: 44px; height: 44px; transition: transform 0.15s ease; }
+    .rating-star:hover { transform: scale(1.15); }
+    .rating-star svg { width: 100%; height: 100%; }
+    .rating-star.active svg .star-fill { fill: #ff9f2c; }
+    .rating-star.active svg .star-stroke { stroke: #ff9f2c; fill: #ff9f2c; }
+    .rating-star.passive svg .star-stroke { stroke: #d0d9e5; }
+    .rating-label { font-size: 1rem; font-weight: 600; color: var(--text-muted); min-height: 1.5em; }
+    .rating-label.active { color: #ff9f2c; }
+    .rating-submit-btn { width: 100%; padding: 12px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; }
+    .rating-submit-btn:hover { background: #009a75; }
+    .rating-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .rating-current { font-size: 0.9rem; color: var(--text-muted); text-align: center; padding-top: 8px; border-top: 1px solid var(--border); width: 100%; }
+    .rating-current strong { color: var(--text); }
     @media (max-width: 680px) {
+
       .app-shell { padding: 16px; }
       .detail-layout { grid-template-columns: 1fr; }
       .comment-input-wrap { flex-direction: column; }
@@ -251,7 +278,7 @@
             <p class="synopsis-text" id="synopsisText">加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，带着未来记忆的他，如何在币圈从一个小白成长为呼风唤雨的大佬？每一步抉择都关乎生死，每一次交易都是人性的考验。</p>
             <button class="expand-btn" id="synopsisExpandBtn" onclick="toggleSynopsis()">展开全部</button>
           </div>
-          <!-- 点赞收藏 -->
+          <!-- 点赞收藏评分 -->
           <div class="drama-actions">
             <button class="action-btn-icon" id="likeBtn2" onclick="toggleLike()">
               <svg class="aicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -265,6 +292,13 @@
               </svg>
               <span class="acount" id="favCount2">856</span>
             </button>
+            <button class="action-btn-icon" id="ratingBtn" onclick="openRatingModal()">
+              <svg class="aicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="4" />
+                <polygon points="12 6 13.64 10.08 18 10.26 14.6 13.22 15.82 17.74 12 15.2 8.18 17.74 9.4 13.22 6 10.26 10.36 10.08 12 6" />
+              </svg>
+              <span class="acount" id="ratingDisplay">4.8</span>
+            </button>
           </div>
         </div>
 
@@ -275,6 +309,23 @@
           <span class="ep-count">共 44 集</span>
         </div>
           <div class="episode-list" id="episodeList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Rating Modal ===== -->
+    <div class="rating-modal-overlay" id="ratingModalOverlay" onclick="closeRatingModal(event)">
+      <div class="rating-modal">
+        <div class="rating-modal-header">
+          <button class="rating-modal-close" onclick="closeRatingModal()">✕</button>
+          <h2>⭐ 给这部剧评分</h2>
+          <p>你的评分将帮助更多人发现好剧</p>
+        </div>
+        <div class="rating-modal-body">
+          <div class="rating-stars" id="ratingStars"></div>
+          <div class="rating-label" id="ratingLabel">点击星星评分</div>
+          <button class="rating-submit-btn" id="ratingSubmitBtn" disabled onclick="submitRating()">提交评分</button>
+          <div class="rating-current">综合评分 <strong id="ratingCurrentScore">4.8</strong> · <span id="ratingCurrentCount">124</span> 人评价</div>
         </div>
       </div>
     </div>
@@ -336,9 +387,128 @@
     let synopsisExpanded = false;
 
     // ============================================================
+    //  评分
+    // ============================================================
+    let selectedRating = 0;
+    let userRated = false;
+    const RATING_LABELS = ['', '很差', '较差', '一般', '较好', '非常好'];
+    const ratingData = {
+      totalScore: 4.8,
+      count: 124,
+    };
+
+    const STAR_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff9f2c"/><stop offset="100%" stop-color="#ffc107"/></linearGradient></defs><polygon class="star-stroke" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#d0d9e5" fill="none"/><polygon class="star-fill" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="none"/></svg>`;
+
+    function renderRatingStars() {
+      const container = document.getElementById('ratingStars');
+      container.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('div');
+        star.className = 'rating-star passive';
+        star.dataset.value = i;
+        star.innerHTML = STAR_SVG;
+        star.addEventListener('click', function() {
+          if (userRated) return;
+          selectRating(i);
+        });
+        star.addEventListener('mouseenter', function() {
+          if (userRated) return;
+          highlightStars(i);
+        });
+        container.appendChild(star);
+      }
+      // 鼠标离开容器时恢复为已选评分（或无选择时的默认状态）
+      container.addEventListener('mouseleave', function() {
+        if (userRated) return;
+        if (selectedRating > 0) {
+          highlightStars(selectedRating);
+        } else {
+          const stars = container.querySelectorAll('.rating-star');
+          stars.forEach(star => star.className = 'rating-star passive');
+          const label = document.getElementById('ratingLabel');
+          label.textContent = '点击星星评分';
+          label.className = 'rating-label';
+        }
+      });
+    }
+
+    function highlightStars(val) {
+      const stars = document.querySelectorAll('.rating-star');
+      stars.forEach((star, idx) => {
+        star.className = 'rating-star' + (idx < val ? ' active' : ' passive');
+      });
+      const label = document.getElementById('ratingLabel');
+      label.textContent = RATING_LABELS[val] || '';
+      label.className = 'rating-label' + (val > 0 ? ' active' : '');
+    }
+
+    function selectRating(val) {
+      selectedRating = val;
+      highlightStars(val);
+      document.getElementById('ratingSubmitBtn').disabled = false;
+    }
+
+    function openRatingModal() {
+      document.getElementById('ratingModalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      renderRatingStars();
+      if (selectedRating > 0) {
+        highlightStars(selectedRating);
+        document.getElementById('ratingSubmitBtn').disabled = false;
+      } else {
+        document.getElementById('ratingLabel').textContent = '点击星星评分';
+        document.getElementById('ratingLabel').className = 'rating-label';
+      }
+      // 更新综合评分显示
+      document.getElementById('ratingCurrentScore').textContent = ratingData.totalScore.toFixed(1);
+      document.getElementById('ratingCurrentCount').textContent = ratingData.count;
+    }
+
+    function closeRatingModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      document.getElementById('ratingModalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function submitRating() {
+      if (selectedRating === 0 || userRated) return;
+
+      // 模拟提交评分
+      const newTotal = (ratingData.totalScore * ratingData.count + selectedRating) / (ratingData.count + 1);
+      ratingData.totalScore = Math.round(newTotal * 10) / 10;
+      ratingData.count += 1;
+      userRated = true;
+
+      // 更新入口显示
+      document.getElementById('ratingDisplay').textContent = ratingData.totalScore.toFixed(1);
+
+      // 更新弹窗
+      document.getElementById('ratingCurrentScore').textContent = ratingData.totalScore.toFixed(1);
+      document.getElementById('ratingCurrentCount').textContent = ratingData.count;
+      document.getElementById('ratingSubmitBtn').disabled = true;
+      document.getElementById('ratingSubmitBtn').textContent = '已评分';
+
+      // 锁定星星
+      const stars = document.querySelectorAll('.rating-star');
+      stars.forEach(star => star.style.cursor = 'default');
+
+      const label = document.getElementById('ratingLabel');
+      label.textContent = `你给了 ${selectedRating} 星 · ${RATING_LABELS[selectedRating]}`;
+
+      showToast(`⭐ 评分成功！你给了 ${selectedRating} 星`, '⭐');
+
+      // 3秒后关闭
+      setTimeout(() => {
+        closeRatingModal();
+        document.getElementById('ratingSubmitBtn').textContent = '提交评分';
+      }, 1500);
+    }
+
+    // ============================================================
     //  Toast
     // ============================================================
     let toastTimer = null;
+
     function showToast(msg, icon) {
       const t = document.getElementById('toastNotification');
       document.getElementById('toastMessage').textContent = msg;
