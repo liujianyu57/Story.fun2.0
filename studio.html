@@ -1205,6 +1205,30 @@
       </div>
     </div>
 
+    <!-- ===== 挖矿产出汇总（顶部通栏） ===== -->
+    <div class="mining-summary" style="margin-top:-12px;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;" onclick="openWeeklyPoolModal()">
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周奖池</div>
+          <div style="font-size:1.2rem;font-weight:700;color:var(--text);" id="msWeeklyPool">0</div>
+          <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;" onclick="openNominalOutputModal()">
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周名义产出</div>
+          <div style="font-size:1.2rem;font-weight:700;color:var(--text);" id="msWeeklyOutput">0</div>
+          <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;" onclick="openActualOutputModal()">
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周实际产出</div>
+          <div style="font-size:1.2rem;font-weight:700;color:var(--accent);" id="msWeeklyTotal">0</div>
+          <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;padding:0 2px;">
+        <a href="rewards.html" style="font-size:0.75rem;color:var(--accent);text-decoration:none;font-weight:600;">收益明细 →</a>
+      </div>
+    </div>
+
     <!-- ===== 派遣面板（5 槽位编队） ===== -->
     <div class="deployment-panel" id="deploymentPanel">
       <div class="deploy-panel-header">
@@ -1213,7 +1237,6 @@
           <span class="count-badge" id="deployCount">(0/5)</span>
         </div>
         <div class="deploy-panel-stats">
-          <span class="stat-item">⛏️ 今日总产出 <span class="stat-value" id="deployTotalOutput">0</span> STORY</span>
           
         </div>
       </div>
@@ -1342,6 +1365,92 @@
       </div>
       <button class="modal-btn confirm" onclick="confirmCharge()">恢复全部体力</button>
       <button class="modal-btn cancel" onclick="closeChargeModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- ===== 实际产出公式说明弹窗 ===== -->
+  <div class="modal-overlay" id="actualOutputModal">
+    <div class="modal-card" style="max-width:440px;">
+      <h2>本周实际产出</h2>
+      <p class="modal-sub" style="margin-bottom:12px;">实际产出受周硬顶和单地址封顶约束</p>
+      <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span style="flex:1;">若全网名义产出 ≤ 当周硬顶：</span>
+          </div>
+          <div style="padding:2px 0 8px 16px;border-bottom:1px solid var(--border);">
+            <span style="font-weight:700;color:var(--text);">用户实得 = 用户名义产出</span>
+            <div style="font-size:0.78rem;color:var(--text-sub);margin-top:2px;">未发出的剩余额度不发放、不回流、不补分</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0 4px;border-bottom:1px solid var(--border);">
+            <span style="flex:1;">若全网名义产出 > 当周硬顶：</span>
+          </div>
+          <div style="padding:2px 0 8px 16px;border-bottom:1px solid var(--border);">
+            <span style="font-weight:700;color:var(--text);">用户实得 = 用户名义产出 × 当周硬顶 / 全网名义产出</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0 4px;">
+            <span style="flex:1;">单地址周封顶</span>
+          </div>
+          <div style="padding:2px 0 4px 16px;">
+            <span style="font-weight:700;color:var(--danger);">单个地址每周最多领取当周硬顶的 5%</span>
+          </div>
+        </div>
+      </div>
+      <button class="modal-btn cancel" onclick="closeActualOutputModal()">关闭</button>
+    </div>
+  </div>
+
+  <!-- ===== 名义产出公式说明弹窗 ===== -->
+  <div class="modal-overlay" id="nominalOutputModal">
+    <div class="modal-card" style="max-width:440px;">
+      <h2>名义产出公式</h2>
+      <p class="modal-sub" style="margin-bottom:12px;">单卡名义产出 = 单卡小时权重 × R_base × 有效挖矿时长</p>
+      <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:0.85rem;line-height:1.8;color:var(--text-muted);">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>单卡小时权重</span>
+            <span style="font-weight:700;color:var(--text);">挖矿系数 × Heat × CP 系数 × trust</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>CP 系数</span>
+            <span style="font-weight:700;color:var(--text);">1</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>R_base</span>
+            <span style="font-weight:700;color:var(--accent);">1 STORY / 单位权重 / 小时</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;">
+            <span>有效挖矿时长</span>
+            <span style="font-weight:700;color:var(--text);">质押中且体力 > 0 的累计时长</span>
+          </div>
+        </div>
+      </div>
+      <button class="modal-btn cancel" onclick="closeNominalOutputModal()">关闭</button>
+    </div>
+  </div>
+
+  <!-- ===== 本周奖池（周硬顶）说明弹窗 ===== -->
+  <div class="modal-overlay" id="weeklyPoolModal">
+    <div class="modal-card" style="max-width:440px;">
+      <h2>本周奖池</h2>
+      <p class="modal-sub" style="margin-bottom:12px;">即 STORY 挖矿的每周硬性发放上限（周硬顶）</p>
+      <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>初始周硬顶</span>
+            <span style="font-weight:700;color:var(--accent);">2,115,385 STORY</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>年衰减系数</span>
+            <span style="font-weight:700;color:var(--text);">× 0.8</span>
+          </div>
+          <div style="padding:8px 0 4px;">
+            <div style="font-weight:600;color:var(--text);margin-bottom:4px;">每周实际发放 = min(全网名义产出, 当周硬顶)</div>
+            <div style="font-size:0.78rem;color:var(--text-sub);">未发出的剩余额度不发放、不回流、不补分</div>
+          </div>
+        </div>
+      </div>
+      <button class="modal-btn cancel" onclick="closeWeeklyPoolModal()">关闭</button>
     </div>
   </div>
 
@@ -1581,10 +1690,7 @@
       const container = document.getElementById('deploySlots');
       const deployed = getDeployedActors();
       const count = document.getElementById('deployCount');
-      const totalOutput = document.getElementById('deployTotalOutput');
       count.textContent = `(${deployed.length}/${MAX_STAKING_SLOTS})`;
-
-      let totalStory = 0;
 
       const slotsHtml = [];
       for (let i = 0; i < MAX_STAKING_SLOTS; i++) {
@@ -1598,8 +1704,6 @@
           // 边框颜色 & 体力条颜色：体力 = 0 → red，体力 ≤ 8 → yellow，体力 > 8 → green
           const borderCls = actor.energy <= 0 ? 'border-red' : actor.energy <= 8 ? 'border-yellow' : 'border-green';
           const barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
-
-          totalStory += (actor.todayOutput || 0);
 
           slotsHtml.push(`
             <div class="deploy-slot occupied ${borderCls}" data-actor-id="${actor.id}">
@@ -1617,8 +1721,8 @@
                   <span class="deploy-slot-energy-pct">⚡${actor.energy}/${actor.energyMax}</span>
                 </div>
                 <div class="deploy-slot-row">
-                  <span style="font-size:0.7rem;color:var(--text-sub);font-weight:500;">今日产出</span>
-                  <span class="deploy-slot-output">${(actor.todayOutput || 0).toFixed(1)}<span class="muted"> STORY</span></span>
+                  <span style="font-size:0.7rem;color:var(--text-sub);font-weight:500;">本周名义产出</span>
+                  <span class="deploy-slot-output">${(actor.cumulativeStory || 0).toFixed(1)}<span class="muted"> STORY</span></span>
                 </div>
                 <div class="deploy-slot-actions">
                   ${actor.energy < actor.energyMax ? `<button class="deploy-slot-charge-btn${actor.energy > 8 ? ' soft' : ' yellow'}" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充</button>` : ''}
@@ -1647,9 +1751,6 @@
       }
 
       container.innerHTML = slotsHtml.join('');
-
-      // 统计信息
-      totalOutput.textContent = totalStory.toFixed(1);
     }
 
     // ============================================================
@@ -1740,8 +1841,8 @@
               </div>
               <div class="ms-item">
                 <div class="ms-info">
-                  <span class="ms-label">今日产出</span>
-                  <span class="ms-value">${(actor.todayOutput || 0).toFixed(1)} STORY</span>
+                  <span class="ms-label">本周名义产出</span>
+                  <span class="ms-value">${(actor.cumulativeStory || 0).toFixed(1)} STORY</span>
                 </div>
               </div>
             </div>
@@ -1760,11 +1861,26 @@
     }
 
     // ============================================================
+    //  渲染：挖矿产出汇总
+    // ============================================================
+    function renderMiningSummary() {
+      const deployed = getDeployedActors();
+      const weeklyNominal = deployed.reduce((sum, a) => sum + (a.cumulativeStory || 0), 0);
+      const weeklyActual = weeklyNominal;
+      const weeklyPool = 2115385; // 初始周硬顶 ≈ 2,115,385 STORY
+
+      document.getElementById('msWeeklyPool').textContent = weeklyPool.toLocaleString();
+      document.getElementById('msWeeklyOutput').textContent = weeklyNominal.toFixed(1);
+      document.getElementById('msWeeklyTotal').textContent = weeklyActual.toFixed(1);
+    }
+
+    // ============================================================
     //  全量渲染
     // ============================================================
     function renderAll() {
       renderDeploySlots();
       renderActors();
+      renderMiningSummary();
     }
 
     // ============================================================
@@ -2077,6 +2193,45 @@
       closeLevelModal();
       renderAll();
       showToast('🏆 ' + actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name + '！', '🎉');
+    }
+
+    // ============================================================
+    //  本周奖池（周硬顶）弹窗
+    // ============================================================
+    function openWeeklyPoolModal() {
+      document.getElementById('weeklyPoolModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWeeklyPoolModal() {
+      document.getElementById('weeklyPoolModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // ============================================================
+    //  实际产出公式弹窗
+    // ============================================================
+    function openActualOutputModal() {
+      document.getElementById('actualOutputModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeActualOutputModal() {
+      document.getElementById('actualOutputModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // ============================================================
+    //  名义产出公式弹窗
+    // ============================================================
+    function openNominalOutputModal() {
+      document.getElementById('nominalOutputModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeNominalOutputModal() {
+      document.getElementById('nominalOutputModal').classList.remove('active');
+      document.body.style.overflow = '';
     }
 
     // ============================================================

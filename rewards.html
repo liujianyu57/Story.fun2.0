@@ -352,6 +352,247 @@
 
     .address-tag { font-family: monospace; color: var(--text-secondary); font-size: 0.8rem; }
 
+    /* ===== Mining Breakdown (演员产出明细) ===== */
+    .mining-breakdown {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+    .mb-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .mb-header h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .mb-header .mb-total {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .mb-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mb-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mb-item-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--border-light);
+    }
+    .mb-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .mb-item-info .mb-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .mb-item-info .mb-detail {
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      margin-top: 1px;
+    }
+    .mb-item-bar {
+      flex: 0 0 100px;
+      height: 5px;
+      background: var(--border-light);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .mb-item-bar .fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), #00d9a3);
+      transition: width 0.6s ease;
+    }
+    .mb-item-output {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ===== Weekly Chart (本周产出趋势) ===== */
+    .weekly-chart {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+    .weekly-chart h3 {
+      margin: 0 0 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .wc-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 110px;
+      padding: 0 4px;
+    }
+    .wc-bar-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .wc-bar {
+      width: 100%;
+      max-width: 34px;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(180deg, var(--accent), #00b388);
+      transition: height 0.6s ease;
+      min-height: 2px;
+    }
+    .wc-bar.today {
+      background: linear-gradient(180deg, var(--accent), #05d97a);
+      box-shadow: 0 0 8px rgba(0,179,136,0.25);
+    }
+    .wc-bar-label {
+      font-size: 0.6rem;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      margin-top: 4px;
+      text-align: center;
+    }
+    .wc-bar-value {
+      font-size: 0.55rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    /* ===== Referral Mining (邀请挖矿) ===== */
+    .referral-mining {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+    .ref-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .ref-header h3 { margin: 0; font-size: 0.95rem; font-weight: 600; }
+    .ref-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(245,176,66,0.1);
+      color: var(--warning);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .ref-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .ref-stat {
+      text-align: center;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 12px 8px;
+    }
+    .ref-stat .rs-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .ref-stat .rs-label {
+      font-size: 0.68rem;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .ref-levels {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ref-level {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+    }
+    .ref-level .rl-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .ref-level .rl-label span { color: var(--text); font-weight: 700; }
+    .ref-level .rl-value {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ===== Mining Parameters (挖矿参数公示) ===== */
+    .params-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+    .params-panel h3 {
+      margin: 0 0 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .param-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 20px;
+    }
+    .param-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .param-item .pi-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .param-item .pi-value {
+      font-weight: 600;
+      color: var(--text);
+    }
+
     /* ===== View All Link ===== */
     .view-all-wrap {
       text-align: center;
@@ -677,6 +918,65 @@
           <button class="view-all-btn" onclick="openModal('holding')">
             查看全部 <span class="view-all-arrow">→</span>
           </button>
+        </div>
+      </div>
+
+      <!-- ===== 演员产出明细 (from mining) ===== -->
+      <div class="mining-breakdown" id="miningBreakdown">
+        <div class="mb-header">
+          <h3>🎭 演员产出明细</h3>
+          <span class="mb-total">时产 <span id="totalHourlyOutput">0</span> STORY/h</span>
+        </div>
+        <div class="mb-list" id="mbList">
+          <!-- 由 JS 渲染 -->
+        </div>
+      </div>
+
+      <!-- ===== 本周产出趋势 ===== -->
+      <div class="weekly-chart">
+        <h3>📊 本周产出趋势</h3>
+        <div class="wc-bars" id="weeklyChartBars">
+          <!-- 由 JS 渲染 -->
+        </div>
+      </div>
+
+      <!-- ===== 邀请挖矿 ===== -->
+      <div class="referral-mining">
+        <div class="ref-header">
+          <h3>🤝 邀请挖矿</h3>
+          <span class="ref-badge">邀请子池独立周硬顶</span>
+        </div>
+        <div class="ref-stats">
+          <div class="ref-stat">
+            <div class="rs-value" id="refMyEarned">0</div>
+            <div class="rs-label">邀请获得 STORY</div>
+          </div>
+          <div class="ref-stat">
+            <div class="rs-value" id="refValidCount">0</div>
+            <div class="rs-label">有效下线</div>
+          </div>
+          <div class="ref-stat">
+            <div class="rs-value" id="refSubPool">0</div>
+            <div class="rs-label">子池周硬顶</div>
+          </div>
+        </div>
+        <div class="ref-levels" id="refLevels">
+          <!-- 由 JS 渲染 -->
+        </div>
+      </div>
+
+      <!-- ===== 挖矿参数公示 ===== -->
+      <div class="params-panel">
+        <h3>⚙️ 挖矿参数（当前 epoch）</h3>
+        <div class="param-grid">
+          <div class="param-item"><span class="pi-label">R_base</span><span class="pi-value">1 STORY/权重/h</span></div>
+          <div class="param-item"><span class="pi-label">质押上限</span><span class="pi-value">5 张/用户</span></div>
+          <div class="param-item"><span class="pi-label">周硬顶</span><span class="pi-value" id="paramWeeklyCap">2,115,385</span></div>
+          <div class="param-item"><span class="pi-label">单地址封顶</span><span class="pi-value" id="paramPerAddrCap">5%</span></div>
+          <div class="param-item"><span class="pi-label">体力消耗</span><span class="pi-value">1 点/小时</span></div>
+          <div class="param-item"><span class="pi-label">体力恢复</span><span class="pi-value">休息 1 点/小时</span></div>
+          <div class="param-item"><span class="pi-label">邀请子池占比</span><span class="pi-value">25%</span></div>
+          <div class="param-item"><span class="pi-label">结算周期</span><span class="pi-value">每周日 0:00 UTC</span></div>
         </div>
       </div>
 
@@ -1322,6 +1622,9 @@
       renderPreview('mintPreview', TX_MINT, rowMint);
       renderPreview('referralPreview', TX_REFERRAL, rowReferral);
       drawChart(7);
+      // === 挖矿模块渲染 ===
+      renderMiningAll();
+      // ====================
       let resizeTimer;
       window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
@@ -1394,6 +1697,105 @@
       showToast('已领取 '+fmt(WALLET.claimable)+' STORY + $'+d2(WALLET.usdcWithdrawable)+' USDC 到钱包');
       WALLET.claimable=0; WALLET.usdcWithdrawable=0;
       renderMetrics();
+    }
+
+    // ============================================================
+    //  Mining Modules (from mining.html)
+    // ============================================================
+    const MINING_LEVEL_CONFIG = [
+      null,
+      { level: 1, name: '群演',  miningCoeff: 1.0,  energyMax: 168, color: '#8a9bb5', chargeCost: 15 },
+      { level: 2, name: '配角',  miningCoeff: 2.2,  energyMax: 168, color: '#5bc0de', chargeCost: 36 },
+      { level: 3, name: '主角',  miningCoeff: 5.0,  energyMax: 168, color: '#5cb85c', chargeCost: 87 },
+      { level: 4, name: '巨星',  miningCoeff: 11,   energyMax: 168, color: '#f0ad4e', chargeCost: 203 },
+      { level: 5, name: '顶流',  miningCoeff: 24,   energyMax: 168, color: '#d9534f', chargeCost: 465 },
+    ];
+    const MINING_WEEKLY_CAP = 2115385;
+    const MINING_PER_ADDR_CAP_RATIO = 0.05;
+    const MINING_R_BASE = 1;
+
+    const MINING_ACTORS = [
+      { id: '#Su-001', name: '苏婉清', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80', parentIP: 'suvanqing', level: 2, energy: 150, energyMax: 168, heat: 2.4, isStaking: true, cumulativeStory: 342.8 },
+      { id: '#Li-001', name: '李云飞', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80', parentIP: 'liyunfei', level: 1, energy: 30, energyMax: 168, heat: 0.8, isStaking: true, cumulativeStory: 15.2 },
+      { id: '#Lin-001', name: '林梦瑶', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80', parentIP: 'linmengyao', level: 3, energy: 140, energyMax: 168, heat: 3.5, isStaking: true, cumulativeStory: 2150.0 },
+      { id: '#Su-002', name: '苏婉清', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80', parentIP: 'suvanqing', level: 2, energy: 120, energyMax: 168, heat: 2.0, isStaking: false, cumulativeStory: 120.0 },
+      { id: '#Zhao-001', name: '赵无极', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&h=200&q=80', parentIP: 'zhaowuji', level: 5, energy: 100, energyMax: 168, heat: 5.2, isStaking: false, cumulativeStory: 8200.0 },
+    ];
+
+    const MINING_REFERRAL = {
+      myEarned: 128.5, validCount: 4, subPoolCap: 528846,
+      levels: [
+        { level: 1, ratio: '10%', earned: 85.2, count: 3 },
+        { level: 2, ratio: '5%',  earned: 32.0, count: 7 },
+        { level: 3, ratio: '3%',  earned: 9.6,  count: 12 },
+        { level: 4, ratio: '2%',  earned: 1.5,  count: 8 },
+        { level: 5, ratio: '1%',  earned: 0.2,  count: 5 },
+      ],
+    };
+
+    const MINING_WEEKLY_HISTORY = [12.5, 15.8, 11.2, 18.6, 22.4, 19.7, 14.3];
+
+    function miningCalcUnitWeight(actor) {
+      const cfg = MINING_LEVEL_CONFIG[actor.level] || MINING_LEVEL_CONFIG[1];
+      return cfg.miningCoeff * (actor.heat || 0) * 1 * 1;
+    }
+
+    function miningCalcHourly(actor) {
+      if (!actor.isStaking || actor.energy <= 0 || (actor.heat || 0) <= 0) return 0;
+      return miningCalcUnitWeight(actor) * MINING_R_BASE;
+    }
+
+    function renderMiningBreakdown() {
+      const deployed = MINING_ACTORS.filter(a => a.isStaking);
+      const list = document.getElementById('mbList');
+      if (deployed.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:16px 0;color:var(--text-tertiary);font-size:0.82rem;">暂无派遣中的演员</div>';
+        document.getElementById('totalHourlyOutput').textContent = '0';
+        return;
+      }
+      let totalHourly = 0;
+      deployed.forEach(a => { totalHourly += miningCalcHourly(a); });
+      document.getElementById('totalHourlyOutput').textContent = totalHourly.toFixed(2);
+      list.innerHTML = deployed.map(a => {
+        const hourly = miningCalcHourly(a);
+        const pct = totalHourly > 0 ? (hourly / totalHourly * 100) : 0;
+        const cfg = MINING_LEVEL_CONFIG[a.level] || MINING_LEVEL_CONFIG[1];
+        return `<div class="mb-item"><img class="mb-item-avatar" src="${a.avatar}" alt="${a.name}" /><div class="mb-item-info"><div class="mb-name">${a.name}</div><div class="mb-detail">Lv${a.level} ${cfg.name} · Heat ${a.heat}x · 系数 ${cfg.miningCoeff}x</div></div><div class="mb-item-bar"><div class="fill" style="width:${pct}%;"></div></div><div class="mb-item-output">${hourly.toFixed(2)}<span style="font-weight:400;color:var(--text-tertiary);font-size:0.6rem;">/h</span></div></div>`;
+      }).join('');
+    }
+
+    function renderMiningWeeklyChart() {
+      const bars = document.getElementById('weeklyChartBars');
+      const maxVal = Math.max(...MINING_WEEKLY_HISTORY, 1);
+      const dayNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+      const today = new Date().getDay();
+      const todayIdx = today === 0 ? 6 : today - 1;
+      bars.innerHTML = MINING_WEEKLY_HISTORY.map((val, idx) => {
+        const height = (val / maxVal) * 100;
+        const isToday = idx === todayIdx;
+        return `<div class="wc-bar-wrap"><div class="wc-bar-value">${val.toFixed(1)}</div><div class="wc-bar ${isToday ? 'today' : ''}" style="height:${Math.max(height, 2)}%;"></div><div class="wc-bar-label">${dayNames[idx]}</div></div>`;
+      }).join('');
+    }
+
+    function renderMiningReferral() {
+      const d = MINING_REFERRAL;
+      document.getElementById('refMyEarned').textContent = d.myEarned.toFixed(1);
+      document.getElementById('refValidCount').textContent = d.validCount;
+      document.getElementById('refSubPool').textContent = fmt(d.subPoolCap);
+      const container = document.getElementById('refLevels');
+      container.innerHTML = d.levels.map(l => `<div class="ref-level"><div class="rl-label">Lv${l.level} <span>${l.ratio}</span></div><div style="display:flex;gap:12px;align-items:center;"><span style="font-size:0.65rem;color:var(--text-tertiary);font-weight:500;">${l.count} 人</span><span class="rl-value">+${l.earned.toFixed(1)}</span></div></div>`).join('');
+    }
+
+    function renderMiningParams() {
+      document.getElementById('paramWeeklyCap').textContent = fmt(MINING_WEEKLY_CAP);
+      document.getElementById('paramPerAddrCap').textContent = (MINING_PER_ADDR_CAP_RATIO * 100) + '% (' + fmt(MINING_WEEKLY_CAP * MINING_PER_ADDR_CAP_RATIO) + ')';
+    }
+
+    function renderMiningAll() {
+      renderMiningBreakdown();
+      renderMiningWeeklyChart();
+      renderMiningReferral();
+      renderMiningParams();
     }
   </script>
   <div id="bottom-nav-placeholder"></div>
