@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+bu'cho<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -1169,8 +1169,8 @@
         <p>管理你的演员分身，监控挖矿收益，调度演出计划</p>
       </div>
       <div class="page-header-actions">
-        <a class="btn-primary" href="DreamOS/dreamos.html" target="_blank" style="background:linear-gradient(135deg, #05DF72, #00BBA7);">🎬 去拍剧</a>
-        <a class="btn-secondary" href="actors.html">🎭 签约演员</a>
+        <a class="btn-primary" href="actors.html">签约演员</a>
+        <a class="btn-secondary" href="DreamOS/dreamos.html" target="_blank">去拍剧</a>
       </div>
     </div>
 
@@ -1212,7 +1212,7 @@
   <!-- ===== Slot Picker Modal (空槽位点击选人) ===== -->
   <div class="modal-overlay" id="slotPickerModal">
     <div class="modal-card">
-      <h2>🎭 选择派遣演员</h2>
+      <h2>选择派遣演员</h2>
       <p class="modal-sub">选择一位空闲中的演员进行派遣</p>
       <div class="slot-picker-list" id="slotPickerList">
         <!-- 由 JS 渲染 -->
@@ -1239,8 +1239,8 @@
   <!-- ===== Level Detail Modal (咖位升级) ===== -->
   <div class="modal-overlay" id="levelModal">
     <div class="modal-card">
-      <h2>咖位详情</h2>
-      <p class="modal-sub" id="modalLevelActor">了解升级路径</p>
+      <h2 id="modalLevelTitle">咖位详情</h2>
+      <p class="modal-sub" id="modalLevelActor">—</p>
 
       <!-- Current Level -->
       <div style="display:flex;align-items:center;gap:14px;background:var(--bg);border-radius:16px;padding:16px;margin-bottom:16px;">
@@ -1252,40 +1252,37 @@
       </div>
 
       <!-- Next Level Requirement -->
-      <div style="background:rgba(255,159,44,0.06);border-radius:16px;padding:16px;margin-bottom:16px;border:1px dashed rgba(255,159,44,0.2);">
-        <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;">⬆️ 下一级升级要求</div>
+      <div id="modalLevelRequirement" style="background:rgba(255,159,44,0.06);border-radius:16px;padding:16px;margin-bottom:16px;border:1px dashed rgba(255,159,44,0.2);">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;">下一级升级要求</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-            <span style="color:var(--text-muted);">📊 累计完播</span>
+            <span style="color:var(--text-muted);">参演短剧累计完播</span>
             <span><span id="modalLevelPlays">0</span> / <span id="modalLevelPlaysReq">0</span></span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-            <span style="color:var(--text-muted);">💰 升级费用</span>
+            <span style="color:var(--text-muted);">升级费用</span>
             <span id="modalLevelCost" style="font-weight:700;color:var(--accent);">0 STORY</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-            <span style="color:var(--text-muted);">🎭 消耗同IP同等级演员</span>
+            <span style="color:var(--text-muted);">消耗同IP同等级演员</span>
             <span id="modalLevelConsume" style="font-weight:700;color:var(--danger);">0 / 2</span>
-          </div>
-        </div>
-        <div style="margin-top:12px;" id="modalLevelProgressWrap">
-          <div style="height:6px;background:#eaf4ee;border-radius:999px;overflow:hidden;">
-            <div id="modalLevelProgress" style="height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold),#f5d042);width:0%;"></div>
           </div>
         </div>
       </div>
 
       <!-- 可选同IP同等级分身列表 -->
       <div class="consume-list" id="consumeList">
-        <div class="consume-list-title">🎭 选择要消耗的同IP同等级分身 <span class="checked-count" id="consumeCheckedCount">0/2</span></div>
+        <div class="consume-list-title">选择要消耗的同IP同等级分身 <span class="checked-count" id="consumeCheckedCount">0/2</span></div>
         <div class="consume-grid" id="consumeGrid">
           <!-- 由 JS 渲染 -->
         </div>
       </div>
 
       <!-- Upgrade Button (hidden if max level) -->
-      <button class="modal-btn confirm" id="modalLevelUpBtn" onclick="upgradeLevel()" style="display:none;">⬆️ 升级到下一级</button>
-      <div id="modalLevelMaxMsg" style="text-align:center;padding:12px;color:var(--text-muted);font-size:0.9rem;display:none;">🏆 已达到顶级咖位</div>
+      <button class="modal-btn confirm" id="modalLevelUpBtn" onclick="upgradeLevel()" style="display:none;">升级到下一级</button>
+      <div id="modalLevelMaxMsg" style="text-align:center;padding:24px 12px;background:linear-gradient(135deg, rgba(245,176,66,0.12), rgba(245,208,66,0.08));border-radius:16px;margin-bottom:16px;display:none;">
+        <div style="font-size:1.2rem;font-weight:800;color:var(--gold);">已达到顶级咖位</div>
+      </div>
 
       <button class="modal-btn cancel" onclick="closeLevelModal()">关闭</button>
     </div>
@@ -1294,7 +1291,7 @@
   <!-- ===== Charge Modal (付费片酬恢复) ===== -->
   <div class="modal-overlay" id="chargeModal">
     <div class="modal-card">
-      <h2>⚡ 恢复体力</h2>
+      <h2>恢复体力</h2>
       <p class="modal-sub" id="modalChargeActor">为演员补充体力</p>
       <div style="background:rgba(255,159,44,0.08);border-radius:14px;padding:18px;margin-bottom:18px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -1306,7 +1303,7 @@
           <span style="font-weight:700;color:var(--warning);" id="modalChargeCost">— STORY</span>
         </div>
       </div>
-      <button class="modal-btn confirm" onclick="confirmCharge()">⚡ 恢复全部体力</button>
+      <button class="modal-btn confirm" onclick="confirmCharge()">恢复全部体力</button>
       <button class="modal-btn cancel" onclick="closeChargeModal()">取消</button>
     </div>
   </div>
@@ -1314,13 +1311,13 @@
   <!-- ===== 召回确认弹窗 ===== -->
   <div class="modal-overlay" id="recallConfirmModal">
     <div class="modal-card" style="text-align:center;">
-      <h2>⏹ 确认召回</h2>
+      <h2>确认召回</h2>
       <p class="modal-sub" style="margin-bottom:8px;">演员休息期间暂停挖矿产出，体力会随时间恢复。</p>
       <div style="text-align:center;margin-bottom:16px;">
         <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="recallModalName">—</div>
         <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="recallModalLevel">—</div>
       </div>
-      <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);">⏹ 确认休息</button>
+      <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);">确认休息</button>
       <button class="modal-btn cancel" onclick="closeRecallModal()">取消</button>
     </div>
   </div>
@@ -1415,7 +1412,7 @@
       {
         id: '#Zhao-001', name: '赵无极',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'zhaowuji', level: 4,
+        parentIP: 'zhaowuji', level: 5,
         energy: 100, energyMax: 168,
         heat: 5.2, dailyStory: 286.0, cumulativeStory: 8200.0, cumulativePlays: 350000,
         isStaking: false, stakingDays: 0, status: 'idle',
@@ -1689,7 +1686,7 @@
             ${actor.energy < actor.energyMax ? `<button class="card-action-btn charge" onclick="event.stopPropagation();openChargeModal('${actor.id}')">补充</button>` : ''}
             ${actor.isStaking
               ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">休息</button>`
-              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">派遣演出</button>`
+              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">派遣</button>`
             }
           </div>
 
@@ -1886,7 +1883,8 @@
       const nextCfg = nextLevel ? LEVEL_CONFIG[nextLevel] : null;
       const threshold = nextLevel ? LEVEL_UP_THRESHOLDS[nextLevel] : null;
 
-      document.getElementById('modalLevelActor').textContent = actor.name + ' · 成长路径';
+      document.getElementById('modalLevelTitle').textContent = actor.name;
+      document.getElementById('modalLevelActor').textContent = actor.id;
 
       document.getElementById('modalLevelCurrent').textContent = 'Lv' + actor.level;
       document.getElementById('modalLevelName').textContent = currentCfg.name;
@@ -1916,18 +1914,19 @@
         document.getElementById('modalLevelPlays').textContent = formatNumber(plays);
         document.getElementById('modalLevelPlaysReq').textContent = formatNumber(threshold.playsRequired);
         document.getElementById('modalLevelCost').textContent = threshold.cost + ' STORY';
-        document.getElementById('modalLevelProgress').style.width = progress + '%';
         document.getElementById('modalLevelConsume').textContent = Math.min(availableCount, 2) + ' / 2';
         document.getElementById('modalLevelConsume').style.color = availableCount >= 2 ? 'var(--accent)' : 'var(--danger)';
 
         document.getElementById('modalLevelUpBtn').style.display = 'block';
-        document.getElementById('modalLevelUpBtn').textContent = '⬆️ 升级到 Lv' + nextLevel + ' ' + nextCfg.name;
+        document.getElementById('modalLevelUpBtn').textContent = '升级到 Lv' + nextLevel + ' ' + nextCfg.name;
 
+        document.getElementById('modalLevelRequirement').style.display = 'block';
         document.getElementById('modalLevelMaxMsg').style.display = 'none';
       } else {
         document.getElementById('modalLevelUpBtn').style.display = 'none';
-        document.getElementById('modalLevelMaxMsg').style.display = 'block';
+        document.getElementById('modalLevelRequirement').style.display = 'none';
         document.getElementById('consumeList').style.display = 'none';
+        document.getElementById('modalLevelMaxMsg').style.display = 'block';
       }
 
       updateUpgradeBtnState();
