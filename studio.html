@@ -216,7 +216,7 @@
       transition: transform 0.4s ease;
     }
     .actor-card:hover .actor-card-hero img {
-      transform: scale(1.05);
+
     }
     /* Gradient overlay for readability */
     .actor-card-hero-overlay {
@@ -539,34 +539,23 @@
     }
     .upgrade-float-badge {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: linear-gradient(135deg, #f5b042, #f7d06a, #f5b042);
-      background-size: 200% 200%;
+      top: 0;
+      right: 0;
+      background: linear-gradient(135deg, #f5b042, #f7d06a);
       color: #5a3e00;
       font-size: 0.82rem;
       font-weight: 800;
       padding: 6px 14px 6px 12px;
-      border-radius: 0 12px 0 14px;
+      border-radius: 0 0 0 12px;
       box-shadow: 0 4px 16px rgba(245, 176, 66, 0.5);
       z-index: 5;
       cursor: pointer;
       pointer-events: auto;
       letter-spacing: 0.5px;
       line-height: 1.3;
-      animation: shine-gold 2s ease-in-out infinite, pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       display: flex;
       align-items: center;
       gap: 5px;
-    }
-    @keyframes shine-gold {
-      0%, 100% { background-position: 0% 50%; box-shadow: 0 4px 16px rgba(245, 176, 66, 0.5); }
-      50% { background-position: 100% 50%; box-shadow: 0 4px 24px rgba(245, 176, 66, 0.8), 0 0 40px rgba(245, 176, 66, 0.3); }
-    }
-    @keyframes pop-in {
-      0% { transform: scale(0) rotate(-5deg); opacity: 0; }
-      70% { transform: scale(1.08) rotate(1deg); }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
 
     /* ===== 派遣演员 Modal ===== */
@@ -792,7 +781,7 @@
       user-select: none;
     }
     .deploy-slot:hover {
-      transform: translateY(-2px);
+
       box-shadow: var(--shadow-sm);
     }
 
@@ -835,7 +824,7 @@
       transition: transform 0.4s ease;
     }
     .deploy-slot.occupied:hover .deploy-slot-top img {
-      transform: scale(1.08);
+
     }
     .deploy-slot-overlay {
       position: absolute;
@@ -1215,7 +1204,7 @@
         </div>
         <div class="deploy-panel-stats">
           <span class="stat-item">⛏️ 今日总产出 <span class="stat-value" id="deployTotalOutput">0</span> STORY</span>
-          <span class="stat-item">⏳ 总体力 <span class="stat-value" id="deployTotalEnergy">0</span> / <span class="stat-value">840</span></span>
+          
         </div>
       </div>
       <div class="deploy-slots" id="deploySlots">
@@ -1340,6 +1329,20 @@
       </div>
       <button class="modal-btn confirm" onclick="confirmCharge()">⚡ 恢复全部体力</button>
       <button class="modal-btn cancel" onclick="closeChargeModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- ===== 召回确认弹窗 ===== -->
+  <div class="modal-overlay" id="recallConfirmModal">
+    <div class="modal-card" style="text-align:center;">
+      <h2>⏹ 确认召回</h2>
+      <p class="modal-sub" style="margin-bottom:8px;">演员休息期间暂停挖矿产出，体力会随时间恢复。</p>
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="recallModalName">—</div>
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="recallModalLevel">—</div>
+      </div>
+      <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);">⏹ 确认休息</button>
+      <button class="modal-btn cancel" onclick="closeRecallModal()">取消</button>
     </div>
   </div>
 
@@ -1541,8 +1544,6 @@
       const deployed = getDeployedActors();
       const count = document.getElementById('deployCount');
       const totalOutput = document.getElementById('deployTotalOutput');
-      const totalEnergy = document.getElementById('deployTotalEnergy');
-
       count.textContent = `(${deployed.length}/${MAX_STAKING_SLOTS})`;
 
       let totalStory = 0;
@@ -1611,7 +1612,6 @@
 
       // 统计信息
       totalOutput.textContent = totalStory.toFixed(1);
-      totalEnergy.textContent = deployed.length > 0 ? deployed.reduce((sum, a) => sum + a.energy, 0).toLocaleString() : '0';
     }
 
     // ============================================================
@@ -1704,14 +1704,8 @@
               </div>
               <div class="ms-item">
                 <div class="ms-info">
-                  <span class="ms-label">过去30天产出</span>
-                  <span class="ms-value green">${(actor.dailyStory * 30).toFixed(1)} STORY</span>
-                </div>
-              </div>
-              <div class="ms-item">
-                <div class="ms-info">
-                  <span class="ms-label">已产</span>
-                  <span class="ms-value blue">${formatNumber(actor.cumulativeStory)} STORY</span>
+                  <span class="ms-label">今日产出</span>
+                  <span class="ms-value green">${(actor.todayOutput || 0).toFixed(1)} STORY</span>
                 </div>
               </div>
             </div>
@@ -1781,14 +1775,38 @@
     }
 
     // ============================================================
-    //  召回（休息）
+    //  召回（休息）- 二次确认弹窗
     // ============================================================
+    let pendingRecallActorId = null;
+
     function recallActor(actorId) {
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
-      actor.isStaking = false;
-      actor.status = 'idle';
-      showToast('⏹ ' + actor.name + ' 已召回休息', '⏹');
+      pendingRecallActorId = actorId;
+
+      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+      document.getElementById('recallModalName').textContent = actor.name;
+      document.getElementById('recallModalLevel').textContent = levelCfg.name + ' · Lv' + actor.level + ' · ' + actor.id;
+
+      document.getElementById('recallConfirmModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRecallModal() {
+      document.getElementById('recallConfirmModal').classList.remove('active');
+      document.body.style.overflow = '';
+      pendingRecallActorId = null;
+    }
+
+    function confirmRecall() {
+      if (!pendingRecallActorId) return;
+      const actor = MY_ACTORS.find(a => a.id === pendingRecallActorId);
+      if (actor) {
+        actor.isStaking = false;
+        actor.status = 'idle';
+        showToast('⏹ ' + actor.name + ' 已召回休息', '⏹');
+      }
+      closeRecallModal();
       renderAll();
     }
 
