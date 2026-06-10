@@ -1413,12 +1413,7 @@
             window.open(`https://market.story.fun/trade/${name.toLowerCase()}`, '_blank');
           });
         }
-        // 添加已售罄 badge 到集合标签
-        const collectionBadge = card.querySelector('.badge-collection');
-        if (collectionBadge && !collectionBadge.classList.contains('badge-soldout')) {
-          collectionBadge.classList.add('badge-soldout');
-          collectionBadge.textContent = '已售罄';
-        }
+        // 已售罄不需要修改徽章，保留原有形象ID标签
       }
 
       function closeMintModal() {
