@@ -54,7 +54,6 @@
     .auth-dropdown-item span { font-size: 1.1rem; }
     .auth-dropdown-logout { color: #f45b69; }
     .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
-    /* Login Modal */
     .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .auth-modal-overlay.active { opacity: 1; visibility: visible; }
     .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
@@ -130,54 +129,56 @@
       background: rgba(15,22,42,0.05);
       color: var(--text-muted);
     }
+    .actor-hero-info .actor-tags .tag.soldout {
+      background: rgba(244,67,54,0.1);
+      color: #e53935;
+    }
     .actor-hero-info .actor-desc {
       margin: 0;
       color: var(--text-muted);
       line-height: 1.8;
       font-size: 0.96rem;
     }
-    .actor-hero-info .actor-nft-id {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-family: monospace;
-      padding: 8px 14px;
-      background: #f8fbff;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      display: inline-block;
-    }
 
-    /* Stats Row */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
+    /* Hero 完播/热度 inline stats */
+    .actor-hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 8px 0;
+      width: fit-content;
     }
-    @media (max-width: 860px) {
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .actor-hero-stats .ahs-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 4px 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 8px;
     }
-    @media (max-width: 480px) {
-      .stats-row { grid-template-columns: 1fr; }
+    .actor-hero-stats .ahs-item:hover {
+      background: var(--accent-soft);
     }
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-    }
-    .stat-card .stat-value {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1.2;
-    }
-    .stat-card .stat-label {
-      margin-top: 6px;
+    .actor-hero-stats .ahs-label {
+      font-size: 0.72rem;
+      font-weight: 600;
       color: var(--text-muted);
-      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+    .actor-hero-stats .ahs-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .actor-hero-stats .ahs-divider {
+      width: 1px;
+      height: 32px;
+      background: var(--border);
+      flex-shrink: 0;
     }
 
     /* NFT Info Panel */
@@ -198,7 +199,7 @@
     }
     .nft-info-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
     @media (max-width: 860px) {
@@ -225,42 +226,6 @@
     }
     .nft-info-item .info-value.accent {
       color: var(--accent);
-    }
-
-    /* Progress Bar */
-    .progress-section {
-      margin-top: 20px;
-      padding: 20px;
-      background: #f8fbff;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-    }
-    .progress-section .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .progress-section .progress-header span {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-    }
-    .progress-section .progress-header strong {
-      font-size: 1rem;
-      color: var(--accent);
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 10px;
-      background: #eaf4ee;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), #00d9a3);
-      border-radius: 999px;
-      transition: width 0.6s ease;
     }
 
     /* Drama Section */
@@ -428,6 +393,16 @@
       box-shadow: 0 8px 24px rgba(0,179,136,0.40);
     }
     .action-btn .icon { font-size: 1.1rem; }
+    .action-btn.danger {
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(245,158,11,0.30);
+    }
+    .action-btn.danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245,158,11,0.40);
+    }
 
     /* Empty State */
     .empty-state {
@@ -468,6 +443,489 @@
       opacity: 1;
     }
     .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
+
+    /* ═══ Mint Modal ═══ */
+    .mint-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15,23,42,0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .mint-modal-overlay.active { display: flex; }
+    .mint-modal {
+      width: min(440px, 100%);
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: 0 40px 80px rgba(15,23,42,0.18);
+      overflow: hidden;
+      transform: scale(0.92) translateY(12px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .mint-modal-overlay.active .mint-modal {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    .mint-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.04);
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all 0.2s ease;
+      z-index: 2;
+    }
+    .mint-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+    .mint-modal-hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background: #f0f5fa;
+    }
+    .mint-modal-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .mint-modal-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.08) 100%);
+    }
+    .mint-modal-badge {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .mint-modal-hero .soldout-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .mint-modal-hero .soldout-overlay span {
+      padding: 8px 20px;
+      background: rgba(244,67,54,0.88);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      letter-spacing: 0.04em;
+    }
+    .mint-modal-body {
+      padding: 24px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mint-modal-header {
+      display: flex;
+      flex-direction: column;
+    }
+    .mint-modal-actor-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .mint-price-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .mint-price-bar .mpb-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .mint-price-bar .mpb-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .mint-price-bar .mpb-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .mint-price-bar .mpb-price {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .mint-price-bar .mpb-remain {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: right;
+      line-height: 1.4;
+    }
+    .mint-price-bar .mpb-remain strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .mint-price-bar .mpb-final-row {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .mint-price-bar .mpb-final-row.show { display: flex; }
+    .mint-price-bar .mpb-final-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mint-price-bar .mpb-final-label .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(245,176,66,0.12);
+      color: #c98900;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: help;
+    }
+    .mint-price-bar .mpb-final-price {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--warning);
+      letter-spacing: -0.01em;
+    }
+    .mint-qty-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px;
+    }
+    .mint-qty-label {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    .mint-qty-controls {
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .mint-qty-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: grid;
+      place-items: center;
+    }
+    .mint-qty-btn:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .mint-qty-input {
+      width: 44px;
+      height: 34px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      outline: none;
+      -moz-appearance: textfield;
+    }
+    .mint-qty-input::-webkit-inner-spin-button,
+    .mint-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .mint-total-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mint-total-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+    .mint-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 4px;
+    }
+    .mint-total-label {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .mint-total-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .mint-modal-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mint-modal-footer .mint-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .mint-modal-footer .mint-btn.primary {
+      background: linear-gradient(135deg, #00b388, #00d4a3);
+      color: #fff;
+    }
+    .mint-modal-footer .mint-btn.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,179,136,0.35);
+    }
+    .mint-modal-footer .mint-btn.primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .mint-modal-footer .mint-btn.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 12px;
+    }
+    .mint-modal-footer .mint-btn.secondary:hover {
+      color: var(--text);
+      background: rgba(0,0,0,0.03);
+    }
+    .mint-modal-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 48px 28px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .mint-modal-success.show { display: flex; }
+    .stamp-icon-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 6px;
+    }
+    .stamp-seal {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #e53935;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 900;
+      box-shadow: 0 4px 20px rgba(229,57,53,0.35);
+      position: relative;
+      transform: scale(0) rotate(-30deg);
+      opacity: 0;
+      transition: none;
+      letter-spacing: 0.04em;
+      border: 3px solid #c62828;
+    }
+    .mint-modal-success.show .stamp-seal {
+      animation: stamp-drop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation-delay: 0.3s;
+    }
+    .stamp-seal-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      line-height: 1;
+    }
+    .stamp-seal-inner span:first-child { font-size: 1.6rem; }
+    .stamp-seal-inner span:last-child { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; margin-top: -2px; }
+    .stamp-ripple {
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 2px solid rgba(229,57,53,0.15);
+      transform: scale(0);
+      opacity: 0;
+    }
+    .mint-modal-success.show .stamp-ripple {
+      animation: ripple-out 0.6s ease-out forwards;
+      animation-delay: 0.6s;
+    }
+    .stamp-ripple:nth-child(2) { inset: -24px; border-width: 1.5px; }
+    .mint-modal-success.show .stamp-ripple:nth-child(2) { animation-delay: 0.7s; }
+    @keyframes stamp-drop {
+      0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+      50% { transform: scale(1.25) rotate(6deg); opacity: 1; }
+      70% { transform: scale(0.92) rotate(-2deg); opacity: 1; }
+      85% { transform: scale(1.04) rotate(1deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes ripple-out {
+      0% { transform: scale(0.5); opacity: 0.6; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .mint-modal-success .success-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 100%;
+    }
+    .mint-modal-success.show .success-content {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.5s;
+    }
+    .mint-modal-success h2 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+    .mint-modal-success p { margin: 4px 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+    .mint-modal-success .success-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+      width: 100%;
+    }
+    .mint-modal-success .success-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .mint-modal-success .success-btn.primary {
+      background: linear-gradient(135deg, #00b388, #00d4a3);
+      color: #fff;
+    }
+    .mint-modal-success .success-btn.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,179,136,0.35);
+    }
+    .mint-modal-success .success-btn.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 12px;
+    }
+    .mint-modal-success .success-btn.secondary:hover {
+      color: var(--text);
+      background: rgba(0,0,0,0.03);
+    }
+
+    /* ═══ Price Tooltip (Bonding Curve) ═══ */
+    .price-tooltip-overlay { position: fixed; inset: 0; z-index: 999; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
+    .price-tooltip-overlay.active { display: flex; }
+    .price-tooltip-box { background: #fff; border-radius: 20px; max-width: 560px; width: 94%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
+    .price-tooltip-box h3 { margin: 0 0 4px; font-size: 1.1rem; color: var(--text); }
+    .price-tooltip-box .price-tip-sub { margin: 0 0 10px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+    .price-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; background: rgba(15, 22, 42, 0.05); color: var(--text); border: none; cursor: pointer; border-radius: 999px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
+    .price-tooltip-box .button-secondary:hover { background: rgba(0,179,136,0.08); color: var(--accent); }
+    .price-curve-wrap { position: relative; margin: 0 auto 12px; width: 100%; max-width: 500px; }
+    .price-curve-wrap canvas { display: block; width: 100%; height: auto; border-radius: 12px; background: #fafdff; border: 1px solid var(--border); }
+    .price-curve-info { display: flex; justify-content: space-between; padding: 6px 8px 0; font-size: 0.72rem; color: var(--text-muted); }
+    .price-curve-legend { display: flex; justify-content: center; gap: 18px; margin: -2px 0 10px; font-size: 0.72rem; color: var(--text-muted); }
+    .price-curve-legend span { display: flex; align-items: center; gap: 4px; }
+    .price-curve-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+    .price-curve-legend .dot.current { background: var(--accent); }
+    .price-curve-legend .dot.curve { background: #e65100; }
+    .price-curve-formula { font-size: 0.78rem; color: var(--text-muted); background: var(--bg); border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; line-height: 1.5; }
+    .price-curve-formula code { font-family: inherit; font-weight: 600; color: var(--accent); }
+
+    /* ═══ Stat Tooltip ═══ */
+    .stat-tooltip-overlay { position: fixed; inset: 0; z-index: 999; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
+    .stat-tooltip-overlay.active { display: flex; }
+    .stat-tooltip-box { background: #fff; border-radius: 20px; max-width: 360px; width: 90%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
+    .stat-tooltip-box h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--text); }
+    .stat-tooltip-box p { margin: 0 0 18px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+    .stat-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; background: rgba(15, 22, 42, 0.05); color: var(--text); border: none; cursor: pointer; border-radius: 999px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
+    .stat-tooltip-box .button-secondary:hover { background: rgba(0,179,136,0.08); color: var(--accent); }
+
+    /* Info help button */
+    .info-help-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.04);
+      color: var(--text-muted);
+      font-size: 0.6rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      padding: 0;
+      line-height: 1;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .info-help-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -491,49 +949,59 @@
           <h1 class="actor-name" id="actorName">—</h1>
           <div class="actor-tags" id="actorTags">
             <span class="tag" id="actorGender">—</span>
-            <span class="tag muted" id="actorNftBadge">演员 NFT</span>
+            <span class="tag muted" id="actorNftBadge">演员 IP</span>
+            <span class="tag" id="actorCreatorTag">—</span>
+            <span class="tag muted" id="actorCollectionTag">—</span>
+            <span class="tag soldout" id="actorSoldoutTag" style="display:none">已售罄</span>
           </div>
         </div>
-        <p class="actor-desc" id="actorDesc">—</p>
-        <span class="actor-nft-id" id="actorNftId">#—</span>
-        <div class="action-row">
-          <a class="action-btn primary" href="actors.html" id="mintBtn">
-            <span class="icon">🎭</span> 签约此演员
-
-          </a>
+        <!-- 发行概要（灰色小字） -->
+        <div style="font-size:0.78rem;color:var(--text-muted);line-height:1.6;display:flex;gap:16px;flex-wrap:wrap;">
+          <span>发行总量 <strong id="heroTotal" style="font-weight:600;color:var(--text)">—</strong></span>
+          <span>已签约 <strong id="heroMinted" style="font-weight:600;color:var(--text)">—</strong></span>
+          <span>可签约 <strong id="heroAvailable" style="font-weight:600;color:var(--accent)">—</strong></span>
         </div>
-
-      </div>
-    </section>
-
-    <!-- Stats Row -->
-    <section class="stats-row" id="statsRow">
-      <div class="stat-card">
-        <div class="stat-value" id="statTotalSupply">—</div>
-        <div class="stat-label">发行总量</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statMinted">—</div>
-        <div class="stat-label">已 Mint</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statAvailable">—</div>
-        <div class="stat-label">可 Mint</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statHolders">—</div>
-        <div class="stat-label">持有人</div>
+        <p class="actor-desc" id="actorDesc">—</p>
+        <!-- 完播 / 热度 -->
+        <div class="actor-hero-stats">
+          <div class="ahs-item">
+            <span class="ahs-label">完播</span>
+            <span class="ahs-value" id="heroViews">—</span>
+          </div>
+          <div class="ahs-divider"></div>
+          <div class="ahs-item">
+            <span class="ahs-label">热度</span>
+            <span class="ahs-value" id="heroHeat">—</span>
+          </div>
+        </div>
+        <div class="action-row">
+          <!-- 可签约：价格标签 + 签约按钮 -->
+          <div id="mintActions" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <span class="price-pill" id="pricePill" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px 6px 16px;background:var(--accent-soft);border-radius:999px;font-size:0.88rem;">
+              <span style="color:var(--text-muted);font-weight:500;font-size:0.78rem;">签约价格</span>
+              <strong id="pricePillValue" style="color:var(--accent);font-weight:800;font-size:1.05rem;">—</strong>
+            </span>
+            <button class="action-btn primary" id="mintBtn">
+              <span class="icon">🎭</span> 签约此演员
+            </button>
+          </div>
+          <!-- 已售罄：显示地板价 + 去交易按钮 -->
+          <div id="soldoutActions" style="display:none;gap:12px;flex-wrap:wrap;align-items:center;">
+            <span id="floorPriceTag" style="font-size:0.9rem;color:var(--text-muted);padding:6px 12px;background:var(--bg);border-radius:10px;">
+              地板价 <strong id="floorPriceValue" style="color:var(--text);font-weight:700;"></strong>
+            </span>
+            <button class="action-btn danger" id="tradeBtn">
+              <span class="icon">🔄</span> 去交易
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- NFT Info Panel -->
     <section class="nft-info-panel">
-      <h3>🔗 NFT 详细信息</h3>
+      <h3>发行信息</h3>
       <div class="nft-info-grid">
-        <div class="nft-info-item">
-          <div class="info-label">Mint 价格</div>
-          <div class="info-value accent" id="infoPrice">—</div>
-        </div>
         <div class="nft-info-item">
           <div class="info-label">合约地址</div>
           <div class="info-value" id="infoContract" style="font-size:0.9rem;font-family:monospace;">—</div>
@@ -542,15 +1010,29 @@
           <div class="info-label">Token 标准</div>
           <div class="info-value" id="infoStandard">Solana SPL</div>
         </div>
-
-      </div>
-      <div class="progress-section">
-        <div class="progress-header">
-          <span>铸造进度</span>
-          <strong id="progressText">—</strong>
+        <div class="nft-info-item">
+          <div class="info-label">发行总量</div>
+          <div class="info-value" id="infoTotalSupply">—</div>
         </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="progressFill" style="width: 0%;"></div>
+      </div>
+      <!-- 价格联合曲线 -->
+      <div class="curve-section" id="curveSection" style="margin-top:18px;padding:18px 20px;background:#fafdff;border:1px solid var(--border);border-radius:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:0.95rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;">
+            📈 价格联合曲线
+          </span>
+          <div style="display:flex;gap:12px;font-size:0.72rem;color:var(--text-muted);">
+            <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#e65100;"></span> 价格曲线</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);"></span> 当前位置</span>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <canvas id="inlineCurveCanvas" width="760" height="200" style="display:block;width:100%;height:auto;border-radius:10px;background:#fafdff;"></canvas>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:0.85rem;color:var(--text-muted);">
+          <span>已签约 <strong id="inlineMinted" style="color:var(--text);font-weight:700;font-size:0.95rem;">—</strong></span>
+          <span>初始价格 <strong id="inlineInitPrice" style="color:var(--text);font-weight:700;font-size:0.95rem;">—</strong></span>
+          <span>当前价格 <strong id="inlineCurPrice" style="color:var(--accent);font-weight:700;font-size:0.95rem;">—</strong></span>
         </div>
       </div>
     </section>
@@ -559,7 +1041,6 @@
     <section class="drama-section">
       <div class="drama-section-header">
         <h3>🎭 签约艺人 · 参演短剧 <span class="count" id="dramaCount">(0)</span></h3>
-
       </div>
       <div class="drama-grid" id="dramaGrid">
         <!-- 由 JS 动态渲染 -->
@@ -567,10 +1048,91 @@
       <div class="empty-state" id="emptyState" style="display:none;">
         <div class="empty-icon">🎭</div>
         <p>暂无签约艺人参演任何短剧</p>
-
       </div>
     </section>
+  </div>
 
+  <!-- ═══ Mint Modal ═══ -->
+  <div class="mint-modal-overlay" id="mintModal" aria-hidden="true">
+    <div class="mint-modal" role="dialog" aria-modal="true" aria-labelledby="mintModalTitle">
+      <button class="mint-modal-close" type="button" id="mintModalClose" aria-label="关闭弹窗">✕</button>
+      <div class="mint-modal-hero">
+        <img id="mintModalImage" src="" alt="演员预览" />
+        <div class="mint-modal-hero-overlay"></div>
+        <div class="mint-modal-badge" id="mintModalTag">演员 IP</div>
+        <div class="soldout-overlay" id="mintSoldoutOverlay" style="display:none"><span>已售罄</span></div>
+      </div>
+      <div class="mint-modal-body" id="mintModalBody">
+        <div class="mint-modal-header">
+          <div class="mint-modal-actor-name" id="mintModalActorName">—</div>
+          <div id="mintModalTitle">确认签约</div>
+        </div>
+        <div class="mint-price-bar" id="mintPriceBar">
+          <div class="mpb-top">
+            <div class="mpb-left">
+              <div class="mpb-label">当前单价</div>
+              <div class="mpb-price" id="mintEstimate">—</div>
+            </div>
+            <div class="mpb-remain" id="mintBalance">剩余 <strong>—</strong> 个</div>
+          </div>
+          <div class="mpb-final-row" id="mintFinalRow">
+            <div class="mpb-final-label">
+              最终单价
+              <span class="step-badge" title="价格按联合曲线阶梯递增，越往后单价越高">📈 阶梯定价</span>
+            </div>
+            <div class="mpb-final-price" id="mintFinalPrice">—</div>
+          </div>
+        </div>
+        <div class="mint-qty-row">
+          <span class="mint-qty-label">签约数量</span>
+          <div class="mint-qty-controls">
+            <button class="mint-qty-btn" id="qtyDec">−</button>
+            <input class="mint-qty-input" id="qtyInput" type="number" value="1" min="1" max="999" />
+            <button class="mint-qty-btn" id="qtyInc">+</button>
+          </div>
+        </div>
+        <div class="mint-total-section">
+          <div class="mint-total-divider"></div>
+          <div class="mint-total-row">
+            <span class="mint-total-label">合计</span>
+            <span class="mint-total-value" id="mintTotal">—</span>
+          </div>
+        </div>
+        <div class="mint-modal-footer">
+          <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
+          <button class="mint-btn secondary" type="button" id="mintCancel">取消</button>
+        </div>
+      </div>
+      <div class="mint-modal-success" id="mintModalSuccess">
+        <div class="stamp-icon-wrap">
+          <div class="stamp-seal">
+            <div class="stamp-seal-inner">
+              <span>✓</span>
+              <span>签约</span>
+            </div>
+          </div>
+          <div class="stamp-ripple"></div>
+          <div class="stamp-ripple"></div>
+        </div>
+        <div class="success-content">
+          <h2>签约成功</h2>
+          <p id="successText"><strong id="successActorName">—</strong> 已加入你的经纪工坊，快去安排演出吧。</p>
+          <div class="success-actions">
+            <button class="success-btn primary" id="viewNftBtn">查看我的演员</button>
+            <button class="success-btn secondary" id="continueBtn">继续浏览</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Stat Tooltip ═══ -->
+  <div class="stat-tooltip-overlay" id="statTooltip">
+    <div class="stat-tooltip-box">
+      <h3 id="statTooltipTitle">—</h3>
+      <p id="statTooltipDesc">—</p>
+      <button class="button-secondary" id="statTooltipClose">知道了</button>
+    </div>
   </div>
 
   <!-- Toast -->
@@ -588,50 +1150,34 @@
     // ============================================================
     const ACTORS_DATA = {
       '苏婉清': {
-        id: '#A-001',
-        name: '苏婉清',
-        gender: '♀ 女性',
+        id: 'C002', name: '苏婉清', gender: '♀ 女性',
         desc: '温婉端庄的江南女子，琴棋书画样样精通，性格外柔内刚。出生于江南书香门第，自幼受传统文化熏陶，举手投足间尽显大家闺秀风范。',
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
-
-        totalSupply: 10000,
-        minted: 1000,
-        available: 9000,
-        holders: 900,
-        price: '10 USDC',
-        reserved: 1000,
-        contract: '0x7A2b...3fD8',
-        standard: 'Solana SPL',
-
+        totalSupply: 10000, minted: 1000, available: 9000, holders: 900,
+        price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        views: '24.1万', heat: '531.6万',
+        creator: 'wanqing_studio', collection: 'C002',
         childActors: [
           { childId: '#C-001', name: '陆小曼', holder: '0x8f3A...bE12', dramas: [
             { title: '江南烟雨', role: '茶女·陆小曼', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '8%', category: '古装', link: 'drama-detail.html' },
             { title: '梅花烙', role: '绣娘·云锦', cover: 'https://images.unsplash.com/photo-1449206474058-bcac4c28a371?auto=format&fit=crop&w=600&q=80', episodes: 18, royalty: '8%', category: '古装', link: 'drama-detail.html' },
           ]},
-
           { childId: '#C-002', name: '沈清荷', holder: '0x4dC7...9aF3', dramas: [
             { title: '长安如梦', role: '才女·沈清荷', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '6%', category: '古装', link: 'drama-detail.html' },
           ]},
           { childId: '#C-003', name: '林薇', holder: '0x2bF9...6cD1', dramas: [
             { title: '迷雾之城', role: '记者·林薇', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
           ]},
-
         ]
       },
       '李云飞': {
-        id: '#A-002',
-        name: '李云飞',
-        gender: '♂ 男性',
+        id: 'C003', name: '李云飞', gender: '♂ 男性',
         desc: '身手矫健的侠客，性格豪爽仗义。自幼习武，练就一身好本领，行走江湖路见不平拔刀相助。',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
-        totalSupply: 8000,
-        minted: 500,
-        available: 7500,
-        holders: 450,
-        price: '8 USDC',
-        reserved: 500,
-        contract: '0x7A2b...3fD8',
-        standard: 'Solana SPL',
+        totalSupply: 8000, minted: 500, available: 7500, holders: 450,
+        price: '8 USDC', reserved: 500, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        views: '24.7万', heat: '1,032.4万',
+        creator: 'feige_labs', collection: 'C003',
         childActors: [
           { childId: '#C-004', name: '赵刚', holder: '0x1aE4...fB77', dramas: [
             { title: '星际迷航', role: '工程师·赵刚', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '7%', category: '科幻', link: 'drama-detail.html' },
@@ -639,24 +1185,15 @@
           { childId: '#C-005', name: '陈默', holder: '0x9cD2...3eA5', dramas: [
             { title: '迷雾之城', role: '侦探·陈默', cover: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80', episodes: 12, royalty: '5%', category: '悬疑', link: 'drama-detail.html' },
           ]},
-
         ]
       },
       '林梦瑶': {
-        id: '#A-003',
-        name: '林梦瑶',
-        gender: '♀ 女性',
+        id: 'C004', name: '林梦瑶', gender: '♀ 女性',
         desc: '聪慧机敏的现代女性，擅长推理分析。毕业于顶尖学府，拥有敏锐的洞察力和出色的逻辑思维能力。',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
-        totalSupply: 10000,
-        minted: 1000,
-        available: 9000,
-        holders: 800,
-        price: '10 USDC',
-        reserved: 1000,
-        contract: '0x7A2b...3fD8',
-        standard: 'Solana SPL',
-
+        totalSupply: 10000, minted: 1000, available: 9000, holders: 800,
+        price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        creator: 'mengyao_art', collection: 'C004',
         childActors: [
           { childId: '#C-006', name: '白露', holder: '0x5fB8...2dC4', dramas: [
             { title: '江南烟雨', role: '画师·白露', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '6%', category: '古装', link: 'drama-detail.html' },
@@ -664,76 +1201,48 @@
           { childId: '#C-007', name: '艾琳', holder: '0x7eA1...4bF6', dramas: [
             { title: '星际迷航', role: '科学官·艾琳', cover: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=600&q=80', episodes: 16, royalty: '8%', category: '科幻', link: 'drama-detail.html' },
           ]},
-
         ]
       },
       '赵无极': {
-        id: '#A-004',
-        name: '赵无极',
-        gender: '♂ 男性',
+        id: 'C005', name: '赵无极', gender: '♂ 男性',
         desc: '深不可测的武林高手，亦正亦邪。武功深不可测，行事风格独特，令人难以捉摸。',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
-        totalSupply: 6000,
-        minted: 500,
-        available: 5500,
-        holders: 300,
-        price: '15 USDC',
-        reserved: 500,
-        contract: '0x7A2b...3fD8',
-        standard: 'Solana SPL',
+        totalSupply: 6000, minted: 500, available: 5500, holders: 300,
+        price: '15 USDC', reserved: 500, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        creator: 'wuji_art', collection: 'C005',
         childActors: [
           { childId: '#C-008', name: '李承钰', holder: '0x3dE7...8aC2', dramas: [
-
             { title: '长安如梦', role: '太子·李承钰', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '10%', category: '古装', link: 'drama-detail.html' },
           ]},
         ]
       },
       '上官婉儿': {
-        id: '#A-005',
-        name: '上官婉儿',
-        gender: '♀ 女性',
+        id: 'C006', name: '上官婉儿', gender: '♀ 女性',
         desc: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
-        totalSupply: 12000,
-        minted: 2000,
-        available: 10000,
-        holders: 1500,
-        price: '12 USDC',
-        reserved: 2000,
-        contract: '0x7A2b...3fD8',
-        standard: 'Solana SPL',
-
+        totalSupply: 12000, minted: 2000, available: 10000, holders: 1500,
+        price: '12 USDC', reserved: 2000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        creator: 'palace_studio', collection: 'C006',
         childActors: [
           { childId: '#C-009', name: '周明远', holder: '0x6cF4...1bD8', dramas: [
             { title: '江南烟雨', role: '知府·周明远', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '4%', category: '古装', link: 'drama-detail.html' },
           ]},
-
         ]
       },
       'Luna': {
-        id: '#A-006',
-        name: 'Luna',
-        gender: '♀ 女性',
+        id: 'C001', name: 'Luna', gender: '♀ 女性',
         desc: '未来偶像型AI演员，适合对话与剧情分润场景。拥有独特的未来感和科技气质。',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
-        totalSupply: 5000,
-        minted: 98,
-        available: 10,
-        holders: 900,
-        price: '10 USDC',
-        reserved: 500,
-        contract: '0x7A2b...3fD8',
-        standard: 'Solana SPL',
+        totalSupply: 5000, minted: 5000, available: 0, holders: 4900,
+        price: '10 USDC', reserved: 0, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        creator: 'storyfun_labs', collection: 'C001',
         childActors: [
           { childId: '#C-010', name: 'AI 助手', holder: '0xdE4a...7cF1', dramas: [
             { title: '重生之我在币圈当大佬', role: 'AI 助手·Luna', cover: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80', episodes: 44, royalty: '12%', category: '金融', link: 'drama-detail.html' },
           ]},
-
         ]
       }
-
     };
-
 
     // ============================================================
     //  Toast
@@ -752,10 +1261,8 @@
     //  页面初始化
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-      // 从 URL 参数获取演员名称
       const params = new URLSearchParams(window.location.search);
       const actorName = params.get('name') || '苏婉清';
-
       const actor = ACTORS_DATA[actorName];
       if (!actor) {
         document.getElementById('actorName').textContent = '未知演员';
@@ -763,103 +1270,285 @@
         return;
       }
 
-      // 更新面包屑
+      // 面包屑
       document.getElementById('breadcrumbActor').textContent = actor.name;
 
-      // 更新 Hero 区域
+      // Hero 区域
       document.getElementById('actorAvatar').src = actor.avatar;
       document.getElementById('actorAvatar').alt = actor.name;
       document.getElementById('actorName').textContent = actor.name;
       document.getElementById('actorGender').textContent = actor.gender;
-      document.getElementById('actorNftBadge').textContent = '演员 NFT';
+      document.getElementById('actorNftBadge').textContent = '演员 IP';
+      document.getElementById('actorCreatorTag').textContent = '发行者 ' + (actor.creator || '—');
+      document.getElementById('actorCollectionTag').textContent = '形象ID ' + (actor.collection || actor.id || '—');
       document.getElementById('actorDesc').textContent = actor.desc;
-      document.getElementById('actorNftId').textContent = actor.id + ' · ' + actor.standard;
+      document.getElementById('heroTotal').textContent = actor.totalSupply.toLocaleString();
+      document.getElementById('heroMinted').textContent = actor.minted.toLocaleString();
+      document.getElementById('heroAvailable').textContent = actor.available.toLocaleString();
+      document.getElementById('heroViews').textContent = actor.views || '—';
+      document.getElementById('heroHeat').textContent = actor.heat || '—';
+      document.getElementById('pricePillValue').textContent = actor.price;
 
-      // 更新 Mint 按钮链接
-      const mintBtn = document.getElementById('mintBtn');
-      mintBtn.href = 'actors.html?mint=' + encodeURIComponent(actor.name);
+      // ═══ 内嵌联合曲线绘制 ═══
+      (function drawInlineCurve() {
+        var canvas = document.getElementById('inlineCurveCanvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var w = canvas.width, h = canvas.height;
+        var total = actor.totalSupply, minted = actor.minted;
+        var curPrice = parseFloat((actor.price || '10').replace(/[^0-9.]/g, '')) || 10;
+        var ratio = total > 0 ? minted / total : 0;
+        var initPrice = curPrice / Math.pow(20, ratio);
+        var pad = { top: 12, right: 16, bottom: 32, left: 36 };
+        var plotW = w - pad.left - pad.right, plotH = h - pad.top - pad.bottom;
+        ctx.clearRect(0, 0, w, h);
+        ctx.strokeStyle = '#eef4ff'; ctx.lineWidth = 0.5;
+        for (var i = 0; i <= 4; i++) {
+          var y = pad.top + (plotH / 4) * i;
+          ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+          var r = 1 - i / 4;
+          var pv = initPrice * Math.pow(20, r);
+          ctx.fillStyle = '#aab7c9'; ctx.font = '8px sans-serif'; ctx.textAlign = 'right';
+          ctx.fillText(pv < 1 ? pv.toFixed(1) : Math.round(pv).toString(), pad.left - 3, y + 3);
+        }
+        ctx.fillStyle = '#aab7c9'; ctx.font = '8px sans-serif'; ctx.textAlign = 'center';
+        for (var i = 0; i <= 4; i++) {
+          var x = pad.left + (plotW / 4) * i;
+          ctx.fillText(Math.round((i / 4) * total), x, h - 6);
+        }
+        ctx.fillStyle = '#8b9bb0'; ctx.font = '7px sans-serif';
+        ctx.fillText('已签约数', pad.left + plotW / 2, h - 16);
+        ctx.save();
+        ctx.translate(8, pad.top + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = '#8b9bb0'; ctx.font = '7px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('价格', 0, 0);
+        ctx.restore();
+        var maxPrice = initPrice * 20;
+        ctx.beginPath(); ctx.strokeStyle = '#e65100'; ctx.lineWidth = 2;
+        for (var i = 0; i <= plotW; i++) {
+          var pct = i / plotW;
+          var price = initPrice * Math.pow(20, pct);
+          var x = pad.left + i;
+          var yn = (price - initPrice) / (maxPrice - initPrice);
+          var y = pad.top + plotH - yn * plotH;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        var cp = total > 0 ? Math.min(minted / total, 1) : 0;
+        var cx = pad.left + cp * plotW;
+        var cPrice = initPrice * Math.pow(20, cp);
+        var cyn = (cPrice - initPrice) / (maxPrice - initPrice);
+        var cy = pad.top + plotH - cyn * plotH;
+        ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#00b388'; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.setLineDash([2, 3]);
+        ctx.strokeStyle = 'rgba(0,179,136,0.35)'; ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(cx, cy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx, pad.top + plotH); ctx.lineTo(cx, cy); ctx.stroke();
+        ctx.setLineDash([]);
+        document.getElementById('inlineMinted').textContent = minted.toLocaleString();
+        document.getElementById('inlineInitPrice').textContent = initPrice.toFixed(2) + ' USDC';
+        document.getElementById('inlineCurPrice').textContent = cPrice.toFixed(2) + ' USDC';
+      })();
 
-      // 更新统计数据
-      document.getElementById('statTotalSupply').textContent = actor.totalSupply.toLocaleString();
-      document.getElementById('statMinted').textContent = actor.minted.toLocaleString();
-      document.getElementById('statAvailable').textContent = actor.available.toLocaleString();
-      document.getElementById('statHolders').textContent = actor.holders.toLocaleString();
-
-      // 更新 NFT 信息
-      document.getElementById('infoPrice').textContent = actor.price;
+      // NFT 信息
       document.getElementById('infoContract').textContent = actor.contract;
+      document.getElementById('infoTotalSupply').textContent = actor.totalSupply.toLocaleString();
 
-      // 更新铸造进度
-      const progressPct = (actor.minted / actor.totalSupply) * 100;
-      document.getElementById('progressFill').style.width = progressPct.toFixed(2) + '%';
-      document.getElementById('progressText').textContent = `已铸造 ${progressPct.toFixed(1)}% (${actor.minted.toLocaleString()} / ${actor.totalSupply.toLocaleString()})`;
+      // ═══ 已售罄状态 ═══
+      var isSoldout = actor.available <= 0;
+      var mintBtn = document.getElementById('mintBtn');
+      var soldoutActions = document.getElementById('soldoutActions');
+      var soldoutTag = document.getElementById('actorSoldoutTag');
 
-      // 更新参演短剧
+      if (isSoldout) {
+        mintBtn.style.display = 'none';
+        soldoutActions.style.display = 'flex';
+        document.getElementById('floorPriceValue').textContent = actor.price;
+        soldoutTag.style.display = 'inline-block';
+      } else {
+        mintBtn.style.display = 'inline-flex';
+        soldoutActions.style.display = 'none';
+        soldoutTag.style.display = 'none';
+      }
+
+      document.getElementById('tradeBtn').addEventListener('click', function() {
+        window.open('https://market.story.fun/trade/' + actor.name.toLowerCase(), '_blank');
+      });
 
       renderDramas(actor);
+
+      // ═══ 完播/热度 tooltip ═══
+      var statTooltip = document.getElementById('statTooltip');
+      function openStatTooltip(title, desc) {
+        document.getElementById('statTooltipTitle').textContent = title;
+        document.getElementById('statTooltipDesc').textContent = desc;
+        statTooltip.classList.add('active');
+      }
+      document.querySelectorAll('.ahs-item').forEach(function(el) {
+        el.addEventListener('click', function() {
+          var label = this.querySelector('.ahs-label').textContent.trim();
+          if (label === '完播') openStatTooltip('完播', '该演员 IP 参演的所有短剧的完播次数之和');
+          else if (label === '热度') openStatTooltip('热度', '该演员 IP 参演的所有短剧的热度之和');
+        });
+      });
+      document.getElementById('statTooltipClose').addEventListener('click', function() { statTooltip.classList.remove('active'); });
+      statTooltip.addEventListener('click', function(e) { if (e.target === this) statTooltip.classList.remove('active'); });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && statTooltip.classList.contains('active')) statTooltip.classList.remove('active');
+      });
+
+      // ═══ Mint Modal ═══
+      var mintModal = document.getElementById('mintModal');
+      var mintModalBody = document.getElementById('mintModalBody');
+      var mintModalSuccess = document.getElementById('mintModalSuccess');
+      var mintModalActorName = document.getElementById('mintModalActorName');
+      var mintModalImage = document.getElementById('mintModalImage');
+      var mintModalTag = document.getElementById('mintModalTag');
+      var mintBalance = document.getElementById('mintBalance');
+      var mintEstimate = document.getElementById('mintEstimate');
+      var mintSoldoutOverlay = document.getElementById('mintSoldoutOverlay');
+      var qtyInput = document.getElementById('qtyInput');
+      var qtyDec = document.getElementById('qtyDec');
+      var qtyInc = document.getElementById('qtyInc');
+      var mintTotal = document.getElementById('mintTotal');
+      var mintFinalRow = document.getElementById('mintFinalRow');
+      var mintFinalPrice = document.getElementById('mintFinalPrice');
+      var mintConfirm = document.getElementById('mintConfirm');
+      var curActorPrice = actor.price;
+      var curActorMinted = actor.minted;
+      var curActorTotal = actor.totalSupply;
+
+      function calcTieredPrice(initPrice, total, minted, k) {
+        return initPrice * Math.pow(20, (minted + k) / total);
+      }
+      function updateTotal() {
+        var qty = parseInt(qtyInput.value) || 1;
+        var curNum = parseFloat(curActorPrice.toString().replace(/[^0-9.]/g, '')) || 10;
+        var unit = curActorPrice.toString().replace(/[0-9.]/g, '') || ' USDC';
+        var ratio = curActorTotal > 0 ? curActorMinted / curActorTotal : 0;
+        var initPrice = curNum / Math.pow(20, ratio);
+        if (qty === 1) {
+          mintFinalRow.classList.remove('show');
+          mintTotal.textContent = curNum.toFixed(1) + unit;
+          return;
+        }
+        var total = 0, last = 0;
+        for (var k = 0; k < qty; k++) {
+          var p = calcTieredPrice(initPrice, curActorTotal, curActorMinted, k);
+          total += p; last = p;
+        }
+        mintFinalRow.classList.add('show');
+        mintFinalPrice.textContent = last.toFixed(2) + unit;
+        mintTotal.textContent = total.toFixed(2) + unit;
+      }
+      function openMintModal(actorData) {
+        mintModalActorName.textContent = actorData.name;
+        mintModalImage.src = actorData.avatar;
+        mintModalTag.textContent = '演员 IP';
+        mintBalance.innerHTML = '剩余 <strong>' + actorData.available.toLocaleString() + '</strong> 个';
+        mintEstimate.textContent = actorData.price;
+        curActorPrice = actorData.price;
+        curActorMinted = actorData.minted;
+        curActorTotal = actorData.totalSupply;
+        mintSoldoutOverlay.style.display = actorData.available <= 0 ? 'flex' : 'none';
+        qtyInput.value = 1;
+        updateTotal();
+        mintModalSuccess.classList.remove('show');
+        mintModalBody.style.display = 'flex';
+        mintModal.classList.add('active');
+        mintModal.setAttribute('aria-hidden', 'false');
+      }
+      function closeMintModal() {
+        mintModal.classList.remove('active');
+        mintModal.setAttribute('aria-hidden', 'true');
+      }
+      mintBtn.addEventListener('click', function() { openMintModal(actor); });
+      document.getElementById('mintModalClose').addEventListener('click', closeMintModal);
+      document.getElementById('mintCancel').addEventListener('click', closeMintModal);
+      mintModal.addEventListener('click', function(e) {
+        if (e.target === mintModal || e.target.classList.contains('mint-modal-overlay')) closeMintModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mintModal.classList.contains('active')) closeMintModal();
+      });
+      qtyDec.addEventListener('click', function() {
+        var v = parseInt(qtyInput.value) || 1;
+        if (v > 1) qtyInput.value = v - 1;
+        updateTotal();
+      });
+      qtyInc.addEventListener('click', function() {
+        var v = parseInt(qtyInput.value) || 1;
+        qtyInput.value = v + 1;
+        updateTotal();
+      });
+      qtyInput.addEventListener('input', updateTotal);
+      mintConfirm.addEventListener('click', function() {
+        mintConfirm.disabled = true;
+        mintConfirm.textContent = '处理中...';
+        setTimeout(function() {
+          document.getElementById('successActorName').textContent = mintModalActorName.textContent || '—';
+          mintModalBody.style.display = 'none';
+          mintModalSuccess.classList.add('show');
+          mintConfirm.disabled = false;
+          mintConfirm.textContent = '确认签约';
+        }, 1200);
+      });
+      document.getElementById('viewNftBtn').addEventListener('click', function() { window.location.href = 'studio.html'; });
+      document.getElementById('continueBtn').addEventListener('click', closeMintModal);
     });
 
-    // ============================================================
-    //  渲染签约艺人参演短剧
-    // ============================================================
+    // ═══ 渲染参演短剧 ═══
     function renderDramas(actor) {
-      const grid = document.getElementById('dramaGrid');
-      const empty = document.getElementById('emptyState');
-      const count = document.getElementById('dramaCount');
-
+      var grid = document.getElementById('dramaGrid');
+      var empty = document.getElementById('emptyState');
+      var count = document.getElementById('dramaCount');
       if (!actor.childActors || actor.childActors.length === 0) {
         grid.innerHTML = '';
         empty.style.display = 'block';
         count.textContent = '(0)';
         return;
       }
-
-      // 统计所有签约艺人的短剧总数
-      let totalDramas = 0;
-      let html = '';
-      actor.childActors.forEach(child => {
+      var totalDramas = 0, html = '';
+      actor.childActors.forEach(function(child) {
         if (child.dramas && child.dramas.length > 0) {
           totalDramas += child.dramas.length;
-          html += child.dramas.map(d => `
-        <div class="drama-card" onclick="location.href='${d.link}'">
-          <img class="drama-cover" src="${d.cover}" alt="${d.title}" />
-          <div class="drama-body">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-              <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--accent-soft);flex-shrink:0;background:linear-gradient(135deg,#e0f7ff,#fff)">
-                <img src="${actor.avatar}" alt="${actor.name}" style="width:100%;height:100%;object-fit:cover" />
-              </div>
-              <div style="flex:1;min-width:0">
-                <div style="font-size:0.9rem;font-weight:700;color:var(--text)">${actor.name}</div>
-                <div style="display:flex;flex-wrap:wrap;gap:4px 10px;font-size:0.72rem;color:var(--text-muted);margin-top:2px">
-                  <span>NFT ID: ${child.childId}</span>
-                  <span>经纪人: ${child.holder}</span>
-
-                </div>
-
-              </div>
-            </div>
-
-
-            <h4>${d.title}</h4>
-            <div class="drama-role">🎭 饰演：${d.role}</div>
-            <div class="drama-meta">
-              <span>${d.category}</span>
-              <span class="muted">全 ${d.episodes} 集</span>
-            </div>
-            <p class="drama-desc">AI 生成的精彩短剧，${d.title} 带你进入不一样的叙事世界。</p>
-          </div>
-          <div class="drama-footer">
-            <span class="royalty-info">分润比例 <strong>${d.royalty}</strong></span>
-            <button class="view-btn" onclick="event.stopPropagation();location.href='${d.link}'">查看详情</button>
-          </div>
-        </div>
-          `).join('');
+          child.dramas.forEach(function(d) {
+            html += '<div class="drama-card" onclick="location.href=\'' + d.link + '\'">' +
+              '<img class="drama-cover" src="' + d.cover + '" alt="' + d.title + '" />' +
+              '<div class="drama-body">' +
+                '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' +
+                  '<div style="width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--accent-soft);flex-shrink:0;background:linear-gradient(135deg,#e0f7ff,#fff)">' +
+                    '<img src="' + actor.avatar + '" alt="' + actor.name + '" style="width:100%;height:100%;object-fit:cover" />' +
+                  '</div>' +
+                  '<div style="flex:1;min-width:0">' +
+                    '<div style="font-size:0.9rem;font-weight:700;color:var(--text)">' + actor.name + '</div>' +
+                    '<div style="display:flex;flex-wrap:wrap;gap:4px 10px;font-size:0.72rem;color:var(--text-muted);margin-top:2px">' +
+                      '<span>NFT ID: ' + child.childId + '</span>' +
+                      '<span>经纪人: ' + child.holder + '</span>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+                '<h4>' + d.title + '</h4>' +
+                '<div class="drama-role">🎭 饰演：' + d.role + '</div>' +
+                '<div class="drama-meta">' +
+                  '<span>' + d.category + '</span>' +
+                  '<span class="muted">全 ' + d.episodes + ' 集</span>' +
+                '</div>' +
+                '<p class="drama-desc">AI 生成的精彩短剧，' + d.title + ' 带你进入不一样的叙事世界。</p>' +
+              '</div>' +
+              '<div class="drama-footer">' +
+                '<span class="royalty-info">分润比例 <strong>' + d.royalty + '</strong></span>' +
+                '<button class="view-btn" onclick="event.stopPropagation();location.href=\'' + d.link + '\'">查看详情</button>' +
+              '</div>' +
+            '</div>';
+          });
         }
       });
-
       empty.style.display = 'none';
-      count.textContent = `(${totalDramas})`;
-
+      count.textContent = '(' + totalDramas + ')';
       if (html === '') {
         grid.innerHTML = '';
         empty.style.display = 'block';
@@ -868,8 +1557,6 @@
       }
       grid.innerHTML = html;
     }
-
-
   </script>
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
