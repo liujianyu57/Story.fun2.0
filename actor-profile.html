@@ -404,6 +404,9 @@
       color: var(--text-muted);
       font-size: 0.95rem;
     }
+    .drama-card .drama-footer .drama-rating { display: inline-flex; align-items: center; gap: 3px; color: #ff9f2c; font-weight: 600; }
+    .drama-card .drama-footer .drama-rating .star-icon { font-size: 0.82rem; }
+
     .drama-card .drama-footer .view-btn {
       border: none;
       cursor: pointer;
@@ -1598,8 +1601,22 @@
       document.getElementById('continueBtn').addEventListener('click', closeMintModal);
     });
 
+    // ═══ 短剧评分数据 ═══
+    var DRAMA_RATINGS = {
+      '重生之我在币圈当大佬': '4.8',
+      '凤骨琉璃': '4.8',
+      '我卸甲后天下大乱了': '4.6',
+      '丞相府今日开饭': '4.7',
+      '江南烟雨': '4.5',
+      '梅花烙': '4.3',
+      '长安如梦': '4.6',
+      '迷雾之城': '4.4',
+      '星际迷航': '4.7'
+    };
+
     // ═══ 渲染参演短剧 — 完全复刻 index.html 卡片结构（含多演员） ═══
     function renderDramas(actor) {
+
       var grid = document.getElementById('dramaGrid');
       var empty = document.getElementById('emptyState');
       var count = document.getElementById('dramaCount');
@@ -1661,7 +1678,8 @@
                   '</div>' +
                 '</div>' +
               '</div>' +
-              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>' + (actor.heat || '—') + '热度</span></div></div>' +
+              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>' + (actor.heat || '—') + '热度</span><span class="drama-rating"><span class="star-icon">★</span> ' + (DRAMA_RATINGS[d.title] || '--') + '</span></div></div>' +
+
             '</div>';
           });
         }
