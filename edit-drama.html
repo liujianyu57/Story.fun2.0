@@ -263,7 +263,7 @@
     .actor-bind-empty .empty-icon { font-size: 2rem; margin-bottom: 10px; }
     .actor-bind-status { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 500; white-space: nowrap; margin-top: 8px; }
     .actor-bind-status img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-    .char-bind-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 80px; border: 1px solid var(--border); background: var(--surface); color: var(--accent); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .char-bind-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px 14px; border-radius: 80px; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
     .char-bind-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
     .char-bind-btn.bound { border-color: var(--accent); background: rgba(0,179,136,0.06); }
     .char-bind-actor-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
@@ -409,6 +409,23 @@
             <span class="plus-icon">+</span> 添加角色
           </button>
         </div>
+
+        <!-- Limit Hint -->
+        <div style="font-size:0.85rem;color:var(--text-muted);padding:0 0 16px;display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span>💡</span>
+            <span>每位创作者最多可添加 <strong style="color:var(--accent);">5</strong> 个角色，并可从中选择最多 <strong style="color:var(--accent);">5</strong> 个角色绑定演员 IP。</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;padding-left:22px;">
+            <span>⏳</span>
+            <span>短剧通过审核后 <strong style="color:var(--accent);">7 天内</strong> 可绑定演员 IP，期间产生的播放数据将同步积累到所绑定的演员 IP 上。<br />（以审核通过时刻起算，截止 <strong style="color:var(--accent);" id="bindDeadline"></strong>）</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;padding-left:22px;">
+            <span>🔒</span>
+            <span>已绑定参演的演员，审核通过后不可解除或更换。</span>
+          </div>
+        </div>
+
         <div class="char-grid" id="charGrid"></div>
       </div>
       <div class="form-panel-footer">
@@ -779,7 +796,7 @@
               + '</div>';
           } else {
             bindHtml = '<div style="margin-top:8px;">'
-              + '<button class="char-bind-btn js-bind-actor" data-char-id="' + c.id + '">🎭 绑定演员 IP</button>'
+              + '<button class="char-bind-btn js-bind-actor" data-char-id="' + c.id + '">🎭 演员参演</button>'
               + '</div>';
           }
 
@@ -1418,6 +1435,20 @@
       setupCoverUpload();
       charManager.init();
       batchUpload.init();
+
+      // Calculate and display the 7-day deadline, accurate to seconds
+      const bindDeadlineEl = document.getElementById('bindDeadline');
+      if (bindDeadlineEl) {
+        const now = new Date();
+        const deadline = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        const y = deadline.getFullYear();
+        const m = String(deadline.getMonth() + 1).padStart(2, '0');
+        const d = String(deadline.getDate()).padStart(2, '0');
+        const hh = String(deadline.getHours()).padStart(2, '0');
+        const mm = String(deadline.getMinutes()).padStart(2, '0');
+        const ss = String(deadline.getSeconds()).padStart(2, '0');
+        bindDeadlineEl.textContent = `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+      }
     });
   </script>
   <div id="bottom-nav-placeholder"></div>
