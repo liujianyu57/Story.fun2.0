@@ -325,13 +325,13 @@
       color: var(--text-muted);
     }
     .drama-card .drama-body h3 {
-      margin: 0;
+      margin: 0 0 12px;
       font-size: 1.4rem;
       line-height: 1.25;
       font-weight: 700;
     }
     .drama-card .drama-body p {
-      margin: 0;
+      margin: 12px 0 0;
       color: var(--text-muted);
       line-height: 1.6;
       font-size: 0.95rem;
@@ -1669,8 +1669,8 @@
             html += '<div class="drama-card" onclick="location.href=\'' + d.link + '\'">' +
               '<img class="drama-cover" src="' + d.cover + '" alt="' + d.title + '" />' +
               '<div class="drama-body">' +
-                '<div class="drama-meta"><span class="badge">' + d.category + '</span><span class="episode">全' + d.episodes + '集</span></div>' +
                 '<h3>' + d.title + '</h3>' +
+                '<div class="drama-meta"><span class="badge">' + d.category + '</span><span class="episode">全' + d.episodes + '集</span></div>' +
                 '<p>' + d.title + ' — 精彩短剧，不容错过。</p>' +
                 '<div class="drama-actors">' +
                   '<div class="drama-actors-list">' +
