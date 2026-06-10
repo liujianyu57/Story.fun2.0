@@ -168,6 +168,37 @@
       font-weight: 400;
     }
 
+    /* ===== Sort Tags (参考 actors.html 样式) ===== */
+    .sort-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .sort-tag {
+      padding: 6px 14px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+    .sort-tag:hover {
+      background: rgba(0,179,136,0.2);
+    }
+    .sort-tag.active {
+      background: var(--accent);
+      color: white;
+    }
+    .section-header-left-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+
     /* ===== Actor Grid ===== */
     .actor-grid {
       display: grid;
@@ -1194,6 +1225,12 @@
     <!-- ===== Actor Grid Section ===== -->
     <div class="section-header">
       <h2>我的演员 <span class="count-badge" id="actorCount">(0)</span></h2>
+      <div style="width:100%;"></div>
+      <div class="sort-container" style="margin-top:-10px;">
+        <span class="sort-tag active" data-sort="level-desc">等级最高</span>
+        <span class="sort-tag" data-sort="heat-desc">热度最高</span>
+        <span class="sort-tag" data-sort="energy-desc">体力最高</span>
+      </div>
     </div>
 
     <div class="actor-grid" id="actorGrid">
@@ -1261,7 +1298,7 @@
           </div>
           <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
             <span style="color:var(--text-muted);">升级费用</span>
-            <span id="modalLevelCost" style="font-weight:700;color:var(--accent);">0 STORY</span>
+            <span id="modalLevelCost" style="font-weight:700;color:var(--accent);">0 USDC</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
             <span style="color:var(--text-muted);">消耗同IP同等级演员</span>
@@ -1300,7 +1337,7 @@
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span style="font-size:0.85rem;color:var(--text-muted);">恢复费用</span>
-          <span style="font-weight:700;color:var(--warning);" id="modalChargeCost">— STORY</span>
+          <span style="font-weight:700;color:var(--warning);" id="modalChargeCost">— USDC</span>
         </div>
       </div>
       <button class="modal-btn confirm" onclick="confirmCharge()">恢复全部体力</button>
@@ -1513,9 +1550,34 @@
     }
 
     // ============================================================
+    //  排序状态
+    // ============================================================
+    let currentSort = 'level-desc';
+
+    function applySort(list) {
+      const s = currentSort;
+      const sorted = [...list];
+      switch (s) {
+        case 'level-desc':
+          sorted.sort((a, b) => (b.level || 0) - (a.level || 0));
+          break;
+        case 'heat-desc':
+          sorted.sort((a, b) => (b.heat || 0) - (a.heat || 0));
+          break;
+        case 'energy-desc':
+          sorted.sort((a, b) => (b.energy || 0) - (a.energy || 0));
+          break;
+        default:
+          break;
+      }
+      return sorted;
+    }
+
+    // ============================================================
     //  渲染：派遣槽位
     // ============================================================
     function renderDeploySlots() {
+
       const container = document.getElementById('deploySlots');
       const deployed = getDeployedActors();
       const count = document.getElementById('deployCount');
@@ -1608,7 +1670,9 @@
       empty.style.display = 'none';
       count.textContent = '(' + MY_ACTORS.length + ')';
 
-      grid.innerHTML = MY_ACTORS.map(actor => {
+      const sortedActors = applySort(MY_ACTORS);
+
+      grid.innerHTML = sortedActors.map(actor => {
         const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
         const energyState = getEnergyState(actor.energy, actor.energyMax);
         const pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
@@ -1619,7 +1683,7 @@
 
         return `
         <div class="actor-card" data-actor-id="${actor.id}">
-            <div class="actor-card-hero" onclick="event.stopPropagation();location.href='${profileLink}'" style="cursor:pointer;">
+            <div class="actor-card-hero">
               <img src="${actor.avatar}" alt="${actor.name}" />
               ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
               <div class="actor-card-hero-overlay"></div>
@@ -1630,7 +1694,7 @@
               </div>
               <div style="position:absolute;bottom:8px;left:8px;z-index:5;display:flex;gap:4px;align-items:center;">
                 <span style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:0.3px;">${actor.id}</span>
-                <span style="background:rgba(0,179,136,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:6px;">演员IP：${actor.ipCode}</span>
+                <span style="background:rgba(0,179,136,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:6px;cursor:pointer;" onclick="event.stopPropagation();location.href='${profileLink}'">演员IP：${actor.ipCode}</span>
               </div>
               <div style="position:absolute;bottom:8px;right:8px;z-index:5;">
                 <div class="actor-hero-status">
@@ -1641,7 +1705,7 @@
           </div>
 
           <div class="actor-card-name-row">
-            <span class="actor-name" onclick="event.stopPropagation();location.href='${profileLink}'" style="cursor:pointer;">${actor.name}</span>
+            <span class="actor-name">${actor.name}</span>
           </div>
 
           <div class="actor-card-body">
@@ -1845,7 +1909,7 @@
 
       document.getElementById('modalChargeActor').textContent = actor.name + ' · ⚡' + actor.energy + '/' + actor.energyMax;
       document.getElementById('modalChargeCurrent').textContent = actor.energy + ' / ' + actor.energyMax;
-      document.getElementById('modalChargeCost').textContent = cost.toFixed(1) + ' STORY';
+      document.getElementById('modalChargeCost').textContent = cost.toFixed(1) + ' USDC';
 
       document.getElementById('chargeModal').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -1868,7 +1932,7 @@
         if (actor.isStaking) {
           actor.status = 'active';
         }
-        showToast('⚡ ' + actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' STORY）', '⚡');
+        showToast('⚡ ' + actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' USDC）', '⚡');
       }
       closeChargeModal();
       renderAll();
@@ -1918,7 +1982,7 @@
         const progress = Math.min(100, (plays / threshold.playsRequired) * 100);
         document.getElementById('modalLevelPlays').textContent = formatNumber(plays);
         document.getElementById('modalLevelPlaysReq').textContent = formatNumber(threshold.playsRequired);
-        document.getElementById('modalLevelCost').textContent = threshold.cost + ' STORY';
+        document.getElementById('modalLevelCost').textContent = threshold.cost + ' USDC';
         document.getElementById('modalLevelConsume').textContent = Math.min(availableCount, 2) + ' / 2';
         document.getElementById('modalLevelConsume').style.color = availableCount >= 2 ? 'var(--accent)' : 'var(--danger)';
 
@@ -2053,6 +2117,18 @@
 
       // 启动体力模拟（每 1 秒 = 1 点体力）
       setInterval(energyTick, 1000);
+
+      // 排序标签点击事件
+      document.querySelectorAll('.sort-tag').forEach(tag => {
+        tag.addEventListener('click', function() {
+          const sort = this.dataset.sort;
+          if (!sort) return;
+          document.querySelectorAll('.sort-tag').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          currentSort = sort;
+          renderActors();
+        });
+      });
 
       // 点击 Modal 外部关闭
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
