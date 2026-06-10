@@ -55,7 +55,8 @@
     }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-    .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    @media (max-width: 960px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) { .metrics-grid { grid-template-columns: 1fr; } }
     .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow-sm); }
     .metric-label { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
@@ -146,7 +147,6 @@
     <div class="page-header">
       <h1>收益</h1>
       <div class="page-header-actions">
-        <button class="btn-outline" onclick="goTo('studio.html')">经纪工坊</button>
         <button class="btn-primary" onclick="claimAll()">一键领取</button>
       </div>
     </div>
@@ -156,12 +156,18 @@
       <div class="metric-card">
         <div class="metric-label">累计 STORY</div>
         <div class="metric-value green" id="mCumulativeStory">12,500</div>
-        <div class="metric-sub">≈ $<span id="mCumulativeStoryUsd">1,250.00</span></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">累计 USDC</div>
+        <div class="metric-value green" id="mCumulativeUsdc">3,580.00</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">可领取 STORY</div>
         <div class="metric-value gold" id="mClaimableStory">2,350</div>
-        <div class="metric-sub">≈ $<span id="mClaimableStoryUsd">235.00</span></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">可领取 USDC</div>
+        <div class="metric-value gold" id="mClaimableUsdc">895.50</div>
       </div>
     </div>
 
@@ -177,13 +183,6 @@
     <div id="tab-story" class="tab-content active">
 
       <div class="section-card">
-        <div class="flow-header">
-          <h3>📋 STORY 收益明细</h3>
-          <div class="flow-stats">
-            本页总计 <span id="pageTotal">0</span> STORY
-          </div>
-        </div>
-
         <div class="filter-bar" id="storyFilterBar">
           <button class="filter-chip active" data-filter="all">全部</button>
           <button class="filter-chip" data-filter="staking">派遣收益</button>
@@ -216,71 +215,31 @@
     </div>
 
     <!-- ============================================================ -->
-    <!--  USDC 页签                                                  -->
+    <!--  USDC 页签 — 演员签约分成                                   -->
     <!-- ============================================================ -->
     <div id="tab-usdc" class="tab-content">
 
-      <div class="two-col">
-        <div class="section-card">
-          <div class="section-header"><h3>Mint 收入分配</h3></div>
-          <div class="source-list" id="mintDistList"></div>
-        </div>
-        <div class="section-card">
-          <div class="section-header"><h3>平台 USDC 现金流</h3></div>
-          <div class="source-list" id="platformIncomeList"></div>
-        </div>
-      </div>
-
       <div class="section-card">
-        <div class="section-header"><h3>片酬消耗</h3></div>
         <div class="table-wrap">
-          <table class="data-table">
+          <table class="data-table" id="usdcFlowTable">
             <thead>
               <tr>
-                <th style="width:110px;">时间</th><th style="min-width:90px;">演员</th><th style="width:120px;">消耗量 (USDC)</th><th style="min-width:80px;">支付方式</th>
+                <th style="width:110px;">时间</th>
+                <th style="min-width:90px;">类型</th>
+                <th style="min-width:100px;">来源</th>
+                <th style="width:120px;">数量</th>
               </tr>
             </thead>
-            <tbody id="payPreview"></tbody>
+            <tbody id="usdcFlowBody">
+              <!-- 由 JS 渲染 -->
+            </tbody>
           </table>
         </div>
-      </div>
 
-      <div class="section-card">
-        <div class="section-header"><h3>Vault 金库沉淀</h3></div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width:110px;">时间</th><th style="min-width:90px;">演员</th><th style="width:120px;">沉淀基数</th><th style="width:120px;">沉淀金额 (USDC)</th>
-              </tr>
-            </thead>
-            <tbody id="vaultPreview"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <div class="section-header"><h3>铸造分润</h3></div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width:110px;">时间</th><th style="min-width:90px;">铸造者</th><th style="min-width:90px;">演员 NFT</th><th style="width:60px;">次数</th><th style="width:110px;">分润金额</th>
-              </tr>
-            </thead>
-            <tbody id="mintPreview"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="params-panel">
-        <h3>⚙️ USDC 经济参数</h3>
-        <div class="param-grid">
-          <div class="param-item"><span class="pi-label">Mint/版税分配</span><span class="pi-value">发行人 40% · 平台 30% · Vault 30%</span></div>
-          <div class="param-item"><span class="pi-label">二级版税率</span><span class="pi-value">10%</span></div>
-          <div class="param-item"><span class="pi-label">版税支付条件</span><span class="pi-value">平台实际收到后分配</span></div>
-          <div class="param-item"><span class="pi-label">Vault 用途</span><span class="pi-value">V1 沉淀不分配，后续投票</span></div>
-          <div class="param-item"><span class="pi-label">发行人解锁</span><span class="pi-value">按累计完播 4 档解锁</span></div>
+        <div class="pagination" id="usdcPagination">
+          <button id="usdcPrevPageBtn" onclick="usdcPrevPage()">← 上一页</button>
+          <span class="page-info" id="usdcPageInfo">第 1 / 1 页</span>
+          <button id="usdcNextPageBtn" onclick="usdcNextPage()">下一页 →</button>
         </div>
       </div>
 
@@ -301,39 +260,7 @@
     let currentPage = 1;
     let currentFilter = 'all';
 
-    const WALLET = { storyEarned: 12500, claimable: 2350 };
-
-    const MINT_DIST = [
-      { name: '发行人', amount: 40, unit: '%', color: '#8b5cf6' },
-      { name: '平台',   amount: 30, unit: '%', color: '#3b82f6' },
-      { name: 'Vault',  amount: 30, unit: '%', color: '#f5b042' },
-    ];
-    const PLATFORM_INCOME = [
-      { name: 'Mint 平台份额',   amount: 1500, unit: 'USDC', color: '#3b82f6' },
-      { name: '二级版税平台份额', amount: 800,  unit: 'USDC', color: '#00b388' },
-      { name: '合成升级费',      amount: 350,  unit: 'USDC', color: '#f5b042' },
-      { name: '体力刷新费',      amount: 2000, unit: 'USDC', color: '#8b5cf6' },
-      { name: 'AI 制作费 (透传)', amount: 350,  unit: 'USDC', color: '#f45b69' },
-    ];
-
-    const actors = ['林梦瑶','苏婉清','赵无极','李云飞','Luna','沈千雪','江辰','林雪儿','苏晚晴','陆北辰'];
-    const levels = ['Lv1','Lv2','Lv3','Lv4','Lv5'];
-    const coeffs = { Lv1:1.0, Lv2:2.2, Lv3:5.0, Lv4:11, Lv5:24 };
-
-    const TX_PAY = Array.from({length:15}, (_,i) => ({
-      time:`06-${String(18-i).padStart(2,'0')} ${String(8+(i*3)%12).padStart(2,'0')}:${String(i*7%60).padStart(2,'0')}`,
-      actor:actors[i%actors.length], amount:+(30+i*8+Math.random()*20).toFixed(2), method:i%3===0?'USDC 支付':'STORY 销毁'
-    }));
-    const TX_VAULT = Array.from({length:15}, (_,i) => {
-      const base=500+i*150+Math.floor(Math.random()*200);
-      return {time:`06-${String(18-Math.floor(i/3)).padStart(2,'0')} 00:00`,actor:actors[i%actors.length],base:'$'+base.toLocaleString(),amount:+(base*0.30).toFixed(2)};
-    });
-    const TX_MINT = Array.from({length:15}, (_,i) => ({
-      time:`06-${String(18-i).padStart(2,'0')} ${String(8+(i*3)%12).padStart(2,'0')}:${String(i*5%60).padStart(2,'0')}`,
-      minter:['0x1a2B...3c4D','0x5e6F...7g8H','0x9i0J...1k2L','0x3m4N...5o6P','0x7q8R...9s0T'][i%5],
-      nft:['林雪儿','江辰','苏晚晴','沈千雪','陆北辰'][i%5],
-      count:1+(i%3), amount:+(5+(i%4)*2.5+Math.random()*3).toFixed(2)
-    }));
+    const WALLET = { storyEarned: 12500, storyClaimable: 2350, usdcEarned: 3580.00, usdcClaimable: 895.50 };
 
     // ===== STORY 流水数据生成 =====
     function generateStoryFlow() {
@@ -395,16 +322,17 @@
 
     // ===== 渲染 =====
     function renderMetrics() {
-      document.getElementById('mCumulativeStory').textContent=fmt(WALLET.storyEarned);
-      document.getElementById('mCumulativeStoryUsd').textContent=d2(WALLET.storyEarned*STORY_PRICE);
-      document.getElementById('mClaimableStory').textContent=fmt(WALLET.claimable);
-      document.getElementById('mClaimableStoryUsd').textContent=d2(WALLET.claimable*STORY_PRICE);
+      document.getElementById('mCumulativeStory').textContent=WALLET.storyEarned.toLocaleString();
+      document.getElementById('mCumulativeUsdc').textContent=WALLET.usdcEarned.toFixed(2);
+      document.getElementById('mClaimableStory').textContent=WALLET.storyClaimable.toLocaleString();
+      document.getElementById('mClaimableUsdc').textContent=WALLET.usdcClaimable.toFixed(2);
     }
 
     function claimAll() {
-      if(WALLET.claimable<=0){showToast('没有可领取的 STORY');return;}
-      showToast('已领取 '+fmt(WALLET.claimable)+' STORY 到钱包');
-      WALLET.claimable=0;
+      if(WALLET.storyClaimable<=0 && WALLET.usdcClaimable<=0){showToast('没有可领取的收益');return;}
+      showToast('已领取 STORY '+fmt(WALLET.storyClaimable)+'、USDC '+d2(WALLET.usdcClaimable)+' 到钱包');
+      WALLET.storyClaimable=0;
+      WALLET.usdcClaimable=0;
       renderMetrics();
     }
 
@@ -447,7 +375,6 @@
         ).join('');
       }
 
-      document.getElementById('pageTotal').textContent = fmt(pageTotal);
       document.getElementById('pageInfo').textContent = `第 ${currentPage} / ${totalPages} 页`;
       document.getElementById('prevPageBtn').disabled = currentPage <= 1;
       document.getElementById('nextPageBtn').disabled = currentPage >= totalPages;
@@ -463,34 +390,91 @@
       if (currentPage < window._storyTotalPages) { currentPage++; renderStoryFlow(); }
     }
 
-    function renderSources(id, data) {
-      const el=document.getElementById(id);
-      if(!el) return;
-      const total=data.reduce((s,x)=>s+x.amount,0);
-      const isPct=data[0]&&data[0].unit==='%';
-      el.innerHTML=data.map(x=>{
-        const pct=total>0?((x.amount/total)*100).toFixed(1):0;
-        const label = isPct ? x.amount+'%' : '$'+x.amount;
-        return `<div class="source-item"><div class="source-row"><span class="src-name">${x.name}</span><span><span class="src-amount" style="color:${x.color};">${label}</span><span class="src-pct"></span></span></div><div class="source-bar-bg"><div class="source-bar-fill" style="width:${pct}%;background:${x.color};"></div></div></div>`;
-      }).join('');
+    // ===== USDC 流水数据 =====
+    const USDC_ACTORS = ['苏婉清', '林梦瑶', '赵无极', '李云飞', 'Luna', '沈千雪', '江辰', '林雪儿', '苏晚晴', '陆北辰'];
+
+    function generateUsdcFlow() {
+      const flow = [];
+      // 演员签约分成 — Mint 发行人份额 (40%)
+      const mintBase = [
+        { actor:'苏婉清', ip:'#1001', amount: 126.80, date: '06-18' },
+        { actor:'林梦瑶', ip:'#1002', amount: 253.60, date: '06-18' },
+        { actor:'赵无极', ip:'#1003', amount: 634.00, date: '06-17' },
+        { actor:'李云飞', ip:'#1004', amount: 31.70,  date: '06-17' },
+        { actor:'Luna',   ip:'#1005', amount: 63.40,  date: '06-16' },
+        { actor:'沈千雪', ip:'#1006', amount: 190.20, date: '06-16' },
+        { actor:'江辰',   ip:'#1007', amount: 44.38,  date: '06-15' },
+        { actor:'林雪儿', ip:'#1008', amount: 88.76,  date: '06-15' },
+        { actor:'苏晚晴', ip:'#1009', amount: 317.00, date: '06-14' },
+        { actor:'陆北辰', ip:'#1010', amount: 158.50, date: '06-14' },
+        { actor:'苏婉清', ip:'#1001', amount: 95.10,  date: '06-13' },
+        { actor:'林梦瑶', ip:'#1002', amount: 412.10, date: '06-13' },
+        { actor:'赵无极', ip:'#1003', amount: 221.90, date: '06-12' },
+        { actor:'李云飞', ip:'#1004', amount: 15.85,  date: '06-12' },
+        { actor:'Luna',   ip:'#1005', amount: 47.55,  date: '06-11' },
+        { actor:'沈千雪', ip:'#1006', amount: 317.00, date: '06-11' },
+        { actor:'江辰',   ip:'#1007', amount: 63.40,  date: '06-10' },
+        { actor:'林雪儿', ip:'#1008', amount: 126.80, date: '06-10' },
+        { actor:'苏晚晴', ip:'#1009', amount: 79.25,  date: '06-09' },
+        { actor:'陆北辰', ip:'#1010', amount: 39.62,  date: '06-09' },
+      ];
+      mintBase.forEach(r => {
+        flow.push({
+          time: `2025-${r.date} 00:00`,
+          actor: r.actor,
+          ip: r.ip,
+          type: 'mint_share',
+          typeLabel: '演员签约分成',
+          amount: r.amount,
+        });
+      });
+      // 按时间倒序
+      flow.sort((a,b)=>b.time.localeCompare(a.time));
+      return flow;
     }
 
-    function renderPreview(id, data, fn) {
-      const tbody=document.getElementById(id);
-      if(!tbody) return;
-      const slice=data.slice(0, 3);
-      tbody.innerHTML=slice.length?slice.map(fn).join(''):'<tr><td colspan="99" style="text-align:center;color:var(--text-tertiary);padding:24px;">暂无记录</td></tr>';
+    const USDC_FLOW = generateUsdcFlow();
+
+    // ===== USDC 分页状态 =====
+    let usdcCurrentPage = 1;
+
+    function renderUsdcFlow() {
+      const filtered = USDC_FLOW;
+
+      const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+      if (usdcCurrentPage > totalPages) usdcCurrentPage = totalPages;
+      const start = (usdcCurrentPage - 1) * PAGE_SIZE;
+      const pageData = filtered.slice(start, start + PAGE_SIZE);
+
+      // 本页总计
+      const pageTotal = pageData.reduce((s, r) => s + r.amount, 0);
+
+      const tbody = document.getElementById('usdcFlowBody');
+      if (pageData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">暂无签约分成记录</td></tr>';
+      } else {
+        tbody.innerHTML = pageData.map(r => {
+          return `<tr>
+            <td style="color:var(--text-secondary);font-size:0.8rem;">${r.time}</td>
+            <td><span class="tx-tag staking">${r.typeLabel}</span></td>
+            <td><strong>${r.actor}</strong> <span style="color:var(--text-tertiary);font-size:0.78rem;">${r.ip}</span></td>
+            <td style="font-weight:700;color:var(--accent);">${d2(r.amount)} USDC</td>
+          </tr>`;
+        }).join('');
+      }
+
+      document.getElementById('usdcPageInfo').textContent = `第 ${usdcCurrentPage} / ${totalPages} 页`;
+      document.getElementById('usdcPrevPageBtn').disabled = usdcCurrentPage <= 1;
+      document.getElementById('usdcNextPageBtn').disabled = usdcCurrentPage >= totalPages;
+
+      window._usdcTotalPages = totalPages;
     }
 
-    // ===== 行渲染 =====
-    function rPay(tx) {
-      return `<tr><td style="color:var(--text-secondary);font-size:0.8rem;">${tx.time}</td><td><strong>${tx.actor}</strong></td><td style="font-weight:600;color:var(--danger);">${d2(tx.amount)} USDC</td><td><span class="tx-tag ${tx.method==='STORY 销毁'?'staking':'referral'}">${tx.method}</span></td></tr>`;
+    function usdcPrevPage() {
+      if (usdcCurrentPage > 1) { usdcCurrentPage--; renderUsdcFlow(); }
     }
-    function rVault(tx) {
-      return `<tr><td style="color:var(--text-secondary);font-size:0.8rem;">${tx.time}</td><td><strong>${tx.actor}</strong></td><td style="color:var(--text-secondary);">${tx.base}</td><td style="font-weight:600;color:var(--accent);">$${d2(tx.amount)}</td></tr>`;
-    }
-    function rMint(tx) {
-      return `<tr><td style="color:var(--text-secondary);font-size:0.8rem;">${tx.time}</td><td><span style="font-family:monospace;color:var(--text-secondary);font-size:0.8rem;">${tx.minter}</span></td><td><strong>${tx.nft}</strong></td><td>${tx.count}</td><td style="font-weight:600;color:var(--accent);">$${d2(tx.amount)}</td></tr>`;
+    function usdcNextPage() {
+      if (usdcCurrentPage < window._usdcTotalPages) { usdcCurrentPage++; renderUsdcFlow(); }
     }
 
     // ===== Filter chips =====
@@ -509,13 +493,9 @@
     // ===== 初始化 =====
     document.addEventListener('DOMContentLoaded', function() {
       renderMetrics();
-      renderSources('mintDistList', MINT_DIST);
-      renderSources('platformIncomeList', PLATFORM_INCOME);
       renderStoryFlow();
+      renderUsdcFlow();
       initFilters();
-      renderPreview('payPreview', TX_PAY, rPay);
-      renderPreview('vaultPreview', TX_VAULT, rVault);
-      renderPreview('mintPreview', TX_MINT, rMint);
     });
   </script>
   <div id="bottom-nav-placeholder"></div>
