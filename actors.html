@@ -630,7 +630,8 @@
 
     /* Action button */
     .card-actions { display: flex; gap: 8px; }
-    .card-actions .button-secondary {
+    .card-actions .button-secondary,
+    .card-actions .actor-mint-btn {
       flex: 1;
       min-width: 0;
       padding: 11px 14px;
@@ -641,10 +642,88 @@
       color: #fff;
       transition: all 0.25s ease;
     }
-    .card-actions .button-secondary:hover {
+    .card-actions .button-secondary:hover,
+    .card-actions .actor-mint-btn:hover {
       transform: translateY(-1px);
       box-shadow: 0 6px 16px rgba(0,179,136,0.35);
     }
+    /* 已售罄 — 交易按钮组 */
+    .card-actions-soldout {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex: 1;
+      width: 100%;
+    }
+    .card-actions-soldout .floor-price-tag {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      padding: 2px 14px 2px 0;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+      min-width: 0;
+    }
+    .card-actions-soldout .floor-price-tag .fpt-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+    .card-actions-soldout .floor-price-tag .fpt-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .card-actions-soldout .actor-trade-btn {
+      flex: 1;
+      min-width: 0;
+      padding: 11px 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .card-actions-soldout .floor-price-tag {
+      flex: 0 0 auto;
+    }
+    .card-actions-soldout .actor-trade-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(245,158,11,0.35);
+    }
+    /* 已售罄 badge 标记 */
+    .badge-soldout {
+      background: rgba(244,67,54,.92);
+      color: #fff;
+    }
+    .mint-modal-hero .soldout-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .mint-modal-hero .soldout-overlay span {
+      padding: 8px 20px;
+      background: rgba(244,67,54,0.88);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      letter-spacing: 0.04em;
+    }
+
 
     /* Stats — minimal Apple-inspired */
     .actor-stats {
@@ -839,8 +918,8 @@
     </div>
 
     <div class="grid grid-3">
-      <!-- Luna -->
-      <article class="card" data-actor="Luna" data-actor-id="1" data-total="5000" data-minted="98" data-available="10" data-holders="90" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="719.7万">
+      <!-- Luna (已售罄示例) -->
+      <article class="card" data-actor="Luna" data-actor-id="1" data-total="5000" data-minted="5000" data-available="0" data-holders="4900" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="719.7万">
         <div class="card-banner banner-1">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
@@ -860,12 +939,12 @@
             <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">719.7万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 10 个</span>
+            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 已售罄</span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom" style="margin-top:8px">
             <div class="card-actions">
-              <button class="button-secondary actor-mint-btn" data-actor="Luna" data-total-supply="5000" data-minted="98" data-available="10" data-price="10 USDC" data-creator="storyfun_labs">签约</button>
+              <button class="button-secondary actor-mint-btn" data-actor="Luna" data-total-supply="5000" data-minted="5000" data-available="0" data-price="10 USDC" data-creator="storyfun_labs">签约</button>
             </div>
           </div>
         </div>
@@ -1296,10 +1375,59 @@
 
       // Apply default sort on page load
       applyCurrentSort();
+
+      // ═══ 已售罄 UI 处理 ═══
+      function initSoldoutUI() {
+        cards.forEach(card => {
+          const available = parseInt(card.dataset.available) || 0;
+          if (available <= 0) {
+            applySoldoutCard(card);
+          }
+        });
+      }
+
+      function applySoldoutCard(card) {
+        const actionsEl = card.querySelector('.card-actions');
+        if (!actionsEl) return;
+        const actorName = card.dataset.actor || card.querySelector('h3')?.textContent || '';
+        const priceStr = card.dataset.price || '10 USDC';
+        // 从价格中提取数字部分作为地板价
+        const floorPrice = priceStr;
+        // 替换按钮区域
+        actionsEl.innerHTML = `
+          <div class="card-actions-soldout">
+            <div class="floor-price-tag">
+              <span class="fpt-label">地板价</span>
+              <span class="fpt-value">${floorPrice}</span>
+            </div>
+            <button class="actor-trade-btn" data-actor="${actorName}">去交易</button>
+          </div>
+        `;
+        // 绑定去交易按钮事件
+        const tradeBtn = actionsEl.querySelector('.actor-trade-btn');
+        if (tradeBtn) {
+          tradeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const name = this.dataset.actor || 'Luna';
+            // 跳转到第三方DEX交易所（链接待定）
+            window.open(`https://market.story.fun/trade/${name.toLowerCase()}`, '_blank');
+          });
+        }
+        // 添加已售罄 badge 到集合标签
+        const collectionBadge = card.querySelector('.badge-collection');
+        if (collectionBadge && !collectionBadge.classList.contains('badge-soldout')) {
+          collectionBadge.classList.add('badge-soldout');
+          collectionBadge.textContent = '已售罄';
+        }
+      }
+
       function closeMintModal() {
         mintModal.classList.remove('active');
         mintModal.setAttribute('aria-hidden', 'true');
       }
+
+      // 在页面加载时初始化已售罄卡片
+      initSoldoutUI();
 
       // Quantity controls — with bonding curve pricing
       const qtyInput = document.getElementById('qtyInput');
@@ -1451,8 +1579,15 @@
           if (label) {
             const match = label.textContent.match(/剩余\s*([\d,]+)/);
             if (match) {
-              const avail = parseInt(match[1].replace(/,/g, '')) - 1;
-              label.textContent = label.textContent.replace(/剩余\s*[\d,]+/, '剩余 ' + Math.max(0, avail).toLocaleString());
+              const oldAvail = parseInt(match[1].replace(/,/g, '')) || 0;
+              const avail = oldAvail - 1;
+              if (avail <= 0) {
+                // 售罄：自动转为交易按钮
+                card.dataset.available = '0';
+                applySoldoutCard(card);
+              } else {
+                label.textContent = label.textContent.replace(/剩余\s*[\d,]+/, '剩余 ' + avail.toLocaleString());
+              }
             }
           }
         } catch (e) {}
