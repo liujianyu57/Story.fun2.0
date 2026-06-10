@@ -370,8 +370,76 @@
     .hero-panel h2 { margin: 0 0 18px; font-size: clamp(2rem, 3vw, 3.2rem); line-height: 1.05; letter-spacing: -0.03em; }
     .hero-panel p { margin: 0 0 24px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; max-width: 640px; }
     .search-container { margin-top: 20px; }
-    .search-box { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; background: var(--surface); }
+    .search-wrapper { position: relative; }
+    .search-box { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; background: var(--surface); color: var(--text); }
     .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,179,136,0.15); }
+    .search-box::placeholder { color: var(--text-muted); }
+
+    /* Search dropdown — dark theme */
+    .search-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      z-index: 50;
+      overflow: hidden;
+      display: none;
+    }
+    .search-dropdown.show { display: block; }
+    .search-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .search-dropdown-item:hover { background: rgba(0,212,163,0.08); }
+    .search-dropdown-item img {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .search-dropdown-item .sdi-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+    .search-dropdown-item .sdi-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .search-dropdown-item .sdi-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .search-dropdown-item .sdi-sub .sdi-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+    .search-dropdown-empty {
+      padding: 20px 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
     .filter-container { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
     .filter-tag { padding: 8px 16px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; font-size: 0.9rem; cursor: pointer; transition: all 0.25s ease; }
     .filter-tag:hover { background: rgba(0,179,136,0.2); }
@@ -513,7 +581,10 @@
         <h2>全部短剧</h2>
         <p>精选AI短剧，开启叙事新体验</p>
         <div class="search-container">
-          <input type="text" id="searchInput" class="search-box" placeholder="搜索短剧名称..." />
+          <div class="search-wrapper">
+            <input type="text" id="searchInput" class="search-box" placeholder="搜索短剧名称或简介..." autocomplete="off" />
+            <div class="search-dropdown" id="searchDropdown"></div>
+          </div>
         </div>
         <div class="filter-container">
           <span class="filter-tag active" data-filter="all">全部</span>
@@ -733,22 +804,82 @@
       // 初始渲染第一个短剧的演员阵容
       renderFeaturedCast(featuredDramas[0].actors);
 
+      // ═══ Search dropdown ═══
+      const searchDropdown = document.getElementById('searchDropdown');
+      const GALLERY_CARDS = document.querySelectorAll('.card');
+
+      /** Get all actor names from a card element */
+      function getCardActorNames(card) {
+        const names = [];
+        card.querySelectorAll('.card-actor-name').forEach(el => {
+          const name = el.textContent.trim();
+          if (name) names.push(name);
+        });
+        return names;
+      }
+
+      function renderSearchDropdown(query) {
+        const q = query.toLowerCase().trim();
+        if (!q) {
+          searchDropdown.classList.remove('show');
+          return;
+        }
+
+        // Search by drama title AND description AND actor names
+        const results = Array.from(GALLERY_CARDS).filter(card => {
+          const title = card.querySelector('h3')?.textContent || '';
+          const desc = card.querySelector('p')?.textContent || '';
+          const actors = getCardActorNames(card);
+          const allText = [title, desc, ...actors].join(' ').toLowerCase();
+          return allText.includes(q);
+        });
+
+        const limited = results.slice(0, 6);
+        if (limited.length === 0) {
+          searchDropdown.innerHTML = '<div class="search-dropdown-empty">未找到匹配的短剧</div>';
+          searchDropdown.classList.add('show');
+          return;
+        }
+
+        searchDropdown.innerHTML = limited.map(card => {
+          const title = card.querySelector('h3')?.textContent || '';
+          const category = card.querySelector('.badge')?.textContent || '';
+          const episode = card.querySelector('.episode')?.textContent || '';
+          const thumbSrc = card.querySelector('.card-thumb')?.src || '';
+          const actors = getCardActorNames(card).join(', ');
+          return `<a class="search-dropdown-item" href="drama-detail.html">
+            <img src="${thumbSrc}" alt="${title}" />
+            <div class="sdi-info">
+              <span class="sdi-name">${title}</span>
+              <span class="sdi-sub">
+                ${category ? `<span class="sdi-badge">${category}</span>` : ''}
+                ${episode ? `<span>${episode}</span>` : ''}
+                ${actors ? `<span>参演: ${actors}</span>` : ''}
+              </span>
+            </div>
+          </a>`;
+        }).join('');
+        searchDropdown.classList.add('show');
+      }
+
+      searchInput.addEventListener('input', function() {
+        renderSearchDropdown(this.value);
+      });
+
+      // 点击页面空白处关闭下拉框
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-wrapper')) {
+          searchDropdown.classList.remove('show');
+        }
+      });
+
       function updateNoResults() {
         const cards = document.querySelectorAll('.card');
         let c = 0;
         cards.forEach(card => { if (card.style.display !== 'none') c++; });
-        document.getElementById('noResults').style.display = c === 0 ? 'block' : 'none';
+        const el = document.getElementById('noResults');
+        if (el) el.style.display = c === 0 ? 'block' : 'none';
       }
-
-      document.getElementById('searchInput').addEventListener('input', function() {
-        const term = this.value.toLowerCase();
-        document.querySelectorAll('.card').forEach(card => {
-          const t = card.querySelector('h3').textContent.toLowerCase();
-          const d = card.querySelector('p').textContent.toLowerCase();
-          card.style.display = (t.includes(term) || d.includes(term)) ? 'flex' : 'none';
-        });
-        updateNoResults();
-      });
 
       document.querySelectorAll('.filter-tag').forEach(tag => {
         tag.addEventListener('click', function() {
