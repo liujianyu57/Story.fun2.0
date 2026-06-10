@@ -196,7 +196,7 @@
       transition: all 0.3s ease;
     }
     .actor-card:hover {
-      transform: translateY(-3px);
+
       box-shadow: var(--shadow-md);
       border-color: rgba(0,179,136,0.15);
     }
@@ -717,6 +717,479 @@
       margin-top:2px;
     }
   </style>
+  <!-- Deployment Panel Styles - 游戏派遣编队 UI -->
+  <style>
+    /* ── 派遣面板容器 ── */
+    .deployment-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s ease;
+    }
+    .deployment-panel:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .deploy-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .deploy-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .deploy-panel-title .count-badge {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .deploy-panel-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .deploy-panel-stats .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .deploy-panel-stats .stat-value {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ── 5 槽位布局 ── */
+    .deploy-slots {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1024px) {
+      .deploy-slots { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .deploy-slots { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── 单个槽位 ── */
+    .deploy-slot {
+      position: relative;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .deploy-slot:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ── 占用槽位 ── */
+    .deploy-slot.occupied {
+      background: var(--surface);
+      border-width: 3px;
+    }
+    .deploy-slot.occupied.border-green {
+      border-color: var(--accent);
+    }
+    .deploy-slot.occupied.border-green:hover {
+      border-color: #00d9a3;
+    }
+    .deploy-slot.occupied.border-yellow {
+      border-color: var(--warning);
+    }
+    .deploy-slot.occupied.border-yellow:hover {
+      border-color: #f5d042;
+    }
+    .deploy-slot.occupied.border-red {
+      border-color: var(--danger);
+    }
+    .deploy-slot.occupied.border-red:hover {
+      border-color: #f47882;
+    }
+
+    /* ── 槽位顶部头像区域 ── */
+    .deploy-slot-top {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e8f5ef, #d4ece5);
+    }
+    .deploy-slot-top img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .deploy-slot.occupied:hover .deploy-slot-top img {
+      transform: scale(1.08);
+    }
+    .deploy-slot-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    /* 槽位内等级标签 */
+    .deploy-slot-level {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+      z-index: 2;
+    }
+    /* 体力百分比标签（头像右上） */
+    .deploy-slot-energy-tag {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #fff;
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .deploy-slot-energy-tag.high { background: rgba(0,179,136,0.75); }
+    .deploy-slot-energy-tag.medium { background: rgba(255,159,44,0.8); }
+    .deploy-slot-energy-tag.low { background: rgba(244,91,105,0.8); }
+    .deploy-slot-energy-tag.exhausted { background: rgba(94,111,131,0.8); }
+
+    /* ── 槽位底部信息区 ── */
+    .deploy-slot-body {
+      padding: 10px 12px 12px;
+    }
+    .deploy-slot-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+    /* 体力行（条 + 百分比） */
+    .deploy-slot-energy-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .deploy-slot-energy-bar {
+      flex: 1;
+      height: 4px;
+      background: #eaf4ee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .deploy-slot-energy-bar .fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.8s ease, background 0.4s ease;
+    }
+    .deploy-slot-energy-bar .fill.green { background: linear-gradient(90deg, #00b388, #00d9a3); }
+    .deploy-slot-energy-bar .fill.yellow { background: linear-gradient(90deg, #f5b042, #f5d042); }
+    .deploy-slot-energy-bar .fill.red { background: linear-gradient(90deg, #f45b69, #f47882); }
+    .deploy-slot-energy-bar .fill.gray { background: #c5d0db; }
+    .deploy-slot-energy-pct {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 32px;
+      text-align: right;
+    }
+
+    /* 状态 + 产出行 */
+    .deploy-slot-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+    }
+    .deploy-slot-status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+    .deploy-slot-status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .deploy-slot-status .dot.mining { background: #22c55e; box-shadow: 0 0 4px rgba(34,197,94,0.5); }
+    .deploy-slot-status .dot.exhausted { background: var(--text-sub); }
+    .deploy-slot-output {
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .deploy-slot-output .muted {
+      color: var(--text-sub);
+      font-weight: 400;
+    }
+    /* ── 槽位底部操作按钮组 ── */
+    .deploy-slot-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .deploy-slot-actions button {
+      flex: 1;
+      padding: 5px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .deploy-slot-charge-btn {
+      background: rgba(255,159,44,0.1);
+      color: var(--warning);
+      border: 1px solid rgba(255,159,44,0.2) !important;
+    }
+    .deploy-slot-charge-btn.yellow {
+      background: var(--warning);
+      color: #fff;
+      border-color: var(--warning) !important;
+    }
+    .deploy-slot-charge-btn.yellow:hover {
+      background: #f5c542;
+    }
+    .deploy-slot-charge-btn.soft,
+    .deploy-slot-rest-btn.soft {
+      opacity: 0.6;
+    }
+    .deploy-slot-charge-btn.soft:hover,
+    .deploy-slot-rest-btn.soft:hover {
+      opacity: 0.85;
+    }
+    .deploy-slot-rest-btn {
+      background: rgba(244,91,105,0.06);
+      color: var(--danger);
+      border: 1px solid rgba(244,91,105,0.2) !important;
+    }
+    .deploy-slot-rest-btn.red {
+      background: var(--danger);
+      color: #fff;
+      border-color: var(--danger) !important;
+    }
+    .deploy-slot-rest-btn.red:hover {
+      background: #f47882;
+    }
+    .deploy-slot-rest-btn.soft:hover {
+      opacity: 0.6;
+    }
+
+    /* ── 空槽位 ── */
+    .deploy-slot.empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+      border: 2px dashed var(--border);
+      background: rgba(222,234,247,0.25);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .deploy-slot.empty:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .deploy-slot-empty-icon {
+      font-size: 1.8rem;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      transition: transform 0.3s ease;
+    }
+    .deploy-slot.empty:hover .deploy-slot-empty-icon {
+      transform: scale(1.2);
+      color: var(--accent);
+    }
+    .deploy-slot-empty-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+
+    /* ── 槽位操作菜单（点击展开） ── */
+    .deploy-slot-menu {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 10;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+    .deploy-slot.occupied:hover .deploy-slot-menu {
+      opacity: 1;
+      visibility: visible;
+    }
+    .deploy-slot-menu-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.2s;
+    }
+    .deploy-slot-menu-btn:hover {
+      background: rgba(0,0,0,0.6);
+    }
+    /* 悬浮气泡菜单 */
+    .deploy-slot-tooltip {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      right: 0;
+      background: rgba(26,35,47,0.96);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 8px 24px rgba(27,45,71,0.25);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      z-index: 20;
+      min-width: 120px;
+    }
+    .deploy-slot.occupied:hover .deploy-slot-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+    .deploy-slot-tooltip-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: #e8edf4;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+    .deploy-slot-tooltip-item:hover {
+      background: rgba(255,255,255,0.08);
+    }
+    .deploy-slot-tooltip-item.danger {
+      color: #f45b69;
+    }
+    .deploy-slot-tooltip-item.danger:hover {
+      background: rgba(244,91,105,0.12);
+    }
+    .deploy-slot-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      right: 10px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid rgba(26,35,47,0.96);
+    }
+
+    /* ── 派遣选人 Modal 定制 ── */
+    .slot-picker-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 320px;
+      overflow-y: auto;
+      margin: 12px 0 16px;
+    }
+    .slot-picker-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .slot-picker-item:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .slot-picker-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .slot-picker-item .spi-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .slot-picker-item .spi-name {
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+    .slot-picker-item .spi-detail {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .slot-picker-item .spi-energy {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+    .slot-picker-empty {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* ── 派遣面板内动画 ── */
+    @keyframes slot-pop-in {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .deploy-slot.just-dispatched {
+      animation: slot-pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+  </style>
 </head>
 <body>
   <div id="header-placeholder"></div>
@@ -725,7 +1198,7 @@
     <!-- ===== Page Header ===== -->
     <div class="page-header">
       <div class="page-header-left">
-        <h1>🏢 经纪工坊</h1>
+        <h1>经纪工坊</h1>
         <p>管理你的演员分身，监控挖矿收益，调度演出计划</p>
       </div>
       <div class="page-header-actions">
@@ -733,10 +1206,26 @@
       </div>
     </div>
 
+    <!-- ===== 派遣面板（5 槽位编队） ===== -->
+    <div class="deployment-panel" id="deploymentPanel">
+      <div class="deploy-panel-header">
+        <div class="deploy-panel-title">
+          <span>🎬 派遣中的演员</span>
+          <span class="count-badge" id="deployCount">(0/5)</span>
+        </div>
+        <div class="deploy-panel-stats">
+          <span class="stat-item">⛏️ 今日总产出 <span class="stat-value" id="deployTotalOutput">0</span> STORY</span>
+          <span class="stat-item">⏳ 总体力 <span class="stat-value" id="deployTotalEnergy">0</span> / <span class="stat-value">840</span></span>
+        </div>
+      </div>
+      <div class="deploy-slots" id="deploySlots">
+        <!-- 由 JS 动态渲染 5 个槽位 -->
+      </div>
+    </div>
+
     <!-- ===== Actor Grid Section ===== -->
     <div class="section-header">
-      <h2>🎭 我的演员分身 <span class="count-badge" id="actorCount">(0)</span></h2>
-      <!-- sort removed -->
+      <h2>我的演员 <span class="count-badge" id="actorCount">(0)</span></h2>
     </div>
 
     <div class="actor-grid" id="actorGrid">
@@ -752,15 +1241,27 @@
 
   </div>
 
+  <!-- ===== Slot Picker Modal (空槽位点击选人) ===== -->
+  <div class="modal-overlay" id="slotPickerModal">
+    <div class="modal-card">
+      <h2>🎭 选择派遣演员</h2>
+      <p class="modal-sub">选择一位空闲中的演员进行派遣</p>
+      <div class="slot-picker-list" id="slotPickerList">
+        <!-- 由 JS 渲染 -->
+      </div>
+      <button class="modal-btn cancel" onclick="closeSlotPicker()">取消</button>
+    </div>
+  </div>
+
   <!-- ===== 派遣演员 Modal ===== -->
   <div class="modal-overlay" id="stakeModal">
     <div class="modal-card">
-      <h2>🎭 派遣演员</h2>
+      <h2>派遣演员</h2>
       <div style="text-align:center;margin-bottom:4px;">
         <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="modalStakeActorName">—</div>
         <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="modalStakeActorLevel">—</div>
       </div>
-      <p class="modal-sub" style="font-size:0.88rem;color:var(--text-muted);margin-bottom:22px;border-top:1px solid var(--border);padding-top:16px;">该演员将自动进行质押挖矿，持续为你产出 STORY 收益。</p>
+      <p class="modal-sub" style="font-size:0.88rem;color:var(--text-muted);margin-bottom:22px;border-top:1px solid var(--border);padding-top:16px;">该演员将自动进行质押挖矿，持续为你产出 STORY 收益。注意：每个整点消耗 1 点体力，体力耗尽则停止产出。</p>
       <button class="modal-btn confirm" onclick="confirmStake()">确认派遣</button>
       <button class="modal-btn cancel" onclick="closeStakeModal()">取消</button>
     </div>
@@ -770,7 +1271,7 @@
   <!-- ===== Level Detail Modal (咖位升级) ===== -->
   <div class="modal-overlay" id="levelModal">
     <div class="modal-card">
-      <h2>🏅 咖位详情</h2>
+      <h2>咖位详情</h2>
       <p class="modal-sub" id="modalLevelActor">了解升级路径</p>
 
       <!-- Current Level -->
@@ -864,176 +1365,127 @@
     ];
 
     // ============================================================
+    //  升级门槛
+    // ============================================================
+    const LEVEL_UP_THRESHOLDS = [
+      null,
+      { playsRequired: 0,     cost: 0     },
+      { playsRequired: 10000,   cost: 500   },
+      { playsRequired: 50000,   cost: 2000  },
+      { playsRequired: 200000,  cost: 8000  },
+      { playsRequired: 1000000, cost: 30000 },
+    ];
+
+    // ============================================================
+    //  派遣系统常量
+    // ============================================================
+    const MAX_STAKING_SLOTS = 5;
+
+    // ============================================================
     //  模拟数据：用户持有的子级演员 NFT
     // ============================================================
-    // 每个子演员 = 用户从母版 Mint 出来的独立资产
-    const MY_ACTORS = [
-      // === 苏婉清 IP × 3 个分身（前3张卡片一模一样，仅ID后缀不同） ===
+    let MY_ACTORS = [
       {
-        id: '#Su-001',
-        name: '苏婉清',
+        id: '#Su-001', name: '苏婉清',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'suvanqing',
-        level: 2,
-        energy: 180,
-        energyMax: 240,
-        heat: 2.4,
-        dailyStory: 18.5,
-        cumulativeStory: 342.8,
-        cumulativePlays: 50000,
-        isStaking: true,
-        stakingDays: 5,
-        status: 'active',
+        parentIP: 'suvanqing', level: 2,
+        energy: 150, energyMax: 168,
+        heat: 2.4, dailyStory: 18.5, cumulativeStory: 342.8, cumulativePlays: 50000,
+        isStaking: true, stakingDays: 5, status: 'active',
+        todayOutput: 3.8, outputRate: 0,
       },
       {
-        id: '#Su-002',
-        name: '苏婉清',
+        id: '#Su-002', name: '苏婉清',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'suvanqing',
-        level: 2,
-        energy: 120,
-        energyMax: 240,
-        heat: 2.0,
-        dailyStory: 15.0,
-        cumulativeStory: 120.0,
-        cumulativePlays: 30000,
-        isStaking: false,
-        stakingDays: 0,
-        status: 'idle',
+        parentIP: 'suvanqing', level: 2,
+        energy: 120, energyMax: 168,
+        heat: 2.0, dailyStory: 15.0, cumulativeStory: 120.0, cumulativePlays: 30000,
+        isStaking: false, stakingDays: 0, status: 'idle',
+        todayOutput: 0, outputRate: 0,
       },
       {
-        id: '#Su-003',
-        name: '苏婉清',
+        id: '#Su-003', name: '苏婉清',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'suvanqing',
-        level: 2,
-        energy: 80,
-        energyMax: 240,
-        heat: 1.8,
-        dailyStory: 12.0,
-        cumulativeStory: 95.0,
-        cumulativePlays: 20000,
-        isStaking: false,
-        stakingDays: 0,
-        status: 'idle',
+        parentIP: 'suvanqing', level: 2,
+        energy: 80, energyMax: 168,
+        heat: 1.8, dailyStory: 12.0, cumulativeStory: 95.0, cumulativePlays: 20000,
+        isStaking: false, stakingDays: 0, status: 'idle',
+        todayOutput: 0, outputRate: 0,
       },
-      // === 其他演员 ===
       {
-        id: '#Li-001',
-        name: '李云飞',
+        id: '#Li-001', name: '李云飞',
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'liyunfei',
-        level: 1,
-        energy: 30,
-        energyMax: 100,
-        heat: 0.8,
-        dailyStory: 0.8,
-        cumulativeStory: 15.2,
-        cumulativePlays: 8000,
-        isStaking: true,
-        stakingDays: 2,
-        status: 'active',
+        parentIP: 'liyunfei', level: 1,
+        energy: 30, energyMax: 168,
+        heat: 0.8, dailyStory: 0.8, cumulativeStory: 15.2, cumulativePlays: 8000,
+        isStaking: true, stakingDays: 2, status: 'active',
+        todayOutput: 0.1, outputRate: 0,
       },
       {
-        id: '#Lin-001',
-        name: '林梦瑶',
+        id: '#Lin-001', name: '林梦瑶',
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'linmengyao',
-        level: 3,
-        energy: 420,
-        energyMax: 580,
-        heat: 3.5,
-        dailyStory: 87.5,
-        cumulativeStory: 2150.0,
-        cumulativePlays: 68000,
-        isStaking: true,
-        stakingDays: 12,
-        status: 'active',
+        parentIP: 'linmengyao', level: 3,
+        energy: 140, energyMax: 168,
+        heat: 3.5, dailyStory: 87.5, cumulativeStory: 2150.0, cumulativePlays: 68000,
+        isStaking: true, stakingDays: 12, status: 'active',
+        todayOutput: 12.4, outputRate: 0,
       },
       {
-        id: '#Zhao-001',
-        name: '赵无极',
+        id: '#Zhao-001', name: '赵无极',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'zhaowuji',
-        level: 4,
-        energy: 1100,
-        energyMax: 1350,
-        heat: 5.2,
-        dailyStory: 286.0,
-        cumulativeStory: 8200.0,
-        cumulativePlays: 350000,
-        isStaking: false,
-        stakingDays: 0,
-        status: 'idle',
+        parentIP: 'zhaowuji', level: 4,
+        energy: 1100, energyMax: 168,
+        heat: 5.2, dailyStory: 286.0, cumulativeStory: 8200.0, cumulativePlays: 350000,
+        isStaking: false, stakingDays: 0, status: 'idle',
+        todayOutput: 0, outputRate: 0,
       },
       {
-        id: '#Shang-001',
-        name: '上官婉儿',
+        id: '#Shang-001', name: '上官婉儿',
         avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'shangguan',
-        level: 1,
-        energy: 65,
-        energyMax: 100,
-        heat: 0.6,
-        dailyStory: 0,
-        cumulativeStory: 0,
-        cumulativePlays: 200,
-        isStaking: false,
-        stakingDays: 0,
-        status: 'paused',
+        parentIP: 'shangguan', level: 1,
+        energy: 65, energyMax: 168,
+        heat: 0.6, dailyStory: 0, cumulativeStory: 0, cumulativePlays: 200,
+        isStaking: false, stakingDays: 0, status: 'paused',
+        todayOutput: 0, outputRate: 0,
       },
       {
-        id: '#Luna-001',
-        name: 'Luna',
+        id: '#Luna-001', name: 'Luna',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'shangguan',
-        level: 1,
-        energy: 50,
-        energyMax: 100,
-        heat: 1.0,
-        dailyStory: 12.5,
-        cumulativeStory: 38.0,
-        cumulativePlays: 5000,
-        isStaking: false,
-        stakingDays: 0,
-        status: 'paused',
+        parentIP: 'shangguan', level: 1,
+        energy: 50, energyMax: 168,
+        heat: 1.0, dailyStory: 12.5, cumulativeStory: 38.0, cumulativePlays: 5000,
+        isStaking: false, stakingDays: 0, status: 'paused',
+        todayOutput: 0, outputRate: 0,
       },
-      // 李云飞（liyunfei）同IP同等级分身，供升级消耗
       {
-        id: '#Li-002',
-        name: '李云飞·贰',
+        id: '#Li-002', name: '李云飞·贰',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'liyunfei',
-        level: 1,
-        energy: 60,
-        energyMax: 100,
-        heat: 0.7,
-        dailyStory: 0.5,
-        cumulativeStory: 3.0,
-        cumulativePlays: 5000,
-        isStaking: false,
-        stakingDays: 0,
-        status: 'idle',
+        parentIP: 'liyunfei', level: 1,
+        energy: 60, energyMax: 168,
+        heat: 0.7, dailyStory: 0.5, cumulativeStory: 3.0, cumulativePlays: 5000,
+        isStaking: false, stakingDays: 0, status: 'idle',
+        todayOutput: 0, outputRate: 0,
       },
       {
-        id: '#Li-003',
-        name: '李云飞·叁',
+        id: '#Li-003', name: '李云飞·叁',
         avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'liyunfei',
-        level: 1,
-        energy: 45,
-        energyMax: 100,
-        heat: 0.6,
-        dailyStory: 0.3,
-        cumulativeStory: 1.5,
-        cumulativePlays: 3000,
-        isStaking: false,
-        stakingDays: 0,
-        status: 'idle',
+        parentIP: 'liyunfei', level: 1,
+        energy: 45, energyMax: 168,
+        heat: 0.6, dailyStory: 0.3, cumulativeStory: 1.5, cumulativePlays: 3000,
+        isStaking: false, stakingDays: 0, status: 'idle',
+        todayOutput: 0, outputRate: 0,
       },
     ];
 
+    // ============================================================
+    //  全局状态
+    // ============================================================
     let toastTimer = null;
+    let pendingStakeActorId = null;
+    let pendingLevelActorId = null;
+    let selectedConsumeIds = [];
+    let pendingChargeActorId = null;
+    let pendingSlotPickerCallback = null;
 
     // ============================================================
     //  Toast
@@ -1057,30 +1509,114 @@
     }
 
     // ============================================================
-    //  获取能量状态
+    //  获取当前派遣中的演员（插槽数据）
+    // ============================================================
+    function getDeployedActors() {
+      return MY_ACTORS.filter(a => a.isStaking).slice(0, MAX_STAKING_SLOTS);
+    }
+
+    // ============================================================
+    //  能量状态判断
     // ============================================================
     function getEnergyState(energy, max) {
       const pct = max > 0 ? (energy / max) * 100 : 0;
-      if (pct >= 50) return { cls: 'high' };
-      if (pct > 0) return { cls: 'medium' };
-      return { cls: 'low' };
+      if (pct >= 50) return { cls: 'high', tagCls: 'high', barCls: 'green', label: '全速' };
+      if (pct > 0) return { cls: 'medium', tagCls: 'medium', barCls: 'yellow', label: '衰减' };
+      return { cls: 'low', tagCls: 'exhausted', barCls: 'gray', label: '耗尽' };
     }
 
     function getStatusInfo(status) {
       switch(status) {
-        case 'active': return { label: '挖矿中', dot: 'active' };
-        case 'paused': return { label: '暂停中', dot: 'paused' };
+        case 'active': return { label: '挖矿中', dot: 'mining' };
+        case 'exhausted': return { label: '已耗尽', dot: 'exhausted' };
         default: return { label: '闲置', dot: 'idle' };
       }
     }
 
     // ============================================================
-    //  页面初始化
+    //  渲染：派遣槽位
     // ============================================================
-    document.addEventListener('DOMContentLoaded', function() {
-      renderActors();
-    });
+    function renderDeploySlots() {
+      const container = document.getElementById('deploySlots');
+      const deployed = getDeployedActors();
+      const count = document.getElementById('deployCount');
+      const totalOutput = document.getElementById('deployTotalOutput');
+      const totalEnergy = document.getElementById('deployTotalEnergy');
 
+      count.textContent = `(${deployed.length}/${MAX_STAKING_SLOTS})`;
+
+      let totalStory = 0;
+
+      const slotsHtml = [];
+      for (let i = 0; i < MAX_STAKING_SLOTS; i++) {
+        const actor = deployed[i];
+        if (actor) {
+          const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+          const energyState = getEnergyState(actor.energy, actor.energyMax);
+          const pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+          const statusInfo = getStatusInfo(actor.status);
+
+          // 边框颜色 & 体力条颜色：体力 = 0 → red，体力 ≤ 8 → yellow，体力 > 8 → green
+          const borderCls = actor.energy <= 0 ? 'border-red' : actor.energy <= 8 ? 'border-yellow' : 'border-green';
+          const barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
+
+          totalStory += (actor.todayOutput || 0);
+
+          slotsHtml.push(`
+            <div class="deploy-slot occupied ${borderCls}" data-actor-id="${actor.id}">
+              <div class="deploy-slot-top">
+                <img src="${actor.avatar}" alt="${actor.name}" />
+                <div class="deploy-slot-overlay"></div>
+                <span class="deploy-slot-level" style="background:${levelCfg.color}99;">Lv${actor.level}</span>
+              </div>
+              <div class="deploy-slot-body">
+                <div class="deploy-slot-name">${actor.name} <span style="font-weight:400;font-size:0.65rem;color:var(--text-sub);margin-left:4px;">${actor.id}</span></div>
+                <div class="deploy-slot-energy-row">
+                  <div class="deploy-slot-energy-bar">
+                    <div class="fill ${barCls}" style="width:${pct}%;"></div>
+                  </div>
+                  <span class="deploy-slot-energy-pct">⚡${actor.energy}/${actor.energyMax}</span>
+                </div>
+                <div class="deploy-slot-row">
+                  <span style="font-size:0.7rem;color:var(--text-sub);font-weight:500;">今日产出</span>
+                  <span class="deploy-slot-output">${(actor.todayOutput || 0).toFixed(1)}<span class="muted"> STORY</span></span>
+                </div>
+                <div class="deploy-slot-actions">
+                  ${actor.energy < actor.energyMax ? `<button class="deploy-slot-charge-btn${actor.energy > 8 ? ' soft' : ' yellow'}" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充</button>` : ''}
+                  <button class="deploy-slot-rest-btn${actor.energy > 8 ? ' soft' : actor.energy <= 0 ? ' red' : ''}" onclick="event.stopPropagation();recallActor('${actor.id}')">⏹ 休息</button>
+                </div>
+              </div>
+              <!-- 悬浮操作菜单 -->
+              <div class="deploy-slot-menu">
+                <button class="deploy-slot-menu-btn" onclick="event.stopPropagation();">···</button>
+                <div class="deploy-slot-tooltip">
+                  <button class="deploy-slot-tooltip-item" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充体力</button>
+                  <button class="deploy-slot-tooltip-item danger" onclick="event.stopPropagation();recallActor('${actor.id}')">⏹ 召回休息</button>
+                </div>
+              </div>
+            </div>
+          `);
+        } else {
+          // 空槽位
+          slotsHtml.push(`
+            <div class="deploy-slot empty" onclick="openSlotPicker()">
+              <div class="deploy-slot-empty-icon">+</div>
+              <div class="deploy-slot-empty-label">派遣演员</div>
+            </div>
+          `);
+        }
+      }
+
+      container.innerHTML = slotsHtml.join('');
+
+      // 统计信息
+      totalOutput.textContent = totalStory.toFixed(1);
+      totalEnergy.textContent = deployed.length > 0 ? deployed.reduce((sum, a) => sum + a.energy, 0).toLocaleString() : '0';
+    }
+
+    // ============================================================
+    //  渲染：演员网格
+    // ============================================================
     function renderActors() {
       const grid = document.getElementById('actorGrid');
       const empty = document.getElementById('emptyState');
@@ -1102,13 +1638,11 @@
         const pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
         const statusInfo = getStatusInfo(actor.status);
 
-        // 判断是否可升级：非满级 + 累计完播 >= 下一级门槛
         const canUpgrade = actor.level < 5 && (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || Infinity);
         const profileLink = 'sub-actor-profile.html?id=' + encodeURIComponent(actor.id);
 
         return `
         <div class="actor-card" data-actor-id="${actor.id}" onclick="location.href='${profileLink}'" style="cursor:pointer;">
-          <!-- Hero Avatar -->
           <div class="actor-card-hero">
             <img src="${actor.avatar}" alt="${actor.name}" />
             ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
@@ -1125,14 +1659,12 @@
             </div>
           </div>
 
-          <!-- Name Row -->
           <div class="actor-card-name-row">
             <span class="actor-name">${actor.name}</span>
             ${actor.energy < actor.energyMax ? `<button class="charge-name-btn" onclick="event.stopPropagation();openChargeModal('${actor.id}')" title="付费片酬恢复">⚡</button>` : ''}
           </div>
 
           <div class="actor-card-body">
-            <!-- Energy Bar -->
             <div class="energy-row">
               <span class="energy-icon">⚡</span>
               <div class="energy-bar-bg">
@@ -1157,7 +1689,6 @@
               ${actor.energy < actor.energyMax && pct < 50 ? `<button class="card-action-btn charge" style="flex:none;padding:3px 14px;font-size:0.72rem;" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充</button>` : ''}
             </div>
 
-            <!-- Mining Stats: 2×2 -->
             <div class="mining-stats">
               <div class="ms-item">
                 <div class="ms-info">
@@ -1198,19 +1729,29 @@
 
         </div>`;
       }).join('');
-
     }
 
     // ============================================================
-    //  派遣 Modal
+    //  全量渲染
     // ============================================================
-    let pendingStakeActorId = null;
-    let selectedDuration = 1;
+    function renderAll() {
+      renderDeploySlots();
+      renderActors();
+    }
 
+    // ============================================================
+    //  派遣演员 Modal
+    // ============================================================
     function openStakeModal(actorId) {
       pendingStakeActorId = actorId;
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
+
+      const deployed = getDeployedActors();
+      if (deployed.length >= MAX_STAKING_SLOTS) {
+        showToast('派遣上限已满（最多 5 个），请先召回一位', '⚠️');
+        return;
+      }
 
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
       document.getElementById('modalStakeActorName').textContent = actor.name;
@@ -1232,49 +1773,86 @@
       if (actor) {
         actor.isStaking = true;
         actor.status = 'active';
+        actor.stakingDays = 0;
         showToast('✅ ' + actor.name + ' 已派遣', '⛏️');
       }
       closeStakeModal();
-      renderActors();
+      renderAll();
     }
 
-
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-      overlay.addEventListener('click', function(e) {
-        if (e.target === this) {
-          this.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      });
-    });
-
     // ============================================================
-    //  休息
+    //  召回（休息）
     // ============================================================
+    function recallActor(actorId) {
+      const actor = MY_ACTORS.find(a => a.id === actorId);
+      if (!actor) return;
+      actor.isStaking = false;
+      actor.status = 'idle';
+      showToast('⏹ ' + actor.name + ' 已召回休息', '⏹');
+      renderAll();
+    }
+
     function unstakeActor(actorId) {
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
       if (confirm('确定让 ' + actor.name + ' 休息？')) {
         actor.isStaking = false;
-        actor.stakingDays = 0;
         actor.status = 'idle';
+        actor.stakingDays = 0;
         showToast('⏹ ' + actor.name + ' 已休息', '⏹');
-        renderActors();
+        renderAll();
       }
+    }
+
+    // ============================================================
+    //  空槽位选人 Modal（Slot Picker）
+    // ============================================================
+    function openSlotPicker() {
+      const available = MY_ACTORS.filter(a => !a.isStaking);
+      const list = document.getElementById('slotPickerList');
+      const modal = document.getElementById('slotPickerModal');
+
+      if (available.length === 0) {
+        list.innerHTML = '<div class="slot-picker-empty">没有空闲的演员可供派遣</div>';
+      } else {
+        list.innerHTML = available.map(a => {
+          const levelCfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
+          return `
+            <div class="slot-picker-item" onclick="slotPickerSelect('${a.id}')">
+              <img src="${a.avatar}" alt="${a.name}" />
+              <div class="spi-info">
+                <div class="spi-name">${a.name}</div>
+                <div class="spi-detail">${a.id} · ${levelCfg.name} · Lv${a.level}</div>
+              </div>
+              <span class="spi-energy">⚡ ${a.energy}/${a.energyMax}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSlotPicker() {
+      document.getElementById('slotPickerModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function slotPickerSelect(actorId) {
+      closeSlotPicker();
+      openStakeModal(actorId);
     }
 
     // ============================================================
     //  Charge Modal (付费片酬恢复)
     // ============================================================
-    let pendingChargeActorId = null;
-
     function openChargeModal(actorId) {
       pendingChargeActorId = actorId;
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
 
       const shortage = actor.energyMax - actor.energy;
-      // 简单定价：每缺 1 点能量 = 0.5 STORY
       const cost = shortage * 0.5;
 
       document.getElementById('modalChargeActor').textContent = actor.name + ' · ⚡' + actor.energy + '/' + actor.energyMax;
@@ -1301,27 +1879,12 @@
         showToast('⚡ ' + actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' STORY）', '⚡');
       }
       closeChargeModal();
-      renderActors();
+      renderAll();
     }
 
     // ============================================================
     //  Level Modal (咖位升级详情)
     // ============================================================
-    // 升级门槛 (同 v2.2 经济模型)
-    const LEVEL_UP_THRESHOLDS = [
-      null,
-      { playsRequired: 0,     cost: 0     },
-      { playsRequired: 10000,   cost: 500   },
-      { playsRequired: 50000,   cost: 2000  },
-      { playsRequired: 200000,  cost: 8000  },
-      { playsRequired: 1000000, cost: 30000 },
-    ];
-
-    let pendingLevelActorId = null;
-
-    // 记录当前弹窗中已选中的消耗分身ID
-    let selectedConsumeIds = [];
-
     function openLevelModal(actorId) {
       pendingLevelActorId = actorId;
       selectedConsumeIds = [];
@@ -1335,16 +1898,13 @@
 
       document.getElementById('modalLevelActor').textContent = actor.name + ' · 成长路径';
 
-      // Current level info
       document.getElementById('modalLevelCurrent').textContent = 'Lv' + actor.level;
       document.getElementById('modalLevelName').textContent = currentCfg.name;
       document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
 
-      // 查找同IP同等级演员（不含自身）
       const sameIpSameLevel = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
       const availableCount = sameIpSameLevel.length;
 
-      // 渲染可选分身列表
       const grid = document.getElementById('consumeGrid');
       if (sameIpSameLevel.length === 0) {
         grid.innerHTML = '<div class="consume-empty">没有可消耗的同IP同等级分身</div>';
@@ -1363,8 +1923,6 @@
       if (nextLevel && threshold) {
         const plays = actor.cumulativePlays || 0;
         const progress = Math.min(100, (plays / threshold.playsRequired) * 100);
-        const meetsPlayReq = plays >= threshold.playsRequired;
-
         document.getElementById('modalLevelPlays').textContent = formatNumber(plays);
         document.getElementById('modalLevelPlaysReq').textContent = formatNumber(threshold.playsRequired);
         document.getElementById('modalLevelCost').textContent = threshold.cost + ' STORY';
@@ -1377,7 +1935,6 @@
 
         document.getElementById('modalLevelMaxMsg').style.display = 'none';
       } else {
-        // Already max level
         document.getElementById('modalLevelUpBtn').style.display = 'none';
         document.getElementById('modalLevelMaxMsg').style.display = 'block';
         document.getElementById('consumeList').style.display = 'none';
@@ -1450,21 +2007,71 @@
         return;
       }
 
-      // 消耗选中的 2 个同IP同等级分身
       selectedConsumeIds.forEach(id => {
         const idx = MY_ACTORS.findIndex(a => a.id === id);
         if (idx !== -1) MY_ACTORS.splice(idx, 1);
       });
 
-      // 升级
       actor.level = nextLevel;
       actor.energyMax = LEVEL_CONFIG[nextLevel].energyMax;
       actor.energy = LEVEL_CONFIG[nextLevel].energyMax;
 
       closeLevelModal();
-      renderActors();
+      renderAll();
       showToast('🏆 ' + actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name + '！', '🎉');
     }
+
+    // ============================================================
+    //  ⏰ 体力 Tick 模拟
+    //  每 1 秒消耗/恢复 1 点体力
+    // ============================================================
+    function energyTick() {
+      MY_ACTORS.forEach(actor => {
+        if (actor.isStaking && actor.status === 'active') {
+          // 派遣中：每小时消耗 1 点体力
+          actor.energy = Math.max(0, actor.energy - 1);
+
+          // 计算本次产出一小时的量（考虑衰减）
+          const effRatio = actor.energyMax > 0 ? Math.min(1, Math.max(0, (actor.energy + 1) / (actor.energyMax * 0.5))) : 0;
+          const hourlyOutput = actor.dailyStory / 24 * effRatio;
+          actor.todayOutput = (actor.todayOutput || 0) + hourlyOutput;
+          actor.cumulativeStory = (actor.cumulativeStory || 0) + hourlyOutput;
+
+          // 体力耗尽
+          if (actor.energy <= 0) {
+            actor.energy = 0;
+            actor.status = 'exhausted';
+          }
+        } else if (!actor.isStaking && actor.status !== 'exhausted') {
+          // 休息中：每小时恢复 1 点体力
+          if (actor.energy < actor.energyMax) {
+            actor.energy = Math.min(actor.energyMax, actor.energy + 1);
+          }
+        }
+      });
+
+      renderAll();
+    }
+
+    // ============================================================
+    //  页面初始化
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      renderAll();
+
+      // 启动体力模拟（每 1 秒 = 1 点体力）
+      setInterval(energyTick, 1000);
+
+      // 点击 Modal 外部关闭
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      });
+    });
 
   </script>
   <div id="bottom-nav-placeholder"></div>
