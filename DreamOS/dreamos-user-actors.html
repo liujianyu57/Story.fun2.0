@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的演员素材 · DreamOS</title>
+<title>我的演员 IP · DreamOS</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -707,7 +707,7 @@ body {
 <div class="topbar">
   <div class="tb-left">
     <button class="back-btn" onclick="goBack()">← 返回</button>
-    <span class="tb-title">我的演员素材</span>
+    <span class="tb-title">我的演员 IP</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button class="tb-right-btn" onclick="window.open('../studio.html','_blank')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:6px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">进入经纪工坊 →</button>
@@ -733,7 +733,7 @@ body {
         <button class="modal-copy-btn" id="modalCopyBtn" onclick="copyContract()">复制</button>
       </div>
       <div class="modal-clone-section">
-        <div class="modal-clone-label">持有的演员素材</div>
+        <div class="modal-clone-label">持有的演员</div>
         <div class="modal-clone-list" id="modalCloneList"></div>
         <button class="modal-clone-load-more" id="modalLoadMore" onclick="loadMoreClones()" style="display:none">加载更多 ↓</button>
       </div>
@@ -748,7 +748,7 @@ body {
 <div class="modal-overlay" id="createModal">
   <div class="modal-card">
     <div class="modal-header">
-      <h2 style="font-size:20px">创建演员素材</h2>
+      <h2 style="font-size:20px">创建演员 IP</h2>
       <button class="modal-close" onclick="closeCreateModal()">✕</button>
     </div>
     <div class="modal-body create-form">
@@ -942,8 +942,8 @@ function renderPage() {
     body.innerHTML =
       '<div class="login-prompt">' +
       '  <div class="prompt-icon">🎭</div>' +
-      '  <div class="prompt-title">登录后查看持有的演员素材</div>' +
-      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员素材。</div>' +
+      '  <div class="prompt-title">登录后查看持有的演员 IP</div>' +
+      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员 IP。</div>' +
       '  <button class="prompt-btn" onclick="goLogin()">去登录 →</button>' +
       '</div>';
     document.getElementById('nft-count').textContent = '未登录';
@@ -970,9 +970,9 @@ function renderPage() {
     body.innerHTML =
       '<div class="empty-state">' +
       '  <div class="empty-icon">🎭</div>' +
-      '  <div class="empty-title">还没有持有演员素材</div>' +
-      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员素材，即可在这里查看你持有的演员素材。</div>' +
-      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建演员素材</button>' +
+      '  <div class="empty-title">还没有持有演员 IP</div>' +
+      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员 IP，即可在这里查看你持有的演员 IP。</div>' +
+      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建演员 IP</button>' +
       '</div>';
     return;
   }
@@ -980,10 +980,10 @@ function renderPage() {
   // ── Render cards (one per IP) ──
   var html = '';
   html += '<div class="sec-name-row">';
-  html += '  <div class="sec-name">我的演员素材</div>';
-  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建演员素材</button>';
+  html += '  <div class="sec-name">我的演员 IP</div>';
+  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建演员 IP</button>';
   html += '</div>';
-  html += '<div class="sec-sub">持有演员素材即可使用该素材形象参与短剧。</div>';
+  html += '<div class="sec-sub">持有演员 IP 即可使用该形象参演短剧。</div>';
   html += '<hr class="sec-div">';
   html += '<div class="actor-grid">';
 
@@ -1220,7 +1220,7 @@ function confirmCreate() {
 
   // Validation
   if (!name) { showToast('请输入演员姓名'); return; }
-  if (ACTOR_IP_DB[name]) { showToast('该演员素材已存在'); return; }
+  if (ACTOR_IP_DB[name]) { showToast('该演员 IP 已存在'); return; }
   if (!desc) { showToast('请输入演员简介'); return; }
   if (price < 0) { showToast('请输入有效的素材价格'); return; }
   if (selfReserve < 1) { showToast('自留数量至少为 1'); return; }
@@ -1259,7 +1259,7 @@ function confirmCreate() {
 
   closeCreateModal();
   renderPage();
-  showToast('✅ 演员素材「' + name + '」创建成功');
+  showToast('✅ 演员 IP「' + name + '」创建成功');
 }
 
 // ══════════════════════════════════════════════
