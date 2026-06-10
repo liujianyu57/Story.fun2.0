@@ -23,11 +23,6 @@
       --danger: #f45b69;
       --warning: #ff9f2c;
       --gold: #f5b042;
-      --lv1: #8a9bb5;
-      --lv2: #5bc0de;
-      --lv3: #5cb85c;
-      --lv4: #f0ad4e;
-      --lv5: #d9534f;
       font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; }
@@ -349,14 +344,13 @@
       text-align: right;
     }
 
-    /* Mining Stats - 2×2 grid for readability */
+    /* Mining Stats - 一行三列 */
     .mining-stats {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 6px;
-      background: var(--bg);
       border-radius: 14px;
-      padding: 14px 16px;
+      padding: 8px 0;
     }
     .ms-item {
       text-align: left;
@@ -377,9 +371,8 @@
       font-size: 0.95rem;
       font-weight: 700;
       line-height: 1.3;
+      color: var(--text);
     }
-    .ms-value.green { color: var(--accent); }
-    .ms-value.blue { color: #4a9eff; }
 
     /* Card Footer: actions */
     .actor-card-footer {
@@ -629,21 +622,6 @@
     .consume-item .ci-name { font-size:0.85rem; font-weight:600; flex:1; }
     .consume-item .ci-lv { font-size:0.72rem; color:var(--text-muted); }
     .consume-empty { text-align:center; color:var(--text-muted); font-size:0.82rem; padding:16px 0; }
-
-    /* ===== 体力效率状态标签 ===== */
-    .energy-efficiency {
-      display:flex;
-      align-items:center;
-      gap:4px;
-      font-size:0.72rem;
-      font-weight:600;
-      padding:3px 10px;
-      border-radius:999px;
-      white-space:nowrap;
-    }
-    .energy-efficiency.full { background:rgba(0,179,136,0.1); color:var(--accent); }
-    .energy-efficiency.decay { background:rgba(255,159,44,0.12); color:var(--warning); }
-    .energy-efficiency.strike { background:rgba(244,91,105,0.1); color:var(--danger); }
 
     /* ===== 体力问号 tooltip ===== */
     .energy-help-wrap {
@@ -1191,6 +1169,7 @@
         <p>管理你的演员分身，监控挖矿收益，调度演出计划</p>
       </div>
       <div class="page-header-actions">
+        <a class="btn-primary" href="DreamOS/dreamos.html" target="_blank" style="background:linear-gradient(135deg, #05DF72, #00BBA7);">🎬 去拍剧</a>
         <a class="btn-secondary" href="actors.html">🎭 签约演员</a>
       </div>
     </div>
@@ -1437,7 +1416,7 @@
         id: '#Zhao-001', name: '赵无极',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80',
         parentIP: 'zhaowuji', level: 4,
-        energy: 1100, energyMax: 168,
+        energy: 100, energyMax: 168,
         heat: 5.2, dailyStory: 286.0, cumulativeStory: 8200.0, cumulativePlays: 350000,
         isStaking: false, stakingDays: 0, status: 'idle',
         todayOutput: 0, outputRate: 0,
@@ -1643,25 +1622,28 @@
 
         return `
         <div class="actor-card" data-actor-id="${actor.id}" onclick="location.href='${profileLink}'" style="cursor:pointer;">
-          <div class="actor-card-hero">
-            <img src="${actor.avatar}" alt="${actor.name}" />
-            ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
-            <div class="actor-card-hero-overlay"></div>
-            <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);color:#fff;font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:999px;pointer-events:none;z-index:5;">${actor.id}</div>
-            <div class="actor-card-hero-info">
-              <div class="actor-hero-lv${canUpgrade ? ' can-upgrade' : ''}" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
-                Lv${actor.level} <span>${levelCfg.name}</span>
+            <div class="actor-card-hero">
+              <img src="${actor.avatar}" alt="${actor.name}" />
+              ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
+              <div class="actor-card-hero-overlay"></div>
+              <div style="position:absolute;top:8px;left:8px;z-index:5;display:flex;gap:6px;align-items:center;">
+                <div class="actor-hero-lv${canUpgrade ? ' can-upgrade' : ''}" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
+                  Lv${actor.level}
+                </div>
               </div>
-              <div class="actor-hero-status">
-                <span class="dot ${statusInfo.dot}"></span>
-                ${statusInfo.label}
+              <div style="position:absolute;bottom:8px;left:8px;z-index:5;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:0.3px;">
+                ${actor.id}
               </div>
-            </div>
+              <div style="position:absolute;bottom:8px;right:8px;z-index:5;">
+                <div class="actor-hero-status">
+                  <span class="dot ${statusInfo.dot}"></span>
+                  ${statusInfo.label}
+                </div>
+              </div>
           </div>
 
           <div class="actor-card-name-row">
             <span class="actor-name">${actor.name}</span>
-            ${actor.energy < actor.energyMax ? `<button class="charge-name-btn" onclick="event.stopPropagation();openChargeModal('${actor.id}')" title="付费片酬恢复">⚡</button>` : ''}
           </div>
 
           <div class="actor-card-body">
@@ -1674,20 +1656,12 @@
               <div class="energy-help-wrap">
                 <button class="energy-help-btn" onclick="event.stopPropagation();">?</button>
                 <div class="energy-help-tip">
-                  <b>⛽ 体力机制（7挖7休）</b><br>
-                  每挖矿 1 小时消耗 1 点体力。体力 ≥50%（≥84）→ 全功率 1.0× 产出；<br>
-                  体力 <50% → 产出线性衰减至 0；体力 = 0 → 罢工。<br>
-                  满体力可连挖 7 天，休息 7 天自动回满。<br>
-                  可用 USDC 买体力（加班）即时补充。
+                  <b>⛽ 体力机制</b><br>
+                  派遣中的演员每 1 秒消耗 1 点体力（模拟 1 小时）。体力耗尽后停止产出，休息时自动恢复。可用 USDC 即时补充体力。
                 </div>
               </div>
             </div>
-            <div class="energy-row-ext">
-              <span class="energy-efficiency ${pct >= 50 ? 'full' : pct > 0 ? 'decay' : 'strike'}">
-                ${pct >= 50 ? '✅ 全功率 1.0×' : pct > 0 ? '⚠️ 衰减 ' + (pct / 50).toFixed(2) + '×' : '❌ 已罢工 0×'}
-              </span>
-              ${actor.energy < actor.energyMax && pct < 50 ? `<button class="card-action-btn charge" style="flex:none;padding:3px 14px;font-size:0.72rem;" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充</button>` : ''}
-            </div>
+            
 
             <div class="mining-stats">
               <div class="ms-item">
@@ -1705,16 +1679,14 @@
               <div class="ms-item">
                 <div class="ms-info">
                   <span class="ms-label">今日产出</span>
-                  <span class="ms-value green">${(actor.todayOutput || 0).toFixed(1)} STORY</span>
+                  <span class="ms-value">${(actor.todayOutput || 0).toFixed(1)} STORY</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="actor-card-footer" onclick="event.stopPropagation();">
-            <a class="card-action-btn film" href="DreamOS/dreamos.html?actor=${encodeURIComponent(actor.name)}" target="_blank">
-              去拍剧
-            </a>
+            ${actor.energy < actor.energyMax ? `<button class="card-action-btn charge" onclick="event.stopPropagation();openChargeModal('${actor.id}')">补充</button>` : ''}
             ${actor.isStaking
               ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">休息</button>`
               : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">派遣演出</button>`
@@ -2046,22 +2018,20 @@
     function energyTick() {
       MY_ACTORS.forEach(actor => {
         if (actor.isStaking && actor.status === 'active') {
-          // 派遣中：每小时消耗 1 点体力
+          // 派遣中：每秒消耗 1 点体力，消耗完之前全速产出
           actor.energy = Math.max(0, actor.energy - 1);
 
-          // 计算本次产出一小时的量（考虑衰减）
-          const effRatio = actor.energyMax > 0 ? Math.min(1, Math.max(0, (actor.energy + 1) / (actor.energyMax * 0.5))) : 0;
-          const hourlyOutput = actor.dailyStory / 24 * effRatio;
+          // 体力 > 0 时全速产出，体力耗尽后停止
+          const hourlyOutput = actor.energy > 0 ? actor.dailyStory / 24 : 0;
           actor.todayOutput = (actor.todayOutput || 0) + hourlyOutput;
           actor.cumulativeStory = (actor.cumulativeStory || 0) + hourlyOutput;
 
-          // 体力耗尽
           if (actor.energy <= 0) {
             actor.energy = 0;
             actor.status = 'exhausted';
           }
         } else if (!actor.isStaking && actor.status !== 'exhausted') {
-          // 休息中：每小时恢复 1 点体力
+          // 休息中：每秒恢复 1 点体力
           if (actor.energy < actor.energyMax) {
             actor.energy = Math.min(actor.energyMax, actor.energy + 1);
           }
