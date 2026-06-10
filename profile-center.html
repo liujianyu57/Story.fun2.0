@@ -47,17 +47,9 @@
     .user-info-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
     .user-info-texts { display: flex; flex-direction: column; gap: 8px; }
     .user-name { font-size: 24px; font-weight: 700; color: var(--text); }
-    .user-sub { display: flex; flex-direction: column; gap: 5px; }
-    .user-sub-item { font-size: 14px; color: var(--text-sub); }
-    .user-sub-item .label { color: var(--text-sub); }
-    .user-sub-item .value { color: var(--text); font-weight: 500; }
 
     .btn-edit { padding: 10px 24px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; height: 44px; display: flex; align-items: center; gap: 6px; }
     .btn-edit:hover { border-color: var(--accent); color: var(--accent); }
-
-    .user-stats { display: flex; gap: 24px; }
-    .stat-item { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-sub); }
-    .stat-item .stat-num { font-weight: 700; color: var(--text); }
 
     /* ===== Tabs ===== */
     .tab-bar { display: flex; align-items: center; gap: 32px; border-bottom: 1px solid var(--border); }
@@ -133,30 +125,8 @@
             <div class="user-info-top">
               <div class="user-info-texts">
                 <div class="user-name" id="profileName">加密小白</div>
-                <div class="user-sub" id="profileSub">
-                  <div class="user-sub-item">
-                    <span class="label">邮箱：</span><span class="value" id="profileEmail">crypto@story.fun</span>
-                  </div>
-                  <div class="user-sub-item">
-                    <span class="label">钱包：</span><span class="value" id="profileWallet">0x7A2b...3fD8</span>
-                  </div>
-                </div>
               </div>
               <button class="btn-edit" onclick="showToast('🕘 编辑资料开发中')">✎ 编辑</button>
-            </div>
-            <div class="user-stats">
-              <div class="stat-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-sub);"><path d="M2 12a10 10 0 1 0 20 0 10 10 0 1 0-20 0"/><path d="M12 6v6l4 2"/></svg>
-                <span>发布 <strong class="stat-num" id="profilePublished">3</strong> 部</span>
-              </div>
-              <div class="stat-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-sub);"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span>获赞 <strong class="stat-num" id="profileLikes">1.2k</strong></span>
-              </div>
-              <div class="stat-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-sub);"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                <span>浏览量 <strong class="stat-num" id="profileViews">8.5k</strong></span>
-              </div>
             </div>
           </div>
         </div>
@@ -294,22 +264,7 @@
       }
 
       const nameEl = document.getElementById('profileName');
-      const emailEl = document.getElementById('profileEmail');
-      const walletEl = document.getElementById('profileWallet');
-
       if (nameEl) nameEl.textContent = currentUser.name || '未登录用户';
-
-      // Show email or wallet based on auth method
-      const isEmail = currentUser.authMethod === 'email';
-      if (emailEl && walletEl) {
-        if (isEmail) {
-          emailEl.textContent = currentUser.email || '未绑定邮箱';
-          walletEl.textContent = currentUser.wallet || '未连接钱包';
-        } else {
-          emailEl.textContent = currentUser.email || '未绑定邮箱';
-          walletEl.textContent = currentUser.wallet || '未连接钱包';
-        }
-      }
     }
 
     // Wait for auth to be ready
