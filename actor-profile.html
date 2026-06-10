@@ -9,28 +9,31 @@
       --bg: #f5faff;
       --surface: #ffffff;
       --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.12);
-      --accent-glow: rgba(0, 179, 136, 0.25);
+      --accent-soft: rgba(0, 179, 136, 0.10);
+      --accent-glow: rgba(0, 179, 136, 0.20);
       --text: #13202e;
-      --text-muted: #5e6f83;
-      --border: #deeaf7;
-      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
-      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
-      --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10);
-      --radius: 24px;
-      --radius-lg: 32px;
-      --danger: #f45b69;
-      --warning: #ff9f2c;
-      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --text-secondary: #405266;
+      --text-muted: #6e859e;
+      --border: #e2eefb;
+      --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.05);
+      --shadow-md: 0 8px 24px rgba(27, 45, 71, 0.06);
+      --shadow-lg: 0 16px 40px rgba(27, 45, 71, 0.08);
+      --radius: 16px;
+      --radius-lg: 20px;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
 
-    .breadcrumb { display: flex; align-items: center; gap: 8px; margin-top: 40px; margin-bottom: 32px; font-size: 0.92rem; color: var(--text-muted); }
+    .breadcrumb { display: flex; align-items: center; gap: 10px; margin-top: 32px; margin-bottom: 28px; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.01em; }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
     .breadcrumb a:hover { color: var(--accent); }
-    .breadcrumb .sep { color: var(--border); }
+    .breadcrumb .sep { color: var(--border); font-size: 1.1rem; line-height: 1; }
 
     /* ===== Auth Styles ===== */
     .auth-container { display: flex; align-items: center; }
@@ -108,27 +111,29 @@
     }
     .actor-hero-info { display: flex; flex-direction: column; gap: 16px; justify-content: center; padding: 32px 32px 32px 32px; }
     .actor-hero-info .actor-name {
-      margin: 0 0 12px 0;
-      font-size: 2.4rem;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      margin: 0 0 14px 0;
+      font-size: 2.25rem;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      font-weight: 750;
     }
     .actor-hero-info .actor-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .actor-hero-info .actor-tags .tag {
-      padding: 6px 14px;
+      padding: 5px 13px;
       border-radius: 999px;
       background: var(--accent-soft);
       color: var(--accent);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
+      letter-spacing: 0.01em;
     }
     .actor-hero-info .actor-tags .tag.muted {
-      background: rgba(15,22,42,0.05);
+      background: rgba(15,22,42,0.04);
       color: var(--text-muted);
     }
     .actor-hero-info .actor-tags .tag.soldout {
-      background: rgba(244,67,54,0.1);
-      color: #e53935;
+      background: rgba(239,68,68,0.08);
+      color: #dc2626;
     }
     .actor-hero-info .actor-desc {
       margin: 0;
@@ -143,37 +148,40 @@
       align-items: center;
       gap: 0;
       background: var(--bg);
-      border-radius: 12px;
-      padding: 8px 0;
+      border-radius: 14px;
+      padding: 10px 0;
       width: fit-content;
+      border: 1px solid var(--border);
     }
     .actor-hero-stats .ahs-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
-      padding: 4px 20px;
+      gap: 3px;
+      padding: 4px 24px;
       cursor: pointer;
-      transition: background 0.2s;
-      border-radius: 8px;
+      transition: all 0.2s;
+      border-radius: 10px;
     }
     .actor-hero-stats .ahs-item:hover {
       background: var(--accent-soft);
     }
     .actor-hero-stats .ahs-label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       color: var(--text-muted);
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
     .actor-hero-stats .ahs-value {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--text);
+      font-variant-numeric: tabular-nums;
     }
     .actor-hero-stats .ahs-divider {
       width: 1px;
-      height: 32px;
+      height: 30px;
       background: var(--border);
       flex-shrink: 0;
     }
@@ -189,15 +197,18 @@
     }
     .nft-info-panel h3 {
       margin: 0 0 20px;
-      font-size: 1.2rem;
+      font-size: 1.05rem;
+      font-weight: 650;
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
     }
     .nft-info-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 14px;
     }
     @media (max-width: 860px) {
       .nft-info-grid { grid-template-columns: repeat(2, 1fr); }
@@ -206,159 +217,223 @@
       .nft-info-grid { grid-template-columns: 1fr; }
     }
     .nft-info-item {
-      padding: 16px 18px;
-      background: #f8fbff;
+      padding: 14px 16px;
+      background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 12px;
     }
     .nft-info-item .info-label {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
+      font-weight: 500;
     }
     .nft-info-item .info-value {
-      font-size: 1.15rem;
-      font-weight: 700;
+      font-size: 1.05rem;
+      font-weight: 650;
       color: var(--text);
     }
     .nft-info-item .info-value.accent {
       color: var(--accent);
     }
 
-    /* Drama Section */
+    /* ═══ Drama Section — 完全复刻 index.html 卡片样式 ═══ */
     .drama-section {
-      margin-bottom: 32px;
+      margin-bottom: 40px;
     }
     .drama-section-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       margin-bottom: 20px;
     }
     .drama-section-header h3 {
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.15rem;
+      font-weight: 650;
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
     }
     .drama-section-header .count {
       color: var(--text-muted);
-      font-size: 0.92rem;
+      font-size: 0.85rem;
       font-weight: 400;
     }
     .drama-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 22px;
+      margin-bottom: 34px;
     }
-    @media (max-width: 1024px) {
-      .drama-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 1120px) {
+      .drama-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
-    @media (max-width: 640px) {
+    @media (max-width: 760px) {
       .drama-grid { grid-template-columns: 1fr; }
     }
     .drama-card {
+      border-radius: 24px;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
       background: var(--surface);
+      box-shadow: 0 12px 30px rgba(27,45,71,0.10);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
       transition: all 0.3s ease;
       cursor: pointer;
+      overflow: hidden;
     }
     .drama-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-      border-color: rgba(0,179,136,0.15);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(27,45,71,0.14);
     }
     .drama-card .drama-cover {
       width: 100%;
-      height: 180px;
+      height: 320px;
       object-fit: cover;
+      border-bottom: 1px solid var(--border);
       display: block;
-      background: #eaf4ff;
     }
     .drama-card .drama-body {
-      padding: 18px 20px;
-    }
-    .drama-card .drama-body h4 {
-      margin: 0 0 6px;
-      font-size: 1.05rem;
-    }
-    .drama-card .drama-body .drama-role {
-      color: var(--accent);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 8px;
+      padding: 24px 26px 20px;
+      flex-grow: 1;
     }
     .drama-card .drama-body .drama-meta {
       display: flex;
+      justify-content: space-between;
+      gap: 12px;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
     }
-    .drama-card .drama-body .drama-meta span {
-      padding: 4px 10px;
+    .drama-card .drama-body .drama-meta .badge,
+    .drama-card .drama-body .drama-meta .episode {
+      display: inline-flex;
+      align-items: center;
       border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .drama-card .drama-body .drama-meta .badge {
       background: var(--accent-soft);
       color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: 600;
     }
-    .drama-card .drama-body .drama-meta span.muted {
-      background: rgba(15,22,42,0.05);
+    .drama-card .drama-body .drama-meta .episode {
+      background: rgba(15,22,42,0.04);
       color: var(--text-muted);
     }
-    .drama-card .drama-body .drama-desc {
+    .drama-card .drama-body h3 {
+      margin: 0;
+      font-size: 1.4rem;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+    .drama-card .drama-body p {
       margin: 0;
       color: var(--text-muted);
-      font-size: 0.88rem;
       line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      font-size: 0.95rem;
+    }
+    .drama-card .drama-body .drama-actors {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .drama-card .drama-body .drama-actors-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .drama-card .drama-body .drama-actors-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .drama-card .drama-body .drama-actor-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .drama-card .drama-body .drama-actor-item:hover {
+      transform: translateY(-2px);
+    }
+    .drama-card .drama-body .drama-actor-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
       overflow: hidden;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+      transition: border-color 0.2s ease;
+    }
+    .drama-card .drama-body .drama-actor-item:hover .drama-actor-avatar {
+      border-color: var(--accent);
+    }
+    .drama-card .drama-body .drama-actor-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .drama-card .drama-body .drama-actor-name {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
     }
     .drama-card .drama-footer {
-      padding: 14px 20px;
+      padding: 20px 26px 26px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #fafcff;
+      gap: 14px;
     }
-    .drama-card .drama-footer .royalty-info {
-      font-size: 0.85rem;
+    .drama-card .drama-footer .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
       color: var(--text-muted);
-    }
-    .drama-card .drama-footer .royalty-info strong {
-      color: var(--accent);
+      font-size: 0.95rem;
     }
     .drama-card .drama-footer .view-btn {
-      padding: 6px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 0.82rem;
+      border: none;
       cursor: pointer;
-      transition: all 0.2s;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
       font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,179,136,0.30);
+      transition: all 0.25s ease;
     }
     .drama-card .drama-footer .view-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-soft);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,179,136,0.40);
+    }
+    @media (max-width: 760px) {
+      .drama-card { min-height: auto; }
+      .drama-card .drama-cover { height: 220px; }
+      .drama-card .drama-footer { flex-direction: column; align-items: flex-start; }
     }
 
-    /* Price pill — matching actors.html card style */
+    /* Price pill */
     .actor-price {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 12px 8px 14px;
-      background: rgba(0,179,136,0.06);
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 12px;
     }
     .actor-price-label {
@@ -370,31 +445,11 @@
       gap: 5px;
     }
     .actor-price-value {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--accent);
       letter-spacing: -0.01em;
-    }
-    .actor-price-help {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.04);
-      color: var(--text-muted);
-      font-size: 0.6rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: none;
-      padding: 0;
-      line-height: 1;
-    }
-    .actor-price-help:hover {
-      background: var(--accent);
-      color: #fff;
+      font-variant-numeric: tabular-nums;
     }
 
     /* Action Buttons */
@@ -1018,22 +1073,13 @@
           </span>
           <span class="actor-price-value" id="priceValue">—</span>
         </div>
-        <div class="action-row">
-          <!-- 可签约：仅显示签约按钮（价格已在上方 actor-price 区域展示） -->
-          <div id="mintActions" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-            <button class="action-btn primary" id="mintBtn" style="min-width: 180px; justify-content: center;">
-              <span class="icon">🎭</span> 签约
-            </button>
-          </div>
-          <!-- 已售罄：显示地板价 + 去交易按钮 -->
-          <div id="soldoutActions" style="display:none;gap:12px;flex-wrap:wrap;align-items:center;">
-            <span id="floorPriceTag" style="font-size:0.9rem;color:var(--text-muted);padding:6px 12px;background:var(--bg);border-radius:10px;">
-              地板价 <strong id="floorPriceValue" style="color:var(--text);font-weight:700;"></strong>
-            </span>
-            <button class="action-btn danger" id="tradeBtn">
-              <span class="icon">🔄</span> 去交易
-            </button>
-          </div>
+        <div id="actionRow" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;">
+          <!-- 可签约 -->
+          <button class="action-btn primary" id="mintBtn" style="min-width:180px;justify-content:center;">签约</button>
+          <!-- 已售罄：地板价标签 -->
+          <span id="floorPriceTag" style="display:none;font-size:0.95rem;color:var(--text);padding:10px 14px;background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">地板价 <strong id="floorPriceValue" style="color:var(--accent);font-weight:800;font-size:1.05rem;"></strong></span>
+          <!-- 已售罄：去交易按钮 -->
+          <button class="action-btn danger" id="tradeBtn" style="display:none;min-width:180px;justify-content:center;">去交易</button>
         </div>
       </div>
     </section>
@@ -1080,7 +1126,7 @@
     <!-- Drama Section -->
     <section class="drama-section">
       <div class="drama-section-header">
-        <h3>🎭 签约艺人 · 参演短剧 <span class="count" id="dramaCount">(0)</span></h3>
+        <h3>参演短剧 <span class="count" id="dramaCount">(0)</span></h3>
       </div>
       <div class="drama-grid" id="dramaGrid">
         <!-- 由 JS 动态渲染 -->
@@ -1276,6 +1322,7 @@
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
         totalSupply: 5000, minted: 5000, available: 0, holders: 4900,
         price: '10 USDC', reserved: 0, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        views: '1.2万', heat: '87.6万',
         creator: 'storyfun_labs', collection: 'C001',
         childActors: [
           { childId: '#C-010', name: 'AI 助手', holder: '0xdE4a...7cF1', dramas: [
@@ -1408,17 +1455,20 @@
       // ═══ 已售罄状态 ═══
       var isSoldout = actor.available <= 0;
       var mintBtn = document.getElementById('mintBtn');
-      var soldoutActions = document.getElementById('soldoutActions');
+      var floorPriceTag = document.getElementById('floorPriceTag');
+      var tradeBtn = document.getElementById('tradeBtn');
       var soldoutTag = document.getElementById('actorSoldoutTag');
 
       if (isSoldout) {
         mintBtn.style.display = 'none';
-        soldoutActions.style.display = 'flex';
+        floorPriceTag.style.display = 'inline-flex';
+        tradeBtn.style.display = 'inline-flex';
         document.getElementById('floorPriceValue').textContent = actor.price;
         soldoutTag.style.display = 'inline-block';
       } else {
         mintBtn.style.display = 'inline-flex';
-        soldoutActions.style.display = 'none';
+        floorPriceTag.style.display = 'none';
+        tradeBtn.style.display = 'none';
         soldoutTag.style.display = 'none';
       }
 
@@ -1548,7 +1598,7 @@
       document.getElementById('continueBtn').addEventListener('click', closeMintModal);
     });
 
-    // ═══ 渲染参演短剧 ═══
+    // ═══ 渲染参演短剧 — 完全复刻 index.html 卡片结构（含多演员） ═══
     function renderDramas(actor) {
       var grid = document.getElementById('dramaGrid');
       var empty = document.getElementById('emptyState');
@@ -1560,37 +1610,58 @@
         return;
       }
       var totalDramas = 0, html = '';
+      var ACTOR_AVATARS = {
+        'Luna': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+        '苏婉清': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+        '李云飞': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+        '林梦瑶': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+        '赵无极': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+        '上官婉儿': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+      };
+      // 构建「剧名 → 参演演员列表」映射（跨所有演员数据交叉匹配）
+      var dramaActorMap = {};
+      for (var actorKey in ACTORS_DATA) {
+        var ad = ACTORS_DATA[actorKey];
+        if (ad.childActors) {
+          ad.childActors.forEach(function(ca) {
+            if (ca.dramas) {
+              ca.dramas.forEach(function(dd) {
+                if (!dramaActorMap[dd.title]) dramaActorMap[dd.title] = [];
+                if (dramaActorMap[dd.title].indexOf(ad.name) === -1) {
+                  dramaActorMap[dd.title].push(ad.name);
+                }
+              });
+            }
+          });
+        }
+      }
       actor.childActors.forEach(function(child) {
         if (child.dramas && child.dramas.length > 0) {
           totalDramas += child.dramas.length;
           child.dramas.forEach(function(d) {
+            // 获取参演该剧的所有演员
+            var allActors = dramaActorMap[d.title] || [actor.name];
+            var actorItemsHtml = '';
+            allActors.forEach(function(aname) {
+              var avatarUrl = ACTOR_AVATARS[aname] || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80';
+              actorItemsHtml += '<div class="drama-actor-item" onclick="event.stopPropagation(); location.href=\'actor-profile.html?name=' + encodeURIComponent(aname) + '\'">' +
+                '<div class="drama-actor-avatar"><img src="' + avatarUrl + '" alt="' + aname + '" loading="lazy" /></div>' +
+                '<span class="drama-actor-name">' + aname + '</span>' +
+              '</div>';
+            });
             html += '<div class="drama-card" onclick="location.href=\'' + d.link + '\'">' +
               '<img class="drama-cover" src="' + d.cover + '" alt="' + d.title + '" />' +
               '<div class="drama-body">' +
-                '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' +
-                  '<div style="width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--accent-soft);flex-shrink:0;background:linear-gradient(135deg,#e0f7ff,#fff)">' +
-                    '<img src="' + actor.avatar + '" alt="' + actor.name + '" style="width:100%;height:100%;object-fit:cover" />' +
-                  '</div>' +
-                  '<div style="flex:1;min-width:0">' +
-                    '<div style="font-size:0.9rem;font-weight:700;color:var(--text)">' + actor.name + '</div>' +
-                    '<div style="display:flex;flex-wrap:wrap;gap:4px 10px;font-size:0.72rem;color:var(--text-muted);margin-top:2px">' +
-                      '<span>NFT ID: ' + child.childId + '</span>' +
-                      '<span>经纪人: ' + child.holder + '</span>' +
-                    '</div>' +
+                '<div class="drama-meta"><span class="badge">' + d.category + '</span><span class="episode">全' + d.episodes + '集</span></div>' +
+                '<h3>' + d.title + '</h3>' +
+                '<p>' + d.title + ' — 精彩短剧，不容错过。</p>' +
+                '<div class="drama-actors">' +
+                  '<div class="drama-actors-list">' +
+                    actorItemsHtml +
                   '</div>' +
                 '</div>' +
-                '<h4>' + d.title + '</h4>' +
-                '<div class="drama-role">🎭 饰演：' + d.role + '</div>' +
-                '<div class="drama-meta">' +
-                  '<span>' + d.category + '</span>' +
-                  '<span class="muted">全 ' + d.episodes + ' 集</span>' +
-                '</div>' +
-                '<p class="drama-desc">AI 生成的精彩短剧，' + d.title + ' 带你进入不一样的叙事世界。</p>' +
               '</div>' +
-              '<div class="drama-footer">' +
-                '<span class="royalty-info">分润比例 <strong>' + d.royalty + '</strong></span>' +
-                '<button class="view-btn" onclick="event.stopPropagation();location.href=\'' + d.link + '\'">查看详情</button>' +
-              '</div>' +
+              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>' + (actor.heat || '—') + '热度</span></div></div>' +
             '</div>';
           });
         }
