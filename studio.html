@@ -714,6 +714,91 @@
       gap:6px;
       margin-top:2px;
     }
+
+    /* ===== 规则弹窗内容区 ===== */
+    .rules-modal-scroll {
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 4px;
+      text-align: left;
+    }
+    .rules-modal-scroll::-webkit-scrollbar { width: 4px; }
+    .rules-modal-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+    .rules-section { margin-bottom: 20px; }
+    .rules-section:last-child { margin-bottom: 0; }
+    .rules-section h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rules-section p, .rules-section li {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin: 0 0 6px;
+    }
+    .rules-section ul {
+      margin: 6px 0;
+      padding-left: 20px;
+    }
+    .rules-section ul li { margin-bottom: 4px; }
+    .rules-formula {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+    .rules-example {
+      background: rgba(255,159,44,0.06);
+      border: 1px solid rgba(255,159,44,0.15);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+    .rules-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 0.85rem;
+    }
+    .rules-table th {
+      background: var(--bg);
+      font-weight: 700;
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .rules-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .rules-table tr:last-child td { border-bottom: none; }
+    .rules-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .rules-tag.green { background: rgba(0,179,136,0.12); color: var(--accent); }
+    .rules-tag.orange { background: rgba(255,159,44,0.12); color: var(--warning); }
+    .rules-tag.red { background: rgba(244,91,105,0.12); color: var(--danger); }
+    .rules-tag.gray { background: rgba(94,111,131,0.12); color: var(--text-muted); }
+    .rules-note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
   </style>
   <!-- Deployment Panel Styles - 游戏派遣编队 UI -->
   <style>
@@ -1224,8 +1309,9 @@
           <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;justify-content:flex-end;padding:0 2px;">
-        <a href="rewards.html" style="font-size:0.75rem;color:var(--accent);text-decoration:none;font-weight:600;">收益明细 →</a>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 2px;">
+        <span style="font-size:0.82rem;font-weight:600;color:var(--text-muted);cursor:pointer;" onclick="openRulesModal()">📖 挖矿规则</span>
+        <a href="rewards.html" style="font-size:0.75rem;color:var(--accent);text-decoration:none;font-weight:600;">每周结算记录 →</a>
       </div>
     </div>
 
@@ -1465,6 +1551,140 @@
       </div>
       <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);">确认休息</button>
       <button class="modal-btn cancel" onclick="closeRecallModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- ===== 挖矿规则说明弹窗 ===== -->
+  <div class="modal-overlay" id="rulesModal">
+    <div class="modal-card" style="max-width:560px;padding:24px;">
+      <h2>派遣挖矿怎么玩</h2>
+      <p class="modal-sub" style="margin-bottom:14px;">一张图看懂从派人到领钱的全流程</p>
+      <div class="rules-modal-scroll">
+
+        <!-- 第一步 -->
+        <div class="rules-section">
+          <h3>1. 派人，去挖矿</h3>
+          <p>把空闲的演员<strong>「派遣」</strong>到下面的 5 个槽位里，他就开始自动挖矿、产出 <strong>STORY</strong> 了。</p>
+          <ul>
+            <li>每人最多同时派遣 <strong>5 位演员</strong></li>
+            <li>同一个演员 IP 也可以多张卡一起派遣</li>
+            <li>派遣后每过 <strong>1 小时消耗 1 点 ⚡体力</strong>，体力 > 0 就一直产出，体力 = 0 就停工</li>
+          </ul>
+        </div>
+
+        <!-- 第二步 -->
+        <div class="rules-section">
+          <h3>2. 算钱，产出公式</h3>
+          <p>每张卡每小时的产出是这样算的：</p>
+          <div class="rules-formula">单卡小时产出 = 挖矿系数 × 热度 × 1 STORY</div>
+          <p>三个决定因素：</p>
+          <ul>
+            <li><strong>挖矿系数</strong> 🔼——咖位越高系数越大。Lv1=1.0 → Lv2=2.2 → Lv3=5.0 → Lv4=11 → Lv5=24</li>
+            <li><strong>热度</strong> 🔥——演员近期的剧表现越好热度越高。有人刷他的剧、完播、点赞、收藏、评论，热度就涨</li>
+            <li><strong>R_base</strong>——固定值，当前为 <strong>1 STORY</strong>，平台后续可能手动调</li>
+          </ul>
+          <p><strong>⚠️ 体力只看"有没有"，不看剩多少：</strong>168 点和 1 点体力的每小时产出一样多，体力只看你有没有在挖。</p>
+          <div class="rules-example">
+            <strong>🧮 举个栗子：</strong><br>
+            你的「林梦瑶」是 Lv3 主角（挖矿系数 5.0），当前热度 3.5，<br>
+            每小时产出 = <strong>5.0 × 3.5 × 1 = 17.5 STORY</strong><br>
+            一天产出 = 17.5 × 24 = <strong>420 STORY</strong><br>
+            一周产出 = 17.5 × 168 = <strong>2,940 STORY</strong>
+          </div>
+        </div>
+
+        <!-- 第三步 -->
+        <div class="rules-section">
+          <h3>3. 发钱，但是有上限</h3>
+          <p>每周全平台有一个<strong>总奖池（周硬顶）</strong>，初始约 <strong>2,115,385 STORY</strong>，之后逐年递减（每年 × 0.8）。</p>
+          <p>发钱分三种情况：</p>
+          <table class="rules-table">
+            <tr>
+              <td style="width:28px;"><span class="rules-tag green">✅</span></td>
+              <td>全平台名义产出 ≤ 本周奖池</td>
+              <td><strong>每人照单全收</strong>，剩余奖池不发、不补</td>
+            </tr>
+            <tr>
+              <td><span class="rules-tag orange">⚖️</span></td>
+              <td>全平台名义产出 > 本周奖池</td>
+              <td><strong>等比缩放</strong>：你实得 = 你的名义产出 × 奖池 ÷ 全平台产出</td>
+            </tr>
+            <tr>
+              <td><span class="rules-tag red">🔒</span></td>
+              <td>单地址超过奖池 5%</td>
+              <td>超出部分<strong>不发</strong>、不回流、不补分</td>
+            </tr>
+          </table>
+          <div class="rules-example">
+            <strong>🧮 再举个栗子：</strong><br>
+            假设本周奖池 <strong>100,000 STORY</strong>：<br>
+            <strong>情况 A：</strong>全平台只有你一个人，你一周产出 134 → 你拿 134，剩下 99,866 不发<br>
+            <strong>情况 B：</strong>全平台总产出 250,000，每人缩放到 40%（100,000÷250,000）<br>
+            <strong>情况 C：</strong>缩放后某人应得 6,000，但单地址封顶 5,000 → 只发 5,000
+          </div>
+        </div>
+
+        <!-- 第四步 -->
+        <div class="rules-section">
+          <h3>4. 管好体力，才能一直挖</h3>
+          <table class="rules-table">
+            <tr>
+              <th>状态</th>
+              <th>体力变化</th>
+              <th>产出</th>
+            </tr>
+            <tr>
+              <td>🎬 派遣中（挖矿）</td>
+              <td>每小时 -1</td>
+              <td><span class="rules-tag green">✅ 正常产出</span></td>
+            </tr>
+            <tr>
+              <td>🛑 体力 = 0</td>
+              <td>不再变化</td>
+              <td><span class="rules-tag red">❌ 产出为 0</span></td>
+            </tr>
+            <tr>
+              <td>🛌 召回休息</td>
+              <td>每小时 +1（自动恢复）</td>
+              <td><span class="rules-tag gray">暂停产出</span></td>
+            </tr>
+            <tr>
+              <td>⚡ 补充体力（付费）</td>
+              <td>瞬间回满 168</td>
+              <td><span class="rules-tag green">恢复产出</span></td>
+            </tr>
+          </table>
+          <p style="margin-top:10px;"><strong>关于补充体力的 3 件事：</strong></p>
+          <ul>
+            <li><strong>只能一键加满</strong>，不能只买 10 点</li>
+            <li><strong>价格只看咖位</strong>，不看还剩多少体力。体力 0 时加满和体力 100 时加满，花的钱一样多</li>
+            <li><strong>越靠近 0 时补充越划算</strong>——同样花一份钱，你买到了最多的新增挖矿时长</li>
+          </ul>
+          <p style="margin-top:10px;font-weight:700;">各咖位补充价格：</p>
+          <table class="rules-table">
+            <tr><th>咖位</th><th>一键加满</th></tr>
+            <tr><td>Lv1 群演</td><td>15 USDC</td></tr>
+            <tr><td>Lv2 配角</td><td>36 USDC</td></tr>
+            <tr><td>Lv3 主角</td><td>87 USDC</td></tr>
+            <tr><td>Lv4 巨星</td><td>203 USDC</td></tr>
+            <tr><td>Lv5 顶流</td><td>465 USDC</td></tr>
+          </table>
+        </div>
+
+        <!-- 第五步 -->
+        <div class="rules-section">
+          <h3>5. 升级咖位，赚更多</h3>
+          <p>3 张同演员同咖位的卡 + 合成费 + 该演员累计完播达标 = 升 1 级。升级后挖矿系数暴涨，每小时产出翻倍甚至翻几倍。</p>
+        </div>
+
+        <!-- 总结 -->
+        <div class="rules-section" style="background:var(--accent-soft);border-radius:14px;padding:14px;">
+          <h3>💡 一句话总结</h3>
+          <p style="margin:0;font-size:0.92rem;">派人 → 看热度 → 盯体力 → 领产出。体力快没了就补充或召回休息，热度靠演员的剧表现提升，升级让产出起飞。</p>
+        </div>
+
+      </div>
+      <button class="modal-btn cancel" onclick="closeRulesModal()" style="margin-top:16px;">关闭</button>
     </div>
   </div>
 
@@ -2176,6 +2396,19 @@
       closeLevelModal();
       renderAll();
       showToast('🏆 ' + actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name + '！', '🎉');
+    }
+
+    // ============================================================
+    //  挖矿规则弹窗
+    // ============================================================
+    function openRulesModal() {
+      document.getElementById('rulesModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRulesModal() {
+      document.getElementById('rulesModal').classList.remove('active');
+      document.body.style.overflow = '';
     }
 
     // ============================================================
