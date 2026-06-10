@@ -65,25 +65,32 @@
     .tab-item:hover { color: var(--text); }
     .tab-item.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
 
-    /* ===== Works Grid ===== */
-    .works-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    /* ===== Drama Cards (完全复刻 index.html 短剧卡片) ===== */
+    .works-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; margin-bottom: 34px; }
 
-    .work-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-    .work-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-
-    .work-cover-wrap { position: relative; overflow: hidden; }
-    .work-cover { width: 100%; height: 280px; object-fit: cover; display: block; background: var(--border-light); }
-    .work-cover-placeholder { width: 100%; height: 280px; background: linear-gradient(135deg, #E8ECF0, #D5DCE3); display: flex; align-items: center; justify-content: center; font-size: 48px; color: var(--text-sub); }
-
-    .work-info { padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 12px; }
-    .work-title { font-size: 16px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .work-meta { display: flex; align-items: center; gap: 12px; }
-    .work-author { display: flex; align-items: center; gap: 4px; font-size: 14px; color: var(--text-sub); }
-    .work-author svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-    .more-btn { display: flex; align-items: center; justify-content: center; padding: 32px 0; }
-    .more-btn button { padding: 10px 32px; border-radius: 88px; border: none; background: var(--gradient-bg, linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%)); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
-    .more-btn button:hover { opacity: 0.9; }
+    .work-card { border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 12px 30px rgba(0,0,0,0.08); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
+    .work-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+    .work-card .card-thumb { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid var(--border); display: block; }
+    .work-card .card-body { padding: 24px 26px 20px; flex-grow: 1; }
+    .work-card .card-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .work-card .badge, .work-card .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
+    .work-card .badge { background: var(--accent-soft); color: var(--accent); }
+    .work-card .episode { background: var(--border-light); color: var(--text-muted); }
+    .work-card h3 { margin: 0 0 12px; font-size: 1.4rem; line-height: 1.25; color: var(--text); }
+    .work-card p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+    .work-card .card-actors { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .work-card .card-actors-label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; white-space: nowrap; }
+    .work-card .card-actors-list { display: flex; gap: 8px; flex-wrap: wrap; }
+    .work-card .card-actor-item { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: transform 0.2s ease; }
+    .work-card .card-actor-item:hover { transform: translateY(-2px); }
+    .work-card .card-actor-avatar { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border); flex-shrink: 0; transition: border-color 0.2s ease; }
+    .work-card .card-actor-item:hover .card-actor-avatar { border-color: var(--accent); }
+    .work-card .card-actor-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .work-card .card-actor-name { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+    .work-card .card-foot { padding: 20px 26px 26px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .work-card .info-row { display: flex; flex-wrap: wrap; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
+    .work-card .card-rating { display: inline-flex; align-items: center; gap: 3px; color: #ffc107; font-weight: 600; }
+    .work-card .card-rating .star-icon { font-size: 0.82rem; }
 
     /* Empty State */
     .empty-state { text-align: center; padding: 64px 24px; color: var(--text-sub); }
@@ -91,14 +98,14 @@
     .empty-state p { font-size: 15px; }
 
     /* Responsive */
-    @media (max-width: 1200px) { .works-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 1120px) { .works-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
     @media (max-width: 900px) {
       .main-content { padding: 24px 20px 64px; }
-      .works-grid { grid-template-columns: repeat(2, 1fr); }
       .user-info-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
       .user-info-top { flex-direction: column; align-items: flex-start; }
       .avatar-gradient { width: 96px; height: 96px; }
     }
+    @media (max-width: 760px) { .works-grid { grid-template-columns: 1fr; } }
     @media (max-width: 540px) {
       .works-grid { grid-template-columns: 1fr; }
       .tab-bar { gap: 16px; overflow-x: auto; }
@@ -164,64 +171,87 @@
         </div>
       </div>
 
-      <!-- Works Grid - 发布短剧 -->
+      <!-- Works Grid - 发布短剧（完全复刻 index.html 短剧卡片结构） -->
       <div id="tabPublished" class="works-grid">
-        <div class="work-card">
-          <div class="work-cover-wrap">
-            <div class="work-cover-placeholder">🎬</div>
-          </div>
-          <div class="work-info">
-            <div class="work-title">重生之门</div>
-            <div class="work-meta">
-              <div class="work-author">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Story.fun官方 · 50集
+        <article class="work-card" onclick="location.href='drama-detail.html'">
+          <img class="card-thumb" src="image/fenggu_cover.jpg" alt="凤骨琉璃" />
+          <div class="card-body">
+            <h3>凤骨琉璃</h3>
+            <div class="card-meta"><span class="badge">古风</span><span class="episode">全44集</span></div>
+            <p>一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
+            <div class="card-actors">
+              <div class="card-actors-list">
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=苏婉清'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div>
+                  <span class="card-actor-name">苏婉清</span>
+                </div>
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=李云飞'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div>
+                  <span class="card-actor-name">李云飞</span>
+                </div>
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
+                  <span class="card-actor-name">林梦瑶</span>
+                </div>
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=上官婉儿'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div>
+                  <span class="card-actor-name">上官婉儿</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="work-card">
-          <div class="work-cover-wrap">
-            <div class="work-cover-placeholder">🎥</div>
-          </div>
-          <div class="work-info">
-            <div class="work-title">长安如梦</div>
-            <div class="work-meta">
-              <div class="work-author">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Story.fun官方 · 24集
+          <div class="card-foot"><div class="info-row"><span>JACK</span><span>22.3万完播</span><span>333.2万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.8</span></div></div>
+        </article>
+        <article class="work-card" onclick="location.href='drama-detail.html'">
+          <img class="card-thumb" src="image/xiejia_cover.jpg" alt="我卸甲后天下大乱了" />
+          <div class="card-body">
+            <h3>我卸甲后天下大乱了</h3>
+            <div class="card-meta"><span class="badge">古风</span><span class="episode">全12集</span></div>
+            <p>卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。</p>
+            <div class="card-actors">
+              <div class="card-actors-list">
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=李云飞'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div>
+                  <span class="card-actor-name">李云飞</span>
+                </div>
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=赵无极'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="赵无极" loading="lazy" /></div>
+                  <span class="card-actor-name">赵无极</span>
+                </div>
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
+                  <span class="card-actor-name">林梦瑶</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="work-card">
-          <div class="work-cover-wrap">
-            <div class="work-cover-placeholder">🌟</div>
-          </div>
-          <div class="work-info">
-            <div class="work-title">星河传说</div>
-            <div class="work-meta">
-              <div class="work-author">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Story.fun官方 · 36集
+          <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k 观看</span><span>286.5万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
+        </article>
+        <article class="work-card" onclick="location.href='drama-detail.html'">
+          <img class="card-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" />
+          <div class="card-body">
+            <h3>丞相府今日开饭</h3>
+            <div class="card-meta"><span class="badge">喜剧</span><span class="episode">全24集</span></div>
+            <p>丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。</p>
+            <div class="card-actors">
+              <div class="card-actors-list">
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=苏婉清'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div>
+                  <span class="card-actor-name">苏婉清</span>
+                </div>
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=上官婉儿'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div>
+                  <span class="card-actor-name">上官婉儿</span>
+                </div>
+                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=Luna'">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Luna" loading="lazy" /></div>
+                  <span class="card-actor-name">Luna</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="work-card">
-          <div class="work-cover-wrap">
-            <div class="work-cover-placeholder">📖</div>
-          </div>
-          <div class="work-info">
-            <div class="work-title">时光代理人</div>
-            <div class="work-meta">
-              <div class="work-author">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Story.fun官方 · 12集
-              </div>
-            </div>
-          </div>
-        </div>
+          <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k 观看</span><span>198.4万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.7</span></div></div>
+        </article>
       </div>
 
       <!-- Empty state for liked / favorited tabs -->
