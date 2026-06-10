@@ -1,4 +1,4 @@
-bu'cho<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -1615,11 +1615,11 @@ bu'cho<!DOCTYPE html>
         const statusInfo = getStatusInfo(actor.status);
 
         const canUpgrade = actor.level < 5 && (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || Infinity);
-        const profileLink = 'sub-actor-profile.html?id=' + encodeURIComponent(actor.id);
+        const profileLink = 'actor-profile.html?name=' + encodeURIComponent(actor.name);
 
         return `
         <div class="actor-card" data-actor-id="${actor.id}">
-            <div class="actor-card-hero">
+            <div class="actor-card-hero" onclick="event.stopPropagation();location.href='${profileLink}'" style="cursor:pointer;">
               <img src="${actor.avatar}" alt="${actor.name}" />
               ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
               <div class="actor-card-hero-overlay"></div>
@@ -1641,7 +1641,7 @@ bu'cho<!DOCTYPE html>
           </div>
 
           <div class="actor-card-name-row">
-            <span class="actor-name">${actor.name}</span>
+            <span class="actor-name" onclick="event.stopPropagation();location.href='${profileLink}'" style="cursor:pointer;">${actor.name}</span>
           </div>
 
           <div class="actor-card-body">
