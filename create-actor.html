@@ -102,15 +102,301 @@
       gap: 56px;
     }
 
-    /* ---- Basic info + face upload (vertical layout) ---- */
+    /* ---- Basic info section ---- */
     .basic-info-section {
       display: flex;
       flex-direction: column;
       gap: 24px;
     }
 
+    /* ---- DreamOS Import Section ---- */
+    .dreamos-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .dreamos-section-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .dreamos-title-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    /* ── Dev Toggle (fixed, right edge of page) ── */
+    .dev-toggle-fixed {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 10px 10px 14px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-dark);
+      border-right: none;
+      border-radius: 12px 0 0 12px;
+      box-shadow: 0 4px 16px rgba(27,45,71,0.08);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.25s ease;
+    }
+    .dev-toggle-fixed:hover {
+      background: #fff;
+      box-shadow: 0 6px 24px rgba(27,45,71,0.12);
+    }
+    .dev-toggle-fixed .dtf-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      writing-mode: vertical-lr;
+      letter-spacing: 0.08em;
+      transition: color 0.2s ease;
+      line-height: 1.2;
+    }
+    .dev-toggle-fixed .dtf-label.has {
+      color: var(--accent);
+    }
+    .dev-toggle-fixed .dtf-label.none {
+      color: var(--danger);
+    }
+    .dev-toggle-fixed .dtf-switch {
+      width: 18px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--border-dark);
+      position: relative;
+      transition: background 0.25s ease;
+      flex-shrink: 0;
+    }
+    .dev-toggle-fixed .dtf-switch.active {
+      background: var(--accent);
+    }
+    .dev-toggle-fixed .dtf-switch .dtf-knob {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    .dev-toggle-fixed .dtf-switch.active .dtf-knob {
+      transform: translateY(10px);
+    }
 
-    /* ---- Basic info fields (mirror original layout) ---- */
+    .dreamos-section-title .badge-dreamos {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 10px;
+      border-radius: 99px;
+      border: 1px solid var(--accent-glow);
+      letter-spacing: 0.03em;
+    }
+    .dreamos-section-hint {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    /* ── DreamOS Search ── */
+    .dreamos-search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .dreamos-search {
+      width: 100%;
+      padding: 10px 36px 10px 36px;
+      border: 1px solid var(--border-dark);
+      border-radius: 999px;
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .dreamos-search::placeholder {
+      color: var(--text-hint);
+    }
+    .dreamos-search:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .dreamos-search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .dreamos-search-clear {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--border-dark);
+      color: var(--text-muted);
+      font-size: 10px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+    .dreamos-search-clear:hover {
+      background: var(--text-muted);
+      color: #fff;
+    }
+    .dreamos-search-clear.visible {
+      display: flex;
+    }
+    .actor-select-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .dreamos-grid-scroll {
+      max-height: calc(2.5 * (56px + 34px + 14px) + 1.5 * 10px); /* 2.5 rows of cards + gaps */
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+    }
+    .dreamos-grid-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .dreamos-grid-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dreamos-grid-scroll::-webkit-scrollbar-thumb {
+      background: var(--border-dark);
+      border-radius: 999px;
+    }
+    .actor-select-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .actor-select-card:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      transform: translateY(-2px);
+    }
+    .actor-select-card.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .actor-select-card img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--bg);
+    }
+    .actor-select-card .asc-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .actor-select-card .asc-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border-dark);
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      color: transparent;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .actor-select-card.active .asc-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .dreamos-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .dreamos-empty .empty-icon {
+      font-size: 40px;
+      opacity: 0.3;
+    }
+    .dreamos-empty p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 320px;
+    }
+    .dreamos-empty .dreamos-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .dreamos-empty .dreamos-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(1,186,178,0.3);
+    }
+
+    @media (max-width: 900px) {
+      .actor-select-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 680px) {
+      .actor-select-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ---- Basic info fields ---- */
     .fields-column {
       flex: 1.3;
       display: flex;
@@ -303,6 +589,13 @@
   </style>
 </head>
 <body>
+  <!-- 开发调试：页面右侧固定切换有/无素材 -->
+  <div class="dev-toggle-fixed" id="devToggleFixed" title="开发调试：切换有/无素材状态">
+    <div class="dtf-switch" id="dtfSwitch">
+      <div class="dtf-knob"></div>
+    </div>
+    <div class="dtf-label has" id="dtfLabel">有素材</div>
+  </div>
   <div id="header-placeholder"></div>
   <div class="app-shell">
 
@@ -311,7 +604,24 @@
 
     <div class="form-panel">
 
-      <!-- ═══ Basic info: name + gender + bio (vertical layout) ═══ -->
+      <!-- ═══ DreamOS Import Section (before name) ═══ -->
+      <div class="dreamos-section" id="dreamosSection">
+        <div class="dreamos-section-title">
+          <div class="dreamos-title-left">
+            从 DreamOS 导入演员素材
+            <span class="badge-dreamos">DreamOS</span>
+          </div>
+        </div>
+        <div class="dreamos-section-hint">选择你在 DreamOS 中已创建的演员素材，自动填充演员信息后进入下一阶段发行 NFT。</div>
+        <div class="dreamos-search-wrap">
+          <input type="text" class="dreamos-search" id="dreamosSearch" placeholder="搜索演员姓名..." autocomplete="off" />
+          <span class="dreamos-search-icon">🔍</span>
+          <span class="dreamos-search-clear" id="dreamosSearchClear">✕</span>
+        </div>
+        <div id="dreamosContent"></div>
+      </div>
+
+      <!-- ═══ Basic info: name + gender + bio ═══ -->
       <div class="basic-info-section">
         <div class="form-row">
           <div class="form-group">
@@ -341,7 +651,6 @@
             <span class="char-count" id="bioCount">0/500</span>
           </div>
         </div>
-
       </div>
 
       <!-- NFT 发行参数 -->
@@ -384,8 +693,242 @@
   <script src="load-bottom-nav.js"></script>
 
   <script>
-  // ── Char counters ──
+  // ══════════════════════════════════════════════
+  //  ACTOR_IP_DB — Mock Database (from DreamOS)
+  // ══════════════════════════════════════════════
+  var ACTOR_IP_DB = {
+    'Luna': {
+      name: 'Luna',
+      image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+      description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。',
+      gender: 'female'
+    },
+    '苏婉清': {
+      name: '苏婉清',
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+      description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。',
+      gender: 'female'
+    },
+    '李云飞': {
+      name: '李云飞',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+      description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。',
+      gender: 'male'
+    },
+    '林梦瑶': {
+      name: '林梦瑶',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+      description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。',
+      gender: 'female'
+    },
+    '赵无极': {
+      name: '赵无极',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。',
+      gender: 'male'
+    },
+    '上官婉儿': {
+      name: '上官婉儿',
+      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
+      gender: 'female'
+    },
+    '叶倾城': {
+      name: '叶倾城',
+      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+      description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。',
+      gender: 'female'
+    },
+    '慕容云': {
+      name: '慕容云',
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+      description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。',
+      gender: 'male'
+    },
+    '花木兰': {
+      name: '花木兰',
+      image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80',
+      description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。',
+      gender: 'female'
+    },
+    '东方朔': {
+      name: '东方朔',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+      description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。',
+      gender: 'male'
+    },
+    '柳如是': {
+      name: '柳如是',
+      image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80',
+      description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。',
+      gender: 'female'
+    },
+    '萧景琰': {
+      name: '萧景琰',
+      image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80',
+      description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。',
+      gender: 'male'
+    },
+    '江小鱼': {
+      name: '江小鱼',
+      image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80',
+      description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。',
+      gender: 'male'
+    }
+  };
+
+  // ── Gender mapping helper ──
+  var GENDER_MAP = {
+    male: 'male',
+    female: 'female',
+    other: 'other'
+  };
+
+  // ══════════════════════════════════════════════
+  //  Load & Render DreamOS Actor Materials
+  // ══════════════════════════════════════════════
+
+  function loadActorMaterials() {
+    var container = document.getElementById('dreamosContent');
+    if (!container) return;
+
+    // Check if user is logged in
+    if (!currentUser || !currentUser.isLoggedIn) {
+      renderEmptyState(container, '未登录');
+      return;
+    }
+
+    var heldNames = currentUser.actorNfts || [];
+    // Deduplicate while preserving order
+    var uniqueNames = [];
+    var seen = {};
+    for (var i = 0; i < heldNames.length; i++) {
+      var n = heldNames[i];
+      if (!seen[n]) {
+        seen[n] = true;
+        uniqueNames.push(n);
+      }
+    }
+
+    // Filter to only those with data in ACTOR_IP_DB
+    var available = uniqueNames.filter(function(name) {
+      return ACTOR_IP_DB[name] != null;
+    });
+
+    if (available.length === 0) {
+      renderEmptyState(container, 'no_materials');
+      return;
+    }
+
+    renderActorGrid(container, available);
+  }
+
+  function renderEmptyState(container, type) {
+    if (type === '未登录') {
+      container.innerHTML =
+        '<div class="dreamos-empty">' +
+        '  <div class="empty-icon">🔐</div>' +
+        '  <p>请先登录，查看你在 DreamOS 中已创建的演员素材。</p>' +
+        '</div>';
+    } else {
+      container.innerHTML =
+        '<div class="dreamos-empty">' +
+        '  <div class="empty-icon">🎭</div>' +
+        '  <p>您还没有在 DreamOS 中创建演员素材。请先前往 DreamOS 创建演员，再回来进行 NFT 发行。</p>' +
+        '  <a class="dreamos-btn" href="DreamOS/dreamos-user-actors.html" target="_blank">前往 DreamOS 创建 →</a>' +
+        '</div>';
+    }
+  }
+
+  function renderActorGrid(container, names) {
+    var html = '<div class="dreamos-grid-scroll"><div class="actor-select-grid">';
+    for (var i = 0; i < names.length; i++) {
+      var name = names[i];
+      var actor = ACTOR_IP_DB[name];
+      if (!actor) continue;
+      html +=
+        '<div class="actor-select-card" data-name="' + name.replace(/'/g, "\\'") + '" onclick="selectActorMaterial(\'' + name.replace(/'/g, "\\'") + '\')">' +
+        '  <img src="' + actor.image + '" alt="' + actor.name + '" loading="lazy" onerror="this.style.display=\'none\'" />' +
+        '  <div class="asc-name">' + actor.name + '</div>' +
+        '  <div class="asc-check">✓</div>' +
+        '</div>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  // ══════════════════════════════════════════════
+  //  Select Actor Material → Fill Form
+  // ══════════════════════════════════════════════
+
+  var _selectedMaterial = null;
+
+  function selectActorMaterial(name) {
+    var actor = ACTOR_IP_DB[name];
+    if (!actor) return;
+
+    _selectedMaterial = name;
+
+    // Update active state on cards
+    var cards = document.querySelectorAll('.actor-select-card');
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      if (card.dataset.name === name) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    }
+
+    // Fill form fields
+    document.getElementById('actorName').value = actor.name;
+    document.getElementById('nameCount').textContent = actor.name.length + '/20';
+
+    // Set gender
+    var genderSelect = document.getElementById('actorGender');
+    if (actor.gender && GENDER_MAP[actor.gender]) {
+      genderSelect.value = GENDER_MAP[actor.gender];
+    } else {
+      genderSelect.value = 'other';
+    }
+
+    // Set bio
+    document.getElementById('actorBio').value = actor.description;
+    document.getElementById('bioCount').textContent = actor.description.length + '/500';
+
+    showToast('✅ 已导入「' + actor.name + '」素材信息');
+  }
+
+  // ══════════════════════════════════════════════
+  //  Init — on DOM ready + auth-ready
+  // ══════════════════════════════════════════════
+
+  // Global cache for search filtering (filled by loadActorMaterials)
+  var _allAvailableNames = [];
+
+  function initDreamOSSection() {
+    loadActorMaterials();
+  }
+
+  // Populate search cache and sync search filter after loading materials
+  var _origRenderActorGrid = renderActorGrid;
+  renderActorGrid = function(container, names) {
+    _allAvailableNames = names.slice();
+    _origRenderActorGrid(container, names);
+    // After rendering, apply search filter if search box is visible
+    if (typeof window._filterActorGrid === 'function') {
+      window._filterActorGrid();
+    } else {
+      // Search init not ready yet; just sync clear button
+      var searchInput = document.getElementById('dreamosSearch');
+      if (searchInput && searchInput.value.trim()) {
+        document.getElementById('dreamosSearchClear').classList.add('visible');
+      }
+    }
+  };
+
   document.addEventListener('DOMContentLoaded', function() {
+    // ── Char counters ──
     var nameInput = document.getElementById('actorName');
     var bioInput = document.getElementById('actorBio');
 
@@ -399,6 +942,96 @@
         document.getElementById('bioCount').textContent = this.value.length + '/500';
       });
     }
+
+    // ── DreamOS Search ──
+    var searchInput = document.getElementById('dreamosSearch');
+    var searchClear = document.getElementById('dreamosSearchClear');
+
+    // _allAvailableNames is declared globally above and filled by renderActorGrid override
+    // Expose globally so renderActorGrid override can call it too
+    window._filterActorGrid = function() {
+      var query = searchInput.value.trim().toLowerCase();
+      if (query) {
+        searchClear.classList.add('visible');
+      } else {
+        searchClear.classList.remove('visible');
+      }
+      // Filter the cached names
+      var filtered = _allAvailableNames.filter(function(name) {
+        return name.toLowerCase().indexOf(query) > -1;
+      });
+      var container = document.getElementById('dreamosContent');
+      if (filtered.length === 0) {
+        container.innerHTML =
+          '<div class="dreamos-empty">' +
+          '  <div class="empty-icon">🔍</div>' +
+          '  <p>未找到与「' + query + '」匹配的演员素材</p>' +
+          '</div>';
+      } else {
+        // Use _origRenderActorGrid directly to avoid recursion with the override
+        _origRenderActorGrid(container, filtered);
+      }
+    };
+
+    searchInput.addEventListener('input', window._filterActorGrid);
+
+    searchClear.addEventListener('click', function() {
+      searchInput.value = '';
+      searchClear.classList.remove('visible');
+      window._filterActorGrid();
+      searchInput.focus();
+    });
+
+    // ── Dev toggle (fixed right edge): switch between "有素材" / "无素材" ──
+    var _devToggleState = true; // true = 有素材, false = 无素材
+    var dtfSwitch = document.getElementById('dtfSwitch');
+    var dtfLabel = document.getElementById('dtfLabel');
+
+    function applyDevToggle() {
+      if (_devToggleState) {
+        dtfSwitch.classList.add('active');
+        dtfLabel.textContent = '有素材';
+        dtfLabel.className = 'dtf-label has';
+        // Force logged-in state and show materials
+        if (currentUser) {
+          currentUser._savedActorNfts = currentUser._savedActorNfts || (currentUser.actorNfts ? currentUser.actorNfts.slice() : []);
+          currentUser.actorNfts = currentUser._savedActorNfts.slice();
+        }
+      } else {
+        dtfSwitch.classList.remove('active');
+        dtfLabel.textContent = '无素材';
+        dtfLabel.className = 'dtf-label none';
+        // Force empty materials
+        if (currentUser) {
+          currentUser._savedActorNfts = currentUser._savedActorNfts || (currentUser.actorNfts ? currentUser.actorNfts.slice() : []);
+          currentUser.actorNfts = [];
+        }
+      }
+      initDreamOSSection();
+    }
+
+    // Click on the fixed toggle wrapper
+    document.getElementById('devToggleFixed').addEventListener('click', function(e) {
+      e.stopPropagation();
+      _devToggleState = !_devToggleState;
+      applyDevToggle();
+    });
+
+    // ── Load DreamOS materials ──
+    // Use setTimeout to ensure auth.js has initialized currentUser
+    setTimeout(initDreamOSSection, 200);
+
+    // Sync search state after grid is rendered (search box empty → show all)
+    setTimeout(function() {
+      if (_allAvailableNames.length > 0 && typeof window._filterActorGrid === 'function') {
+        window._filterActorGrid();
+      }
+    }, 500);
+  });
+
+  // Re-load when auth state changes (e.g. login/logout)
+  document.addEventListener('auth-ready', function() {
+    initDreamOSSection();
   });
 
   // ── Submit ──

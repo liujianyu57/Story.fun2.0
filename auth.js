@@ -423,6 +423,9 @@ function mockLogin(method) {
 
     // 显示成功提示
     showToast(`✅ 已通过 ${methodNames[method] || 'Privy'} 登录成功`, '🎉');
+
+    // 触发 auth-ready 事件，通知其他页面更新
+    document.dispatchEvent(new CustomEvent('auth-ready'));
   }, 800);
 }
 
@@ -448,6 +451,9 @@ function handleLogout() {
   });
 
   showToast('👋 已退出登录', '👋');
+
+  // 触发 auth-ready 事件，通知其他页面更新
+  document.dispatchEvent(new CustomEvent('auth-ready'));
 }
 
 // ============================================================
