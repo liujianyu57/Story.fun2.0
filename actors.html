@@ -280,6 +280,84 @@
     .mint-qty-input::-webkit-inner-spin-button,
     .mint-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
+    /* Slippage setting — slider row */
+    .mint-slippage-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 2px 2px 0;
+    }
+    .mint-slippage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mint-slippage-label {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    .mint-slippage-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .mint-slippage-track {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mint-slippage-track .range-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      min-width: 24px;
+      user-select: none;
+    }
+    .mint-slippage-track .range-label:last-child {
+      text-align: right;
+    }
+    .mint-slippage-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .mint-slippage-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 1px 6px rgba(0,179,136,0.3);
+      transition: transform 0.15s ease;
+      border: 2px solid #fff;
+    }
+    .mint-slippage-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+    }
+    .mint-slippage-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 6px rgba(0,179,136,0.3);
+    }
+    .mint-slippage-hint {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      opacity: 0.8;
+    }
+
     /* Total divider + amount */
     .mint-total-section {
       display: flex;
@@ -307,6 +385,22 @@
       font-weight: 800;
       color: var(--accent);
       letter-spacing: -0.02em;
+    }
+    .mint-total-original {
+      display: none;
+      text-align: right;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0 0 6px;
+    }
+    .mint-total-original.show { display: block; }
+    .mint-total-original s {
+      text-decoration: line-through;
+      opacity: 0.65;
+    }
+    .mint-total-original .diff {
+      color: #b8860b;
+      font-weight: 600;
     }
     .mint-modal-footer {
       display: flex;
@@ -1190,6 +1284,19 @@
               <button class="mint-qty-btn" id="qtyInc">+</button>
             </div>
           </div>
+          <!-- 滑点设置 -->
+          <div class="mint-slippage-row">
+            <div class="mint-slippage-header">
+              <span class="mint-slippage-label">滑点保护</span>
+              <span class="mint-slippage-value" id="slippageDisplay">1.0%</span>
+            </div>
+            <div class="mint-slippage-track">
+              <span class="range-label">0%</span>
+              <input class="mint-slippage-slider" id="slippageSlider" type="range" min="0" max="50" step="1" value="10" />
+              <span class="range-label">5%</span>
+            </div>
+            <div class="mint-slippage-hint">滑点用于应对网络拥堵时的价格波动，最终支付金额不超过设定滑点，多余金额将会退还至钱包。</div>
+          </div>
           <!-- 合计 -->
           <div class="mint-total-section">
             <div class="mint-total-divider"></div>
@@ -1197,6 +1304,7 @@
               <span class="mint-total-label">合计</span>
               <span class="mint-total-value" id="mintTotal">10.0 USDC</span>
             </div>
+            <div class="mint-total-original" id="mintTotalOrig">原始合计 <s id="mintTotalOrigNum">10.0 USDC</s> <span class="diff" id="mintTotalDiff">+0.1 USDC</span></div>
           </div>
           <div class="mint-modal-footer">
             <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
@@ -1431,6 +1539,12 @@
       const mintTotal = document.getElementById('mintTotal');
       const mintFinalRow = document.getElementById('mintFinalRow');
       const mintFinalPrice = document.getElementById('mintFinalPrice');
+      // Slippage elements
+      const slippageSlider = document.getElementById('slippageSlider');
+      const slippageDisplay = document.getElementById('slippageDisplay');
+      const mintTotalOrig = document.getElementById('mintTotalOrig');
+      const mintTotalOrigNum = document.getElementById('mintTotalOrigNum');
+      const mintTotalDiff = document.getElementById('mintTotalDiff');
       let currentActorPrice = 10;       // current price string e.g. "10 USDC"
       let currentActorMinted = 0;       // already minted count
       let currentActorTotal = 10000;    // total supply
@@ -1441,36 +1555,60 @@
         return initialPrice * Math.pow(20, ratio);
       }
 
+      /** Get current slippage ratio (e.g. 0.01 for 1%) */
+      function getSlippage() {
+        return (parseInt(slippageSlider.value) || 10) / 1000;
+      }
+
       function updateTotal() {
         const qty = parseInt(qtyInput.value) || 1;
         const curPriceNum = parseFloat(currentActorPrice.toString().replace(/[^0-9.]/g, '')) || 10;
         const unit = currentActorPrice.toString().replace(/[0-9.]/g, '') || ' USDC';
         const totalSupply = currentActorTotal;
         const minted = currentActorMinted;
+        const slippage = getSlippage();
+
+        // Update slippage display
+        const slipPct = (slippage * 100).toFixed(1);
+        slippageDisplay.textContent = slipPct + '%';
 
         // Derive initial price: currentPrice = initialPrice * 20 ^ (minted / totalSupply)
         const ratio = totalSupply > 0 ? minted / totalSupply : 0;
         const initialPrice = curPriceNum / Math.pow(20, ratio);
 
+        let baseTotal;
         if (qty === 1) {
           mintFinalRow.classList.remove('show');
-          mintTotal.textContent = curPriceNum.toFixed(1) + unit;
-          return;
+          baseTotal = curPriceNum;
+        } else {
+          // Calculate total across all qty units
+          let total = 0;
+          let lastPrice = 0;
+          for (let k = 0; k < qty; k++) {
+            const price = calcTieredPrice(initialPrice, totalSupply, minted, k);
+            total += price;
+            lastPrice = price;
+          }
+          // Show final unit price
+          mintFinalRow.classList.add('show');
+          mintFinalPrice.textContent = lastPrice.toFixed(2) + unit;
+          baseTotal = total;
         }
 
-        // Calculate total across all qty units
-        let total = 0;
-        let lastPrice = 0;
-        for (let k = 0; k < qty; k++) {
-          const price = calcTieredPrice(initialPrice, totalSupply, minted, k);
-          total += price;
-          lastPrice = price;
-        }
+        // Apply slippage to total
+        const slippageAmount = baseTotal * slippage;
+        const finalTotal = baseTotal + slippageAmount;
 
-        // Show final unit price
-        mintFinalRow.classList.add('show');
-        mintFinalPrice.textContent = lastPrice.toFixed(2) + unit;
-        mintTotal.textContent = total.toFixed(2) + unit;
+        mintTotal.textContent = finalTotal.toFixed(2) + unit;
+
+        // Show original total if slippage > 0
+        if (slippage > 0) {
+          mintTotalOrig.classList.add('show');
+          mintTotalOrigNum.textContent = baseTotal.toFixed(2) + unit;
+          mintTotalDiff.textContent = '+' + slippageAmount.toFixed(2) + unit;
+        } else {
+          mintTotalOrig.classList.remove('show');
+        }
       }
 
       qtyDec.addEventListener('click', () => {
@@ -1484,6 +1622,7 @@
         updateTotal();
       });
       qtyInput.addEventListener('input', updateTotal);
+      slippageSlider.addEventListener('input', updateTotal);
 
       function openMintModal(data) {
         mintModalActorName.textContent = data.name;
