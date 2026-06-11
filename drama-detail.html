@@ -24,8 +24,9 @@
       font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
-    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    html { overflow-x: hidden; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; overflow-x: hidden; width: 100%; max-width: 100%; }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; width: 100%; overflow-x: hidden; }
     .breadcrumb { display: flex; align-items: center; gap: 8px; margin-top: 40px; margin-bottom: 20px; font-size: 0.92rem; color: var(--text-muted); }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
     .breadcrumb a:hover { color: var(--accent); }
@@ -78,7 +79,7 @@
     .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     /* ===== End Auth Styles ===== */
-    .detail-layout { display: grid; grid-template-columns: 1fr 380px; gap: 28px; margin-bottom: 32px; }
+    .detail-layout { display: grid; grid-template-columns: 1fr 380px; gap: 28px; margin-bottom: 32px; min-width: 0; }
     @media (max-width: 1024px) { .detail-layout { grid-template-columns: 1fr; } }
     .player-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: #0a0e17; box-shadow: var(--shadow-lg); }
     .player-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); gap: 16px; cursor: pointer; transition: all 0.3s ease; position: relative; }
@@ -95,7 +96,7 @@
     .player-controls .progress-bar { flex: 1; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.2); cursor: pointer; position: relative; }
     .player-controls .progress-bar .fill { height: 100%; width: 0%; border-radius: 4px; background: var(--accent); transition: width 0.3s ease; }
     .player-controls .time { color: rgba(255,255,255,0.7); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
-    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .sidebar { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
     .info-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); }
     .info-card .drama-title { margin: 0 0 6px; font-size: 1.6rem; line-height: 1.2; }
     .info-card .drama-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
@@ -205,12 +206,118 @@
     .rating-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .rating-current { font-size: 0.9rem; color: var(--text-muted); text-align: center; padding-top: 8px; border-top: 1px solid var(--border); width: 100%; }
     .rating-current strong { color: var(--text); }
+    /* ================================================================
+       响应式 - 手机 (max-width: 680px)
+       ================================================================ */
     @media (max-width: 680px) {
+      body { overflow-x: hidden; }
+      .app-shell { padding: 12px; max-width: 100%; overflow-x: hidden; }
+      .detail-layout { grid-template-columns: 1fr; gap: 16px; min-width: 0; width: 100%; }
+      .breadcrumb { margin-top: 16px; margin-bottom: 12px; font-size: 0.82rem; flex-wrap: wrap; }
+      .player-section { width: 100%; min-width: 0; }
+      .player-wrapper { width: 100%; max-width: 100%; min-width: 0; border-radius: var(--radius); aspect-ratio: 16 / 9; }
+      .player-wrapper img.bg-cover { width: 100%; height: 100%; max-width: none; }
+      .sidebar { min-width: 0; width: 100%; }
+      .info-card { min-width: 0; overflow-wrap: break-word; }
+      .episode-panel { min-width: 0; width: 100%; }
+      .episode-list { min-width: 0; width: 100%; }
+      .cast-scroll { min-width: 0; }
+      .comment-list { min-width: 0; }
+      .player-placeholder .play-icon { width: 56px; height: 56px; font-size: 1.5rem; }
+      .player-placeholder .episode-label { font-size: 0.82rem; }
+      .player-controls { padding: 10px 12px; gap: 10px; }
+      .player-controls .ctrl-btn { width: 30px; height: 30px; font-size: 0.85rem; }
+      .player-controls .time { font-size: 0.72rem; }
+      .info-card { padding: 16px; border-radius: 18px; }
+      .info-card .drama-title { font-size: 1.25rem; }
+      .info-card .drama-meta .tag { font-size: 0.75rem; padding: 3px 10px; }
+      .info-card .drama-stats-highlight { gap: 8px; }
+      .info-card .drama-stats-highlight .stat { padding: 10px 6px; border-radius: 12px; }
+      .info-card .drama-stats-highlight .stat .num { font-size: 1.2rem; }
+      .info-card .drama-stats-highlight .stat .label { font-size: 0.75rem; }
+      .synopsis .synopsis-text { font-size: 0.85rem; }
+      .button, .button-secondary { padding: 10px 18px; font-size: 0.88rem; }
+      .episode-panel { border-radius: 18px; }
+      .episode-panel .panel-header { padding: 14px 16px; }
+      .episode-panel .panel-header h3 { font-size: 0.95rem; }
+      .episode-list { padding: 10px 12px; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; max-height: 300px; }
+      .ep-item { height: 38px; font-size: 0.78rem; border-radius: 8px; }
+      .cast-section { margin-top: 20px; }
+      .cast-section h3 { font-size: 1.05rem; margin-bottom: 12px; }
+      .cast-card { width: 100px; }
+      .cast-card .c-avatar-wrap { width: 68px; height: 68px; }
+      .cast-card .c-avatar-wrap .c-badge { width: 18px; height: 18px; font-size: 0.6rem; }
+      .cast-card .c-actor-line { font-size: 0.82rem; }
+      .cast-card .c-name { font-size: 0.72rem; }
+      .comments-section { margin-top: 20px; }
+      .comments-section h3 { font-size: 1.05rem; margin-bottom: 12px; }
+      .comment-input-wrap { flex-direction: row; gap: 8px; }
+      .comment-input-wrap .avatar { width: 34px; height: 34px; font-size: 0.8rem; }
+      .comment-input-wrap .input-group { flex: 1; display: flex; gap: 8px; }
+      .comment-input-wrap input { padding: 10px 14px; font-size: 0.85rem; min-width: 0; }
+      .comment-input-wrap .send-btn { padding: 8px 14px; font-size: 0.85rem; white-space: nowrap; }
+      .comment-item { padding: 10px 12px; border-radius: 14px; gap: 10px; }
+      .comment-item .c-avatar { width: 30px; height: 30px; font-size: 0.75rem; }
+      .comment-item .c-body .c-name { font-size: 0.82rem; }
+      .comment-item .c-body .c-text { font-size: 0.82rem; }
+      .comment-item .c-actions { min-width: 36px; }
+      .comment-item .c-actions button { padding: 4px 2px; }
+      .comment-item .c-actions button svg { width: 16px; height: 16px; }
+      .comment-item .c-actions button .c-like-num { font-size: 0.68rem; }
+      .drama-actions { flex-wrap: wrap; justify-content: center; gap: 4px; }
+      .drama-actions .action-btn-icon { padding: 8px 14px; }
+      .drama-actions .action-btn-icon .aicon { width: 18px; height: 18px; }
+      .drama-actions .action-btn-icon .acount { font-size: 0.82rem; }
+      .sidebar { gap: 14px; }
+      /* Modal 手机适配 */
+      .auth-modal { border-radius: 20px; }
+      .auth-modal-header { padding: 28px 20px 16px; }
+      .auth-modal-header h2 { font-size: 1.2rem; }
+      .auth-modal-body { padding: 4px 20px 24px; gap: 10px; }
+      .auth-social-btn { padding: 12px; font-size: 0.88rem; border-radius: 12px; }
+      .auth-wallet-btn { padding: 12px; font-size: 0.88rem; border-radius: 12px; }
+      .auth-modal-tos { font-size: 0.75rem; }
+      .auth-modal-logo { width: 44px; height: 44px; font-size: 1.1rem; }
+      .auth-modal-close { top: 12px; right: 12px; width: 28px; height: 28px; font-size: 0.95rem; }
+      .auth-dropdown { width: 200px; right: -12px; border-radius: 12px; }
+      .auth-dropdown-header { padding: 12px 14px; }
+      .auth-dropdown-header img { width: 32px; height: 32px; }
+      .auth-dropdown-name { font-size: 0.85rem; }
+      .auth-dropdown-wallet { font-size: 0.7rem; }
+      .auth-dropdown-item { padding: 10px 14px; font-size: 0.82rem; }
+      .auth-login-btn { padding: 6px 14px; font-size: 0.82rem; }
+      .auth-avatar { width: 30px; height: 30px; }
+      .rating-modal { border-radius: 20px; max-width: 340px; }
+      .rating-modal-header { padding: 24px 20px 4px; }
+      .rating-modal-header h2 { font-size: 1.1rem; }
+      .rating-modal-body { padding: 12px 20px 24px; gap: 12px; }
+      .rating-star { width: 36px; height: 36px; }
+      .rating-label { font-size: 0.88rem; }
+      .rating-submit-btn { padding: 10px; font-size: 0.92rem; }
+      .rating-current { font-size: 0.82rem; }
+      .toast-notification { max-width: calc(100vw - 48px); padding: 14px 18px; font-size: 0.85rem; top: 16px; }
+    }
 
-      .app-shell { padding: 16px; }
-      .detail-layout { grid-template-columns: 1fr; }
+    /* 极小屏 (max-width: 400px) */
+    @media (max-width: 400px) {
+      .app-shell { padding: 8px; }
+      .detail-layout { gap: 12px; }
+      .info-card { padding: 12px; border-radius: 14px; }
+      .info-card .drama-title { font-size: 1.1rem; }
+      .info-card .drama-stats-highlight .stat .num { font-size: 1rem; }
+      .info-card .drama-stats-highlight .stat { padding: 8px 4px; }
+      .episode-list { grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 4px; max-height: 220px; }
+      .ep-item { height: 32px; font-size: 0.72rem; }
+      .cast-card { width: 80px; }
+      .cast-card .c-avatar-wrap { width: 56px; height: 56px; }
+      .cast-card .c-avatar-wrap .c-badge { width: 16px; height: 16px; font-size: 0.5rem; }
+      .cast-card .c-actor-line { font-size: 0.72rem; }
+      .cast-card .c-name { font-size: 0.65rem; }
       .comment-input-wrap { flex-direction: column; }
       .comment-input-wrap .input-group { width: 100%; }
+      .breadcrumb { font-size: 0.75rem; }
+      .player-wrapper { border-radius: 14px; }
+      .player-placeholder .play-icon { width: 44px; height: 44px; font-size: 1.2rem; }
     }
   </style>
 </head>
