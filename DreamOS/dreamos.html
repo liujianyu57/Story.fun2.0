@@ -385,7 +385,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
         <div class="ud-nav">
           <div class="ud-nav-item" onclick="goToActorNFT()">
             <span class="ud-nav-icon">🎭</span>
-            <span>演员 IP</span>
+            <span>演员素材</span>
             <span class="ud-nav-badge">13</span>
 
           </div>
@@ -718,7 +718,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
       <!-- 从持有的演员 NFT 中选择 -->
       <div id="char-select-nft-section">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <div class="form-label" style="margin-bottom:0">从您持有的演员 IP 中选择</div>
+          <div class="form-label" style="margin-bottom:0">从您持有的演员素材中选择</div>
           <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(255,170,0,.12);color:var(--amber);border:1px solid rgba(255,170,0,.2)">快速填充</span>
         </div>
         <div id="char-nft-list" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;min-height:48px">
@@ -1977,10 +1977,6 @@ function showToast(msg) {
     <span>📺 已生成视频</span>
     <button class="vs-close" onclick="toggleVideoSidebar()">×</button>
   </div>
-  <div style="padding:0 14px 10px">
-    <button onclick="openPublishWholeDrama()" style="width:100%;padding:10px 0;border-radius:8px;background:var(--amber);color:var(--ink-900);border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Mono',monospace;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">🚀 发布整剧</button>
-  </div>
-
   <div class="vs-body" id="vs-body"></div>
   <div style="padding:10px 14px 14px;border-top:1px solid var(--bs);flex-shrink:0">
     <button onclick="downloadAllVideos()" style="width:100%;padding:10px 0;border-radius:7px;background:none;border:1px solid var(--b);color:var(--t2);font-size:11px;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px" onmouseover="this.style.borderColor='rgba(255,170,0,.3)';this.style.color='var(--amber)'" onmouseout="this.style.borderColor='var(--b)';this.style.color='var(--t2)'">⏬ 下载全部视频</button>

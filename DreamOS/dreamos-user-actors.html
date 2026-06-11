@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的演员 IP · DreamOS</title>
+<title>我的演员素材 · DreamOS</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -131,34 +131,6 @@ body {
 .actor-card-avatar img {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
-}
-
-/* ℹ️ info button on card */
-.actor-card-info-btn {
-  position: absolute;
-  top: 10px; right: 10px;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(13,16,23,.75);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,.12);
-  color: var(--t2);
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s, color .2s, border-color .2s;
-  font-family: "EB Garamond", serif;
-  font-style: italic;
-  font-weight: 700;
-  line-height: 1;
-  z-index: 2;
-}
-.actor-card-info-btn:hover {
-  background: var(--amber);
-  color: var(--ink-900);
-  border-color: var(--amber);
 }
 
 .actor-card-body {
@@ -331,214 +303,6 @@ body {
   flex: 1;
 }
 
-/* Create form styles */
-.create-form { padding-bottom: 4px; }
-.form-group { margin-bottom: 16px; }
-.form-label {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: var(--t2); margin-bottom: 6px;
-}
-.form-label .form-hint { color: var(--t3); font-weight: 400; font-size: 10px; }
-.form-input, .form-textarea, .form-select {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--bs);
-  background: var(--ink-900);
-  color: var(--t1);
-  font-size: 12px;
-  font-family: "DM Mono", monospace;
-  transition: border-color .2s;
-  outline: none;
-}
-.form-input:focus, .form-textarea:focus, .form-select:focus {
-  border-color: var(--amber);
-}
-.form-textarea {
-  min-height: 60px;
-  resize: vertical;
-}
-.form-select {
-  appearance: none;
-  cursor: pointer;
-}
-.form-select option { background: var(--ink-800); color: var(--t1); }
-
-/* Image upload - large area */
-.form-upload-area {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.form-upload-trigger {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 220px;
-  border-radius: 10px;
-  border: 1px dashed var(--bs);
-  background: var(--ink-900);
-  cursor: pointer;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: border-color .2s, background .2s;
-}
-.form-upload-trigger:hover {
-  border-color: var(--amber);
-  background: var(--ink-700);
-}
-.form-upload-trigger .upload-placeholder-icon {
-  font-size: 28px;
-  opacity: .3;
-  margin-bottom: 8px;
-  pointer-events: none;
-}
-.form-upload-trigger .upload-placeholder-text {
-  font-size: 11px;
-  color: var(--t3);
-  pointer-events: none;
-}
-.form-upload-trigger .upload-placeholder-hint {
-  font-size: 9px;
-  color: var(--t3);
-  opacity: .5;
-  margin-top: 4px;
-  pointer-events: none;
-}
-.form-upload-trigger img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  position: absolute;
-  inset: 0;
-}
-.form-upload-name-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 10px;
-  color: var(--t3);
-}
-.form-upload-name-bar .upload-filename {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.form-upload-name-bar .upload-change-btn {
-  flex-shrink: 0;
-  padding: 3px 10px;
-  border-radius: 5px;
-  border: 1px solid var(--bs);
-  background: transparent;
-  color: var(--t3);
-  font-size: 9px;
-  cursor: pointer;
-  font-family: "DM Mono", monospace;
-  transition: all .2s;
-}
-.form-upload-name-bar .upload-change-btn:hover {
-  border-color: var(--amber);
-  color: var(--amber);
-}
-
-
-/* Gender radio */
-.form-gender-group {
-  display: flex; gap: 8px;
-}
-.form-gender-btn {
-  flex: 1;
-  padding: 8px 12px;
-  border-radius: 7px;
-  border: 1px solid var(--bs);
-  background: var(--ink-900);
-  color: var(--t3);
-  font-size: 11px;
-  cursor: pointer;
-  font-family: "DM Mono", monospace;
-  text-align: center;
-  transition: all .2s;
-}
-.form-gender-btn:hover {
-  border-color: var(--t2);
-  color: var(--t2);
-}
-.form-gender-btn.active {
-  border-color: var(--amber);
-  color: var(--amber);
-  background: rgba(255,170,0,.08);
-}
-
-/* Form section divider */
-.form-section-label {
-  font-size: 10px;
-  letter-spacing: .08em;
-  color: var(--t3);
-  margin-bottom: 12px;
-  padding-top: 4px;
-  border-top: 1px solid var(--bs);
-  padding-top: 12px;
-}
-
-/* Fee summary */
-.form-fee-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 7px 0;
-  font-size: 11px;
-  color: var(--t2);
-}
-.form-fee-row .fee-val { color: var(--t1); font-weight: 500; }
-.form-fee-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0 0;
-  margin-top: 6px;
-  border-top: 1px solid var(--bs);
-  font-size: 13px;
-  font-weight: 600;
-}
-.form-fee-total .fee-val { color: var(--amber); }
-
-/* Form actions footer (fixed at bottom) */
-.modal-actions-footer {
-  padding: 16px 24px 20px;
-  flex-shrink: 0;
-  border-top: 1px solid var(--bs);
-  display: flex;
-  gap: 10px;
-}
-.modal-actions-footer .form-btn {
-  flex: 1;
-  padding: 11px 16px;
-  border-radius: 8px;
-  border: none;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: "DM Mono", monospace;
-  transition: opacity .15s;
-}
-.modal-actions-footer .form-btn.confirm {
-  background: var(--amber);
-  color: var(--ink-900);
-}
-.modal-actions-footer .form-btn.confirm:hover { opacity: .85 }
-.modal-actions-footer .form-btn.confirm:disabled { opacity: .4; cursor: not-allowed }
-.modal-actions-footer .form-btn.cancel {
-  background: transparent;
-  color: var(--t3);
-  border: 1px solid var(--bs);
-}
-.modal-actions-footer .form-btn.cancel:hover { color: var(--t1); border-color: var(--t2) }
-
 /* Contract address row */
 .modal-contract-row {
   display: flex;
@@ -644,7 +408,7 @@ body {
   color: var(--amber);
 }
 
-/* Modal footer */
+/* Modal footer (info modal only) */
 .modal-footer {
   padding: 16px 24px 20px;
   flex-shrink: 0;
@@ -707,7 +471,7 @@ body {
 <div class="topbar">
   <div class="tb-left">
     <button class="back-btn" onclick="goBack()">← 返回</button>
-    <span class="tb-title">我的演员 IP</span>
+    <span class="tb-title">我的演员素材</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button class="tb-right-btn" onclick="window.open('../studio.html','_blank')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:6px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">进入经纪工坊 →</button>
@@ -740,91 +504,6 @@ body {
     </div>
     <div class="modal-footer">
       <a class="modal-btn-primary" id="modalStudioBtn" href="../studio.html" target="_blank">进入经纪工坊</a>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Create -->
-<div class="modal-overlay" id="createModal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h2 style="font-size:20px">创建演员 IP</h2>
-      <button class="modal-close" onclick="closeCreateModal()">✕</button>
-    </div>
-    <div class="modal-body create-form">
-      <!-- Actor image -->
-      <div class="form-group">
-        <div class="form-label">演员形象</div>
-        <div class="form-upload-area">
-          <div class="form-upload-trigger" onclick="document.getElementById('fileInput').click()">
-            <span class="upload-placeholder-icon">🖼</span>
-            <span class="upload-placeholder-text">点击上传演员头像</span>
-            <span class="upload-placeholder-hint">建议使用 1:1 比例高清正面照　！支持 JPG/PNG</span>
-            <img id="previewImg" src="" alt="preview" style="display:none">
-          </div>
-          <div class="form-upload-name-bar" id="uploadNameBar" style="display:none">
-            <span class="upload-filename" id="uploadName"></span>
-            <button class="upload-change-btn" onclick="document.getElementById('fileInput').click()">重选</button>
-          </div>
-          <input type="file" id="fileInput" accept="image/jpeg,image/png" style="display:none" onchange="onFileSelected(event)">
-        </div>
-      </div>
-      <!-- Name -->
-      <div class="form-group">
-        <div class="form-label">演员姓名</div>
-        <input class="form-input" id="createName" placeholder="请输入演员姓名" maxlength="20">
-      </div>
-      <!-- Gender -->
-      <div class="form-group">
-        <div class="form-label">性别</div>
-        <div class="form-gender-group" id="genderGroup">
-          <button class="form-gender-btn" data-gender="男" onclick="selectGender(this)">男</button>
-          <button class="form-gender-btn" data-gender="女" onclick="selectGender(this)">女</button>
-          <button class="form-gender-btn active" data-gender="不限" onclick="selectGender(this)">不限</button>
-        </div>
-      </div>
-      <!-- Description -->
-      <div class="form-group">
-        <div class="form-label">简介</div>
-        <textarea class="form-textarea" id="createDesc" placeholder="请输入演员简介" maxlength="200"></textarea>
-      </div>
-      <!-- Issue params -->
-      <div class="form-section-label">发行参数</div>
-      <div class="form-group">
-        <div class="form-label">发行总量</div>
-        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid var(--bs);background:var(--ink-900);font-size:12px;color:var(--t2)">
-          <span style="font-weight:500;color:var(--t1)">10,000</span>
-          <span style="color:var(--t3)">个素材</span>
-        </div>
-        <input type="hidden" id="createTotalSupply" value="10000">
-      </div>
-      <div class="form-group">
-        <div class="form-label">素材价格 <span class="form-hint">！每个素材的售价 USDC</span></div>
-        <input class="form-input" id="createPrice" type="number" min="0" step="0.01" placeholder="10" oninput="calcFee()">
-      </div>
-      <div class="form-group">
-        <div class="form-label">自留数量 <span class="form-hint">！创建者预留的素材数量</span></div>
-        <input class="form-input" id="createSelfReserve" type="number" min="1" max="10000" placeholder="1" oninput="calcFee()">
-      </div>
-      <!-- Fee -->
-      <div class="form-section-label">费用</div>
-      <div class="form-fee-row">
-        <span>创建手续费</span>
-        <span class="fee-val">10 USDC</span>
-      </div>
-      <div class="form-fee-row">
-        <span>自留费用</span>
-        <span class="fee-val" id="feeSelfReserve">0 USDC</span>
-      </div>
-      <div class="form-fee-total">
-        <span>合计</span>
-        <span class="fee-val" id="feeTotal">10 USDC</span>
-      </div>
-    </div>
-    <!-- Fixed footer with buttons -->
-    <div class="modal-actions-footer">
-      <button class="form-btn cancel" onclick="closeCreateModal()">取消</button>
-      <button class="form-btn confirm" id="createConfirmBtn" onclick="confirmCreate()">确认创建</button>
     </div>
   </div>
 </div>
@@ -928,8 +607,6 @@ let _modalAllClones = [];
 let _modalPageSize = 8;
 let _modalCurrentPage = 0;
 
-let _createFileData = null;  // base64 file data for new IP
-
 // ══════════════════════════════════════════════
 //  Render Logic
 // ══════════════════════════════════════════════
@@ -942,8 +619,8 @@ function renderPage() {
     body.innerHTML =
       '<div class="login-prompt">' +
       '  <div class="prompt-icon">🎭</div>' +
-      '  <div class="prompt-title">登录后查看持有的演员 IP</div>' +
-      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员 IP。</div>' +
+      '  <div class="prompt-title">登录后查看持有的演员素材</div>' +
+      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员素材。</div>' +
       '  <button class="prompt-btn" onclick="goLogin()">去登录 →</button>' +
       '</div>';
     document.getElementById('nft-count').textContent = '未登录';
@@ -970,9 +647,9 @@ function renderPage() {
     body.innerHTML =
       '<div class="empty-state">' +
       '  <div class="empty-icon">🎭</div>' +
-      '  <div class="empty-title">还没有持有演员 IP</div>' +
-      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员 IP，即可在这里查看你持有的演员 IP。</div>' +
-      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建演员 IP</button>' +
+      '  <div class="empty-title">还没有持有演员素材</div>' +
+      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员素材，即可在这里查看你持有的演员素材。</div>' +
+      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建演员素材</button>' +
       '</div>';
     return;
   }
@@ -980,10 +657,10 @@ function renderPage() {
   // ── Render cards (one per IP) ──
   var html = '';
   html += '<div class="sec-name-row">';
-  html += '  <div class="sec-name">我的演员 IP</div>';
-  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建演员 IP</button>';
+  html += '  <div class="sec-name">我的演员素材</div>';
+  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建演员素材</button>';
   html += '</div>';
-  html += '<div class="sec-sub">持有演员 IP 即可使用该形象参演短剧。</div>';
+  html += '<div class="sec-sub">持有演员素材即可使用该形象参演短剧。</div>';
   html += '<hr class="sec-div">';
   html += '<div class="actor-grid">';
 
@@ -995,7 +672,7 @@ function renderPage() {
     html += '<div class="actor-card">';
     html += '  <div class="actor-card-avatar">';
     html += '    <img src="' + actor.image + '" alt="' + actor.name + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div style=display:flex;align-items:center;justify-content:center;height:100%;font-size:48px;opacity:.15>🎭</div>\'">';
-    html += '    <button class="actor-card-info-btn" onclick="event.stopPropagation();openModal(\'' + actorName.replace(/'/g, "\\'") + '\')">ⓘ</button>';
+    
     html += '  </div>';
     html += '  <div class="actor-card-body">';
     html += '    <div class="actor-card-name">' + actor.name + '</div>';
@@ -1129,16 +806,14 @@ function fallbackCopy(text) {
 document.addEventListener('click', function(e) {
   var overlay = document.getElementById('actorModal');
   if (e.target === overlay) closeModal();
-  var createOverlay = document.getElementById('createModal');
-  if (e.target === createOverlay) closeCreateModal();
 });
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeModal(); closeCreateModal(); }
+  if (e.key === 'Escape') { closeModal(); }
 });
 
 // ══════════════════════════════════════════════
-//  Create Modal
+//  Create — coming soon
 // ══════════════════════════════════════════════
 
 function openCreateModal() {
@@ -1146,120 +821,7 @@ function openCreateModal() {
     showToast('请先登录');
     return;
   }
-  _createFileData = null;
-  document.getElementById('createName').value = '';
-  document.getElementById('createDesc').value = '';
-  document.getElementById('createPrice').value = '';
-  document.getElementById('createSelfReserve').value = '';
-  // Reset upload area
-  document.getElementById('previewImg').style.display = 'none';
-  document.getElementById('previewImg').src = '';
-  var trigger = document.querySelector('.form-upload-trigger');
-  trigger.querySelector('.upload-placeholder-icon').style.display = '';
-  trigger.querySelector('.upload-placeholder-text').style.display = '';
-  trigger.querySelector('.upload-placeholder-hint').style.display = '';
-  document.getElementById('uploadNameBar').style.display = 'none';
-  document.getElementById('uploadName').textContent = '';
-  document.getElementById('fileInput').value = '';
-
-  // Reset gender
-  var btns = document.querySelectorAll('#genderGroup .form-gender-btn');
-  for (var g = 0; g < btns.length; g++) btns[g].classList.remove('active');
-  document.querySelector('#genderGroup .form-gender-btn[data-gender="不限"]').classList.add('active');
-  calcFee();
-  document.getElementById('createModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCreateModal() {
-  document.getElementById('createModal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function onFileSelected(event) {
-  var file = event.target.files[0];
-  if (!file) return;
-  document.getElementById('uploadName').textContent = file.name;
-  document.getElementById('uploadNameBar').style.display = 'flex';
-
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    _createFileData = e.target.result;
-    // Hide placeholder, show image
-    var trigger = document.querySelector('.form-upload-trigger');
-    trigger.querySelector('.upload-placeholder-icon').style.display = 'none';
-    trigger.querySelector('.upload-placeholder-text').style.display = 'none';
-    trigger.querySelector('.upload-placeholder-hint').style.display = 'none';
-    var img = document.getElementById('previewImg');
-    img.src = _createFileData;
-    img.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-}
-
-function selectGender(el) {
-  var btns = document.querySelectorAll('#genderGroup .form-gender-btn');
-  for (var g = 0; g < btns.length; g++) btns[g].classList.remove('active');
-  el.classList.add('active');
-}
-
-function calcFee() {
-  var price = parseFloat(document.getElementById('createPrice').value) || 0;
-  var selfReserve = parseInt(document.getElementById('createSelfReserve').value) || 0;
-  var selfCost = price * selfReserve;
-  document.getElementById('feeSelfReserve').textContent = selfCost.toFixed(2) + ' USDC';
-  document.getElementById('feeTotal').textContent = (10 + selfCost).toFixed(2) + ' USDC';
-}
-
-function confirmCreate() {
-  var name = document.getElementById('createName').value.trim();
-  var desc = document.getElementById('createDesc').value.trim();
-  var totalSupply = parseInt(document.getElementById('createTotalSupply').value) || 10000;
-  var price = parseFloat(document.getElementById('createPrice').value) || 0;
-  var selfReserve = parseInt(document.getElementById('createSelfReserve').value) || 0;
-
-  // Validation
-  if (!name) { showToast('请输入演员姓名'); return; }
-  if (ACTOR_IP_DB[name]) { showToast('该演员 IP 已存在'); return; }
-  if (!desc) { showToast('请输入演员简介'); return; }
-  if (price < 0) { showToast('请输入有效的素材价格'); return; }
-  if (selfReserve < 1) { showToast('自留数量至少为 1'); return; }
-  if (selfReserve > totalSupply) { showToast('自留数量不能超过发行总量'); return; }
-
-  // Get selected gender
-  var gender = '不限';
-  var btns = document.querySelectorAll('#genderGroup .form-gender-btn');
-  for (var g = 0; g < btns.length; g++) {
-    if (btns[g].classList.contains('active')) { gender = btns[g].getAttribute('data-gender'); break; }
-  }
-
-  // Generate a mock contract address
-  var addrHex = '0x' + Array.from({length: 8}, function() { return Math.floor(Math.random() * 16).toString(16); }).join('') + '...' + Array.from({length: 4}, function() { return Math.floor(Math.random() * 16).toString(16); }).join('').toUpperCase();
-
-  // Default image if no file uploaded
-  var image = _createFileData || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80';
-
-  // Add to DB
-  ACTOR_IP_DB[name] = {
-    name: name,
-    image: image,
-    description: desc,
-    contractAddress: addrHex,
-    gender: gender,
-    totalSupply: totalSupply,
-    price: price,
-    selfReserve: selfReserve
-  };
-
-  // Add self-reserved clones to user
-  if (!currentUser.actorNfts) currentUser.actorNfts = [];
-  for (var r = 0; r < selfReserve; r++) {
-    currentUser.actorNfts.push(name);
-  }
-
-  closeCreateModal();
-  renderPage();
-  showToast('✅ 演员 IP「' + name + '」创建成功');
+  showToast('🔜 创建功能即将上线，敬请期待');
 }
 
 // ══════════════════════════════════════════════
