@@ -988,6 +988,28 @@
         });
       });
 
+      // ═══ 手机端链接跳转到 drama-player.html ═══
+      if (window.innerWidth <= 760) {
+        // Banner 立即观看按钮
+        var bannerBtn = document.querySelector('.featured-content .button');
+        if (bannerBtn) {
+          bannerBtn.onclick = function(e) {
+            e.stopPropagation();
+            var d = featuredDramas[0];
+            location.href = 'drama-player.html?title=' + encodeURIComponent(d.title) + '&total=44&cover=' + encodeURIComponent(d.img);
+          };
+        }
+        // 短剧卡片
+        document.querySelectorAll('.card').forEach(function(card) {
+          var title = card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : '';
+          var cover = card.querySelector('.card-thumb') ? card.querySelector('.card-thumb').src : '';
+          var total = card.querySelector('.episode') ? (card.querySelector('.episode').textContent.match(/\d+/) || ['24'])[0] : '24';
+          card.onclick = function(e) {
+            location.href = 'drama-player.html?title=' + encodeURIComponent(title) + '&total=' + total + '&cover=' + encodeURIComponent(cover);
+          };
+        });
+      }
+
       // ═══ 布局切换 (1列 / 2列) ═══
       const layoutBtns = document.querySelectorAll('.layout-toggle button');
       const gallery = document.querySelector('.gallery');
