@@ -351,7 +351,8 @@
       <!-- Tab 2 -->
       <div class="tab-content" id="tab2">
         <div class="nft-grid">
-          <div class="nft-card" data-staked="true">
+          <div class="nft-card">
+
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80" alt="星际迷航 NFT" />
               <span class="nft-id-badge">#NFT-002</span>
@@ -420,70 +421,8 @@
       </div>
     </div>
 
-    <!-- Stake Modal -->
-    <div class="modal-overlay" id="stakeModal">
-      <div class="modal" style="max-width: 520px;">
-        <div class="modal-header">
-          <h3>🔒 质押短剧 NFT</h3>
-          <button class="modal-close" onclick="closeStakeModal()">✕</button>
-        </div>
-        <div class="modal-body">
-          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">质押短剧 NFT 即可获得该短剧 <strong style="color:var(--accent);">70% 创作者分润</strong> 权益。质押后 NFT 将被锁定，分润将自动累计。</p>
-
-          <div id="stakePreview" style="display:flex;align-items:center;gap:18px;padding:18px;border-radius:18px;border:1px solid var(--border);background:#fafcff;margin-bottom:20px;">
-            <img id="stakeNftCover" src="" alt="" style="width:72px;height:72px;border-radius:14px;object-fit:cover;background:#eaf4ff;flex-shrink:0;" />
-            <div>
-              <h4 id="stakeNftName" style="margin:0 0 4px;font-size:1.1rem;">—</h4>
-              <p id="stakeNftId" style="margin:0;color:var(--text-muted);font-size:0.92rem;">短剧 NFT · ERC-721</p>
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">创作者分润比例</p>
-              <p style="margin:4px 0 0;font-size:1.5rem;font-weight:700;color:var(--accent);">70%</p>
-            </div>
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">短剧单价</p>
-              <p id="stakeUnitPrice" style="margin:4px 0 0;font-size:1.2rem;font-weight:700;color:var(--accent);">—</p>
-            </div>
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">累计分润</p>
-              <p id="stakeTotalEarned" style="margin:4px 0 0;font-size:1.2rem;font-weight:700;">0 USDC</p>
-            </div>
-            <div style="padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fafcff;">
-              <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">已质押数量</p>
-              <p id="stakedCount" style="margin:4px 0 0;font-size:1.2rem;font-weight:700;">0</p>
-            </div>
-          </div>
-
-          <div id="stakeInfo" style="padding:16px 18px;border-radius:14px;background:rgba(0,179,136,0.06);border:1px solid rgba(0,179,136,0.12);margin-bottom:20px;">
-            <p style="margin:0;color:var(--text-muted);font-size:0.92rem;line-height:1.7;">
-              质押后，该短剧每笔销售收入的 <strong style="color:var(--accent);">70%</strong> 将作为分润累计到您的账户。
-              <span style="display:block;margin-top:8px;font-size:0.88rem;">💡 分润实时累计，可随时在收益页中领取。</span>
-            </p>
-          </div>
-
-          <div id="stakeStakedInfo" style="display:none;padding:16px 18px;border-radius:14px;background:rgba(255,159,44,0.06);border:1px solid rgba(255,159,44,0.12);margin-bottom:20px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="color:var(--text-muted);font-size:0.95rem;">可分润总额</span>
-              <span id="stakePendingEarned" style="font-size:1.35rem;font-weight:700;color:#f59e0b;">0 USDC</span>
-            </div>
-            <p style="margin:8px 0 0;color:#b87a1a;font-size:0.88rem;line-height:1.6;">该 NFT 当前处于质押状态。解质押后将不再享受分润。</p>
-          </div>
-
-          <div style="padding:12px 16px;border-radius:12px;background:#fff8e6;border:1px solid rgba(255,159,44,0.20);">
-            <p style="margin:0;color:#b87a1a;font-size:0.88rem;line-height:1.6;">💡 质押后仍可正常观看短剧，互不影响。解质押后分润权益将终止。</p>
-          </div>
-        </div>
-        <div class="modal-footer" id="stakeModalFooter">
-          <button class="button-secondary" onclick="closeStakeModal()">取消</button>
-          <button class="button" id="stakeConfirmBtn" onclick="confirmStake()">确认质押</button>
-        </div>
-      </div>
-    </div>
-
     <!-- Bind Actor Modal -->
+
     <div class="modal-overlay" id="bindActorModal">
       <div class="modal" style="max-width: 640px;">
         <div class="modal-header">
@@ -669,8 +608,8 @@
 
           const nftCard = document.createElement('div');
           nftCard.className = 'nft-card';
-          nftCard.dataset.staked = 'false';
           nftCard.innerHTML = `
+
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="${cover}" alt="${title} NFT" />
               <span class="nft-id-badge">${newId}</span>
@@ -715,104 +654,8 @@
       }
     });
 
-    let currentStakeNft = null;
-    const stakeModal = document.getElementById('stakeModal');
-    const stakedNftIds = new Set();
-
-    document.querySelectorAll('#tab2 .nft-card').forEach(card => {
-      if (card.dataset.staked === 'true') {
-        const nftId = card.querySelector('.nft-id-badge')?.textContent || '';
-        stakedNftIds.add(nftId);
-      }
-    });
-
-    const nftDramaMap = {
-      '#NFT-001': { price: '12.5', earned: '87.50' },
-      '#NFT-002': { price: '8.0', earned: '33.60' },
-      '#NFT-003': { price: '9.8', earned: '54.88' },
-      '#NFT-005': { price: '6.5', earned: '22.75' },
-    };
-
-    function openStakeModal(nftCard) {
-      const cover = nftCard.querySelector('.nft-cover').src;
-      const name = nftCard.querySelector('.nft-body h4').textContent;
-      const nftId = nftCard.querySelector('.nft-id-badge').textContent;
-      const isStaked = nftCard.dataset.staked === 'true';
-
-      currentStakeNft = { cover, name, nftId, card: nftCard, isStaked };
-
-      document.getElementById('stakeNftCover').src = cover;
-      document.getElementById('stakeNftCover').alt = name;
-      document.getElementById('stakeNftName').textContent = name;
-      document.getElementById('stakeNftId').textContent = nftId + ' · ERC-721';
-
-      const drama = nftDramaMap[nftId] || { price: '—', earned: '0' };
-      document.getElementById('stakeUnitPrice').textContent = drama.price !== '—' ? drama.price + ' USDC' : '—';
-      document.getElementById('stakeTotalEarned').textContent = drama.earned + ' USDC';
-      document.getElementById('stakedCount').textContent = stakedNftIds.size;
-
-      const stakeInfo = document.getElementById('stakeInfo');
-      const stakedInfo = document.getElementById('stakeStakedInfo');
-      const footer = document.getElementById('stakeModalFooter');
-
-      if (isStaked) {
-        stakeInfo.style.display = 'none';
-        stakedInfo.style.display = 'block';
-        document.getElementById('stakePendingEarned').textContent = drama.earned + ' USDC';
-        footer.innerHTML = '<button class="button-secondary" onclick="closeStakeModal()">取消</button><button class="button" style="background:#f59e0b;" onclick="confirmUnstake()">解质押</button>';
-      } else {
-        stakeInfo.style.display = 'block';
-        stakedInfo.style.display = 'none';
-        footer.innerHTML = '<button class="button-secondary" onclick="closeStakeModal()">取消</button><button class="button" onclick="confirmStake()">确认质押</button>';
-      }
-      stakeModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeStakeModal() {
-      stakeModal.classList.remove('open');
-      document.body.style.overflow = '';
-      currentStakeNft = null;
-    }
-
-    function confirmStake() {
-      if (!currentStakeNft) return;
-      const btn = document.querySelector('#stakeModalFooter .button');
-      btn.textContent = '质押中...';
-      btn.disabled = true;
-      setTimeout(() => {
-        currentStakeNft.card.dataset.staked = 'true';
-        stakedNftIds.add(currentStakeNft.nftId);
-        alert(`✅ 「${currentStakeNft.name}」质押成功！`);
-        closeStakeModal();
-      }, 1000);
-    }
-
-    function confirmUnstake() {
-      if (!currentStakeNft) return;
-      if (!confirm(`确定要解质押「${currentStakeNft.name}」吗？`)) return;
-      const btn = document.querySelector('#stakeModalFooter .button');
-      btn.textContent = '解质押中...';
-      btn.disabled = true;
-      setTimeout(() => {
-        currentStakeNft.card.dataset.staked = 'false';
-        stakedNftIds.delete(currentStakeNft.nftId);
-        alert(`✅ 「${currentStakeNft.name}」解质押成功！`);
-        closeStakeModal();
-      }, 1000);
-    }
-
-    stakeModal.addEventListener('click', function(e) { if (e.target === this) closeStakeModal(); });
-
-    // NFT 卡片区域点击打开质押详情弹窗
-    document.addEventListener('click', function(e) {
-      const bodyArea = e.target.closest('.nft-card .nft-body, .nft-card .nft-cover-wrap');
-      if (!bodyArea) return;
-      const card = bodyArea.closest('.nft-card');
-      if (card) openStakeModal(card);
-    });
-
     let currentActor = null;
+
     const actorMintModal = document.getElementById('actorMintModal');
 
     function openActorMintModal(name, avatar, totalSupply, openMint, mintPrice, reserved) {
@@ -904,7 +747,8 @@
       document.getElementById('bindDramaCover').src = cover;
       document.getElementById('bindDramaCover').alt = name;
       document.getElementById('bindDramaName').textContent = name;
-      document.getElementById('bindDramaNftId').textContent = nftId + ' · 已质押';
+      document.getElementById('bindDramaNftId').textContent = nftId;
+
 
       const roles = dramaRoles[name] || [];
       const roleList = document.getElementById('bindRoleList');
@@ -1036,18 +880,8 @@
       }
     }
 
-    function filterNFTs(filter, btn) {
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('#tab2 .nft-card').forEach(card => {
-        const isStaked = card.dataset.staked === 'true';
-        if (filter === 'all') { card.style.display = ''; }
-        else if (filter === 'staked') { card.style.display = isStaked ? '' : 'none'; }
-        else if (filter === 'unstaked') { card.style.display = !isStaked ? '' : 'none'; }
-      });
-    }
-
     const actorDramaData = {
+
       '苏婉清': [
         { drama: '江南烟雨', role: '茶女·陆小曼', royalty: '8%', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80' },
         { drama: '长安如梦', role: '才女·沈清荷', royalty: '6%', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80' },
@@ -1119,7 +953,6 @@
       if (e.key !== 'Escape') return;
       const overlays = [
         { el: document.getElementById('mintModal'), close: closeMintModal },
-        { el: document.getElementById('stakeModal'), close: closeStakeModal },
         { el: document.getElementById('bindActorModal'), close: closeBindActorModal },
         { el: document.getElementById('actorDramaModal'), close: closeActorDramaModal },
       ];
@@ -1131,6 +964,7 @@
         }
       }
     });
+
   </script>
 
   <div id="bottom-nav-placeholder"></div>
