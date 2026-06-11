@@ -1048,11 +1048,10 @@
         <div>
           <h1 class="actor-name" id="actorName">—</h1>
           <div class="actor-tags" id="actorTags">
-            <span class="tag" id="actorGender">—</span>
-            <span class="tag muted" id="actorNftBadge">演员 IP</span>
-            <span class="tag" id="actorCreatorTag">—</span>
-            <span class="tag muted" id="actorCollectionTag">—</span>
-            <span class="tag soldout" id="actorSoldoutTag" style="display:none">已售罄</span>
+          <span class="tag" id="actorGender">—</span>
+          <span class="tag" id="actorCreatorTag">—</span>
+          <span class="tag muted" id="actorCollectionTag">—</span>
+          <span class="tag soldout" id="actorSoldoutTag" style="display:none">已售罄</span>
           </div>
         </div>
         <p class="actor-desc" id="actorDesc">—</p>
@@ -1369,7 +1368,6 @@
       document.getElementById('actorAvatar').alt = actor.name;
       document.getElementById('actorName').textContent = actor.name;
       document.getElementById('actorGender').textContent = actor.gender;
-      document.getElementById('actorNftBadge').textContent = '演员 IP';
       document.getElementById('actorCreatorTag').textContent = '发行者 ' + (actor.creator || '—');
       document.getElementById('actorCollectionTag').textContent = '演员 IP ' + (actor.collection || actor.id || '—');
       document.getElementById('actorDesc').textContent = actor.desc;
@@ -1553,7 +1551,7 @@
       function openMintModal(actorData) {
         mintModalActorName.textContent = actorData.name;
         mintModalImage.src = actorData.avatar;
-        mintModalTag.textContent = '演员 IP';
+        mintModalTag.textContent = '演员 IP • ' + (actorData.collection || actorData.id || '—');
         mintBalance.innerHTML = '剩余 <strong>' + actorData.available.toLocaleString() + '</strong> 个';
         mintEstimate.textContent = actorData.price;
         curActorPrice = actorData.price;

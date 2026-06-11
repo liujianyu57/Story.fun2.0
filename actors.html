@@ -1488,7 +1488,7 @@
       function openMintModal(data) {
         mintModalActorName.textContent = data.name;
         mintModalImage.src = data.image;
-        mintModalTag.textContent = data.tag;
+        mintModalTag.textContent = data.tag + (data.collection ? ' · ' + data.collection : '');
         mintBalance.textContent = '剩余 ' + data.amount + ' 个';
         mintEstimate.textContent = data.price;
         currentActorPrice = data.price;
@@ -1514,8 +1514,10 @@
           const available = card.dataset.available || '10';
           const minted = card.dataset.minted || '0';
           const total = card.dataset.total || '10000';
+          const collection = card.dataset.collection || '';
           openMintModal({
             name: actorName,
+            collection: collection,
             price: price,
             amount: available,
             minted: parseInt(minted),
@@ -1630,7 +1632,7 @@
             statTooltipDesc.textContent = '该演员 IP 参演的所有短剧的完播次数之和';
           } else if (stat === 'heat') {
             statTooltipTitle.textContent = '热度';
-            statTooltipDesc.textContent = '该演员 IP 参演的所有短剧的热度之和';
+            statTooltipDesc.textContent = '该演员 IP 参演的所有短剧最近30天的热度之和';
           }
           statTooltip.classList.add('active');
         });

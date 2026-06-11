@@ -1394,6 +1394,7 @@
         <div>
           <div style="font-weight:700;font-size:1rem;" id="modalLevelName">群演</div>
           <div style="font-size:0.82rem;color:var(--text-muted);">挖矿系数 ×<span id="modalLevelCoeff">1.0</span></div>
+          <div style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;" id="modalLevelEnergy">⚡ 体力 0/0</div>
         </div>
       </div>
 
@@ -2277,6 +2278,7 @@
       document.getElementById('modalLevelCurrent').textContent = 'Lv' + actor.level;
       document.getElementById('modalLevelName').textContent = currentCfg.name;
       document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
+      document.getElementById('modalLevelEnergy').textContent = '⚡ 体力 ' + actor.energy + '/' + actor.energyMax;
 
       const sameIpSameLevel = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
       const availableCount = sameIpSameLevel.length;
@@ -2291,6 +2293,7 @@
             <span class="ci-id">${a.id}</span>
             <span class="ci-name">${a.name}</span>
             <span class="ci-lv">Lv${a.level}</span>
+            <span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto;white-space:nowrap;">⚡${a.energy}/${a.energyMax}</span>
           </div>
         `).join('');
       }

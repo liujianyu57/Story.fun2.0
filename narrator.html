@@ -36,6 +36,18 @@
     .card-list-item:hover .card-header img { transform: scale(1.06); }
     .card-header::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%); pointer-events: none; }
     .card-header .badge-row { position: absolute; top: 14px; left: 14px; display: flex; align-items: center; gap: 8px; z-index: 2; }
+
+    /* ===== Card Menu (右上角三点菜单) ===== */
+    .card-menu { position: absolute; top: 12px; right: 12px; z-index: 10; }
+    .card-menu-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.30); color: #fff; font-size: 1.2rem; cursor: pointer; display: grid; place-items: center; transition: all 0.2s ease; backdrop-filter: blur(4px); line-height: 1; padding: 0; }
+    .card-menu-btn:hover { background: rgba(0,0,0,0.50); transform: scale(1.08); }
+    .card-menu-dropdown { position: absolute; top: calc(100% + 4px); right: 0; min-width: 150px; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.06); padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-6px) scale(0.95); transition: all 0.2s ease; transform-origin: top right; }
+    .card-menu-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .card-menu-dropdown .menu-item { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; font-weight: 500; color: var(--text); cursor: pointer; transition: background 0.15s ease; white-space: nowrap; }
+    .card-menu-dropdown .menu-item:hover { background: rgba(0,0,0,0.04); }
+    .card-menu-dropdown .menu-item.danger { color: #f45b69; }
+    .card-menu-dropdown .menu-item.danger:hover { background: rgba(244,91,105,0.08); }
+    .card-menu-dropdown .menu-item .menu-icon { font-size: 1rem; flex-shrink: 0; }
     .status-badge { padding: 6px 14px 6px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; color: #fff; cursor: pointer; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.02em; backdrop-filter: blur(4px); box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
     .status-badge:hover { transform: scale(1.06); }
     .status-pending { background: linear-gradient(135deg, #ff9f2c, #f59e0b); }
@@ -214,6 +226,12 @@
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('审核通过后可铸造短剧NFT并上架短剧')">?</span>
                 </span>
               </div>
+              <div class="card-menu">
+                <button class="card-menu-btn" onclick="event.stopPropagation();toggleCardMenu(this)">⋯</button>
+                <div class="card-menu-dropdown">
+                  <div class="menu-item danger" onclick="event.stopPropagation();confirmDelete('长安如梦')"><span class="menu-icon">🗑️</span> 删除短剧</div>
+                </div>
+              </div>
             </div>
             <div class="card-body">
               <h3>长安如梦</h3>
@@ -240,6 +258,12 @@
                   <span class="status-dot"></span> 已通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('铸造NFT后自动上架短剧')">?</span>
                 </span>
+              </div>
+              <div class="card-menu">
+                <button class="card-menu-btn" onclick="event.stopPropagation();toggleCardMenu(this)">⋯</button>
+                <div class="card-menu-dropdown">
+                  <div class="menu-item danger" onclick="event.stopPropagation();confirmDelete('江南烟雨')"><span class="menu-icon">🗑️</span> 删除短剧</div>
+                </div>
               </div>
             </div>
             <div class="card-body">
@@ -270,6 +294,12 @@
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('铸造NFT后自动上架短剧')">?</span>
                 </span>
               </div>
+              <div class="card-menu">
+                <button class="card-menu-btn" onclick="event.stopPropagation();toggleCardMenu(this)">⋯</button>
+                <div class="card-menu-dropdown">
+                  <div class="menu-item danger" onclick="event.stopPropagation();confirmDelete('星际迷航')"><span class="menu-icon">🗑️</span> 删除短剧</div>
+                </div>
+              </div>
             </div>
             <div class="card-body">
               <h3>星际迷航</h3>
@@ -290,6 +320,12 @@
                   <span class="status-dot"></span> 未通过
                   <span class="hint-icon" onclick="event.stopPropagation();showToast('内容存在敏感词汇，无法通过审核')">?</span>
                 </span>
+              </div>
+              <div class="card-menu">
+                <button class="card-menu-btn" onclick="event.stopPropagation();toggleCardMenu(this)">⋯</button>
+                <div class="card-menu-dropdown">
+                  <div class="menu-item danger" onclick="event.stopPropagation();confirmDelete('迷雾之城')"><span class="menu-icon">🗑️</span> 删除短剧</div>
+                </div>
               </div>
             </div>
             <div class="card-body">
@@ -935,6 +971,24 @@
     document.addEventListener('click', function(e) {
       const btn = e.target.closest('.nft-body .button');
       if (btn && btn.textContent.trim() === '绑定演员') { e.preventDefault(); handleBindActorClick(btn); }
+    });
+
+    // === 右上角菜单切换 ===
+    function toggleCardMenu(btn) {
+      const dropdown = btn.parentElement.querySelector('.card-menu-dropdown');
+      if (!dropdown) return;
+      const isOpen = dropdown.classList.contains('show');
+      // 关闭所有菜单
+      document.querySelectorAll('.card-menu-dropdown.show').forEach(d => d.classList.remove('show'));
+      // 如果当前菜单是关闭的，打开它
+      if (!isOpen) dropdown.classList.add('show');
+    }
+
+    // 点击页面其他地方关闭菜单
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.card-menu')) {
+        document.querySelectorAll('.card-menu-dropdown.show').forEach(d => d.classList.remove('show'));
+      }
     });
 
     function confirmDelete(title) {
