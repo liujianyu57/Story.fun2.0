@@ -64,6 +64,16 @@
     .metric-value.green { color: var(--story-green); }
     .metric-value.gold { color: var(--gold); }
     .metric-sub { font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px; }
+    .metric-card-actions { display: flex; align-items: center; gap: 12px; }
+    .metric-card-actions .metric-value-wrap { flex: 1; }
+    .btn-sm {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 6px 16px; border-radius: 999px; border: none;
+      background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .btn-sm:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,179,136,0.25); }
+    .btn-sm:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
 
     .tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
     .tab-nav-btn {
@@ -146,9 +156,6 @@
 
     <div class="page-header">
       <h1>收益</h1>
-      <div class="page-header-actions">
-        <button class="btn-primary" onclick="claimAll()">一键领取</button>
-      </div>
     </div>
 
     <!-- ===== 核心指标 ===== -->
@@ -162,12 +169,22 @@
         <div class="metric-value green" id="mCumulativeUsdc">3,580.00</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">可领取 STORY</div>
-        <div class="metric-value gold" id="mClaimableStory">2,350</div>
+        <div class="metric-card-actions">
+          <div class="metric-value-wrap">
+            <div class="metric-label">可领取 STORY</div>
+            <div class="metric-value gold" id="mClaimableStory">2,350</div>
+          </div>
+          <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn">领取</button>
+        </div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">可领取 USDC</div>
-        <div class="metric-value gold" id="mClaimableUsdc">895.50</div>
+        <div class="metric-card-actions">
+          <div class="metric-value-wrap">
+            <div class="metric-label">可领取 USDC</div>
+            <div class="metric-value gold" id="mClaimableUsdc">895.50</div>
+          </div>
+          <button class="btn-sm" onclick="claimUsdc()" id="claimUsdcBtn">领取</button>
+        </div>
       </div>
     </div>
 
@@ -279,7 +296,7 @@
         flow.push({
           time: `2025-${end} 00:00`,
           type:'staking', typeLabel:'派遣收益',
-          source: `第${r.period}期 2025-${start} ~ 2025-${end}`,
+          source: `2025-${start} ~ 2025-${end}`,
           amount: r.amount,
           status:'已到账'
         });
@@ -291,8 +308,8 @@
         const day = 18 - Math.floor(i / 2);
         const period = day >= 15 ? '24' : '23';
         const periodLabel = day >= 15
-          ? '第24期 2025-06-15 ~ 2025-06-21'
-          : '第23期 2025-06-08 ~ 2025-06-14';
+          ? '2025-06-15 ~ 2025-06-21'
+          : '2025-06-08 ~ 2025-06-14';
         flow.push({
           time:`2025-06-${String(day).padStart(2,'0')} ${String(9+(i*3)%10).padStart(2,'0')}:${String(i*11%60).padStart(2,'0')}`,
           type:'referral', typeLabel:'邀请收益',
@@ -337,6 +354,20 @@
       if(WALLET.storyClaimable<=0 && WALLET.usdcClaimable<=0){showToast('没有可领取的收益');return;}
       showToast('已领取 STORY '+fmt(WALLET.storyClaimable)+'、USDC '+d2(WALLET.usdcClaimable)+' 到钱包');
       WALLET.storyClaimable=0;
+      WALLET.usdcClaimable=0;
+      renderMetrics();
+    }
+
+    function claimStory() {
+      if(WALLET.storyClaimable<=0){showToast('没有可领取的 STORY');return;}
+      showToast('已领取 '+fmt(WALLET.storyClaimable)+' STORY 到钱包');
+      WALLET.storyClaimable=0;
+      renderMetrics();
+    }
+
+    function claimUsdc() {
+      if(WALLET.usdcClaimable<=0){showToast('没有可领取的 USDC');return;}
+      showToast('已领取 '+d2(WALLET.usdcClaimable)+' USDC 到钱包');
       WALLET.usdcClaimable=0;
       renderMetrics();
     }
