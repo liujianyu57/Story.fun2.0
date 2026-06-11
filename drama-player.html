@@ -24,15 +24,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .top-back .back-btn svg{width:28px;height:28px}
 .top-back .ep-badge{pointer-events:auto;margin-left:12px;font-size:18px;font-weight:600;color:#fff;letter-spacing:.5px}
 
-/* ===== Bottom Info Bar ===== */
-.bottom-bar{position:fixed;left:0;right:0;bottom:0;z-index:11;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.25) 80%,transparent);pointer-events:none}
-.bottom-bar .bb-left{pointer-events:auto;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 0;max-width:75%;text-decoration:none}
-.bottom-bar .bb-left .bb-title{font-size:14px;font-weight:600;color:#fff;line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-shadow:0 1px 6px rgba(0,0,0,.6);transition:color .2s}
-.bottom-bar .bb-left:active .bb-title{color:var(--accent)}
-.bottom-bar .bb-left .bb-arrow-icon{margin-left:2px;color:rgba(255,255,255,.5);font-size:12px;line-height:1;flex-shrink:0}
-.bottom-bar .bb-right{pointer-events:auto;display:flex;align-items:center;gap:6px}
-.bottom-bar .bb-right .bb-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,255,255,.25);flex-shrink:0;display:block;transition:border-color .2s}
-.bottom-bar .bb-right .bb-avatar:active{border-color:var(--accent)}
+/* ===== Bottom Bar (选集 + 清屏播放) ===== */
+.bottom-bar{position:fixed;left:0;right:0;bottom:0;z-index:11;display:flex;align-items:center;gap:8px;padding:6px 10px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0));background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.25) 80%,transparent);pointer-events:none}
+.bottom-bar .bb-btn{pointer-events:auto;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:999px;background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:.5px solid rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;border:none}
+.bottom-bar .bb-btn:active{background:rgba(255,255,255,.25);transform:scale(.92)}
+.bottom-bar .bb-btn svg{width:16px;height:16px;flex-shrink:0}
+.bottom-bar .bb-btn.bb-ep{flex:1;gap:8px;padding:10px 20px}
+.bottom-bar .bb-btn.bb-full{padding:10px 16px;flex-shrink:0;transition:all .2s}
+.bottom-bar .bb-btn.bb-full.active{background:var(--accent);border-color:var(--accent)}
+.bottom-bar .bb-btn.bb-full svg{width:18px;height:18px}
 
 /* ===== Actions (right side) ===== */
 .actions{position:absolute;right:10px;bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px}
@@ -60,7 +60,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .info-actors .ia-overflow{font-size:10px;color:rgba(255,255,255,.5);margin-left:2px;font-weight:500}
 
 /* ===== Player Progress Bar ===== */
-.player-progress{position:fixed;left:0;right:0;bottom:50px;z-index:12;height:4px;background:rgba(255,255,255,.12);cursor:pointer;pointer-events:auto;touch-action:none}
+.player-progress{position:fixed;left:0;right:0;bottom:48px;z-index:12;height:4px;background:rgba(255,255,255,.12);cursor:pointer;pointer-events:auto;touch-action:none}
 .player-progress .pp-fill{height:100%;width:0%;background:linear-gradient(90deg,#00b388,#34d399);border-radius:0 2px 2px 0;position:relative;transition:none}
 .player-progress .pp-fill .pp-thumb{position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #00b388;box-shadow:0 1px 6px rgba(0,0,0,.4);opacity:0;transition:opacity .2s}
 .player-progress:active .pp-fill .pp-thumb,
@@ -94,9 +94,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .ep-drawer .ep-header .ep-title .ep-status{font-size:10px;font-weight:500;color:rgba(0,179,136,.85);background:rgba(0,179,136,.12);border:.5px solid rgba(0,179,136,.25);padding:2px 8px;border-radius:999px}
 .ep-drawer .ep-header .ep-close{width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.06);border:none;color:#5e6f83;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .ep-drawer .ep-header .ep-close:active{background:rgba(0,0,0,.12);transform:scale(.9)}
-.ep-drawer .ep-body{flex:1;overflow-y:auto;padding:14px 16px env(safe-area-inset-bottom,0);-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ep-drawer .ep-body{flex:1;overflow-y:auto;padding:14px 16px env(safe-area-inset-bottom,0);-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .ep-drawer .ep-body::-webkit-scrollbar{width:0}
-.ep-item{display:flex;align-items:center;justify-content:center;padding:10px 6px;border-radius:10px;background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06);font-size:13px;font-weight:500;color:#2d3e52;cursor:pointer;transition:all .2s;text-align:center}
+.ep-item{display:flex;align-items:center;justify-content:center;padding:0;aspect-ratio:1/1;border-radius:4px;background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06);font-size:13px;font-weight:500;color:#2d3e52;cursor:pointer;transition:all .2s;text-align:center}
 .ep-item:active{background:rgba(0,179,136,.12);transform:scale(.92)}
 .ep-item.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
 
@@ -137,6 +137,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .comment-input-wrap .send-btn:active{transform:scale(.95);box-shadow:0 1px 4px rgba(0,179,136,.2)}
 .comment-count{font-size:12px;color:rgba(94,111,131,.6)}
 
+/* ===== Clean Mode ===== */
+#app.clean-mode .info,
+#app.clean-mode .actions,
+#app.clean-mode .slide-mask{opacity:0;pointer-events:none;transition:opacity .25s}
+
 @media(min-width:769px){#app{position:relative;max-width:400px;height:100vh;margin:0 auto}body{background:var(--bg);display:flex;align-items:center;justify-content:center}body,#loading{background:#f5faff!important}.bottom-bar{max-width:400px;left:50%;transform:translateX(-50%)}.cm-drawer .cm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.cm-drawer.open .cm-panel{transform:translateX(-50%) translateY(0)}.ep-drawer .ep-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.ep-drawer.open .ep-panel{transform:translateX(-50%) translateY(0)}}
 </style>
 </head>
@@ -152,15 +157,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
     <span class="ep-badge" id="epBadge">第1集</span>
   </div>
 
-  <!-- Bottom Info Bar: drama name + actor avatars -->
+  <!-- Bottom Bar: episode selector + fullscreen -->
   <div class="bottom-bar" id="bottomBar">
-    <a class="bb-left" id="bbLeftLink" href="drama-detail.html">
-      <span class="bb-title" id="bbTitle">短剧名称</span>
-      <span class="bb-arrow-icon">▸</span>
-    </a>
-    <div class="bb-right" id="bbRightAvatars">
-      <img class="bb-avatar" src="" alt="演员头像" id="bbAvatar" onerror="this.style.display='none'">
-    </div>
+    <button class="bb-btn bb-ep" id="bbEpBtn"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>选集 全<span id="bbEpTotal">24</span>集</button>
+    <button class="bb-btn bb-full" id="bbFullBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
   </div>
 
   <!-- Player Progress Bar -->
@@ -183,7 +183,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
   <div class="ep-panel">
     <div class="ep-handle"></div>
     <div class="ep-header">
-      <div class="ep-title">选集 <span class="ep-status">已完结</span></div>
+      <div class="ep-title">选集</div>
       <button class="ep-close" id="epClose">✕</button>
     </div>
     <div class="ep-body" id="epBody"></div>
@@ -217,19 +217,23 @@ for(let i=0;i<total;i++)episodes.push({idx:i,label:`第${i+1}集`,cover:dramaCov
 
 let idx=0,animFlag=false,wh=0,paused=false;
 const track=document.getElementById('track'),toast=document.getElementById('toast'),loading=document.getElementById('loading'),epBadge=document.getElementById('epBadge'),backBtn=document.getElementById('backBtn');
-const bbTitle=document.getElementById('bbTitle'),bbAvatar=document.getElementById('bbAvatar'),bbLeftLink=document.getElementById('bbLeftLink');
+const bbEpBtn=document.getElementById('bbEpBtn'),bbFullBtn=document.getElementById('bbFullBtn'),bbEpTotal=document.getElementById('bbEpTotal');
+bbEpTotal.textContent = total;
+
 const cmDrawer=document.getElementById('cmDrawer'),cmBody=document.getElementById('cmBody'),cmTitle=document.getElementById('cmTitle');
 const epDrawer=document.getElementById('epDrawer'),epBody=document.getElementById('epBody');
 const playerProg=document.getElementById('playerProgress'),ppFill=document.getElementById('ppFill'),ppThumb=document.getElementById('ppThumb');
 const ppTooltip=document.getElementById('ppTooltip'),ppTipImg=document.getElementById('ppTipImg'),ppTipTime=document.getElementById('ppTipTime');
 
-/* ---- Set bottom info link ---- */
-bbLeftLink.href = `drama-detail.html?title=${encodeURIComponent(dramaTitle)}`;
-if (actorAvatars.length) {
-  bbAvatar.src = actorAvatars[0];
-} else {
-  bbAvatar.style.display = 'none';
-}
+/* ---- Bottom Bar Buttons ---- */
+bbEpBtn.addEventListener('click', function(e){ e.stopPropagation(); openEpDrawer(); });
+let cleanMode = false;
+bbFullBtn.addEventListener('click', function(e){
+  e.stopPropagation();
+  cleanMode = !cleanMode;
+  document.getElementById('app').classList.toggle('clean-mode', cleanMode);
+  this.classList.toggle('active', cleanMode);
+});
 
 /* ---- Player Progress Simulation ---- */
 let playProgress = 0;
@@ -321,7 +325,7 @@ function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearT
 /* ---- Episode Selector ---- */
 function renderEpSelector(){
   epBody.innerHTML = episodes.map((ep,i) =>
-    `<div class="ep-item ${i===idx?'active':''}" data-epidx="${i}">${ep.label}</div>`
+    `<div class="ep-item ${i===idx?'active':''}" data-epidx="${i}">${i+1}</div>`
   ).join('');
   document.querySelectorAll('.ep-item').forEach(el => {
     el.addEventListener('click', function(e){
@@ -411,7 +415,6 @@ function gotoDetail(){
 /* ---- Render ---- */
 function updateMeta(){
   epBadge.textContent=episodes[idx].label;
-  bbTitle.textContent=dramaTitle;
 }
 
 function render(){
@@ -456,10 +459,6 @@ function bindEvents(){
   backBtn.addEventListener('click',function(){history.back()});
   playerProg.addEventListener('mousedown', onProgressPointerDown);
   playerProg.addEventListener('touchstart', onProgressPointerDown, {passive: true});
-  /* Click on bottom title area to open episode selector */
-  bbLeftLink.addEventListener('click', function(e){
-    /* Let the link navigate naturally to drama-detail page */
-  });
 }
 
 let ts=0,td=0,sw=0;
