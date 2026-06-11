@@ -195,7 +195,7 @@
               <tr>
                 <th style="width:110px;">时间</th>
                 <th style="min-width:90px;">类型</th>
-                <th style="min-width:120px;">来源/去向</th>
+                <th style="min-width:120px;">来源</th>
                 <th style="width:120px;">数量</th>
               </tr>
             </thead>
@@ -288,10 +288,15 @@
       const referNames = ['小草莓🍓','清风','夜雨','追光者','星空','云端','月影','彩虹','星辰','山川',
                           '海风','阳光','雨露','微光','暖阳','星河','晨曦','暮色','晚风','归途'];
       for (let i = 0; i < 20; i++) {
+        const day = 18 - Math.floor(i / 2);
+        const period = day >= 15 ? '24' : '23';
+        const periodLabel = day >= 15
+          ? '第24期 2025-06-15 ~ 2025-06-21'
+          : '第23期 2025-06-08 ~ 2025-06-14';
         flow.push({
-          time:`2025-06-${String(18-Math.floor(i/2)).padStart(2,'0')} ${String(9+(i*3)%10).padStart(2,'0')}:${String(i*11%60).padStart(2,'0')}`,
+          time:`2025-06-${String(day).padStart(2,'0')} ${String(9+(i*3)%10).padStart(2,'0')}:${String(i*11%60).padStart(2,'0')}`,
           type:'referral', typeLabel:'邀请收益',
-          source: referNames[i % referNames.length],
+          source: `${periodLabel} 👤${referNames[i % referNames.length]}`,
           amount:+(0.5+(i%4)+Math.random()*2).toFixed(2),
           status:'已到账'
         });
