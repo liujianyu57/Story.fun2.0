@@ -198,7 +198,7 @@
           <div style="display: flex; gap: 16px;">
             <div style="flex: 1;">
               <p style="margin:0;color:var(--text-muted);font-size:0.85rem;">持有短剧NFT</p>
-              <h4 style="margin: 6px 0 0; font-size: 1.8rem; color: var(--accent);">3</h4>
+              <h4 style="margin: 6px 0 0; font-size: 1.8rem; color: var(--accent);">1</h4>
             </div>
           </div>
         </div>
@@ -301,6 +301,7 @@
                   <div class="menu-item danger" onclick="event.stopPropagation();confirmDelete('星际迷航')"><span class="menu-icon">🗑️</span> 删除短剧</div>
                 </div>
               </div>
+              <span class="minted-badge">✅ 已铸造</span>
             </div>
             <div class="card-body">
               <h3>星际迷航</h3>
@@ -308,8 +309,7 @@
               <div class="props-row"><span class="props-pill">科幻</span><span class="props-pill">冒险</span></div>
             </div>
             <div class="card-action" data-status="approved">
-              <button class="button" style="flex:0.7;"><span class="btn-icon">🔨</span> 铸造短剧NFT</button>
-              <button class="button" style="flex:0.3;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
+              <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
             </div>
           </article>
 
@@ -351,16 +351,6 @@
       <!-- Tab 2 -->
       <div class="tab-content" id="tab2">
         <div class="nft-grid">
-          <div class="nft-card" data-staked="false">
-            <div class="nft-cover-wrap">
-              <img class="nft-cover" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=900&q=80" alt="江南烟雨 NFT" />
-              <span class="nft-id-badge">#NFT-001</span>
-            </div>
-            <div class="nft-body">
-              <h4>江南烟雨</h4>
-              <div class="nft-sub"><span>24 集 ｜ 烟雨江南中一段凄美爱情故事</span></div>
-            </div>
-          </div>
           <div class="nft-card" data-staked="true">
             <div class="nft-cover-wrap">
               <img class="nft-cover" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=80" alt="星际迷航 NFT" />
@@ -369,26 +359,6 @@
             <div class="nft-body">
               <h4>星际迷航</h4>
               <div class="nft-sub"><span>16 集 ｜ 浩瀚星空中的人类冒险传奇</span></div>
-            </div>
-          </div>
-          <div class="nft-card" data-staked="true">
-            <div class="nft-cover-wrap">
-              <img class="nft-cover" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="长安如梦 NFT" />
-              <span class="nft-id-badge">#NFT-003</span>
-            </div>
-            <div class="nft-body">
-              <h4>长安如梦</h4>
-              <div class="nft-sub"><span>30 集 ｜ 一曲长歌诉尽长安繁华梦</span></div>
-            </div>
-          </div>
-          <div class="nft-card" data-staked="false">
-            <div class="nft-cover-wrap">
-              <img class="nft-cover" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="迷雾之城 NFT" />
-              <span class="nft-id-badge">#NFT-005</span>
-            </div>
-            <div class="nft-body">
-              <h4>迷雾之城</h4>
-              <div class="nft-sub"><span>12 集 ｜ 迷雾笼罩的城市中隐藏着惊天秘密</span></div>
             </div>
           </div>
         </div>
@@ -682,6 +652,43 @@
             const editBtn = currentMintCard.querySelector('.card-action .button:last-child');
             if (editBtn) editBtn.style.flex = '1';
           }
+        }
+
+        // 并在「短剧NFT」页签中添加对应的 NFT 卡片
+        if (currentMintCard) {
+          const title = currentMintCard.querySelector('.card-body h3').textContent.trim();
+          const cover = currentMintCard.querySelector('.card-header img').src;
+          const sub = currentMintCard.querySelector('.card-sub span')?.textContent || title;
+          // 生成新 NFT ID
+          const existingIds = document.querySelectorAll('#tab2 .nft-id-badge');
+          const maxNum = Array.from(existingIds).reduce((max, el) => {
+            const m = el.textContent.match(/\d+/);
+            return m ? Math.max(max, parseInt(m[0])) : max;
+          }, 0);
+          const newId = '#NFT-' + String(maxNum + 1).padStart(3, '0');
+
+          const nftCard = document.createElement('div');
+          nftCard.className = 'nft-card';
+          nftCard.dataset.staked = 'false';
+          nftCard.innerHTML = `
+            <div class="nft-cover-wrap">
+              <img class="nft-cover" src="${cover}" alt="${title} NFT" />
+              <span class="nft-id-badge">${newId}</span>
+            </div>
+            <div class="nft-body">
+              <h4>${title}</h4>
+              <div class="nft-sub"><span>${sub}</span></div>
+            </div>
+          `;
+          document.querySelector('#tab2 .nft-grid').appendChild(nftCard);
+
+          // 更新持有数量
+          const countEl = document.querySelector('h4[style*="font-size: 1.8rem"]');
+          if (countEl) {
+            const nftCount = document.querySelectorAll('#tab2 .nft-card').length;
+            countEl.textContent = nftCount;
+          }
+          
           currentMintCard = null;
         }
 
