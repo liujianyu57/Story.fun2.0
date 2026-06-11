@@ -75,6 +75,22 @@
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     /* ===== End Auth Styles ===== */
 
+    /* ===== Success Modal ===== */
+    .success-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .success-modal-overlay.active { opacity: 1; visibility: visible; }
+    .success-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; text-align: center; padding: 48px 32px 36px; }
+    .success-modal-overlay.active .success-modal { transform: scale(1) translateY(0); }
+    .success-modal-icon { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #00b388, #00d4a3); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; color: #fff; box-shadow: 0 4px 20px rgba(0,179,136,0.35); }
+    .success-modal h2 { font-size: 1.4rem; margin: 0 0 8px; color: var(--text); }
+    .success-modal p { font-size: 0.92rem; color: var(--text-muted); margin: 0 0 28px; line-height: 1.6; }
+    .success-modal .success-actor-name { font-weight: 700; color: var(--accent); }
+    .success-modal .success-buttons { display: flex; flex-direction: column; gap: 10px; }
+    .success-modal .success-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--accent); color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s ease; }
+    .success-modal .success-btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .success-modal .success-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-dark); background: var(--surface); color: var(--text-muted); font-size: 0.92rem; cursor: pointer; transition: all 0.2s ease; }
+    .success-modal .success-btn-outline:hover { border-color: var(--accent); color: var(--text); }
+    /* ===== End Success Modal ===== */
+
     .page-title {
       font-size: 30px;
       font-weight: 700;
@@ -623,25 +639,11 @@
 
       <!-- ═══ Basic info: name + gender + bio ═══ -->
       <div class="basic-info-section">
-        <div class="form-row">
+        <div class="form-row full">
           <div class="form-group">
             <label>演员姓名</label>
             <input type="text" placeholder="请输入演员姓名" maxlength="20" id="actorName" />
             <span class="char-count" id="nameCount">0/20</span>
-          </div>
-          <div class="form-group">
-            <label>性别</label>
-            <div class="select-wrapper">
-              <select id="actorGender">
-                <option value="" disabled selected>请选择</option>
-                <option value="male">男性</option>
-                <option value="female">女性</option>
-                <option value="other">不限</option>
-              </select>
-              <svg class="chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L12 15L18 9" stroke="#8B8D98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
           </div>
         </div>
         <div class="form-row full">
@@ -663,7 +665,8 @@
         <div class="params-row">
           <div class="form-group">
             <label>演员发行总量</label>
-            <input type="number" placeholder="请输入" min="1" id="nftSupply" />
+            <input type="number" value="50000" min="1" id="nftSupply" readonly style="background: var(--bg); cursor: not-allowed; opacity: 0.8;" />
+            <span class="hint-text">发行总量固定为 50,000，不可修改。</span>
           </div>
           <div class="form-group">
             <label>初始价格（USDC）</label>
@@ -678,9 +681,22 @@
     <!-- Footer -->
     <div class="form-footer">
       <button class="button-outline" onclick="location.href='narrator.html'">取消</button>
-      <button class="button-primary" id="submitBtn" onclick="handleSubmit()">提交</button>
+      <button class="button-primary" id="submitBtn" onclick="handleSubmit()">确定发行</button>
     </div>
 
+  </div>
+
+  <!-- Success Modal -->
+  <div class="success-modal-overlay" id="successModal" onclick="closeSuccessModal()">
+    <div class="success-modal" onclick="event.stopPropagation()">
+      <div class="success-modal-icon">✅</div>
+      <h2>🎉 发行成功！</h2>
+      <p>演员 IP <span class="success-actor-name" id="successActorName"></span> 已成功发行！</p>
+      <div class="success-buttons">
+        <a class="success-btn-primary" id="successViewLink" href="javascript:;">查看演员主页 →</a>
+        <button class="success-btn-outline" onclick="closeSuccessModal()">关闭</button>
+      </div>
+    </div>
   </div>
 
   <div id="bottom-nav-placeholder"></div>
@@ -880,14 +896,6 @@
     document.getElementById('actorName').value = actor.name;
     document.getElementById('nameCount').textContent = actor.name.length + '/20';
 
-    // Set gender
-    var genderSelect = document.getElementById('actorGender');
-    if (actor.gender && GENDER_MAP[actor.gender]) {
-      genderSelect.value = GENDER_MAP[actor.gender];
-    } else {
-      genderSelect.value = 'other';
-    }
-
     // Set bio
     document.getElementById('actorBio').value = actor.description;
     document.getElementById('bioCount').textContent = actor.description.length + '/500';
@@ -1031,35 +1039,77 @@
   });
 
   // ── Submit ──
+  var FIXED_NFT_SUPPLY = 50000;
+
   function handleSubmit() {
     var name = document.getElementById('actorName').value.trim();
-    var gender = document.getElementById('actorGender').value;
     var bio = document.getElementById('actorBio').value.trim();
-    var nftSupply = document.getElementById('nftSupply').value;
     var nftPrice = document.getElementById('nftPrice').value;
 
     if (!name) { showToast('请输入演员姓名'); return; }
-    if (!gender) { showToast('请选择性别'); return; }
-    if (!nftSupply) { showToast('请输入演员发行总量'); return; }
     if (!nftPrice) { showToast('请输入初始价格'); return; }
+
+    // Get avatar from selected DreamOS material or use default
+    var avatar = 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
+    if (_selectedMaterial && ACTOR_IP_DB[_selectedMaterial]) {
+      avatar = ACTOR_IP_DB[_selectedMaterial].image;
+    }
 
     var actorData = {
       name: name,
-      gender: gender,
-      bio: bio,
-      nftSupply: nftSupply,
-      nftPrice: nftPrice
+      desc: bio || '暂无介绍',
+      avatar: avatar,
+      gender: '—',
+      totalSupply: FIXED_NFT_SUPPLY,
+      minted: 0,
+      available: FIXED_NFT_SUPPLY,
+      holders: 0,
+      price: nftPrice + ' USDC',
+      reserved: 0,
+      contract: '—',
+      standard: 'Solana SPL',
+      views: '0',
+      heat: '0',
+      creator: currentUser && currentUser.username ? currentUser.username : '—',
+      collection: '—',
+      childActors: []
     };
 
     console.log('Actor Data:', actorData);
+
+    // Save to localStorage so actor-profile.html can read it
     try {
+      // Save as pending (for immediate navigation)
       localStorage.setItem('storyfun_pending_actor', JSON.stringify(actorData));
+      // Also save to created actors map (for actor-profile.html fallback)
+      var createdActors = {};
+      try {
+        createdActors = JSON.parse(localStorage.getItem('storyfun_created_actors')) || {};
+      } catch(e) {}
+      createdActors[name] = actorData;
+      localStorage.setItem('storyfun_created_actors', JSON.stringify(createdActors));
     } catch(e) {}
 
-    showToast('✅ 提交成功！');
-    setTimeout(function() {
-      location.href = 'narrator.html';
-    }, 1200);
+    // Show success modal
+    showSuccessModal(name);
+  }
+
+  // ── Success Modal ──
+  function showSuccessModal(actorName) {
+    var modal = document.getElementById('successModal');
+    if (!modal) return;
+    document.getElementById('successActorName').textContent = actorName;
+    document.getElementById('successViewLink').href = 'actor-profile.html?name=' + encodeURIComponent(actorName);
+    modal.classList.add('active');
+  }
+
+  function closeSuccessModal() {
+    document.getElementById('successModal').classList.remove('active');
+  }
+
+  function goToActorProfile() {
+    var actorName = document.getElementById('successActorName').textContent;
+    location.href = 'actor-profile.html?name=' + encodeURIComponent(actorName);
   }
 
   // ── Toast ──

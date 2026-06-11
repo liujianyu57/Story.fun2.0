@@ -1353,7 +1353,16 @@
     document.addEventListener('DOMContentLoaded', function() {
       const params = new URLSearchParams(window.location.search);
       const actorName = params.get('name') || '苏婉清';
-      const actor = ACTORS_DATA[actorName];
+      let actor = ACTORS_DATA[actorName];
+
+      // Fallback: check created actors from localStorage
+      if (!actor) {
+        try {
+          const createdActors = JSON.parse(localStorage.getItem('storyfun_created_actors')) || {};
+          actor = createdActors[actorName];
+        } catch(e) {}
+      }
+
       if (!actor) {
         document.getElementById('actorName').textContent = '未知演员';
         document.getElementById('actorDesc').textContent = '未找到该演员的信息';
