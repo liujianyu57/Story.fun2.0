@@ -518,7 +518,7 @@
 
     .params-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
 
@@ -612,7 +612,7 @@
             <span class="badge-dreamos">DreamOS</span>
           </div>
         </div>
-        <div class="dreamos-section-hint">选择你在 DreamOS 中已创建的演员素材，自动填充演员信息后进入下一阶段发行 NFT。</div>
+        <div class="dreamos-section-hint">选择你在 DreamOS 中已创建的演员素材，自动填充演员 IP 信息。</div>
         <div class="dreamos-search-wrap">
           <input type="text" class="dreamos-search" id="dreamosSearch" placeholder="搜索演员姓名..." autocomplete="off" />
           <span class="dreamos-search-icon">🔍</span>
@@ -647,7 +647,7 @@
         <div class="form-row full">
           <div class="form-group">
             <label>简介</label>
-            <textarea placeholder="角色背景、性格特点、代表作..." id="actorBio"></textarea>
+            <textarea placeholder="请输入演员 IP 介绍" id="actorBio"></textarea>
             <span class="char-count" id="bioCount">0/500</span>
           </div>
         </div>
@@ -657,22 +657,17 @@
       <hr class="nft-section-divider" />
 
       <div>
-        <h3 class="nft-section-title">🔗 NFT 发行参数</h3>
-        <p class="nft-section-desc">设定演员 NFT 的链上发行参数，创建后不可修改。</p>
+        <h3 class="nft-section-title">演员 IP 发行参数</h3>
+        <p class="nft-section-desc">设定演员 IP 的发行参数，发行后不可修改。</p>
 
         <div class="params-row">
           <div class="form-group">
-            <label>NFT发行总量</label>
+            <label>演员发行总量</label>
             <input type="number" placeholder="请输入" min="1" id="nftSupply" />
           </div>
           <div class="form-group">
-            <label>Mint价格（USDC）</label>
+            <label>初始价格（USDC）</label>
             <input type="number" placeholder="请输入" step="0.1" min="0" id="nftPrice" />
-          </div>
-          <div class="form-group">
-            <label>最低持有门槛（数量）</label>
-            <input type="number" placeholder="请输入" min="0" id="nftMinHold" />
-            <span class="hint-text">持有≥该数量才能参与AI演员对话</span>
           </div>
         </div>
       </div>
@@ -682,7 +677,7 @@
     <!-- Footer -->
     <div class="form-footer">
       <button class="button-outline" onclick="location.href='narrator.html'">取消</button>
-      <button class="button-primary" id="submitBtn" onclick="handleSubmit()">提交审核</button>
+      <button class="button-primary" id="submitBtn" onclick="handleSubmit()">提交</button>
     </div>
 
   </div>
@@ -1041,20 +1036,18 @@
     var bio = document.getElementById('actorBio').value.trim();
     var nftSupply = document.getElementById('nftSupply').value;
     var nftPrice = document.getElementById('nftPrice').value;
-    var nftMinHold = document.getElementById('nftMinHold').value;
 
     if (!name) { showToast('请输入演员姓名'); return; }
     if (!gender) { showToast('请选择性别'); return; }
-    if (!nftSupply) { showToast('请输入NFT发行总量'); return; }
-    if (!nftPrice) { showToast('请输入Mint价格'); return; }
+    if (!nftSupply) { showToast('请输入演员发行总量'); return; }
+    if (!nftPrice) { showToast('请输入初始价格'); return; }
 
     var actorData = {
       name: name,
       gender: gender,
       bio: bio,
       nftSupply: nftSupply,
-      nftPrice: nftPrice,
-      nftMinHold: nftMinHold
+      nftPrice: nftPrice
     };
 
     console.log('Actor Data:', actorData);
