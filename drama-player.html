@@ -6,7 +6,7 @@
 <title>Story.fun | 播放</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#f5faff;--accent:#00b388;font-family:"PingFang SC","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+:root{--bg:#f5faff;--accent:#00b388;--accent-glow:rgba(0,179,136,0.35);font-family:"PingFang SC","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
 html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-highlight-color:transparent;user-select:none}
 #app{position:fixed;inset:0;overflow:hidden;background:#0f1825}
 #track{position:absolute;left:0;top:0;width:100%;will-change:transform}
@@ -16,55 +16,72 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .play-btn{position:absolute;top:50%;left:50%;z-index:3;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.35)}
 .play-btn.show{opacity:1}
 .play-btn svg{width:30px;height:30px;fill:#fff;margin-left:3px}
-.top-back{position:fixed;top:0;left:0;right:0;z-index:10;height:56px;padding-top:env(safe-area-inset-top,0);display:flex;align-items:flex-end;padding:0 12px 8px;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent);pointer-events:none}
-.top-back .back-btn{pointer-events:auto;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:background .2s}
-.top-back .back-btn:active{background:rgba(255,255,255,.2)}
-.top-back .back-btn svg{width:20px;height:20px}
-.top-back .title-bar{pointer-events:auto;margin-left:12px;color:#fff;font-size:15px;font-weight:600;text-shadow:0 2px 8px rgba(0,0,0,.5);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;flex:1}
-.top-back .ep-badge{pointer-events:auto;margin-right:4px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:.5px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:600;color:#fff}
-.info{position:absolute;left:18px;right:80px;bottom:calc(30px + 50px + env(safe-area-inset-bottom,0px) + 46px);z-index:2;display:flex;flex-direction:column;gap:6px}
-.info-title{font-size:19px;font-weight:700;color:#fff;line-height:1.3;text-shadow:0 2px 12px rgba(0,0,0,.5)}
-.info-author{font-size:12px;color:rgba(255,255,255,.75);display:flex;align-items:center;gap:5px;cursor:pointer}
-.info-author img{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.2);object-fit:cover}
-.info-desc{font-size:12px;color:rgba(255,255,255,.6);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.actions{position:absolute;right:10px;bottom:calc(40px + 50px + env(safe-area-inset-bottom,0px) + 50px + 46px);z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px}
+
+/* ===== Top Header ===== */
+.top-back{position:fixed;top:0;left:0;right:0;z-index:10;height:56px;padding-top:env(safe-area-inset-top,0);display:flex;align-items:center;padding:0 12px;background:linear-gradient(180deg,rgba(0,0,0,.5),transparent);pointer-events:none}
+.top-back .back-btn{pointer-events:auto;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;flex-shrink:0;padding:8px}
+.top-back .back-btn:active{opacity:.7}
+.top-back .back-btn svg{width:28px;height:28px}
+.top-back .ep-badge{pointer-events:auto;margin-left:12px;font-size:18px;font-weight:600;color:#fff;letter-spacing:.5px}
+
+/* ===== Bottom Info Bar ===== */
+.bottom-bar{position:fixed;left:0;right:0;bottom:0;z-index:11;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.25) 80%,transparent);pointer-events:none}
+.bottom-bar .bb-left{pointer-events:auto;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 0;max-width:75%;text-decoration:none}
+.bottom-bar .bb-left .bb-title{font-size:14px;font-weight:600;color:#fff;line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-shadow:0 1px 6px rgba(0,0,0,.6);transition:color .2s}
+.bottom-bar .bb-left:active .bb-title{color:var(--accent)}
+.bottom-bar .bb-left .bb-arrow-icon{margin-left:2px;color:rgba(255,255,255,.5);font-size:12px;line-height:1;flex-shrink:0}
+.bottom-bar .bb-right{pointer-events:auto;display:flex;align-items:center;gap:6px}
+.bottom-bar .bb-right .bb-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,255,255,.25);flex-shrink:0;display:block;transition:border-color .2s}
+.bottom-bar .bb-right .bb-avatar:active{border-color:var(--accent)}
+
+/* ===== Actions (right side) ===== */
+.actions{position:absolute;right:10px;bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px}
 .act-btn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;padding:0;color:#fff;-webkit-tap-highlight-color:transparent;transition:transform .15s}
 .act-btn:active{transform:scale(.82)}
 .act-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);font-size:18px;transition:all .2s}
 .act-icon.liked{color:#fff;background:var(--accent)}
 .act-icon.bookmarked{color:#fff;background:#ffbb3a}
 .act-label{font-size:10px;font-weight:500;color:rgba(255,255,255,.75);line-height:1}
-/* ---- Bottom Control Bar ---- */
-.bottom-bar{position:fixed;left:0;right:0;bottom:2px;z-index:11;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(0,0,0,.35);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:.5px solid rgba(255,255,255,.08);pointer-events:auto}
-.bottom-bar .bb-left{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 0}
-.bottom-bar .bb-left .bb-ep{font-size:12px;font-weight:500;color:rgba(255,255,255,.85)}
-.bottom-bar .bb-left .bb-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3)}
-.bottom-bar .bb-left .bb-status{font-size:10px;font-weight:500;color:rgba(0,179,136,.85);background:rgba(0,179,136,.15);border:.5px solid rgba(0,179,136,.25);padding:2px 8px;border-radius:999px}
-.bottom-bar .bb-left .bb-total{font-size:12px;font-weight:400;color:rgba(255,255,255,.55)}
-.bottom-bar .bb-left .bb-arrow{margin-left:2px;color:rgba(255,255,255,.4);font-size:14px;line-height:1}
-.bottom-bar .bb-right{display:flex;align-items:center;gap:10px}
-.bottom-bar .bb-right .bb-clean-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.75)}
-.bottom-bar .bb-right .bb-clean-btn:active{background:rgba(255,255,255,.2);transform:scale(.9)}
-.bottom-bar .bb-right .bb-clean-btn svg{width:18px;height:18px}
-/* ---- Player Progress Bar ---- */
-.player-progress{position:fixed;left:0;right:0;bottom:44px;z-index:12;height:4px;background:rgba(255,255,255,.12);cursor:pointer;pointer-events:auto;touch-action:none}
+
+/* ===== Episode info overlay on slide ===== */
+.info{position:absolute;left:18px;right:80px;bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:2;display:flex;flex-direction:column;gap:6px}
+.info-title{font-size:19px;font-weight:700;color:#fff;line-height:1.3;text-shadow:0 2px 12px rgba(0,0,0,.5);cursor:pointer;display:inline-flex;align-items:center;gap:2px}
+.info-title .info-arrow{font-size:20px;color:rgba(255,255,255,.5);transition:transform .2s;display:inline-block}
+.info-title:active .info-arrow{transform:translateX(3px)}
+.info-desc{font-size:12px;color:rgba(255,255,255,.6);line-height:1.5;cursor:pointer;transition:max-height .3s ease;max-height:18px;overflow:hidden;display:flex;align-items:baseline}
+.info-desc.open{max-height:200px;display:block}
+.info-desc .desc-text{flex-shrink:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.info-desc.open .desc-text{white-space:normal}
+.info-desc .desc-toggle{flex-shrink:0;font-size:11px;color:rgba(255,255,255,.4);font-weight:500;margin-left:auto;padding-left:2px}
+.info-desc .desc-toggle:active{color:var(--accent)}
+.info-actors{display:flex;align-items:center;gap:4px;margin-top:4px}
+.info-actors .ia-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,255,255,.35);flex-shrink:0;display:block;cursor:pointer;transition:border-color .2s,transform .15s}
+.info-actors .ia-avatar:active{border-color:var(--accent);transform:scale(.9)}
+.info-actors .ia-overflow{font-size:10px;color:rgba(255,255,255,.5);margin-left:2px;font-weight:500}
+
+/* ===== Player Progress Bar ===== */
+.player-progress{position:fixed;left:0;right:0;bottom:50px;z-index:12;height:4px;background:rgba(255,255,255,.12);cursor:pointer;pointer-events:auto;touch-action:none}
 .player-progress .pp-fill{height:100%;width:0%;background:linear-gradient(90deg,#00b388,#34d399);border-radius:0 2px 2px 0;position:relative;transition:none}
 .player-progress .pp-fill .pp-thumb{position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #00b388;box-shadow:0 1px 6px rgba(0,0,0,.4);opacity:0;transition:opacity .2s}
 .player-progress:active .pp-fill .pp-thumb,
 .player-progress:hover .pp-fill .pp-thumb,
 .player-progress.show-thumb .pp-fill .pp-thumb{opacity:1}
-/* ---- Progress Tooltip ---- */
-.pp-tooltip{position:fixed;z-index:20;pointer-events:none;opacity:0;transition:opacity .15s;left:50%;transform:translateX(-50%);bottom:calc(44px + 4px + 24px)}
+
+/* ===== Progress Tooltip ===== */
+.pp-tooltip{position:fixed;z-index:20;pointer-events:none;opacity:0;transition:opacity .15s;left:50%;transform:translateX(-50%);bottom:calc(50px + 4px + 24px)}
 .pp-tooltip.show{opacity:1}
 .pp-tooltip .pp-tip-img{width:86px;height:130px;border-radius:10px;object-fit:cover;display:block;box-shadow:0 4px 20px rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2)}
 .pp-tooltip .pp-tip-time{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;border:.5px solid rgba(255,255,255,.12)}
+
 #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0f1825;z-index:99;transition:opacity .4s}
 #loading.hide{opacity:0;pointer-events:none}
 .spinner{width:32px;height:32px;border:3px solid rgba(0,179,136,.12);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
 #toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);z-index:98;background:rgba(15,24,37,.88);backdrop-filter:blur(14px);color:#fff;padding:12px 26px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap}
 #toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-/* ---- Episode Selector Drawer ---- */
+
+/* ===== Episode Selector Drawer ===== */
 .ep-drawer{position:fixed;inset:0;z-index:400;visibility:hidden;transition:visibility .3s}
 .ep-drawer.open{visibility:visible}
 .ep-drawer .ep-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s}
@@ -82,7 +99,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .ep-item{display:flex;align-items:center;justify-content:center;padding:10px 6px;border-radius:10px;background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06);font-size:13px;font-weight:500;color:#2d3e52;cursor:pointer;transition:all .2s;text-align:center}
 .ep-item:active{background:rgba(0,179,136,.12);transform:scale(.92)}
 .ep-item.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
-/* ---- Comment Drawer (light theme) ---- */
+
+/* ===== Comment Drawer (light theme) ===== */
 .cm-drawer{position:fixed;inset:0;z-index:300;visibility:hidden;transition:visibility .3s}
 .cm-drawer.open{visibility:visible}
 .cm-drawer .cm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .3s}
@@ -118,6 +136,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .comment-input-wrap .send-btn{border:none;border-radius:999px;padding:10px 20px;background:linear-gradient(135deg,#00b388,#00c9a0);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,179,136,.3)}
 .comment-input-wrap .send-btn:active{transform:scale(.95);box-shadow:0 1px 4px rgba(0,179,136,.2)}
 .comment-count{font-size:12px;color:rgba(94,111,131,.6)}
+
 @media(min-width:769px){#app{position:relative;max-width:400px;height:100vh;margin:0 auto}body{background:var(--bg);display:flex;align-items:center;justify-content:center}body,#loading{background:#f5faff!important}.bottom-bar{max-width:400px;left:50%;transform:translateX(-50%)}.cm-drawer .cm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.cm-drawer.open .cm-panel{transform:translateX(-50%) translateY(0)}.ep-drawer .ep-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.ep-drawer.open .ep-panel{transform:translateX(-50%) translateY(0)}}
 </style>
 </head>
@@ -126,30 +145,31 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 <div id="toast"></div>
 <div id="app">
   <div id="track"></div>
-  <div class="top-back">
+
+  <!-- Top Header: back button + episode badge -->
+  <div class="top-back" id="topBar">
     <div class="back-btn" id="backBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <span class="title-bar" id="titleBar">正在播放</span>
     <span class="ep-badge" id="epBadge">第1集</span>
   </div>
-  <!-- Bottom Control Bar -->
+
+  <!-- Bottom Info Bar: drama name + actor avatars -->
   <div class="bottom-bar" id="bottomBar">
-    <div class="bb-left" id="epSelectorBtn">
-      <span class="bb-ep">选集</span>
-      <span class="bb-dot"></span>
-      <span class="bb-status">已完结</span>
-      <span class="bb-total" id="bbTotal">全24集</span>
-      <span class="bb-arrow">▸</span>
-    </div>
-    <div class="bb-right">
-      <div class="bb-clean-btn" id="cleanPlayBtn"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 8l6 4-6 4V8z" fill="currentColor"/></svg></div>
+    <a class="bb-left" id="bbLeftLink" href="drama-detail.html">
+      <span class="bb-title" id="bbTitle">短剧名称</span>
+      <span class="bb-arrow-icon">▸</span>
+    </a>
+    <div class="bb-right" id="bbRightAvatars">
+      <img class="bb-avatar" src="" alt="演员头像" id="bbAvatar" onerror="this.style.display='none'">
     </div>
   </div>
+
   <!-- Player Progress Bar -->
   <div class="player-progress" id="playerProgress">
     <div class="pp-fill" id="ppFill">
       <div class="pp-thumb" id="ppThumb"></div>
     </div>
   </div>
+
   <!-- Progress Tooltip -->
   <div class="pp-tooltip" id="ppTooltip">
     <img class="pp-tip-img" id="ppTipImg" src="" alt="">
@@ -188,22 +208,34 @@ const params=new URLSearchParams(location.search);
 const dramaTitle=params.get('title')||'未命名短剧';
 const dramaTotal=parseInt(params.get('total'))||24;
 const dramaCover=params.get('cover')||'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80';
+const dramaDesc=params.get('desc')||'加密货币市场的至暗时刻，一场价值数百亿的赌局在AI短剧中上演。主角在一次意外中重生回到2015年，凭借未来记忆在币圈从一个小白成长为呼风唤雨的大佬。每一次抉择都关乎生死，每一次交易都是人性的终极考验。';
+const actorAvatars=params.get('actors')?params.get('actors').split(','):['https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'];
+const actorNames=params.get('actorNames')?params.get('actorNames').split(','):['苏婉清','李云飞','林梦瑶','赵无极','上官婉儿'];
 const total=Math.min(dramaTotal,60);
 const episodes=[];
 for(let i=0;i<total;i++)episodes.push({idx:i,label:`第${i+1}集`,cover:dramaCover,desc:`精彩继续第${i+1}集，更有趣的剧情等待你来发现！`});
 
 let idx=0,animFlag=false,wh=0,paused=false;
-const track=document.getElementById('track'),toast=document.getElementById('toast'),loading=document.getElementById('loading'),titleBar=document.getElementById('titleBar'),epBadge=document.getElementById('epBadge'),backBtn=document.getElementById('backBtn'),bbTotal=document.getElementById('bbTotal');
+const track=document.getElementById('track'),toast=document.getElementById('toast'),loading=document.getElementById('loading'),epBadge=document.getElementById('epBadge'),backBtn=document.getElementById('backBtn');
+const bbTitle=document.getElementById('bbTitle'),bbAvatar=document.getElementById('bbAvatar'),bbLeftLink=document.getElementById('bbLeftLink');
 const cmDrawer=document.getElementById('cmDrawer'),cmBody=document.getElementById('cmBody'),cmTitle=document.getElementById('cmTitle');
 const epDrawer=document.getElementById('epDrawer'),epBody=document.getElementById('epBody');
 const playerProg=document.getElementById('playerProgress'),ppFill=document.getElementById('ppFill'),ppThumb=document.getElementById('ppThumb');
 const ppTooltip=document.getElementById('ppTooltip'),ppTipImg=document.getElementById('ppTipImg'),ppTipTime=document.getElementById('ppTipTime');
 
+/* ---- Set bottom info link ---- */
+bbLeftLink.href = `drama-detail.html?title=${encodeURIComponent(dramaTitle)}`;
+if (actorAvatars.length) {
+  bbAvatar.src = actorAvatars[0];
+} else {
+  bbAvatar.style.display = 'none';
+}
+
 /* ---- Player Progress Simulation ---- */
-let playProgress = 0; // 0-1 percentage
+let playProgress = 0;
 let playInterval = null;
-const PROGRESS_SPEED = 0.003; // per tick (~3.5s to fill 1%)
-const EP_DURATION_SEC = 45; // assume each episode is 45 seconds total
+const PROGRESS_SPEED = 0.003;
+const EP_DURATION_SEC = 45;
 
 function startPlayProgress(){
   if (playInterval) return;
@@ -236,7 +268,6 @@ function setPlayProgressFromEvent(e){
   const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
   playProgress = Math.max(0, Math.min(1, x / rect.width));
   updatePlayProgressUI();
-  /* Update tooltip */
   ppTipImg.src = episodes[idx].cover;
   ppTipTime.textContent = fmtTime(playProgress);
 }
@@ -264,7 +295,6 @@ function onProgressPointerUp(e){
   document.removeEventListener('mouseup', onProgressPointerUp);
   document.removeEventListener('touchmove', onProgressPointerMove);
   document.removeEventListener('touchend', onProgressPointerUp);
-  /* Resume progress if dragged to a new position and not complete */
   if (!playInterval && playProgress < 1) startPlayProgress();
 }
 
@@ -373,25 +403,38 @@ function openDrawer(epIdx){
 
 function closeDrawer(){ cmDrawer.classList.remove('open'); }
 
+/* ---- Navigate to Drama Detail ---- */
+function gotoDetail(){
+  location.href = `drama-detail.html?title=${encodeURIComponent(dramaTitle)}`;
+}
+
 /* ---- Render ---- */
 function updateMeta(){
-  titleBar.textContent=dramaTitle;
   epBadge.textContent=episodes[idx].label;
-  bbTotal.textContent=`全${total}集`;
+  bbTitle.textContent=dramaTitle;
 }
 
 function render(){
   let h='';
+  const showCount = Math.min(actorAvatars.length, 5);
+  let actorHtml = '';
+  for (let j = 0; j < showCount; j++) {
+    const n = actorNames[j] || '';
+    actorHtml += `<img class="ia-avatar" src="${actorAvatars[j]}" alt="${n}" onclick="event.stopPropagation();location.href='actor-profile.html?name=${encodeURIComponent(n)}'">`;
+  }
+  if (actorAvatars.length > 5) {
+    actorHtml += `<span class="ia-overflow">+${actorAvatars.length - 5}</span>`;
+  }
+  const actorRow = actorAvatars.length ? `<div class="info-actors">${actorHtml}</div>` : '';
   for(let i=0;i<total;i++){
     const ep=episodes[i];
-    h+=`<div class="slide" style="top:${i*100}vh"><img class="slide-img" src="${ep.cover}" alt="${ep.label}" loading="${i===0?'eager':'lazy'}" onerror="this.style.display='none'"/><div class="slide-mask"></div><div class="play-btn" id="pb_${i}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><div class="info-title">${ep.label}</div><div class="info-desc">${ep.desc}</div></div><div class="actions"><button class="act-btn" data-act="fav" data-idx="${i}"><div class="act-icon">☆</div><span class="act-label">收藏</span></button><button class="act-btn" data-act="cmt" data-idx="${i}"><div class="act-icon">💬</div><span class="act-label">评论</span></button><button class="act-btn" data-act="like" data-idx="${i}"><div class="act-icon">🤍</div><span class="act-label">点赞</span></button><button class="act-btn" data-act="share" data-idx="${i}"><div class="act-icon">↗</div><span class="act-label">分享</span></div></div></div>`;
+      h+=`<div class="slide" style="top:${i*100}vh"><img class="slide-img" src="${ep.cover}" alt="${ep.label}" loading="${i===0?'eager':'lazy'}" onerror="this.style.display='none'"/><div class="slide-mask"></div><div class="play-btn" id="pb_${i}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><div class="info-title" id="infoTitle_${i}" onclick="event.stopPropagation();gotoDetail()">${dramaTitle} <span class="info-arrow">›</span></div>${actorRow}<div class="info-desc" id="infoDesc_${i}" onclick="event.stopPropagation();if(this.classList.toggle('open')){this.querySelector('.desc-toggle').textContent='收起'}else{this.querySelector('.desc-toggle').textContent='展开'}"><span class="desc-text">${dramaDesc}</span><span class="desc-toggle">展开</span></div></div><div class="actions"><button class="act-btn" data-act="fav" data-idx="${i}"><div class="act-icon">☆</div><span class="act-label">收藏</span></button><button class="act-btn" data-act="cmt" data-idx="${i}"><div class="act-icon">💬</div><span class="act-label">评论</span></button><button class="act-btn" data-act="like" data-idx="${i}"><div class="act-icon">🤍</div><span class="act-label">点赞</span></button><button class="act-btn" data-act="share" data-idx="${i}"><div class="act-icon">↗</div><span class="act-label">分享</span></div></div></div>`;
   }
   track.innerHTML=h;track.style.height=(total*100)+'vh';wh=window.innerHeight;goTo(0,false);bindEvents();setTimeout(()=>loading.classList.add('hide'),350);
 }
 
 function goTo(i,animate){
   if(animFlag)return;if(animate)animFlag=true;i=Math.max(0,Math.min(total-1,i));idx=i;track.style.transition=animate?'transform .38s cubic-bezier(.22,1,.36,1)':'none';track.style.transform=`translateY(${-i*wh}px)`;updateMeta();if(animate)setTimeout(()=>{animFlag=false},400);
-  /* Reset play progress on episode switch */
   playProgress = 0;
   updatePlayProgressUI();
   if (!playInterval) startPlayProgress();
@@ -408,14 +451,15 @@ function bindEvents(){
   document.querySelectorAll('.slide').forEach(el=>{el.addEventListener('click',togglePause)});
   document.getElementById('cmClose').addEventListener('click',closeDrawer);
   document.getElementById('cmOverlay').addEventListener('click',closeDrawer);
-  document.getElementById('epSelectorBtn').addEventListener('click',function(e){e.stopPropagation();openEpDrawer()});
   document.getElementById('epClose').addEventListener('click',closeEpDrawer);
   document.getElementById('epOverlay').addEventListener('click',closeEpDrawer);
-  document.getElementById('cleanPlayBtn').addEventListener('click',function(e){e.stopPropagation();showToast('🔇 清屏播放功能暂未开放')});
   backBtn.addEventListener('click',function(){history.back()});
-  /* Player progress bar events */
   playerProg.addEventListener('mousedown', onProgressPointerDown);
   playerProg.addEventListener('touchstart', onProgressPointerDown, {passive: true});
+  /* Click on bottom title area to open episode selector */
+  bbLeftLink.addEventListener('click', function(e){
+    /* Let the link navigate naturally to drama-detail page */
+  });
 }
 
 let ts=0,td=0,sw=0;
