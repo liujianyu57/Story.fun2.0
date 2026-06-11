@@ -1304,7 +1304,7 @@
           <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;" onclick="openActualOutputModal()">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周实际产出</div>
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周预估产出</div>
           <div style="font-size:1.2rem;font-weight:700;color:var(--accent);" id="msWeeklyTotal">0</div>
           <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
         </div>
@@ -1458,8 +1458,8 @@
   <!-- ===== 实际产出公式说明弹窗 ===== -->
   <div class="modal-overlay" id="actualOutputModal">
     <div class="modal-card" style="max-width:440px;">
-      <h2>本周实际产出</h2>
-      <p class="modal-sub" style="margin-bottom:12px;">实际产出受周硬顶和单地址封顶约束</p>
+      <h2>本周预估产出</h2>
+      <p class="modal-sub" style="margin-bottom:12px;">预估产出受周硬顶和单地址封顶约束，本周结束时产生实际收益</p>
       <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
         <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -1490,7 +1490,11 @@
   <!-- ===== 名义产出公式说明弹窗 ===== -->
   <div class="modal-overlay" id="nominalOutputModal">
     <div class="modal-card" style="max-width:440px;">
-      <h2>名义产出公式</h2>
+      <h2>本周名义产出</h2>
+      <div style="background:var(--accent-soft);border-radius:14px;padding:14px;margin-bottom:16px;text-align:center;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--text);">我的所有演员的周累计名义产出累加</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">单卡公式见下方说明 ↓</div>
+      </div>
       <p class="modal-sub" style="margin-bottom:12px;">单卡名义产出 = 单卡小时权重 × R_base × 有效挖矿时长</p>
       <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
         <div style="font-size:0.85rem;line-height:1.8;color:var(--text-muted);">
