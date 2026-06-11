@@ -148,7 +148,14 @@
     .cast-card .c-actor-line.unbound { color: var(--text-muted); }
     .cast-card .c-name { font-size: 0.82rem; font-weight: 500; color: var(--text-muted); }
     .cast-card .c-name .c-role-suffix { color: var(--text-muted); font-weight: 400; }
-    .comments-section { margin-top: 28px; }
+    /* 评论区默认位于 detail-layout 外，桌面端限制宽度与左列对齐 */
+    .comments-section { margin-top: 28px; width: 100%; }
+    @media (min-width: 1025px) {
+      .comments-section { max-width: calc(100% - 380px - 28px); }
+    }
+    @media (min-width: 681px) and (max-width: 1024px) {
+      .comments-section { max-width: 100%; }
+    }
     .comments-section h3 { margin: 0 0 16px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
     .comment-input-wrap { display: flex; gap: 12px; margin-bottom: 20px; }
     .comment-input-wrap .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; color: var(--accent); font-weight: 700; flex-shrink: 0; }
@@ -353,18 +360,6 @@
           <h3>主要角色</h3>
           <div class="cast-scroll" id="castGrid"></div>
         </div>
-        <!-- 评论 -->
-        <div class="comments-section">
-          <h3>评论 <span style="color:var(--text-muted);font-weight:400;font-size:0.9rem;" id="commentCount">(12)</span></h3>
-          <div class="comment-input-wrap">
-            <div class="avatar">我</div>
-            <div class="input-group">
-              <input type="text" id="commentInput" placeholder="写下你的评论..." maxlength="200" />
-              <button class="send-btn" onclick="postComment()">发送</button>
-            </div>
-          </div>
-          <div class="comment-list" id="commentList"></div>
-        </div>
       </div>
       <!-- 右侧 -->
       <div class="sidebar">
@@ -417,6 +412,19 @@
           <div class="episode-list" id="episodeList"></div>
         </div>
       </div>
+    </div>
+
+    <!-- 评论（手机适配下在最底部） -->
+    <div class="comments-section" id="commentsSection">
+      <h3>评论 <span style="color:var(--text-muted);font-weight:400;font-size:0.9rem;" id="commentCount">(12)</span></h3>
+      <div class="comment-input-wrap">
+        <div class="avatar">我</div>
+        <div class="input-group">
+          <input type="text" id="commentInput" placeholder="写下你的评论..." maxlength="200" />
+          <button class="send-btn" onclick="postComment()">发送</button>
+        </div>
+      </div>
+      <div class="comment-list" id="commentList"></div>
     </div>
 
     <!-- ===== Rating Modal ===== -->
@@ -629,6 +637,24 @@
     // ============================================================
     function playEpisode(epId) {
       const ep = epId || currentEp;
+
+      // 手机适配：跳转到播放器页面
+      if (window.innerWidth <= 680) {
+        const actors = DRAMA_DATA.cast.filter(c => c.actor && c.actorAvatar).map(c => c.actorAvatar).join(',');
+        const actorNames = DRAMA_DATA.cast.filter(c => c.actor).map(c => c.actor).join(',');
+        const params = new URLSearchParams({
+          title: DRAMA_DATA.title,
+          total: DRAMA_DATA.totalEpisodes,
+          cover: DRAMA_DATA.cover,
+          desc: DRAMA_DATA.synopsisFull || DRAMA_DATA.synopsis,
+          actors: actors,
+          actorNames: actorNames,
+          ep: ep,
+        });
+        location.href = `drama-player.html?${params.toString()}`;
+        return;
+      }
+
       currentEp = ep;
       const data = DRAMA_DATA.episodes[ep - 1];
       if (!data) return;
