@@ -36,6 +36,7 @@
     .card-list-item:hover .card-header img { transform: scale(1.06); }
     .card-header::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(26, 35, 47, 0.06) 100%); pointer-events: none; }
     .card-header .badge-row { position: absolute; top: 14px; left: 14px; display: flex; align-items: center; gap: 8px; z-index: 2; }
+    .card-header .minted-badge { position: absolute; bottom: 14px; left: 14px; z-index: 2; padding: 5px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #00b388, #00c797); backdrop-filter: blur(4px); box-shadow: 0 2px 8px rgba(0,0,0,0.10); display: inline-flex; align-items: center; gap: 4px; }
 
     /* ===== Card Menu (右上角三点菜单) ===== */
     .card-menu { position: absolute; top: 12px; right: 12px; z-index: 10; }
@@ -341,8 +342,7 @@
               </div>
             </div>
             <div class="card-action">
-              <button class="button button-danger" style="flex:0.5;" onclick="confirmDelete('迷雾之城')"><span class="btn-icon">🗑️</span> 删除短剧</button>
-              <button class="button" style="flex:0.5;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
+              <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
             </div>
           </article>
         </div>
@@ -620,6 +620,7 @@
     }
 
     let currentMintDrama = null;
+    let currentMintCard = null; // 当前铸造的卡片 DOM 引用
     const mintModal = document.getElementById('mintModal');
     const confirmBtn = document.getElementById('mintConfirmBtn');
 
@@ -664,6 +665,26 @@
       setTimeout(() => {
         alert('✅ 铸造成功！');
         closeMintModal();
+
+        // 铸造成功后：添加「已铸造」徽章 + 仅隐藏铸造按钮，保留编辑按钮
+        if (currentMintCard) {
+          const header = currentMintCard.querySelector('.card-header');
+          if (header && !header.querySelector('.minted-badge')) {
+            const badge = document.createElement('span');
+            badge.className = 'minted-badge';
+            badge.textContent = '✅ 已铸造';
+            header.appendChild(badge);
+          }
+          // 只隐藏「铸造短剧NFT」按钮，同时让编辑按钮撑满
+          const mintBtn = currentMintCard.querySelector('.card-action .button:first-child');
+          if (mintBtn) {
+            mintBtn.style.display = 'none';
+            const editBtn = currentMintCard.querySelector('.card-action .button:last-child');
+            if (editBtn) editBtn.style.flex = '1';
+          }
+          currentMintCard = null;
+        }
+
         confirmBtn.textContent = '确认铸造';
         confirmBtn.disabled = false;
       }, 1500);
@@ -679,6 +700,7 @@
         if (card && card.dataset.status === 'approved') {
           const title = card.querySelector('.card-body h3').textContent.trim();
           const cover = card.querySelector('.card-header img').src;
+          currentMintCard = card; // 保存卡片引用
           openMintModal({ title, cover });
         } else if (card && card.dataset.status === 'rejected') {
           alert('❌ 该短剧未通过审核，无法铸造。');
