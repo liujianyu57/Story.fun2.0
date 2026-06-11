@@ -325,10 +325,11 @@
     }
     @media (max-width: 760px) {
       .featured-cast { gap: 12px; }
-      .featured-cast-avatar { width: 48px; height: 48px; }
+      .featured-cast-avatar { width: 32px; height: 32px; }
       .featured-cast-name { font-size: 0.65rem; }
       .featured-cast-list { gap: 10px; }
       .featured-cast-label { font-size: 0.68rem; height: 48px; }
+
     }
 
     /* 缩略图导航 */
@@ -370,6 +371,12 @@
 
     /* ===== 搜索与筛选 ===== */
     .hero { margin-bottom: 34px; }
+    .hero-panel .hero-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .hero-panel .hero-title-row h2 { margin: 0; font-size: clamp(2rem, 3vw, 3.2rem); line-height: 1.05; letter-spacing: -0.03em; }
+    .hero-panel .hero-title-row .layout-toggle { display: none; }
+    @media (max-width: 760px) {
+      .hero-panel .hero-title-row .layout-toggle { display: flex; align-items: center; }
+    }
     .hero-panel h2 { margin: 0 0 18px; font-size: clamp(2rem, 3vw, 3.2rem); line-height: 1.05; letter-spacing: -0.03em; }
     .hero-panel p { margin: 0 0 24px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; max-width: 640px; }
     .search-container { margin-top: 20px; }
@@ -533,6 +540,69 @@
       .featured-content p { font-size: 0.95rem; }
       .featured-content .button { padding: 12px 28px; font-size: 0.95rem; }
       .featured-thumb-item { width: 110px; height: 62px; }
+
+      /* ── 布局切换按钮 ── */
+      .layout-toggle {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .layout-toggle .toggle-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 3px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+      }
+      .layout-toggle button {
+        width: 36px;
+        height: 26px;
+        border: none;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        line-height: 1;
+      }
+      .layout-toggle button.active {
+        background: var(--accent);
+        color: #fff;
+      }
+      .gallery.grid-2 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .gallery.grid-2 .card-thumb { height: 180px; }
+      .gallery.grid-2 .card-body { padding: 12px 14px 12px; }
+      .gallery.grid-2 .card-body h3 { font-size: 0.85rem; margin-bottom: 0; }
+      .gallery.grid-2 .card-body p { display: none; }
+      .gallery.grid-2 .card-meta { display: none; }
+      .gallery.grid-2 .card-actors { margin-top: 8px; padding-top: 8px; border-top: 0.5px solid var(--border); }
+      .gallery.grid-2 .card-actor-name { display: none; }
+      .gallery.grid-2 .card-actor-avatar { width: 22px; height: 22px; border-width: 1px; }
+      .gallery.grid-2 .card-actor-item { gap: 0; }
+      .gallery.grid-2 .card-foot { padding: 8px 14px 12px; }
+      .gallery.grid-2 .card-foot .info-row { font-size: 0.75rem; gap: 6px; }
+      .gallery.grid-2 .card { min-height: auto; }
+
+      .gallery.grid-1 { grid-template-columns: 1fr; }
+
+      /* ── Banner 手机端精简 ── */
+      #featured-category { display: none; }
+      #featured-episodes { display: none; }
+      #featured-desc { display: none; }
+      #featured-meta .badge { display: none; }
+      #featured-meta .episode { display: none; }
+
+      /* ── 筛选标签横向滚动 ── */
+      .filter-container { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .filter-container::-webkit-scrollbar { display: none; }
+      .filter-tag { white-space: nowrap; }
+
+      /* ── Banner 视频铺满，消除黑边 ── */
+      .featured-video-bg { object-fit: cover; }
     }
   </style>
 </head>
@@ -586,7 +656,15 @@
   <div class="app-shell">
     <section class="hero">
       <div class="hero-panel">
-        <h2>全部短剧</h2>
+        <div class="hero-title-row">
+          <h2>全部短剧</h2>
+          <div class="layout-toggle">
+            <div class="toggle-group">
+              <button data-cols="2" class="active">2列</button>
+              <button data-cols="1">1列</button>
+            </div>
+          </div>
+        </div>
         <p>精选AI短剧，开启叙事新体验</p>
         <div class="search-container">
           <div class="search-wrapper">
@@ -674,7 +752,7 @@
             </div>
           </div>
         </div>
-        <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k 观看</span><span>286.5万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
+        <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4万完播</span><span>286.5万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
       </article>
       <article class="card" data-category="喜剧" data-sort="hot" onclick="location.href='drama-detail.html'">
 
@@ -700,7 +778,7 @@
             </div>
           </div>
         </div>
-        <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k 观看</span><span>198.4万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.7</span></div></div>
+        <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8万完播</span><span>198.4万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.7</span></div></div>
       </article>
     </section>
   </div>
@@ -724,10 +802,10 @@
 
     const featuredDramas = [
       { id: 1, title: '凤骨琉璃', category: '古风', episodes: '全44集', creator: 'JACK', views: '22.3万完播', heat: '333.2万热度', rating: '4.8', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', img: 'image/fenggu_cover.jpg', video: 'video/凤骨琉璃.mp4', actors: ['苏婉清', '李云飞', '林梦瑶', '上官婉儿'] },
-      { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4k 观看', heat: '286.5万热度', rating: '4.6', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4', actors: ['李云飞', '赵无极', '林梦瑶'] },
-      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8k 观看', heat: '198.4万热度', rating: '4.7', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4', actors: ['苏婉清', '上官婉儿', 'Luna'] },
-      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1k 观看', heat: '412.7万热度', rating: '4.5', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80', actors: ['林梦瑶', '赵无极', '李云飞'] },
-      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2k 观看', heat: '521.3万热度', rating: '4.9', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80', actors: ['Luna', '林梦瑶', '上官婉儿'] }
+      { id: 2, title: '我卸甲后天下大乱了', category: '古风', episodes: '全12集', creator: 'EVA', views: '2.4万完播', heat: '286.5万热度', rating: '4.6', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', img: 'image/xiejia_cover.jpg', video: 'video/我卸甲后天下大乱了.mp4', actors: ['李云飞', '赵无极', '林梦瑶'] },
+      { id: 3, title: '丞相府今日开饭', category: '喜剧', episodes: '全24集', creator: 'LENS', views: '1.8万完播', heat: '198.4万热度', rating: '4.7', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', img: 'image/chengxiangfu_cover.jpg', video: 'video/丞相府今日开饭.mp4', actors: ['苏婉清', '上官婉儿', 'Luna'] },
+      { id: 4, title: '隔世追凶', category: '悬疑', episodes: '全18集', creator: 'NOVA', views: '3.1万完播', heat: '412.7万热度', rating: '4.5', desc: '跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。', img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80', actors: ['林梦瑶', '赵无极', '李云飞'] },
+      { id: 5, title: '星河之约', category: '科幻', episodes: '全32集', creator: 'STAR', views: '4.2万完播', heat: '521.3万热度', rating: '4.9', desc: '在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。', img: 'https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80', actors: ['Luna', '林梦瑶', '上官婉儿'] }
     ];
 
 
@@ -909,6 +987,25 @@
           updateNoResults();
         });
       });
+
+      // ═══ 布局切换 (1列 / 2列) ═══
+      const layoutBtns = document.querySelectorAll('.layout-toggle button');
+      const gallery = document.querySelector('.gallery');
+      if (layoutBtns.length && gallery) {
+        const savedCols = localStorage.getItem('gallery-cols') || '2';
+        gallery.classList.add('grid-' + savedCols);
+        layoutBtns.forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.cols === savedCols);
+          btn.addEventListener('click', function() {
+            const cols = this.dataset.cols;
+            layoutBtns.forEach(function(b) { b.classList.remove('active'); });
+            this.classList.add('active');
+            gallery.classList.remove('grid-1', 'grid-2');
+            gallery.classList.add('grid-' + cols);
+            localStorage.setItem('gallery-cols', cols);
+          });
+        });
+      }
     });
   </script>
 </body>
