@@ -80,12 +80,12 @@
       margin-top: 4px;
     }
 
-    /* ===== Records Link ===== */
+    /* ===== Records Link + Prize Pool ===== */
     .records-link {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 12px;
       padding: 12px 20px;
       margin-bottom: 20px;
       background: var(--accent-soft);
@@ -94,12 +94,50 @@
       color: var(--accent);
       font-size: 0.88rem;
       font-weight: 600;
-      cursor: pointer;
       transition: all 0.2s ease;
     }
     .records-link:hover {
       background: rgba(0,179,136,0.15);
       border-color: var(--accent);
+    }
+    .pool-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+    .pool-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: 0.01em;
+    }
+    .pool-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1.2;
+    }
+    .pool-unit {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-tertiary);
+    }
+    .pool-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(0,179,136,0.18);
+      flex-shrink: 0;
+    }
+    .records-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .records-cta:hover {
+      opacity: 0.75;
     }
 
     /* ===== Invite Link Card ===== */
@@ -288,10 +326,17 @@
       </div>
     </div>
 
-    <!-- ===== View Records Link ===== -->
-    <div class="records-link" onclick="goToRewards()">
-      <span>查看邀请收益记录</span>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <!-- ===== Prize Pool + Records Link ===== -->
+    <div class="records-link">
+      <div class="pool-wrapper">
+        <div class="pool-label">本周邀请奖池</div>
+        <div class="pool-value" id="weeklyPool">12,500 <span class="pool-unit">STORY</span></div>
+      </div>
+      <div class="pool-divider"></div>
+      <div class="records-cta" onclick="goToRewards()">
+        <span>查看邀请收益记录</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
     </div>
 
     <!-- ===== Invite Link ===== -->
