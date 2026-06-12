@@ -2289,7 +2289,7 @@
 
       const grid = document.getElementById('consumeGrid');
       if (sameIpSameLevel.length === 0) {
-        grid.innerHTML = '<div class="consume-empty">没有可消耗的同IP同等级分身</div>';
+        grid.innerHTML = '<div class="consume-empty">没有可消耗的同IP同等级演员</div>';
       } else {
         grid.innerHTML = sameIpSameLevel.map(a => `
           <div class="consume-item" data-actor-id="${a.id}" onclick="toggleConsumeActor('${a.id}')">

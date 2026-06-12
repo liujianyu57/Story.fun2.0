@@ -510,11 +510,15 @@
             </div>
           </div>
           <div class="form-group">
-            <label>角色名称 <span class="hint">（必填）</span></label>
-            <input type="text" id="editCharName" placeholder="例如：林婉儿" maxlength="20" />
+            <label>角色名称</label>
+
+            <input type="text" id="editCharName" placeholder="请输入角色名称" maxlength="20" />
+
           </div>
           <div class="form-group">
-            <label>性格简介 <span class="hint">（可选）</span></label>
+            <label>角色简介</label>
+
+
             <textarea id="editCharDesc" placeholder="描述角色的性格、背景故事……" maxlength="200"></textarea>
           </div>
         </div>
@@ -629,14 +633,11 @@ function goToStep(num) {
       editingId: null,
       bindCharId: null,
 
-      defaultChars: [
-        { name: '未命名角色 1', desc: '点击编辑填写角色名称与简介', avatar: null },
-        { name: '未命名角色 2', desc: '点击编辑填写角色名称与简介', avatar: null },
-      ],
+      defaultChars: [],
 
       init() {
-        this.defaultChars.forEach(c => this.addChar(c.name, c.desc, c.avatar));
         this.render();
+
 
         // Avatar file input
         document.getElementById('avatarFileInput').addEventListener('change', (e) => {
@@ -789,12 +790,16 @@ function goToStep(num) {
         let bindHtml = '';
         if (char.actorKey && ACTOR_IP_DB[char.actorKey]) {
           const actor = ACTOR_IP_DB[char.actorKey];
+          const actorKeys = this.getUserActorKeys();
+          const actorIndex = actorKeys.indexOf(char.actorKey);
+          const actorNum = actorIndex !== -1 ? actorIndex + 1 : '';
           bindHtml = '<div style="margin-top:8px;">'
             + '<button class="char-bind-btn bound js-bind-actor" data-char-id="' + char.id + '">'
             + '<img class="char-bind-actor-avatar" src="' + actor.image + '" alt="" />'
-            + this.escapeHtml(actor.name)
+            + this.escapeHtml(actor.name) + (actorNum ? ' <span style="font-size:0.75rem;font-weight:400;">演员IP' + actorNum + '</span>' : '')
             + '</button>'
             + '</div>';
+
         } else {
           bindHtml = '<div style="margin-top:8px;">'
             + '<button class="char-bind-btn js-bind-actor" data-char-id="' + char.id + '">🎭 演员参演</button>'
@@ -867,13 +872,15 @@ function goToStep(num) {
           .map(c => c.actorKey);
 
         let html = '';
-        actorKeys.forEach(key => {
+        actorKeys.forEach((key, index) => {
           const actor = ACTOR_IP_DB[key];
           const isBoundToOther = alreadyBound.includes(key);
+          const actorNum = index + 1;
           html += '<div class="actor-bind-item js-bind-select" data-actor-key="' + key + '" style="' + (isBoundToOther ? 'opacity:0.5;' : '') + '">'
             + '<img class="abi-avatar" src="' + actor.image + '" alt="" onerror="this.outerHTML=\'<div class=abi-avatar style=display:grid;place-items:center;font-size:1.2rem;>🎭</div>\'" />'
             + '<div class="abi-info">'
-            + '<div class="abi-name">' + this.escapeHtml(actor.name) + '</div>'
+            + '<div class="abi-name">' + this.escapeHtml(actor.name) + ' <span style="font-size:0.78rem;color:var(--accent);font-weight:500;">演员IP' + actorNum + '</span></div>'
+
             + '<div class="abi-desc">' + this.escapeHtml(actor.description || '') + '</div>'
             + (isBoundToOther ? '<div style="font-size:0.7rem;color:var(--warning);margin-top:2px;">⚠️ 已被其他角色绑定</div>' : '')
             + '</div></div>';
