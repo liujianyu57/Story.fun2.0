@@ -1030,7 +1030,7 @@
           </div>
           <div class="actor-stats">
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">2.6万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">719.7万</span></span>
+            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">3.3x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 已售罄</span>
@@ -1062,7 +1062,7 @@
           </div>
           <div class="actor-stats">
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">531.6万</span></span>
+            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">2.5x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
@@ -1094,7 +1094,7 @@
           </div>
           <div class="actor-stats">
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.7万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,032.4万</span></span>
+            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">4.8x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 7,500 个</span>
@@ -1126,7 +1126,7 @@
           </div>
           <div class="actor-stats">
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">27.7万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,553.4万</span></span>
+            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">7.2x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
@@ -1158,7 +1158,7 @@
           </div>
           <div class="actor-stats">
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">5.5万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">699.2万</span></span>
+            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">3.2x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 5,500 个</span>
@@ -1190,7 +1190,7 @@
           </div>
           <div class="actor-stats">
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度</span><span class="num">1,052.9万</span></span>
+            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">4.9x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 10,000 个</span>
@@ -1775,8 +1775,8 @@
             statTooltipTitle.textContent = '完播';
             statTooltipDesc.textContent = '该演员 IP 参演的所有短剧的完播次数之和';
           } else if (stat === 'heat') {
-            statTooltipTitle.textContent = '热度';
-            statTooltipDesc.textContent = '该演员 IP 参演的所有短剧最近30天的热度之和';
+            statTooltipTitle.textContent = '热度系数';
+            statTooltipDesc.textContent = '热度系数是演员 IP 的近30天热度乘子，用于决定该演员在派遣中的产出。';
           }
           statTooltip.classList.add('active');
         });
