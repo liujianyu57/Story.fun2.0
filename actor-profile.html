@@ -1048,14 +1048,14 @@
         <div>
           <h1 class="actor-name" id="actorName">—</h1>
           <div class="actor-tags" id="actorTags">
-          <span class="tag" id="actorGender">—</span>
+          
           <span class="tag" id="actorCreatorTag">—</span>
           <span class="tag muted" id="actorCollectionTag">—</span>
           <span class="tag soldout" id="actorSoldoutTag" style="display:none">已售罄</span>
           </div>
         </div>
         <p class="actor-desc" id="actorDesc">—</p>
-        <!-- 完播 / 热度 -->
+        <!-- 完播 / 热度系数 -->
         <div class="actor-hero-stats">
           <div class="ahs-item">
             <span class="ahs-label">完播</span>
@@ -1063,7 +1063,7 @@
           </div>
           <div class="ahs-divider"></div>
           <div class="ahs-item">
-            <span class="ahs-label">热度</span>
+            <span class="ahs-label">热度系数</span>
             <span class="ahs-value" id="heroHeat">—</span>
           </div>
         </div>
@@ -1238,12 +1238,12 @@
     // ============================================================
     const ACTORS_DATA = {
       '苏婉清': {
-        id: 'C002', name: '苏婉清', gender: '♀ 女性',
-        desc: '温婉端庄的江南女子，琴棋书画样样精通，性格外柔内刚。出生于江南书香门第，自幼受传统文化熏陶，举手投足间尽显大家闺秀风范。',
+        id: 'C002', name: '苏婉清',
+        desc: '温婉端庄，琴棋书画样样精通，性格外柔内刚。出生于江南书香门第，自幼受传统文化熏陶，举手投足间尽显大家闺秀风范。',
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 900,
         price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '24.1万', heat: '531.6万',
+        views: '24.1万', heat: '2.5x',
         creator: 'wanqing_studio', collection: 'C002',
         childActors: [
           { childId: '#C-001', name: '陆小曼', holder: '0x8f3A...bE12', dramas: [
@@ -1259,12 +1259,12 @@
         ]
       },
       '李云飞': {
-        id: 'C003', name: '李云飞', gender: '♂ 男性',
+        id: 'C003', name: '李云飞',
         desc: '身手矫健的侠客，性格豪爽仗义。自幼习武，练就一身好本领，行走江湖路见不平拔刀相助。',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 8000, minted: 500, available: 7500, holders: 450,
         price: '8 USDC', reserved: 500, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '24.7万', heat: '1,032.4万',
+        views: '24.7万', heat: '4.8x',
         creator: 'feige_labs', collection: 'C003',
         childActors: [
           { childId: '#C-004', name: '赵刚', holder: '0x1aE4...fB77', dramas: [
@@ -1276,12 +1276,12 @@
         ]
       },
       '林梦瑶': {
-        id: 'C004', name: '林梦瑶', gender: '♀ 女性',
+        id: 'C004', name: '林梦瑶',
         desc: '聪慧机敏的现代女性，擅长推理分析。毕业于顶尖学府，拥有敏锐的洞察力和出色的逻辑思维能力。',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 800,
         price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '27.7万', heat: '1,553.4万',
+        views: '27.7万', heat: '7.2x',
         creator: 'mengyao_art', collection: 'C004',
         childActors: [
           { childId: '#C-006', name: '白露', holder: '0x5fB8...2dC4', dramas: [
@@ -1293,7 +1293,7 @@
         ]
       },
       '赵无极': {
-        id: 'C005', name: '赵无极', gender: '♂ 男性',
+        id: 'C005', name: '赵无极',
         desc: '深不可测的武林高手，亦正亦邪。武功深不可测，行事风格独特，令人难以捉摸。',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 6000, minted: 500, available: 5500, holders: 300,
@@ -1306,7 +1306,7 @@
         ]
       },
       '上官婉儿': {
-        id: 'C006', name: '上官婉儿', gender: '♀ 女性',
+        id: 'C006', name: '上官婉儿',
         desc: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
         totalSupply: 12000, minted: 2000, available: 10000, holders: 1500,
@@ -1319,12 +1319,12 @@
         ]
       },
       'Luna': {
-        id: 'C001', name: 'Luna', gender: '♀ 女性',
+        id: 'C001', name: 'Luna',
         desc: '未来偶像型AI演员，适合对话与剧情分润场景。拥有独特的未来感和科技气质。',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
         totalSupply: 5000, minted: 5000, available: 0, holders: 4900,
         price: '10 USDC', reserved: 0, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '1.2万', heat: '87.6万',
+        views: '1.2万', heat: '3.3x',
         creator: 'storyfun_labs', collection: 'C001',
         childActors: [
           { childId: '#C-010', name: 'AI 助手', holder: '0xdE4a...7cF1', dramas: [
@@ -1376,7 +1376,7 @@
       document.getElementById('actorAvatar').src = actor.avatar;
       document.getElementById('actorAvatar').alt = actor.name;
       document.getElementById('actorName').textContent = actor.name;
-      document.getElementById('actorGender').textContent = actor.gender;
+      
       document.getElementById('actorCreatorTag').textContent = '发行者 ' + (actor.creator || '—');
       document.getElementById('actorCollectionTag').textContent = '演员 IP ' + (actor.collection || actor.id || '—');
       document.getElementById('actorDesc').textContent = actor.desc;
@@ -1504,7 +1504,7 @@
         el.addEventListener('click', function() {
           var label = this.querySelector('.ahs-label').textContent.trim();
           if (label === '完播') openStatTooltip('完播', '该演员 IP 参演的所有短剧的完播次数之和');
-          else if (label === '热度') openStatTooltip('热度', '该演员 IP 参演的所有短剧的热度之和');
+          else if (label === '热度系数') openStatTooltip('热度系数', '热度系数是演员 IP 的近30天热度乘子，用于决定该演员在派遣中的产出。');
         });
       });
       document.getElementById('statTooltipClose').addEventListener('click', function() { statTooltip.classList.remove('active'); });
@@ -1690,7 +1690,7 @@
                   '</div>' +
                 '</div>' +
               '</div>' +
-              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>' + (actor.heat || '—') + '热度</span><span class="drama-rating"><span class="star-icon">★</span> ' + (DRAMA_RATINGS[d.title] || '--') + '</span></div></div>' +
+              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>' + (actor.heat || '—') + '热度系数</span><span class="drama-rating"><span class="star-icon">★</span> ' + (DRAMA_RATINGS[d.title] || '--') + '</span></div></div>' +
 
             '</div>';
           });
