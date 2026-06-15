@@ -576,7 +576,8 @@
         charManager.characters = [];
         charManager.idCounter = 0;
         data.characters.forEach(c => {
-          charManager.addChar(c.name, c.desc, c.avatar, c.actorKey || null);
+          // Mark characters from dramaDatabase with actorPersisted=true (already passed review)
+          charManager.addChar(c.name, c.desc, c.avatar, c.actorKey || null, true);
         });
         charManager.render();
       }
@@ -706,8 +707,8 @@
         });
       },
 
-      addChar(name, desc, avatar, actorKey) {
-        this.characters.push({ id: ++this.idCounter, name: name || '未命名角色', desc: desc || '', avatar: avatar || null, actorKey: actorKey || null });
+      addChar(name, desc, avatar, actorKey, actorPersisted) {
+        this.characters.push({ id: ++this.idCounter, name: name || '未命名角色', desc: desc || '', avatar: avatar || null, actorKey: actorKey || null, actorPersisted: actorPersisted || false });
       },
 
       removeChar(id) {
@@ -777,39 +778,56 @@
         grid.innerHTML = '';
         const self = this;
         this.characters.forEach(c => {
+          const isBound = !!(c.actorKey && ACTOR_IP_DB[c.actorKey]);
+          const isPersistedBound = isBound && c.actorPersisted;
+          const actor = isBound ? ACTOR_IP_DB[c.actorKey] : null;
           const avatarHtml = c.avatar
             ? '<img src="' + c.avatar + '" alt="' + c.name + '" />'
             : '<div class="char-avatar-placeholder">' + c.name.charAt(0) + '</div>';
 
-          // Build bind button HTML
+          // Build bind area HTML
           let bindHtml = '';
-          if (c.actorKey && ACTOR_IP_DB[c.actorKey]) {
-            const actor = ACTOR_IP_DB[c.actorKey];
-            const actorKeys = this.getUserActorKeys();
-            const actorIndex = actorKeys.indexOf(c.actorKey);
-            const actorNum = actorIndex !== -1 ? actorIndex + 1 : '';
-            bindHtml = '<div style="margin-top:8px;">'
-              + '<button class="char-bind-btn bound js-bind-actor" data-char-id="' + c.id + '">'
-              + '<img class="char-bind-actor-avatar" src="' + actor.image + '" alt="" />'
-              + this.escapeHtml(actor.name) + (actorNum ? ' <span style="font-size:0.75rem;font-weight:400;">演员IP' + actorNum + '</span>' : '')
-              + '</button>'
+          if (isPersistedBound) {
+            // Persisted bound (passed review): static display only
+            bindHtml = '<div style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(0,179,136,0.06);border-radius:80px;">'
+              + '<img src="' + actor.image + '" alt="" style="width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;" />'
+              + '<span style="font-size:0.85rem;font-weight:600;color:var(--accent);">' + this.escapeHtml(actor.name) + '</span>'
+              + '<span style="font-size:0.72rem;color:var(--text-muted);margin-left:auto;">已绑定 ✓</span>'
+              + '</div>';
+          } else if (isBound) {
+            // Newly bound in this session: can unbind/change
+            bindHtml = '<div style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(0,179,136,0.06);border-radius:80px;cursor:pointer;" class="js-bind-actor" data-char-id="' + c.id + '" title="点击更改演员">'
+              + '<img src="' + actor.image + '" alt="" style="width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;" />'
+              + '<span style="font-size:0.85rem;font-weight:600;color:var(--accent);">' + this.escapeHtml(actor.name) + '</span>'
+              + '<span style="font-size:0.7rem;color:var(--warning);margin-left:auto;">点击更改</span>'
               + '</div>';
           } else {
-
             bindHtml = '<div style="margin-top:8px;">'
               + '<button class="char-bind-btn js-bind-actor" data-char-id="' + c.id + '">🎭 演员参演</button>'
               + '</div>';
           }
 
-          grid.insertAdjacentHTML('beforeend', '<div class="char-card" data-char-id="' + c.id + '">'
+          // Actions
+          let actionsHtml = '';
+          if (isPersistedBound) {
+            actionsHtml = '<div style="margin-top:8px;font-size:0.78rem;color:var(--text-muted);text-align:center;padding:4px 0;">🔒 审核已通过，不可编辑</div>';
+
+          } else {
+            actionsHtml = '<div class="char-actions" style="margin-top:8px;">'
+              + '<button class="char-action-btn js-edit-char">✎ 编辑</button>'
+              + '<button class="char-action-btn danger js-remove-char">✕ 删除</button>'
+              + '</div>';
+          }
+
+
+          grid.insertAdjacentHTML('beforeend', '<div class="char-card' + (isPersistedBound ? ' persisted-bound' : '') + '" data-char-id="' + c.id + '">'
             + '<div class="char-avatar-area">' + avatarHtml + '</div>'
             + '<div class="char-body">'
             + '<div class="char-name">' + this.escapeHtml(c.name) + '</div>'
             + '<div class="char-desc">' + this.escapeHtml(c.desc || '暂无简介') + '</div>'
             + bindHtml
-            + '<div class="char-actions" style="margin-top:8px;">'
-            + '<button class="char-action-btn js-edit-char">✎ 编辑</button>'
-            + '</div></div></div>');
+            + actionsHtml
+            + '</div></div>');
         });
         grid.insertAdjacentHTML('beforeend', '<div class="char-card add-card js-add-char">'
           + '<div class="add-card-content">'
@@ -828,26 +846,47 @@
           const editBtn = e.target.closest('.js-edit-char');
           const addCard = e.target.closest('.js-add-char');
           const bindBtn = e.target.closest('.js-bind-actor');
+          const removeBtn = e.target.closest('.js-remove-char');
 
-          if (editBtn) {
+          if (removeBtn) {
+            const card = removeBtn.closest('.char-card');
+            const id = parseInt(card.dataset.charId);
+            const char = this.characters.find(c => c.id === id);
+            if (char) this.removeChar(id);
+          } else if (editBtn) {
             const card = editBtn.closest('.char-card');
             const id = parseInt(card.dataset.charId);
+            const char = this.characters.find(c => c.id === id);
+            // Block editing of persisted (review-passed) bound characters only
+            if (char && char.actorPersisted && char.actorKey) {
+              showToast('该角色已通过审核绑定演员，不可编辑');
+              return;
+            }
             this.openEditModal(id);
           } else if (addCard) {
             this.openAddModal();
           } else if (bindBtn) {
+
             const card = bindBtn.closest('.char-card');
             const id = parseInt(card.dataset.charId);
+            const char = this.characters.find(c => c.id === id);
+            // Block rebinding of persisted (review-passed) bound characters only
+            if (char && char.actorPersisted && char.actorKey) {
+              showToast('该角色已通过审核绑定演员，不可更改');
+              return;
+            }
+            // For non-persisted bound characters, unbind first then open bind modal
+            if (char && char.actorKey) {
+              char.actorKey = null;
+            }
             this.openBindModal(id);
+
           }
         });
       },
 
-      removeChar(id) {
-        showToast('角色管理不支持删除操作');
-      },
-
       // ===== Actor Binding Methods =====
+
 
       openBindModal(charId) {
         const char = this.characters.find(c => c.id === charId);
@@ -918,7 +957,9 @@
         const char = this.characters.find(c => c.id === charId);
         if (!char) return;
         char.actorKey = actorKey;
+        char.actorPersisted = false; // 本次操作绑定的演员，可修改
         this.closeBindModal();
+
         this.render();
         showToast('✅ 已绑定演员「' + ACTOR_IP_DB[actorKey].name + '」');
       },
