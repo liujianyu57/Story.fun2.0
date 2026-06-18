@@ -648,7 +648,16 @@
     }
     .mint-modal-header {
       display: flex;
-      flex-direction: column;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .mint-modal-header #mintModalTitle {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      flex-shrink: 0;
     }
     .mint-modal-actor-name {
       font-size: 1.5rem;
@@ -656,7 +665,9 @@
       color: var(--text);
       letter-spacing: -0.02em;
       line-height: 1.2;
+      text-align: right;
     }
+
     .mint-price-bar {
       display: flex;
       flex-direction: column;
@@ -731,82 +742,12 @@
       color: var(--warning);
       letter-spacing: -0.01em;
     }
-    .mint-qty-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2px;
-    }
-    .mint-qty-label {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      font-weight: 500;
-    }
-    .mint-qty-controls {
-      display: flex;
-      align-items: center;
-      background: var(--bg);
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    .mint-qty-btn {
-      width: 34px;
-      height: 34px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: grid;
-      place-items: center;
-    }
-    .mint-qty-btn:hover {
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-    .mint-qty-input {
-      width: 44px;
-      height: 34px;
-      border: none;
-      background: transparent;
+    .mint-slippage-notice {
       text-align: center;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      outline: none;
-      -moz-appearance: textfield;
-    }
-    .mint-qty-input::-webkit-inner-spin-button,
-    .mint-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    .mint-total-section {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .mint-total-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0;
-    }
-    .mint-total-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0 4px;
-    }
-    .mint-total-label {
-      font-size: 0.92rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      font-weight: 500;
-    }
-    .mint-total-value {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.02em;
+      padding: 6px 0 2px;
+      opacity: 0.85;
     }
     .mint-modal-footer {
       display: flex;
@@ -1152,41 +1093,22 @@
       </div>
       <div class="mint-modal-body" id="mintModalBody">
         <div class="mint-modal-header">
-          <div class="mint-modal-actor-name" id="mintModalActorName">—</div>
           <div id="mintModalTitle">确认签约</div>
+          <div class="mint-modal-actor-name" id="mintModalActorName">—</div>
         </div>
+
         <div class="mint-price-bar" id="mintPriceBar">
           <div class="mpb-top">
             <div class="mpb-left">
-              <div class="mpb-label">当前单价</div>
+              <div class="mpb-label">签约价格 <button class="info-help-btn" id="profilePriceHelp" type="button">?</button></div>
+
               <div class="mpb-price" id="mintEstimate">—</div>
             </div>
             <div class="mpb-remain" id="mintBalance">剩余 <strong>—</strong> 个</div>
           </div>
-          <div class="mpb-final-row" id="mintFinalRow">
-            <div class="mpb-final-label">
-              最终单价
-              <span class="step-badge" title="价格按联合曲线阶梯递增，越往后单价越高">📈 阶梯定价</span>
-            </div>
-            <div class="mpb-final-price" id="mintFinalPrice">—</div>
-          </div>
-        </div>
-        <div class="mint-qty-row">
-          <span class="mint-qty-label">签约数量</span>
-          <div class="mint-qty-controls">
-            <button class="mint-qty-btn" id="qtyDec">−</button>
-            <input class="mint-qty-input" id="qtyInput" type="number" value="1" min="1" max="999" />
-            <button class="mint-qty-btn" id="qtyInc">+</button>
-          </div>
-        </div>
-        <div class="mint-total-section">
-          <div class="mint-total-divider"></div>
-          <div class="mint-total-row">
-            <span class="mint-total-label">合计</span>
-            <span class="mint-total-value" id="mintTotal">—</span>
-          </div>
         </div>
         <div class="mint-modal-footer">
+          <div class="mint-slippage-notice">已开启 1% 滑点保护，价格超出时将取消交易</div>
           <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
           <button class="mint-btn secondary" type="button" id="mintCancel">取消</button>
         </div>
@@ -1523,52 +1445,14 @@
       var mintBalance = document.getElementById('mintBalance');
       var mintEstimate = document.getElementById('mintEstimate');
       var mintSoldoutOverlay = document.getElementById('mintSoldoutOverlay');
-      var qtyInput = document.getElementById('qtyInput');
-      var qtyDec = document.getElementById('qtyDec');
-      var qtyInc = document.getElementById('qtyInc');
-      var mintTotal = document.getElementById('mintTotal');
-      var mintFinalRow = document.getElementById('mintFinalRow');
-      var mintFinalPrice = document.getElementById('mintFinalPrice');
       var mintConfirm = document.getElementById('mintConfirm');
-      var curActorPrice = actor.price;
-      var curActorMinted = actor.minted;
-      var curActorTotal = actor.totalSupply;
-
-      function calcTieredPrice(initPrice, total, minted, k) {
-        return initPrice * Math.pow(20, (minted + k) / total);
-      }
-      function updateTotal() {
-        var qty = parseInt(qtyInput.value) || 1;
-        var curNum = parseFloat(curActorPrice.toString().replace(/[^0-9.]/g, '')) || 10;
-        var unit = curActorPrice.toString().replace(/[0-9.]/g, '') || ' USDC';
-        var ratio = curActorTotal > 0 ? curActorMinted / curActorTotal : 0;
-        var initPrice = curNum / Math.pow(20, ratio);
-        if (qty === 1) {
-          mintFinalRow.classList.remove('show');
-          mintTotal.textContent = curNum.toFixed(1) + unit;
-          return;
-        }
-        var total = 0, last = 0;
-        for (var k = 0; k < qty; k++) {
-          var p = calcTieredPrice(initPrice, curActorTotal, curActorMinted, k);
-          total += p; last = p;
-        }
-        mintFinalRow.classList.add('show');
-        mintFinalPrice.textContent = last.toFixed(2) + unit;
-        mintTotal.textContent = total.toFixed(2) + unit;
-      }
       function openMintModal(actorData) {
         mintModalActorName.textContent = actorData.name;
         mintModalImage.src = actorData.avatar;
         mintModalTag.textContent = '演员 IP • ' + (actorData.collection || actorData.id || '—');
         mintBalance.innerHTML = '剩余 <strong>' + actorData.available.toLocaleString() + '</strong> 个';
         mintEstimate.textContent = actorData.price;
-        curActorPrice = actorData.price;
-        curActorMinted = actorData.minted;
-        curActorTotal = actorData.totalSupply;
         mintSoldoutOverlay.style.display = actorData.available <= 0 ? 'flex' : 'none';
-        qtyInput.value = 1;
-        updateTotal();
         mintModalSuccess.classList.remove('show');
         mintModalBody.style.display = 'flex';
         mintModal.classList.add('active');
@@ -1587,17 +1471,6 @@
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && mintModal.classList.contains('active')) closeMintModal();
       });
-      qtyDec.addEventListener('click', function() {
-        var v = parseInt(qtyInput.value) || 1;
-        if (v > 1) qtyInput.value = v - 1;
-        updateTotal();
-      });
-      qtyInc.addEventListener('click', function() {
-        var v = parseInt(qtyInput.value) || 1;
-        qtyInput.value = v + 1;
-        updateTotal();
-      });
-      qtyInput.addEventListener('input', updateTotal);
       mintConfirm.addEventListener('click', function() {
         mintConfirm.disabled = true;
         mintConfirm.textContent = '处理中...';
