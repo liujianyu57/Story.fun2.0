@@ -302,7 +302,7 @@
       { href: 'actors.html', label: '演员 IP' },
       { href: 'studio.html', label: '经纪工坊' },
       { href: 'narrator.html', label: '创作' },
-      { href: 'about.html', label: '关于我们' },
+      { href: 'whitepaper.html', label: '白皮书' },
     ];
 
     const navLinksHtml = navItems.map(item => {
@@ -419,7 +419,7 @@
       <a class="nav-link" href="actors.html">演员 IP</a>
       <a class="nav-link" href="studio.html">经纪工坊</a>
       <a class="nav-link" href="narrator.html">创作</a>
-      <a class="nav-link" href="about.html">关于我们</a>
+      <a class="nav-link" href="whitepaper.html">白皮书</a>
     </nav>
     <div class="header-actions">
       <button class="lang-btn" aria-label="Language">
