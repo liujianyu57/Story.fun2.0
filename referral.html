@@ -287,6 +287,179 @@
       color: var(--text-secondary);
     }
 
+    /* ===== Invited Users Modal ===== */
+    .invitees-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(15,23,42,0.45);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+    .invitees-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .invitees-modal {
+      background: var(--surface);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 580px;
+      max-height: 80vh;
+      box-shadow: 0 40px 80px rgba(27,45,71,0.2);
+      overflow: hidden;
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .invitees-modal-overlay.active .invitees-modal {
+      transform: scale(1) translateY(0);
+    }
+    .invitees-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .invitees-modal-header h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .invitees-modal-header .header-hint {
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+    .invitees-modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.04);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .invitees-modal-close:hover {
+      background: rgba(0,0,0,0.08);
+      color: var(--text);
+    }
+    .invitees-modal-body {
+      padding: 0 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .invitees-modal-summary {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0 14px;
+      border-bottom: 1px solid var(--border-light);
+      flex-shrink: 0;
+    }
+    .invitees-modal-summary .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .invitees-modal-summary .stat-item .stat-num {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .invitees-modal-summary .stat-item .stat-num.blue { color: #3b82f6; }
+    .invitees-modal-summary .stat-item .stat-num.green { color: var(--story-green); }
+    .invitees-modal-summary .stat-item .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-tertiary);
+    }
+    .invitees-list {
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0 16px;
+      gap: 2px;
+    }
+    .invitee-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 8px;
+      border-radius: 10px;
+      transition: background 0.15s ease;
+    }
+    .invitee-row:hover {
+      background: var(--bg);
+    }
+    .invitee-row .invitee-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--border);
+    }
+    .invitee-row .invitee-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .invitee-row .invitee-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .invitee-row .invitee-meta {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      margin-top: 1px;
+    }
+    .invitee-row .invitee-status {
+      flex-shrink: 0;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+    .invitee-row .invitee-status.active {
+      background: rgba(0,179,136,0.10);
+      color: var(--accent);
+    }
+    .invitee-row .invitee-status.inactive {
+      background: rgba(139,141,152,0.10);
+      color: var(--text-tertiary);
+    }
+    .invitees-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+      text-align: center;
+      gap: 8px;
+    }
+    .invitees-empty .empty-icon {
+      font-size: 2.5rem;
+      opacity: 0.3;
+    }
+    .invitees-empty p {
+      font-size: 0.88rem;
+      color: var(--text-tertiary);
+    }
+
     /* ===== Toast ===== */
     .toast-notification {
       position: fixed; top: 24px; left: 50%;
@@ -316,8 +489,8 @@
 
     <!-- ===== Metrics ===== -->
     <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-label">累计邀请人数</div>
+      <div class="metric-card" style="cursor: pointer;" onclick="openInviteesModal()">
+        <div class="metric-label" style="display: flex; align-items: center; gap: 6px;">累计邀请人数 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b8d98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
         <div class="metric-value blue" id="mInviteCount">6</div>
       </div>
       <div class="metric-card">
@@ -415,6 +588,35 @@
 
   </div>
 
+  <!-- ===== Invited Users Modal ===== -->
+  <div class="invitees-modal-overlay" id="inviteesModal" onclick="closeInviteesModal()">
+    <div class="invitees-modal" onclick="event.stopPropagation()">
+      <div class="invitees-modal-header">
+        <div>
+          <h2>直接下级用户 <span class="header-hint" id="modalInviteeTotal"></span></h2>
+        </div>
+        <button class="invitees-modal-close" onclick="closeInviteesModal()">✕</button>
+      </div>
+      <div class="invitees-modal-body">
+        <div class="invitees-modal-summary">
+          <div class="stat-item">
+            <div class="stat-num blue" id="modalTotalCount">0</div>
+            <div class="stat-label">总人数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num green" id="modalValidCount">0</div>
+            <div class="stat-label">有效用户</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" style="color: var(--text-tertiary);" id="modalInvalidCount">0</div>
+            <div class="stat-label">待激活</div>
+          </div>
+        </div>
+        <div class="invitees-list" id="inviteesList"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div class="toast-notification" id="toastNotification">
     <span id="toastMessage"></span>
@@ -445,6 +647,75 @@
         ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
       });
       showToast('✅ 邀请链接已复制');
+    }
+
+    // ══════════════════════════════════════════════
+    //  Invited Users — Mock Data
+    // ══════════════════════════════════════════════
+
+    var INVITEES_DB = [
+      { name: '清风明月', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80', joined: '2026-06-28', valid: true, storyEarned: '2,350' },
+      { name: '星辰大海', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80', joined: '2026-06-25', valid: true, storyEarned: '1,820' },
+      { name: '江湖过客', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80', joined: '2026-06-20', valid: true, storyEarned: '980' },
+      { name: '雪落无声', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80', joined: '2026-06-18', valid: false, storyEarned: '0' },
+      { name: '踏雪无痕', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80', joined: '2026-06-15', valid: true, storyEarned: '4,100' },
+      { name: '闲云野鹤', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80', joined: '2026-06-10', valid: false, storyEarned: '0' }
+    ];
+
+    // ══════════════════════════════════════════════
+    //  Modal: Open / Close / Render
+    // ══════════════════════════════════════════════
+
+    function openInviteesModal() {
+      renderInvitees();
+      document.getElementById('inviteesModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeInviteesModal() {
+      document.getElementById('inviteesModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function renderInvitees() {
+      var total = INVITEES_DB.length;
+      var validCount = INVITEES_DB.filter(function(u) { return u.valid; }).length;
+      var invalidCount = total - validCount;
+
+      // Update summary stats in modal
+      document.getElementById('modalTotalCount').textContent = total;
+      document.getElementById('modalValidCount').textContent = validCount;
+      document.getElementById('modalInvalidCount').textContent = invalidCount;
+      document.getElementById('modalInviteeTotal').textContent = '共 ' + total + ' 人';
+
+      // Render list
+      var listEl = document.getElementById('inviteesList');
+      if (total === 0) {
+        listEl.innerHTML =
+          '<div class="invitees-empty">' +
+          '  <div class="empty-icon">👥</div>' +
+          '  <p>暂无直接下级用户</p>' +
+          '</div>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < INVITEES_DB.length; i++) {
+        var u = INVITEES_DB[i];
+        var statusClass = u.valid ? 'active' : 'inactive';
+        var statusLabel = u.valid ? '有效用户' : '待激活';
+        var metaText = '注册于 ' + u.joined;
+        html +=
+          '<div class="invitee-row">' +
+          '  <img class="invitee-avatar" src="' + u.avatar + '" alt="' + u.name + '" loading="lazy" onerror="this.style.display=\'none\'" />' +
+          '  <div class="invitee-info">' +
+          '    <div class="invitee-name">' + u.name + '</div>' +
+          '    <div class="invitee-meta">' + metaText + '</div>' +
+          '  </div>' +
+          '  <span class="invitee-status ' + statusClass + '">' + statusLabel + '</span>' +
+          '</div>';
+      }
+      listEl.innerHTML = html;
     }
   </script>
   <div id="bottom-nav-placeholder"></div>
