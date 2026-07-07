@@ -137,6 +137,47 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
 .comment-input-wrap .send-btn:active{transform:scale(.95);box-shadow:0 1px 4px rgba(0,179,136,.2)}
 .comment-count{font-size:12px;color:rgba(94,111,131,.6)}
 
+/* ===== Long Press Menu ===== */
+.lp-drawer{position:fixed;inset:0;z-index:500;visibility:hidden;transition:visibility .3s}
+.lp-drawer.open{visibility:visible}
+.lp-drawer .lp-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s}
+.lp-drawer.open .lp-overlay{opacity:1}
+.lp-drawer .lp-panel{position:absolute;left:0;right:0;bottom:0;background:#1c2633;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0));box-shadow:0 -4px 30px rgba(0,0,0,.4)}
+.lp-drawer.open .lp-panel{transform:translateY(0)}
+.lp-drawer .lp-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.15);margin:0 auto 8px;flex-shrink:0}
+.lp-drawer .lp-item{display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:16px 24px;color:#fff;font-size:16px;font-weight:500;cursor:pointer;transition:background .15s;border:none;background:none;width:100%;text-align:left}
+.lp-drawer .lp-item:active{background:rgba(255,255,255,.06)}
+.lp-drawer .lp-item .lp-icon{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.lp-drawer .lp-cancel{padding:16px 24px;color:rgba(255,255,255,.4);font-size:15px;font-weight:500;cursor:pointer;transition:background .15s;border:none;background:none;width:100%;text-align:center;border-top:1px solid rgba(255,255,255,.06);margin-top:4px}
+.lp-drawer .lp-cancel:active{background:rgba(255,255,255,.06)}
+
+/* ===== Report Reasons Drawer ===== */
+.report-drawer{position:fixed;inset:0;z-index:510;visibility:hidden;transition:visibility .3s}
+.report-drawer.open{visibility:visible}
+.report-drawer .report-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s}
+.report-drawer.open .report-overlay{opacity:1}
+.report-drawer .report-panel{position:absolute;left:0;right:0;bottom:0;max-height:80vh;background:#1c2633;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0));box-shadow:0 -4px 30px rgba(0,0,0,.4);overflow:hidden;display:flex;flex-direction:column}
+.report-drawer.open .report-panel{transform:translateY(0)}
+.report-drawer .report-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.15);margin:0 auto 8px;flex-shrink:0}
+.report-drawer .report-header{display:flex;align-items:center;justify-content:space-between;padding:4px 16px 12px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.report-drawer .report-header .report-back{color:rgba(255,255,255,.6);font-size:14px;cursor:pointer;border:none;background:none;padding:6px 4px;display:flex;align-items:center;gap:4px;transition:color .15s}
+.report-drawer .report-header .report-back:active{color:#fff}
+.report-drawer .report-header .report-title{color:#fff;font-size:14px;font-weight:600}
+.report-drawer .report-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 0}
+.report-drawer .report-body::-webkit-scrollbar{width:0}
+.report-drawer .report-section-title{padding:12px 20px 6px;color:rgba(255,255,255,.4);font-size:11px;font-weight:600;letter-spacing:.05em}
+.report-drawer .report-type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:6px 16px 12px}
+.report-drawer .report-type-btn{padding:10px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;text-align:center}
+.report-drawer .report-type-btn:active{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+.report-drawer .report-type-btn.selected{border-color:#f45b69;background:rgba(244,91,105,.15);color:#f45b69}
+.report-drawer .report-desc-area{padding:0 16px 12px}
+.report-drawer .report-desc-area textarea{width:100%;height:80px;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:13px;font-family:inherit;outline:none;resize:none;transition:border-color .2s;line-height:1.5}
+.report-drawer .report-desc-area textarea::placeholder{color:rgba(255,255,255,.3)}
+.report-drawer .report-desc-area textarea:focus{border-color:rgba(255,255,255,.3)}
+.report-drawer .report-submit{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 20px;margin:4px 16px 0;border-radius:12px;border:none;background:linear-gradient(135deg,#f45b69,#ff7b6b);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.report-drawer .report-submit:active{transform:scale(.97);opacity:.85}
+.report-drawer .report-submit:disabled{opacity:.3;cursor:not-allowed;transform:none}
+
 /* ===== Clean Mode ===== */
 #app.clean-mode .info,
 #app.clean-mode .actions,
@@ -200,6 +241,50 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f1825;-webkit-tap-
       <button class="cm-close" id="cmClose">✕</button>
     </div>
     <div class="cm-body" id="cmBody"></div>
+  </div>
+</div>
+
+<!-- Long Press Menu (layer 1: entry point) -->
+<div class="lp-drawer" id="lpDrawer">
+  <div class="lp-overlay" id="lpOverlay"></div>
+  <div class="lp-panel">
+    <div class="lp-handle"></div>
+    <button class="lp-item" id="lpReportBtn">
+      <span class="lp-icon">🚩</span>
+      举报
+    </button>
+    <button class="lp-cancel" id="lpCancel">取消</button>
+  </div>
+</div>
+
+<!-- Report Reasons Drawer (layer 2: reason selection + description) -->
+<div class="report-drawer" id="reportDrawer">
+  <div class="report-overlay" id="reportOverlay"></div>
+  <div class="report-panel">
+    <div class="report-handle"></div>
+    <div class="report-header">
+      <button class="report-back" id="reportBack">‹ 返回</button>
+      <span class="report-title">举报</span>
+      <span></span>
+    </div>
+    <div class="report-body">
+      <div class="report-section-title">举报类型</div>
+      <div class="report-type-grid" id="reportTypeGrid">
+        <button class="report-type-btn" data-type="porn">低俗色情</button>
+        <button class="report-type-btn" data-type="illegal">涉嫌违法犯罪</button>
+        <button class="report-type-btn" data-type="sensitive">内容敏感</button>
+        <button class="report-type-btn" data-type="gambling">涉黑赌博</button>
+        <button class="report-type-btn" data-type="minor">侵害未成年人</button>
+        <button class="report-type-btn" data-type="copyright">侵权投诉</button>
+        <button class="report-type-btn" data-type="quality">质量问题</button>
+        <button class="report-type-btn" data-type="other">其他</button>
+      </div>
+      <div class="report-section-title">举报描述</div>
+      <div class="report-desc-area">
+        <textarea id="reportDesc" placeholder="请描述具体原因（选填）" maxlength="500"></textarea>
+      </div>
+    </div>
+    <button class="report-submit" id="reportSubmitBtn">提交举报</button>
   </div>
 </div>
 
@@ -461,10 +546,94 @@ function bindEvents(){
   playerProg.addEventListener('touchstart', onProgressPointerDown, {passive: true});
 }
 
-let ts=0,td=0,sw=0;
-document.addEventListener('touchstart',function(e){if(e.target.closest('.actions')||e.target.closest('.info')||e.target.closest('.top-back')||e.target.closest('.cm-drawer')||e.target.closest('.bottom-bar')||e.target.closest('.ep-drawer'))return;ts=e.touches[0].clientY;sw=1;},{passive:true});
-document.addEventListener('touchmove',function(e){if(!sw)return;td=e.touches[0].clientY-ts;const max=wh*.12;let dr=Math.max(-max,Math.min(max,td));if((idx===0&&dr>0)||(idx>=total-1&&dr<0))dr*=.25;track.style.transition='none';track.style.transform=`translateY(${-idx*wh+dr}px)`;},{passive:true});
-document.addEventListener('touchend',function(){if(!sw)return;sw=0;if(td<-wh*.12)nextSlide();else if(td>wh*.12)prevSlide();else goTo(idx,true);td=0;},{passive:true});
+/* ---- Long Press Menu + Report Drawer ---- */
+const lpDrawer=document.getElementById('lpDrawer');
+const lpOverlay=document.getElementById('lpOverlay');
+const lpReportBtn=document.getElementById('lpReportBtn');
+const lpCancel=document.getElementById('lpCancel');
+const reportDrawer=document.getElementById('reportDrawer');
+const reportOverlay=document.getElementById('reportOverlay');
+const reportBack=document.getElementById('reportBack');
+const reportTypeGrid=document.getElementById('reportTypeGrid');
+const reportDesc=document.getElementById('reportDesc');
+const reportSubmitBtn=document.getElementById('reportSubmitBtn');
+let longPressTimer=null;
+const LONG_PRESS_MS=600;
+let selectedReportType=null;
+
+var REPORT_LABELS={
+  porn:'低俗色情',illegal:'涉嫌违法犯罪',sensitive:'内容敏感',
+  gambling:'涉黑赌博',minor:'侵害未成年人',copyright:'侵权投诉',
+  quality:'质量问题',other:'其他'
+};
+
+function openLpDrawer(){ lpDrawer.classList.add('open'); }
+function closeLpDrawer(){ lpDrawer.classList.remove('open'); }
+function openReportDrawer(){
+  selectedReportType=null;
+  reportSubmitBtn.disabled=true;
+  reportDesc.value='';
+  document.querySelectorAll('.report-type-btn').forEach(function(b){b.classList.remove('selected');});
+  reportDrawer.classList.add('open');
+}
+function closeReportDrawer(){ reportDrawer.classList.remove('open'); }
+function closeAllDrawers(){ closeLpDrawer(); closeReportDrawer(); }
+
+// Report type selection
+reportTypeGrid.addEventListener('click',function(e){
+  var btn=e.target.closest('.report-type-btn');
+  if(!btn)return;
+  document.querySelectorAll('.report-type-btn').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
+  selectedReportType=btn.dataset.type;
+  reportSubmitBtn.disabled=false;
+});
+
+// Submit report
+reportSubmitBtn.addEventListener('click',function(){
+  if(!selectedReportType){ showToast('请选择举报类型'); return; }
+  var label=REPORT_LABELS[selectedReportType]||selectedReportType;
+  var desc=reportDesc.value.trim();
+  var msg='✅ 已举报「'+label+'」';
+  if(desc) msg+= '，描述已收到';
+  msg+='，我们会尽快处理';
+  closeAllDrawers();
+  showToast(msg);
+});
+
+// Layer 1: Click "举报" → open report reasons
+lpReportBtn.addEventListener('click',function(){ openReportDrawer(); });
+// Layer 1: Click "取消" → close
+lpCancel.addEventListener('click',function(){ closeLpDrawer(); });
+// Layer 1: Click overlay → close
+lpOverlay.addEventListener('click',function(){ closeLpDrawer(); });
+// Layer 2: Click "‹ 返回" → go back to layer 1
+reportBack.addEventListener('click',function(){ closeReportDrawer(); });
+// Layer 2: Click overlay → close report drawer only
+reportOverlay.addEventListener('click',function(){ closeReportDrawer(); });
+
+// Long press detection on slides
+var longPressFired=false;
+var ts=0,td=0,sw=0;
+document.addEventListener('touchstart',function(e){
+  if(e.target.closest('.actions')||e.target.closest('.info')||e.target.closest('.top-back')||e.target.closest('.cm-drawer')||e.target.closest('.bottom-bar')||e.target.closest('.ep-drawer')||e.target.closest('.lp-drawer')||e.target.closest('.report-drawer'))return;
+  ts=e.touches[0].clientY;sw=1;longPressFired=false;
+  // Start long press timer
+  longPressTimer=setTimeout(function(){
+    longPressFired=true;
+    openLpDrawer();
+  },LONG_PRESS_MS);
+},{passive:true});
+document.addEventListener('touchmove',function(e){
+  if(!sw)return;td=e.touches[0].clientY-ts;const max=wh*.12;let dr=Math.max(-max,Math.min(max,td));if((idx===0&&dr>0)||(idx>=total-1&&dr<0))dr*=.25;track.style.transition='none';track.style.transform=`translateY(${-idx*wh+dr}px)`;
+  // Cancel long press if moved too much
+  if(Math.abs(td)>10){clearTimeout(longPressTimer);longPressTimer=null;}
+},{passive:true});
+document.addEventListener('touchend',function(){
+  clearTimeout(longPressTimer);longPressTimer=null;
+  if(longPressFired){longPressFired=false;sw=0;td=0;return;}
+  if(!sw)return;sw=0;if(td<-wh*.12)nextSlide();else if(td>wh*.12)prevSlide();else goTo(idx,true);td=0;
+},{passive:true});
 window.addEventListener('resize',function(){wh=window.innerHeight;goTo(idx,false)});
 document.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowRight')nextSlide();else if(e.key==='ArrowUp'||e.key==='ArrowLeft')prevSlide()});
 updateMeta();render();
