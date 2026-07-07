@@ -1136,8 +1136,46 @@
     </div>
   </div>
 
+  <!-- ═══ Price Tooltip（支持固定/曲线双模式） ═══ -->
+  <div class="price-tooltip-overlay" id="priceTooltip">
+    <div class="price-tooltip-box">
+      <!-- 曲线价格模式 -->
+      <div id="priceTooltipCurve">
+        <h3>📈 曲线价格</h3>
+        <p class="price-tip-sub">价格按联合曲线公式随已签约数自动上涨，早期签约更优惠</p>
+        <div class="price-curve-formula">
+          公式：<code>价格 = 初始价格 × 5<sup>(已签约数 ÷ 发行总量)</sup></code>
+        </div>
+        <div class="price-curve-wrap">
+          <canvas id="priceCurveCanvas" width="500" height="270"></canvas>
+          <div class="price-curve-info">
+            <span>已签约 <strong id="curveMintedLabel">0</strong></span>
+            <span>初始价格 <strong id="curveInitialPrice" style="color:var(--text-muted)">—</strong></span>
+            <span>当前价格 <strong id="curveCurrentPrice" style="color:var(--accent)">—</strong></span>
+          </div>
+        </div>
+        <div class="price-curve-legend">
+          <span><span class="dot curve"></span> 价格曲线</span>
+          <span><span class="dot current"></span> 当前位置</span>
+        </div>
+      </div>
+      <!-- 固定价格模式 -->
+      <div id="priceTooltipFixed" style="display:none;">
+        <h3>💰 固定价格</h3>
+        <p class="price-tip-sub" style="margin-bottom:16px;">该演员 IP 采用固定价格模式，每个演员都以统一价格签约，销量变化不影响价格。</p>
+        <div style="background:var(--bg); border-radius:12px; padding:16px; margin-bottom:12px; text-align:left; font-size:0.85rem; line-height:1.7; color:var(--text-muted);">
+          • 发行者设定固定价格后，所有签约均按此价格结算<br/>
+          • 不会因已签约数增加而价格上涨<br/>
+          • 适合希望锁定成本的买家
+        </div>
+      </div>
+      <button class="button-secondary" id="priceTooltipClose">知道了</button>
+    </div>
+  </div>
+
   <!-- ═══ Stat Tooltip ═══ -->
   <div class="stat-tooltip-overlay" id="statTooltip">
+
     <div class="stat-tooltip-box">
       <h3 id="statTooltipTitle">—</h3>
       <p id="statTooltipDesc">—</p>
@@ -1160,7 +1198,8 @@
     // ============================================================
     const ACTORS_DATA = {
       '苏婉清': {
-        id: 'C002', name: '苏婉清',
+        id: 'C002', name: '苏婉清', pricing: 'fixed',
+
         desc: '温婉端庄，琴棋书画样样精通，性格外柔内刚。出生于江南书香门第，自幼受传统文化熏陶，举手投足间尽显大家闺秀风范。',
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 900,
@@ -1181,7 +1220,8 @@
         ]
       },
       '李云飞': {
-        id: 'C003', name: '李云飞',
+        id: 'C003', name: '李云飞', pricing: 'curve',
+
         desc: '身手矫健的侠客，性格豪爽仗义。自幼习武，练就一身好本领，行走江湖路见不平拔刀相助。',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 8000, minted: 500, available: 7500, holders: 450,
@@ -1198,7 +1238,8 @@
         ]
       },
       '林梦瑶': {
-        id: 'C004', name: '林梦瑶',
+        id: 'C004', name: '林梦瑶', pricing: 'curve',
+
         desc: '聪慧机敏的现代女性，擅长推理分析。毕业于顶尖学府，拥有敏锐的洞察力和出色的逻辑思维能力。',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 800,
@@ -1215,7 +1256,8 @@
         ]
       },
       '赵无极': {
-        id: 'C005', name: '赵无极',
+        id: 'C005', name: '赵无极', pricing: 'fixed',
+
         desc: '深不可测的武林高手，亦正亦邪。武功深不可测，行事风格独特，令人难以捉摸。',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 6000, minted: 500, available: 5500, holders: 300,
@@ -1228,8 +1270,9 @@
         ]
       },
       '上官婉儿': {
-        id: 'C006', name: '上官婉儿',
+        id: 'C006', name: '上官婉儿', pricing: 'fixed',
         desc: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
+
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
         totalSupply: 12000, minted: 2000, available: 10000, holders: 1500,
         price: '12 USDC', reserved: 2000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
@@ -1241,7 +1284,8 @@
         ]
       },
       'Luna': {
-        id: 'C001', name: 'Luna',
+        id: 'C001', name: 'Luna', pricing: 'curve',
+
         desc: '未来偶像型AI演员，适合对话与剧情分润场景。拥有独特的未来感和科技气质。',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
         totalSupply: 5000, minted: 5000, available: 0, holders: 4900,
@@ -1316,10 +1360,39 @@
         }
       }
 
-      // ═══ 内嵌联合曲线绘制 ═══
-      (function drawInlineCurve() {
+      // ═══ 价格模式：曲线/固定区隔 ═══
+      var curveSection = document.getElementById('curveSection');
+      var curveTitleIcon = curveSection.querySelector('span[style*="font-size:0.95rem"]');
+      var curveFormulaEl = curveSection.querySelector('.price-curve-formula');
+      var curveLegendEl = curveSection.querySelector('div[style*="gap:12px"]');
+      var curveInfoEl = curveSection.querySelector('div[style*="margin-top:8px"]');
+
+      if (actor.pricing === 'fixed') {
+        // 固定价格：隐藏曲线图、轴标签、图例，显示固定说明
+        curveTitleIcon.innerHTML = '💰 固定价格';
+        curveSection.querySelector('canvas').style.display = 'none';
+        if (curveLegendEl) curveLegendEl.style.display = 'none';
+        if (curveInfoEl) curveInfoEl.style.display = 'none';
+        // 添加或显示固定价格区域
+        var fixedInfo = curveSection.querySelector('.fixed-price-info');
+        if (!fixedInfo) {
+          fixedInfo = document.createElement('div');
+          fixedInfo.className = 'fixed-price-info';
+          fixedInfo.style.cssText = 'padding:6px 0 4px;text-align:center;font-size:0.88rem;color:var(--text-muted);line-height:1.7;';
+          fixedInfo.innerHTML = '该演员 IP 采用固定价格模式，所有签约均按固定价格结算，不随销量变化。';
+          curveSection.insertBefore(fixedInfo, curveSection.querySelector('div[style*="margin-top:8px"]') || curveSection.lastChild);
+        }
+        fixedInfo.style.display = 'block';
+      } else {
+        // 曲线价格：显示曲线图
+        curveTitleIcon.innerHTML = '📈 价格联合曲线';
+        curveSection.querySelector('canvas').style.display = 'block';
+        if (curveLegendEl) curveLegendEl.style.display = 'flex';
+        if (curveInfoEl) curveInfoEl.style.display = 'flex';
+        var fixedInfo = curveSection.querySelector('.fixed-price-info');
+        if (fixedInfo) fixedInfo.style.display = 'none';
+
         var canvas = document.getElementById('inlineCurveCanvas');
-        if (!canvas) return;
         var dpr = window.devicePixelRatio || 1;
         var rect = canvas.getBoundingClientRect();
         canvas.width = rect.width * dpr;
@@ -1330,7 +1403,8 @@
         var total = actor.totalSupply, minted = actor.minted;
         var curPrice = parseFloat((actor.price || '10').replace(/[^0-9.]/g, '')) || 10;
         var ratio = total > 0 ? minted / total : 0;
-        var initPrice = curPrice / Math.pow(20, ratio);
+        var BASE = 5;
+        var initPrice = curPrice / Math.pow(BASE, ratio);
         var pad = { top: 12, right: 16, bottom: 32, left: 36 };
         var plotW = w - pad.left - pad.right, plotH = h - pad.top - pad.bottom;
         ctx.clearRect(0, 0, w, h);
@@ -1339,7 +1413,7 @@
           var y = pad.top + (plotH / 4) * i;
           ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
           var r = 1 - i / 4;
-          var pv = initPrice * Math.pow(20, r);
+          var pv = initPrice * Math.pow(BASE, r);
           ctx.fillStyle = '#aab7c9'; ctx.font = '8px sans-serif'; ctx.textAlign = 'right';
           ctx.fillText(pv < 1 ? pv.toFixed(1) : Math.round(pv).toString(), pad.left - 3, y + 3);
         }
@@ -1356,11 +1430,11 @@
         ctx.fillStyle = '#8b9bb0'; ctx.font = '7px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText('价格', 0, 0);
         ctx.restore();
-        var maxPrice = initPrice * 20;
+        var maxPrice = initPrice * BASE;
         ctx.beginPath(); ctx.strokeStyle = '#e65100'; ctx.lineWidth = 2;
         for (var i = 0; i <= plotW; i++) {
           var pct = i / plotW;
-          var price = initPrice * Math.pow(20, pct);
+          var price = initPrice * Math.pow(BASE, pct);
           var x = pad.left + i;
           var yn = (price - initPrice) / (maxPrice - initPrice);
           var y = pad.top + plotH - yn * plotH;
@@ -1369,7 +1443,7 @@
         ctx.stroke();
         var cp = total > 0 ? Math.min(minted / total, 1) : 0;
         var cx = pad.left + cp * plotW;
-        var cPrice = initPrice * Math.pow(20, cp);
+        var cPrice = initPrice * Math.pow(BASE, cp);
         var cyn = (cPrice - initPrice) / (maxPrice - initPrice);
         var cy = pad.top + plotH - cyn * plotH;
         ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2);
@@ -1383,7 +1457,8 @@
         document.getElementById('inlineMinted').textContent = minted.toLocaleString();
         document.getElementById('inlineInitPrice').textContent = initPrice.toFixed(2) + ' USDC';
         document.getElementById('inlineCurPrice').textContent = cPrice.toFixed(2) + ' USDC';
-      })();
+      }
+
 
       // NFT 信息
       document.getElementById('infoContract').textContent = actor.contract;
@@ -1482,9 +1557,110 @@
           mintConfirm.textContent = '确认签约';
         }, 1200);
       });
+      // ═══ 价格 tooltip（? 按钮） ═══
+      var priceTooltip = document.getElementById('priceTooltip');
+      var profilePriceHelp = document.getElementById('profilePriceHelp');
+      if (profilePriceHelp) {
+        profilePriceHelp.addEventListener('click', function(e) {
+          e.stopPropagation();
+          // 根据当前 actor 定价模式显示对应内容
+          var curveDiv = document.getElementById('priceTooltipCurve');
+          var fixedDiv = document.getElementById('priceTooltipFixed');
+          if (actor.pricing === 'fixed') {
+            curveDiv.style.display = 'none';
+            fixedDiv.style.display = 'block';
+          } else {
+            curveDiv.style.display = 'block';
+            fixedDiv.style.display = 'none';
+          }
+          // 如果是曲线模式，绘制 tooltip 里的曲线
+          if (actor.pricing !== 'fixed') {
+            drawTooltipCurve(actor);
+          }
+          priceTooltip.classList.add('active');
+        });
+      }
+      document.getElementById('priceTooltipClose').addEventListener('click', function() {
+        priceTooltip.classList.remove('active');
+      });
+      priceTooltip.addEventListener('click', function(e) {
+        if (e.target === this) priceTooltip.classList.remove('active');
+      });
+
       document.getElementById('viewNftBtn').addEventListener('click', function() { window.location.href = 'studio.html'; });
       document.getElementById('continueBtn').addEventListener('click', closeMintModal);
     });
+
+    // ═══ Tooltip 曲线绘制函数 ═══
+    function drawTooltipCurve(actor) {
+      var canvas = document.getElementById('priceCurveCanvas');
+      if (!canvas) return;
+      var dpr = window.devicePixelRatio || 1;
+      var rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      var ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      var w = rect.width, h = rect.height;
+      var total = actor.totalSupply, minted = actor.minted;
+      var curPrice = parseFloat((actor.price || '10').replace(/[^0-9.]/g, '')) || 10;
+      var ratio = total > 0 ? minted / total : 0;
+      var BASE = 5;
+      var initPrice = curPrice / Math.pow(BASE, ratio);
+      var pad = { top: 16, right: 20, bottom: 40, left: 44 };
+      var plotW = w - pad.left - pad.right, plotH = h - pad.top - pad.bottom;
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = '#eef4ff'; ctx.lineWidth = 0.5;
+      for (var i = 0; i <= 4; i++) {
+        var y = pad.top + (plotH / 4) * i;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+        var r = 1 - i / 4;
+        var pv = initPrice * Math.pow(BASE, r);
+        ctx.fillStyle = '#aab7c9'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+        ctx.fillText(pv < 1 ? pv.toFixed(1) : Math.round(pv).toString(), pad.left - 4, y + 4);
+      }
+      ctx.fillStyle = '#aab7c9'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+      for (var i = 0; i <= 4; i++) {
+        var x = pad.left + (plotW / 4) * i;
+        ctx.fillText(Math.round((i / 4) * total), x, h - 10);
+      }
+      ctx.fillStyle = '#8b9bb0'; ctx.font = '9px sans-serif';
+      ctx.fillText('已签约数', pad.left + plotW / 2, h - 24);
+      ctx.save();
+      ctx.translate(10, pad.top + plotH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillStyle = '#8b9bb0'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('价格', 0, 0);
+      ctx.restore();
+      var maxPrice = initPrice * BASE;
+      ctx.beginPath(); ctx.strokeStyle = '#e65100'; ctx.lineWidth = 2.5;
+      for (var i = 0; i <= plotW; i++) {
+        var pct = i / plotW;
+        var price = initPrice * Math.pow(BASE, pct);
+        var x = pad.left + i;
+        var yn = (price - initPrice) / (maxPrice - initPrice);
+        var y = pad.top + plotH - yn * plotH;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      var cp = total > 0 ? Math.min(minted / total, 1) : 0;
+      var cx = pad.left + cp * plotW;
+      var cPrice = initPrice * Math.pow(BASE, cp);
+      var cyn = (cPrice - initPrice) / (maxPrice - initPrice);
+      var cy = pad.top + plotH - cyn * plotH;
+      ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#00b388'; ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.stroke();
+      ctx.setLineDash([2, 4]);
+      ctx.strokeStyle = 'rgba(0,179,136,0.35)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(cx, cy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx, pad.top + plotH); ctx.lineTo(cx, cy); ctx.stroke();
+      ctx.setLineDash([]);
+      document.getElementById('curveMintedLabel').textContent = minted.toLocaleString();
+      document.getElementById('curveInitialPrice').textContent = initPrice.toFixed(2) + ' USDC';
+      document.getElementById('curveCurrentPrice').textContent = cPrice.toFixed(2) + ' USDC';
+    }
+
 
     // ═══ 短剧评分数据 ═══
     var DRAMA_RATINGS = {

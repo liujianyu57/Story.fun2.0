@@ -532,11 +532,51 @@
       margin-bottom: 20px;
     }
 
+    /* ── 定价模式切换 ── */
+    .pricing-mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--bg);
+      border-radius: 999px;
+      padding: 3px;
+      border: 1px solid var(--border-dark);
+      width: fit-content;
+      margin-bottom: 20px;
+    }
+    .pricing-mode-toggle .pm-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .pricing-mode-toggle .pm-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(27,45,71,0.08);
+    }
+    .pricing-mode-toggle .pm-btn:hover:not(.active) {
+      color: var(--text);
+    }
+    .pricing-mode-field {
+      display: none;
+    }
+    .pricing-mode-field.visible {
+      display: block;
+    }
+
     .params-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
+
 
     /* ---- Footer ---- */
     .form-footer {
@@ -662,21 +702,42 @@
         <h3 class="nft-section-title">演员 IP 发行参数</h3>
         <p class="nft-section-desc">设定演员 IP 的发行参数，发行后不可修改。</p>
 
-        <div class="params-row">
+        <!-- 演员发行总量（两种模式共享） -->
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label>演员发行总量</label>
+          <input type="number" value="1000" min="100" max="5000" step="100" id="nftSupply" />
+          <span class="hint-text">发行总量范围 100 - 5,000。</span>
+        </div>
+
+        <!-- 定价模式切换 -->
+        <div class="pricing-mode-toggle" id="pricingModeToggle">
+          <button class="pm-btn active" data-mode="fixed">固定价格</button>
+          <button class="pm-btn" data-mode="curve">曲线价格</button>
+        </div>
+
+        <!-- 固定价格模式 — 仅价格输入框 -->
+        <div class="pricing-mode-field visible" id="pricingFixedField">
           <div class="form-group">
-            <label>演员发行总量</label>
-            <input type="number" value="50000" min="1" id="nftSupply" readonly style="background: var(--bg); cursor: not-allowed; opacity: 0.8;" />
-            <span class="hint-text">发行总量固定为 50,000，不可修改。</span>
-          </div>
-          <div class="form-group">
-            <label>初始价格（USDC）</label>
-            <input type="number" placeholder="请输入" step="0.1" min="0" id="nftPrice" />
-            <span class="hint-text">初始价格为联合曲线起始价，每签约一个演员，价格按公式 <code>P = P₀ × 20^(已签约数/发行总量)</code> 自动上涨，早期签约更优惠。</span>
+            <label>固定价格（USDC）</label>
+            <input type="number" placeholder="请输入每个演员的固定价格" step="0.1" min="0" id="nftPriceFixed" />
+            <span class="hint-text">每个演员都以固定不变的价格购买，不会随销量变化。</span>
           </div>
         </div>
+
+        <!-- 曲线价格模式 — 仅价格输入框 -->
+        <div class="pricing-mode-field" id="pricingCurveField">
+          <div class="form-group">
+            <label>初始价格（USDC）</label>
+            <input type="number" placeholder="请输入联合曲线初始价" step="0.1" min="0" id="nftPriceCurve" />
+            <span class="hint-text">初始价格为联合曲线起始价，每签约一个演员，价格按公式 <code>P = P₀ × 5^(已签约数/发行总量)</code> 自动上涨，早期签约更优惠。</span>
+          </div>
+        </div>
+
+
       </div>
 
       <!-- ═══ Fee Information ═══ -->
+
       <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--accent-soft); border-radius: 12px; border: 1px solid var(--accent-glow);">
         <span style="font-size: 14px; font-weight: 500; color: var(--text);">手续费</span>
         <span style="font-size: 14px; font-weight: 700; color: var(--accent);">1 USDC</span>
@@ -992,7 +1053,28 @@
       searchInput.focus();
     });
 
+    // ── Pricing Mode Toggle ──
+    var pricingToggle = document.getElementById('pricingModeToggle');
+
+    if (pricingToggle) {
+      pricingToggle.addEventListener('click', function(e) {
+        var btn = e.target.closest('.pm-btn');
+        if (!btn) return;
+        var mode = btn.dataset.mode;
+        if (mode === _pricingMode) return;
+        _pricingMode = mode;
+        // Update toggle active state
+        pricingToggle.querySelectorAll('.pm-btn').forEach(function(b) {
+          b.classList.toggle('active', b.dataset.mode === mode);
+        });
+        // Show/hide fields
+        document.getElementById('pricingFixedField').classList.toggle('visible', mode === 'fixed');
+        document.getElementById('pricingCurveField').classList.toggle('visible', mode === 'curve');
+      });
+    }
+
     // ── Dev toggle (fixed right edge): switch between "有素材" / "无素材" ──
+
     var _devToggleState = true; // true = 有素材, false = 无素材
     var dtfSwitch = document.getElementById('dtfSwitch');
     var dtfLabel = document.getElementById('dtfLabel');
@@ -1044,16 +1126,28 @@
     initDreamOSSection();
   });
 
+  // ── Pricing Mode (global) ──
+  var _pricingMode = 'fixed'; // 'fixed' or 'curve'
+
   // ── Submit ──
-  var FIXED_NFT_SUPPLY = 50000;
 
   function handleSubmit() {
     var name = document.getElementById('actorName').value.trim();
     var bio = document.getElementById('actorBio').value.trim();
-    var nftPrice = document.getElementById('nftPrice').value;
+
+    // Read price & supply based on pricing mode
+    var pricingMode = _pricingMode || 'fixed';
+    var nftPrice;
+    var nftSupply = parseInt(document.getElementById('nftSupply').value) || 1000;
+    if (pricingMode === 'fixed') {
+      nftPrice = document.getElementById('nftPriceFixed').value;
+    } else {
+      nftPrice = document.getElementById('nftPriceCurve').value;
+    }
+
 
     if (!name) { showToast('请输入演员姓名'); return; }
-    if (!nftPrice) { showToast('请输入初始价格'); return; }
+    if (!nftPrice) { showToast('请输入价格'); return; }
 
     // Get avatar from selected DreamOS material or use default
     var avatar = 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
@@ -1066,9 +1160,9 @@
       desc: bio || '暂无介绍',
       avatar: avatar,
       gender: '—',
-      totalSupply: FIXED_NFT_SUPPLY,
+      totalSupply: nftSupply,
       minted: 0,
-      available: FIXED_NFT_SUPPLY,
+      available: nftSupply,
       holders: 0,
       price: nftPrice + ' USDC',
       reserved: 0,
@@ -1080,6 +1174,7 @@
       collection: '—',
       childActors: []
     };
+
 
     console.log('Actor Data:', actorData);
 
