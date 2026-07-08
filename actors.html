@@ -162,47 +162,73 @@
     }
 
 
-    /* Price row — tiered pricing display */
+    /* ═══ Price Row — Apple Inspired ═══ */
     .mint-price-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
       background: var(--bg);
-      border-radius: 14px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 22px 20px 18px;
     }
-    .mint-price-bar .mpb-top {
+    .mpb-badge-row {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
     }
-    .mint-price-bar .mpb-left {
+    .mpb-pricing-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background: rgba(0,179,136,0.10);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .mpb-pricing-tag .actor-price-help {
+      width: 16px;
+      height: 16px;
+      font-size: 0.55rem;
+    }
+    .mpb-pricing-tag.fixed {
+      background: rgba(101,117,134,0.10);
+      color: var(--text-muted);
+    }
+    /* Big price */
+    .mpb-price-row {
       display: flex;
-      flex-direction: column;
-      gap: 1px;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 24px;
     }
-    .mint-price-bar .mpb-label {
-      font-size: 0.76rem;
+    .mpb-price-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .mpb-price-label {
+      font-size: 0.78rem;
       color: var(--text-muted);
       font-weight: 500;
     }
-    .mint-price-bar .mpb-price {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-    .mint-price-bar .mpb-remain {
-      font-size: 0.78rem;
+    /* Progress text — compact "总发行 X · 剩余 Y" */
+    .mpb-progress {
+      font-size: 0.8rem;
       color: var(--text-muted);
-      text-align: right;
       line-height: 1.4;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
     }
-    .mint-price-bar .mpb-remain strong {
+    .mpb-progress strong {
       color: var(--text);
       font-weight: 700;
     }
+
     /* Slippage setting — slider row */
 
 
@@ -1102,13 +1128,13 @@
       </article>
     </div>
 
-    <!-- 签约价格说明弹窗（支持固定价格 / 曲线价格两种模式） -->
+    <!-- 签约价格说明弹窗 -->
     <div class="price-tooltip-overlay" id="priceTooltip">
       <div class="price-tooltip-box">
 
         <!-- 曲线价格模式 -->
         <div id="priceTooltipCurve">
-          <h3>📈 曲线价格</h3>
+          <h3>曲线价格</h3>
           <p class="price-tip-sub">价格按联合曲线公式随已签约数自动上涨，早期签约更优惠</p>
 
           <div class="price-curve-formula">
@@ -1117,22 +1143,45 @@
 
           <div class="price-curve-wrap">
             <canvas id="priceCurveCanvas" width="500" height="270"></canvas>
-            <div class="price-curve-info">
-              <span>已签约 <strong id="curveMintedLabel">0</strong></span>
-              <span>初始价格 <strong id="curveInitialPrice" style="color:var(--text-muted)">—</strong></span>
-              <span>当前价格 <strong id="curveCurrentPrice" style="color:var(--accent)">—</strong></span>
-            </div>
           </div>
 
           <div class="price-curve-legend">
             <span><span class="dot curve"></span> 价格曲线</span>
             <span><span class="dot current"></span> 当前位置</span>
           </div>
+
+          <!-- 价格详情：六字段统一样式，不刻意强化 -->
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:8px 0 10px;">
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">初始价格</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveInitTooltip">—</div>
+            </div>
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">当前价格</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveCurrTooltip">—</div>
+            </div>
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">尾价</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveEndPriceTooltip">—</div>
+            </div>
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">总发行量</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveTotalSupply">—</div>
+            </div>
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">已签约</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveMintedSupply">—</div>
+            </div>
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">剩余</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveRemainSupply">—</div>
+            </div>
+          </div>
         </div>
 
         <!-- 固定价格模式 -->
         <div id="priceTooltipFixed" style="display:none;">
-          <h3>💰 固定价格</h3>
+          <h3>固定价格</h3>
           <p class="price-tip-sub" style="margin-bottom:16px;">该演员 IP 采用固定价格模式，每个演员都以统一价格签约，销量变化不影响价格。</p>
           <div style="background:var(--bg); border-radius:12px; padding:16px; margin-bottom:12px; text-align:left; font-size:0.85rem; line-height:1.7; color:var(--text-muted);">
             • 发行者设定固定价格后，所有签约均按此价格结算<br/>
@@ -1172,23 +1221,23 @@
           </div>
           <!-- 价格摘要卡片 -->
           <div class="mint-price-bar" id="mintPriceBar">
-            <div class="mpb-top">
-              <div class="mpb-left">
-                <div class="mpb-label">签约价格 <button class="actor-price-help" id="mintPriceHelp" type="button">?</button></div>
-
-
-                <div class="mpb-price" id="mintEstimate">10.0 USDC</div>
-              </div>
-              <div class="mpb-remain" id="mintBalance">剩余 <strong>10</strong> 个</div>
+            <div class="mpb-badge-row">
+              <span class="mpb-pricing-tag" id="mpbPricingTag"><span id="mpbPricingLabel">曲线价格</span><button class="actor-price-help" id="mintPriceHelp" type="button">?</button></span>
+            </div>
+            <div class="mpb-price-row">
+              <span class="mpb-price-value" id="mintEstimate">10.0 USDC</span>
+              <span class="mpb-price-label">签约价格</span>
+            </div>
+            <div class="mpb-progress" id="mpbProgress">
+              <span class="mpb-progress-text">总发行 <strong id="mpbPctTotal">0</strong> &nbsp;·&nbsp; 剩余 <strong id="mpbRemain">0</strong></span>
             </div>
           </div>
 
-          <!-- 滑点保护（固定1%，不显示设置） -->
           <input type="hidden" id="slippageSlider" value="10" />
           <input type="hidden" id="slippageDisplay" value="1.0%" />
 
           <div class="mint-modal-footer">
-            <div class="mint-slippage-notice">已开启 1% 滑点保护，价格超出时将取消交易</div>
+            <div class="mint-slippage-notice" id="slippageNotice">已开启 1% 滑点保护，价格超出时将取消交易</div>
             <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
 
             <button class="mint-btn secondary" type="button" id="mintCancel">取消</button>
@@ -1234,12 +1283,24 @@
 
       const mintModalImage = document.getElementById('mintModalImage');
       const mintModalTag = document.getElementById('mintModalTag');
-      const mintBalance = document.getElementById('mintBalance');
       const mintEstimate = document.getElementById('mintEstimate');
       const mintModalSuccess = document.getElementById('mintModalSuccess');
       const mintModalBody = document.querySelector('.mint-modal-body');
       const viewNftBtn = document.getElementById('viewNftBtn');
       const continueBtn = document.getElementById('continueBtn');
+
+      // ═══ 精简后的定价字段引用 ═══
+      const mpbPricingTag = document.getElementById('mpbPricingTag');
+      const mpbRemain = document.getElementById('mpbRemain');
+      const mpbPctTotal = document.getElementById('mpbPctTotal');
+
+      // ═══ ? 弹窗内详情字段 ═══
+      const curveInitTooltip = document.getElementById('curveInitTooltip');
+      const curveCurrTooltip = document.getElementById('curveCurrTooltip');
+      const curveEndPriceTooltip = document.getElementById('curveEndPriceTooltip');
+      const curveTotalSupply = document.getElementById('curveTotalSupply');
+      const curveMintedSupply = document.getElementById('curveMintedSupply');
+      const curveRemainSupply = document.getElementById('curveRemainSupply');
 
       document.querySelectorAll('.actor-trade-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -1263,7 +1324,6 @@
           const collection = card.dataset.collection || '';
           return name.toLowerCase().includes(q) || collection.toLowerCase().includes(q);
         });
-        // 最多返回6个
         const limited = results.slice(0, 6);
         if (limited.length === 0) {
           searchDropdown.innerHTML = '<div class="search-dropdown-empty">未找到匹配的演员</div>';
@@ -1291,7 +1351,6 @@
         renderSearchDropdown(this.value);
       });
 
-      // 点击页面空白处关闭下拉框
       document.addEventListener('click', function(e) {
         if (!e.target.closest('.search-wrapper')) {
           searchDropdown.classList.remove('show');
@@ -1301,7 +1360,6 @@
       // ═══ Sort functionality ═══
       let currentSort = 'price-asc';
 
-      /** Parse Chinese-formatted number like "2.6万", "1,032.4万", "5.5万" */
       function parseChineseNum(str) {
         if (!str) return 0;
         const s = str.replace(/,/g, '');
@@ -1310,7 +1368,6 @@
         return parseFloat(s) || 0;
       }
 
-      /** Get sort value from a card element based on sort key */
       function getSortVal(card, sortKey) {
         switch (sortKey) {
           case 'price-asc':
@@ -1327,7 +1384,6 @@
 
       function applyCurrentSort() {
         const searchTerm = searchInput.value.toLowerCase().trim();
-        // Filter visible cards
         const visible = Array.from(cards).filter(card => {
           if (!searchTerm) return true;
           const name = card.querySelector('h3').textContent.toLowerCase();
@@ -1335,7 +1391,6 @@
           return name.includes(searchTerm) || desc.includes(searchTerm);
         });
 
-        // Sort visible cards
         const sorted = visible.sort((a, b) => {
           const valA = getSortVal(a, currentSort);
           const valB = getSortVal(b, currentSort);
@@ -1343,10 +1398,8 @@
           return (valA - valB) * multi;
         });
 
-        // Hide all first
         cards.forEach(c => c.style.display = 'none');
 
-        // Append sorted cards back to grid
         const grid = document.querySelector('.grid');
         sorted.forEach(card => {
           card.style.display = 'flex';
@@ -1354,7 +1407,6 @@
         });
       }
 
-      // Sort tag click handler
       document.querySelectorAll('.sort-tag').forEach(tag => {
         tag.addEventListener('click', function() {
           document.querySelectorAll('.sort-tag').forEach(t => t.classList.remove('active'));
@@ -1364,7 +1416,6 @@
         });
       });
 
-      // Apply default sort on page load
       applyCurrentSort();
 
       // ═══ 已售罄 UI 处理 ═══
@@ -1382,9 +1433,7 @@
         if (!actionsEl) return;
         const actorName = card.dataset.actor || card.querySelector('h3')?.textContent || '';
         const priceStr = card.dataset.price || '10 USDC';
-        // 从价格中提取数字部分作为地板价
         const floorPrice = priceStr;
-        // 替换按钮区域
         actionsEl.innerHTML = `
           <div class="card-actions-soldout">
             <div class="floor-price-tag">
@@ -1394,17 +1443,14 @@
             <button class="actor-trade-btn" data-actor="${actorName}">去交易</button>
           </div>
         `;
-        // 绑定去交易按钮事件
         const tradeBtn = actionsEl.querySelector('.actor-trade-btn');
         if (tradeBtn) {
           tradeBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             const name = this.dataset.actor || 'Luna';
-            // 跳转到第三方DEX交易所（链接待定）
             window.open(`https://market.story.fun/trade/${name.toLowerCase()}`, '_blank');
           });
         }
-        // 已售罄不需要修改徽章，保留原有形象ID标签
       }
 
       function closeMintModal() {
@@ -1412,21 +1458,42 @@
         mintModal.setAttribute('aria-hidden', 'true');
       }
 
-      // 在页面加载时初始化已售罄卡片
       initSoldoutUI();
 
       function openMintModal(data) {
         mintModalActorName.textContent = data.name;
         mintModalImage.src = data.image;
         mintModalTag.textContent = data.tag + (data.collection ? ' · ' + data.collection : '');
-        mintBalance.textContent = '剩余 ' + data.amount + ' 个';
         mintEstimate.textContent = data.price;
-        // Reset success state
 
         mintModalSuccess.classList.remove('show');
         mintModalBody.style.display = 'flex';
         mintModal.classList.add('active');
         mintModal.setAttribute('aria-hidden', 'false');
+
+        // ═══ 填充精简信息 ═══
+        const pricing = data.pricing || 'curve';
+        const total = data.total || 0;
+        const minted = data.minted || 0;
+
+        // 只更新标签span的文字，不动DOM结构—?按钮事件绑定不受影响
+        const mpbPricingLabel = document.getElementById('mpbPricingLabel');
+        if (pricing === 'curve') {
+          mpbPricingLabel.textContent = '曲线价格';
+          mpbPricingTag.classList.remove('fixed');
+        } else {
+          mpbPricingLabel.textContent = '固定价格';
+          mpbPricingTag.classList.add('fixed');
+        }
+
+        mpbRemain.textContent = (total - minted).toLocaleString();
+        mpbPctTotal.textContent = total.toLocaleString();
+
+        // 固定价格模式隐藏滑点保护提示
+        const slippageNotice = document.getElementById('slippageNotice');
+        if (slippageNotice) {
+          slippageNotice.style.display = (pricing === 'curve') ? '' : 'none';
+        }
       }
 
       mintButtons.forEach(button => {
@@ -1440,6 +1507,7 @@
           const minted = card.dataset.minted || '0';
           const total = card.dataset.total || '10000';
           const collection = card.dataset.collection || '';
+          const pricing = card.dataset.pricing || 'curve';
           openMintModal({
             name: actorName,
             collection: collection,
@@ -1447,6 +1515,7 @@
             amount: available,
             minted: parseInt(minted),
             total: parseInt(total),
+            pricing: pricing,
             tag: '演员 IP',
             image: imageSrc
           });
@@ -1455,7 +1524,6 @@
 
       cards.forEach(card => {
         card.addEventListener('click', (e) => {
-          // 点击 ? 按钮不跳转详情页
           if (e.target.closest('.actor-price-help')) return;
           const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
           const actorId = card.dataset.actorId || '1';
@@ -1496,7 +1564,6 @@
 
       function updateCardCounts(card) {
         try {
-          // Update price label "剩余" count
           const label = card.querySelector('.actor-price-label');
           if (label) {
             const match = label.textContent.match(/剩余\s*([\d,]+)/);
@@ -1504,7 +1571,6 @@
               const oldAvail = parseInt(match[1].replace(/,/g, '')) || 0;
               const avail = oldAvail - 1;
               if (avail <= 0) {
-                // 售罄：自动转为交易按钮
                 card.dataset.available = '0';
                 applySoldoutCard(card);
               } else {
@@ -1574,17 +1640,14 @@
         if (e.key === 'Escape' && statTooltip.classList.contains('active')) closeStatTooltip();
       });
 
-      // 签约价格 tooltip — 支持固定价格 / 曲线价格两种模式
+      // 签约价格 tooltip
       const priceTooltip = document.getElementById('priceTooltip');
       const priceTooltipClose = document.getElementById('priceTooltipClose');
       const priceTooltipCurve = document.getElementById('priceTooltipCurve');
       const priceTooltipFixed = document.getElementById('priceTooltipFixed');
       const curveCanvas = document.getElementById('priceCurveCanvas');
-      const curveMintedLabel = document.getElementById('curveMintedLabel');
-      const curveInitialPrice = document.getElementById('curveInitialPrice');
-      const curveCurrentPrice = document.getElementById('curveCurrentPrice');
 
-      const BASE = 5; // 曲线底数
+      const BASE = 5;
 
       function drawBondingCurve(initialPrice, totalSupply, minted) {
         const canvas = curveCanvas;
@@ -1599,7 +1662,6 @@
 
         const maxPrice = initialPrice * BASE;
 
-        // Grid lines
         ctx.strokeStyle = '#eef4ff';
         ctx.lineWidth = 0.5;
         for (let i = 0; i <= 5; i++) {
@@ -1608,7 +1670,6 @@
           ctx.moveTo(pad.left, y);
           ctx.lineTo(w - pad.right, y);
           ctx.stroke();
-          // Y label
           const ratio = 1 - i / 5;
           const priceVal = initialPrice * Math.pow(BASE, ratio);
           ctx.fillStyle = '#aab7c9';
@@ -1616,7 +1677,6 @@
           ctx.textAlign = 'right';
           ctx.fillText(priceVal < 1 ? priceVal.toFixed(2) : Math.round(priceVal).toString(), pad.left - 4, y + 3);
         }
-        // X labels
         ctx.fillStyle = '#aab7c9';
         ctx.font = '9px sans-serif';
         ctx.textAlign = 'center';
@@ -1625,12 +1685,10 @@
           const pct = i / 4;
           ctx.fillText(Math.round(pct * totalSupply), x, h - 8);
         }
-        // X axis label
         ctx.fillStyle = '#8b9bb0';
         ctx.font = '9px sans-serif';
         ctx.fillText('已签约数', pad.left + plotW / 2, h - 20);
 
-        // Y axis label
         ctx.save();
         ctx.translate(10, pad.top + plotH / 2);
         ctx.rotate(-Math.PI / 2);
@@ -1640,7 +1698,6 @@
         ctx.fillText('签约价格 (USDC)', 0, 0);
         ctx.restore();
 
-        // Draw bonding curve: price = initialPrice * BASE^(minted/totalSupply)
         ctx.beginPath();
         ctx.strokeStyle = '#e65100';
         ctx.lineWidth = 2.5;
@@ -1655,7 +1712,6 @@
         }
         ctx.stroke();
 
-        // Draw current position dot
         const currentPct = totalSupply > 0 ? Math.min(minted / totalSupply, 1) : 0;
         const curX = pad.left + currentPct * plotW;
         const currentPrice = initialPrice * Math.pow(BASE, currentPct);
@@ -1670,7 +1726,6 @@
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Dashed lines from current position to axes
         ctx.setLineDash([3, 3]);
         ctx.strokeStyle = 'rgba(0,179,136,0.4)';
         ctx.lineWidth = 1;
@@ -1684,15 +1739,18 @@
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Update labels
-        curveMintedLabel.textContent = minted.toLocaleString();
-        curveInitialPrice.textContent = initialPrice.toFixed(2) + ' USDC';
-        curveCurrentPrice.textContent = currentPrice.toFixed(2) + ' USDC';
+        // 更新两行六字段：初始价格 / 当前价格 / 尾价；总发行量 / 已签约 / 剩余
+        var endPrice = initialPrice * BASE;
+        curveInitTooltip.textContent = initialPrice.toFixed(2) + ' USDC';
+        curveCurrTooltip.textContent = currentPrice.toFixed(2) + ' USDC';
+        curveEndPriceTooltip.textContent = endPrice.toFixed(2) + ' USDC';
+        curveTotalSupply.textContent = totalSupply.toLocaleString();
+        curveMintedSupply.textContent = minted.toLocaleString();
+        curveRemainSupply.textContent = (totalSupply - minted).toLocaleString();
       }
 
       function openPriceTooltipForCard(cardElement) {
         var pricing = cardElement.dataset.pricing || 'curve';
-        // Show/hide the appropriate content
         priceTooltipCurve.style.display = pricing === 'curve' ? '' : 'none';
         priceTooltipFixed.style.display = pricing === 'fixed' ? '' : 'none';
 
@@ -1719,7 +1777,6 @@
         priceTooltip.classList.remove('active');
       }
 
-      // 卡片上的 ? 按钮 — 事件委托
       document.querySelector('.grid').addEventListener('click', function(e) {
         var helpBtn = e.target.closest('.actor-price-help');
         if (helpBtn) {
@@ -1727,7 +1784,6 @@
         }
       });
 
-      // 弹窗内的 ? 按钮 — 根据当前演员名字找到卡片
       document.getElementById('mintPriceHelp').addEventListener('click', function(e) {
         e.stopPropagation();
         var actorName = mintModalActorName.textContent;
