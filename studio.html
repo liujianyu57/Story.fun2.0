@@ -1398,6 +1398,30 @@
         </div>
       </div>
 
+      <!-- Upgrade Comparison: Before → After -->
+      <div id="modalLevelComparison" style="background:linear-gradient(135deg,rgba(0,179,136,0.06),rgba(0,179,136,0.03));border-radius:16px;padding:16px;margin-bottom:16px;">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:12px;text-align:center;">升级前后对比</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <!-- Before -->
+          <div style="flex:1;text-align:center;">
+            <div style="font-size:1.2rem;font-weight:800;color:var(--text);" id="modalCompareBeforeLv">Lv1</div>
+            <div style="font-size:0.8rem;font-weight:600;margin-top:2px;color:var(--text);" id="modalCompareBeforeName">群演</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">挖矿系数 ×<span id="modalCompareBeforeCoeff">1.0</span></div>
+          </div>
+          <!-- Arrow -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="font-size:1.5rem;color:var(--accent);font-weight:700;line-height:1;">→</div>
+            <div style="font-size:0.65rem;color:var(--accent);font-weight:600;background:var(--accent-soft);padding:2px 8px;border-radius:999px;white-space:nowrap;">升级</div>
+          </div>
+          <!-- After -->
+          <div style="flex:1;text-align:center;">
+            <div style="font-size:1.2rem;font-weight:800;color:var(--accent);" id="modalCompareAfterLv">Lv2</div>
+            <div style="font-size:0.8rem;font-weight:600;margin-top:2px;color:var(--accent);" id="modalCompareAfterName">配角</div>
+            <div style="font-size:0.75rem;color:var(--accent);margin-top:4px;">挖矿系数 ×<span id="modalCompareAfterCoeff">2.2</span></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Next Level Requirement -->
       <div id="modalLevelRequirement" style="background:rgba(255,159,44,0.06);border-radius:16px;padding:16px;margin-bottom:16px;border:1px dashed rgba(255,159,44,0.2);">
         <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;">下一级升级要求</div>
@@ -2283,6 +2307,20 @@
       document.getElementById('modalLevelName').textContent = currentCfg.name;
       document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
       document.getElementById('modalLevelEnergy').textContent = '⚡ 体力 ' + actor.energy + '/' + actor.energyMax;
+
+      // Update comparison: Before → After
+      const comparisonEl = document.getElementById('modalLevelComparison');
+      if (nextLevel && nextCfg) {
+        comparisonEl.style.display = 'block';
+        document.getElementById('modalCompareBeforeLv').textContent = 'Lv' + actor.level;
+        document.getElementById('modalCompareBeforeName').textContent = currentCfg.name;
+        document.getElementById('modalCompareBeforeCoeff').textContent = currentCfg.miningCoeff;
+        document.getElementById('modalCompareAfterLv').textContent = 'Lv' + nextLevel;
+        document.getElementById('modalCompareAfterName').textContent = nextCfg.name;
+        document.getElementById('modalCompareAfterCoeff').textContent = nextCfg.miningCoeff;
+      } else {
+        comparisonEl.style.display = 'none';
+      }
 
       const sameIpSameLevel = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
       const availableCount = sameIpSameLevel.length;
