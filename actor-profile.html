@@ -237,8 +237,35 @@
       color: var(--accent);
     }
 
+    /* ═══ 短剧标识徽章（与 index.html 保持一致） ═══ */
+    .drama-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .drama-badge.official { background: linear-gradient(135deg, #f59e0b, #f97316); color: #fff; }
+    .drama-badge.partner  { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+    .drama-badge.creator  { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #fff; }
+    .drama-badge.community{ background: rgba(101,117,134,0.12); color: var(--text-muted); }
+    .drama-card {
+      position: relative;
+    }
+    .drama-card .drama-cert-corner {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 2;
+    }
+
     /* ═══ Drama Section — 完全复刻 index.html 卡片样式 ═══ */
     .drama-section {
+
       margin-bottom: 40px;
     }
     .drama-section-header {
@@ -321,6 +348,7 @@
       color: var(--accent);
     }
     .drama-card .drama-body .drama-meta .episode {
+
       background: rgba(15,22,42,0.04);
       color: var(--text-muted);
     }
@@ -1748,6 +1776,18 @@
       if (curveRemainEl) curveRemainEl.textContent = (total - minted).toLocaleString();
     }
 
+    // ═══ 短剧标识配置（与 index.html 保持一致） ═══
+    const BADGE_CONFIG = {
+      official: { cls: 'official', icon: '🏅', label: '官方', fullLabel: '官方短剧' },
+      partner:  { cls: 'partner',  icon: '🤝', label: '合作', fullLabel: '合作方短剧' },
+      creator:  { cls: 'creator',  icon: '✅', label: '认证', fullLabel: '认证创作者短剧' },
+      community:{ cls: 'community',icon: '🌐', label: '社区', fullLabel: '社区短剧' },
+    };
+    function getBadgeHTML(certType, longText) {
+      const cfg = BADGE_CONFIG[certType] || BADGE_CONFIG.community;
+      return `<span class="drama-badge ${cfg.cls}">${cfg.icon} ${longText ? cfg.fullLabel : cfg.label}</span>`;
+    }
+
     // ═══ 豆瓣评分映射 ═══
     var DRAMA_RATINGS = {
       '重生之我在币圈当大佬': '4.7',
@@ -1758,8 +1798,20 @@
       '星际迷航': '4.7'
     };
 
+    // ═══ 短剧标识映射（剧名 → certType） ═══
+    const DRAMA_CERT_MAP = {
+      '重生之我在币圈当大佬': 'official',
+      '江南烟雨': 'community',
+      '梅花烙': 'community',
+      '长安如梦': 'partner',
+      '迷雾之城': 'creator',
+      '星际迷航': 'community',
+    };
+
     // ═══ 渲染参演短剧 — 完全复刻 index.html 卡片结构（含多演员） ═══
+
     function renderDramas(actor) {
+
       var grid = document.getElementById('dramaGrid');
       var empty = document.getElementById('emptyState');
       var count = document.getElementById('dramaCount');
@@ -1807,9 +1859,14 @@
                 '<span class="drama-actor-name">' + aname + '</span>' +
               '</div>';
             });
+            // 获取该短剧的标识
+            var certType = DRAMA_CERT_MAP[d.title] || 'community';
+            var certBadge = getBadgeHTML(certType, false);
             html += '<div class="drama-card" onclick="location.href=\'' + d.link + '\'">' +
               '<img class="drama-cover" src="' + d.cover + '" alt="' + d.title + '" />' +
+              '<div class="drama-cert-corner">' + certBadge + '</div>' +
               '<div class="drama-body">' +
+
                 '<h3>' + d.title + '</h3>' +
                 '<div class="drama-meta"><span class="badge">' + d.category + '</span><span class="episode">全' + d.episodes + '集</span></div>' +
                 '<p>' + d.title + ' — 精彩短剧，不容错过。</p>' +

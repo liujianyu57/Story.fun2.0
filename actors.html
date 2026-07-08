@@ -802,7 +802,7 @@
     .sort-tag:hover { background: rgba(0,179,136,0.2); }
     .sort-tag.active { background: var(--accent); color: white; }
 
-    /* Banner badges */
+    /* Banner badges — bottom row */
     .banner-bottom-badges {
       position: absolute;
       left: 12px;
@@ -814,6 +814,14 @@
       gap: 8px;
       pointer-events: none;
       z-index: 2;
+    }
+    /* 发行标识 — 卡片左上角 */
+    .badge-issuance-corner {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 3;
+      pointer-events: auto;
     }
     .badge {
       padding: 5px 10px;
@@ -899,6 +907,34 @@
       color: var(--text-muted);
       font-size: 0.85rem;
     }
+    /* ═══ 发行标识标签（短剧标识） ═══ */
+    .badge-issuance {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .badge-issuance.official {
+      background: #05DF72;
+      color: #fff;
+    }
+    .badge-issuance.partner {
+      background: #4A9EFF;
+      color: #fff;
+    }
+    .badge-issuance.certified {
+      background: #FF8C00;
+      color: #fff;
+    }
+    .badge-issuance.community {
+      background: linear-gradient(135deg, #94a3b8, #64748b);
+      color: #fff;
+    }
     @media (max-width: 960px) { .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -930,11 +966,14 @@
 
     <div class="grid grid-3">
       <!-- Luna (已售罄示例, 曲线价格) -->
-      <article class="card" data-actor="Luna" data-pricing="curve" data-actor-id="1" data-total="5000" data-minted="5000" data-available="0" data-holders="4900" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="3.3">
+      <article class="card" data-actor="Luna" data-issuance-type="official" data-pricing="curve" data-actor-id="1" data-total="5000" data-minted="5000" data-available="0" data-holders="4900" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="3.3">
 
         <div class="card-banner banner-1">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
+          </div>
+          <div class="badge-issuance-corner">
+            <span class="badge badge-issuance official">⭐ 官方发行</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 storyfun_labs</span>
@@ -963,11 +1002,14 @@
       </article>
 
       <!-- 苏婉清（固定价格） -->
-      <article class="card" data-actor="苏婉清" data-pricing="fixed" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio" data-collection="C002" data-views="24.1万" data-heat="2.5">
+      <article class="card" data-actor="苏婉清" data-issuance-type="official" data-pricing="fixed" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio" data-collection="C002" data-views="24.1万" data-heat="2.5">
 
         <div class="card-banner banner-2">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80" alt="演员 苏婉清" />
+          </div>
+          <div class="badge-issuance-corner">
+            <span class="badge badge-issuance official">⭐ 官方发行</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 wanqing_studio</span>
@@ -996,11 +1038,14 @@
       </article>
 
       <!-- 李云飞（曲线价格） -->
-      <article class="card" data-actor="李云飞" data-pricing="curve" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs" data-collection="C003" data-views="24.7万" data-heat="4.8">
+      <article class="card" data-actor="李云飞" data-issuance-type="partner" data-pricing="curve" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs" data-collection="C003" data-views="24.7万" data-heat="4.8">
 
         <div class="card-banner banner-3">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="演员 李云飞" />
+          </div>
+          <div class="badge-issuance-corner">
+            <span class="badge badge-issuance partner">🤝 合作方发行</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 feige_labs</span>
@@ -1029,11 +1074,14 @@
       </article>
 
       <!-- 林梦瑶（曲线价格） -->
-      <article class="card" data-actor="林梦瑶" data-pricing="curve" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art" data-collection="C004" data-views="27.7万" data-heat="7.2">
+      <article class="card" data-actor="林梦瑶" data-issuance-type="partner" data-pricing="curve" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art" data-collection="C004" data-views="27.7万" data-heat="7.2">
 
         <div class="card-banner" style="background:linear-gradient(135deg, #e6e0ff, #ffffff)">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" alt="演员 林梦瑶" />
+          </div>
+          <div class="badge-issuance-corner">
+            <span class="badge badge-issuance partner">🤝 合作方发行</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 mengyao_art</span>
@@ -1062,11 +1110,14 @@
       </article>
 
       <!-- 赵无极（固定价格） -->
-      <article class="card" data-actor="赵无极" data-pricing="fixed" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art" data-collection="C005" data-views="5.5万" data-heat="3.2">
+      <article class="card" data-actor="赵无极" data-issuance-type="certified" data-pricing="fixed" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art" data-collection="C005" data-views="5.5万" data-heat="3.2">
 
         <div class="card-banner" style="background:linear-gradient(135deg, #ffe4e0, #fffaf8)">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80" alt="演员 赵无极" />
+          </div>
+          <div class="badge-issuance-corner">
+            <span class="badge badge-issuance certified">✓ 认证创作者发行</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 wuji_art</span>
@@ -1095,11 +1146,14 @@
       </article>
 
       <!-- 上官婉儿（固定价格） -->
-      <article class="card" data-actor="上官婉儿" data-pricing="fixed" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio" data-collection="C006" data-views="24.1万" data-heat="4.9">
+      <article class="card" data-actor="上官婉儿" data-issuance-type="community" data-pricing="fixed" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio" data-collection="C006" data-views="24.1万" data-heat="4.9">
 
         <div class="card-banner" style="background:linear-gradient(135deg, #f5e6ff, #fffaff)">
           <div class="actor-avatar">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="演员 上官婉儿" />
+          </div>
+          <div class="badge-issuance-corner">
+            <span class="badge badge-issuance community">🌐 社区发行</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 palace_studio</span>
