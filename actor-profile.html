@@ -1033,28 +1033,53 @@
           <div class="info-value" id="infoStandard">Solana SPL</div>
         </div>
         <div class="nft-info-item">
-          <div class="info-label">发行总量</div>
+          <div class="info-label">定价类型</div>
+          <div class="info-value" id="infoPricingType" style="font-size:0.9rem;">—</div>
+        </div>
+        <div class="nft-info-item">
+          <div class="info-label">总发行量</div>
           <div class="info-value" id="infoTotalSupply">—</div>
+        </div>
+        <div class="nft-info-item">
+          <div class="info-label">已签约</div>
+          <div class="info-value" id="infoMinted">—</div>
+        </div>
+        <div class="nft-info-item">
+          <div class="info-label">剩余</div>
+          <div class="info-value" id="infoRemain">—</div>
         </div>
       </div>
       <!-- 价格联合曲线 -->
       <div class="curve-section" id="curveSection" style="margin-top:18px;padding:18px 20px;background:#fafdff;border:1px solid var(--border);border-radius:16px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <span style="font-size:0.95rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;">
-            📈 价格联合曲线
+            价格联合曲线
           </span>
           <div style="display:flex;gap:12px;font-size:0.72rem;color:var(--text-muted);">
             <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#e65100;"></span> 价格曲线</span>
             <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);"></span> 当前位置</span>
           </div>
         </div>
+        <div class="price-curve-formula" style="margin-bottom:12px;">
+          公式：<code>价格 = 初始价格 × 5<sup>(已签约数 ÷ 发行总量)</sup></code>
+        </div>
         <div style="position:relative;">
           <canvas id="inlineCurveCanvas" style="display:block;width:100%;height:200px;border-radius:10px;background:#fafdff;"></canvas>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:0.85rem;color:var(--text-muted);">
-          <span>已签约 <strong id="inlineMinted" style="color:var(--text);font-weight:700;font-size:0.95rem;">—</strong></span>
-          <span>初始价格 <strong id="inlineInitPrice" style="color:var(--text);font-weight:700;font-size:0.95rem;">—</strong></span>
-          <span>当前价格 <strong id="inlineCurPrice" style="color:var(--accent);font-weight:700;font-size:0.95rem;">—</strong></span>
+        <!-- 曲线价格 3字段网格（仅价格字段） -->
+        <div id="inlineCurveGrid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:12px;">
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">初始价格</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineInitPriceGrid">—</div>
+          </div>
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">当前价格</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineCurPriceGrid">—</div>
+          </div>
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">尾价</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineEndPriceGrid">—</div>
+          </div>
         </div>
       </div>
     </section>
@@ -1138,6 +1163,7 @@
       <div id="priceTooltipCurve">
         <h3>📈 曲线价格</h3>
         <p class="price-tip-sub">价格按联合曲线公式随已签约数自动上涨，早期签约更优惠</p>
+        <p style="font-size:0.72rem; color:var(--text-muted); line-height:1.5; margin:-4px 0 8px; padding:6px 8px; background:rgba(244,67,54,0.06); border-radius:8px;">初始价格不代表平台估值，曲线上涨不代表二级价格上涨，平台不承诺收益。</p>
         <div class="price-curve-formula">
           公式：<code>价格 = 初始价格 × 5<sup>(已签约数 ÷ 发行总量)</sup></code>
         </div>
@@ -1391,24 +1417,11 @@
       var curveInfoEl = curveSection.querySelector('div[style*="margin-top:8px"]');
 
       if (actor.pricing === 'fixed') {
-        // 固定价格：隐藏曲线图、轴标签、图例，显示固定说明
-        curveTitleIcon.innerHTML = '💰 固定价格';
-        curveSection.querySelector('canvas').style.display = 'none';
-        if (curveLegendEl) curveLegendEl.style.display = 'none';
-        if (curveInfoEl) curveInfoEl.style.display = 'none';
-        // 添加或显示固定价格区域
-        var fixedInfo = curveSection.querySelector('.fixed-price-info');
-        if (!fixedInfo) {
-          fixedInfo = document.createElement('div');
-          fixedInfo.className = 'fixed-price-info';
-          fixedInfo.style.cssText = 'padding:6px 0 4px;text-align:center;font-size:0.88rem;color:var(--text-muted);line-height:1.7;';
-          fixedInfo.innerHTML = '该演员 IP 采用固定价格模式，所有签约均按固定价格结算，不随销量变化。';
-          curveSection.insertBefore(fixedInfo, curveSection.querySelector('div[style*="margin-top:8px"]') || curveSection.lastChild);
-        }
-        fixedInfo.style.display = 'block';
+        // 固定价格：整个曲线区域隐藏
+        curveSection.style.display = 'none';
       } else {
         // 曲线价格：显示曲线图
-        curveTitleIcon.innerHTML = '📈 价格联合曲线';
+        curveTitleIcon.innerHTML = '价格联合曲线';
         curveSection.querySelector('canvas').style.display = 'block';
         if (curveLegendEl) curveLegendEl.style.display = 'flex';
         if (curveInfoEl) curveInfoEl.style.display = 'flex';
@@ -1477,15 +1490,33 @@
         ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(cx, cy); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(cx, pad.top + plotH); ctx.lineTo(cx, cy); ctx.stroke();
         ctx.setLineDash([]);
-        document.getElementById('inlineMinted').textContent = minted.toLocaleString();
-        document.getElementById('inlineInitPrice').textContent = initPrice.toFixed(2) + ' USDC';
-        document.getElementById('inlineCurPrice').textContent = cPrice.toFixed(2) + ' USDC';
       }
 
 
       // NFT 信息
       document.getElementById('infoContract').textContent = actor.contract;
+      document.getElementById('infoPricingType').textContent = actor.pricing === 'curve' ? '📈 曲线价格' : '💰 固定价格';
+
+      // ═══ 填充发行信息 grid 字段（总发行量/已签约/剩余） ═══
       document.getElementById('infoTotalSupply').textContent = actor.totalSupply.toLocaleString();
+      document.getElementById('infoMinted').textContent = actor.minted.toLocaleString();
+      document.getElementById('infoRemain').textContent = actor.available.toLocaleString();
+
+      // ═══ 填充曲线价格网格 ═══
+      var curveGrid = document.getElementById('inlineCurveGrid');
+      if (actor.pricing === 'curve') {
+        curveGrid.style.display = 'grid';
+        var _BASE = 5;
+        var _cPrice = parseFloat((actor.price || '10').replace(/[^0-9.]/g, '')) || 10;
+        var _r = actor.totalSupply > 0 ? actor.minted / actor.totalSupply : 0;
+        var _initP = _cPrice / Math.pow(_BASE, _r);
+        var _endP = _initP * _BASE;
+        document.getElementById('inlineInitPriceGrid').textContent = _initP.toFixed(2) + ' USDC';
+        document.getElementById('inlineCurPriceGrid').textContent = _cPrice.toFixed(2) + ' USDC';
+        document.getElementById('inlineEndPriceGrid').textContent = _endP.toFixed(2) + ' USDC';
+      } else {
+        curveGrid.style.display = 'none';
+      }
 
       // ═══ 已售罄状态 ═══
       var isSoldout = actor.available <= 0;
