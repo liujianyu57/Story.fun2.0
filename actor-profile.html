@@ -668,81 +668,74 @@
       text-align: right;
     }
 
+    /* ═══ Price Row — Apple Inspired ═══ */
     .mint-price-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
       background: var(--bg);
-      border-radius: 14px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 22px 20px 18px;
     }
-    .mint-price-bar .mpb-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-    .mint-price-bar .mpb-left {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-    .mint-price-bar .mpb-label {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-    .mint-price-bar .mpb-price {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-    .mint-price-bar .mpb-remain {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      text-align: right;
-      line-height: 1.4;
-    }
-    .mint-price-bar .mpb-remain strong {
-      color: var(--text);
-      font-weight: 700;
-    }
-    .mint-price-bar .mpb-final-row {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-    }
-    .mint-price-bar .mpb-final-row.show { display: flex; }
-    .mint-price-bar .mpb-final-label {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      font-weight: 500;
+    .mpb-badge-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      margin-bottom: 10px;
     }
-    .mint-price-bar .mpb-final-label .step-badge {
+    .mpb-pricing-tag {
       display: inline-flex;
       align-items: center;
       gap: 3px;
-      padding: 2px 8px;
+      padding: 2px 10px;
       border-radius: 999px;
-      background: rgba(245,176,66,0.12);
-      color: #c98900;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      cursor: help;
+      letter-spacing: 0.02em;
+      background: rgba(0,179,136,0.10);
+      color: var(--accent);
+      white-space: nowrap;
     }
-    .mint-price-bar .mpb-final-price {
-      font-size: 1rem;
+    .mpb-pricing-tag .actor-price-help {
+      width: 16px;
+      height: 16px;
+      font-size: 0.55rem;
+    }
+    .mpb-pricing-tag.fixed {
+      background: rgba(101,117,134,0.10);
+      color: var(--text-muted);
+    }
+    /* Big price */
+    .mpb-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .mpb-price-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .mpb-price-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    /* Progress text — compact "总发行 X · 剩余 Y" */
+    .mpb-progress {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .mpb-progress strong {
+      color: var(--text);
       font-weight: 700;
-      color: var(--warning);
-      letter-spacing: -0.01em;
     }
     .mint-slippage-notice {
+
       text-align: center;
       font-size: 0.78rem;
       color: var(--text-muted);
@@ -916,7 +909,7 @@
     }
 
     /* ═══ Price Tooltip (Bonding Curve) ═══ */
-    .price-tooltip-overlay { position: fixed; inset: 0; z-index: 999; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
+    .price-tooltip-overlay { position: fixed; inset: 0; z-index: 10001; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
     .price-tooltip-overlay.active { display: flex; }
     .price-tooltip-box { background: #fff; border-radius: 20px; max-width: 560px; width: 94%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
     .price-tooltip-box h3 { margin: 0 0 4px; font-size: 1.1rem; color: var(--text); }
@@ -1098,17 +1091,19 @@
         </div>
 
         <div class="mint-price-bar" id="mintPriceBar">
-          <div class="mpb-top">
-            <div class="mpb-left">
-              <div class="mpb-label">签约价格 <button class="info-help-btn" id="profilePriceHelp" type="button">?</button></div>
-
-              <div class="mpb-price" id="mintEstimate">—</div>
-            </div>
-            <div class="mpb-remain" id="mintBalance">剩余 <strong>—</strong> 个</div>
+          <div class="mpb-badge-row">
+            <span class="mpb-pricing-tag" id="mpbPricingTag"><span id="mpbPricingLabel">曲线价格</span><button class="info-help-btn" id="profilePriceHelp" type="button">?</button></span>
+          </div>
+          <div class="mpb-price-row">
+            <span class="mpb-price-value" id="mintEstimate">—</span>
+            <span class="mpb-price-label">签约价格</span>
+          </div>
+          <div class="mpb-progress" id="mpbProgress">
+            <span class="mpb-progress-text">总发行 <strong id="mpbPctTotal">0</strong> &nbsp;·&nbsp; 剩余 <strong id="mpbRemain">0</strong></span>
           </div>
         </div>
         <div class="mint-modal-footer">
-          <div class="mint-slippage-notice">已开启 1% 滑点保护，价格超出时将取消交易</div>
+          <div class="mint-slippage-notice" id="slippageNotice">已开启 1% 滑点保护，价格超出时将取消交易</div>
           <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
           <button class="mint-btn secondary" type="button" id="mintCancel">取消</button>
         </div>
@@ -1157,6 +1152,34 @@
         <div class="price-curve-legend">
           <span><span class="dot curve"></span> 价格曲线</span>
           <span><span class="dot current"></span> 当前位置</span>
+        </div>
+
+        <!-- 价格详情：六字段统一样式，不刻意强化 -->
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:8px 0 10px;">
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">初始价格</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveInitTooltip">—</div>
+          </div>
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">当前价格</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveCurrTooltip">—</div>
+          </div>
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">尾价</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveEndPriceTooltip">—</div>
+          </div>
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">总发行量</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveTotalSupply">—</div>
+          </div>
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">已签约</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveMintedSupply">—</div>
+          </div>
+          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+            <div style="color:var(--text-muted); font-size:0.68rem;">剩余</div>
+            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="curveRemainSupply">—</div>
+          </div>
         </div>
       </div>
       <!-- 固定价格模式 -->
@@ -1517,7 +1540,6 @@
       var mintModalActorName = document.getElementById('mintModalActorName');
       var mintModalImage = document.getElementById('mintModalImage');
       var mintModalTag = document.getElementById('mintModalTag');
-      var mintBalance = document.getElementById('mintBalance');
       var mintEstimate = document.getElementById('mintEstimate');
       var mintSoldoutOverlay = document.getElementById('mintSoldoutOverlay');
       var mintConfirm = document.getElementById('mintConfirm');
@@ -1525,11 +1547,33 @@
         mintModalActorName.textContent = actorData.name;
         mintModalImage.src = actorData.avatar;
         mintModalTag.textContent = '演员 IP • ' + (actorData.collection || actorData.id || '—');
-        mintBalance.innerHTML = '剩余 <strong>' + actorData.available.toLocaleString() + '</strong> 个';
-        mintEstimate.textContent = actorData.price;
         mintSoldoutOverlay.style.display = actorData.available <= 0 ? 'flex' : 'none';
         mintModalSuccess.classList.remove('show');
         mintModalBody.style.display = 'flex';
+        // 新定价摘要
+        var tagEl = document.getElementById('mpbPricingTag');
+        var labelEl = document.getElementById('mpbPricingLabel');
+        if (actorData.pricing === 'fixed') {
+          labelEl.textContent = '固定价格';
+          tagEl.classList.add('fixed');
+        } else {
+          labelEl.textContent = '曲线价格';
+          tagEl.classList.remove('fixed');
+        }
+        document.getElementById('mintEstimate').textContent = actorData.price;
+        document.getElementById('mpbPctTotal').textContent = actorData.totalSupply.toLocaleString();
+        document.getElementById('mpbRemain').textContent = actorData.available.toLocaleString();
+        // 滑点提示（仅曲线价格需提示滑点保护）
+        var slipNotice = document.getElementById('slippageNotice');
+        if (actorData.pricing === 'fixed') {
+          slipNotice.style.display = 'none';
+        } else if (actorData.available <= 0) {
+          slipNotice.style.display = 'block';
+          slipNotice.textContent = '该演员 IP 已售罄';
+        } else {
+          slipNotice.style.display = 'block';
+          slipNotice.textContent = '已开启 1% 滑点保护，价格超出时将取消交易';
+        }
         mintModal.classList.add('active');
         mintModal.setAttribute('aria-hidden', 'false');
       }
@@ -1595,13 +1639,12 @@
     function drawTooltipCurve(actor) {
       var canvas = document.getElementById('priceCurveCanvas');
       if (!canvas) return;
+      var w = 500, h = 270;
       var dpr = window.devicePixelRatio || 1;
-      var rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
       var ctx = canvas.getContext('2d');
       ctx.scale(dpr, dpr);
-      var w = rect.width, h = rect.height;
       var total = actor.totalSupply, minted = actor.minted;
       var curPrice = parseFloat((actor.price || '10').replace(/[^0-9.]/g, '')) || 10;
       var ratio = total > 0 ? minted / total : 0;
@@ -1659,15 +1702,24 @@
       document.getElementById('curveMintedLabel').textContent = minted.toLocaleString();
       document.getElementById('curveInitialPrice').textContent = initPrice.toFixed(2) + ' USDC';
       document.getElementById('curveCurrentPrice').textContent = cPrice.toFixed(2) + ' USDC';
+      // 更新六字段定价详情
+      var curveInitEl = document.getElementById('curveInitTooltip');
+      var curveCurrEl = document.getElementById('curveCurrTooltip');
+      var curveEndEl = document.getElementById('curveEndPriceTooltip');
+      var curveTotalEl = document.getElementById('curveTotalSupply');
+      var curveMintedEl = document.getElementById('curveMintedSupply');
+      var curveRemainEl = document.getElementById('curveRemainSupply');
+      if (curveInitEl) curveInitEl.textContent = initPrice.toFixed(2) + ' USDC';
+      if (curveCurrEl) curveCurrEl.textContent = cPrice.toFixed(2) + ' USDC';
+      if (curveEndEl) curveEndEl.textContent = (initPrice * BASE).toFixed(2) + ' USDC';
+      if (curveTotalEl) curveTotalEl.textContent = total.toLocaleString();
+      if (curveMintedEl) curveMintedEl.textContent = minted.toLocaleString();
+      if (curveRemainEl) curveRemainEl.textContent = (total - minted).toLocaleString();
     }
 
-
-    // ═══ 短剧评分数据 ═══
+    // ═══ 豆瓣评分映射 ═══
     var DRAMA_RATINGS = {
-      '重生之我在币圈当大佬': '4.8',
-      '凤骨琉璃': '4.8',
-      '我卸甲后天下大乱了': '4.6',
-      '丞相府今日开饭': '4.7',
+      '重生之我在币圈当大佬': '4.7',
       '江南烟雨': '4.5',
       '梅花烙': '4.3',
       '长安如梦': '4.6',
@@ -1677,7 +1729,6 @@
 
     // ═══ 渲染参演短剧 — 完全复刻 index.html 卡片结构（含多演员） ═══
     function renderDramas(actor) {
-
       var grid = document.getElementById('dramaGrid');
       var empty = document.getElementById('emptyState');
       var count = document.getElementById('dramaCount');
@@ -1696,7 +1747,6 @@
         '赵无极': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
         '上官婉儿': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
       };
-      // 构建「剧名 → 参演演员列表」映射（跨所有演员数据交叉匹配）
       var dramaActorMap = {};
       for (var actorKey in ACTORS_DATA) {
         var ad = ACTORS_DATA[actorKey];
@@ -1717,7 +1767,6 @@
         if (child.dramas && child.dramas.length > 0) {
           totalDramas += child.dramas.length;
           child.dramas.forEach(function(d) {
-            // 获取参演该剧的所有演员
             var allActors = dramaActorMap[d.title] || [actor.name];
             var actorItemsHtml = '';
             allActors.forEach(function(aname) {
@@ -1740,7 +1789,6 @@
                 '</div>' +
               '</div>' +
               '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>' + (actor.heat || '—') + '热度系数</span><span class="drama-rating"><span class="star-icon">★</span> ' + (DRAMA_RATINGS[d.title] || '--') + '</span></div></div>' +
-
             '</div>';
           });
         }
@@ -1760,3 +1808,4 @@
   <script src="load-bottom-nav.js"></script>
 </body>
 </html>
+
