@@ -84,6 +84,9 @@
 .story-header-wrapper .nav-link-1011 {
   color: #00d4a3 !important;
   font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
 .story-header-wrapper .nav-link-1011:hover {
   color: #00e8b3 !important;
@@ -91,6 +94,9 @@
 }
 .story-header-wrapper .nav-link-1011.active {
   color: #00d4a3 !important;
+}
+.story-header-wrapper .nav-link-1011 svg {
+  flex-shrink: 0;
 }
 .story-header-wrapper .header-actions {
   display: flex;
@@ -309,7 +315,7 @@
   // ============================================================
   function buildMobileDrawerHtml() {
     const navItems = [
-      { href: '1011.html', label: '1011' },
+      { href: '1011.html', label: '🔥 1011' },
       { href: 'index.html', label: '剧场' },
       { href: 'actors.html', label: '演员 IP' },
       { href: 'studio.html', label: '经纪工坊' },
@@ -427,7 +433,13 @@
     </div>
 
     <nav class="nav-links">
-      <a class="nav-link nav-link-1011" href="1011.html">1011</a>
+      <a class="nav-link nav-link-1011" href="1011.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:2px;">
+          <path d="M12 2C10.5 6 7 9 7 13c0 2.5 2 5 5 5s5-2.5 5-5c0-4-3.5-7-5-11z" fill="#FF6B35" stroke="#FF6B35" stroke-width="0.5"/>
+          <path d="M12 15c-1.5 0-2.5-1-2.5-2.5 0-1.5 1.5-3.5 2.5-5.5 1 2 2.5 4 2.5 5.5C14.5 14 13.5 15 12 15z" fill="#FFD23F" stroke="none"/>
+        </svg>
+        1011
+      </a>
       <a class="nav-link" href="index.html">剧场</a>
       <a class="nav-link" href="actors.html">演员 IP</a>
       <a class="nav-link" href="studio.html">经纪工坊</a>
