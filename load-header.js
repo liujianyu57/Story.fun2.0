@@ -82,7 +82,7 @@
   border-radius: 999px;
 }
 .story-header-wrapper .nav-link-1011 {
-  color: #60646C !important;
+  color: #ffffff !important;
   font-weight: 800;
 }
 .story-header-wrapper .nav-link-1011:hover {
