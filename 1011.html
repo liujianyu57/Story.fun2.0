@@ -21,6 +21,9 @@
       --radius: 12px;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -30,6 +33,23 @@
       font-family: "PingFang SC", "SF Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* ── 滚动入场动效 ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
 
     /* ── Header 覆写 — 1011 主题 ── */
     .story-header-wrapper {
@@ -264,6 +284,7 @@
        ═══════════════════════════════════════════ */
     .platform-intro {
       padding: 80px 0;
+      scroll-margin-top: 80px;
     }
     .platform-intro-inner {
       max-width: 1440px;
@@ -295,6 +316,7 @@
       content: '';
       position: absolute;
       inset: 0;
+      z-index: 2;
       pointer-events: none;
       background:
         linear-gradient(to top,    var(--bg) 0%,   transparent 35%),
@@ -615,6 +637,7 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      height: 36px;
     }
     .matrix-card-body .card-meta {
       display: flex;
@@ -635,7 +658,7 @@
     .matrix-card-body .card-stats {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       margin-top: 8px;
       font-size: 11px;
       color: var(--muted);
@@ -663,6 +686,15 @@
     }
     .matrix-card-body .card-stats .like-btn:hover {
       color: var(--foreground);
+    }
+    .matrix-card-body .card-stats .card-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      flex-shrink: 0;
     }
 
     @media (max-width: 1024px) {
@@ -1328,8 +1360,8 @@
     }
     .video-overlay-inner {
       position: relative;
-      width: 90%;
-      max-width: 960px;
+      width: 95%;
+      max-width: 1200px;
       border-radius: 16px;
       overflow: hidden;
       background: #000;
@@ -1456,13 +1488,13 @@
             </svg>
             播放预告片
           </button>
-          <a class="hero-btn hero-btn-secondary" href="#trailer">
+          <a class="hero-btn hero-btn-secondary" href="#platform">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 16v-4"/>
-              <path d="M12 8h.01"/>
+              <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/>
+              <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/>
+              <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>
             </svg>
-            了解更多
+            进入叙事
           </a>
         </div>
       </div>
@@ -1472,7 +1504,7 @@
   <!-- ═══════════════════════════════════════════
        平台介绍 — 第二屏
        ═══════════════════════════════════════════ -->
-  <section class="platform-intro" id="platform">
+  <section class="platform-intro reveal" id="platform">
     <div class="platform-intro-inner">
       <div class="platform-intro-left">
         <div class="platform-badge">
@@ -1569,7 +1601,7 @@
   <!-- ═══════════════════════════════════════════
        叙事矩阵 — 第三屏
        ═══════════════════════════════════════════ -->
-  <section class="matrix" id="narratives">
+  <section class="matrix reveal" id="narratives">
     <div class="matrix-section-label">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/>
@@ -1588,7 +1620,7 @@
     </div>
 
     <div class="matrix-grid">
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=链之纪：凛冬&cover=cover-pyramid.png&author=凛冬编年史'">
         <div class="matrix-card-cover">
           <img src="image/cover-pyramid.png" alt="链之纪：凛冬" />
           <div class="card-gradient"></div>
@@ -1598,11 +1630,11 @@
         <div class="matrix-card-body">
           <h3>链之纪：凛冬</h3>
           <p class="card-desc">以 1011 为起点的架空史诗——把这场大爆仓写成一个时代的凛冬。</p>
-          <div class="card-meta"><span class="author">@凛冬编年史</span><span class="time">8 小时前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>2,410,882</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>318,204</button></div>
+          <div class="card-meta"><span class="author">@凛冬编年史</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>2,410,882</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>318,204</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.8</span></div>
         </div>
       </article>
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=160万个名字&cover=cover-names.png&author=冰墙纪事'">
         <div class="matrix-card-cover">
           <img src="image/cover-names.png" alt="160 万个名字" />
           <div class="card-gradient"></div>
@@ -1612,11 +1644,11 @@
         <div class="matrix-card-body">
           <h3>160 万个名字</h3>
           <p class="card-desc">把 160 万个爆仓钱包地址刻进冰墙，逐一念出他们的故事。</p>
-          <div class="card-meta"><span class="author">@冰墙纪事</span><span class="time">5 天前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,533,000</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>402,117</button></div>
+          <div class="card-meta"><span class="author">@冰墙纪事</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,533,000</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>402,117</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.6</span></div>
         </div>
       </article>
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=金字塔的阴影&cover=cover-pyramid.png&author=链上福尔摩斯'">
         <div class="matrix-card-cover">
           <img src="image/cover-pyramid.png" alt="金字塔的阴影" />
           <div class="card-gradient"></div>
@@ -1626,11 +1658,11 @@
         <div class="matrix-card-body">
           <h3>金字塔的阴影</h3>
           <p class="card-desc">1011 之后，大鹏依旧矗立，阴影比从前更长。</p>
-          <div class="card-meta"><span class="author">@链上福尔摩斯</span><span class="time">1 天前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,204,668</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>277,913</button></div>
+          <div class="card-meta"><span class="author">@链上福尔摩斯</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,204,668</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>277,913</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.5</span></div>
         </div>
       </article>
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=归零那夜&cover=cover-zero-night.png&author=深夜梭哈的老王'">
         <div class="matrix-card-cover">
           <img src="image/cover-zero-night.png" alt="归零那夜" />
           <div class="card-gradient"></div>
@@ -1640,11 +1672,11 @@
         <div class="matrix-card-body">
           <h3>归零那夜</h3>
           <p class="card-desc">一个普通人在 2025.10.11 凌晨，眼睁睁看着账户被清零的三小时。</p>
-          <div class="card-meta"><span class="author">@深夜梭哈的老王</span><span class="time">3 天前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,092,553</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>204,881</button></div>
+          <div class="card-meta"><span class="author">@深夜梭哈的老王</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,092,553</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>204,881</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.7</span></div>
         </div>
       </article>
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=烛火手记&cover=cover-candle.png&author=夜行烛火'">
         <div class="matrix-card-cover">
           <img src="image/cover-candle.png" alt="烛火手记" />
           <div class="card-gradient"></div>
@@ -1654,11 +1686,11 @@
         <div class="matrix-card-body">
           <h3>烛火手记</h3>
           <p class="card-desc">第一人称手记：1011 那夜之后，我为什么选择举起这支烛火。</p>
-          <div class="card-meta"><span class="author">@夜行烛火</span><span class="time">6 天前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>988,760</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>233,050</button></div>
+          <div class="card-meta"><span class="author">@夜行烛火</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>988,760</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>233,050</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.4</span></div>
         </div>
       </article>
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=渊流堡的幸存者&cover=cover-survivor.png&author=HyperliquidMax'">
         <div class="matrix-card-cover">
           <img src="image/cover-survivor.png" alt="渊流堡的幸存者" />
           <div class="card-gradient"></div>
@@ -1668,11 +1700,11 @@
         <div class="matrix-card-body">
           <h3>渊流堡的幸存者</h3>
           <p class="card-desc">1011 全场爆仓，唯有渊流堡毫发无伤——幸存者的愧疚与追问。</p>
-          <div class="card-meta"><span class="author">@HyperliquidMax</span><span class="time">2 天前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>876,420</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>151,309</button></div>
+          <div class="card-meta"><span class="author">@HyperliquidMax</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>876,420</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>151,309</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.3</span></div>
         </div>
       </article>
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=最后一笔梭哈&cover=cover-allin.png&author=一把梭的阿May'">
         <div class="matrix-card-cover">
           <img src="image/cover-allin.png" alt="最后一笔梭哈" />
           <div class="card-gradient"></div>
@@ -1682,11 +1714,11 @@
         <div class="matrix-card-body">
           <h3>最后一笔梭哈</h3>
           <p class="card-desc">10 月 11 日，按下确认键前的最后 10 秒——一个赌徒的心理独白。</p>
-          <div class="card-meta"><span class="author">@一把梭的阿May</span><span class="time">12 小时前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>643,201</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>98,442</button></div>
+          <div class="card-meta"><span class="author">@一把梭的阿May</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>643,201</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>98,442</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.2</span></div>
         </div>
       </article>
-      <article class="matrix-card">
+      <article class="matrix-card" onclick="location.href='drama-detail.html?title=我还活着&cover=cover-zero-night.png&author=幸存者联盟'">
         <div class="matrix-card-cover">
           <img src="image/cover-zero-night.png" alt="我还活着" />
           <div class="card-gradient"></div>
@@ -1696,8 +1728,8 @@
         <div class="matrix-card-body">
           <h3>我还活着</h3>
           <p class="card-desc">爆仓后在 Telegram 群里互相确认损失的那一夜，有人发出这三个字。</p>
-          <div class="card-meta"><span class="author">@幸存者联盟</span><span class="time">4 天前</span></div>
-          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>512,097</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>121,660</button></div>
+          <div class="card-meta"><span class="author">@幸存者联盟</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>512,097</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>121,660</button><span class="card-rating"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.5</span></div>
         </div>
       </article>
     </div>
@@ -1706,7 +1738,7 @@
   <!-- ═══════════════════════════════════════════
        角色图谱 — 第四屏
        ═══════════════════════════════════════════ -->
-  <section class="roles" id="roles">
+  <section class="roles reveal" id="roles">
     <div class="roles-inner">
       <div class="roles-section-label">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;">
@@ -1726,7 +1758,12 @@
 
       <div class="roles-grid">
         <div class="roles-list">
-          <button class="roles-list-item active">
+          <button class="roles-list-item active"
+            data-image="cover-pyramid.png"
+            data-label="关键角色"
+            data-name="大鹏 · 金字塔"
+            data-sub="始终矗立的庞然阴影"
+            data-desc="1011 中毫发无伤、甚至受益的一方。它未必真的作恶，但它的沉默与体量本身，就是最大的戏剧张力。">
             <span class="roles-list-icon active-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/>
@@ -1745,7 +1782,12 @@
               <div class="roles-list-sub">始终矗立的庞然阴影</div>
             </div>
           </button>
-          <button class="roles-list-item">
+          <button class="roles-list-item"
+            data-image="cover-names.png"
+            data-label="受害者"
+            data-name="160 万爆仓者"
+            data-sub="被清算的普通人"
+            data-desc="一夜之间被清零的 160 万个地址背后，是 160 万个真实的人。他们不是数字，是这场寒冬的代价。">
             <span class="roles-list-icon inactive-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12.409 5.824c-.702.792-1.15 1.496-1.415 2.166l2.153 2.156a.5.5 0 0 1 0 .707l-2.293 2.293a.5.5 0 0 0 0 .707L12 15"/>
@@ -1758,7 +1800,12 @@
               <div class="roles-list-sub">被清算的普通人</div>
             </div>
           </button>
-          <button class="roles-list-item">
+          <button class="roles-list-item"
+            data-image="cover-survivor.png"
+            data-label="幸存者"
+            data-name="渊流堡"
+            data-sub="毫发无伤的堡垒"
+            data-desc="全场爆仓潮中唯一全身而退的神秘实体。是运气、是远见，还是另有隐情？幸存者的沉默比损失更令人不安。">
             <span class="roles-list-icon inactive-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
@@ -1770,7 +1817,12 @@
               <div class="roles-list-sub">毫发无伤的堡垒</div>
             </div>
           </button>
-          <button class="roles-list-item">
+          <button class="roles-list-item"
+            data-image="cover-candle.png"
+            data-label="视角者"
+            data-name="举烛者"
+            data-sub="记录并讲述的人"
+            data-desc="他们选择把这场事件记录下来，以文字、影像或代码。举烛者不是旁观者——他们让这场凛冬不被遗忘。">
             <span class="roles-list-icon inactive-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/>
@@ -1786,15 +1838,15 @@
 
         <div class="roles-detail-card">
           <div class="roles-detail-cover">
-            <img src="image/cover-pyramid.png" alt="大鹏 · 金字塔" />
+            <img id="rolesDetailImg" src="image/cover-pyramid.png" alt="大鹏 · 金字塔" />
             <div class="cover-gradient"></div>
             <div class="roles-detail-info">
-              <div class="info-label">关键角色</div>
-              <h3>大鹏 · 金字塔</h3>
-              <div class="info-sub">始终矗立的庞然阴影</div>
+              <div id="rolesDetailLabel" class="info-label">关键角色</div>
+              <h3 id="rolesDetailName">大鹏 · 金字塔</h3>
+              <div id="rolesDetailSub" class="info-sub">始终矗立的庞然阴影</div>
             </div>
           </div>
-          <div class="roles-detail-body">
+          <div id="rolesDetailDesc" class="roles-detail-body">
             1011 中毫发无伤、甚至受益的一方。它未必真的作恶，但它的沉默与体量本身，就是最大的戏剧张力。
           </div>
         </div>
@@ -1805,7 +1857,7 @@
   <!-- ═══════════════════════════════════════════
        定调之作 — 第五屏 (预告片)
        ═══════════════════════════════════════════ -->
-  <section class="trailer" id="trailer">
+  <section class="trailer reveal" id="trailer">
     <div class="trailer-inner">
       <div class="trailer-label">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;">
@@ -1878,7 +1930,7 @@
   <!-- ═══════════════════════════════════════════
        公开征集 — 第六屏
        ═══════════════════════════════════════════ -->
-  <section class="submit" id="submit">
+  <section class="submit reveal" id="submit">
     <div class="submit-inner split">
       <div>
         <div class="submit-label">
@@ -1910,7 +1962,7 @@
             <label for="submitLogline">一句话故事 (Logline)</label>
             <textarea id="submitLogline" rows="3" placeholder="用一句话讲出你在 1011 那一夜的故事……"></textarea>
           </div>
-          <button class="submit-btn" disabled>
+          <button type="button" class="submit-btn" onclick="location.href='publish.html'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>
             提交叙事
           </button>
@@ -1922,7 +1974,7 @@
   <!-- ═══════════════════════════════════════════
        底部寄语 — 火种
        ═══════════════════════════════════════════ -->
-  <section class="epilogue">
+  <section class="epilogue reveal">
     <div class="epilogue-inner">
       <p class="epilogue-text">
         每一个被认真讲述的真实事件，都不会被遗忘。
@@ -1950,7 +2002,7 @@
           <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
-      <video id="trailerVideo" controls autoplay playsinline>
+      <video id="trailerVideo" controls playsinline>
         <source src="video/打斗视频.mp4" type="video/mp4">
         您的浏览器不支持视频播放。
       </video>
@@ -1966,6 +2018,18 @@
 
   <script>
     (function() {
+      // ── 滚动入场动效：Intersection Observer ──
+      var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        revealObserver.observe(el);
+      });
+
       var overlay = document.getElementById('videoOverlay');
       var video = document.getElementById('trailerVideo');
       var closeBtn = document.getElementById('videoCloseBtn');
@@ -2011,6 +2075,43 @@
         if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) {
           closeVideo();
         }
+      });
+
+      // ── 角色 Tab 切换 ──
+      var rolesDetailImg = document.getElementById('rolesDetailImg');
+      var rolesDetailLabel = document.getElementById('rolesDetailLabel');
+      var rolesDetailName = document.getElementById('rolesDetailName');
+      var rolesDetailSub = document.getElementById('rolesDetailSub');
+      var rolesDetailDesc = document.getElementById('rolesDetailDesc');
+
+      document.querySelectorAll('.roles-list-item').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          // 移除所有 active
+          document.querySelectorAll('.roles-list-item').forEach(function(item) {
+            item.classList.remove('active');
+            var icon = item.querySelector('.roles-list-icon');
+            if (icon) {
+              icon.classList.remove('active-icon');
+              icon.classList.add('inactive-icon');
+            }
+          });
+
+          // 当前按钮 active
+          btn.classList.add('active');
+          var activeIcon = btn.querySelector('.roles-list-icon');
+          if (activeIcon) {
+            activeIcon.classList.remove('inactive-icon');
+            activeIcon.classList.add('active-icon');
+          }
+
+          // 更新详情卡
+          rolesDetailImg.src = 'image/' + btn.getAttribute('data-image');
+          rolesDetailImg.alt = btn.getAttribute('data-name');
+          rolesDetailLabel.textContent = btn.getAttribute('data-label');
+          rolesDetailName.textContent = btn.getAttribute('data-name');
+          rolesDetailSub.textContent = btn.getAttribute('data-sub');
+          rolesDetailDesc.textContent = btn.getAttribute('data-desc');
+        });
       });
     })();
   </script>
