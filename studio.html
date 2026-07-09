@@ -146,6 +146,27 @@
       color: var(--accent);
     }
 
+    /* ===== Trust 风险标签 ===== */
+    .trust-risk-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(245, 158, 11, 0.12);
+      color: #d97706;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+    .trust-risk-badge:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
     /* ===== Section Header ===== */
     .section-header {
       display: flex;
@@ -1281,7 +1302,7 @@
     <!-- ===== Page Header ===== -->
     <div class="page-header">
       <div class="page-header-left">
-        <h1>经纪工坊</h1>
+        <h1>经纪工坊 <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;">⚠️ 风险账户</span></h1>
         <p>管理你的演员，派遣产生收益。</p>
       </div>
       <div class="page-header-actions">
@@ -2497,7 +2518,29 @@
     }
 
     // ============================================================
+    //  Trust 风险提示
+    // ============================================================
+    function openUserTrustTooltip() {
+      openStatTooltip('⚠️ 风险账户', '该账户信任系数异常，挖矿权重将受影响。');
+    }
+
+    // ============================================================
     //  ⏰ 体力 Tick 模拟
+    function openStatTooltip(title, desc) {
+      // 复用已有 modal 实现——创建临时 stat tooltip 覆盖层
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div class="modal-card" style="max-width:400px;text-align:center;padding:28px 24px 22px;">' +
+        '<h2 style="margin:0 0 8px;font-size:1.1rem;text-align:center;">' + title + '</h2>' +
+        '<p class="modal-sub" style="margin:0 0 18px;font-size:0.9rem;line-height:1.7;color:var(--text-muted);">' + desc + '</p>' +
+        '<button class="modal-btn cancel" onclick="this.closest(\'.modal-overlay\').remove()" style="padding:8px 24px;font-size:0.88rem;width:auto;display:inline-flex;">知道了</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) this.remove();
+      });
+    }
     //  每 1 秒消耗/恢复 1 点体力
     // ============================================================
     function energyTick() {
@@ -2530,6 +2573,10 @@
     //  页面初始化
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
+      // 模拟用户 Trust 异常，显示风险提示标签
+      var trustBadge = document.getElementById('trustRiskBadge');
+      if (trustBadge) trustBadge.style.display = 'inline-flex';
+      
       renderAll();
 
       // 启动体力模拟（每 1 秒 = 1 点体力）

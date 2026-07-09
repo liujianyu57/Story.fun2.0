@@ -135,6 +135,11 @@
       background: rgba(239,68,68,0.08);
       color: #dc2626;
     }
+    .actor-hero-info .actor-tags .tag.trust-risk {
+      background: rgba(245, 158, 11, 0.12);
+      color: #d97706;
+      cursor: help;
+    }
     .actor-hero-info .actor-desc {
       margin: 0;
       color: var(--text-muted);
@@ -1396,7 +1401,7 @@
         ]
       },
       '李云飞': {
-        id: 'C003', name: '李云飞', pricing: 'curve', issuanceType: 'partner',
+        id: 'C003', name: '李云飞', pricing: 'curve', issuanceType: 'partner', trustRisk: true,
 
         desc: '身手矫健的侠客，性格豪爽仗义。自幼习武，练就一身好本领，行走江湖路见不平拔刀相助。',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
@@ -1522,6 +1527,20 @@
       document.getElementById('actorCreatorTag').textContent = '发行者 ' + (actor.creator || '—');
       document.getElementById('actorCollectionTag').textContent = '演员 IP ' + (actor.collection || actor.id || '—');
       document.getElementById('actorDesc').textContent = actor.desc;
+
+      // ═══ Trust 风险标签 ═══
+      if (actor.trustRisk) {
+        var tagsContainer = document.getElementById('actorTags');
+        var riskTag = document.createElement('span');
+        riskTag.className = 'tag trust-risk';
+        riskTag.textContent = '⚠️ 风险IP';
+        riskTag.title = '点击查看详情';
+        riskTag.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openStatTooltip('⚠️ 风险IP', '该演员IP信任系数异常，挖矿权重将受影响。');
+        });
+        tagsContainer.appendChild(riskTag);
+      }
 
       // ═══ 发行标识（与 actors.html 保持一致） ═══
       const ISSUANCE_CONFIG = {
