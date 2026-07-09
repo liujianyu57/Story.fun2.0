@@ -964,6 +964,72 @@
     .stat-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; background: rgba(15, 22, 42, 0.05); color: var(--text); border: none; cursor: pointer; border-radius: 999px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
     .stat-tooltip-box .button-secondary:hover { background: rgba(0,179,136,0.08); color: var(--accent); }
 
+    /* ═══ Treasury / 演员IP金库 — 极简重构 ═══ */
+    .treasury-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px 20px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 32px;
+    }
+    .treasury-panel .treasury-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .treasury-panel .treasury-header h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+    }
+    .treasury-panel .treasury-header h3 span { margin-right: 6px; }
+    /* 金额行 — 数字为主，标签辅助 */
+    .treasury-amount-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+      padding: 18px 0 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .treasury-amount-row .ta-value {
+      font-size: 2rem;
+      font-weight: 750;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .treasury-amount-row .ta-value .usdc { color: var(--accent); font-weight: 700; }
+    /* 资金源标签 — 超紧凑一行 */
+    .treasury-tags {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 12px 0 0;
+    }
+    .treasury-tags .tt-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .treasury-tags .tt-item .tt-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+    .treasury-tags .tt-item .tt-dot.green { background: var(--accent); }
+    .treasury-tags .tt-item .tt-dot.orange { background: #f59e0b; }
+    .treasury-tags .tt-item .tt-pct {
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
     /* Info help button */
     .info-help-btn {
       display: inline-flex;
@@ -1109,6 +1175,21 @@
             <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineEndPriceGrid">—</div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ═══ 演员 IP 金库 ═══ -->
+    <section class="treasury-panel" id="treasuryPanel">
+      <div class="treasury-header">
+        <h3><span>🏦</span> 演员 IP 金库</h3>
+        <button class="info-help-btn" id="treasuryHelp" type="button" aria-label="金库说明">?</button>
+      </div>
+      <div class="treasury-amount-row">
+        <div class="ta-value"><span id="treasuryAmount">—</span> <span class="usdc">USDC</span></div>
+      </div>
+      <div class="treasury-tags">
+        <span class="tt-item"><span class="tt-dot green"></span> 签约收入 · 沉淀 <span class="tt-pct">30%</span></span>
+        <span class="tt-item"><span class="tt-dot orange"></span> 二级版税 · 沉淀 <span class="tt-pct">30%</span></span>
       </div>
     </section>
 
@@ -1281,7 +1362,7 @@
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 900,
         price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '24.1万', heat: '2.5x',
+        views: '24.1万', heat: '2.5x', treasuryUSDC: '124,567.89',
         creator: 'wanqing_studio', collection: 'C002',
         childActors: [
           { childId: '#C-001', name: '陆小曼', holder: '0x8f3A...bE12', dramas: [
@@ -1303,7 +1384,7 @@
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 8000, minted: 500, available: 7500, holders: 450,
         price: '8 USDC', reserved: 500, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '24.7万', heat: '4.8x',
+        views: '24.7万', heat: '4.8x', treasuryUSDC: '89,230.45',
         creator: 'feige_labs', collection: 'C003',
         childActors: [
           { childId: '#C-004', name: '赵刚', holder: '0x1aE4...fB77', dramas: [
@@ -1321,7 +1402,7 @@
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 800,
         price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '27.7万', heat: '7.2x',
+        views: '27.7万', heat: '7.2x', treasuryUSDC: '256,789.12',
         creator: 'mengyao_art', collection: 'C004',
         childActors: [
           { childId: '#C-006', name: '白露', holder: '0x5fB8...2dC4', dramas: [
@@ -1339,7 +1420,7 @@
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 6000, minted: 500, available: 5500, holders: 300,
         price: '15 USDC', reserved: 500, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        creator: 'wuji_art', collection: 'C005',
+        creator: 'wuji_art', collection: 'C005', treasuryUSDC: '45,678.00',
         childActors: [
           { childId: '#C-008', name: '李承钰', holder: '0x3dE7...8aC2', dramas: [
             { title: '长安如梦', role: '太子·李承钰', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '10%', category: '古装', link: 'drama-detail.html' },
@@ -1353,7 +1434,7 @@
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
         totalSupply: 12000, minted: 2000, available: 10000, holders: 1500,
         price: '12 USDC', reserved: 2000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        creator: 'palace_studio', collection: 'C006',
+        creator: 'palace_studio', collection: 'C006', treasuryUSDC: '198,345.67',
         childActors: [
           { childId: '#C-009', name: '周明远', holder: '0x6cF4...1bD8', dramas: [
             { title: '江南烟雨', role: '知府·周明远', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '4%', category: '古装', link: 'drama-detail.html' },
@@ -1367,7 +1448,7 @@
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
         totalSupply: 5000, minted: 5000, available: 0, holders: 4900,
         price: '10 USDC', reserved: 0, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '1.2万', heat: '3.3x',
+        views: '1.2万', heat: '3.3x', treasuryUSDC: '12,345.67',
         creator: 'storyfun_labs', collection: 'C001',
         childActors: [
           { childId: '#C-010', name: 'AI 助手', holder: '0xdE4a...7cF1', dramas: [
@@ -1529,6 +1610,24 @@
       document.getElementById('infoTotalSupply').textContent = actor.totalSupply.toLocaleString();
       document.getElementById('infoMinted').textContent = actor.minted.toLocaleString();
       document.getElementById('infoRemain').textContent = actor.available.toLocaleString();
+
+      // ═══ 金库填充 ═══
+      if (actor.treasuryUSDC) {
+        document.getElementById('treasuryAmount').textContent = actor.treasuryUSDC;
+      }
+
+      // ═══ 金库 tooltip ═══
+      var treasuryHelp = document.getElementById('treasuryHelp');
+      if (treasuryHelp) {
+        treasuryHelp.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openStatTooltip('🏦 演员 IP 金库',
+            '签约收入的 30% 自动沉淀至演员 IP 金库，用于支撑 IP 生态的长期发展。\n' +
+            '二级市场版税收入的 30% 同样归入金库，形成持续资金蓄水池。\n\n' +
+            'V1 版本金库仅提供数据展示，暂不开放分配。'
+          );
+        });
+      }
 
       // ═══ 填充曲线价格网格 ═══
       var curveGrid = document.getElementById('inlineCurveGrid');
