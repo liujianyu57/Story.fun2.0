@@ -55,9 +55,14 @@
     }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-    @media (max-width: 960px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .metrics-grid { grid-template-columns: 1fr; } }
+    .metrics-group { margin-bottom: 20px; }
+    .metrics-group-header { font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.03em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .metrics-group-header::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+    .metrics-group-grid { display: grid; gap: 16px; }
+    .metrics-group-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .metrics-group-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 720px) { .metrics-group-grid.cols-3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .metrics-group-grid.cols-2, .metrics-group-grid.cols-3 { grid-template-columns: 1fr; } }
     .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow-sm); }
     .metric-label { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
     .metric-value { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
@@ -159,31 +164,45 @@
     </div>
 
     <!-- ===== 核心指标 ===== -->
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-label">累计 STORY</div>
-        <div class="metric-value green" id="mCumulativeStory">12,500</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">累计 USDC</div>
-        <div class="metric-value green" id="mCumulativeUsdc">3,580.00</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-card-actions">
-          <div class="metric-value-wrap">
-            <div class="metric-label">可领取 STORY</div>
-            <div class="metric-value gold" id="mClaimableStory">2,350</div>
-          </div>
-          <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn">领取</button>
+    <div class="metrics-group">
+      <div class="metrics-group-header">累计收益</div>
+      <div class="metrics-group-grid cols-2">
+        <div class="metric-card">
+          <div class="metric-label">累计 STORY</div>
+          <div class="metric-value green" id="mCumulativeStory">12,500</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">累计 USDC</div>
+          <div class="metric-value green" id="mCumulativeUsdc">3,580.00</div>
         </div>
       </div>
-      <div class="metric-card">
-        <div class="metric-card-actions">
-          <div class="metric-value-wrap">
-            <div class="metric-label">可领取 USDC</div>
-            <div class="metric-value gold" id="mClaimableUsdc">895.50</div>
+    </div>
+
+    <div class="metrics-group">
+      <div class="metrics-group-header">待处理收益</div>
+      <div class="metrics-group-grid cols-3">
+        <div class="metric-card">
+          <div class="metric-label">结算中 STORY</div>
+          <div class="metric-value gold" id="mPendingStory">1,980</div>
+          <div class="metric-sub">结算中，到账后可领取</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-actions">
+            <div class="metric-value-wrap">
+              <div class="metric-label">可领取 STORY</div>
+              <div class="metric-value gold" id="mClaimableStory">2,350</div>
+            </div>
+            <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn">领取</button>
           </div>
-          <button class="btn-sm" onclick="claimUsdc()" id="claimUsdcBtn">领取</button>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-actions">
+            <div class="metric-value-wrap">
+              <div class="metric-label">可领取 USDC</div>
+              <div class="metric-value gold" id="mClaimableUsdc">895.50</div>
+            </div>
+            <button class="btn-sm" onclick="claimUsdc()" id="claimUsdcBtn">领取</button>
+          </div>
         </div>
       </div>
     </div>
@@ -264,7 +283,7 @@
     const STORY_PRICE = 0.10;
     let currentFilter = 'all';
 
-    const WALLET = { storyEarned: 12500, storyClaimable: 2350, usdcEarned: 3580.00, usdcClaimable: 895.50 };
+    const WALLET = { storyEarned: 12500, storyClaimable: 2350, pendingStory: 1980, usdcEarned: 3580.00, usdcClaimable: 895.50 };
 
     // ===== STORY 流水数据生成 =====
     function generateStoryFlow() {
@@ -334,6 +353,7 @@
       document.getElementById('mCumulativeStory').textContent=WALLET.storyEarned.toLocaleString();
       document.getElementById('mCumulativeUsdc').textContent=WALLET.usdcEarned.toFixed(2);
       document.getElementById('mClaimableStory').textContent=WALLET.storyClaimable.toLocaleString();
+      document.getElementById('mPendingStory').textContent=WALLET.pendingStory.toLocaleString();
       document.getElementById('mClaimableUsdc').textContent=WALLET.usdcClaimable.toFixed(2);
     }
 
