@@ -81,6 +81,17 @@
   color: #00BBA7;
   border-radius: 999px;
 }
+.story-header-wrapper .nav-link-1011 {
+  color: #00d4a3 !important;
+  font-weight: 800;
+}
+.story-header-wrapper .nav-link-1011:hover {
+  color: #00e8b3 !important;
+  background: rgba(0, 212, 163, 0.10);
+}
+.story-header-wrapper .nav-link-1011.active {
+  color: #00d4a3 !important;
+}
 .story-header-wrapper .header-actions {
   display: flex;
   align-items: center;
@@ -298,6 +309,7 @@
   // ============================================================
   function buildMobileDrawerHtml() {
     const navItems = [
+      { href: '1011.html', label: '1011' },
       { href: 'index.html', label: '剧场' },
       { href: 'actors.html', label: '演员 IP' },
       { href: 'studio.html', label: '经纪工坊' },
@@ -415,6 +427,7 @@
     </div>
 
     <nav class="nav-links">
+      <a class="nav-link nav-link-1011" href="1011.html">1011</a>
       <a class="nav-link" href="index.html">剧场</a>
       <a class="nav-link" href="actors.html">演员 IP</a>
       <a class="nav-link" href="studio.html">经纪工坊</a>
