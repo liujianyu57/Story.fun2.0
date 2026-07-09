@@ -81,17 +81,6 @@
   color: #00BBA7;
   border-radius: 999px;
 }
-.story-header-wrapper .nav-link-1011 {
-  color: #ffffff !important;
-  font-weight: 800;
-}
-.story-header-wrapper .nav-link-1011:hover {
-  color: #00d4a3 !important;
-  background: rgba(0, 212, 163, 0.10);
-}
-.story-header-wrapper .nav-link-1011.active {
-  color: #00d4a3 !important;
-}
 .story-header-wrapper .header-actions {
   display: flex;
   align-items: center;
