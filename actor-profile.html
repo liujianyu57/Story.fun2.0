@@ -237,6 +237,24 @@
       color: var(--accent);
     }
 
+    /* ═══ 发行标识（与 actors.html 保持一致） ═══ */
+    .badge-issuance {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      color: #fff;
+    }
+    .badge-issuance.official { background: #05DF72; }
+    .badge-issuance.partner  { background: #4A9EFF; }
+    .badge-issuance.certified { background: #FF8C00; }
+    .badge-issuance.community { background: linear-gradient(135deg, #94a3b8, #64748b); }
+
     /* ═══ 短剧标识徽章（与 index.html 保持一致） ═══ */
     .drama-badge {
       display: inline-flex;
@@ -1076,7 +1094,7 @@
         <div>
           <h1 class="actor-name" id="actorName">—</h1>
           <div class="actor-tags" id="actorTags">
-          
+          <span class="badge-issuance" id="actorIssuanceBadge" style="display:none;"></span>
           <span class="tag" id="actorCreatorTag">—</span>
           <span class="tag muted" id="actorCollectionTag">—</span>
           <span class="tag soldout" id="actorSoldoutTag" style="display:none">已售罄</span>
@@ -1356,7 +1374,7 @@
     // ============================================================
     const ACTORS_DATA = {
       '苏婉清': {
-        id: 'C002', name: '苏婉清', pricing: 'fixed',
+        id: 'C002', name: '苏婉清', pricing: 'fixed', issuanceType: 'official',
 
         desc: '温婉端庄，琴棋书画样样精通，性格外柔内刚。出生于江南书香门第，自幼受传统文化熏陶，举手投足间尽显大家闺秀风范。',
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
@@ -1378,7 +1396,7 @@
         ]
       },
       '李云飞': {
-        id: 'C003', name: '李云飞', pricing: 'curve',
+        id: 'C003', name: '李云飞', pricing: 'curve', issuanceType: 'partner',
 
         desc: '身手矫健的侠客，性格豪爽仗义。自幼习武，练就一身好本领，行走江湖路见不平拔刀相助。',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
@@ -1396,7 +1414,7 @@
         ]
       },
       '林梦瑶': {
-        id: 'C004', name: '林梦瑶', pricing: 'curve',
+        id: 'C004', name: '林梦瑶', pricing: 'curve', issuanceType: 'partner',
 
         desc: '聪慧机敏的现代女性，擅长推理分析。毕业于顶尖学府，拥有敏锐的洞察力和出色的逻辑思维能力。',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
@@ -1414,7 +1432,7 @@
         ]
       },
       '赵无极': {
-        id: 'C005', name: '赵无极', pricing: 'fixed',
+        id: 'C005', name: '赵无极', pricing: 'fixed', issuanceType: 'certified',
 
         desc: '深不可测的武林高手，亦正亦邪。武功深不可测，行事风格独特，令人难以捉摸。',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
@@ -1428,7 +1446,7 @@
         ]
       },
       '上官婉儿': {
-        id: 'C006', name: '上官婉儿', pricing: 'fixed',
+        id: 'C006', name: '上官婉儿', pricing: 'fixed', issuanceType: 'community',
         desc: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。',
 
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
@@ -1442,7 +1460,7 @@
         ]
       },
       'Luna': {
-        id: 'C001', name: 'Luna', pricing: 'curve',
+        id: 'C001', name: 'Luna', pricing: 'curve', issuanceType: 'official',
 
         desc: '未来偶像型AI演员，适合对话与剧情分润场景。拥有独特的未来感和科技气质。',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
@@ -1504,6 +1522,23 @@
       document.getElementById('actorCreatorTag').textContent = '发行者 ' + (actor.creator || '—');
       document.getElementById('actorCollectionTag').textContent = '演员 IP ' + (actor.collection || actor.id || '—');
       document.getElementById('actorDesc').textContent = actor.desc;
+
+      // ═══ 发行标识（与 actors.html 保持一致） ═══
+      const ISSUANCE_CONFIG = {
+        official:  { cls: 'official',  icon: '⭐',  label: '官方发行' },
+        partner:   { cls: 'partner',   icon: '🤝',  label: '合作方发行' },
+        certified: { cls: 'certified', icon: '✓',  label: '认证创作者发行' },
+        community: { cls: 'community', icon: '🌐',  label: '社区发行' },
+      };
+      var issuanceBadge = document.getElementById('actorIssuanceBadge');
+      if (actor.issuanceType && ISSUANCE_CONFIG[actor.issuanceType]) {
+        var cfg = ISSUANCE_CONFIG[actor.issuanceType];
+        issuanceBadge.textContent = cfg.icon + ' ' + cfg.label;
+        issuanceBadge.className = 'badge-issuance ' + cfg.cls;
+        issuanceBadge.style.display = 'inline-flex';
+      } else {
+        issuanceBadge.style.display = 'none';
+      }
       document.getElementById('heroViews').textContent = actor.views || '—';
       document.getElementById('heroHeat').textContent = actor.heat || '—';
       // 更新 actor-price 区域
