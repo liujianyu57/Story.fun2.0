@@ -127,10 +127,6 @@
       height: 100%;
       object-fit: cover;
       object-position: center 48%;
-
-
-
-
       opacity: 0.40;
     }
 
@@ -159,7 +155,6 @@
       letter-spacing: 0.25em;
       color: var(--primary);
       margin-bottom: 24px;
-
     }
     .hero-badge svg {
       width: 16px;
@@ -172,7 +167,6 @@
       font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
       font-weight: 900;
       font-size: 96px;
-
       line-height: 0.95;
       letter-spacing: -0.03em;
       color: #fff;
@@ -187,8 +181,6 @@
       color: rgba(255, 255, 255, 0.50);
       letter-spacing: 0.02em;
     }
-
-
 
     .hero-desc {
       margin-top: 24px;
@@ -482,62 +474,6 @@
       color: var(--muted);
       max-width: 600px;
     }
-
-    /* 行业按钮 */
-    .matrix-industry-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-    .matrix-industry-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .matrix-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--muted);
-      background: rgba(255,255,255,0.03);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .matrix-tag:hover {
-      border-color: var(--primary);
-      color: var(--foreground);
-    }
-    .matrix-tag.active {
-      border-color: var(--primary);
-      background: var(--primary);
-      color: #0a0e14;
-    }
-    .matrix-tag.active .tag-count {
-      background: rgba(0,0,0,0.15);
-    }
-    .matrix-tag .tag-count,
-    .matrix-tag .tag-lock {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .matrix-tag .tag-lock svg {
-      width: 10px;
-      height: 10px;
-    }
-
-    /* 信息栏 */
     .matrix-info-bar {
       margin-top: 24px;
       display: flex;
@@ -567,68 +503,6 @@
       color: var(--foreground);
       font-weight: 600;
     }
-    .matrix-sort {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .matrix-sort-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      margin-right: 4px;
-    }
-    .matrix-sort-btn {
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 14px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: var(--card);
-      color: var(--muted);
-    }
-    .matrix-sort-btn.active {
-      background: var(--card);
-      color: var(--foreground);
-    }
-    .matrix-sort-btn:hover {
-      color: var(--foreground);
-    }
-
-    /* 标签筛选项 */
-    .matrix-filter-tags {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-top: 20px;
-    }
-    .matrix-filter-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      margin-right: 4px;
-    }
-    .matrix-filter-tag {
-      padding: 4px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--muted);
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .matrix-filter-tag:hover {
-      border-color: var(--primary);
-      color: var(--foreground);
-    }
-
-    /* 剧集网格 */
     .matrix-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -714,7 +588,6 @@
       height: 20px;
       fill: currentColor;
     }
-
     .matrix-card-body {
       display: flex;
       flex-direction: column;
@@ -800,14 +673,13 @@
       .matrix { padding: 40px 20px; }
       .matrix-grid { grid-template-columns: repeat(2, 1fr); }
       .matrix-title { font-size: 26px; }
-      .matrix-info-bar { flex-direction: column; }
     }
     @media (max-width: 480px) {
       .matrix-title { font-size: 22px; }
     }
 
     /* ═══════════════════════════════════════════
-       角色图谱 — 第四屏 (真实历史给出的剧本)
+       角色图谱 — 第四屏
        ═══════════════════════════════════════════ */
     .roles {
       border-top: 1px solid var(--border);
@@ -998,7 +870,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       定调之作 — 预告片（参考 story-fun.vercel.app）
+       定调之作 — 预告片
        ═══════════════════════════════════════════ */
     .trailer {
       border-top: 1px solid var(--border);
@@ -1044,8 +916,6 @@
       line-height: 1.8;
       color: var(--muted);
     }
-
-    /* 播放器 — 缩小居中 */
     .trailer-player {
       margin-top: 40px;
       max-width: 900px;
@@ -1180,8 +1050,6 @@
       background: rgba(255,255,255,0.15);
       font-size: 10px;
     }
-
-    /* 预告片时间线 — 与播放器同宽居中 */
     .trailer-timeline {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1220,7 +1088,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       公开征集 — 第六屏（参考 story-fun.vercel.app）
+       公开征集 — 第六屏
        ═══════════════════════════════════════════ */
     .submit {
       border-top: 1px solid var(--border);
@@ -1298,8 +1166,6 @@
       color: var(--foreground);
       font-weight: 600;
     }
-
-    /* 右侧表单卡片 */
     .submit-card {
       border-radius: 16px;
       border: 1px solid var(--border);
@@ -1341,22 +1207,6 @@
     }
     .submit-field textarea {
       resize: none;
-    }
-    .submit-upload {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px dashed var(--border);
-      background: rgba(10, 14, 20, 0.40);
-      font-size: 14px;
-      color: var(--muted);
-    }
-    .submit-upload svg {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
     }
     .submit-btn {
       display: inline-flex;
@@ -1461,6 +1311,69 @@
       .epilogue-text { font-size: 18px; }
     }
 
+    /* ── 视频播放器弹窗 ── */
+    .video-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
+    .video-overlay.open {
+      display: flex;
+    }
+    .video-overlay-inner {
+      position: relative;
+      width: 90%;
+      max-width: 960px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+    }
+    .video-overlay video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      background: #000;
+    }
+    .video-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.60);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+    .video-close-btn:hover {
+      background: rgba(0,0,0,0.80);
+    }
+    .video-close-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .video-overlay-inner {
+        width: 100%;
+        border-radius: 0;
+      }
+    }
+
     /* ═══════════════════════════════════════════
         响应式
         ═══════════════════════════════════════════ */
@@ -1537,19 +1450,19 @@
 
         <!-- 按钮 -->
         <div class="hero-actions">
-          <a class="hero-btn hero-btn-primary" href="#trailer">
+          <button class="hero-btn hero-btn-primary js-play-trailer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
             </svg>
             播放预告片
-          </a>
-          <a class="hero-btn hero-btn-secondary" href="#platform">
+          </button>
+          <a class="hero-btn hero-btn-secondary" href="#trailer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 16v-4"/>
               <path d="M12 8h.01"/>
             </svg>
-            进入叙事
+            了解更多
           </a>
         </div>
       </div>
@@ -1578,7 +1491,6 @@
           用故事解释世界运转的真相。但 1011 不是故事，是真实发生的一夜。
         </p>
 
-        <!-- 时间线（属于第二屏） -->
         <div class="timeline-wrap">
           <div class="timeline-list">
             <div class="timeline-item">
@@ -1658,7 +1570,6 @@
        叙事矩阵 — 第三屏
        ═══════════════════════════════════════════ -->
   <section class="matrix" id="narratives">
-    <!-- 头部 -->
     <div class="matrix-section-label">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/>
@@ -1669,8 +1580,6 @@
     </div>
     <h2 class="matrix-title">群众正在讲述的故事</h2>
 
-
-    <!-- 信息栏 -->
     <div class="matrix-info-bar">
       <div class="matrix-info-box" style="width:100%;">
         <p class="info-label">当前叙事 · 1011</p>
@@ -1678,245 +1587,124 @@
       </div>
     </div>
 
-
-    <!-- 剧集网格 -->
     <div class="matrix-grid">
-      <!-- 链之纪：凛冬 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-pyramid.png" alt="链之纪：凛冬" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            9 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>9 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>链之纪：凛冬</h3>
           <p class="card-desc">以 1011 为起点的架空史诗——把这场大爆仓写成一个时代的凛冬。</p>
-          <div class="card-meta">
-            <span class="author">@凛冬编年史</span>
-            <span class="time">8 小时前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>2,410,882</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>318,204</button>
-          </div>
+          <div class="card-meta"><span class="author">@凛冬编年史</span><span class="time">8 小时前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>2,410,882</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>318,204</button></div>
         </div>
       </article>
-
-      <!-- 160 万个名字 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-names.png" alt="160 万个名字" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            3 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>3 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>160 万个名字</h3>
           <p class="card-desc">把 160 万个爆仓钱包地址刻进冰墙，逐一念出他们的故事。</p>
-          <div class="card-meta">
-            <span class="author">@冰墙纪事</span>
-            <span class="time">5 天前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,533,000</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>402,117</button>
-          </div>
+          <div class="card-meta"><span class="author">@冰墙纪事</span><span class="time">5 天前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,533,000</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>402,117</button></div>
         </div>
       </article>
-
-      <!-- 金字塔的阴影 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-pyramid.png" alt="金字塔的阴影" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            8 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>8 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>金字塔的阴影</h3>
-          <p class="card-desc">1011 之后，大鹏依旧矗立，阴影比从前更长——一场关于真相的众说纷纭。</p>
-          <div class="card-meta">
-            <span class="author">@链上福尔摩斯</span>
-            <span class="time">1 天前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,204,668</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>277,913</button>
-          </div>
+          <p class="card-desc">1011 之后，大鹏依旧矗立，阴影比从前更长。</p>
+          <div class="card-meta"><span class="author">@链上福尔摩斯</span><span class="time">1 天前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,204,668</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>277,913</button></div>
         </div>
       </article>
-
-      <!-- 归零那夜 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-zero-night.png" alt="归零那夜" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            6 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>6 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>归零那夜</h3>
           <p class="card-desc">一个普通人在 2025.10.11 凌晨，眼睁睁看着账户被清零的三小时。</p>
-          <div class="card-meta">
-            <span class="author">@深夜梭哈的老王</span>
-            <span class="time">3 天前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,092,553</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>204,881</button>
-          </div>
+          <div class="card-meta"><span class="author">@深夜梭哈的老王</span><span class="time">3 天前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>1,092,553</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>204,881</button></div>
         </div>
       </article>
-
-      <!-- 烛火手记 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-candle.png" alt="烛火手记" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            5 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>5 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>烛火手记</h3>
           <p class="card-desc">第一人称手记：1011 那夜之后，我为什么选择举起这支烛火。</p>
-          <div class="card-meta">
-            <span class="author">@夜行烛火</span>
-            <span class="time">6 天前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>988,760</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>233,050</button>
-          </div>
+          <div class="card-meta"><span class="author">@夜行烛火</span><span class="time">6 天前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>988,760</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>233,050</button></div>
         </div>
       </article>
-
-      <!-- 渊流堡的幸存者 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-survivor.png" alt="渊流堡的幸存者" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            4 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>4 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>渊流堡的幸存者</h3>
           <p class="card-desc">1011 全场爆仓，唯有渊流堡毫发无伤——幸存者的愧疚与追问。</p>
-          <div class="card-meta">
-            <span class="author">@HyperliquidMax</span>
-            <span class="time">2 天前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>876,420</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>151,309</button>
-          </div>
+          <div class="card-meta"><span class="author">@HyperliquidMax</span><span class="time">2 天前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>876,420</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>151,309</button></div>
         </div>
       </article>
-
-      <!-- 最后一笔梭哈 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-allin.png" alt="最后一笔梭哈" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            2 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>2 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>最后一笔梭哈</h3>
           <p class="card-desc">10 月 11 日，按下确认键前的最后 10 秒——一个赌徒的心理独白。</p>
-          <div class="card-meta">
-            <span class="author">@一把梭的阿May</span>
-            <span class="time">12 小时前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>643,201</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>98,442</button>
-          </div>
+          <div class="card-meta"><span class="author">@一把梭的阿May</span><span class="time">12 小时前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>643,201</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>98,442</button></div>
         </div>
       </article>
-
-      <!-- 我还活着 -->
       <article class="matrix-card">
         <div class="matrix-card-cover">
           <img src="image/cover-zero-night.png" alt="我还活着" />
           <div class="card-gradient"></div>
-          <span class="card-episodes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
-            3 集
-          </span>
-          <div class="card-play-overlay">
-            <span class="play-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
-            </span>
-          </div>
+          <span class="card-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>3 集</span>
+          <div class="card-play-overlay"><span class="play-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span></div>
         </div>
         <div class="matrix-card-body">
           <h3>我还活着</h3>
           <p class="card-desc">爆仓后在 Telegram 群里互相确认损失的那一夜，有人发出这三个字。</p>
-          <div class="card-meta">
-            <span class="author">@幸存者联盟</span>
-            <span class="time">4 天前</span>
-          </div>
-          <div class="card-stats">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>512,097</span>
-            <button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>121,660</button>
-          </div>
+          <div class="card-meta"><span class="author">@幸存者联盟</span><span class="time">4 天前</span></div>
+          <div class="card-stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>512,097</span><button class="like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>121,660</button></div>
         </div>
       </article>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
-       角色图谱 — 第四屏 (真实历史给出的剧本)
+       角色图谱 — 第四屏
        ═══════════════════════════════════════════ -->
   <section class="roles" id="roles">
     <div class="roles-inner">
@@ -1937,7 +1725,6 @@
       </p>
 
       <div class="roles-grid">
-        <!-- 左侧列表 -->
         <div class="roles-list">
           <button class="roles-list-item active">
             <span class="roles-list-icon active-icon">
@@ -1958,7 +1745,6 @@
               <div class="roles-list-sub">始终矗立的庞然阴影</div>
             </div>
           </button>
-
           <button class="roles-list-item">
             <span class="roles-list-icon inactive-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1972,7 +1758,6 @@
               <div class="roles-list-sub">被清算的普通人</div>
             </div>
           </button>
-
           <button class="roles-list-item">
             <span class="roles-list-icon inactive-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1985,7 +1770,6 @@
               <div class="roles-list-sub">毫发无伤的堡垒</div>
             </div>
           </button>
-
           <button class="roles-list-item">
             <span class="roles-list-icon inactive-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2000,7 +1784,6 @@
           </button>
         </div>
 
-        <!-- 右侧详情卡片 -->
         <div class="roles-detail-card">
           <div class="roles-detail-cover">
             <img src="image/cover-pyramid.png" alt="大鹏 · 金字塔" />
@@ -2044,7 +1827,7 @@
         <div class="trailer-player-inner">
           <img src="image/hero-winter.png" alt="《链之纪：凛冬》预告片" />
           <div class="trailer-player-glow"></div>
-          <button class="trailer-play-btn" aria-label="播放预告片">
+          <button class="trailer-play-btn js-play-trailer" aria-label="播放预告片">
             <span class="play-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
@@ -2093,7 +1876,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
-       公开征集 — 第六屏（参考 story-fun.vercel.app）
+       公开征集 — 第六屏
        ═══════════════════════════════════════════ -->
   <section class="submit" id="submit">
     <div class="submit-inner split">
@@ -2105,34 +1888,18 @@
           </svg>
           公开征集
         </div>
-
         <h2 class="submit-title">举起你自己的烛火</h2>
-
         <p class="submit-desc">
           真正的创作者是每一个举烛的人。1011 IP 不是「给你看的内容」，而是<strong>你自己的故事被讲出来</strong>。
           采用公开征集的形式，通过投票流程让大众认可——从观众到创作者，只差一次上传。
         </p>
-
         <ul class="submit-list">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            <span><strong>链上存证</strong> —— 讲出来的故事永远存在，无人可夺走</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            <span><strong>代币激励</strong> —— 创作者直接获益，不再被平台抽走 30–55%</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            <span><strong>NFT 身份</strong> —— 「我是 1011 亲历者」变成可验证的凭证</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            <span><strong>大奖赛</strong> —— 全球创作者大奖赛 + 评审节目承接创作需求</span>
-          </li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><strong>链上存证</strong> —— 讲出来的故事永远存在，无人可夺走</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><strong>代币激励</strong> —— 创作者直接获益，不再被平台抽走 30–55%</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><strong>NFT 身份</strong> —— 「我是 1011 亲历者」变成可验证的凭证</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><strong>大奖赛</strong> —— 全球创作者大奖赛 + 评审节目承接创作需求</span></li>
         </ul>
       </div>
-
       <div class="submit-card">
         <form class="submit-form">
           <div class="submit-field">
@@ -2172,11 +1939,80 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════════
+       📺 视频播放器弹窗
+       ═══════════════════════════════════════════ -->
+  <div class="video-overlay" id="videoOverlay">
+    <div class="video-overlay-inner">
+      <button class="video-close-btn" id="videoCloseBtn" aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <video id="trailerVideo" controls autoplay playsinline>
+        <source src="video/打斗视频.mp4" type="video/mp4">
+        您的浏览器不支持视频播放。
+      </video>
+    </div>
+  </div>
+
   <!-- Bottom nav placeholder -->
   <div id="bottom-nav-placeholder"></div>
 
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
   <script src="load-bottom-nav.js"></script>
+
+  <script>
+    (function() {
+      var overlay = document.getElementById('videoOverlay');
+      var video = document.getElementById('trailerVideo');
+      var closeBtn = document.getElementById('videoCloseBtn');
+
+      // 打开弹窗
+      function openVideo() {
+        overlay.classList.add('open');
+        video.currentTime = 0;
+        video.play().catch(function() {});
+      }
+
+      // 关闭弹窗
+      function closeVideo() {
+        overlay.classList.remove('open');
+        video.pause();
+        video.currentTime = 0;
+      }
+
+      // 绑定所有 .js-play-trailer 按钮
+      document.querySelectorAll('.js-play-trailer').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          openVideo();
+        });
+      });
+
+      // 关闭按钮
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeVideo);
+      }
+
+      // 点击遮罩关闭
+      if (overlay) {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === overlay) {
+            closeVideo();
+          }
+        });
+      }
+
+      // ESC 键关闭
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) {
+          closeVideo();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
