@@ -453,10 +453,15 @@
       .platform-title { font-size: 32px; }
       .timeline-stats { gap: 20px; }
       .timeline-stat dt { font-size: 20px; }
+      /* 手机端移除图片四向渐变遮罩，避免过度遮挡 */
+      .platform-intro-right::after {
+        background: none !important;
+      }
     }
     @media (max-width: 480px) {
       .platform-title { font-size: 28px; }
     }
+
 
     /* ═══════════════════════════════════════════
        叙事矩阵 — 参考 story-fun.vercel.app
@@ -2016,7 +2021,9 @@
   <script src="auth.js"></script>
   <script src="load-bottom-nav.js"></script>
 
+
   <script>
+
     (function() {
       // ── 滚动入场动效：Intersection Observer ──
       var revealObserver = new IntersectionObserver(function(entries) {
@@ -2115,5 +2122,8 @@
       });
     })();
   </script>
+
 </body>
 </html>
+
+

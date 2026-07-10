@@ -133,6 +133,14 @@
   function insertFallbackBottomNav() {
     const html = `<div class="bottom-nav-wrapper">
   <div class="bottom-nav">
+    <a class="bottom-nav-item" href="1011.html" data-tab="1011">
+      <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3.5" y="3.5" width="21" height="21" rx="4" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M9.5 14.5L12.5 17.5L18.5 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="bottom-nav-label">1011</span>
+    </a>
+
     <a class="bottom-nav-item" href="index.html" data-tab="theater">
       <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M24.8376 14.0001C24.8376 19.9861 19.9849 24.8388 13.9989 24.8388C8.01281 24.8388 3.16016 19.9861 3.16016 14.0001C3.16016 8.014 8.01281 3.16135 13.9989 3.16135C19.9849 3.16135 24.8376 8.014 24.8376 14.0001Z" fill="none" stroke="currentColor" stroke-width="1.49333" stroke-linecap="round" stroke-linejoin="round"/>
@@ -171,6 +179,7 @@
   </div>
 </div>`;
     insertBottomNav(html);
+
   }
 
   // ============================================================

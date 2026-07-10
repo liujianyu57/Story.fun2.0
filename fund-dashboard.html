@@ -84,12 +84,14 @@
     .section-header .hint { font-size: 0.78rem; color: var(--text-tertiary); font-weight: 400; }
 
     /* ── 收入来源卡片 ── */
-    .inc-source-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+    .inc-source-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+    @media (max-width: 680px) { .inc-source-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 480px) { .inc-source-grid { grid-template-columns: 1fr; } }
-    .inc-source-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 6px; }
-    .inc-source-card .isc-icon { font-size: 1.5rem; }
-    .inc-source-card .isc-label { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); }
-    .inc-source-card .isc-amount { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+    .inc-source-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 12px; }
+    .inc-source-card .isc-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .inc-source-card .isc-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .inc-source-card .isc-label { font-size: 0.75rem; font-weight: 500; color: var(--text-secondary); }
+    .inc-source-card .isc-amount { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
 
     .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-light); }
     .data-table { width: 100%; border-collapse: collapse; }
@@ -104,6 +106,7 @@
     .tx-tag.stamina { background: rgba(245,176,66,0.08); color: var(--gold); }
     .tx-tag.upgrade { background: rgba(244,91,105,0.08); color: var(--danger); }
     .tx-tag.vault { background: rgba(155,92,230,0.08); color: #9b5ce6; }
+    .tx-tag.fee { background: rgba(255,159,44,0.10); color: var(--warning); }
 
     .btn-sm-outline {
       display: inline-flex; align-items: center; justify-content: center;
@@ -175,7 +178,7 @@
       <div class="metrics-group-grid cols-2">
         <div class="metric-card">
           <div class="metric-label">USDC 总收入</div>
-          <div class="metric-value green" id="mTotalUsdcRevenue">1,284,500 USDC</div>
+          <div class="metric-value green" id="mTotalUsdcRevenue">1,334,500 USDC</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">STORY 总释放</div>
@@ -190,27 +193,42 @@
     <div class="metrics-group">
       <div class="metrics-group-header">USDC 收入明细</div>
 
-      <!-- 4 大收入来源卡片（2×2） -->
+      <!-- 5 大收入来源卡片（3 列布局） -->
       <div class="inc-source-grid" id="incomeCards">
         <div class="inc-source-card">
           <div class="isc-icon">🪙</div>
-          <div class="isc-label">签约费</div>
-          <div class="isc-amount">$385,350</div>
+          <div class="isc-body">
+            <div class="isc-label">签约费</div>
+            <div class="isc-amount">$385,350</div>
+          </div>
         </div>
         <div class="inc-source-card">
           <div class="isc-icon">💳</div>
-          <div class="isc-label">二级版税</div>
-          <div class="isc-amount">$513,800</div>
+          <div class="isc-body">
+            <div class="isc-label">二级版税</div>
+            <div class="isc-amount">$513,800</div>
+          </div>
         </div>
         <div class="inc-source-card">
           <div class="isc-icon">⚡</div>
-          <div class="isc-label">购买体力费</div>
-          <div class="isc-amount">$256,900</div>
+          <div class="isc-body">
+            <div class="isc-label">购买体力费</div>
+            <div class="isc-amount">$256,900</div>
+          </div>
         </div>
         <div class="inc-source-card">
           <div class="isc-icon">🔼</div>
-          <div class="isc-label">合成升级费</div>
-          <div class="isc-amount">$128,450</div>
+          <div class="isc-body">
+            <div class="isc-label">合成升级费</div>
+            <div class="isc-amount">$128,450</div>
+          </div>
+        </div>
+        <div class="inc-source-card">
+          <div class="isc-icon">💸</div>
+          <div class="isc-body">
+            <div class="isc-label">手续费</div>
+            <div class="isc-amount">$50,000</div>
+          </div>
         </div>
       </div>
 
@@ -407,6 +425,7 @@
       { time:'2025-06-21 18:40', type:'royalty', label:'二级版税',    project:'赵无极 #1003',   amount: 89.40 },
       { time:'2025-06-21 16:20', type:'upgrade', label:'合成升级费',  project:'Lv2→Lv3',        amount: 25.00 },
       { time:'2025-06-21 10:00', type:'mint',   label:'签约费',     project:'赵无极 #1003',   amount: 634.00 },
+      { time:'2025-06-21 09:15', type:'fee',    label:'手续费',     project:'平台交易',       amount: 8.50 },
       { time:'2025-06-20 21:30', type:'stamina', label:'购买体力费',  project:'Lv3 主角加满',   amount: 87.00 },
       { time:'2025-06-20 15:12', type:'royalty', label:'二级版税',    project:'Luna #1005',     amount: 32.70 },
       { time:'2025-06-20 09:50', type:'mint',   label:'签约费',     project:'李云飞 #1004',   amount: 31.70 },
@@ -416,6 +435,7 @@
       { time:'2025-06-18 22:44', type:'royalty', label:'二级版税',    project:'沈千雪 #1006',   amount: 128.50 },
       { time:'2025-06-18 17:30', type:'mint',   label:'签约费',     project:'沈千雪 #1006',   amount: 190.20 },
       { time:'2025-06-18 12:10', type:'mint',   label:'签约费',     project:'江辰 #1007',     amount: 44.38 },
+      { time:'2025-06-18 10:00', type:'fee',    label:'手续费',     project:'二级市场',       amount: 12.30 },
       { time:'2025-06-17 23:55', type:'stamina', label:'购买体力费',  project:'Lv2 配角加满',   amount: 36.00 },
       { time:'2025-06-17 19:05', type:'royalty', label:'二级版税',    project:'林雪儿 #1008',   amount: 56.20 },
       { time:'2025-06-17 14:30', type:'mint',   label:'签约费',     project:'林雪儿 #1008',   amount: 88.76 },
@@ -427,10 +447,13 @@
       { time:'2025-06-15 18:30', type:'mint',   label:'签约费',     project:'苏婉清 #1001',   amount: 95.10 },
       { time:'2025-06-15 12:00', type:'upgrade', label:'合成升级费',  project:'Lv2→Lv3',        amount: 25.00 },
       { time:'2025-06-15 09:20', type:'stamina', label:'购买体力费',  project:'Lv1 群演加满',   amount: 15.00 },
+      { time:'2025-06-15 08:30', type:'fee',    label:'手续费',     project:'平台交易',       amount: 5.20 },
       { time:'2025-06-14 22:50', type:'royalty', label:'二级版税',    project:'林梦瑶 #1002',   amount: 176.40 },
       { time:'2025-06-14 16:10', type:'mint',   label:'签约费',     project:'林梦瑶 #1002',   amount: 412.10 },
       { time:'2025-06-14 10:30', type:'mint',   label:'签约费',     project:'赵无极 #1003',   amount: 221.90 },
       { time:'2025-06-14 08:00', type:'stamina', label:'购买体力费',  project:'Lv4 巨星加满',   amount: 203.00 },
+      { time:'2025-06-14 07:20', type:'fee',    label:'手续费',     project:'二级市场',       amount: 18.70 },
+      { time:'2025-06-13 16:45', type:'fee',    label:'手续费',     project:'平台交易',       amount: 6.30 },
     ];
 
     // ── Vault 排行数据 ──
@@ -506,7 +529,7 @@
     // ── USDC 流水 ──
     function renderUsdcFlow() {
       const top5 = USDC_FLOW_DATA.slice(0, 5);
-      const tagCls = { mint:'mint', royalty:'royalty', stamina:'stamina', upgrade:'upgrade', vault:'vault' };
+      const tagCls = { mint:'mint', royalty:'royalty', stamina:'stamina', upgrade:'upgrade', vault:'vault', fee:'fee' };
       const tbody = document.getElementById('usdcFlowBody');
       tbody.innerHTML = top5.map(r => `
         <tr>
@@ -519,7 +542,7 @@
 
     // ── USDC 流水弹窗 ──
     function renderUsdcFlowFull() {
-      const tagCls = { mint:'mint', royalty:'royalty', stamina:'stamina', upgrade:'upgrade', vault:'vault' };
+      const tagCls = { mint:'mint', royalty:'royalty', stamina:'stamina', upgrade:'upgrade', vault:'vault', fee:'fee' };
       const tbody = document.getElementById('usdcFlowFullBody');
       tbody.innerHTML = USDC_FLOW_DATA.map(r => `
         <tr>
