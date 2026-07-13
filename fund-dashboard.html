@@ -329,6 +329,7 @@
       <div class="section-card">
         <div class="section-header">
           <h3>近期挖矿释放</h3>
+          <button class="btn-sm-outline" onclick="openWeeklyReleaseModal()">查看更多 →</button>
         </div>
         <div class="table-wrap">
           <table class="data-table" id="weeklyReleaseTable">
@@ -396,6 +397,33 @@
             </tr>
           </thead>
           <tbody id="vaultFullBody">
+            <!-- 由 JS 渲染 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!--  每周释放弹窗                                                   -->
+  <!-- ============================================================ -->
+  <div class="modal-overlay" id="weeklyReleaseModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>历史挖矿数据</h3>
+        <button class="modal-close" onclick="closeModal('weeklyReleaseModal')">✕</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:110px;">周期</th>
+              <th style="width:130px;">周硬顶</th>
+              <th style="width:130px;">实际释放</th>
+              <th style="width:100px;">使用率</th>
+            </tr>
+          </thead>
+          <tbody id="weeklyReleaseFullBody">
             <!-- 由 JS 渲染 -->
           </tbody>
         </table>
@@ -490,7 +518,7 @@
       { name:'市场运营',          pct:'5%',  amount:50000000,  released:0,         progress:'0%',    mechanism:'按运营节奏释放' },
     ];
 
-    // ── 近 8 周释放数据 ──
+    // ── 近 8 周释放数据（首页展示） ──
     const WEEKLY_RELEASE = [
       { week:22, range:'06/09 - 06/15', cap:2098100, actual:1852300, usage:'88.3%', note:'份额制清算，未触顶' },
       { week:21, range:'06/02 - 06/08', cap:2102900, actual:2102900, usage:'100%',  note:'触顶 · 按权重缩放' },
@@ -500,6 +528,32 @@
       { week:17, range:'05/05 - 05/11', cap:2122100, actual:1921500, usage:'90.5%', note:'—' },
       { week:16, range:'04/28 - 05/04', cap:2126900, actual:1884200, usage:'88.6%', note:'—' },
       { week:15, range:'04/21 - 04/27', cap:2131700, actual:2131700, usage:'100%',  note:'触顶 · 按权重缩放' },
+    ];
+
+    // ── 全部历史周次释放数据（弹窗展示） ──
+    const WEEKLY_RELEASE_FULL = [
+      { week:22, range:'06/09 - 06/15', cap:2098100, actual:1852300, usage:'88.3%', note:'份额制清算，未触顶' },
+      { week:21, range:'06/02 - 06/08', cap:2102900, actual:2102900, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:20, range:'05/26 - 06/01', cap:2107700, actual:1987600, usage:'94.3%', note:'—' },
+      { week:19, range:'05/19 - 05/25', cap:2112500, actual:1754000, usage:'83.0%', note:'—' },
+      { week:18, range:'05/12 - 05/18', cap:2117300, actual:2117300, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:17, range:'05/05 - 05/11', cap:2122100, actual:1921500, usage:'90.5%', note:'—' },
+      { week:16, range:'04/28 - 05/04', cap:2126900, actual:1884200, usage:'88.6%', note:'—' },
+      { week:15, range:'04/21 - 04/27', cap:2131700, actual:2131700, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:14, range:'04/14 - 04/20', cap:2136500, actual:2011300, usage:'94.1%', note:'—' },
+      { week:13, range:'04/07 - 04/13', cap:2141300, actual:1896400, usage:'88.6%', note:'—' },
+      { week:12, range:'03/31 - 04/06', cap:2146100, actual:2146100, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:11, range:'03/24 - 03/30', cap:2150900, actual:1968200, usage:'91.5%', note:'—' },
+      { week:10, range:'03/17 - 03/23', cap:2155700, actual:2155700, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:9,  range:'03/10 - 03/16', cap:2160500, actual:1789300, usage:'82.8%', note:'—' },
+      { week:8,  range:'03/03 - 03/09', cap:2165300, actual:2038200, usage:'94.1%', note:'—' },
+      { week:7,  range:'02/24 - 03/02', cap:2170100, actual:2170100, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:6,  range:'02/17 - 02/23', cap:2174900, actual:1857600, usage:'85.4%', note:'—' },
+      { week:5,  range:'02/10 - 02/16', cap:2179700, actual:1924500, usage:'88.3%', note:'—' },
+      { week:4,  range:'02/03 - 02/09', cap:2184500, actual:2184500, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:3,  range:'01/27 - 02/02', cap:2189300, actual:1748200, usage:'79.9%', note:'春节周 · 算力偏低' },
+      { week:2,  range:'01/20 - 01/26', cap:2194100, actual:2194100, usage:'100%',  note:'触顶 · 按权重缩放' },
+      { week:1,  range:'01/13 - 01/19', cap:2198900, actual:2034700, usage:'92.5%', note:'主网上线首周' },
     ];
 
     // ================================================================
@@ -596,7 +650,7 @@
       `).join('');
     }
 
-    // ── 每周释放 ──
+    // ── 每周释放（首页） ──
     function renderWeeklyRelease() {
       const tbody = document.getElementById('weeklyReleaseBody');
       tbody.innerHTML = WEEKLY_RELEASE.map(r => `
@@ -608,6 +662,20 @@
         </tr>
       `).join('');
     }
+
+    // ── 每周释放弹窗（全部历史） ──
+    function renderWeeklyReleaseFull() {
+      const tbody = document.getElementById('weeklyReleaseFullBody');
+      tbody.innerHTML = WEEKLY_RELEASE_FULL.map(r => `
+        <tr>
+          <td style="color:var(--text-secondary);">${r.range}</td>
+          <td>${fmt(r.cap)}</td>
+          <td style="font-weight:600;color:var(--gold);">${fmt(r.actual)}</td>
+          <td>${r.usage}</td>
+        </tr>
+      `).join('');
+    }
+    function openWeeklyReleaseModal() { renderWeeklyReleaseFull(); openModal('weeklyReleaseModal'); }
 
     // ================================================================
     //  初始化
