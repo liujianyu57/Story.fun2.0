@@ -116,7 +116,76 @@
   align-items: center;
 }
 
+/* ── Brand Dropdown (Logo 下拉菜单) ── */
+.story-header-wrapper .brand-logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.story-header-wrapper .brand-logo-wrapper:hover {
+  opacity: 0.85;
+}
+.story-header-wrapper .brand-dropdown-arrow {
+  color: #8b8d98;
+  transition: transform 0.22s ease;
+  flex-shrink: 0;
+}
+.story-header-wrapper .brand-dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+.story-header-wrapper .brand-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 170px;
+  background: #ffffff;
+  border: 0.5px solid #ECECF0;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: all 0.22s ease;
+  z-index: 200;
+}
+.story-header-wrapper .brand-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.story-header-wrapper .brand-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 18px;
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1C2024;
+  text-decoration: none;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+.story-header-wrapper .brand-dropdown-item:hover {
+  background: #F5F5F7;
+}
+.story-header-wrapper .brand-dropdown-item:first-child {
+  border-bottom: 0.5px solid #ECECF0;
+}
+@media (max-width: 768px) {
+  .story-header-wrapper .brand-dropdown {
+    left: 0;
+    min-width: 150px;
+  }
+}
+
 /* ── Auth Button ── */
+
 .story-header-wrapper .auth-login-btn {
   display: inline-flex;
   align-items: center;
@@ -260,9 +329,10 @@
     flex-wrap: nowrap;
     gap: 8px;
   }
-  /* Hide brand logo & text on mobile; show hamburger */
+  /* Hide brand logo & text & arrow on mobile; show hamburger */
   .story-header-wrapper .header-logo-img,
-  .story-header-wrapper .brand-text {
+  .story-header-wrapper .brand-text,
+  .story-header-wrapper .brand-dropdown-arrow {
     display: none;
   }
   .story-header-wrapper .hamburger-btn {
@@ -392,7 +462,34 @@
     // 绑定移动端抽屉事件
     bindMobileDrawerEvents();
 
+    // 绑定 Logo 下拉菜单
+    bindBrandDropdown();
+
     document.dispatchEvent(new CustomEvent('header-loaded'));
+  }
+
+  // ============================================================
+  //  绑定 Logo 下拉菜单点击事件
+  // ============================================================
+  function bindBrandDropdown() {
+    const wrapper = document.getElementById('brandLogoWrapper');
+    const dropdown = document.getElementById('brandDropdown');
+    const arrow = document.querySelector('.brand-dropdown-arrow');
+    if (!wrapper || !dropdown) return;
+
+    wrapper.addEventListener('click', function(e) {
+      // 如果点击的是下拉菜单的 a 链接，不做 toggle 处理（让 a 的默认跳转生效）
+      if (e.target.closest('.brand-dropdown')) return;
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+      if (arrow) arrow.classList.toggle('open');
+    });
+
+    // 点击页面其他地方关闭
+    document.addEventListener('click', function() {
+      dropdown.classList.remove('open');
+      if (arrow) arrow.classList.remove('open');
+    });
   }
 
 
@@ -411,8 +508,17 @@
           <path d="M4 18H20" stroke="#1C2024" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <img class="header-logo-img" src="image/storyfun-logo-icon.png" width="29" height="29" alt="Story.fun" />
-      <span class="brand-text">Story.fun</span>
+      <div class="brand-logo-wrapper" id="brandLogoWrapper">
+        <img class="header-logo-img" src="image/storyfun-logo-icon.png" width="29" height="29" alt="Story.fun" />
+        <span class="brand-text">Story.fun</span>
+        <svg class="brand-dropdown-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-dropdown" id="brandDropdown">
+          <a class="brand-dropdown-item" href="index.html">🎭 用户端</a>
+          <a class="brand-dropdown-item" href="admin/admin-mining.html">⚙️ 后台管理</a>
+        </div>
+      </div>
     </div>
 
     <nav class="nav-links">

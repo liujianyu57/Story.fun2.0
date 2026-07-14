@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 周期收益明细</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.10);
+      --text: #13202e;
+      --text-secondary: #5e6f83;
+      --text-tertiary: #8b8d98;
+      --border: #deeaf7;
+      --border-light: #e8f0fa;
+      --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.04);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --danger: #f45b69;
+      --warning: #ff9f2c;
+      --gold: #f5b042;
+      --story-green: #05DF72;
+      --story-teal: #00BBA7;
+      font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+    .app-shell { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+    @media (max-width: 640px) { .app-shell { padding: 16px; } }
+    .admin-topbar {
+      background: #13202e; color: #fff; padding: 0 32px; height: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 100;
+    }
+    .admin-topbar-left { display: flex; align-items: center; gap: 12px; height: 100%; }
+    .admin-topbar-brand {
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+      padding: 0 8px; height: 100%; position: relative;
+      user-select: none; background: none; border: none; color: #fff; font-weight: 700; font-size: 1rem;
+    }
+    .admin-topbar-brand:hover { background: rgba(255,255,255,0.08); }
+    .admin-topbar-brand .arrow { font-size: 10px; transition: transform 0.22s ease; color: #8ba0b8; }
+    .admin-topbar-brand .arrow.open { transform: rotate(180deg); }
+    .admin-topbar-sep { color: #40556b; font-size: 0.85rem; }
+    .admin-topbar-label { color: #b0c4d9; font-size: 0.85rem; }
+    .admin-dropdown {
+      position: absolute; top: calc(100% + 6px); left: 0;
+      min-width: 180px; background: #ffffff; border: 0.5px solid #ECECF0;
+      border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      overflow: hidden;
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: all 0.22s ease; z-index: 200;
+    }
+    .admin-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .admin-dropdown-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 18px; font-family: inherit; font-weight: 500; font-size: 14px; line-height: 20px;
+      color: #1C2024; text-decoration: none; transition: background 0.15s ease; white-space: nowrap;
+    }
+    .admin-dropdown-item:hover { background: #F5F5F7; }
+    .admin-dropdown-item:first-child { border-bottom: 0.5px solid #ECECF0; }
+    .admin-dropdown-item.current { background: #f0f7ff; color: #0057b3; }
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 28px; margin-bottom: 24px;
+    }
+    .page-header h1 { margin: 0; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.015em; }
+    .page-header-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 20px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-secondary); font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; transition: all 0.15s; text-decoration: none;
+    }
+    .btn-back:hover { border-color: var(--accent); color: var(--accent); }
+    .metrics-group { margin-bottom: 20px; }
+    .metrics-group-grid { display: grid; gap: 16px; }
+    .metrics-group-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 900px) { .metrics-group-grid.cols-4 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .metrics-group-grid.cols-4 { grid-template-columns: 1fr; } }
+    .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow-sm); }
+    .metric-label { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+    .metric-value { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .metric-value.green { color: var(--story-green); }
+    .metric-value.gold { color: var(--gold); }
+    .metric-value.teal { color: var(--story-teal); }
+    .metric-value.blue { color: #3b82f6; }
+    .metric-sub { font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px; }
+    .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+    .section-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .section-toolbar-left { display: flex; align-items: center; gap: 12px; }
+    .section-toolbar-left h3 { margin: 0; font-size: 0.95rem; font-weight: 600; }
+    .section-toolbar-right { display: flex; gap: 8px; align-items: center; }
+    .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-light); }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th, .data-table td { padding: 12px 14px; text-align: left; font-size: 0.85rem; white-space: nowrap; }
+    .data-table th { color: var(--text-secondary); font-weight: 500; border-bottom: 1px solid var(--border-light); font-size: 0.78rem; letter-spacing: 0.02em; background: #f8fbfe; }
+    .data-table td { border-bottom: 1px solid var(--border-light); }
+    .data-table tr:last-of-type td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8fbfe; }
+    .status-tag { display: inline-block; padding: 3px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+    .status-tag.pending { background: rgba(255, 159, 44, 0.12); color: #d4942a; }
+    .status-tag.approved { background: rgba(0, 179, 136, 0.10); color: var(--accent); }
+    .btn-sm {
+      display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+      padding: 6px 16px; border-radius: 999px; border: none;
+      background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn-sm:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,179,136,0.25); }
+    .btn-sm:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+    .btn-sm-outline {
+      display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+      padding: 6px 16px; border-radius: 999px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary); font-size: 0.75rem; font-weight: 500;
+      cursor: pointer; transition: all 0.15s; text-decoration: none;
+    }
+    .btn-sm-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-sm-outline.warning { border-color: var(--warning); color: var(--warning); }
+    .btn-sm-outline.warning:hover { background: rgba(255,159,44,0.08); }
+    .pagination { display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 16px; }
+    .pagination button {
+      padding: 6px 16px; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--surface); color: var(--text-secondary); font-size: 0.8rem; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .pagination button:hover { border-color: var(--accent); color: var(--accent); }
+    .pagination button:disabled { opacity: 0.4; cursor: default; }
+    .pagination .page-info { font-size: 0.82rem; color: var(--text-tertiary); }
+    .edit-input {
+      width: 100px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;
+      font-size: 0.85rem; font-weight: 600; color: var(--text); background: var(--bg);
+      text-align: right; outline: none; transition: border-color 0.15s;
+    }
+    .edit-input:focus { border-color: var(--accent); }
+    .empty-state { text-align: center; padding: 48px 0; color: var(--text-tertiary); font-size: 0.88rem; }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 5000;
+      background: rgba(0,0,0,0.35); backdrop-filter: blur(2px);
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--surface); border-radius: var(--radius); box-shadow: 0 20px 60px rgba(27,45,71,0.2);
+      width: 90%; max-width: 420px; max-height: 80vh; overflow-y: auto;
+      padding: 28px 32px;
+    }
+    .modal-box .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-box .modal-header h3 { font-size: 1.1rem; font-weight: 600; margin: 0; }
+    .modal-box .modal-close {
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      border: none; background: rgba(0,0,0,0.04); border-radius: 50%; cursor: pointer;
+      font-size: 1.2rem; color: var(--text-secondary); transition: background 0.15s;
+    }
+    .modal-box .modal-close:hover { background: rgba(0,0,0,0.08); }
+    .modal-box .modal-body { margin-bottom: 20px; }
+    .modal-box .modal-body p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+    .modal-box .modal-body .highlight { font-weight: 700; color: var(--text); }
+    .modal-box .modal-body .form-group { margin-bottom: 14px; }
+    .modal-box .modal-body .form-group label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+    .modal-box .modal-body .form-group input {
+      width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 1rem; font-weight: 600; color: var(--text); background: var(--bg);
+      outline: none; transition: border-color 0.15s;
+    }
+    .modal-box .modal-body .form-group input:focus { border-color: var(--accent); }
+    .modal-box .modal-body .form-hint { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 4px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .btn-modal-cancel {
+      padding: 10px 24px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-secondary); font-size: 0.88rem; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-modal-cancel:hover { border-color: var(--text-secondary); }
+    .btn-modal-confirm {
+      padding: 10px 24px; border-radius: 999px; border: none;
+      background: var(--accent); color: #fff; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-modal-confirm:hover { opacity: 0.85; }
+    .btn-modal-confirm.warning { background: var(--warning); }
+    .toast-notification {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px);
+      z-index: 9999; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px);
+      color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.88rem;
+      box-shadow: 0 12px 40px rgba(27,45,71,0.25);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
+      opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500;
+    }
+    .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+<div class="admin-topbar">
+  <div class="admin-topbar-left">
+    <button class="admin-topbar-brand" id="adminBrandBtn">
+      ⚙️ 管理后台 <span class="arrow" id="adminBrandArrow">▾</span>
+      <div class="admin-dropdown" id="adminDropdown">
+        <a class="admin-dropdown-item" href="../index.html">🎭 用户端</a>
+        <a class="admin-dropdown-item current" href="admin-mining.html">⚙️ 后台管理</a>
+      </div>
+    </button>
+    <span class="admin-topbar-sep">|</span>
+    <a href="admin-mining.html" style="color:#b0c4d9;text-decoration:none;font-size:0.85rem;">挖矿结算管理</a>
+    <span style="color:#40556b;font-size:0.85rem;">›</span>
+    <span class="admin-topbar-label">周期详情</span>
+  </div>
+</div>
+<div class="app-shell">
+  <div class="page-header">
+    <div><h1 id="pageTitle">06/09 ~ 06/15</h1></div>
+    <div class="page-header-actions">
+      <button class="btn-sm-outline" onclick="openHistoryModal()" style="position:relative;">
+        📋 修改记录
+        <span id="historyBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;font-size:0.65rem;width:18px;height:18px;border-radius:50%;align-items:center;justify-content:center;font-weight:700;">0</span>
+      </button>
+      <button class="btn-sm-outline warning" onclick="openBatchEditModal()">📝 批量修改</button>
+    </div>
+  </div>
+  <div class="metrics-group">
+    <div class="metrics-group-grid cols-4">
+      <div class="metric-card">
+        <div class="metric-label">用户总数</div>
+        <div class="metric-value" id="mTotalUsers">128</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">总名义产出</div>
+        <div class="metric-value gold" id="mTotalNominal">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">总实际产出</div>
+        <div class="metric-value green" id="mTotalActual">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">周期状态</div>
+        <div class="metric-value blue" id="mWeekStatus" style="font-size:1.2rem;">结算中</div>
+      </div>
+    </div>
+  </div>
+  <div class="section-card">
+    <div class="section-toolbar">
+      <div class="section-toolbar-left">
+        <h3>用户收益明细</h3>
+        <div style="position:relative;margin-left:12px;">
+          <input type="text" id="uidSearchInput" placeholder="🔍 搜索 UID..."
+            style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;width:180px;outline:none;background:var(--bg);color:var(--text);transition:border-color 0.15s;" />
+        </div>
+      </div>
+      <div class="section-toolbar-right">
+        <span style="font-size:0.78rem;color:var(--text-tertiary);" id="userCountLabel">共 0 人</span>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="userTable">
+        <thead>
+          <tr>
+            <th style="min-width:100px;">用户 UID</th>
+            <th style="width:140px;">名义产出 (STORY)</th>
+            <th style="width:140px;">实际产出 (STORY)</th>
+            <th style="width:100px;">操作</th>
+          </tr>
+        </thead>
+        <tbody id="userBody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="userPagination"></div>
+  </div>
+</div>
+
+<!-- 单用户编辑弹窗 -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>修改实际产出</h3>
+      <button class="modal-close" onclick="closeModal('editModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>修改用户 <span class="highlight" id="editUserLabel">UID-1001</span> 的实际产出：</p>
+      <div class="form-group">
+        <label>名义产出</label>
+        <input type="text" id="editNominalDisplay" readonly style="background:var(--border-light);color:var(--text-tertiary);" />
+      </div>
+      <div class="form-group">
+        <label>实际产出 (STORY)</label>
+        <input type="number" id="editActualInput" min="0" step="0.01" placeholder="输入金额" />
+      </div>
+      <div class="form-hint">最小可设为 0</div>
+      <div class="form-group">
+        <label>备注（修改原因）</label>
+        <textarea id="editRemarkInput" rows="3" placeholder="请输入修改原因…"
+          style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.88rem;background:var(--bg);color:var(--text);outline:none;resize:vertical;font-family:inherit;line-height:1.5;" 
+        ></textarea>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeModal('editModal')">取消</button>
+      <button class="btn-modal-confirm" onclick="confirmEdit()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 批量修改弹窗 -->
+<div class="modal-overlay" id="batchEditModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>批量修改实际产出</h3>
+      <button class="modal-close" onclick="closeModal('batchEditModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>将所有用户的实际产出统一设为以下金额：</p>
+      <div class="form-group">
+        <label>统一实际产出 (STORY)</label>
+        <input type="number" id="batchActualInput" min="0" step="0.01" placeholder="输入金额" />
+      </div>
+      <div class="form-hint">最小可设为 0。此操作将覆盖所有用户的当前实际产出值。</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeModal('batchEditModal')">取消</button>
+      <button class="btn-modal-confirm warning" onclick="confirmBatchEdit()">确认批量修改</button>
+    </div>
+  </div>
+</div>
+
+<!-- 修改记录弹窗 -->
+<div class="modal-overlay" id="historyModal">
+  <div class="modal-box" style="max-width:600px;">
+    <div class="modal-header">
+      <h3>📋 修改记录</h3>
+      <button class="modal-close" onclick="closeModal('historyModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="historyList" style="max-height:360px;overflow-y:auto;"></div>
+      <div id="historyEmpty" style="text-align:center;padding:32px 0;color:var(--text-tertiary);font-size:0.88rem;">暂无修改记录</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeModal('historyModal')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-notification" id="toastNotification"><span id="toastMessage"></span></div>
+
+<script>
+(function() {
+  const btn = document.getElementById('adminBrandBtn');
+  const dd = document.getElementById('adminDropdown');
+  const arrow = document.getElementById('adminBrandArrow');
+  if (btn && dd) {
+    btn.addEventListener('click', function(e) {
+      if (e.target.closest('.admin-dropdown')) return;
+      e.stopPropagation();
+      dd.classList.toggle('open');
+      if (arrow) arrow.classList.toggle('open');
+    });
+    document.addEventListener('click', function() {
+      dd.classList.remove('open');
+      if (arrow) arrow.classList.remove('open');
+    });
+  }
+})();
+
+function getQueryParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function generateUserData(week) {
+  const users = [];
+  const baseUid = week * 1000;
+  const count = 12 + (week % 5) * 3;
+  const nameParts = ['子轩','雨涵','浩宇','雪琪','明哲','思涵','天佑','诗涵','宇轩','若曦',
+    '子涵','晨曦','俊杰','语嫣','梓豪','芷柔','一鸣','佳琪','文博','静怡',
+    '鹏飞','梦洁','志远','婉婷','泽宇','芸熙','翰林','瑾瑜','睿渊','雅静'];
+  for (let i = 0; i < count; i++) {
+    const nominal = +(50 + Math.random() * 500).toFixed(2);
+    const actual = weekStatuses[week] === 'approved' ? nominal : +(nominal * (0.3 + Math.random() * 0.7)).toFixed(2);
+    users.push({ uid: baseUid + i + 1, name: nameParts[i % nameParts.length], nominal, actual });
+  }
+  return users;
+}
+
+const weekInfoMap = {
+  22:{range:'06/09 ~ 06/15',users:128,amount:1852300}, 21:{range:'06/02 ~ 06/08',users:156,amount:2102900},
+  20:{range:'05/26 ~ 06/01',users:142,amount:1987600}, 19:{range:'05/19 ~ 05/25',users:115,amount:1754000},
+  18:{range:'05/12 ~ 05/18',users:168,amount:2117300}, 17:{range:'05/05 ~ 05/11',users:134,amount:1921500},
+  16:{range:'04/28 ~ 05/04',users:127,amount:1884200}, 15:{range:'04/21 ~ 04/27',users:172,amount:2131700},
+  14:{range:'04/14 ~ 04/20',users:119,amount:2011300}, 13:{range:'04/07 ~ 04/13',users:108,amount:1896400},
+  12:{range:'03/31 ~ 04/06',users:161,amount:2146100}, 11:{range:'03/24 ~ 03/30',users:145,amount:1968200},
+  10:{range:'03/17 ~ 03/23',users:178,amount:2155700}, 9:{range:'03/10 ~ 03/16',users:98,amount:1789300},
+  8:{range:'03/03 ~ 03/09',users:132,amount:2038200}, 7:{range:'02/24 ~ 03/02',users:155,amount:2170100},
+  6:{range:'02/17 ~ 02/23',users:111,amount:1857600}, 5:{range:'02/10 ~ 02/16',users:124,amount:1924500},
+  4:{range:'02/03 ~ 02/09',users:166,amount:2184500}, 3:{range:'01/27 ~ 02/02',users:87,amount:1748200},
+  2:{range:'01/20 ~ 01/26',users:153,amount:2194100}, 1:{range:'01/13 ~ 01/19',users:136,amount:2034700}
+};
+const weekStatuses = {
+  22:'pending',21:'approved',20:'approved',19:'approved',18:'approved',
+  17:'pending',16:'approved',15:'approved',14:'approved',13:'pending',
+  12:'approved',11:'approved',10:'approved',9:'approved',8:'approved',
+  7:'approved',6:'approved',5:'approved',4:'approved',3:'approved',2:'approved',1:'approved'
+};
+
+let currentWeek = 22;
+let userData = [];
+let uidSearchKeyword = '';
+let modificationHistory = [];
+let userPage = 1;
+const USER_PAGE_SIZE = 10;
+
+function fmt(n) {
+  if (n >= 1000000000) return (n/1000000000).toFixed(2)+'B';
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000) return (n/1000).toFixed(1)+'k';
+  return n.toLocaleString();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toastNotification');
+  document.getElementById('toastMessage').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function updateHistoryBadge() {
+  const badge = document.getElementById('historyBadge');
+  if (!badge) return;
+  const count = modificationHistory.length;
+  if (count > 0) {
+    badge.style.display = 'flex';
+    badge.textContent = count;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function openHistoryModal() {
+  const list = document.getElementById('historyList');
+  const empty = document.getElementById('historyEmpty');
+  if (modificationHistory.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    list.innerHTML = modificationHistory.slice().reverse().map((r, i) => {
+      const idx = modificationHistory.length - i;
+      return `<div style="padding:12px 0;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:flex-start;">
+        <span style="background:var(--accent-soft);color:var(--accent);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;">${idx}</span>
+        <div style="flex:1;">
+          <div style="font-size:0.82rem;font-weight:600;">UID-${r.uid} · ${r.userName}</div>
+          <div style="font-size:0.78rem;color:var(--text-secondary);margin:4px 0;">
+            <span style="color:var(--text-tertiary);">${r.oldActual.toFixed(2)}</span>
+            <span style="color:var(--text-tertiary);margin:0 4px;">→</span>
+            <span style="color:var(--accent);font-weight:600;">${r.newActual.toFixed(2)}</span>
+          </div>
+          ${r.remark ? `<div style="font-size:0.78rem;color:var(--text-tertiary);">备注：${r.remark}</div>` : ''}
+          <div style="font-size:0.7rem;color:var(--text-tertiary);margin-top:2px;">${r.time}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  openModal('historyModal');
+}
+
+function renderPage() {
+  const info = weekInfoMap[currentWeek] || {range:'未知',users:0,amount:0};
+  const status = weekStatuses[currentWeek] || 'pending';
+  const statusLabel = status === 'pending' ? '结算中' : '已放行';
+  const statusClass = status === 'pending' ? 'pending' : 'approved';
+  document.getElementById('pageTitle').textContent = `${info.range}`;
+  document.getElementById('mTotalUsers').textContent = userData.length;
+  const totalNominal = userData.reduce((s,u) => s + u.nominal, 0);
+  const totalActual = userData.reduce((s,u) => s + u.actual, 0);
+  document.getElementById('mTotalNominal').textContent = fmt(totalNominal);
+  document.getElementById('mTotalActual').textContent = fmt(totalActual);
+  document.getElementById('mWeekStatus').innerHTML = `<span class="status-tag ${statusClass}">${statusLabel}</span>`;
+  renderUserTable();
+}
+
+function renderUserTable() {
+  const status = weekStatuses[currentWeek] || 'pending';
+  const isPending = status === 'pending';
+  const tbody = document.getElementById('userBody');
+  const paginationEl = document.getElementById('userPagination');
+  const keyword = uidSearchKeyword.trim();
+  const filtered = keyword ? userData.filter(u => String(u.uid).includes(keyword)) : userData;
+  filtered.sort((a, b) => b.actual - a.actual);
+  const totalFiltered = filtered.length;
+  document.getElementById('userCountLabel').textContent = keyword ? `筛选 ${totalFiltered} / 共 ${userData.length} 人` : `共 ${userData.length} 人`;
+  const totalPages = Math.ceil(totalFiltered / USER_PAGE_SIZE) || 1;
+  if (userPage > totalPages) userPage = totalPages;
+  const start = (userPage - 1) * USER_PAGE_SIZE;
+  const pageData = filtered.slice(start, start + USER_PAGE_SIZE);
+  if (pageData.length === 0) {
+    tbody.innerHTML = keyword ? '<tr><td colspan="4" class="empty-state">未找到匹配的用户</td></tr>' : '<tr><td colspan="4" class="empty-state">暂无用户数据</td></tr>';
+    paginationEl.innerHTML = '';
+    return;
+  }
+  tbody.innerHTML = pageData.map(u => `<tr>
+    <td><strong>${u.uid}</strong><span style="color:var(--text-tertiary);font-size:0.78rem;margin-left:6px;">${u.name}</span></td>
+    <td style="font-weight:600;">${u.nominal.toFixed(2)}</td>
+    <td style="font-weight:600;${isPending ? 'color:var(--text);' : 'color:var(--accent);'}">${u.actual.toFixed(2)}</td>
+    <td>${isPending ? `<button class="btn-sm-outline" onclick="openEditModal(${u.uid})">✏️ 编辑</button>` : `<span style="color:var(--text-tertiary);font-size:0.78rem;">—</span>`}</td>
+  </tr>`).join('');
+  renderUserPagination(totalPages);
+}
+
+function renderUserPagination(totalPages) {
+  const el = document.getElementById('userPagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <button ${userPage <= 1 ? 'disabled' : ''} onclick="changeUserPage(${userPage - 1})">← 上一页</button>
+    <span class="page-info">第 ${userPage} / ${totalPages} 页</span>
+    <button ${userPage >= totalPages ? 'disabled' : ''} onclick="changeUserPage(${userPage + 1})">下一页 →</button>`;
+}
+
+function changeUserPage(page) {
+  userPage = page;
+  renderUserTable();
+}
+
+let editingUid = null;
+
+function openEditModal(uid) {
+  const u = userData.find(d => d.uid === uid);
+  if (!u) return;
+  editingUid = uid;
+  document.getElementById('editUserLabel').textContent = `UID-${uid} · ${u.name}`;
+  document.getElementById('editNominalDisplay').value = u.nominal.toFixed(2);
+  document.getElementById('editActualInput').value = u.actual;
+  document.getElementById('editRemarkInput').value = '';
+  openModal('editModal');
+}
+
+function confirmEdit() {
+  const input = document.getElementById('editActualInput');
+  const val = parseFloat(input.value);
+  if (isNaN(val) || val < 0) { showToast('请输入有效的金额（最小为 0）'); return; }
+  const u = userData.find(d => d.uid === editingUid);
+  if (!u) return;
+  const oldVal = u.actual;
+  u.actual = +val.toFixed(2);
+
+  const remark = document.getElementById('editRemarkInput').value.trim();
+  const now = new Date();
+  const timeStr = now.toLocaleString('zh-CN', {hour12:false});
+  modificationHistory.push({ uid: u.uid, userName: u.name, oldActual: oldVal, newActual: u.actual, remark, time: timeStr });
+  updateHistoryBadge();
+
+  closeModal('editModal');
+  renderPage();
+  showToast(`✅ 已更新 UID-${editingUid} 实际产出为 ${u.actual.toFixed(2)} STORY`);
+  editingUid = null;
+}
+
+function updateActual(uid, value) {
+  const val = parseFloat(value);
+  if (isNaN(val) || val < 0) return;
+  const u = userData.find(d => d.uid === uid);
+  if (!u) return;
+  u.actual = +val.toFixed(2);
+  document.getElementById('mTotalActual').textContent = fmt(userData.reduce((s,u) => s + u.actual, 0));
+}
+
+function openBatchEditModal() {
+  const status = weekStatuses[currentWeek] || 'pending';
+  if (status !== 'pending') { showToast('该周期已放行，不可修改'); return; }
+  document.getElementById('batchActualInput').value = '';
+  openModal('batchEditModal');
+}
+
+function confirmBatchEdit() {
+  const input = document.getElementById('batchActualInput');
+  const val = parseFloat(input.value);
+  if (isNaN(val) || val < 0) { showToast('请输入有效的金额（最小为 0）'); return; }
+  const rounded = +val.toFixed(2);
+  const now = new Date();
+  const timeStr = now.toLocaleString('zh-CN', {hour12:false});
+
+  userData.forEach(u => {
+    if (u.actual !== rounded) {
+      modificationHistory.push({ uid: u.uid, userName: u.name, oldActual: u.actual, newActual: rounded, remark: '批量修改', time: timeStr });
+    }
+    u.actual = rounded;
+  });
+  updateHistoryBadge();
+
+  closeModal('batchEditModal');
+  renderPage();
+  showToast(`✅ 已将所有用户实际产出统一设为 ${rounded} STORY`);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const weekParam = getQueryParam('week');
+  currentWeek = weekParam ? parseInt(weekParam) : 22;
+  if (!weekInfoMap[currentWeek]) currentWeek = 22;
+  userData = generateUserData(currentWeek);
+  renderPage();
+  const searchInput = document.getElementById('uidSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      uidSearchKeyword = e.target.value;
+      renderUserTable();
+    });
+  }
+});
+</script>
+</body>
+</html>
