@@ -31,53 +31,6 @@
     .app-shell { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
     @media (max-width: 640px) { .app-shell { padding: 16px; } }
 
-    /* Admin top bar */
-    .admin-topbar {
-      background: #13202e; color: #fff; padding: 0 32px; height: 48px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: relative; z-index: 100;
-    }
-    .admin-topbar-left {
-      display: flex; align-items: center; gap: 12px; height: 100%;
-    }
-    .admin-topbar-brand {
-      display: flex; align-items: center; gap: 8px; cursor: pointer;
-      padding: 0 8px; height: 100%; position: relative;
-      user-select: none; background: none; border: none; color: #fff;
-      font-weight: 700; font-size: 1rem;
-    }
-    .admin-topbar-brand:hover {
-      background: rgba(255,255,255,0.08);
-    }
-    .admin-topbar-brand .arrow {
-      font-size: 10px; transition: transform 0.22s ease;
-      color: #8ba0b8;
-    }
-    .admin-topbar-brand .arrow.open { transform: rotate(180deg); }
-    .admin-topbar-sep { color: #40556b; font-size: 0.85rem; }
-    .admin-topbar-label { color: #b0c4d9; font-size: 0.85rem; }
-
-    /* Admin dropdown */
-    .admin-dropdown {
-      position: absolute; top: calc(100% + 6px); left: 0;
-      min-width: 180px; background: #ffffff; border: 0.5px solid #ECECF0;
-      border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-      overflow: hidden;
-      opacity: 0; visibility: hidden; transform: translateY(-6px);
-      transition: all 0.22s ease; z-index: 200;
-    }
-    .admin-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
-    .admin-dropdown-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 13px 18px;
-      font-family: inherit; font-weight: 500; font-size: 14px; line-height: 20px;
-      color: #1C2024; text-decoration: none; transition: background 0.15s ease;
-      white-space: nowrap;
-    }
-    .admin-dropdown-item:hover { background: #F5F5F7; }
-    .admin-dropdown-item:first-child { border-bottom: 0.5px solid #ECECF0; }
-    .admin-dropdown-item.current { background: #f0f7ff; color: #0057b3; }
-
     .page-header {
       display: flex;
       align-items: center;
@@ -182,21 +135,7 @@
 </head>
 <body>
 
-  <!-- 管理后台标题栏（带下拉菜单） -->
-  <div class="admin-topbar">
-    <div class="admin-topbar-left">
-      <button class="admin-topbar-brand" id="adminBrandBtn">
-        ⚙️ 管理后台
-        <span class="arrow" id="adminBrandArrow">▾</span>
-        <div class="admin-dropdown" id="adminDropdown">
-          <a class="admin-dropdown-item" href="../index.html">🎭 用户端</a>
-          <a class="admin-dropdown-item current" href="admin-mining.html">⚙️ 后台管理</a>
-        </div>
-      </button>
-      <span class="admin-topbar-sep">|</span>
-      <span class="admin-topbar-label">挖矿结算管理</span>
-    </div>
-  </div>
+  <div id="admin-sidebar-placeholder"></div>
 
   <div class="app-shell">
 
@@ -259,27 +198,8 @@
     <span id="toastMessage"></span>
   </div>
 
+  <script src="load-admin-sidebar.js"></script>
   <script>
-    // ================================================================
-    //  Admin 标题栏下拉菜单
-    // ================================================================
-    (function() {
-      const btn = document.getElementById('adminBrandBtn');
-      const dd = document.getElementById('adminDropdown');
-      const arrow = document.getElementById('adminBrandArrow');
-      if (!btn || !dd) return;
-      btn.addEventListener('click', function(e) {
-        if (e.target.closest('.admin-dropdown')) return;
-        e.stopPropagation();
-        dd.classList.toggle('open');
-        if (arrow) arrow.classList.toggle('open');
-      });
-      document.addEventListener('click', function() {
-        dd.classList.remove('open');
-        if (arrow) arrow.classList.remove('open');
-      });
-    })();
-
     // ================================================================
     //  模拟数据
     // ================================================================
