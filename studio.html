@@ -1545,7 +1545,7 @@
         <div style="font-size:0.85rem;line-height:1.8;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
             <span>单卡小时权重</span>
-            <span style="font-weight:700;color:var(--text);">挖矿系数 × Heat × CP 系数 × trust</span>
+            <span style="font-weight:700;color:var(--text);text-align:right;">挖矿系数 × Heat × CP 系数 × trust1 × trust2</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
             <span>CP 系数</span>
@@ -1573,8 +1573,16 @@
       <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
         <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>初始周硬顶</span>
-            <span style="font-weight:700;color:var(--accent);">2,115,385 STORY</span>
+            <span>本周总奖池</span>
+            <span style="font-weight:700;color:var(--accent);" id="weeklyPoolTotal">2,115,385 STORY</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>├ 本周质押奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（75%）</span></span>
+            <span style="font-weight:700;color:var(--accent);" id="weeklyPoolStaking">1,586,539 STORY</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>└ 本周邀请奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（25%）</span></span>
+            <span style="font-weight:700;color:var(--accent);" id="weeklyPoolReferral">528,846 STORY</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
             <span>周衰减系数</span>
@@ -2482,6 +2490,10 @@
     //  本周奖池（周硬顶）弹窗
     // ============================================================
     function openWeeklyPoolModal() {
+      const weeklyPool = 2115385;
+      document.getElementById('weeklyPoolTotal').textContent = weeklyPool.toLocaleString() + ' STORY';
+      document.getElementById('weeklyPoolStaking').textContent = Math.floor(weeklyPool * 0.75).toLocaleString() + ' STORY';
+      document.getElementById('weeklyPoolReferral').textContent = Math.floor(weeklyPool * 0.25).toLocaleString() + ' STORY';
       document.getElementById('weeklyPoolModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }

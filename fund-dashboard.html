@@ -337,7 +337,8 @@
               <tr>
                 <th style="width:110px;">周期</th>
                 <th style="width:130px;">周硬顶</th>
-                <th style="width:130px;">实际释放</th>
+                <th style="width:120px;">质押挖矿</th>
+                <th style="width:120px;">邀请挖矿</th>
                 <th style="width:100px;">使用率</th>
               </tr>
             </thead>
@@ -419,7 +420,8 @@
             <tr>
               <th style="width:110px;">周期</th>
               <th style="width:130px;">周硬顶</th>
-              <th style="width:130px;">实际释放</th>
+              <th style="width:120px;">质押挖矿</th>
+              <th style="width:120px;">邀请挖矿</th>
               <th style="width:100px;">使用率</th>
             </tr>
           </thead>
@@ -653,27 +655,35 @@
     // ── 每周释放（首页） ──
     function renderWeeklyRelease() {
       const tbody = document.getElementById('weeklyReleaseBody');
-      tbody.innerHTML = WEEKLY_RELEASE.map(r => `
+      tbody.innerHTML = WEEKLY_RELEASE.map(r => {
+        const staking = Math.floor(r.actual * 0.75);
+        const referral = r.actual - staking;
+        return `
         <tr>
           <td style="color:var(--text-secondary);">${r.range}</td>
           <td>${fmt(r.cap)}</td>
-          <td style="font-weight:600;color:var(--gold);">${fmt(r.actual)}</td>
+          <td style="font-weight:600;color:var(--gold);">${fmt(staking)}</td>
+          <td style="font-weight:600;color:var(--warning);">${fmt(referral)}</td>
           <td>${r.usage}</td>
         </tr>
-      `).join('');
+      `}).join('');
     }
 
     // ── 每周释放弹窗（全部历史） ──
     function renderWeeklyReleaseFull() {
       const tbody = document.getElementById('weeklyReleaseFullBody');
-      tbody.innerHTML = WEEKLY_RELEASE_FULL.map(r => `
+      tbody.innerHTML = WEEKLY_RELEASE_FULL.map(r => {
+        const staking = Math.floor(r.actual * 0.75);
+        const referral = r.actual - staking;
+        return `
         <tr>
           <td style="color:var(--text-secondary);">${r.range}</td>
           <td>${fmt(r.cap)}</td>
-          <td style="font-weight:600;color:var(--gold);">${fmt(r.actual)}</td>
+          <td style="font-weight:600;color:var(--gold);">${fmt(staking)}</td>
+          <td style="font-weight:600;color:var(--warning);">${fmt(referral)}</td>
           <td>${r.usage}</td>
         </tr>
-      `).join('');
+      `}).join('');
     }
     function openWeeklyReleaseModal() { renderWeeklyReleaseFull(); openModal('weeklyReleaseModal'); }
 
