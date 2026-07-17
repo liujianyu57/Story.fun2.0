@@ -8,6 +8,7 @@
 const PRIVY_MOCK_USER = {
   id: 'user_privy_001',
   name: '加密小白',
+  bio: '在Web3的世界里探索短剧的无限可能。创作者、收藏家、梦想家。',
   email: 'crypto@story.fun',
   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
   wallet: '0x7A2b...3fD8',

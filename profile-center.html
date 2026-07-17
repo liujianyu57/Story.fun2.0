@@ -40,16 +40,18 @@
 
     .avatar-wrap { flex-shrink: 0; }
     .avatar-gradient { width: 128px; height: 128px; border-radius: 99px; padding: 4px; background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%); box-shadow: 0px 4px 6px -4px rgba(0,0,0,0.1), 0px 10px 15px -3px rgba(0,0,0,0.1); }
-    .avatar-bg { width: 100%; height: 100%; border-radius: 88px; background: var(--surface); display: flex; align-items: center; justify-content: center; }
+    .avatar-bg { width: 100%; height: 100%; border-radius: 88px; overflow: hidden; background: var(--surface); display: flex; align-items: center; justify-content: center; }
+    .avatar-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .avatar-bg .avatar-letter { font-size: 30px; font-weight: 700; }
 
     .user-info-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
     .user-info-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
     .user-info-texts { display: flex; flex-direction: column; gap: 8px; }
     .user-name { font-size: 24px; font-weight: 700; color: var(--text); }
+    .user-bio { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 480px; }
 
     .btn-edit { padding: 10px 24px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; height: 44px; display: flex; align-items: center; gap: 6px; }
-    .btn-edit:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-edit:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 
     /* ===== Tabs ===== */
     .tab-bar { display: flex; align-items: center; gap: 32px; border-bottom: 1px solid var(--border); }
@@ -89,6 +91,61 @@
     .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
     .empty-state p { font-size: 15px; }
 
+    /* ===== Edit Profile Modal ===== */
+    .modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card { background: var(--surface); border-radius: 28px; width: 100%; max-width: 440px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; padding: 28px; }
+    .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+    .modal-card h2 { margin: 0 0 8px; font-size: 1.25rem; text-align: center; }
+    .modal-card .modal-sub { color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 20px; }
+    .modal-card .modal-btn {
+      width: 100%; padding: 14px; border-radius: 999px; border: none;
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+    }
+    .modal-card .modal-btn.confirm {
+      background: linear-gradient(135deg, #05DF72, #00BBA7);
+      color: #fff; margin-bottom: 10px;
+    }
+    .modal-card .modal-btn.confirm:hover { transform: translateY(-2px); }
+    .modal-card .modal-btn.cancel {
+      background: transparent; color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .modal-card .modal-btn.cancel:hover { background: rgba(0,0,0,0.03); }
+    .modal-card .modal-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
+
+    .edit-field-group {
+      display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;
+    }
+    .edit-field-group label {
+      font-size: 0.85rem; font-weight: 600; color: var(--text);
+    }
+    .edit-field-group input,
+    .edit-field-group textarea {
+      padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
+      font-size: 0.9rem; font-family: inherit; color: var(--text);
+      background: var(--bg); transition: border-color 0.2s; outline: none;
+    }
+    .edit-field-group input:focus,
+    .edit-field-group textarea:focus {
+      border-color: var(--accent); background: var(--surface);
+    }
+    .edit-field-group textarea {
+      resize: vertical; min-height: 80px; line-height: 1.5;
+    }
+    .edit-field-group .char-count {
+      font-size: 0.7rem; color: var(--text-sub); text-align: right; margin-top: 2px;
+    }
+
+    /* Avatar preview in edit modal */
+    .edit-avatar-preview {
+      width: 80px; height: 80px; border-radius: 50%; overflow: hidden;
+      margin: 0 auto 16px; border: 3px solid var(--border);
+    }
+    .edit-avatar-preview img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
     /* Responsive */
     @media (max-width: 1120px) { .works-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
     @media (max-width: 900px) {
@@ -116,8 +173,8 @@
         <div class="user-info-inner">
           <div class="avatar-wrap">
             <div class="avatar-gradient">
-              <div class="avatar-bg">
-                <span class="avatar-letter gradient-text">叙</span>
+              <div class="avatar-bg" id="avatarContainer">
+                <span class="avatar-letter gradient-text" id="avatarLetter">叙</span>
               </div>
             </div>
           </div>
@@ -125,8 +182,9 @@
             <div class="user-info-top">
               <div class="user-info-texts">
                 <div class="user-name" id="profileName">加密小白</div>
+                <div class="user-bio" id="profileBio">在Web3的世界里探索短剧的无限可能。创作者、收藏家、梦想家。</div>
               </div>
-              <button class="btn-edit" onclick="showToast('🕘 编辑资料开发中')">✎ 编辑</button>
+              <button class="btn-edit" onclick="openEditProfileModal()">✎ 编辑资料</button>
             </div>
           </div>
         </div>
@@ -141,7 +199,7 @@
         </div>
       </div>
 
-      <!-- Works Grid - 发布短剧（完全复刻 index.html 短剧卡片结构） -->
+      <!-- Works Grid - 发布短剧 -->
       <div id="tabPublished" class="works-grid">
         <article class="work-card" onclick="location.href='drama-detail.html'">
           <img class="card-thumb" src="image/fenggu_cover.jpg" alt="凤骨琉璃" />
@@ -236,26 +294,78 @@
     </div>
   </div>
 
+  <!-- ===== Edit Profile Modal ===== -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-card">
+      <h2>编辑资料</h2>
+      <p class="modal-sub">修改你的头像、用户名和简介</p>
+
+      <div class="edit-avatar-preview" id="editAvatarPreview">
+        <img src="" alt="头像预览" />
+      </div>
+
+      <div class="edit-field-group">
+        <label>头像</label>
+        <input type="file" id="editAvatarFile" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)" />
+        <button type="button" class="btn-edit" onclick="document.getElementById('editAvatarFile').click()" style="width:100%;justify-content:center;">📷 选择本地图片</button>
+      </div>
+
+      <div class="edit-field-group">
+        <label>用户名</label>
+        <input type="text" id="editNameInput" placeholder="输入用户名" maxlength="20" />
+      </div>
+
+      <div class="edit-field-group">
+        <label>简介</label>
+        <textarea id="editBioInput" placeholder="介绍一下自己" maxlength="120"></textarea>
+        <span class="char-count"><span id="bioCharCount">0</span>/120</span>
+      </div>
+
+      <button class="modal-btn confirm" onclick="saveProfile()">保存</button>
+      <button class="modal-btn cancel" onclick="closeEditProfileModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-notification" id="toastNotification" style="position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 99999; background: rgba(26, 35, 47, 0.95); backdrop-filter: blur(8px); color: #fff; padding: 16px 24px; border-radius: 16px; font-size: 0.92rem; line-height: 1.6; box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 420px; text-align: center; font-weight: 500;">
+    <span class="toast-icon">💡</span>
+    <span id="toastMessage"></span>
+  </div>
+
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
   <script>
+    let toastTimer = null;
+
+    function showToast(msg, icon) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      if (icon) t.querySelector('.toast-icon').textContent = icon;
+      t.classList.add('show');
+      t.style.transform = 'translateX(-50%) translateY(0)';
+      t.style.opacity = '1';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.style.transform = 'translateX(-50%) translateY(-100px)';
+        t.style.opacity = '0';
+        setTimeout(() => t.classList.remove('show'), 400);
+      }, 3000);
+    }
+
     /**
      * Tab switching
      */
     function switchTab(tab) {
-      // Update tab buttons
       document.querySelectorAll('.tab-item').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tab);
       });
-
-      // Show/hide content
       document.getElementById('tabPublished').style.display = tab === 'published' ? 'grid' : 'none';
       document.getElementById('tabLiked').style.display = tab === 'liked' ? 'block' : 'none';
       document.getElementById('tabFavorited').style.display = tab === 'favorited' ? 'block' : 'none';
     }
 
     /**
-     * Load user profile from auth.js
+     * Load user profile from auth.js currentUser
      */
     function loadProfile() {
       if (typeof currentUser === 'undefined') {
@@ -263,13 +373,203 @@
         return;
       }
 
+      const name = currentUser.name || '未登录用户';
+      const bio = currentUser.bio || '';
+      const avatar = currentUser.avatar || '';
+
+      // Update name
       const nameEl = document.getElementById('profileName');
-      if (nameEl) nameEl.textContent = currentUser.name || '未登录用户';
+      if (nameEl) nameEl.textContent = name;
+
+      // Update bio
+      const bioEl = document.getElementById('profileBio');
+      if (bioEl) bioEl.textContent = bio;
+
+      // Update avatar
+      updateAvatarDisplay(avatar, name);
     }
 
-    // Wait for auth to be ready
-    document.addEventListener('DOMContentLoaded', loadProfile);
+    /**
+     * Update avatar display (show image or fallback letter)
+     */
+    function updateAvatarDisplay(avatarUrl, name) {
+      const container = document.getElementById('avatarContainer');
+      if (!container) return;
+
+      if (avatarUrl) {
+        container.innerHTML = '<img src="' + avatarUrl + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" />' +
+          '<span class="avatar-letter gradient-text" style="display:none;">' + (name ? name.charAt(0) : '?') + '</span>';
+      } else {
+        container.innerHTML = '<span class="avatar-letter gradient-text">' + (name ? name.charAt(0) : '?') + '</span>';
+      }
+    }
+
+    // Track pending avatar data URL from file upload
+    let pendingAvatarDataUrl = null;
+
+    /**
+     * Open edit profile modal
+     */
+    function openEditProfileModal() {
+      if (typeof currentUser === 'undefined') {
+        showToast('⚠️ 请先登录', '🔑');
+        return;
+      }
+
+      const avatar = currentUser.avatar || '';
+      const name = currentUser.name || '';
+      const bio = currentUser.bio || '';
+
+      // Reset pending avatar
+      pendingAvatarDataUrl = null;
+
+      // Set preview
+      updateEditAvatarPreview(avatar, name);
+
+      // Reset file input
+      const fileInput = document.getElementById('editAvatarFile');
+      if (fileInput) fileInput.value = '';
+
+      // Set input values
+      document.getElementById('editNameInput').value = name;
+      document.getElementById('editBioInput').value = bio;
+
+      // Update char count
+      updateBioCharCount();
+
+      // Show modal
+      document.getElementById('editProfileModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Update avatar preview in edit modal
+     */
+    function updateEditAvatarPreview(src, name) {
+      const container = document.getElementById('editAvatarPreview');
+      if (!container) return;
+      if (src) {
+        container.innerHTML = '<img src="' + src + '" alt="头像预览" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" />' +
+          '<span class="avatar-letter gradient-text" style="display:none;">' + (name ? name.charAt(0) : '?') + '</span>';
+      } else {
+        container.innerHTML = '<div style="width:80px;height:80px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:var(--text-sub);">' + (name ? name.charAt(0) : '?') + '</div>';
+      }
+    }
+
+    /**
+     * Handle local file selection for avatar
+     */
+    function handleAvatarFileSelect(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        showToast('⚠️ 请选择图片文件');
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('⚠️ 图片大小不能超过 5MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        pendingAvatarDataUrl = dataUrl;
+        const name = document.getElementById('editNameInput').value || '?';
+        updateEditAvatarPreview(dataUrl, name);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateBioCharCount() {
+      const input = document.getElementById('editBioInput');
+      const counter = document.getElementById('bioCharCount');
+      if (input && counter) {
+        counter.textContent = input.value.length;
+      }
+    }
+
+    /**
+     * Close edit profile modal
+     */
+    function closeEditProfileModal() {
+      document.getElementById('editProfileModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    /**
+     * Save profile changes
+     */
+    function saveProfile() {
+      if (typeof currentUser === 'undefined') {
+        showToast('⚠️ 请先登录', '🔑');
+        return;
+      }
+
+      const newAvatar = pendingAvatarDataUrl || currentUser.avatar || '';
+      const newName = document.getElementById('editNameInput').value.trim();
+      const newBio = document.getElementById('editBioInput').value.trim();
+
+      if (!newName) {
+        showToast('⚠️ 用户名不能为空');
+        return;
+      }
+
+      // Update currentUser
+      currentUser.avatar = newAvatar;
+      currentUser.name = newName;
+      currentUser.bio = newBio;
+
+      // Save to localStorage
+      if (typeof saveUserToStorage === 'function') {
+        saveUserToStorage(currentUser);
+      }
+
+      // Update UI
+      const nameEl = document.getElementById('profileName');
+      if (nameEl) nameEl.textContent = newName;
+
+      const bioEl = document.getElementById('profileBio');
+      if (bioEl) bioEl.textContent = newBio;
+
+      updateAvatarDisplay(newAvatar, newName);
+
+      // Refresh auth dropdown in header
+      const containers = document.querySelectorAll('.auth-container');
+      containers.forEach(container => {
+        if (typeof renderAuthUI === 'function') {
+          renderAuthUI(container);
+        }
+      });
+
+      closeEditProfileModal();
+      showToast('✅ 资料已保存', '💾');
+    }
+
+    // Monitor bio input for char count
+    document.addEventListener('DOMContentLoaded', function() {
+      const bioInput = document.getElementById('editBioInput');
+      if (bioInput) {
+        bioInput.addEventListener('input', updateBioCharCount);
+      }
+
+      // Load profile
+      loadProfile();
+    });
+
     document.addEventListener('header-loaded', loadProfile);
+
+    // Click modal overlay to close
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('active')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
   </script>
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
