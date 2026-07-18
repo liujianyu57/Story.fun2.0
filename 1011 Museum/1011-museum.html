@@ -34,6 +34,57 @@
       overflow-x: hidden;
     }
 
+    /* ============================================
+       SITE HEADER (左上角 Logo + 标题)
+       ============================================ */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 28px;
+      background: linear-gradient(to right, rgba(13,17,20,0.92) 0%, rgba(13,17,20,0.7) 70%, transparent 100%);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      pointer-events: none;
+    }
+    .site-header * {
+      pointer-events: auto;
+    }
+    .site-header .logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .site-header .logo-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.06em;
+      font-family: "SF Pro Display", "PingFang SC", sans-serif;
+      white-space: nowrap;
+    }
+    .site-header .logo-text .gold {
+      color: var(--gold);
+    }
+    @media (max-width: 768px) {
+      .site-header {
+        padding: 14px 18px;
+        gap: 8px;
+      }
+      .site-header .logo-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .site-header .logo-text {
+        font-size: 14px;
+      }
+    }
+
     /* Reveal Animation */
     .reveal {
       opacity: 0; transform: translateY(32px);
@@ -798,9 +849,18 @@
 <body>
 
   <!-- ===============================
+       SITE HEADER (左上角 Logo + 标题)
+       =============================== -->
+  <header class="site-header">
+    <img class="logo-icon" src="../image/storyfun-logo-icon.png" alt="1011 Museum" />
+    <span class="logo-text"><span class="gold">1011</span> 博物馆</span>
+  </header>
+
+  <!-- ===============================
        HERO
        =============================== -->
   <section class="hero">
+
     <div class="hero-bg">
       <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236c3?w=1920&q=80" alt="" loading="eager" />
     </div>
