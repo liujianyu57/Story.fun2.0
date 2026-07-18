@@ -80,6 +80,12 @@
       border-radius: 20px;
       background: rgba(255,255,255,0.7);
       border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .score-display:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(3,201,184,0.08);
     }
     .score-value { font-size: 18px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px; line-height: 1; }
     .score-unit { font-size: 12px; font-weight: 500; color: var(--muted); }
@@ -437,6 +443,174 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; animation: fadeSlideUp 0.35s ease; }
 
+    /* ===== 签到系统 ===== */
+    .checkin-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+    .checkin-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 50%, var(--primary) 100%);
+    }
+    .checkin-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .checkin-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .checkin-label::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    .checkin-streak {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .checkin-streak-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: -0.5px;
+    }
+    .checkin-streak-unit {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .checkin-fire {
+      font-size: 18px;
+    }
+    .checkin-days {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .checkin-day {
+      flex: 1;
+      text-align: center;
+      padding: 10px 4px;
+      border-radius: 12px;
+      background: #FAFBFC;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s;
+    }
+    .checkin-day.done {
+      background: linear-gradient(135deg, var(--accent) 0%, #E6F7F5 100%);
+      border-color: rgba(3,201,184,0.3);
+    }
+    .checkin-day.today {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(3,201,184,0.1);
+    }
+    .checkin-day.today.done {
+      border-color: var(--primary-dark);
+      box-shadow: 0 0 0 3px rgba(3,201,184,0.15);
+    }
+    .checkin-day-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .checkin-day-pts {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-feature-settings: "tnum";
+    }
+    .checkin-day-pts::before {
+      content: '+';
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .checkin-day.done .checkin-day-pts {
+      color: var(--gold);
+    }
+    .checkin-day.done .checkin-day-label {
+      color: var(--primary-dark);
+    }
+    .checkin-day.today .checkin-day-label {
+      color: var(--primary);
+    }
+    .checkin-btn-area {
+      text-align: center;
+    }
+    .checkin-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 36px;
+      border-radius: 40px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 4px 16px rgba(3,201,184,0.3);
+    }
+    .checkin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(3,201,184,0.4);
+    }
+    .checkin-btn:active {
+      transform: translateY(0);
+    }
+    .checkin-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+    .checkin-btn-done {
+      background: var(--accent);
+      color: var(--primary-dark);
+      border: 1px solid rgba(3,201,184,0.3);
+      box-shadow: none;
+      cursor: default;
+    }
+    .checkin-btn-done:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .checkin-rule {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .checkin-rule strong {
+      color: var(--primary-dark);
+    }
+
     /* ===== 任务分类 ===== */
     .task-section {
       background: var(--white);
@@ -595,6 +769,151 @@
       font-size: 12px;
       color: var(--muted);
       line-height: 1.6;
+    }
+
+    /* ===== 传播数据加分标准（高级版） ===== */
+    .bonus-card {
+      background: var(--white);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 24px 0 0;
+      margin: 20px 0 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .bonus-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 24px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .bonus-card-header svg {
+      color: var(--primary);
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      stroke-width: 1.8;
+    }
+    .bonus-platform-group {
+      padding: 20px 24px;
+    }
+    .bonus-platform-group + .bonus-platform-group {
+      border-top: 1px solid #F1F3F5;
+    }
+    .bonus-platform-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .bonus-platform-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .bonus-platform-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      letter-spacing: -0.2px;
+    }
+    .bonus-rules {
+      display: flex;
+      gap: 6px;
+    }
+    .bonus-rule-item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #FAFBFC;
+      border: 1px solid #F1F3F5;
+      transition: all 0.2s;
+    }
+    .bonus-rule-item:hover {
+      background: var(--white);
+      border-color: #E2E8F0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .bonus-rule-label {
+      font-size: 12px;
+      color: var(--muted);
+      flex: 1;
+      line-height: 1.3;
+    }
+    .bonus-rule-pts {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      flex-shrink: 0;
+      font-feature-settings: "tnum";
+    }
+    .bonus-rule-pts::before {
+      content: '+';
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+      .bonus-rules { flex-direction: column; }
+      .bonus-card-header { padding: 0 18px 16px; }
+      .bonus-platform-group { padding: 16px 18px; }
+    }
+
+    /* ===== 追踪说明 ===== */
+    .track-card {
+      background: var(--white);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 8px;
+    }
+    .track-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .track-card-header svg { color: var(--primary); flex-shrink: 0; }
+    .track-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .track-item {
+      background: #FAFBFC;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+    .track-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+    .track-value {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .bonus-grid { grid-template-columns: repeat(2, 1fr); }
+      .track-grid { grid-template-columns: 1fr; }
     }
 
     /* ===== Twitter 绑定 ===== */
@@ -972,17 +1291,92 @@
             <input type="text" placeholder="YouTube 视频链接" id="youtubeLink" />
             <button class="share-submit-btn" data-platform="youtube">提交</button>
           </div>
+
+          <!-- 传播数据加分标准 -->
+          <div class="bonus-card">
+            <div class="bonus-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              传播数据加分标准
+            </div>
+            <div class="bonus-platform-group">
+              <div class="bonus-platform-head">
+                <span class="bonus-platform-dot" style="background:#1DA1F2;"></span>
+                <span class="bonus-platform-name">Twitter / X</span>
+              </div>
+              <div class="bonus-rules">
+                <div class="bonus-rule-item">
+                  <span class="bonus-rule-label">每 10 次播放</span>
+                  <span class="bonus-rule-pts">2</span>
+                </div>
+                <div class="bonus-rule-item">
+                  <span class="bonus-rule-label">每 10 次点赞</span>
+                  <span class="bonus-rule-pts">3</span>
+                </div>
+                <div class="bonus-rule-item">
+                  <span class="bonus-rule-label">每 10 次转推</span>
+                  <span class="bonus-rule-pts">5</span>
+                </div>
+              </div>
+            </div>
+            <div class="bonus-platform-group">
+              <div class="bonus-platform-head">
+                <span class="bonus-platform-dot" style="background:#000;"></span>
+                <span class="bonus-platform-name">TikTok</span>
+              </div>
+              <div class="bonus-rules">
+                <div class="bonus-rule-item">
+                  <span class="bonus-rule-label">每 100 次播放</span>
+                  <span class="bonus-rule-pts">5</span>
+                </div>
+                <div class="bonus-rule-item">
+                  <span class="bonus-rule-label">每 10 次点赞</span>
+                  <span class="bonus-rule-pts">3</span>
+                </div>
+              </div>
+            </div>
+            <div class="bonus-platform-group">
+              <div class="bonus-platform-head">
+                <span class="bonus-platform-dot" style="background:#FF0000;"></span>
+                <span class="bonus-platform-name">YouTube</span>
+              </div>
+              <div class="bonus-rules">
+                <div class="bonus-rule-item">
+                  <span class="bonus-rule-label">每 100 次播放</span>
+                  <span class="bonus-rule-pts">4</span>
+                </div>
+                <div class="bonus-rule-item">
+                  <span class="bonus-rule-label">每 10 次点赞</span>
+                  <span class="bonus-rule-pts">5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <p class="share-footer">提交后获取验证码，写入对应平台内容简介即可完成验证</p>
         </div>
       </div>
 
       <!-- 任务面板 -->
       <div class="tab-panel" id="tabTasks">
+        <!-- 签到系统 -->
+        <div class="checkin-card" id="checkinCard">
+          <div class="checkin-top">
+            <div class="checkin-label">每日签到</div>
+            <div class="checkin-streak">
+              连续签到 <span class="checkin-streak-num" id="checkinStreak">0</span> <span class="checkin-streak-unit">天</span>
+
+            </div>
+          </div>
+          <div class="checkin-days" id="checkinDays">
+            <!-- JS 动态渲染 -->
+          </div>
+          <div class="checkin-btn-area">
+            <button class="checkin-btn" id="checkinBtn">签到领积分</button>
+          </div>
+        </div>
+
         <div id="taskContainer">
           <!-- JS 动态渲染 -->
-        </div>
-        <div class="task-progress">
-          已完成 <strong id="doneCount">0</strong> / <strong id="totalCount">19</strong> 个任务
         </div>
       </div>
 
@@ -1044,7 +1438,21 @@
       <div id="verifyCodeList" style="margin-bottom:18px;"></div>
       <p style="font-size:11px;color:var(--muted);margin-bottom:18px;">点击验证码可复制 · 验证通过后开始累计积分</p>
       <div class="modal-box-actions">
-        <button class="modal-btn-confirm" id="verifyModalClose" style="flex:1;">我已添加，开始验证</button>
+        <button class="modal-btn-confirm" id="verifyModalClose" style="flex:1;">我已添加</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 积分记录弹窗 -->
+  <div class="modal-overlay" id="scoreModal">
+    <div class="modal-box" style="max-width:480px;text-align:left;">
+      <div class="modal-box-title" style="text-align:center;">积分记录</div>
+      <div class="modal-box-desc" style="text-align:center;">查看你的积分获取明细</div>
+      <div id="scoreHistoryList" style="margin-bottom:20px;max-height:360px;overflow-y:auto;padding-right:4px;">
+        <!-- JS 动态渲染 -->
+      </div>
+      <div class="modal-box-actions">
+        <button class="modal-btn-confirm" id="scoreModalClose" style="flex:1;">知道了</button>
       </div>
     </div>
   </div>
@@ -1061,42 +1469,113 @@
   <script>
     (function() {
       const TASKS = [
-        { id: 't1', category: '日常活跃', name: '每日登陆平台', points: 5 },
-        { id: 't2', category: '日常活跃', name: '连续签到 (连续天数越多，奖励叠加)', points: 15 },
-        { id: 't3', category: '社交关注', name: '关注 story.fun X 账号', points: 10 },
-        { id: 't4', category: '社交关注', name: '关注团队对外成员账号', points: 10 },
-        { id: 't5', category: '社交传播', name: '转推任何有关 story.fun 的推文', points: 5 },
-        { id: 't6', category: '社交传播', name: '赞好任何有关 story.fun 的推文', points: 2 },
-        { id: 't7', category: '社交传播', name: '到官方推文打卡互动', points: 10 },
-        { id: 't8', category: '产品互动', name: '在 story.fun 创建账号', points: 20 },
-        { id: 't9', category: '产品互动', name: '在 story.fun 上尝试生成短剧', points: 30 },
-        { id: 't10', category: '产品互动', name: '浏览 1011 短剧，了解发生什么事', points: 15 },
-        { id: 't11', category: '产品互动', name: '转推有关 1011 短剧或事件的推文', points: 25 },
-        { id: 't12', category: '产品互动', name: '与 One Light 互动 (看过或创建短剧)', points: 40 },
-        { id: 't13', category: '产品互动', name: '参与 1011 拼图挑战活动', points: 35 },
-        { id: 't14', category: '链上互动', name: '接触 Solana 生态其他项目并互动', points: 50 },
-        { id: 't15', category: '链上互动', name: '登录 Solana 钱包', points: 60 },
-        { id: 't16', category: '等级成就', name: '等级达到 25 级', points: 30 },
-        { id: 't17', category: '等级成就', name: '等级达到 50 级', points: 60 },
-        { id: 't18', category: '等级成就', name: '等级达到 75 级', points: 80 },
-        { id: 't19', category: '等级成就', name: '等级达到 100 级', points: 100 }
+        { id: 't3', category: '关注 Twitter 账号', name: '关注 Story.fun', points: 10, linkUrl: 'https://x.com/Story.fun' },
+        { id: 't5', category: '社交传播', name: '转推推文', points: 5, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
+        { id: 't6', category: '社交传播', name: '点赞推文', points: 2, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
+        { id: 't7', category: '社交传播', name: '打卡互动', points: 10, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
+        { id: 't9', category: '产品互动', name: '在 Story.fun 发布短剧', points: 30, linkUrl: 'create-actor.html' },
+        { id: 't10', category: '产品互动', name: '在 Story.fun 上完播1集短剧', points: 15, linkUrl: 'drama-player.html' },
+        { id: 't20', category: '产品互动', name: '在 Story.fun 上派遣演员挖矿', points: 25, linkUrl: 'studio.html' },
       ];
 
       let completed = new Set();
       let score = 0;
       let linksSubmitted = false;
 
+      // ===== 积分记录 =====
+      var scoreHistory = [];
+      function addScoreRecord(reason, points) {
+        var now = new Date();
+        var timeStr = now.getFullYear() + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+        scoreHistory.unshift({ reason: reason, points: points, time: timeStr });
+      }
+      function renderScoreHistory() {
+        var html = '';
+        if (scoreHistory.length === 0) {
+          html = '<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:14px;">暂无积分记录</div>';
+        } else {
+          scoreHistory.forEach(function(rec) {
+            var sign = rec.points > 0 ? '+' : '';
+            html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #F1F3F5;gap:10px;">' +
+              '<div style="flex:1;min-width:0;">' +
+                '<div style="font-size:14px;font-weight:500;color:var(--dark);">' + rec.reason + '</div>' +
+                '<div style="font-size:11px;color:var(--muted);margin-top:2px;">' + rec.time + '</div>' +
+              '</div>' +
+              '<span style="font-size:16px;font-weight:700;color:' + (rec.points > 0 ? 'var(--primary-dark)' : 'var(--muted)') + ';flex-shrink:0;">' + sign + rec.points + '</span>' +
+              '</div>';
+          });
+        }
+        document.getElementById('scoreHistoryList').innerHTML = html;
+      }
+
+      // ===== 签到系统（原型模式：刷新重置） =====
+      var CHECKIN_POINTS = [5, 8, 12, 16, 20, 25, 35];
+      var checkinData = { streak: 0, lastDate: null, todayDone: false };
+
+      function renderCheckin() {
+        var streak = checkinData.streak;
+        var todayDone = checkinData.todayDone;
+        document.getElementById('checkinStreak').textContent = streak;
+
+        var daysHtml = '';
+        for (var i = 0; i < 7; i++) {
+          var dayNum = i + 1;
+          var pts = CHECKIN_POINTS[i];
+          var isDone = todayDone && streak >= dayNum;
+          // 未签到：只框选当天（第 1 天）
+          var isTodayHighlight = !todayDone && i === 0;
+          if (todayDone && i + 1 <= streak % 7) isDone = true;
+          if (todayDone && streak >= 7 && i + 1 <= 7) isDone = true;
+
+          var doneIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+          daysHtml += '<div class="checkin-day' +
+            (isDone ? ' done' : '') +
+            (isTodayHighlight ? ' today' : '') +
+            '">' +
+            '<span class="checkin-day-label">' + (isDone ? doneIcon : 'D' + dayNum) + '</span>' +
+            '<span class="checkin-day-pts">' + pts + '</span>' +
+            '</div>';
+        }
+        document.getElementById('checkinDays').innerHTML = daysHtml;
+
+        var btn = document.getElementById('checkinBtn');
+        if (todayDone) {
+          btn.disabled = true;
+          btn.className = 'checkin-btn checkin-btn-done';
+          btn.textContent = '今日已签到';
+        } else {
+          btn.disabled = false;
+          btn.className = 'checkin-btn';
+          btn.textContent = '签到领积分';
+        }
+      }
+
+      document.getElementById('checkinBtn').addEventListener('click', function() {
+        if (checkinData.todayDone) return;
+        var streak = checkinData.streak;
+        var idx = streak % 7;
+        var pts = CHECKIN_POINTS[idx];
+
+        checkinData.streak = streak + 1;
+        checkinData.todayDone = true;
+
+        score += pts;
+        addScoreRecord('每日签到（连续 ' + checkinData.streak + ' 天）', pts);
+        refreshAll();
+        renderCheckin();
+        showToast('签到成功！积分 +' + pts + ' 🔥');
+      });
+
+      // 初始渲染签到
+      renderCheckin();
+
       const storyForm = document.getElementById('storyForm');
       const tabArea = document.getElementById('tabArea');
       const sailCard = document.getElementById('sailCard');
       const topScoreEl = document.getElementById('topScore');
-      const doneCountEl = document.getElementById('doneCount');
-      const totalCountEl = document.getElementById('totalCount');
       const taskContainer = document.getElementById('taskContainer');
       const storyText = document.getElementById('storyText');
       const youtubeLink = document.getElementById('youtubeLink');
-
-      totalCountEl.textContent = TASKS.length;
 
       function renderTasks() {
         let html = '';
@@ -1107,12 +1586,24 @@
             html += `<div class="task-section"><div class="task-section-header">${currentCategory}</div>`;
           }
           const done = completed.has(task.id);
+          var handleHtml = '';
+          if (task.id === 't3') {
+            handleHtml = '<div style="font-size:12px;color:var(--muted);margin-top:2px;"><a href="https://x.com/Story.fun" target="_blank" rel="noopener noreferrer" style="color:var(--primary);text-decoration:none;font-weight:500;">@Story.fun <span style="font-size:10px;opacity:0.7;">↗</span></a></div>';
+          } else if (task.tweetUrl) {
+            handleHtml = '<div style="font-size:12px;color:var(--muted);margin-top:2px;"><a href="' + task.tweetUrl + '" target="_blank" rel="noopener noreferrer" style="color:var(--primary);text-decoration:none;font-weight:500;">查看推文 <span style="font-size:10px;opacity:0.7;">↗</span></a></div>';
+          }
+          var btnHtml = done
+            ? '<button class="task-btn done-btn" disabled>✅ 已完成</button>'
+            : '<a class="task-btn" href="' + (task.linkUrl || '#') + '" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">去完成</a>';
           html += `
             <div class="task-item${done ? ' done' : ''}">
-              <span class="task-name">${task.name}</span>
+              <div style="flex:1;min-width:0;">
+                <span class="task-name">${task.name}</span>
+                ${handleHtml}
+              </div>
               <div class="task-right">
                 <span class="task-points">+${task.points}</span>
-                <button class="task-btn${done ? ' done-btn' : ''}" data-id="${task.id}" ${done ? 'disabled' : ''}>${done ? '✅ 已完成' : '👍 完成'}</button>
+                ${btnHtml}
               </div>
             </div>`;
           const idx = TASKS.indexOf(task);
@@ -1121,24 +1612,10 @@
         });
         taskContainer.innerHTML = html;
 
-        const SOCIAL_CATEGORIES = ['社交关注', '社交传播'];
-        taskContainer.querySelectorAll('.task-btn:not([disabled])').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const id = this.dataset.id;
-            if (completed.has(id)) return;
-            const task = TASKS.find(t => t.id === id);
-            if (!task) return;
-            function completeTask() { completed.add(id); score += task.points; refreshAll(); }
-            if (SOCIAL_CATEGORIES.includes(task.category)) { requireTwitter(completeTask); }
-            else { completeTask(); }
-          });
-        });
       }
 
       function refreshAll() {
-        const done = completed.size;
         topScoreEl.textContent = score;
-        doneCountEl.textContent = done;
         renderTasks();
       }
 
@@ -1305,18 +1782,14 @@
           // 禁用输入框
           input.disabled = true;
 
-          // 点击「查看」重新打开弹窗
-          var selfBtn = this;
-          this.onclick = function(e) {
-            e.preventDefault();
-            // 显示验证码弹窗
+          // 显示验证码弹窗
+          function showVerifyCode() {
             verifyCodeList.innerHTML =
               '<div style="margin-bottom:14px;text-align:left;">' +
                 '<div style="font-size:13px;font-weight:600;margin-bottom:4px;color:' + config.color + ';">' + config.label + '</div>' +
                 '<div class="verify-code-display" data-code="' + code + '" style="margin-bottom:0;font-size:16px;padding:10px 16px;">' + code + '</div>' +
               '</div>';
 
-            // 绑定复制
             var codeEl = verifyCodeList.querySelector('.verify-code-display');
             codeEl.addEventListener('click', function() {
               navigator.clipboard.writeText(code).then(function() {
@@ -1328,10 +1801,13 @@
             });
 
             verifyModal.classList.add('open');
-          };
+          }
+
+          // 点击「查看」重新打开弹窗
+          this.onclick = function(e) { e.preventDefault(); showVerifyCode(); };
 
           // 首次提交直接打开弹窗
-          selfBtn.onclick();
+          showVerifyCode();
         });
       });
 
@@ -1375,7 +1851,9 @@
         twitterBound = true;
         bindTwitterBtn.classList.add('hidden');
         twitterBoundSm.classList.remove('hidden');
-        score += 20; refreshAll(); closeTwitterModal();
+        score += 20;
+        addScoreRecord('绑定 Twitter 账号', 20);
+        refreshAll(); closeTwitterModal();
         if (pendingTwitterCallback) { pendingTwitterCallback(); pendingTwitterCallback = null; }
       }
       function requireTwitter(callback) {
@@ -1389,6 +1867,28 @@
       twitterModal.addEventListener('click', function(e) { if (e.target === twitterModal) closeTwitterModal(); });
       twitterInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') confirmTwitterBind(); });
       document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && twitterModal.classList.contains('open')) closeTwitterModal(); });
+
+      // ===== 积分记录弹窗 =====
+      const scoreModal = document.getElementById('scoreModal');
+      const scoreModalClose = document.getElementById('scoreModalClose');
+      const scoreBadge = document.getElementById('scoreBadge');
+
+      scoreBadge.addEventListener('click', function() {
+        renderScoreHistory();
+        scoreModal.classList.add('open');
+      });
+
+      scoreModalClose.addEventListener('click', function() {
+        scoreModal.classList.remove('open');
+      });
+
+      scoreModal.addEventListener('click', function(e) {
+        if (e.target === scoreModal) scoreModal.classList.remove('open');
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && scoreModal.classList.contains('open')) scoreModal.classList.remove('open');
+      });
 
       renderTasks();
       refreshAll();
