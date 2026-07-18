@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1011 · 诺亚方舟 — Story.Fun</title>
+  <style>
+    :root {
+      --bg: #F5F7FA;
+      --white: #FFFFFF;
+      --dark: #0F172A;
+      --muted: #64748B;
+      --primary: #03C9B8;
+      --primary-dark: #029A8C;
+      --btn-bg: #0F172A;
+      --gold: #D4A853;
+      --gold-light: #F5E6C8;
+      --accent: #F0FDFA;
+      --border-subtle: #E8ECF0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-xl: 0 24px 64px rgba(0,0,0,0.12);
+      --radius-sm: 10px;
+      --radius: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(3,201,184,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 100% 100%, rgba(212,168,83,0.03) 0%, transparent 60%);
+      color: var(--dark);
+      font-family: "SF Pro Display", "SF Pro", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+      flex: 1;
+    }
+
+    /* ===== 顶部栏 ===== */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(3,201,184,0.25);
+    }
+    .logo-text { font-weight: 700; font-size: 20px; color: var(--dark); letter-spacing: -0.3px; }
+    .logo-text span { color: var(--muted); font-weight: 400; }
+    .top-right { display: flex; align-items: center; gap: 12px; }
+    .score-display {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border-subtle);
+    }
+    .score-value { font-size: 18px; font-weight: 700; color: var(--dark); letter-spacing: -0.5px; line-height: 1; }
+    .score-unit { font-size: 12px; font-weight: 500; color: var(--muted); }
+    .header-divider {
+      width: 1px; height: 20px;
+      background: var(--border-subtle);
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+    .score-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--dark);
+      padding: 4px 0;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: default;
+    }
+
+    /* ===== 启航信息卡 ===== */
+    .sail-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      margin-bottom: 24px;
+      text-align: center;
+      display: none;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+    .sail-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 50%, var(--primary) 100%);
+    }
+    .sail-card.visible { display: block; animation: fadeSlideUp 0.4s ease; }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .sail-card-icon { font-size: 44px; margin-bottom: 8px; }
+    .sail-card-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+    .sail-card-sub { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+    .sail-card-hint { font-size: 12px; color: var(--primary-dark); margin-bottom: 18px; font-weight: 500; }
+    .sail-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .sail-stat { text-align: center; min-width: 90px; }
+    .sail-stat-val { font-size: 32px; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
+    .sail-stat-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+    .sail-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .sail-card-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sail-card-meta-item .meta-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+    .sail-card-meta-item strong {
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .sail-card-meta-item .reward-highlight {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .sail-reward {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: var(--primary-dark);
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid rgba(3,201,184,0.2);
+    }
+
+    /* ===== 故事表单 ===== */
+    .story-form {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-subtle);
+    }
+    .story-form.hidden { display: none; }
+    .story-form-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: var(--primary-dark);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(3,201,184,0.15);
+    }
+    .story-form-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+    .story-form-sub {
+      font-size: 15px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+    .story-form-sub strong { color: var(--primary-dark); }
+
+    /* ===== 故事引导区块 ===== */
+    .story-intro {
+      margin-bottom: 36px;
+      text-align: center;
+    }
+    .story-intro-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .story-intro-headline {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 520px;
+      margin: 0 auto 20px;
+    }
+    .story-intro-headline em {
+      font-style: normal;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .story-intro-headline .name-tag {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .story-intro-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 0 auto 20px;
+    }
+    .story-intro-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .story-intro-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .story-intro-meta-item .meta-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+    .story-intro-meta-item strong {
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .story-intro-meta-item .reward-highlight {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .field-group { margin-bottom: 22px; }
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    textarea, input[type="text"], input[type="url"], input[type="file"] {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-subtle);
+      background: #FAFBFC;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--dark);
+      outline: none;
+      resize: vertical;
+      transition: all 0.2s;
+    }
+    textarea:focus, input:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(3,201,184,0.08);
+    }
+    textarea::placeholder, input::placeholder { color: #B0B8C1; }
+    textarea { min-height: 130px; line-height: 1.7; }
+
+    /* ===== 上传区域 ===== */
+    .upload-zone {
+      border: 1.5px dashed var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: #FAFBFC;
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .upload-zone:hover { border-color: var(--primary); background: var(--white); }
+    .upload-zone.drag-over { border-color: var(--primary); background: var(--accent); }
+    .upload-zone.has-file { border-style: solid; padding: 0; }
+    .upload-zone-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 20px;
+    }
+    .upload-zone.has-file .upload-zone-inner { display: none; }
+    .upload-zone-icon { color: var(--muted); transition: color 0.2s; }
+    .upload-zone:hover .upload-zone-icon { color: var(--primary); }
+    .upload-zone-text { font-size: 14px; font-weight: 500; color: var(--dark); }
+    .upload-zone-hint { font-size: 12px; color: #B0B8C1; }
+    .upload-preview {
+      position: relative;
+      width: 100%;
+    }
+    .upload-preview img {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      display: block;
+    }
+    .upload-preview.has-file { display: block; }
+    .upload-preview-remove {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(15,23,42,0.7);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .upload-preview-remove:hover { background: rgba(15,23,42,0.9); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 32px;
+      border-radius: 60px;
+      background: var(--dark);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: -0.2px;
+      box-shadow: var(--shadow-md);
+    }
+    .btn-primary:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(3,201,184,0.35);
+    }
+    .btn-submit:hover { box-shadow: 0 6px 28px rgba(3,201,184,0.45); }
+
+    /* ===== Tab 切换 ===== */
+    .tab-area { display: none; }
+    .tab-area.visible { display: block; animation: fadeSlideUp 0.4s ease; }
+    .tab-bar {
+      display: flex;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 5px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 13px 20px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: center;
+      letter-spacing: -0.2px;
+    }
+    .tab-btn.active {
+      background: rgba(3,201,184,0.12);
+      color: var(--primary-dark);
+      font-weight: 700;
+      box-shadow: none;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeSlideUp 0.35s ease; }
+
+    /* ===== 任务分类 ===== */
+    .task-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-subtle);
+      transition: box-shadow 0.2s;
+    }
+    .task-section:hover { box-shadow: var(--shadow-md); }
+    .task-section-header {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .task-section-header::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #F8FAFC;
+      gap: 12px;
+    }
+    .task-item:last-child { border-bottom: none; }
+    .task-item.done .task-name { color: var(--muted); opacity: 0.6; }
+    .task-item.done { background: #FAFBFC; margin: 0 -12px; padding-left: 12px; padding-right: 12px; border-radius: 8px; }
+    .task-name { font-size: 14px; line-height: 1.5; flex: 1; font-weight: 500; }
+    .task-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .task-points {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      background: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      border: 1px solid rgba(3,201,184,0.15);
+    }
+    .task-btn {
+      padding: 7px 18px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border-subtle);
+      background: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .task-btn:hover { background: #F5F7FA; border-color: #CDD5E0; }
+    .task-btn:disabled { opacity: 0.45; cursor: default; background: #F8FAFC; }
+    .task-btn.done-btn {
+      background: var(--accent);
+      color: var(--primary-dark);
+      border-color: rgba(3,201,184,0.3);
+      cursor: default;
+    }
+    .task-progress {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .task-progress strong { color: var(--primary); }
+
+    /* ===== 分享面板 ===== */
+    .share-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-subtle);
+    }
+    .share-field {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-subtle);
+      margin-bottom: 12px;
+      transition: all 0.2s;
+      background: #FAFBFC;
+    }
+    .share-field:focus-within {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(3,201,184,0.06);
+    }
+    .share-field-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .share-field:nth-child(2) .share-field-icon { background: #E8EAED; }
+    .share-field:nth-child(3) .share-field-icon { background: #FDE8E8; }
+    .share-field:nth-child(4) .share-field-icon { background: #FDE8E0; }
+    .share-field input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: var(--dark);
+      outline: none;
+      padding: 6px 0;
+    }
+    .share-field input::placeholder { color: #B0B8C1; }
+    .share-submit-btn {
+      flex-shrink: 0;
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: none;
+      background: var(--dark);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .share-submit-btn:hover { opacity: 0.9; }
+    .share-submit-btn:disabled { opacity: 0.4; cursor: default; }
+    .share-submit-btn.done {
+      background: var(--accent);
+      color: var(--primary-dark);
+      border: 1px solid rgba(3,201,184,0.3);
+    }
+    .share-hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+    .share-footer {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ===== Twitter 绑定 ===== */
+    .hidden { display: none !important; }
+    .twitter-status { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .twitter-bind-btn-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 24px;
+      border: none;
+      background: var(--dark);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+    .twitter-bind-btn-sm:hover {
+      opacity: 0.9;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+    .twitter-bound-sm {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 24px;
+      background: var(--accent);
+      border: 1.5px solid rgba(3,201,184,0.3);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .twitter-bound-sm .twitter-bound-icon { font-size: 14px; }
+    .twitter-bound-icon { font-size: 16px; }
+
+    /* ===== 自定义弹窗 ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(15,23,42,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-box {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px 28px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: var(--shadow-xl);
+      text-align: center;
+      animation: modalSlideUp 0.35s ease;
+    }
+    @keyframes modalSlideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-box-icon { font-size: 40px; margin-bottom: 12px; }
+    .modal-box-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+    .modal-box-desc { font-size: 14px; color: var(--muted); margin-bottom: 22px; line-height: 1.6; }
+    .modal-box input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-subtle);
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--dark);
+      outline: none;
+      text-align: center;
+      margin-bottom: 20px;
+      background: #FAFBFC;
+    }
+    .modal-box input:focus { border-color: var(--primary); background: var(--white); }
+    .modal-box-actions { display: flex; gap: 10px; }
+    .modal-box-actions button {
+      flex: 1;
+      padding: 13px 20px;
+      border-radius: 60px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    .modal-btn-cancel {
+      background: #F1F5F9;
+      color: var(--muted);
+    }
+    .modal-btn-cancel:hover { background: #E2E8F0; }
+    .modal-btn-confirm {
+      background: var(--dark);
+      color: #fff;
+    }
+    .modal-btn-confirm:hover { opacity: 0.9; }
+
+    /* ===== 排行榜 ===== */
+    .leaderboard-section {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-subtle);
+      animation: fadeSlideUp 0.4s ease;
+    }
+    .leaderboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+      padding: 0 4px;
+    }
+    .leaderboard-title { font-size: 16px; font-weight: 700; color: var(--dark); letter-spacing: -0.3px; }
+    .leaderboard-sub { font-size: 12px; color: var(--muted); }
+    .leaderboard-table-wrap {
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .leaderboard-table-wrap::-webkit-scrollbar { width: 4px; }
+    .leaderboard-table-wrap::-webkit-scrollbar-track { background: transparent; }
+    .leaderboard-table-wrap::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 2px; }
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .leaderboard-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .leaderboard-table th.col-rank { width: 50px; text-align: center; }
+    .leaderboard-table th.col-user { width: auto; }
+    .leaderboard-table th.col-score { width: 70px; text-align: right; }
+    .leaderboard-table th.col-reward { width: 100px; text-align: right; }
+    .leaderboard-table td {
+      padding: 10px 6px;
+      border-bottom: 1px solid #F8FAFC;
+      vertical-align: middle;
+    }
+    .leaderboard-table .is-me td { background: var(--accent); }
+    .leaderboard-table .col-rank { text-align: center; font-weight: 700; color: var(--muted); }
+    .leaderboard-table .rank-top { color: var(--primary-dark); font-size: 15px; }
+    .leaderboard-table .col-user { font-weight: 500; }
+    .leaderboard-table .col-score { text-align: right; font-weight: 600; color: var(--dark); }
+    .leaderboard-table .col-reward { text-align: right; font-weight: 600; color: var(--primary-dark); font-size: 12px; }
+
+    /* ===== 分享验证 ===== */
+    .share-verify-area { }
+    .share-verify-done { margin-top: 8px; }
+    .verify-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: var(--accent);
+      border: 1px solid rgba(3,201,184,0.3);
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .verify-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .verify-code-display {
+      background: var(--white);
+      border: 2px dashed var(--primary);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 14px;
+      text-align: center;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: all;
+    }
+    .verify-code-display:hover {
+      background: var(--accent);
+    }
+
+    /* ===== Toast 提示 ===== */
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-xl);
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 480px) {
+      .page { padding: 20px 14px 36px; }
+      .story-form { padding: 28px 20px; }
+      .story-form-title { font-size: 24px; }
+      .sail-stats { gap: 20px; }
+      .sail-stat-val { font-size: 26px; }
+      .task-item { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+
+  <main class="page" id="app">
+
+    <!-- 顶部导航 -->
+    <div class="top-bar">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+        </div>
+        <div class="logo-text">1011 <span>· 诺亚方舟</span></div>
+      </div>
+      <div class="top-right">
+        <div class="score-display" id="scoreBadge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="2"/><line x1="12" y1="10" x2="12" y2="17"/><path d="M8 13H5a6 6 0 0 0 14 0h-3"/></svg>
+          <span class="score-value" id="topScore">0</span>
+        </div>
+        <div class="header-divider"></div>
+        <div class="twitter-status" id="twitterStatus">
+          <button class="twitter-bind-btn-sm" id="bindTwitterBtn">
+            <span class="twitter-bind-icon">𝕏</span> 绑定账号
+          </button>
+          <span class="twitter-bound-sm hidden" id="twitterBoundSm">
+            <span class="twitter-bound-icon">𝕏</span>
+            <span class="twitter-bound-name" id="twitterHandleSm">已绑定</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 启航信息卡（故事提交后常驻） -->
+    <div class="sail-card" id="sailCard">
+      <div class="sail-card-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+      </div>
+      <div class="sail-card-title">你已成功登船</div>
+      <div class="sail-card-sub">故事已提交，等待方舟启航</div>
+      <div class="sail-card-hint">启航前可随时完成任务，积分越多奖励越高</div>
+      <div class="sail-card-meta">
+        <span class="sail-card-meta-item">
+          <span class="meta-dot"></span>
+          截止 <strong>2026.12.31</strong>
+        </span>
+        <span class="sail-card-meta-item">
+          <span class="meta-dot"></span>
+          按最终积分排名发放 <span class="reward-highlight">$XX ~ $XXXX</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- 故事表单（提交前） -->
+    <div class="story-form" id="storyForm">
+      <div class="story-form-title">写下你的 1011 故事</div>
+      <div style="text-align:center;">
+        <span class="story-form-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          写故事 · 登方舟
+        </span>
+      </div>
+      <div class="story-intro">
+        <p class="story-intro-headline">
+          <em>2025.10.11</em> 加密市场史诗级清算，杠杆风暴席卷全网。<br>
+          无数交易者亲历剧烈波动，这一天被 Web3 社区称为 <span class="name-tag">「1011」</span>。
+        </p>
+        <div class="story-intro-rule"></div>
+        <div class="story-intro-meta">
+          <span class="story-intro-meta-item">
+            <span class="meta-dot"></span>
+            截止 <strong>2026.12.31</strong>
+          </span>
+          <span class="story-intro-meta-item">
+            <span class="meta-dot"></span>
+            按最终积分排名发放 <span class="reward-highlight">$XX ~ $XXXX</span>
+          </span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">你的 1011 故事</label>
+        <textarea placeholder="那天，我看见…… 市场崩溃的瞬间，我的仓位……" id="storyText" rows="3"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">上传图片（选填）</label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" accept="image/*" id="storyImage" hidden />
+          <div class="upload-zone-inner">
+            <svg class="upload-zone-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="upload-zone-text">点击上传图片</span>
+            <span class="upload-zone-hint">支持 JPG、PNG、WebP 格式</span>
+          </div>
+          <div class="upload-preview hidden" id="uploadPreview">
+            <img id="uploadPreviewImg" src="" alt="" />
+            <button class="upload-preview-remove" id="uploadRemoveBtn" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary btn-submit" id="submitStoryBtn">提交故事 · 登船</button>
+    </div>
+
+    <!-- Tab 区域（故事提交后显示） -->
+    <div class="tab-area" id="tabArea">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="share">分享故事</button>
+        <button class="tab-btn" data-tab="tasks">做任务赚积分</button>
+        <button class="tab-btn" data-tab="leaderboard">排行榜</button>
+      </div>
+
+      <!-- 分享面板 -->
+      <div class="tab-panel active" id="tabShare">
+        <div class="share-section">
+          <p class="share-hint">
+            🌐 将你的故事分享到社交平台，提交链接即可获得验证码，写入内容简介完成验证。
+          </p>
+          <div class="share-field">
+            <span class="share-field-icon">𝕏</span>
+            <input type="text" placeholder="Twitter / X 链接" id="twitterLink" />
+            <button class="share-submit-btn" data-platform="twitter">提交</button>
+          </div>
+          <div class="share-field">
+            <span class="share-field-icon">🎵</span>
+            <input type="text" placeholder="TikTok 链接" id="tiktokLink" />
+            <button class="share-submit-btn" data-platform="tiktok">提交</button>
+          </div>
+          <div class="share-field">
+            <span class="share-field-icon">▶️</span>
+            <input type="text" placeholder="YouTube 视频链接" id="youtubeLink" />
+            <button class="share-submit-btn" data-platform="youtube">提交</button>
+          </div>
+          <p class="share-footer">提交后获取验证码，写入对应平台内容简介即可完成验证</p>
+        </div>
+      </div>
+
+      <!-- 任务面板 -->
+      <div class="tab-panel" id="tabTasks">
+        <div id="taskContainer">
+          <!-- JS 动态渲染 -->
+        </div>
+        <div class="task-progress">
+          已完成 <strong id="doneCount">0</strong> / <strong id="totalCount">19</strong> 个任务
+        </div>
+      </div>
+
+      <!-- 排行榜面板 -->
+      <div class="tab-panel" id="tabLeaderboard">
+        <div class="leaderboard-table-wrap">
+          <table class="leaderboard-table" id="leaderboardTable">
+            <thead>
+              <tr>
+                <th class="col-rank">排名</th>
+                <th class="col-user">用户</th>
+                <th class="col-score">积分</th>
+                <th class="col-reward">奖励</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 绑定 Twitter 弹窗 -->
+  <div class="modal-overlay" id="twitterModal">
+    <div class="modal-box">
+      <div class="modal-box-icon">𝕏</div>
+      <div class="modal-box-title">绑定 Twitter / X 账号</div>
+      <div class="modal-box-desc">输入你的用户名，用于验证关注、转推等任务完成状态</div>
+      <input type="text" id="twitterInput" placeholder="@yourhandle" autocomplete="off" />
+      <div class="modal-box-actions">
+        <button class="modal-btn-cancel" id="modalCancel">取消</button>
+        <button class="modal-btn-confirm" id="modalConfirm">确认绑定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 登船成功弹窗 -->
+  <div class="modal-overlay" id="sailModal">
+    <div class="modal-box">
+      <div class="modal-box-icon" style="font-size:40px;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+      </div>
+      <div class="modal-box-title">故事已提交！你已成功登船</div>
+      <div class="modal-box-desc">现在可以分享故事或完成任务赚取积分，积分越高，USDT 奖励越多。</div>
+      <div class="modal-box-actions">
+        <button class="modal-btn-confirm" id="sailModalClose" style="flex:1;">开始探索</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 验证码弹窗（支持多平台） -->
+  <div class="modal-overlay" id="verifyModal">
+    <div class="modal-box">
+      <div class="modal-box-icon">🔑</div>
+      <div class="modal-box-title">验证你的社交链接</div>
+      <div class="modal-box-desc">将对应的验证码写入各平台内容简介中，系统将通过验证码确认归属。</div>
+      <div id="verifyCodeList" style="margin-bottom:18px;"></div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:18px;">点击验证码可复制 · 验证通过后开始累计积分</p>
+      <div class="modal-box-actions">
+        <button class="modal-btn-confirm" id="verifyModalClose" style="flex:1;">我已添加，开始验证</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <div id="bottom-nav-placeholder"></div>
+
+  <script src="load-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="load-bottom-nav.js"></script>
+
+  <script>
+    (function() {
+      const TASKS = [
+        { id: 't1', category: '日常活跃', name: '每日登陆平台', points: 5 },
+        { id: 't2', category: '日常活跃', name: '连续签到 (连续天数越多，奖励叠加)', points: 15 },
+        { id: 't3', category: '社交关注', name: '关注 story.fun X 账号', points: 10 },
+        { id: 't4', category: '社交关注', name: '关注团队对外成员账号', points: 10 },
+        { id: 't5', category: '社交传播', name: '转推任何有关 story.fun 的推文', points: 5 },
+        { id: 't6', category: '社交传播', name: '赞好任何有关 story.fun 的推文', points: 2 },
+        { id: 't7', category: '社交传播', name: '到官方推文打卡互动', points: 10 },
+        { id: 't8', category: '产品互动', name: '在 story.fun 创建账号', points: 20 },
+        { id: 't9', category: '产品互动', name: '在 story.fun 上尝试生成短剧', points: 30 },
+        { id: 't10', category: '产品互动', name: '浏览 1011 短剧，了解发生什么事', points: 15 },
+        { id: 't11', category: '产品互动', name: '转推有关 1011 短剧或事件的推文', points: 25 },
+        { id: 't12', category: '产品互动', name: '与 One Light 互动 (看过或创建短剧)', points: 40 },
+        { id: 't13', category: '产品互动', name: '参与 1011 拼图挑战活动', points: 35 },
+        { id: 't14', category: '链上互动', name: '接触 Solana 生态其他项目并互动', points: 50 },
+        { id: 't15', category: '链上互动', name: '登录 Solana 钱包', points: 60 },
+        { id: 't16', category: '等级成就', name: '等级达到 25 级', points: 30 },
+        { id: 't17', category: '等级成就', name: '等级达到 50 级', points: 60 },
+        { id: 't18', category: '等级成就', name: '等级达到 75 级', points: 80 },
+        { id: 't19', category: '等级成就', name: '等级达到 100 级', points: 100 }
+      ];
+
+      let completed = new Set();
+      let score = 0;
+      let linksSubmitted = false;
+
+      const storyForm = document.getElementById('storyForm');
+      const tabArea = document.getElementById('tabArea');
+      const sailCard = document.getElementById('sailCard');
+      const topScoreEl = document.getElementById('topScore');
+      const doneCountEl = document.getElementById('doneCount');
+      const totalCountEl = document.getElementById('totalCount');
+      const taskContainer = document.getElementById('taskContainer');
+      const storyText = document.getElementById('storyText');
+      const youtubeLink = document.getElementById('youtubeLink');
+
+      totalCountEl.textContent = TASKS.length;
+
+      function renderTasks() {
+        let html = '';
+        let currentCategory = '';
+        TASKS.forEach(task => {
+          if (task.category !== currentCategory) {
+            currentCategory = task.category;
+            html += `<div class="task-section"><div class="task-section-header">${currentCategory}</div>`;
+          }
+          const done = completed.has(task.id);
+          html += `
+            <div class="task-item${done ? ' done' : ''}">
+              <span class="task-name">${task.name}</span>
+              <div class="task-right">
+                <span class="task-points">+${task.points}</span>
+                <button class="task-btn${done ? ' done-btn' : ''}" data-id="${task.id}" ${done ? 'disabled' : ''}>${done ? '✅ 已完成' : '👍 完成'}</button>
+              </div>
+            </div>`;
+          const idx = TASKS.indexOf(task);
+          const next = TASKS[idx + 1];
+          if (!next || next.category !== currentCategory) { html += `</div>`; }
+        });
+        taskContainer.innerHTML = html;
+
+        const SOCIAL_CATEGORIES = ['社交关注', '社交传播'];
+        taskContainer.querySelectorAll('.task-btn:not([disabled])').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.dataset.id;
+            if (completed.has(id)) return;
+            const task = TASKS.find(t => t.id === id);
+            if (!task) return;
+            function completeTask() { completed.add(id); score += task.points; refreshAll(); }
+            if (SOCIAL_CATEGORIES.includes(task.category)) { requireTwitter(completeTask); }
+            else { completeTask(); }
+          });
+        });
+      }
+
+      function refreshAll() {
+        const done = completed.size;
+        topScoreEl.textContent = score;
+        doneCountEl.textContent = done;
+        renderTasks();
+      }
+
+      function activateSailMode() {
+        storyForm.classList.add('hidden');
+        sailCard.classList.add('visible');
+        tabArea.classList.add('visible');
+        refreshAll();
+        renderLeaderboard();
+      }
+
+      // ===== 排行榜 =====
+      const leaderboardBody = document.getElementById('leaderboardBody');
+      const REWARD_TIERS = [
+        { min: 1, max: 1, label: '$10,000' },
+        { min: 2, max: 3, label: '$5,000' },
+        { min: 4, max: 10, label: '$1,000' },
+        { min: 11, max: 20, label: '$500' },
+        { min: 21, max: 50, label: '$100' },
+        { min: 51, max: 100, label: '$50' }
+      ];
+
+      function getReward(rank) {
+        for (var i = 0; i < REWARD_TIERS.length; i++) {
+          if (rank >= REWARD_TIERS[i].min && rank <= REWARD_TIERS[i].max) return REWARD_TIERS[i].label;
+        }
+        return '—';
+      }
+
+      function renderLeaderboard() {
+        var html = '';
+        // 模拟100条排名数据
+        for (var i = 1; i <= 100; i++) {
+          var mockScore = Math.max(0, 672 - (i - 1) * 5 - Math.floor(Math.random() * 10));
+          var isMe = i === 7; // 假设当前用户排第7
+          var rankClass = i <= 3 ? ' rank-top' : '';
+          var reward = getReward(i);
+          html += '<tr' + (isMe ? ' class="is-me"' : '') + '>' +
+            '<td class="col-rank' + rankClass + '">' + i + '</td>' +
+            '<td class="col-user">' + (isMe ? '你' : '用户 ' + ('000' + i).slice(-4)) + '</td>' +
+            '<td class="col-score">' + mockScore + '</td>' +
+            '<td class="col-reward">' + reward + '</td>' +
+            '</tr>';
+        }
+        leaderboardBody.innerHTML = html;
+      }
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const tab = this.dataset.tab;
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById('tabShare').classList.toggle('active', tab === 'share');
+          document.getElementById('tabTasks').classList.toggle('active', tab === 'tasks');
+          document.getElementById('tabLeaderboard').classList.toggle('active', tab === 'leaderboard');
+        });
+      });
+
+      const storyImageInput = document.getElementById('storyImage');
+      const uploadZone = document.getElementById('uploadZone');
+      const uploadPreview = document.getElementById('uploadPreview');
+      const uploadPreviewImg = document.getElementById('uploadPreviewImg');
+      const uploadRemoveBtn = document.getElementById('uploadRemoveBtn');
+
+      uploadZone.addEventListener('click', function(e) {
+        if (e.target === uploadRemoveBtn || (uploadRemoveBtn && uploadRemoveBtn.contains(e.target))) return;
+        storyImageInput.click();
+      });
+
+      storyImageInput.addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) showUploadPreview(file);
+      });
+
+      function showUploadPreview(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          uploadPreviewImg.src = e.target.result;
+          uploadPreview.classList.remove('hidden');
+          uploadPreview.classList.add('has-file');
+          uploadZone.classList.add('has-file');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      uploadRemoveBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        storyImageInput.value = '';
+        uploadPreviewImg.src = '';
+        uploadPreview.classList.add('hidden');
+        uploadPreview.classList.remove('has-file');
+        uploadZone.classList.remove('has-file');
+      });
+
+      // ===== Toast =====
+      const toast = document.getElementById('toast');
+      var toastTimer = null;
+      function showToast(msg) {
+        if (toastTimer) clearTimeout(toastTimer);
+        toast.textContent = msg;
+        toast.classList.add('show');
+        toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2500);
+      }
+
+      document.getElementById('submitStoryBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!storyText.value.trim()) { showToast('请写下你的 1011 经历'); return; }
+        openSailModal();
+      });
+
+      const sailModal = document.getElementById('sailModal');
+      const sailModalClose = document.getElementById('sailModalClose');
+      function openSailModal() { sailModal.classList.add('open'); }
+      function closeSailModalAndGo() { sailModal.classList.remove('open'); activateSailMode(); }
+      sailModalClose.addEventListener('click', closeSailModalAndGo);
+      sailModal.addEventListener('click', function(e) { if (e.target === sailModal) closeSailModalAndGo(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && sailModal.classList.contains('open')) closeSailModalAndGo(); });
+
+      // ===== 独立提交验证码（每个平台单独提交） =====
+      const verifyModal = document.getElementById('verifyModal');
+      const verifyCodeList = document.getElementById('verifyCodeList');
+      const verifyModalClose = document.getElementById('verifyModalClose');
+      const twitterLinkInput = document.getElementById('twitterLink');
+      const tiktokLinkInput = document.getElementById('tiktokLink');
+      const youtubeLinkInput = document.getElementById('youtubeLink');
+
+      function generateCode() {
+        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        var code = 'SF-';
+        for (var i = 0; i < 8; i++) { code += chars[Math.floor(Math.random() * chars.length)]; }
+        return code;
+      }
+
+      // 记录各平台是否已提交
+      var submittedPlatforms = {};
+
+      // 平台配置
+      var PLATFORM_CONFIG = {
+        twitter: { label: '𝕏  Twitter / X', color: '#1DA1F2', points: 20 },
+        tiktok: { label: '🎵  TikTok', color: '#000', points: 20 },
+        youtube: { label: '▶️  YouTube', color: '#FF0000', points: 20 }
+      };
+
+      // 为每个提交按钮绑定事件
+      document.querySelectorAll('.share-submit-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var platform = this.dataset.platform;
+          var config = PLATFORM_CONFIG[platform];
+          var inputMap = { twitter: twitterLinkInput, tiktok: tiktokLinkInput, youtube: youtubeLinkInput };
+          var input = inputMap[platform];
+
+          if (submittedPlatforms[platform]) { showToast('该平台已提交'); return; }
+          if (!input.value.trim()) { showToast('请填写 ' + config.label + ' 链接'); return; }
+
+          var code = generateCode();
+          submittedPlatforms[platform] = { code: code, link: input.value.trim() };
+
+          // 更新按钮状态
+          this.textContent = '查看';
+          this.classList.add('done');
+          this.disabled = false;
+
+          // 禁用输入框
+          input.disabled = true;
+
+          // 点击「查看」重新打开弹窗
+          var selfBtn = this;
+          this.onclick = function(e) {
+            e.preventDefault();
+            // 显示验证码弹窗
+            verifyCodeList.innerHTML =
+              '<div style="margin-bottom:14px;text-align:left;">' +
+                '<div style="font-size:13px;font-weight:600;margin-bottom:4px;color:' + config.color + ';">' + config.label + '</div>' +
+                '<div class="verify-code-display" data-code="' + code + '" style="margin-bottom:0;font-size:16px;padding:10px 16px;">' + code + '</div>' +
+              '</div>';
+
+            // 绑定复制
+            var codeEl = verifyCodeList.querySelector('.verify-code-display');
+            codeEl.addEventListener('click', function() {
+              navigator.clipboard.writeText(code).then(function() {
+                this.style.background = 'var(--primary-dark)';
+                this.style.color = '#fff';
+                var self = this;
+                setTimeout(function() { self.style.background = ''; self.style.color = ''; }, 600);
+              }.bind(this));
+            });
+
+            verifyModal.classList.add('open');
+          };
+
+          // 首次提交直接打开弹窗
+          selfBtn.onclick();
+        });
+      });
+
+      verifyModalClose.addEventListener('click', function() {
+        verifyModal.classList.remove('open');
+        // 每次关闭弹窗时，给已提交的平台加分（仅加一次）
+        var added = 0;
+        Object.keys(submittedPlatforms).forEach(function(p) {
+          if (!submittedPlatforms[p].scored) {
+            score += PLATFORM_CONFIG[p].points;
+            submittedPlatforms[p].scored = true;
+            added++;
+          }
+        });
+        if (added > 0) {
+          refreshAll();
+          showToast('验证码已确认，积分 +' + (added * 20));
+        }
+      });
+
+      verifyModal.addEventListener('click', function(e) { if (e.target === verifyModal) verifyModal.classList.remove('open'); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && verifyModal.classList.contains('open')) verifyModal.classList.remove('open'); });
+
+      let twitterBound = false;
+      let pendingTwitterCallback = null;
+      const twitterModal = document.getElementById('twitterModal');
+      const twitterInput = document.getElementById('twitterInput');
+      const modalCancel = document.getElementById('modalCancel');
+      const modalConfirm = document.getElementById('modalConfirm');
+      const bindTwitterBtn = document.getElementById('bindTwitterBtn');
+      const twitterBoundSm = document.getElementById('twitterBoundSm');
+      const twitterHandleSm = document.getElementById('twitterHandleSm');
+
+      function openTwitterModal() { twitterModal.classList.add('open'); twitterInput.value = ''; setTimeout(() => twitterInput.focus(), 100); }
+      function closeTwitterModal() { twitterModal.classList.remove('open'); pendingTwitterCallback = null; }
+      function confirmTwitterBind() {
+        const handle = twitterInput.value.trim();
+        if (!handle) return;
+        const name = handle.startsWith('@') ? handle : '@' + handle;
+        twitterHandleSm.textContent = name + ' ✅';
+        twitterBound = true;
+        bindTwitterBtn.classList.add('hidden');
+        twitterBoundSm.classList.remove('hidden');
+        score += 20; refreshAll(); closeTwitterModal();
+        if (pendingTwitterCallback) { pendingTwitterCallback(); pendingTwitterCallback = null; }
+      }
+      function requireTwitter(callback) {
+        if (twitterBound) { callback(); }
+        else { pendingTwitterCallback = callback; openTwitterModal(); }
+      }
+
+      bindTwitterBtn.addEventListener('click', openTwitterModal);
+      modalCancel.addEventListener('click', closeTwitterModal);
+      modalConfirm.addEventListener('click', confirmTwitterBind);
+      twitterModal.addEventListener('click', function(e) { if (e.target === twitterModal) closeTwitterModal(); });
+      twitterInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') confirmTwitterBind(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && twitterModal.classList.contains('open')) closeTwitterModal(); });
+
+      renderTasks();
+      refreshAll();
+    })();
+  </script>
+</body>
+</html>

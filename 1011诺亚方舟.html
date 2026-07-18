@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://monsterchiang.github.io/nuoyafangzhou/ -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>1011 诺亚方舟 · 我的故事</title>
+  <link rel="stylesheet" href="./1011 诺亚方舟_files/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
+
+    body {
+      background: #0b0d1a;
+      background-image: radial-gradient(circle at 20% 30%, #1a1f33 0%, #0b0d1a 80%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .vessel {
+      max-width: 780px;
+      width: 100%;
+      background: rgba(18, 22, 40, 0.75);
+      backdrop-filter: blur(12px);
+      border-radius: 48px 48px 40px 40px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 215, 150, 0.08);
+      padding: 28px 24px 30px;
+      border: 1px solid rgba(255, 215, 150, 0.12);
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .logo-icon { font-size: 28px; color: #f7c873; filter: drop-shadow(0 0 8px #f7c87366); }
+    .logo-text { font-weight: 600; font-size: 22px; letter-spacing: 1px; color: #efe6d7; text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+    .logo-text span { color: #f7c873; font-weight: 300; }
+
+    .top-score {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(247, 200, 115, 0.1);
+      border: 1px solid #f7c87330;
+      padding: 6px 16px 6px 14px;
+      border-radius: 40px;
+      color: #f7c873;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+    }
+    .top-score:hover { background: rgba(247, 200, 115, 0.2); }
+    .top-score span { color: #fff; font-weight: 700; }
+
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 2px 0 16px;
+    }
+    .step-dot-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 20px;
+      background: #3d425f;
+      transition: 0.3s;
+      box-shadow: inset 0 0 4px #00000055;
+      flex-shrink: 0;
+    }
+    .step-dot.active { background: #f7c873; width: 28px; box-shadow: 0 0 16px #f7c873aa; }
+    .step-dot.done { background: #b8a68b; }
+    .step-label { font-size: 10px; color: #5f658b; text-align: center; letter-spacing: 0.3px; }
+    .step-label.active-label { color: #f7c873; }
+    .step-label.done-label { color: #b8a68b; }
+
+    /* ===== 核心：所有步骤面板统一高度 780px ===== */
+    .step-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 780px;
+      max-height: 780px;
+      transition: opacity 0.25s ease;
+      overflow: hidden;
+    }
+    .step-panel.hidden { display: none; }
+
+    .step-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* 内容滚动区 - 大部分页面不需要滚动，但保留以防万一 */
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .scroll-area::-webkit-scrollbar { width: 3px; }
+    .scroll-area::-webkit-scrollbar-track { background: transparent; }
+    .scroll-area::-webkit-scrollbar-thumb { background: #f7c87360; border-radius: 10px; }
+
+    .step-actions {
+      flex-shrink: 0;
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #f0e7d9;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .page-title i { color: #f7c873; font-size: 24px; }
+
+    .page-sub {
+      color: #b3adc0;
+      font-size: 15px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+      border-left: 3px solid #f7c87355;
+      padding-left: 14px;
+      flex-shrink: 0;
+    }
+    .page-sub strong { color: #f7c873; font-weight: 500; }
+
+    .intro-card {
+      background: rgba(247, 200, 115, 0.06);
+      border-radius: 24px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(247, 200, 115, 0.15);
+      flex-shrink: 0;
+    }
+    .intro-card p { color: #d6d0e0; font-size: 15px; line-height: 1.7; margin-bottom: 6px; }
+    .intro-card .highlight { color: #f7c873; font-weight: 500; }
+    .intro-tag {
+      display: inline-block;
+      background: #f7c87320;
+      color: #f7c873;
+      font-size: 13px;
+      padding: 4px 14px;
+      border-radius: 40px;
+      border: 1px solid #f7c87330;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .field-group { margin-bottom: 16px; flex-shrink: 0; }
+    .field-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #cbc3d6;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+    .field-label i { margin-right: 8px; color: #f7c873; width: 20px; }
+    textarea, input[type="text"], input[type="url"] {
+      width: 100%;
+      background: rgba(12, 15, 30, 0.7);
+      border: 1px solid #3f4568;
+      border-radius: 20px;
+      padding: 14px 18px;
+      font-size: 15px;
+      color: #f0ece4;
+      transition: 0.2s;
+      outline: none;
+      resize: vertical;
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.4);
+    }
+    textarea:focus, input:focus {
+      border-color: #f7c873;
+      box-shadow: 0 0 0 3px #f7c87330, inset 0 2px 8px #00000088;
+    }
+    textarea { min-height: 96px; }
+    .file-upload-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: rgba(12, 15, 30, 0.5);
+      border-radius: 40px;
+      padding: 8px 14px 8px 20px;
+      border: 1px dashed #5f658b;
+    }
+    .file-upload-area i { color: #f7c873; font-size: 22px; }
+    .file-upload-area span { color: #b7b2c9; font-size: 14px; }
+    .file-upload-area input[type="file"] {
+      background: #2b2f4b;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 40px;
+      color: #f0ece4;
+      font-size: 13px;
+      width: auto;
+      flex: 1;
+      min-width: 120px;
+      cursor: pointer;
+    }
+    .file-upload-area input[type="file"]::file-selector-button {
+      background: #3d4368;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 40px;
+      color: #efe6d7;
+      margin-right: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .file-upload-area input[type="file"]::file-selector-button:hover {
+      background: #f7c873;
+      color: #0b0d1a;
+    }
+
+    .btn-primary {
+      background: #f7c873;
+      border: none;
+      border-radius: 60px;
+      padding: 15px 28px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #0b0d1a;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 20px rgba(247, 200, 115, 0.25);
+      border: 1px solid #f7c873aa;
+    }
+    .btn-primary:hover { background: #fada8a; transform: scale(1.01); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #5f658b;
+      border-radius: 60px;
+      padding: 13px 28px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #d6d0e0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .btn-secondary i { color: #f7c873; }
+    .btn-secondary:hover { background: #2b2f4b; border-color: #f7c87380; }
+    .btn-outline-gold {
+      background: transparent;
+      border: 1px solid #f7c873;
+      border-radius: 60px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #f7c873;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-outline-gold:hover { background: #f7c87320; }
+
+    /* ===== 分享页 ===== */
+    .social-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 8px 0 10px;
+      flex-shrink: 0;
+    }
+    .social-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(12, 15, 30, 0.5);
+      padding: 4px 12px 4px 18px;
+      border-radius: 60px;
+      border: 1px solid #3f4568;
+    }
+    .social-row i { font-size: 22px; width: 32px; color: #f7c873; text-align: center; }
+    .social-row input {
+      background: transparent;
+      border: none;
+      padding: 12px 6px;
+      flex: 1;
+      color: #f0ece4;
+      font-size: 14px;
+      outline: none;
+    }
+    .social-row input::placeholder { color: #7b7a97; }
+    .social-row:focus-within { border-color: #f7c873; box-shadow: 0 0 0 2px #f7c87330; }
+
+    .social-bonus {
+      background: rgba(12, 15, 30, 0.5);
+      border-radius: 18px;
+      padding: 12px 16px;
+      margin: 6px 0 8px;
+      border: 1px solid #3f4568;
+      flex-shrink: 0;
+    }
+    .social-bonus h4 {
+      color: #f0e7d9;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .social-bonus h4 i { color: #f7c873; margin-right: 6px; }
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 5px;
+    }
+    .bonus-item {
+      background: rgba(255,255,255,0.03);
+      padding: 5px 8px;
+      border-radius: 8px;
+      border: 1px solid #2d304b;
+      text-align: center;
+    }
+    .bonus-item .platform { color: #b3adc0; font-size: 10px; }
+    .bonus-item .rule { color: #d6d0e0; font-size: 10px; }
+    .bonus-item .pts { color: #f7c873; font-weight: 600; font-size: 12px; }
+
+    .track-card {
+      background: rgba(12, 15, 30, 0.5);
+      border-radius: 18px;
+      padding: 10px 16px;
+      margin: 4px 0 10px;
+      border: 1px solid #f7c87330;
+      flex-shrink: 0;
+    }
+    .track-card .track-title {
+      color: #f0e7d9;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .track-card .track-title i { color: #f7c873; margin-right: 6px; }
+    .track-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+    .track-grid .track-item {
+      background: rgba(247,200,115,0.05);
+      border-radius: 8px;
+      padding: 5px 10px;
+      border: 1px solid #2d304b;
+      text-align: center;
+    }
+    .track-grid .track-item .label { color: #b3adc0; font-size: 10px; }
+    .track-grid .track-item .value { color: #f7c873; font-size: 12px; font-weight: 600; }
+
+    /* ===== 任务列表 ===== */
+    .task-container {
+      background: rgba(12,15,30,0.5);
+      border-radius: 24px;
+      padding: 16px 18px 18px;
+      border: 1px solid #3f4568;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .task-list-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      max-height: 420px;
+    }
+    .task-list-scroll::-webkit-scrollbar { width: 3px; }
+    .task-list-scroll::-webkit-scrollbar-track { background: transparent; }
+    .task-list-scroll::-webkit-scrollbar-thumb { background: #f7c87360; border-radius: 10px; }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.03);
+      padding: 8px 12px 8px 16px;
+      border-radius: 14px;
+      border: 1px solid #2d304b;
+      transition: 0.2s;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .task-item:hover { border-color: #5f658b; }
+    .task-item.done { border-color: #2d8f5c; background: rgba(45, 143, 92, 0.08); }
+    .task-item.done .task-name { color: #8fcaa6; }
+    .task-item.done .task-points { color: #8fcaa6; }
+
+    .task-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 120px;
+    }
+    .task-category {
+      font-size: 9px;
+      font-weight: 700;
+      color: #b3adc0;
+      background: #2b2f4b;
+      padding: 2px 8px;
+      border-radius: 30px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .task-name { color: #e8e2d6; font-size: 13px; line-height: 1.3; }
+    .task-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .task-points {
+      color: #f7c873;
+      font-weight: 600;
+      font-size: 13px;
+      background: rgba(247, 200, 115, 0.08);
+      padding: 2px 10px;
+      border-radius: 30px;
+      border: 1px solid #f7c87320;
+      white-space: nowrap;
+    }
+    .task-btn {
+      background: #3d4368;
+      border: none;
+      border-radius: 30px;
+      padding: 5px 14px;
+      color: #d6d0e0;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .task-btn:hover { background: #5a618b; color: #fff; }
+    .task-btn:disabled { opacity: 0.4; cursor: default; }
+    .task-btn.done-btn { background: #2d8f5c; color: #fff; cursor: default; }
+    .task-btn.done-btn:hover { background: #2d8f5c; }
+
+    .task-progress {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #2d304b;
+      display: flex;
+      justify-content: center;
+      font-size: 13px;
+      color: #7b7a97;
+      flex-shrink: 0;
+    }
+    .task-progress .done-count { color: #f7c873; font-weight: 600; }
+
+    /* ===== 任务浮层 ===== */
+    .task-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      animation: fadeIn 0.25s ease;
+    }
+    .task-overlay.open { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .task-panel {
+      background: #141a2e;
+      border-radius: 32px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 85vh;
+      padding: 28px 24px 24px;
+      border: 1px solid #f7c87330;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .task-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .task-panel-header h2 { color: #f0e7d9; font-size: 22px; font-weight: 600; }
+    .task-panel-header h2 i { color: #f7c873; margin-right: 10px; }
+    .task-panel-header .close-btn {
+      background: transparent;
+      border: none;
+      color: #b3adc0;
+      font-size: 28px;
+      cursor: pointer;
+      padding: 0 8px;
+      transition: 0.2s;
+      line-height: 1;
+    }
+    .task-panel-header .close-btn:hover { color: #f7c873; transform: rotate(90deg); }
+
+    /* ===== 启航页 ===== */
+    .ready-container {
+      text-align: center;
+      padding: 20px 6px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .ready-icon { font-size: 56px; color: #f7c873; filter: drop-shadow(0 0 30px #f7c87355); margin-bottom: 10px; }
+    .ready-title { font-size: 30px; font-weight: 600; color: #f0e7d9; margin-bottom: 14px; }
+    .ready-title i { color: #f7c873; margin-right: 8px; }
+    .ready-desc { color: #b3adc0; font-size: 15px; line-height: 1.7; max-width: 400px; margin: 0 auto 18px; }
+    .reward-badge {
+      background: #1f233e;
+      border-radius: 60px;
+      padding: 10px 22px;
+      display: inline-block;
+      border: 1px solid #f7c87340;
+      color: #f7c873;
+      font-weight: 500;
+      font-size: 15px;
+      backdrop-filter: blur(6px);
+      margin-top: 6px;
+    }
+    .final-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 12px 0 18px;
+      flex-wrap: wrap;
+    }
+    .final-stat-item {
+      background: rgba(12, 15, 30, 0.5);
+      padding: 12px 24px;
+      border-radius: 16px;
+      border: 1px solid #3f4568;
+      text-align: center;
+    }
+    .final-stat-item .num { color: #f7c873; font-size: 24px; font-weight: 700; }
+    .final-stat-item .label { color: #7b7a97; font-size: 12px; margin-top: 2px; }
+
+    .mt-2 { margin-top: 8px; }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 480px) {
+      .vessel { padding: 20px 14px 24px; }
+      .page-title { font-size: 24px; }
+      .step-panel { min-height: 700px; max-height: 700px; }
+      .task-item { padding: 6px 10px; }
+      .task-name { font-size: 12px; }
+      .bonus-grid { grid-template-columns: 1fr 1fr; }
+      .final-stats { gap: 12px; }
+      .final-stat-item { padding: 10px 16px; }
+      .task-list-scroll { max-height: 340px; }
+      .track-grid { grid-template-columns: 1fr; }
+      textarea { min-height: 80px; }
+      .social-row { padding: 3px 10px 3px 14px; }
+      .social-row input { padding: 10px 4px; font-size: 13px; }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      .step-panel { min-height: 740px; max-height: 740px; }
+      .task-list-scroll { max-height: 380px; }
+    }
+  </style>
+</head>
+<body data-demoway-document-id="eurj88j0opccf2uyqlqkhdbe">
+
+<div class="vessel" id="app">
+
+  <!-- 顶部 -->
+  <div class="top-bar">
+    <div class="logo-area" id="resetBtn">
+      <i class="fas fa-ship logo-icon"></i>
+      <div class="logo-text">1011 <span>· 诺亚方舟</span></div>
+    </div>
+    <div class="top-score" id="openTaskBtn">
+      <i class="fas fa-star"></i> <span id="topScore">0</span> 分
+    </div>
+  </div>
+
+  <!-- 步骤点 -->
+  <div class="step-indicator">
+    <div class="step-dot-wrapper">
+      <span class="step-dot active" id="dot1"></span>
+      <span class="step-label active-label" id="label1">故事</span>
+    </div>
+    <div class="step-dot-wrapper">
+      <span class="step-dot" id="dot2"></span>
+      <span class="step-label" id="label2">任务</span>
+    </div>
+    <div class="step-dot-wrapper">
+      <span class="step-dot" id="dot3"></span>
+      <span class="step-label" id="label3">分享</span>
+    </div>
+    <div class="step-dot-wrapper">
+      <span class="step-dot" id="dot4"></span>
+      <span class="step-label" id="label4">启航</span>
+    </div>
+  </div>
+
+  <!-- ===== 步骤1: 我的1011故事 ===== -->
+  <div id="step1" class="step-panel">
+    <div class="step-content">
+      <div class="scroll-area">
+        <div class="page-title"><i class="fas fa-pen-fancy"></i> 我的 1011 故事</div>
+        <div class="page-sub">
+          <i class="fas fa-quote-left" style="color:#f7c873; margin-right:6px;"></i> 
+          上传你的经历，完成任务获取积分，根据总分获得 <strong>$XX ~ $XXXX</strong> 奖励
+        </div>
+
+        <div class="intro-card">
+          <p><span class="highlight">⏳ 2025.10.11</span> 加密市场史诗级清算，杠杆风暴席卷全网。</p>
+          <p>无数交易者亲历剧烈波动，这一天被 Web3 社区称为 <strong class="highlight">「1011」</strong>。</p>
+          <p style="font-size:14px; color:#b3adc0; margin-top:4px;">亲历者 · 幸存者 · 见证者 — 留下你的故事。</p>
+          <div class="intro-tag"><i class="fas fa-fire"></i> 诺亚方舟 · 记忆永存</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label"><i class="fas fa-align-left"></i> 告诉我们你的 1011 经历</label>
+          <textarea placeholder="那天，我看见了…… 市场崩溃的瞬间，我的仓位……" id="storyText" rows="3"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label"><i class="fas fa-image"></i> 上传图片 (选填)</label>
+          <div class="file-upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>选择文件</span>
+            <input type="file" accept="image/*" id="storyImage">
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn-primary" id="saveStoryBtn"><i class="fas fa-save"></i> 保存我的故事</button>
+        <button class="btn-secondary" id="goStep2Btn"><i class="fas fa-arrow-right"></i> 下一步 · 任务中心</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 步骤2: 任务中心 ===== -->
+  <div id="step2" class="step-panel hidden">
+    <div class="step-content">
+      <div class="scroll-area" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+        <div class="page-title"><i class="fas fa-tasks"></i> 任务中心</div>
+        <div class="page-sub">
+          <i class="fas fa-star" style="color:#f7c873;"></i> 
+          完成以下任务赚取积分，积分越高，奖励越丰厚！
+        </div>
+
+        <div class="task-container">
+          <div class="task-list-scroll" id="taskList"><div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">日常活跃</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">每日登陸平台</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+5</span>
+              <button class="task-btn" data-id="t1">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">連續簽到 (連續天數越多，獎勵疊加)</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+15</span>
+              <button class="task-btn" data-id="t2">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">社交关注</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">關注 story.fun X 賬號</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+10</span>
+              <button class="task-btn" data-id="t3">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">關注團隊對外成員賬號</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+10</span>
+              <button class="task-btn" data-id="t4">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">社交传播</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">轉推任何有關 story.fun 的推文</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+5</span>
+              <button class="task-btn" data-id="t5">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">讚好任何有關 story.fun 的推文</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+2</span>
+              <button class="task-btn" data-id="t6">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">到官方推文打卡互動</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+10</span>
+              <button class="task-btn" data-id="t7">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">产品互动</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">在 story.fun 創建賬號</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+20</span>
+              <button class="task-btn" data-id="t8">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">在 story.fun 上嘗試生成短劇</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+30</span>
+              <button class="task-btn" data-id="t9">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">瀏覽 1011 短劇，了解發生什麼事</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+15</span>
+              <button class="task-btn" data-id="t10">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">轉推有關 1011 短劇或事件的推文</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+25</span>
+              <button class="task-btn" data-id="t11">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">與 One Light 互動 (看過或創建短劇)</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+40</span>
+              <button class="task-btn" data-id="t12">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">參與 1011 拼圖挑戰活動</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+35</span>
+              <button class="task-btn" data-id="t13">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">链上互动</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">接觸 Solana 生態其他項目並互動</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+50</span>
+              <button class="task-btn" data-id="t14">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">登錄 Solana 錢包</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+60</span>
+              <button class="task-btn" data-id="t15">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">等级成就</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 25 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+30</span>
+              <button class="task-btn" data-id="t16">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 50 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+60</span>
+              <button class="task-btn" data-id="t17">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 75 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+80</span>
+              <button class="task-btn" data-id="t18">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 100 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+100</span>
+              <button class="task-btn" data-id="t19">👍 完成</button>
+            </div>
+          </div>
+        </div>
+          <div class="task-progress">
+            <span>已完成 <span class="done-count" id="doneCount">0</span> / <span id="totalCount">19</span> 个任务</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn-primary" id="goStep3Btn"><i class="fas fa-share-alt"></i> 下一步 · 分享你的故事</button>
+        <button class="btn-secondary" id="backToStep1Btn"><i class="fas fa-arrow-left"></i> 返回编辑故事</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 步骤3: 分享你的故事 ===== -->
+  <div id="step3" class="step-panel hidden">
+    <div class="step-content">
+      <div class="scroll-area">
+        <div class="page-title"><i class="fas fa-share-alt"></i> 分享你的故事</div>
+        <div class="page-sub"><i class="fas fa-globe-asia" style="color:#f7c873;"></i> 让更多人知道你的 1011 故事，传播数据也能加分！</div>
+
+        <div class="social-grid">
+          <div class="social-row"><i class="fab fa-twitter"></i><input type="url" placeholder="推特链接 (Twitter)" id="twitterLink"></div>
+          <div class="social-row"><i class="fab fa-tiktok"></i><input type="url" placeholder="TikTok 链接" id="tiktokLink"></div>
+          <div class="social-row"><i class="fab fa-youtube"></i><input type="url" placeholder="YouTube 链接" id="youtubeLink"></div>
+        </div>
+
+        <div class="social-bonus">
+          <h4><i class="fas fa-chart-line"></i> 传播数据加分标准</h4>
+          <div class="bonus-grid">
+            <div class="bonus-item"><div class="platform"><i class="fab fa-twitter"></i> Twitter</div><div class="rule">每10次播放</div><div class="pts">+2</div></div>
+            <div class="bonus-item"><div class="platform"><i class="fab fa-twitter"></i> Twitter</div><div class="rule">每10次点赞</div><div class="pts">+3</div></div>
+            <div class="bonus-item"><div class="platform"><i class="fab fa-twitter"></i> Twitter</div><div class="rule">每10次转推</div><div class="pts">+5</div></div>
+            <div class="bonus-item"><div class="platform"><i class="fab fa-tiktok"></i> TikTok</div><div class="rule">每100次播放</div><div class="pts">+5</div></div>
+            <div class="bonus-item"><div class="platform"><i class="fab fa-tiktok"></i> TikTok</div><div class="rule">每10次点赞</div><div class="pts">+3</div></div>
+            <div class="bonus-item"><div class="platform"><i class="fab fa-youtube"></i> YouTube</div><div class="rule">每100次播放</div><div class="pts">+4</div></div>
+            <div class="bonus-item"><div class="platform"><i class="fab fa-youtube"></i> YouTube</div><div class="rule">每10次点赞</div><div class="pts">+5</div></div>
+            <div class="bonus-item"><div class="platform">📊 综合</div><div class="rule">综合传播力额外奖励</div><div class="pts">实时累计</div></div>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="track-title"><i class="fas fa-robot"></i>提交链接后自动追踪以下数据并累计积分</div>
+          <div class="track-grid">
+            <div class="track-item"><div class="label">📹 播放量</div><div class="value">跨平台自动累计</div></div>
+            <div class="track-item"><div class="label">❤️ 互動量</div><div class="value">點讚+轉推自動計算</div></div>
+            <div class="track-item"><div class="label">🏆 綜合傳播力</div><div class="value">額外加分獎勵</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn-primary" id="submitLinksBtn"><i class="fas fa-paper-plane"></i> 提交社交链接</button>
+        <button class="btn-secondary" id="goStep4Btn"><i class="fas fa-anchor"></i> 跳过 · 直接登船</button>
+        <button class="btn-secondary" id="backToStep2Btn" style="margin-top:4px;"><i class="fas fa-arrow-left"></i> 返回任务中心</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 步骤4: 等待启航 ===== -->
+  <div id="step4" class="step-panel hidden">
+    <div class="step-content">
+      <div class="ready-container">
+        <div class="ready-icon"><i class="fas fa-rocket"></i></div>
+        <div class="ready-title"><i class="fas fa-ship"></i> 你已成功登船</div>
+
+        <div class="final-stats">
+          <div class="final-stat-item"><div class="num" id="finalScore">0</div><div class="label">总积分</div></div>
+          <div class="final-stat-item"><div class="num" id="finalTasks">0</div><div class="label">已完成任务</div></div>
+        </div>
+
+        <div class="ready-desc">
+          <strong style="color:#f7c873;">诺亚方舟即将启航。</strong><br>
+          你的 1011 故事已成功提交。方舟启航后，我们将根据你的内容、社媒传播数据及任务积分，评估并发放 <strong>USDT</strong> 奖励。
+        </div>
+
+        <button class="btn-outline-gold" id="continueTaskBtn" style="max-width:320px; margin:0 auto 10px;">
+          <i class="fas fa-plus-circle"></i> 继续做任务，增加积分
+        </button>
+        <div style="font-size:13px; color:#7b7a97; margin-bottom:14px;">
+          ⏳ 启航前可随时完成任务，积分越多奖励越高
+        </div>
+
+        <div class="reward-badge"><i class="fas fa-coins"></i> 奖金范围 $XX – $XXXX</div>
+        <div style="margin-top: 22px; border-top: 1px solid #3f4568; padding-top: 16px; color:#7b7a97; font-size:13px;">
+          <i class="fas fa-hourglass-half"></i> 等待启航 · 故事将永远留在链上
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 18px; text-align: center; font-size: 12px; color: #4d4f6b; letter-spacing: 1px; border-top: 1px solid #2d304b; padding-top: 16px;">
+    <i class="fas fa-ethereum"></i> 1011  ·  诺亚方舟  ·  不朽记忆
+  </div>
+</div>
+
+<!-- ===== 任务浮层 ===== -->
+<div class="task-overlay" id="taskOverlay">
+  <div class="task-panel">
+    <div class="task-panel-header">
+      <h2><i class="fas fa-tasks"></i> 任务中心</h2>
+      <button class="close-btn" id="closeTaskOverlay">×</button>
+    </div>
+    <div class="task-list-scroll" id="overlayTaskList" style="max-height:420px;"><div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">日常活跃</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">每日登陸平台</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+5</span>
+              <button class="task-btn" data-id="t1">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">連續簽到 (連續天數越多，獎勵疊加)</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+15</span>
+              <button class="task-btn" data-id="t2">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">社交关注</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">關注 story.fun X 賬號</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+10</span>
+              <button class="task-btn" data-id="t3">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">關注團隊對外成員賬號</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+10</span>
+              <button class="task-btn" data-id="t4">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">社交传播</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">轉推任何有關 story.fun 的推文</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+5</span>
+              <button class="task-btn" data-id="t5">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">讚好任何有關 story.fun 的推文</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+2</span>
+              <button class="task-btn" data-id="t6">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">到官方推文打卡互動</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+10</span>
+              <button class="task-btn" data-id="t7">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">产品互动</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">在 story.fun 創建賬號</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+20</span>
+              <button class="task-btn" data-id="t8">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">在 story.fun 上嘗試生成短劇</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+30</span>
+              <button class="task-btn" data-id="t9">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">瀏覽 1011 短劇，了解發生什麼事</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+15</span>
+              <button class="task-btn" data-id="t10">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">轉推有關 1011 短劇或事件的推文</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+25</span>
+              <button class="task-btn" data-id="t11">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">與 One Light 互動 (看過或創建短劇)</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+40</span>
+              <button class="task-btn" data-id="t12">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">參與 1011 拼圖挑戰活動</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+35</span>
+              <button class="task-btn" data-id="t13">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">链上互动</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">接觸 Solana 生態其他項目並互動</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+50</span>
+              <button class="task-btn" data-id="t14">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">登錄 Solana 錢包</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+60</span>
+              <button class="task-btn" data-id="t15">👍 完成</button>
+            </div>
+          </div>
+        <div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">等级成就</div>
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 25 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+30</span>
+              <button class="task-btn" data-id="t16">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 50 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+60</span>
+              <button class="task-btn" data-id="t17">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 75 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+80</span>
+              <button class="task-btn" data-id="t18">👍 完成</button>
+            </div>
+          </div>
+        
+          <div class="task-item">
+            <div class="task-left">
+              <span class="task-name">等級達到 100 級</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+100</span>
+              <button class="task-btn" data-id="t19">👍 完成</button>
+            </div>
+          </div>
+        </div>
+    <div class="task-progress" style="margin-top:12px; padding-top:12px;">
+      <span>已完成 <span class="done-count" id="overlayDoneCount">0</span> / <span id="overlayTotalCount">19</span> 个任务</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ===== 任务数据（19个） =====
+    const TASKS = [
+      { id: 't1', category: '日常活跃', name: '每日登陸平台', points: 5 },
+      { id: 't2', category: '日常活跃', name: '連續簽到 (連續天數越多，獎勵疊加)', points: 15 },
+      { id: 't3', category: '社交关注', name: '關注 story.fun X 賬號', points: 10 },
+      { id: 't4', category: '社交关注', name: '關注團隊對外成員賬號', points: 10 },
+      { id: 't5', category: '社交传播', name: '轉推任何有關 story.fun 的推文', points: 5 },
+      { id: 't6', category: '社交传播', name: '讚好任何有關 story.fun 的推文', points: 2 },
+      { id: 't7', category: '社交传播', name: '到官方推文打卡互動', points: 10 },
+      { id: 't8', category: '产品互动', name: '在 story.fun 創建賬號', points: 20 },
+      { id: 't9', category: '产品互动', name: '在 story.fun 上嘗試生成短劇', points: 30 },
+      { id: 't10', category: '产品互动', name: '瀏覽 1011 短劇，了解發生什麼事', points: 15 },
+      { id: 't11', category: '产品互动', name: '轉推有關 1011 短劇或事件的推文', points: 25 },
+      { id: 't12', category: '产品互动', name: '與 One Light 互動 (看過或創建短劇)', points: 40 },
+      { id: 't13', category: '产品互动', name: '參與 1011 拼圖挑戰活動', points: 35 },
+      { id: 't14', category: '链上互动', name: '接觸 Solana 生態其他項目並互動', points: 50 },
+      { id: 't15', category: '链上互动', name: '登錄 Solana 錢包', points: 60 },
+      { id: 't16', category: '等级成就', name: '等級達到 25 級', points: 30 },
+      { id: 't17', category: '等级成就', name: '等級達到 50 級', points: 60 },
+      { id: 't18', category: '等级成就', name: '等級達到 75 級', points: 80 },
+      { id: 't19', category: '等级成就', name: '等級達到 100 級', points: 100 }
+    ];
+    const TOTAL = TASKS.length;
+
+    let completed = new Set();
+    let score = 0;
+    let autoTasksCompleted = false;
+
+    // DOM
+    const topScore = document.getElementById('topScore');
+    const doneCount = document.getElementById('doneCount');
+    const overlayDoneCount = document.getElementById('overlayDoneCount');
+    const totalCount = document.getElementById('totalCount');
+    const overlayTotalCount = document.getElementById('overlayTotalCount');
+    const finalScore = document.getElementById('finalScore');
+    const finalTasks = document.getElementById('finalTasks');
+
+    const taskList = document.getElementById('taskList');
+    const overlayTaskList = document.getElementById('overlayTaskList');
+    const taskOverlay = document.getElementById('taskOverlay');
+    const openTaskBtn = document.getElementById('openTaskBtn');
+    const closeTaskOverlay = document.getElementById('closeTaskOverlay');
+    const continueTaskBtn = document.getElementById('continueTaskBtn');
+
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step4 = document.getElementById('step4');
+    const dots = [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3'), document.getElementById('dot4')];
+    const labels = [document.getElementById('label1'), document.getElementById('label2'), document.getElementById('label3'), document.getElementById('label4')];
+
+    const saveStoryBtn = document.getElementById('saveStoryBtn');
+    const goStep2Btn = document.getElementById('goStep2Btn');
+    const goStep3Btn = document.getElementById('goStep3Btn');
+    const backToStep1Btn = document.getElementById('backToStep1Btn');
+    const backToStep2Btn = document.getElementById('backToStep2Btn');
+    const submitLinksBtn = document.getElementById('submitLinksBtn');
+    const goStep4Btn = document.getElementById('goStep4Btn');
+
+    const storyText = document.getElementById('storyText');
+    const storyImage = document.getElementById('storyImage');
+    const twitterLink = document.getElementById('twitterLink');
+    const tiktokLink = document.getElementById('tiktokLink');
+    const youtubeLink = document.getElementById('youtubeLink');
+
+    // ===== 渲染任务 =====
+    function renderTasks(container) {
+      let html = '';
+      let currentCategory = '';
+      TASKS.forEach(task => {
+        if (task.category !== currentCategory) {
+          currentCategory = task.category;
+          html += `<div style="font-size:12px; font-weight:600; color:#f7c873; padding:8px 4px 4px; letter-spacing:0.5px; border-bottom:1px solid #2d304b; margin-bottom:4px;">${currentCategory}</div>`;
+        }
+        const done = completed.has(task.id);
+        const btnText = done ? '✅ 已完成' : '👍 完成';
+        const btnClass = done ? 'task-btn done-btn' : 'task-btn';
+        const itemClass = done ? 'task-item done' : 'task-item';
+        html += `
+          <div class="${itemClass}">
+            <div class="task-left">
+              <span class="task-name">${task.name}</span>
+            </div>
+            <div class="task-right">
+              <span class="task-points">+${task.points}</span>
+              <button class="${btnClass}" data-id="${task.id}" ${done ? 'disabled' : ''}>${btnText}</button>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+
+      container.querySelectorAll('.task-btn:not([disabled])').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = this.dataset.id;
+          if (completed.has(id)) return;
+          const task = TASKS.find(t => t.id === id);
+          if (!task) return;
+          completed.add(id);
+          score += task.points;
+          refreshAll();
+        });
+      });
+    }
+
+    // ===== 刷新所有 =====
+    function refreshAll() {
+      const done = completed.size;
+      topScore.textContent = score;
+      doneCount.textContent = done;
+      overlayDoneCount.textContent = done;
+      totalCount.textContent = TOTAL;
+      overlayTotalCount.textContent = TOTAL;
+      finalScore.textContent = score;
+      finalTasks.textContent = done;
+      renderTasks(taskList);
+      renderTasks(overlayTaskList);
+    }
+
+    // ===== 切换步骤 =====
+    function setStep(n) {
+      [step1, step2, step3, step4].forEach((el, i) => {
+        el.classList.toggle('hidden', i + 1 !== n);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active', 'done');
+        labels[i].classList.remove('active-label', 'done-label');
+        if (i + 1 === n) {
+          dot.classList.add('active');
+          labels[i].classList.add('active-label');
+        } else if (i + 1 < n) {
+          dot.classList.add('done');
+          labels[i].classList.add('done-label');
+        }
+      });
+      refreshAll();
+    }
+
+    // ===== 浮层控制 =====
+    function openOverlay() {
+      taskOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      refreshAll();
+    }
+    function closeOverlay() {
+      taskOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    openTaskBtn.addEventListener('click', openOverlay);
+    continueTaskBtn.addEventListener('click', openOverlay);
+    closeTaskOverlay.addEventListener('click', closeOverlay);
+    taskOverlay.addEventListener('click', function(e) { if (e.target === this) closeOverlay(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeOverlay(); });
+
+    // ===== 模拟自动加分 =====
+    function completeAutoTasks() {
+      if (autoTasksCompleted) return;
+      const bonus = 60;
+      score += bonus;
+      autoTasksCompleted = true;
+      refreshAll();
+      alert(`✅ 社媒链接已提交！\n📹 播放量追踪 +20\n❤️ 互動量追踪 +25\n🏆 綜合傳播力 +15\n\n共获得 ${bonus} 积分！`);
+    }
+
+    // ===== 按钮事件 =====
+    saveStoryBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!storyText.value.trim()) { alert('📝 请写下你的 1011 经历。'); return; }
+      alert('✅ 故事已保存！');
+    });
+
+    goStep2Btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!storyText.value.trim()) { alert('✍️ 请先写下你的 1011 故事。'); return; }
+      setStep(2);
+    });
+
+    backToStep1Btn.addEventListener('click', function() { setStep(1); });
+
+    goStep3Btn.addEventListener('click', function() {
+      if (completed.size === 0 && !confirm('你还没有完成任何任务，确定要跳过吗？')) return;
+      setStep(3);
+    });
+
+    backToStep2Btn.addEventListener('click', function() { setStep(2); });
+
+    submitLinksBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const tw = twitterLink.value.trim(), tt = tiktokLink.value.trim(), yt = youtubeLink.value.trim();
+      if (!tw && !tt && !yt) { alert('🔗 至少填写一个社交链接。'); return; }
+      const valid = (u) => u && (u.startsWith('http://') || u.startsWith('https://'));
+      if ((tw && !valid(tw)) || (tt && !valid(tt)) || (yt && !valid(yt))) {
+        alert('⚠️ 请填写完整的链接 (包含 http:// 或 https://)');
+        return;
+      }
+      alert('🌐 社交链接已提交！系统将自动追踪传播数据并为您加分。');
+      completeAutoTasks();
+      setStep(4);
+    });
+
+    goStep4Btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (confirm('跳过社交链接？ 你随时可以返回补充。')) setStep(4);
+    });
+
+    document.getElementById('resetBtn').addEventListener('dblclick', function() {
+      if (confirm('重置演示到第一步？')) {
+        completed.clear();
+        score = 0;
+        autoTasksCompleted = false;
+        setStep(1);
+        storyText.value = '';
+        storyImage.value = '';
+        twitterLink.value = '';
+        tiktokLink.value = '';
+        youtubeLink.value = '';
+        closeOverlay();
+        refreshAll();
+      }
+    });
+
+    // ===== 初始化 =====
+    renderTasks(taskList);
+    renderTasks(overlayTaskList);
+    setStep(1);
+  })();
+</script>
+
+
+<div data-demoway-ignore="true"><template shadowrootmode="open"><link rel="stylesheet" href="chrome-extension://amcccnldajjnngnaoinemnaloklogjak/content-scripts/content.css"><div class="pointer-events-none absolute inset-0 size-full"><!-- Remove item from normal navigation flow, only available via hotkey --><section aria-label="Notifications alt+T" tabindex="-1" aria-live="polite" aria-relevant="additions text" aria-atomic="false"><ol data-sonner-toaster="" data-sonner-theme="light" class="toaster group pointer-events-auto" dir="ltr" tabindex="-1" data-theme="light" data-rich-colors="true" data-y-position="top" data-x-position="center" style="--rfext-front-toast-height: 0px; --rfext-width: 356px; --rfext-gap: 14px; --normal-bg: inherit; --normal-text: inherit; --normal-border: hsl(var(--border)); --rfext-offset-top: 24px; --rfext-offset-right: 24px; --rfext-offset-bottom: 24px; --rfext-offset-left: 24px; --rfext-mobile-offset-top: 16px; --rfext-mobile-offset-right: 16px; --rfext-mobile-offset-bottom: 16px; --rfext-mobile-offset-left: 16px;"></ol></section><div class="group/controls flex justify-between indicator pointer-events-auto absolute flex-col items-stretch gap-2 overflow-visible rounded-md bg-white px-[12px] py-[8px] invisible" style="left: 20px; bottom: 20px;"><div class="flex items-center justify-between gap-[16px]"><div class="cursor-move"><svg viewBox="0 0 24 24" width="1.2em" height="1.2em" class="pointer-events-none text-[18px] text-neutral-700"><path fill="none" stroke="currentColor" stroke-width="2" d="M15 5h2V3h-2zM7 5h2V3H7zm8 8h2v-2h-2zm-8 0h2v-2H7zm8 8h2v-2h-2zm-8 0h2v-2H7z"></path></svg></div><button class="focus-visible:ring-ring relative gap-2 font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-[1em] [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 flex h-[36px] min-w-[36px] items-center justify-center rounded-full [&amp;_svg]:h-[1.2em] [&amp;_svg]:w-[1.2em] !pointer-events-auto w-full px-[16px] text-sm cursor-pointer"><!----><svg viewBox="0 0 16 16" width="1.2em" height="1.2em"><path fill="currentColor" d="M8 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"></path></svg> Start Capturing</button></div></div><!----><!----><!----><!----><!----><!----><!----></div><!----><!----><!----><!----><!----><div style="display: none;"><iframe title="intermediary" allowtransparency="true" sandbox="allow-same-origin allow-scripts" src="chrome-extension://amcccnldajjnngnaoinemnaloklogjak/intermediary.html?task_list_border=true"></iframe></div><!----></template></div><div id="__LARK_CLIPPER__"></div></body></html>
