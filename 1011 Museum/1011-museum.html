@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1011 Museum — 加密市场历史性闪崩事件</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-deep: #0D1114;
+      --bg-card: #151A1F;
+      --bg-card-hover: #1A2027;
+      --gold: #C9A96E;
+      --gold-dim: #A68A4E;
+      --red: #C44B4B;
+      --red-dim: #9E3A3A;
+      --green: #4CAF84;
+      --blue: #5B8CB8;
+      --text: #E0E0E0;
+      --text-dim: #889099;
+      --text-muted: #5A646E;
+      --border: rgba(255,255,255,0.06);
+      --border-gold: rgba(201,169,110,0.20);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--bg-deep); }
+    body {
+      background: var(--bg-deep);
+      color: var(--text);
+      font-family: "PingFang SC", "SF Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Reveal Animation */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Section Base */
+    .section {
+      position: relative;
+      padding: 100px 0;
+    }
+    .section-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .section-label {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-family: "SF Pro", "PingFang SC", sans-serif;
+    }
+    .section-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-dim);
+      max-width: 680px;
+      line-height: 1.7;
+    }
+    .section-header {
+      margin-bottom: 56px;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse at 50% 40%, rgba(13,17,20,0.3) 0%, rgba(13,17,20,0.85) 70%),
+        linear-gradient(to bottom, rgba(13,17,20,0.7) 0%, rgba(13,17,20,0.9) 50%, rgba(13,17,20,0.98) 100%);
+    }
+    .hero-grain {
+      position: absolute; inset: 0; z-index: 2; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 256px;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 0 24px;
+    }
+    .hero-icon {
+      width: 48px; height: 48px;
+      color: var(--gold);
+      margin: 0 auto 24px;
+      opacity: 0.8;
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: clamp(72px, 12vw, 144px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      font-family: "SF Pro Display", "PingFang SC", sans-serif;
+    }
+    .hero-subtitle {
+      font-size: clamp(16px, 2.5vw, 22px);
+      font-weight: 400;
+      color: var(--text-dim);
+      margin-bottom: 48px;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-stat {
+      text-align: center;
+      padding: 24px 36px;
+      border: 1px solid var(--border-gold);
+      border-radius: 1px;
+      background: rgba(21,26,31,0.6);
+      backdrop-filter: blur(8px);
+      min-width: 180px;
+    }
+    .hero-stat-val {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1.1;
+      font-family: "SF Pro Display", "PingFang SC", sans-serif;
+    }
+    .hero-stat-lbl {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 6px;
+      letter-spacing: 0.08em;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      color: var(--text-dim);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      animation: floatDown 2s ease-in-out infinite;
+    }
+    @keyframes floatDown {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ============================================
+       TIMELINE
+       ============================================ */
+    .timeline-section {
+      position: relative;
+    }
+    .timeline-bg {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.06;
+    }
+    .timeline-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .timeline-track {
+      position: relative;
+      padding-left: 60px;
+    }
+    .timeline-line {
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), var(--red), var(--gold-dim));
+    }
+    .timeline-item {
+      position: relative;
+      padding: 24px 0 24px 40px;
+      border-left: none;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -41px;
+      top: 28px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg-deep);
+      border: 2px solid var(--gold);
+      z-index: 1;
+    }
+    .timeline-item:nth-child(3) .timeline-dot,
+    .timeline-item:nth-child(4) .timeline-dot,
+    .timeline-item:nth-child(5) .timeline-dot { border-color: var(--red); }
+    .timeline-time {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+      font-family: "SF Mono", "Menlo", monospace;
+    }
+    .timeline-event {
+      font-size: 17px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.4;
+    }
+    .timeline-price {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .timeline-price span {
+      color: var(--red);
+      font-weight: 600;
+    }
+    .timeline-chart {
+      margin-top: 40px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+    .timeline-chart svg {
+      width: 100%;
+      height: auto;
+    }
+    .chart-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================
+       DATA HALL
+       ============================================ */
+    .data-bg {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.05;
+    }
+    .data-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 56px;
+    }
+    .data-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .data-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-gold);
+    }
+    .data-card-icon {
+      width: 28px; height: 28px;
+      color: var(--gold);
+      margin-bottom: 16px;
+      opacity: 0.7;
+    }
+    .data-card-val {
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      font-family: "SF Pro Display", "PingFang SC", sans-serif;
+      margin-bottom: 6px;
+    }
+    .data-card-lbl {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .data-card-src {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    /* Exchange bar chart */
+    .exchange-bars {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+    }
+    .exchange-bars-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      letter-spacing: 0.08em;
+    }
+    .exchange-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .exchange-bar-label {
+      width: 140px;
+      font-size: 14px;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .exchange-bar-track {
+      flex: 1;
+      height: 28px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    .exchange-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+    }
+    .exchange-bar-fill.hl { background: linear-gradient(90deg, var(--gold-dim), var(--gold)); }
+    .exchange-bar-fill.by { background: linear-gradient(90deg, #5B8CB8, #7DACD8); }
+    .exchange-bar-fill.bn { background: linear-gradient(90deg, #F0B90B, #FCD535); }
+    .exchange-bar-val {
+      width: 80px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .exchange-bar-note {
+      width: 100px;
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       CAUSAL CHAIN
+       ============================================ */
+    .causal-bg {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.07;
+    }
+    .causal-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .causal-chain {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .causal-node {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 28px 0;
+      position: relative;
+    }
+    .causal-node:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 72px;
+      width: 1px;
+      height: calc(100% - 44px);
+      background: linear-gradient(to bottom, var(--border-gold), var(--border));
+    }
+    .causal-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--bg-card);
+      z-index: 1;
+    }
+    .causal-num svg {
+      width: 22px; height: 22px;
+      color: var(--gold);
+    }
+    .causal-node:nth-child(4) .causal-num svg,
+    .causal-node:nth-child(5) .causal-num svg,
+    .causal-node:nth-child(6) .causal-num svg { color: var(--red-dim); }
+    .causal-node:nth-child(4) .causal-num,
+    .causal-node:nth-child(5) .causal-num,
+    .causal-node:nth-child(6) .causal-num { border-color: rgba(196,75,75,0.3); }
+    .causal-body h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .causal-body .causal-role {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .causal-body p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    /* ============================================
+       CHARACTER GALLERY
+       ============================================ */
+    .gallery-bg {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.06;
+    }
+    .gallery-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .gallery-col-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid;
+    }
+    .gallery-col-label.losers { color: var(--red); border-color: rgba(196,75,75,0.3); }
+    .gallery-col-label.winners { color: var(--green); border-color: rgba(76,175,132,0.3); }
+    .gallery-col-label.explainers { color: var(--blue); border-color: rgba(91,140,184,0.3); }
+    .gallery-col-label.narrators { color: var(--gold); border-color: var(--border-gold); }
+    .char-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px;
+      margin-bottom: 12px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .char-card:hover {
+      background: var(--bg-card-hover);
+    }
+    .char-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .char-role-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+    .tag-red { background: rgba(196,75,75,0.15); color: var(--red); }
+    .tag-green { background: rgba(76,175,132,0.15); color: var(--green); }
+    .tag-blue { background: rgba(91,140,184,0.15); color: var(--blue); }
+    .tag-gold { background: rgba(201,169,110,0.15); color: var(--gold); }
+    .char-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       COMPARISON
+       ============================================ */
+    .compare-bg {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.05;
+    }
+    .compare-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .compare-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+    }
+    .compare-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .compare-card .exch-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+    }
+    .exch-tag.binance { color: #F0B90B; }
+    .exch-tag.coinbase { color: #0052FF; }
+    .compare-stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .compare-stat:last-child { border-bottom: none; }
+    .compare-stat-lbl { color: var(--text-dim); }
+    .compare-stat-val { color: #fff; font-weight: 500; }
+    .compare-stat-val.bad { color: var(--red); }
+    .compare-stat-val.ok { color: var(--green); }
+
+    /* DOGE price comparison */
+    .doge-compare {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+    }
+    .doge-compare h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .doge-bars { display: flex; gap: 24px; flex-wrap: wrap; }
+    .doge-bar-item { flex: 1; min-width: 140px; text-align: center; }
+    .doge-bar-item .drop-pct {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--red);
+      font-family: "SF Pro Display", "PingFang SC", sans-serif;
+    }
+    .doge-bar-item .exch-name {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .doge-bar-item .price-range {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ============================================
+       AFTERMATH
+       ============================================ */
+    .aftermath-bg {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.06;
+    }
+    .aftermath-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .aftermath-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .aftermath-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px;
+      text-align: center;
+    }
+    .aftermath-card .period {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .aftermath-card .change {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--red);
+      font-family: "SF Pro Display", "PingFang SC", sans-serif;
+    }
+    .aftermath-card .amount {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .aftermath-timeline {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+    }
+    .aftermath-timeline h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .am-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .am-row:last-child { border-bottom: none; }
+    .am-date { width: 160px; color: var(--text-muted); font-family: "SF Mono", "Menlo", monospace; font-size: 13px; flex-shrink: 0; }
+    .am-event { color: var(--text-dim); flex: 1; }
+    .am-figure { color: var(--red); font-weight: 600; flex-shrink: 0; }
+
+    /* ============================================
+       CONCLUSION
+       ============================================ */
+    .conclusion-bg {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.05;
+    }
+    .conclusion-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .conclusion-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .conclusion-col h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .conclusion-col.confirmed h3 { color: var(--green); border-color: rgba(76,175,132,0.3); }
+    .conclusion-col.unconfirmed h3 { color: var(--red); border-color: rgba(196,75,75,0.3); }
+    .conclusion-item {
+      font-size: 13px;
+      color: var(--text-dim);
+      padding: 8px 0;
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .conclusion-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+    .conclusion-col.confirmed .conclusion-item::before { background: var(--green); }
+    .conclusion-col.unconfirmed .conclusion-item::before { background: var(--red); }
+    .verdict-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
+      padding: 36px;
+      position: relative;
+    }
+    .verdict-box::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--gold);
+    }
+    .verdict-box .verdict-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .verdict-box p {
+      font-size: 16px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      font-style: italic;
+    }
+    .verdict-box p strong {
+      color: #fff;
+      font-style: normal;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .museum-footer {
+      text-align: center;
+      padding: 60px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .museum-footer p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+    .museum-footer a {
+      color: var(--gold-dim);
+      text-decoration: none;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .aftermath-metrics { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .section { padding: 60px 0; }
+      .section-inner { padding: 0 20px; }
+      .section-title { font-size: 26px; }
+      .hero-stats { gap: 16px; }
+      .hero-stat { padding: 16px 20px; min-width: 140px; }
+      .hero-stat-val { font-size: 24px; }
+      .timeline-track { padding-left: 40px; }
+      .timeline-item { padding-left: 28px; }
+      .timeline-dot { left: -29px; }
+      .timeline-line { left: 13px; }
+      .data-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .conclusion-grid { grid-template-columns: 1fr; }
+      .exchange-bar-row { flex-wrap: wrap; }
+      .exchange-bar-label { width: 100%; }
+      .doge-bars { flex-direction: column; }
+      .am-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===============================
+       HERO
+       =============================== -->
+  <section class="hero">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236c3?w=1920&q=80" alt="" loading="eager" />
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-content reveal">
+      <i data-lucide="flame" class="hero-icon"></i>
+      <div class="hero-eyebrow">加密市场历史性事件</div>
+      <h1 class="hero-title">1011</h1>
+      <p class="hero-subtitle">一次全球加密市场结构的联合失效</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">1,618,240</div>
+          <div class="hero-stat-lbl">爆仓账户/交易身份</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">$191.3<span style="font-size:0.5em;">亿</span></div>
+          <div class="hero-stat-lbl">公开名义爆仓（下限）</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">280<span style="font-size:0.5em;">天+</span></div>
+          <div class="hero-stat-lbl">市场至今未恢复</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>向下探索</span>
+      <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+    </div>
+  </section>
+
+  <!-- ===============================
+       TIMELINE
+       =============================== -->
+  <section class="section timeline-section reveal">
+    <div class="timeline-bg">
+      <img src="https://images.unsplash.com/photo-1501139083538-0139583c060f?w=1200&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Chronology</div>
+        <h2 class="section-title">逐分钟时间线</h2>
+        <p class="section-desc">2025年10月10日 20:50 UTC 起（北京时间 10月11日 04:50），以小时为单位记录市场崩解的每一帧。</p>
+      </div>
+
+      <div class="timeline-track">
+        <div class="timeline-line"></div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">04:50 BJT · 20:50 UTC</div>
+          <div class="timeline-event">特朗普发布贸易威胁，宣布将对中国商品加征 100% 关税</div>
+          <div class="timeline-price">BTC 从 $126,000 区域开始下跌</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">07:30 BJT · 23:30 UTC</div>
+          <div class="timeline-event">BTC <span>$68,200 → $65,800</span></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">08:12 BJT · 00:12 UTC</div>
+          <div class="timeline-event">爆仓突破 <span style="color:var(--red);">$5 亿</span></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">09:30 BJT · 01:30 UTC</div>
+          <div class="timeline-event">BTC 跌破 $62,000 · ETH 跌破 $2,400</div>
+          <div class="timeline-price">USDe 在 Binance 开始明显偏离 $1</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">10:45 BJT · 02:45 UTC</div>
+          <div class="timeline-event">爆仓突破 <span style="color:var(--red);">$15 亿</span> · 约 80 万地址被清算</div>
+          <div class="timeline-price">USDe Binance 最低触及 <span>$0.65</span></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">12:00 BJT · 04:00 UTC</div>
+          <div class="timeline-event">BTC 最低 $59,800 · 160 万地址受影响</div>
+          <div class="timeline-price">山寨币普遍跌幅 <span>40%+</span>，部分极端插针接近零</div>
+        </div>
+      </div>
+
+      <div class="timeline-chart">
+        <div class="chart-label">BTC 价格走势示意（1011 事件窗口）</div>
+        <svg viewBox="0 0 800 240" preserveAspectRatio="xMidYMid meet">
+          <!-- Grid -->
+          <line x1="80" y1="20" x2="80" y2="200" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="80" y1="200" x2="760" y2="200" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <line x1="80" y1="110" x2="760" y2="110" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="4 4"/>
+          <!-- Y labels -->
+          <text x="70" y="25" fill="#5A646E" font-size="10" text-anchor="end">$126K</text>
+          <text x="70" y="115" fill="#5A646E" font-size="10" text-anchor="end">$68K</text>
+          <text x="70" y="205" fill="#5A646E" font-size="10" text-anchor="end">$60K</text>
+          <!-- X labels -->
+          <text x="80" y="220" fill="#5A646E" font-size="9" text-anchor="middle">20:50</text>
+          <text x="240" y="220" fill="#5A646E" font-size="9" text-anchor="middle">23:30</text>
+          <text x="420" y="220" fill="#5A646E" font-size="9" text-anchor="middle">01:30</text>
+          <text x="580" y="220" fill="#5A646E" font-size="9" text-anchor="middle">02:45</text>
+          <text x="720" y="220" fill="#C44B4B" font-size="9" text-anchor="middle">04:00</text>
+          <!-- BTC Price line -->
+          <polyline points="80,30 150,166 240,172 340,184 460,190 560,195 720,196"
+            fill="none" stroke="url(#btcGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Area fill -->
+          <polygon points="80,200 80,30 150,166 240,172 340,184 460,190 560,195 720,196 720,200"
+            fill="url(#btcArea)" opacity="0.4"/>
+          <!-- Gradient defs -->
+          <defs>
+            <linearGradient id="btcGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#C9A96E"/>
+              <stop offset="100%" stop-color="#C44B4B"/>
+            </linearGradient>
+            <linearGradient id="btcArea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C44B4B" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#C44B4B" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Data points -->
+          <circle cx="80" cy="30" r="4" fill="#C9A96E"/>
+          <circle cx="150" cy="166" r="3" fill="#C9A96E"/>
+          <circle cx="240" cy="172" r="3" fill="#C9A96E"/>
+          <circle cx="340" cy="184" r="3" fill="#C9A96E"/>
+          <circle cx="460" cy="190" r="3" fill="#C44B4B"/>
+          <circle cx="560" cy="195" r="3" fill="#C44B4B"/>
+          <circle cx="720" cy="196" r="5" fill="#C44B4B"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       DATA HALL
+       =============================== -->
+  <section class="section reveal" style="position:relative;">
+    <div class="data-bg">
+      <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=1920&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Data Hall</div>
+        <h2 class="section-title">数据大厅</h2>
+        <p class="section-desc">每一组数字背后都有一群人。以下数据来自 CoinGlass、Amberdata、CoinShares 等独立来源，统计口径各有不同。</p>
+      </div>
+
+      <!-- Metric Cards -->
+      <div class="data-grid">
+        <div class="data-card">
+          <i data-lucide="users" class="data-card-icon"></i>
+          <div class="data-card-val">1,618,240</div>
+          <div class="data-card-lbl">爆仓账户 / 交易身份</div>
+          <div class="data-card-src">来源：CoinGlass 公开数据</div>
+        </div>
+        <div class="data-card">
+          <i data-lucide="dollar-sign" class="data-card-icon"></i>
+          <div class="data-card-val">$191.3 亿</div>
+          <div class="data-card-lbl">公开名义爆仓金额（下限）</div>
+          <div class="data-card-src">来源：CoinGlass · 部分交易所数据不完整</div>
+        </div>
+        <div class="data-card">
+          <i data-lucide="trending-up" class="data-card-icon"></i>
+          <div class="data-card-val">$300–400 亿</div>
+          <div class="data-card-lbl">修正后的真实爆仓估算</div>
+          <div class="data-card-src">来源：CoinGlass 年度报告 · CoinShares 估计上限 $500 亿</div>
+        </div>
+        <div class="data-card">
+          <i data-lucide="percent" class="data-card-icon"></i>
+          <div class="data-card-val">85–90%</div>
+          <div class="data-card-lbl">爆仓仓位为多头</div>
+          <div class="data-card-src">来源：CoinGlass 年度衍生品报告</div>
+        </div>
+        <div class="data-card">
+          <i data-lucide="bar-chart-3" class="data-card-icon"></i>
+          <div class="data-card-val">$500–600 亿</div>
+          <div class="data-card-lbl">未平仓合约下降规模</div>
+          <div class="data-card-src">来源：CoinDesk Data / CoinShares</div>
+        </div>
+        <div class="data-card">
+          <i data-lucide="building-2" class="data-card-icon"></i>
+          <div class="data-card-val">$3,700–5,000 亿</div>
+          <div class="data-card-lbl">事件当日市值蒸发区间</div>
+          <div class="data-card-src">来源：综合市场数据</div>
+        </div>
+      </div>
+
+      <!-- Exchange Comparison -->
+      <div class="exchange-bars">
+        <div class="exchange-bars-title">按平台统计的公开爆仓分布</div>
+        <div class="exchange-bar-row">
+          <span class="exchange-bar-label">Hyperliquid</span>
+          <div class="exchange-bar-track">
+            <div class="exchange-bar-fill hl" style="width: 100%;"></div>
+          </div>
+          <span class="exchange-bar-val">~$102 亿</span>
+          <span class="exchange-bar-note">链上公开数据</span>
+        </div>
+        <div class="exchange-bar-row">
+          <span class="exchange-bar-label">Bybit</span>
+          <div class="exchange-bar-track">
+            <div class="exchange-bar-fill by" style="width: 45%;"></div>
+          </div>
+          <span class="exchange-bar-val">~$46 亿</span>
+          <span class="exchange-bar-note">公开聚合数据</span>
+        </div>
+        <div class="exchange-bar-row">
+          <span class="exchange-bar-label">Binance</span>
+          <div class="exchange-bar-track" style="background:rgba(255,255,255,0.02);">
+            <div class="exchange-bar-fill bn" style="width: 25%;"></div>
+          </div>
+          <span class="exchange-bar-val" style="color:var(--text-muted);">不完整</span>
+          <span class="exchange-bar-note">WS 限制 1笔/秒</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       CAUSAL CHAIN
+       =============================== -->
+  <section class="section reveal" style="position:relative;">
+    <div class="causal-bg">
+      <img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1920&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Causal Chain</div>
+        <h2 class="section-title">因果链</h2>
+        <p class="section-desc">一场全球闪崩从不是单一原因造成。六层结构逐级放大，最终形成无法停止的清算循环。</p>
+      </div>
+
+      <div class="causal-chain">
+        <div class="causal-node">
+          <div class="causal-num"><i data-lucide="sparkles"></i></div>
+          <div class="causal-body">
+            <div class="causal-role">第一层 · 火花</div>
+            <h3>中美贸易冲突消息触发下跌</h3>
+            <p>特朗普发布加征 100% 关税威胁，BTC 从 $126K 历史高点迅速下挫。期权隐含波动率激增，下行保护需求飙升。高置信度直接触发因素。</p>
+          </div>
+        </div>
+        <div class="causal-node">
+          <div class="causal-num"><i data-lucide="bar-chart-4"></i></div>
+          <div class="causal-body">
+            <div class="causal-role">第二层 · 燃料</div>
+            <h3>拥挤的多头杠杆集中平仓</h3>
+            <p>事件前市场多头情绪和期货基差处于高位。85–90% 的爆仓为多头。全市场未平仓合约下降约 $500–600 亿，形成快速去杠杆。</p>
+          </div>
+        </div>
+        <div class="causal-node">
+          <div class="causal-num"><i data-lucide="wind"></i></div>
+          <div class="causal-body">
+            <div class="causal-role">第三层 · 风</div>
+            <h3>做市商撤出与订单簿流动性消失</h3>
+            <p>做市商减少挂单、扩大价差、降低库存。部分大型交易所在 BTC 价格 4% 范围内几乎没有有效买盘。不同平台价格差异极大，市场难以确认统一的"真实价格"。</p>
+          </div>
+        </div>
+        <div class="causal-node">
+          <div class="causal-num"><i data-lucide="link-2"></i></div>
+          <div class="causal-body">
+            <div class="causal-role">第四层 · 连锁</div>
+            <h3>自动爆仓与 ADL 反身性循环</h3>
+            <p>强制卖出压低价格 → 更多账户爆仓 → 保险基金承压 → ADL 削减盈利仓位 → 做市商因风险上升继续撤单。Hyperliquid ADL 在 12 分钟内处理约 $21 亿仓位。</p>
+          </div>
+        </div>
+        <div class="causal-node">
+          <div class="causal-num"><i data-lucide="landmark"></i></div>
+          <div class="causal-body">
+            <div class="causal-role">第五层 · 抵押品</div>
+            <h3>USDe、WBETH、BNSOL 局部脱锚</h3>
+            <p>USDe 在 Binance 一度跌至 $0.65。这些资产同时是用户持仓、Earn 收益产品和统一保证金抵押品。抵押品估值下降后触发第二轮合约强平——但这发生在 BTC 第一轮下跌之后。</p>
+          </div>
+        </div>
+        <div class="causal-node">
+          <div class="causal-num"><i data-lucide="server-crash"></i></div>
+          <div class="causal-body">
+            <div class="causal-role">第六层 · 系统</div>
+            <h3>交易所基础设施压力</h3>
+            <p>Binance 资产划转约 33 分钟性能下降，部分用户无法及时补充保证金。dYdX 离线接近 8 小时，Lighter 出现严重中断。多个平台 API 失败、充值暂停。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       CHARACTER GALLERY
+       =============================== -->
+  <section class="section reveal" style="position:relative;">
+    <div class="gallery-bg">
+      <img src="https://images.unsplash.com/photo-1531913764164-f85c1e1e1f4b?w=1920&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Character Gallery</div>
+        <h2 class="section-title">角色画廊</h2>
+        <p class="section-desc">1011 不是一场没有面孔的数字崩塌。每一个标签背后，都有具体的人和机构。</p>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- Losers -->
+        <div>
+          <div class="gallery-col-label losers">损失者</div>
+          <div class="char-card">
+            <div class="char-name">麻吉大哥</div>
+            <span class="char-role-tag tag-red">知名人物</span>
+            <div class="char-desc">公开钱包在事件中遭受重大损失，引发社区广泛关注</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">TheWhiteWhale</div>
+            <span class="char-role-tag tag-red">大型交易者</span>
+            <div class="char-desc">Hyperliquid 上被完全清算的知名钱包之一</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">CyantArb</div>
+            <span class="char-role-tag tag-red">套利基金</span>
+            <div class="char-desc">在 ADL 中遭受异常价格清算的机构账户</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">USDe 抵押品用户</div>
+            <span class="char-role-tag tag-red">群体</span>
+            <div class="char-desc">持有"高收益稳定币"作为抵押品，因 Binance 局部脱锚被连带清算</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">无法划转保证金的用户</div>
+            <span class="char-role-tag tag-red">群体</span>
+            <div class="char-desc">因 Binance 资产划转 33 分钟性能下降，在"核心系统正常"的情况下失去自救窗口</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">被 ADL 做市商</div>
+            <span class="char-role-tag tag-red">机构</span>
+            <div class="char-desc">盈利仓位被异常价格强制削减，原有对冲结构被打破</div>
+          </div>
+        </div>
+
+        <!-- Winners -->
+        <div>
+          <div class="gallery-col-label winners">获利者</div>
+          <div class="char-card">
+            <div class="char-name">匿名空头鲸鱼</div>
+            <span class="char-role-tag tag-green">$1.6 亿利润</span>
+            <div class="char-desc">最后一笔建仓结束于特朗普发文前一分钟。两组账户当日获利约 $1.6 亿</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">最大盈利钱包</div>
+            <span class="char-role-tag tag-green">Hyperliquid</span>
+            <div class="char-desc">事件前从 10 月 9 日开始注入资金，建立约 $4 亿 BTC 空头</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">跨交易所套利者</div>
+            <span class="char-role-tag tag-green">机构</span>
+            <div class="char-desc">在 Binance 与 Coinbase 出现极大价差时，部分套利基金从中获利</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">极端插针买家</div>
+            <span class="char-role-tag tag-green">散户</span>
+            <div class="char-desc">在 Binance 低价买入异常插针资产（如接近零的 ATOM、IOTX）的幸运交易者</div>
+          </div>
+        </div>
+
+        <!-- Explainers -->
+        <div>
+          <div class="gallery-col-label explainers">解释者</div>
+          <div class="char-card">
+            <div class="char-name">CoinGlass</div>
+            <span class="char-role-tag tag-blue">数据机构</span>
+            <div class="char-desc">公开捕获 $191.3 亿爆仓、161.8 万账户。事后将真实规模上调至 $300–400 亿</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">Galaxy</div>
+            <span class="char-role-tag tag-blue">研究机构</span>
+            <div class="char-desc">提供最完整的逐分钟时间线重建，确认 BTC 第一轮下跌早于 USDe 脱锚</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">Wintermute</div>
+            <span class="char-role-tag tag-blue">做市商 · 受影响者</span>
+            <div class="char-desc">既是受 ADL 影响的机构，也是事后反对将崩盘全部归咎于 Binance 的声音</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">Haseeb Qureshi</div>
+            <span class="char-role-tag tag-blue">Dragonfly 合伙人</span>
+            <div class="char-desc">用时间线反驳"USDe 引发全球崩盘"的说法，认为 USDe 是放大器而非触发因素</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">Ethena</div>
+            <span class="char-role-tag tag-blue">USDe 发行方</span>
+            <div class="char-desc">辩护称底层对冲和赎回机制仍然运作，问题来自局部流动性和交易所抵押品定价</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">学术研究者</div>
+            <span class="char-role-tag tag-blue">独立</span>
+            <div class="char-desc">预印本论文估算 Hyperliquid ADL 给盈利交易者带来约 $6.3 亿不必要利润削减</div>
+          </div>
+        </div>
+
+        <!-- Narrators & Power -->
+        <div>
+          <div class="gallery-col-label narrators">叙事与权力人物</div>
+          <div class="char-card">
+            <div class="char-name">Donald Trump</div>
+            <span class="char-role-tag tag-gold">美国前总统</span>
+            <div class="char-desc">关税推文是整个事件的直接导火索——火花本身</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">Cathie Wood</div>
+            <span class="char-role-tag tag-gold">ARK Invest</span>
+            <div class="char-desc">最初称事件为"Binance 软件故障"引发，后修正为"Binance 有软件问题但未触发闪崩"</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">徐明星 (Star Xu)</div>
+            <span class="char-role-tag tag-gold">OKX 创始人</span>
+            <div class="char-desc">最明确的"Binance 责任论"发出者。详细说明 USDe 杠杆循环机制</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">CZ (赵长鹏)</div>
+            <span class="char-role-tag tag-gold">Binance 联合创始人</span>
+            <div class="char-desc">事件发生时已卸任 CEO，后续公开讨论中为 Binance 立场发声</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">ZachXBT</div>
+            <span class="char-role-tag tag-gold">链上侦探</span>
+            <div class="char-desc">追踪空头鲸鱼钱包关联，指出相关钱包可能属于多个实体</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       EXCHANGE COMPARISON
+       =============================== -->
+  <section class="section reveal" style="position:relative;">
+    <div class="compare-bg">
+      <img src="https://images.unsplash.com/photo-1622737133809-d95047b9e673?w=1920&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Cross-Exchange</div>
+        <h2 class="section-title">区域对比</h2>
+        <p class="section-desc">同一次全球下跌，在不同交易所演变成完全不同的用户结果。</p>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h3>Binance</h3>
+          <div class="exch-tag binance">全球最大 CEX</div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">核心撮合系统</span>
+            <span class="compare-stat-val ok">未停机</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">资产划转</span>
+            <span class="compare-stat-val bad">~33 分钟性能下降</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">USDe 最低价</span>
+            <span class="compare-stat-val bad">$0.65</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">抵押品估值</span>
+            <span class="compare-stat-val bad">指数依赖自身订单簿</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">K 线显示</span>
+            <span class="compare-stat-val bad">曾修改后撤回</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">用户赔偿</span>
+            <span class="compare-stat-val ok">$3.28 亿+</span>
+          </div>
+        </div>
+        <div class="compare-card">
+          <h3>Coinbase</h3>
+          <div class="exch-tag coinbase">美国最大合规交易所</div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">核心撮合系统</span>
+            <span class="compare-stat-val ok">正常运行</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">资产划转</span>
+            <span class="compare-stat-val ok">正常</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">抵押品脱锚</span>
+            <span class="compare-stat-val ok">无</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">订单簿深度</span>
+            <span class="compare-stat-val bad">下降，价差扩大</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">与 Binance 价差</span>
+            <span class="compare-stat-val bad">SOL 一度低 ~$20</span>
+          </div>
+          <div class="compare-stat">
+            <span class="compare-stat-lbl">用户赔偿</span>
+            <span class="compare-stat-val ok">无大规模赔偿</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOGE compare -->
+      <div class="doge-compare">
+        <h3>同一资产 DOGE 在不同交易所的闪跌深度</h3>
+        <div class="doge-bars">
+          <div class="doge-bar-item">
+            <div class="drop-pct">-65%</div>
+            <div class="exch-name">OKX</div>
+            <div class="price-range">$0.25405 → $0.08904</div>
+          </div>
+          <div class="doge-bar-item">
+            <div class="drop-pct">-63%</div>
+            <div class="exch-name">Binance</div>
+            <div class="price-range">$0.25403 → $0.095</div>
+          </div>
+          <div class="doge-bar-item">
+            <div class="drop-pct">-40%</div>
+            <div class="exch-name">Coinbase</div>
+            <div class="price-range">$0.25412 → $0.15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       AFTERMATH
+       =============================== -->
+  <section class="section reveal" style="position:relative;">
+    <div class="aftermath-bg">
+      <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1920&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Aftermath</div>
+        <h2 class="section-title">后续回响</h2>
+        <p class="section-desc">闪崩只有几小时，但它的余波持续了数月。市场结构、流动性和信任都发生了永久性改变。</p>
+      </div>
+
+      <div class="aftermath-metrics">
+        <div class="aftermath-card">
+          <div class="period">2025 年 Q4</div>
+          <div class="change">-23.7%</div>
+          <div class="amount">市值蒸发 $9,460 亿 · 年末约 $3 万亿</div>
+        </div>
+        <div class="aftermath-card">
+          <div class="period">2026 年 Q1</div>
+          <div class="change">-20.4%</div>
+          <div class="amount">再减少 $6,220 亿 · 季末约 $2.4 万亿</div>
+        </div>
+        <div class="aftermath-card">
+          <div class="period">2026 年 7 月（当前）</div>
+          <div class="change">-41%</div>
+          <div class="amount">较峰值约 $4.4 万亿 · 当前约 $2.29 万亿</div>
+        </div>
+      </div>
+
+      <div class="aftermath-timeline">
+        <h3>关键后续数据</h3>
+        <div class="am-row">
+          <span class="am-date">BTC 价格</span>
+          <span class="am-event">从 $126,000+ 历史高点持续回撤</span>
+          <span class="am-figure">当前 ~$64,167</span>
+        </div>
+        <div class="am-row">
+          <span class="am-date">USDe 供应量</span>
+          <span class="am-event">较峰值收缩约 57.3%</span>
+          <span class="am-figure">-~$84 亿</span>
+        </div>
+        <div class="am-row">
+          <span class="am-date">BTC 市场深度</span>
+          <span class="am-event">1% 平均深度从 $800 万降至约 $500 万</span>
+          <span class="am-figure">-37.5%</span>
+        </div>
+        <div class="am-row">
+          <span class="am-date">CEX 现货成交量</span>
+          <span class="am-event">2026 Q1 环比下降</span>
+          <span class="am-figure">-39.1%</span>
+        </div>
+        <div class="am-row">
+          <span class="am-date">山寨币表现</span>
+          <span class="am-event">仅约 16.5% 的山寨币在事件两周后表现优于 BTC</span>
+        </div>
+        <div class="am-row">
+          <span class="am-date">未恢复天数</span>
+          <span class="am-event">从 1011 到 2026 年 7 月的持续回撤</span>
+          <span class="am-figure">280+ 天</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       CONCLUSION
+       =============================== -->
+  <section class="section reveal" style="position:relative;">
+    <div class="conclusion-bg">
+      <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=1920&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Conclusion</div>
+        <h2 class="section-title">结论长廊</h2>
+        <p class="section-desc">截至 2026 年 7 月，我们可以确认什么？什么仍然存疑？</p>
+      </div>
+
+      <div class="conclusion-grid">
+        <div class="conclusion-col confirmed">
+          <h3><i data-lucide="check-circle-2" style="width:18px;height:18px;"></i> 可以较有把握地确认</h3>
+          <div class="conclusion-item">1011 是当时有记录以来最大的单日加密衍生品爆仓事件</div>
+          <div class="conclusion-item">CoinGlass 公开捕获爆仓约 $191.3 亿、161.8 万账户</div>
+          <div class="conclusion-item">真实名义爆仓规模明显高于公开数据，$300–400 亿是合理修正区间</div>
+          <div class="conclusion-item">关税消息是第一轮全球下跌的直接触发因素</div>
+          <div class="conclusion-item">高杠杆和流动性不足是事件失控的核心条件</div>
+          <div class="conclusion-item">USDe、WBETH、BNSOL 严重脱锚主要发生在 Binance</div>
+          <div class="conclusion-item">Binance 指数和资产划转系统存在已被官方承认的问题</div>
+          <div class="conclusion-item">USDe 局部脱锚发生在第一轮 BTC 下跌之后，但扩大了 Binance 内部清算</div>
+          <div class="conclusion-item">多家交易所出现延迟、API 故障、停机或用户无法及时调仓</div>
+          <div class="conclusion-item">Binance 修改过 K 线前端显示并随后撤回</div>
+          <div class="conclusion-item">1011 后市场进入持续数月的去杠杆和熊市阶段</div>
+          <div class="conclusion-item">Binance 已向受影响用户赔偿超过 $3.28 亿</div>
+        </div>
+        <div class="conclusion-col unconfirmed">
+          <h3><i data-lucide="x-circle" style="width:18px;height:18px;"></i> 目前不能确认</h3>
+          <div class="conclusion-item">真实爆仓精确数字是否为 $300 亿、$400 亿或 $500 亿</div>
+          <div class="conclusion-item">机构、散户和 KOL 各自的准确爆仓人数及金额</div>
+          <div class="conclusion-item">Binance、Bybit 等 CEX 未公开的全部清算和 ADL 数据</div>
+          <div class="conclusion-item">空头鲸鱼是否提前获得特朗普政策消息</div>
+          <div class="conclusion-item">Garrett Jin 是否为相关全部钱包的最终控制人</div>
+          <div class="conclusion-item">是否存在交易所、做市商、政治人士或大户联合攻击</div>
+          <div class="conclusion-item">"$4000 亿真实爆仓"是否有任何事实基础</div>
+          <div class="conclusion-item">Binance 是否因竞争或公关目的故意淡化 K 线异常</div>
+          <div class="conclusion-item">1011 是否是后来全部熊市的唯一原因</div>
+        </div>
+      </div>
+
+      <div class="verdict-box">
+        <div class="verdict-label">最终定性</div>
+        <p>
+          1011 不是一个单纯的"特朗普发推导致币价下跌"事件，也不能被简单定义为"USDe 脱锚导致全球崩盘"。
+          它更接近<strong>一次全球加密市场结构的联合失效</strong>：
+          宏观政策冲击击中了一个极度拥挤的多头市场；做市商风险控制使订单簿迅速变薄；
+          自动爆仓、统一保证金和 ADL 形成反身性循环；交易所间的价格、系统能力和抵押品规则差异，
+          又把同一次全球下跌转化成完全不同的用户结果。<br><br>
+          <strong>关税是火花。杠杆是燃料。流动性真空是风。交易所机制决定谁被烧得最严重。</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       FOOTER
+       =============================== -->
+  <footer class="museum-footer">
+    <p>
+      数据来源：CoinGlass · Amberdata · CoinShares · Galaxy · CoinGecko · Binance 官方报告 · Hyperliquid 链上数据<br>
+      报告更新日期：2026 年 7 月 17 日 · 此页面仅供信息陈列，不构成投资建议<br>
+      1011 Museum — 每一个被认真记录的真实事件，都不会被遗忘。
+    </p>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Scroll reveal
+    (function() {
+      const obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+    })();
+  </script>
+</body>
+</html>
