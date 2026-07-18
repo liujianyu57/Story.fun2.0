@@ -1468,15 +1468,24 @@
 
   <script>
     (function() {
-      const TASKS = [
+      // ===== 从 localStorage 读取配置（由后台 admin-1011-config.html 管理） =====
+      function loadConfig(key, defaultVal) {
+        try {
+          var data = localStorage.getItem(key);
+          return data ? JSON.parse(data) : JSON.parse(JSON.stringify(defaultVal));
+        } catch(e) { return JSON.parse(JSON.stringify(defaultVal)); }
+      }
+
+      var DEFAULT_TASKS = [
         { id: 't3', category: '关注 Twitter 账号', name: '关注 Story.fun', points: 10, linkUrl: 'https://x.com/Story.fun' },
         { id: 't5', category: '社交传播', name: '转推推文', points: 5, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
         { id: 't6', category: '社交传播', name: '点赞推文', points: 2, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
-        { id: 't7', category: '社交传播', name: '打卡互动', points: 10, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
         { id: 't9', category: '产品互动', name: '在 Story.fun 发布短剧', points: 30, linkUrl: 'create-actor.html' },
         { id: 't10', category: '产品互动', name: '在 Story.fun 上完播1集短剧', points: 15, linkUrl: 'drama-player.html' },
         { id: 't20', category: '产品互动', name: '在 Story.fun 上派遣演员挖矿', points: 25, linkUrl: 'studio.html' },
       ];
+
+      const TASKS = loadConfig('1011_task_config', DEFAULT_TASKS);
 
       let completed = new Set();
       let score = 0;
@@ -1509,7 +1518,7 @@
       }
 
       // ===== 签到系统（原型模式：刷新重置） =====
-      var CHECKIN_POINTS = [5, 8, 12, 16, 20, 25, 35];
+      var CHECKIN_POINTS = loadConfig('1011_checkin_config', [5, 8, 12, 16, 20, 25, 35]);
       var checkinData = { streak: 0, lastDate: null, todayDone: false };
 
       function renderCheckin() {
@@ -1629,7 +1638,7 @@
 
       // ===== 排行榜 =====
       const leaderboardBody = document.getElementById('leaderboardBody');
-      const REWARD_TIERS = [
+      var DEFAULT_REWARDS = [
         { min: 1, max: 1, label: '$10,000' },
         { min: 2, max: 3, label: '$5,000' },
         { min: 4, max: 10, label: '$1,000' },
@@ -1637,6 +1646,7 @@
         { min: 21, max: 50, label: '$100' },
         { min: 51, max: 100, label: '$50' }
       ];
+      const REWARD_TIERS = loadConfig('1011_reward_config', DEFAULT_REWARDS);
 
       function getReward(rank) {
         for (var i = 0; i < REWARD_TIERS.length; i++) {
@@ -1720,9 +1730,42 @@
         toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2500);
       }
 
+      // ===== 保存故事到 localStorage =====
+      function saveStory(text, imageData) {
+        var stories = [];
+        try {
+          var existing = localStorage.getItem('1011_stories');
+          if (existing) stories = JSON.parse(existing);
+        } catch(e) {}
+        var now = new Date();
+        var timeStr = now.getFullYear() + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+        // 尝试获取用户信息
+        var userName = '匿名用户';
+        try {
+          if (typeof getUserInfo === 'function') {
+            var user = getUserInfo();
+            if (user && user.username) userName = user.username;
+          }
+        } catch(e) {}
+        stories.push({
+          id: 'story_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          text: text,
+          image: imageData || null,
+          time: timeStr,
+          user: userName
+        });
+        localStorage.setItem('1011_stories', JSON.stringify(stories));
+      }
+
       document.getElementById('submitStoryBtn').addEventListener('click', function(e) {
         e.preventDefault();
         if (!storyText.value.trim()) { showToast('请写下你的 1011 经历'); return; }
+        // 保存故事
+        var imageData = null;
+        if (uploadPreviewImg.src && uploadPreviewImg.src.startsWith('data:')) {
+          imageData = uploadPreviewImg.src;
+        }
+        saveStory(storyText.value.trim(), imageData);
         openSailModal();
       });
 
@@ -1734,7 +1777,7 @@
       sailModal.addEventListener('click', function(e) { if (e.target === sailModal) closeSailModalAndGo(); });
       document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && sailModal.classList.contains('open')) closeSailModalAndGo(); });
 
-      // ===== 独立提交验证码（每个平台单独提交） =====
+      // ===== 独立提交验证码（每个平台单独提交，需后台审核） =====
       const verifyModal = document.getElementById('verifyModal');
       const verifyCodeList = document.getElementById('verifyCodeList');
       const verifyModalClose = document.getElementById('verifyModalClose');
@@ -1749,15 +1792,97 @@
         return code;
       }
 
-      // 记录各平台是否已提交
-      var submittedPlatforms = {};
+      // 从 localStorage 读取审核数据
+      function loadShareLinks() {
+        try {
+          var data = localStorage.getItem('1011_share_links');
+          return data ? JSON.parse(data) : {};
+        } catch(e) { return {}; }
+      }
+
+      // 保存审核数据到 localStorage
+      function saveShareLinks(data) {
+        localStorage.setItem('1011_share_links', JSON.stringify(data));
+      }
 
       // 平台配置
       var PLATFORM_CONFIG = {
-        twitter: { label: '𝕏  Twitter / X', color: '#1DA1F2', points: 20 },
-        tiktok: { label: '🎵  TikTok', color: '#000', points: 20 },
-        youtube: { label: '▶️  YouTube', color: '#FF0000', points: 20 }
+        twitter: { label: '𝕏  Twitter / X', color: '#1DA1F2' },
+        tiktok: { label: '🎵  TikTok', color: '#000' },
+        youtube: { label: '▶️  YouTube', color: '#FF0000' }
       };
+
+      // 恢复已提交的平台状态
+      var savedLinks = loadShareLinks();
+      Object.keys(savedLinks).forEach(function(p) {
+        var item = savedLinks[p];
+        var inputMap = { twitter: twitterLinkInput, tiktok: tiktokLinkInput, youtube: youtubeLinkInput };
+        var input = inputMap[p];
+        if (input) {
+          input.value = item.link || '';
+          input.disabled = true;
+        }
+      });
+
+      // 更新所有按钮状态（页面加载时调用）
+      function refreshShareButtons() {
+        var data = loadShareLinks();
+        document.querySelectorAll('.share-submit-btn').forEach(function(btn) {
+          var platform = btn.dataset.platform;
+          var item = data[platform];
+          if (!item) {
+            btn.textContent = '提交';
+            btn.className = 'share-submit-btn';
+            btn.disabled = false;
+            btn.onclick = null;
+            // 移除状态标签
+            var statusEl = btn.parentNode.querySelector('.share-status-tag');
+            if (statusEl) statusEl.remove();
+            return;
+          }
+          // 添加或更新状态标签
+          var statusEl = btn.parentNode.querySelector('.share-status-tag');
+          if (!statusEl) {
+            statusEl = document.createElement('span');
+            statusEl.className = 'share-status-tag';
+            statusEl.dataset.platform = platform;
+            statusEl.style.cssText = 'font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;white-space:nowrap;flex-shrink:0;';
+            btn.parentNode.insertBefore(statusEl, btn);
+          }
+
+          if (item.status === 'pending') {
+            statusEl.textContent = '⏳ 审核中';
+            statusEl.style.background = '#fff8e5';
+            statusEl.style.color = '#b8860b';
+            statusEl.style.border = '1px solid #f0d78c';
+            btn.textContent = '查看';
+            btn.className = 'share-submit-btn done';
+            btn.disabled = false;
+          } else if (item.status === 'approved') {
+            statusEl.textContent = '✅ 已通过';
+            statusEl.style.background = '#e6f7ee';
+            statusEl.style.color = '#0a7e3c';
+            statusEl.style.border = '1px solid #a8e6c0';
+            btn.textContent = '查看';
+            btn.className = 'share-submit-btn done';
+            btn.disabled = false;
+          } else if (item.status === 'rejected') {
+            statusEl.textContent = '❌ 未通过';
+            statusEl.style.background = '#fde8e8';
+            statusEl.style.color = '#c0392b';
+            statusEl.style.border = '1px solid #f5b7b1';
+            btn.textContent = '重新提交';
+            btn.className = 'share-submit-btn';
+            btn.disabled = false;
+            // 恢复输入框可编辑
+            var inputMap = { twitter: twitterLinkInput, tiktok: tiktokLinkInput, youtube: youtubeLinkInput };
+            var input = inputMap[platform];
+            if (input) input.disabled = false;
+          }
+
+        });
+      }
+
 
       // 为每个提交按钮绑定事件
       document.querySelectorAll('.share-submit-btn').forEach(function(btn) {
@@ -1768,19 +1893,34 @@
           var inputMap = { twitter: twitterLinkInput, tiktok: tiktokLinkInput, youtube: youtubeLinkInput };
           var input = inputMap[platform];
 
-          if (submittedPlatforms[platform]) { showToast('该平台已提交'); return; }
+          var data = loadShareLinks();
+          // 如果状态是 rejected，允许重新提交（先删除旧数据）
+          if (data[platform] && data[platform].status === 'rejected') {
+            delete data[platform];
+            saveShareLinks(data);
+            // 移除状态标签
+            var statusEl = btn.parentNode.querySelector('.share-status-tag');
+            if (statusEl) statusEl.remove();
+          } else if (data[platform]) {
+            showToast('该平台已提交，请等待审核');
+            return;
+          }
           if (!input.value.trim()) { showToast('请填写 ' + config.label + ' 链接'); return; }
 
-          var code = generateCode();
-          submittedPlatforms[platform] = { code: code, link: input.value.trim() };
 
-          // 更新按钮状态
-          this.textContent = '查看';
-          this.classList.add('done');
-          this.disabled = false;
+          var code = generateCode();
+          var now = new Date();
+          var timeStr = now.getFullYear() + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+
+          // 保存到 localStorage，状态为 pending（审核中）
+          data[platform] = { link: input.value.trim(), code: code, status: 'pending', time: timeStr };
+          saveShareLinks(data);
 
           // 禁用输入框
           input.disabled = true;
+
+          // 更新按钮状态
+          refreshShareButtons();
 
           // 显示验证码弹窗
           function showVerifyCode() {
@@ -1788,6 +1928,7 @@
               '<div style="margin-bottom:14px;text-align:left;">' +
                 '<div style="font-size:13px;font-weight:600;margin-bottom:4px;color:' + config.color + ';">' + config.label + '</div>' +
                 '<div class="verify-code-display" data-code="' + code + '" style="margin-bottom:0;font-size:16px;padding:10px 16px;">' + code + '</div>' +
+                '<div style="margin-top:10px;font-size:12px;color:var(--muted);">⏳ 审核中，请等待管理员确认链接与 1011 相关</div>' +
               '</div>';
 
             var codeEl = verifyCodeList.querySelector('.verify-code-display');
@@ -1808,27 +1949,109 @@
 
           // 首次提交直接打开弹窗
           showVerifyCode();
+          showToast('已提交，等待管理员审核');
         });
       });
 
       verifyModalClose.addEventListener('click', function() {
         verifyModal.classList.remove('open');
-        // 每次关闭弹窗时，给已提交的平台加分（仅加一次）
-        var added = 0;
-        Object.keys(submittedPlatforms).forEach(function(p) {
-          if (!submittedPlatforms[p].scored) {
-            score += PLATFORM_CONFIG[p].points;
-            submittedPlatforms[p].scored = true;
-            added++;
+      });
+
+      // 定时轮询审核结果（每 5 秒检查一次）
+      setInterval(function() {
+        var data = loadShareLinks();
+        var changed = false;
+        Object.keys(data).forEach(function(p) {
+          var statusEl = document.querySelector('.share-status-tag[data-platform="' + p + '"]');
+          if (!statusEl) {
+            // 没有状态标签但有数据，说明需要刷新
+            if (data[p]) changed = true;
+            return;
+          }
+          var item = data[p];
+          if (!item) return;
+          var expectedText = '';
+          if (item.status === 'pending') expectedText = '⏳ 审核中';
+          else if (item.status === 'approved') expectedText = '✅ 已通过';
+          else if (item.status === 'rejected') expectedText = '❌ 未通过';
+          if (statusEl.textContent !== expectedText) changed = true;
+        });
+        if (changed) refreshShareButtons();
+      }, 5000);
+
+
+      // 初始化按钮状态
+      refreshShareButtons();
+
+      // ===== 调试按钮组 =====
+      var debugContainer = document.createElement('div');
+      debugContainer.style.cssText = 'position:fixed;right:16px;bottom:100px;z-index:9999;display:flex;flex-direction:column;gap:8px;';
+
+      var approveBtn = document.createElement('button');
+      approveBtn.textContent = '✅ 审核通过';
+      approveBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #27ae60;background:rgba(39,174,96,0.1);color:#1e8449;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      approveBtn.addEventListener('click', function() {
+        var data = loadShareLinks();
+        var changed = false;
+        Object.keys(data).forEach(function(p) {
+          if (data[p].status === 'pending') {
+            data[p].status = 'approved';
+            changed = true;
           }
         });
-        if (added > 0) {
-          refreshAll();
-          showToast('验证码已确认，积分 +' + (added * 20));
+        if (changed) {
+          saveShareLinks(data);
+          refreshShareButtons();
+          showToast('✅ 所有待审核链接已通过');
+        } else {
+          showToast('没有待审核的链接');
         }
       });
 
+      var rejectBtn = document.createElement('button');
+      rejectBtn.textContent = '❌ 审核拒绝';
+      rejectBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #e74c3c;background:rgba(231,76,60,0.08);color:#c0392b;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      rejectBtn.addEventListener('click', function() {
+        var data = loadShareLinks();
+        var changed = false;
+        Object.keys(data).forEach(function(p) {
+          if (data[p].status === 'pending') {
+            data[p].status = 'rejected';
+            changed = true;
+          }
+        });
+        if (changed) {
+          saveShareLinks(data);
+          refreshShareButtons();
+          showToast('❌ 所有待审核链接已拒绝');
+        } else {
+          showToast('没有待审核的链接');
+        }
+      });
+
+      var resetBtn = document.createElement('button');
+      resetBtn.textContent = '🔄 重置提交';
+      resetBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #7f8c8d;background:rgba(127,140,141,0.08);color:#5d6d7e;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      resetBtn.addEventListener('click', function() {
+        localStorage.removeItem('1011_share_links');
+        // 恢复输入框
+        [twitterLinkInput, tiktokLinkInput, youtubeLinkInput].forEach(function(input) {
+          input.value = '';
+          input.disabled = false;
+        });
+        refreshShareButtons();
+        showToast('🔄 已重置所有提交状态');
+      });
+
+      debugContainer.appendChild(approveBtn);
+      debugContainer.appendChild(rejectBtn);
+      debugContainer.appendChild(resetBtn);
+
+      document.body.appendChild(debugContainer);
+
+
       verifyModal.addEventListener('click', function(e) { if (e.target === verifyModal) verifyModal.classList.remove('open'); });
+
       document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && verifyModal.classList.contains('open')) verifyModal.classList.remove('open'); });
 
       let twitterBound = false;

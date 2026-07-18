@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 1011任务配置</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.10);
+      --text: #13202e;
+      --text-secondary: #5e6f83;
+      --text-tertiary: #8b8d98;
+      --border: #deeaf7;
+      --border-light: #e8f0fa;
+      --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.04);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --danger: #f45b69;
+      --warning: #ff9f2c;
+      --story-green: #05DF72;
+      font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+    .app-shell { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+    @media (max-width: 640px) { .app-shell { padding: 16px; } }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 28px;
+      margin-bottom: 24px;
+    }
+    .page-header h1 { margin: 0; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.015em; }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+    .section-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-light); }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th, .data-table td { padding: 10px 12px; text-align: left; font-size: 0.85rem; }
+    .data-table th { color: var(--text-secondary); font-weight: 500; border-bottom: 1px solid var(--border-light); font-size: 0.78rem; letter-spacing: 0.02em; background: #f8fbfe; }
+    .data-table td { border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+    .data-table tr:last-of-type td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8fbfe; }
+
+    .config-input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fafcfe;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .config-input:focus { border-color: var(--accent); background: #fff; }
+    .config-input.num { width: 70px; text-align: center; }
+    .config-input.num-sm { width: 55px; text-align: center; }
+
+    .btn-sm {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-sm.primary { background: var(--accent); color: #fff; }
+    .btn-sm.primary:hover { opacity: 0.85; }
+    .btn-sm.danger { background: var(--danger); color: #fff; }
+    .btn-sm.danger:hover { opacity: 0.85; }
+    .btn-sm.outline { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
+    .btn-sm.outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-sm:disabled { opacity: 0.4; cursor: default; }
+
+    .btn-save {
+      padding: 10px 32px;
+      border-radius: 30px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-save:hover { opacity: 0.85; }
+
+    .inline-flex { display: inline-flex; align-items: center; gap: 6px; }
+    .gap-2 { gap: 8px; }
+    .mt-3 { margin-top: 16px; }
+    .mb-2 { margin-bottom: 10px; }
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #13202e;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .bonus-card-item {
+      background: #fafcfe;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .bonus-card-item label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .bonus-card-item .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bonus-card-item .row span {
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+    }
+
+    .empty-row {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--text-tertiary);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="admin-sidebar-placeholder"></div>
+
+  <div class="app-shell">
+    <div class="page-header">
+      <h1>⚙️ 1011任务配置</h1>
+      <span style="font-size:0.85rem;color:var(--text-secondary);">管理任务、签到积分、加分标准与奖励档位</span>
+    </div>
+
+    <!-- ===== 1. 任务管理 ===== -->
+    <div class="section-card">
+      <div class="section-card-title">
+        <span>📋 任务管理</span>
+        <button class="btn-sm primary" id="addTaskBtn">+ 新增任务</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:60px;">ID</th>
+              <th>分类</th>
+              <th>任务名称</th>
+              <th style="width:80px;">积分</th>
+              <th>链接</th>
+              <th style="width:60px;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="taskTableBody">
+            <!-- JS 动态渲染 -->
+          </tbody>
+        </table>
+      </div>
+      <div class="flex justify-between mt-3">
+        <span style="font-size:0.78rem;color:var(--text-tertiary);">修改后点击「保存全部配置」生效</span>
+        <button class="btn-save" id="saveAllBtn">💾 保存全部配置</button>
+      </div>
+    </div>
+
+    <!-- ===== 2. 签到积分配置 ===== -->
+    <div class="section-card">
+      <div class="section-card-title">
+        <span>📅 签到积分配置</span>
+      </div>
+      <div class="flex flex-wrap gap-2 items-center" id="checkinConfigContainer">
+        <!-- JS 动态渲染 -->
+      </div>
+      <div style="margin-top:12px;font-size:0.78rem;color:var(--text-tertiary);">
+        设置连续签到 7 天每天的积分值
+      </div>
+    </div>
+
+    <!-- ===== 3. 传播加分标准 ===== -->
+    <div class="section-card">
+      <div class="section-card-title">
+        <span>📊 传播加分标准</span>
+      </div>
+      <div id="bonusConfigContainer">
+        <!-- JS 动态渲染 -->
+      </div>
+    </div>
+
+    <!-- ===== 4. 排行榜奖励配置 ===== -->
+    <div class="section-card">
+      <div class="section-card-title">
+        <span>🏆 排行榜奖励配置</span>
+        <button class="btn-sm primary" id="addRewardBtn">+ 新增档位</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:100px;">最低排名</th>
+              <th style="width:100px;">最高排名</th>
+              <th>奖励金额</th>
+              <th style="width:60px;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="rewardTableBody">
+            <!-- JS 动态渲染 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="load-admin-sidebar.js"></script>
+
+  <script>
+    (function() {
+      // ===== 默认配置 =====
+      var DEFAULT_TASKS = [
+        { id: 't3', category: '关注 Twitter 账号', name: '关注 Story.fun', points: 10, linkUrl: 'https://x.com/Story.fun' },
+        { id: 't5', category: '社交传播', name: '转推推文', points: 5, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
+        { id: 't6', category: '社交传播', name: '点赞推文', points: 2, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
+        { id: 't9', category: '产品互动', name: '在 Story.fun 发布短剧', points: 30, linkUrl: 'create-actor.html' },
+        { id: 't10', category: '产品互动', name: '在 Story.fun 上完播1集短剧', points: 15, linkUrl: 'drama-player.html' },
+        { id: 't20', category: '产品互动', name: '在 Story.fun 上派遣演员挖矿', points: 25, linkUrl: 'studio.html' },
+      ];
+
+      var DEFAULT_CHECKIN = [5, 8, 12, 16, 20, 25, 35];
+
+      var DEFAULT_BONUS = {
+        twitter: { label: 'Twitter / X', color: '#1DA1F2', rules: [
+          { label: '每 10 次播放', threshold: 10, points: 2 },
+          { label: '每 10 次点赞', threshold: 10, points: 3 },
+          { label: '每 10 次转推', threshold: 10, points: 5 }
+        ]},
+        tiktok: { label: 'TikTok', color: '#000', rules: [
+          { label: '每 100 次播放', threshold: 100, points: 5 },
+          { label: '每 10 次点赞', threshold: 10, points: 3 }
+        ]},
+        youtube: { label: 'YouTube', color: '#FF0000', rules: [
+          { label: '每 100 次播放', threshold: 100, points: 4 },
+          { label: '每 10 次点赞', threshold: 10, points: 5 }
+        ]}
+      };
+
+      var DEFAULT_REWARDS = [
+        { min: 1, max: 1, label: '$10,000' },
+        { min: 2, max: 3, label: '$5,000' },
+        { min: 4, max: 10, label: '$1,000' },
+        { min: 11, max: 20, label: '$500' },
+        { min: 21, max: 50, label: '$100' },
+        { min: 51, max: 100, label: '$50' }
+      ];
+
+      // ===== 数据读写 =====
+      function loadData(key, defaultVal) {
+        try {
+          var data = localStorage.getItem(key);
+          return data ? JSON.parse(data) : JSON.parse(JSON.stringify(defaultVal));
+        } catch(e) { return JSON.parse(JSON.stringify(defaultVal)); }
+      }
+
+      function saveData(key, val) {
+        localStorage.setItem(key, JSON.stringify(val));
+      }
+
+      // ===== Toast =====
+      var toast = document.getElementById('toast');
+      var toastTimer = null;
+      function showToast(msg) {
+        if (toastTimer) clearTimeout(toastTimer);
+        toast.textContent = msg;
+        toast.classList.add('show');
+        toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2500);
+      }
+
+      // ===== 任务管理 =====
+      var tasks = loadData('1011_task_config', DEFAULT_TASKS);
+      var nextTaskId = 1;
+
+      function getNextTaskId() {
+        var maxNum = 0;
+        tasks.forEach(function(t) {
+          var num = parseInt(t.id.replace('t', ''), 10);
+          if (!isNaN(num) && num > maxNum) maxNum = num;
+        });
+        return 't' + (maxNum + 1);
+      }
+
+      function renderTasks() {
+        var html = '';
+        if (tasks.length === 0) {
+          html = '<tr><td colspan="6" class="empty-row">暂无任务，点击「+ 新增任务」添加</td></tr>';
+        } else {
+          tasks.forEach(function(task, idx) {
+            html += '<tr>' +
+              '<td><span style="font-size:0.75rem;color:var(--text-tertiary);">' + task.id + '</span></td>' +
+              '<td><input class="config-input" data-task-idx="' + idx + '" data-field="category" value="' + escHtml(task.category) + '" /></td>' +
+              '<td><input class="config-input" data-task-idx="' + idx + '" data-field="name" value="' + escHtml(task.name) + '" /></td>' +
+              '<td><input class="config-input num" data-task-idx="' + idx + '" data-field="points" type="number" value="' + task.points + '" /></td>' +
+              '<td><input class="config-input" data-task-idx="' + idx + '" data-field="linkUrl" value="' + escHtml(task.linkUrl || '') + '" placeholder="链接 URL" /></td>' +
+              '<td><button class="btn-sm danger" data-action="delete-task" data-idx="' + idx + '">删除</button></td>' +
+              '</tr>';
+          });
+        }
+        document.getElementById('taskTableBody').innerHTML = html;
+
+        // 绑定删除事件
+        document.querySelectorAll('[data-action="delete-task"]').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx, 10);
+            tasks.splice(idx, 1);
+            renderTasks();
+          });
+        });
+
+        // 绑定输入变更事件
+        document.querySelectorAll('[data-task-idx]').forEach(function(input) {
+          input.addEventListener('change', function() {
+            var idx = parseInt(this.dataset.taskIdx, 10);
+            var field = this.dataset.field;
+            var val = this.type === 'number' ? parseInt(this.value, 10) || 0 : this.value;
+            if (tasks[idx]) tasks[idx][field] = val;
+          });
+        });
+      }
+
+      function escHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&').replace(/"/g, '"').replace(/'/g, '&#39;').replace(/</g, '<').replace(/>/g, '>');
+      }
+
+      document.getElementById('addTaskBtn').addEventListener('click', function() {
+        tasks.push({
+          id: getNextTaskId(),
+          category: '新分类',
+          name: '新任务',
+          points: 10,
+          linkUrl: ''
+        });
+        renderTasks();
+      });
+
+      // ===== 签到积分配置 =====
+      var checkinPoints = loadData('1011_checkin_config', DEFAULT_CHECKIN);
+
+      function renderCheckin() {
+        var container = document.getElementById('checkinConfigContainer');
+        var html = '';
+        for (var i = 0; i < 7; i++) {
+          var dayLabel = 'D' + (i + 1);
+          html += '<div style="display:flex;align-items:center;gap:6px;background:#fafcfe;border:1px solid var(--border-light);border-radius:10px;padding:10px 14px;">' +
+            '<span style="font-size:0.82rem;font-weight:600;color:var(--text-secondary);width:28px;">' + dayLabel + '</span>' +
+            '<input class="config-input num" type="number" data-checkin-idx="' + i + '" value="' + checkinPoints[i] + '" style="width:60px;" />' +
+            '<span style="font-size:0.75rem;color:var(--text-tertiary);">积分</span>' +
+            '</div>';
+        }
+        container.innerHTML = html;
+
+        container.querySelectorAll('[data-checkin-idx]').forEach(function(input) {
+          input.addEventListener('change', function() {
+            var idx = parseInt(this.dataset.checkinIdx, 10);
+            checkinPoints[idx] = parseInt(this.value, 10) || 0;
+          });
+        });
+      }
+
+      // ===== 传播加分标准 =====
+      var bonusConfig = loadData('1011_bonus_config', DEFAULT_BONUS);
+
+      function renderBonus() {
+        var container = document.getElementById('bonusConfigContainer');
+        var html = '';
+        var platformKeys = Object.keys(bonusConfig);
+        platformKeys.forEach(function(key) {
+          var platform = bonusConfig[key];
+          html += '<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border-light);">' +
+            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">' +
+              '<span style="width:10px;height:10px;border-radius:50%;background:' + platform.color + ';display:inline-block;"></span>' +
+              '<span style="font-size:0.85rem;font-weight:600;">' + platform.label + '</span>' +
+              '<input class="config-input" style="width:120px;margin-left:8px;" data-bonus-platform="' + key + '" data-bonus-field="label" value="' + escHtml(platform.label) + '" placeholder="平台名称" />' +
+              '<input class="config-input" style="width:80px;" data-bonus-platform="' + key + '" data-bonus-field="color" value="' + platform.color + '" placeholder="颜色" />' +
+            '</div>' +
+            '<div class="bonus-grid">';
+          platform.rules.forEach(function(rule, rIdx) {
+            html += '<div class="bonus-card-item">' +
+              '<label>规则 ' + (rIdx + 1) + '</label>' +
+              '<div class="row" style="margin-bottom:6px;">' +
+                '<input class="config-input" data-bonus-platform="' + key + '" data-bonus-rule-idx="' + rIdx + '" data-bonus-rule-field="label" value="' + escHtml(rule.label) + '" placeholder="描述" />' +
+              '</div>' +
+              '<div class="row">' +
+                '<span>每</span>' +
+                '<input class="config-input num-sm" type="number" data-bonus-platform="' + key + '" data-bonus-rule-idx="' + rIdx + '" data-bonus-rule-field="threshold" value="' + rule.threshold + '" />' +
+                '<span>次</span>' +
+                '<span style="margin-left:4px;">+</span>' +
+                '<input class="config-input num-sm" type="number" data-bonus-platform="' + key + '" data-bonus-rule-idx="' + rIdx + '" data-bonus-rule-field="points" value="' + rule.points + '" />' +
+                '<span>分</span>' +
+                '<button class="btn-sm danger" style="padding:4px 8px;font-size:0.7rem;margin-left:4px;" data-action="delete-bonus-rule" data-bonus-platform="' + key + '" data-bonus-rule-idx="' + rIdx + '">✕</button>' +
+              '</div>' +
+            '</div>';
+          });
+          html += '</div>' +
+            '<button class="btn-sm outline" style="margin-top:8px;" data-action="add-bonus-rule" data-bonus-platform="' + key + '">+ 添加规则</button>' +
+            '</div>';
+        });
+        container.innerHTML = html;
+
+        // 绑定加分规则输入变更
+        container.querySelectorAll('[data-bonus-platform]').forEach(function(input) {
+          input.addEventListener('change', function() {
+            var platform = this.dataset.bonusPlatform;
+            var field = this.dataset.bonusField;
+            if (field) {
+              // 平台级字段
+              if (bonusConfig[platform]) bonusConfig[platform][field] = this.value;
+              return;
+            }
+            var rIdx = parseInt(this.dataset.bonusRuleIdx, 10);
+            var ruleField = this.dataset.bonusRuleField;
+            if (bonusConfig[platform] && bonusConfig[platform].rules[rIdx]) {
+              var val = this.type === 'number' ? parseInt(this.value, 10) || 0 : this.value;
+              bonusConfig[platform].rules[rIdx][ruleField] = val;
+            }
+          });
+        });
+
+        // 绑定删除规则
+        container.querySelectorAll('[data-action="delete-bonus-rule"]').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var platform = this.dataset.bonusPlatform;
+            var rIdx = parseInt(this.dataset.bonusRuleIdx, 10);
+            if (bonusConfig[platform] && bonusConfig[platform].rules.length > 1) {
+              bonusConfig[platform].rules.splice(rIdx, 1);
+              renderBonus();
+            } else {
+              showToast('至少保留一条规则');
+            }
+          });
+        });
+
+        // 绑定添加规则
+        container.querySelectorAll('[data-action="add-bonus-rule"]').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var platform = this.dataset.bonusPlatform;
+            if (bonusConfig[platform]) {
+              bonusConfig[platform].rules.push({ label: '新规则', threshold: 10, points: 1 });
+              renderBonus();
+            }
+          });
+        });
+      }
+
+      // ===== 排行榜奖励配置 =====
+      var rewards = loadData('1011_reward_config', DEFAULT_REWARDS);
+
+      function renderRewards() {
+        var html = '';
+        if (rewards.length === 0) {
+          html = '<tr><td colspan="4" class="empty-row">暂无奖励档位，点击「+ 新增档位」添加</td></tr>';
+        } else {
+          rewards.forEach(function(r, idx) {
+            html += '<tr>' +
+              '<td><input class="config-input num" type="number" data-reward-idx="' + idx + '" data-reward-field="min" value="' + r.min + '" /></td>' +
+              '<td><input class="config-input num" type="number" data-reward-idx="' + idx + '" data-reward-field="max" value="' + r.max + '" /></td>' +
+              '<td><input class="config-input" style="width:120px;" data-reward-idx="' + idx + '" data-reward-field="label" value="' + escHtml(r.label) + '" placeholder="如 $1,000" /></td>' +
+              '<td><button class="btn-sm danger" data-action="delete-reward" data-idx="' + idx + '">删除</button></td>' +
+              '</tr>';
+          });
+        }
+        document.getElementById('rewardTableBody').innerHTML = html;
+
+        document.querySelectorAll('[data-action="delete-reward"]').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx, 10);
+            rewards.splice(idx, 1);
+            renderRewards();
+          });
+        });
+
+        document.querySelectorAll('[data-reward-idx]').forEach(function(input) {
+          input.addEventListener('change', function() {
+            var idx = parseInt(this.dataset.rewardIdx, 10);
+            var field = this.dataset.rewardField;
+            var val = this.type === 'number' ? parseInt(this.value, 10) || 0 : this.value;
+            if (rewards[idx]) rewards[idx][field] = val;
+          });
+        });
+      }
+
+      document.getElementById('addRewardBtn').addEventListener('click', function() {
+        rewards.push({ min: 1, max: 1, label: '$XX' });
+        renderRewards();
+      });
+
+      // ===== 保存全部配置 =====
+      document.getElementById('saveAllBtn').addEventListener('click', function() {
+        saveData('1011_task_config', tasks);
+        saveData('1011_checkin_config', checkinPoints);
+        saveData('1011_bonus_config', bonusConfig);
+        saveData('1011_reward_config', rewards);
+        showToast('✅ 全部配置已保存');
+      });
+
+      // ===== 初始渲染 =====
+      renderTasks();
+      renderCheckin();
+      renderBonus();
+      renderRewards();
+    })();
+  </script>
+</body>
+</html>

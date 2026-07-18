@@ -12,8 +12,12 @@
     var name = window.location.pathname.split('/').pop() || '';
     if (name.indexOf('admin-mining-detail') !== -1) return 'detail';
     if (name.indexOf('admin-mining') !== -1) return 'mining';
+    if (name.indexOf('admin-1011-config') !== -1) return 'config';
+    if (name.indexOf('admin-1011-stories') !== -1) return 'stories';
+    if (name.indexOf('admin-1011') !== -1) return '1011';
     return 'other';
   })();
+
 
   // ── CSS ──
   var style = document.createElement('style');
@@ -53,7 +57,12 @@
   var navItems = [
     { section: '导航' },
     { href: 'admin-mining.html', emoji: '', label: '挖矿结算管理', match: 'mining' },
+    { href: 'admin-1011-stories.html', emoji: '', label: '1011故事收集', match: 'stories' },
+    { href: 'admin-1011.html', emoji: '', label: '1011分享审核', match: '1011' },
+    { href: 'admin-1011-config.html', emoji: '', label: '1011任务配置', match: 'config' },
+
   ];
+
 
   var navHtml = '';
   navItems.forEach(function(item) {

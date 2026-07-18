@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 1011分享审核</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.10);
+      --text: #13202e;
+      --text-secondary: #5e6f83;
+      --text-tertiary: #8b8d98;
+      --border: #deeaf7;
+      --border-light: #e8f0fa;
+      --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.04);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --danger: #f45b69;
+      --warning: #ff9f2c;
+      --gold: #f5b042;
+      --story-green: #05DF72;
+      --story-teal: #00BBA7;
+      font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+    .app-shell { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+    @media (max-width: 640px) { .app-shell { padding: 16px; } }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 28px;
+      margin-bottom: 24px;
+    }
+    .page-header h1 { margin: 0; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.015em; }
+
+    .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+
+    .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-light); }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th, .data-table td { padding: 12px 14px; text-align: left; font-size: 0.85rem; white-space: nowrap; }
+    .data-table th { color: var(--text-secondary); font-weight: 500; border-bottom: 1px solid var(--border-light); font-size: 0.78rem; letter-spacing: 0.02em; background: #f8fbfe; }
+    .data-table td { border-bottom: 1px solid var(--border-light); }
+    .data-table tr:last-of-type td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8fbfe; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-badge.pending { background: #fff8e5; color: #b8860b; border: 1px solid #f0d78c; }
+    .status-badge.approved { background: #e6f7ee; color: #0a7e3c; border: 1px solid #a8e6c0; }
+    .status-badge.rejected { background: #fde8e8; color: #c0392b; border: 1px solid #f5b7b1; }
+
+    .btn-sm {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-sm.approve { background: var(--story-green); color: #fff; }
+    .btn-sm.approve:hover { opacity: 0.85; }
+    .btn-sm.reject { background: var(--danger); color: #fff; }
+    .btn-sm.reject:hover { opacity: 0.85; }
+    .btn-sm:disabled { opacity: 0.4; cursor: default; }
+
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+    }
+    .empty-state .emoji { font-size: 2.5rem; margin-bottom: 12px; }
+
+    .link-cell {
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .link-cell:hover { text-decoration: underline; }
+
+    .code-cell {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="admin-sidebar-placeholder"></div>
+
+  <div class="app-shell">
+    <div class="page-header">
+      <h1>📖 1011分享审核</h1>
+      <span style="font-size:0.85rem;color:var(--text-secondary);">审核用户提交的分享链接是否与 1011 相关</span>
+    </div>
+
+    <div class="section-card">
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="pending">待审核</button>
+        <button class="filter-btn" data-filter="approved">已通过</button>
+        <button class="filter-btn" data-filter="rejected">已拒绝</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>平台</th>
+              <th>链接</th>
+              <th>验证码</th>
+              <th>提交时间</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="reviewBody">
+            <!-- JS 动态渲染 -->
+          </tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="emoji">📭</div>
+        <div>暂无待审核的分享链接</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="load-admin-sidebar.js"></script>
+
+  <script>
+    (function() {
+      var currentFilter = 'all';
+
+      // 平台名称映射
+      var PLATFORM_LABELS = {
+        twitter: { name: '𝕏 Twitter / X', color: '#1DA1F2' },
+        tiktok: { name: '🎵 TikTok', color: '#000' },
+        youtube: { name: '▶️ YouTube', color: '#FF0000' }
+      };
+
+      // 状态中文
+      var STATUS_LABELS = {
+        pending: '待审核',
+        approved: '已通过',
+        rejected: '已拒绝'
+      };
+
+      function loadData() {
+        try {
+          var data = localStorage.getItem('1011_share_links');
+          return data ? JSON.parse(data) : {};
+        } catch(e) { return {}; }
+      }
+
+      function saveData(data) {
+        localStorage.setItem('1011_share_links', JSON.stringify(data));
+      }
+
+      function renderTable() {
+        var data = loadData();
+        var tbody = document.getElementById('reviewBody');
+        var empty = document.getElementById('emptyState');
+        var entries = Object.keys(data).map(function(p) {
+          return { platform: p, item: data[p] };
+        });
+
+        // 筛选
+        if (currentFilter !== 'all') {
+          entries = entries.filter(function(e) { return e.item.status === currentFilter; });
+        }
+
+        if (entries.length === 0) {
+          tbody.innerHTML = '';
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+
+        var html = '';
+        entries.forEach(function(entry) {
+          var p = entry.platform;
+          var item = entry.item;
+          var label = PLATFORM_LABELS[p] || { name: p, color: '#888' };
+          var statusLabel = STATUS_LABELS[item.status] || item.status;
+
+          var statusClass = item.status === 'pending' ? 'pending' : (item.status === 'approved' ? 'approved' : 'rejected');
+
+          var actionHtml = '';
+          if (item.status === 'pending') {
+            actionHtml = '<button class="btn-sm approve" data-platform="' + p + '" data-action="approve">通过</button>' +
+                         '<button class="btn-sm reject" data-platform="' + p + '" data-action="reject" style="margin-left:6px;">拒绝</button>';
+          } else if (item.status === 'approved') {
+            var views = item.views || 0;
+            var likes = item.likes || 0;
+            var shares = item.shares || 0;
+            actionHtml = '<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">' +
+              '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">播放</span>' +
+              '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="views" value="' + views + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
+              '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">点赞</span>' +
+              '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="likes" value="' + likes + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
+              '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">转发</span>' +
+              '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="shares" value="' + shares + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
+              '<button class="btn-sm approve" data-platform="' + p + '" data-action="save-metrics" style="margin-left:4px;padding:4px 10px;font-size:0.7rem;">保存</button>' +
+              '</div>';
+          } else if (item.status === 'rejected') {
+            actionHtml = '<span style="font-size:0.75rem;color:var(--text-tertiary);">已拒绝</span>';
+
+          }
+
+          html += '<tr>' +
+            '<td><span style="font-weight:500;">' + label.name + '</span></td>' +
+            '<td><a class="link-cell" href="' + item.link + '" target="_blank" rel="noopener noreferrer" title="' + item.link + '">' + item.link + '</a></td>' +
+            '<td><span class="code-cell">' + (item.code || '-') + '</span></td>' +
+            '<td style="font-size:0.78rem;color:var(--text-tertiary);">' + (item.time || '-') + '</td>' +
+            '<td><span class="status-badge ' + statusClass + '">' + statusLabel + '</span></td>' +
+            '<td>' + actionHtml + '</td>' +
+            '</tr>';
+        });
+        tbody.innerHTML = html;
+
+        // 绑定操作按钮事件
+        tbody.querySelectorAll('.btn-sm.approve').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var platform = this.dataset.platform;
+            var data = loadData();
+            if (data[platform]) {
+              data[platform].status = 'approved';
+              saveData(data);
+              renderTable();
+            }
+          });
+        });
+
+        tbody.querySelectorAll('.btn-sm.reject').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var platform = this.dataset.platform;
+            var data = loadData();
+            if (data[platform]) {
+              data[platform].status = 'rejected';
+              saveData(data);
+              renderTable();
+            }
+          });
+        });
+
+        // 绑定保存指标按钮事件
+        tbody.querySelectorAll('.btn-sm[data-action="save-metrics"]').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var platform = this.dataset.platform;
+            var data = loadData();
+            if (!data[platform]) return;
+            // 读取三个输入框的值
+            var row = this.closest('tr');
+            var inputs = row.querySelectorAll('.metric-input');
+            inputs.forEach(function(input) {
+              var metric = input.dataset.metric;
+              var val = parseInt(input.value, 10);
+              if (isNaN(val)) val = 0;
+              data[platform][metric] = val;
+            });
+            saveData(data);
+            // 按钮反馈
+            var origText = this.textContent;
+            this.textContent = '✓ 已保存';
+            var self = this;
+            setTimeout(function() { self.textContent = origText; }, 1500);
+          });
+        });
+      }
+
+
+      // 筛选按钮事件
+      document.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          currentFilter = this.dataset.filter;
+          renderTable();
+        });
+      });
+
+      // 初始渲染
+      renderTable();
+
+      // 每 3 秒自动刷新
+      setInterval(renderTable, 3000);
+    })();
+  </script>
+</body>
+</html>

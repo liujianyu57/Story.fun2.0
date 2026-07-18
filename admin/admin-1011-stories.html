@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 1011故事收集</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.10);
+      --text: #13202e;
+      --text-secondary: #5e6f83;
+      --text-tertiary: #8b8d98;
+      --border: #deeaf7;
+      --border-light: #e8f0fa;
+      --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.04);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --gold: #f5b042;
+      font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+    .app-shell { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+    @media (max-width: 640px) { .app-shell { padding: 16px; } }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 28px;
+      margin-bottom: 24px;
+    }
+    .page-header h1 { margin: 0; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.015em; }
+    .page-header .header-count {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+
+    .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-light); }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th, .data-table td { padding: 12px 14px; text-align: left; font-size: 0.85rem; }
+    .data-table th {
+      color: var(--text-secondary);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      background: #f8fbfe;
+    }
+    .data-table td { border-bottom: 1px solid var(--border-light); vertical-align: top; }
+    .data-table tr:last-of-type td { border-bottom: none; }
+
+    .col-index { width: 50px; text-align: center; }
+    .col-user { width: 120px; }
+    .col-text { min-width: 200px; max-width: 400px; }
+    .col-image { width: 100px; }
+    .col-time { width: 150px; white-space: nowrap; }
+
+    .story-text-preview {
+      max-height: 60px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      line-height: 1.6;
+      transition: max-height 0.3s ease;
+    }
+    .story-text-preview.expanded {
+      max-height: none;
+    }
+    .story-text-preview::after {
+      content: '展开';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--surface);
+      padding: 0 6px;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .story-text-preview.expanded::after {
+      content: '收起';
+    }
+
+    .story-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 1px solid var(--border-light);
+      transition: transform 0.2s;
+    }
+    .story-thumb:hover { transform: scale(1.05); }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-tertiary);
+    }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state .empty-title { font-size: 18px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+    .empty-state .empty-desc { font-size: 14px; line-height: 1.6; }
+
+    /* ===== 图片预览弹窗 ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(15,23,42,0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 24px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+      text-align: center;
+      animation: modalSlideUp 0.3s ease;
+    }
+    @keyframes modalSlideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-box img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 8px;
+    }
+    .modal-box-actions { margin-top: 16px; }
+    .modal-box-actions button {
+      padding: 10px 28px;
+      border-radius: 60px;
+      border: none;
+      background: var(--text);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .col-user, .col-time { min-width: auto; }
+      .col-text { max-width: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="admin-sidebar-placeholder"></div>
+
+  <div class="app-shell">
+    <div class="page-header">
+      <h1>📖 1011 故事收集</h1>
+      <span class="header-count" id="storyCount">共 0 条故事</span>
+    </div>
+
+    <div class="section-card">
+      <div id="storyTableWrap">
+        <!-- JS 动态渲染 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 图片预览弹窗 -->
+  <div class="modal-overlay" id="imageModal">
+    <div class="modal-box">
+      <img id="imageModalImg" src="" alt="" />
+      <div class="modal-box-actions">
+        <button id="imageModalClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="load-admin-sidebar.js"></script>
+
+  <script>
+    (function() {
+      // 读取故事数据
+      function loadStories() {
+        try {
+          var data = localStorage.getItem('1011_stories');
+          return data ? JSON.parse(data) : [];
+        } catch(e) { return []; }
+      }
+
+      // 渲染故事列表
+      function renderStories() {
+        var stories = loadStories();
+        var container = document.getElementById('storyTableWrap');
+        var countEl = document.getElementById('storyCount');
+
+        countEl.textContent = '共 ' + stories.length + ' 条故事';
+
+        if (stories.length === 0) {
+          container.innerHTML = '<div class="empty-state">' +
+            '<div class="empty-icon">📖</div>' +
+            '<div class="empty-title">暂无故事</div>' +
+            '<div class="empty-desc">还没有用户提交 1011 故事，等待用户从 task.html 提交</div>' +
+            '</div>';
+          return;
+        }
+
+        // 按时间倒序排列
+        stories.sort(function(a, b) {
+          return new Date(b.time) - new Date(a.time);
+        });
+
+        var html = '<div class="table-wrap"><table class="data-table">' +
+          '<thead><tr>' +
+            '<th class="col-index">#</th>' +
+            '<th class="col-user">用户</th>' +
+            '<th class="col-text">故事内容</th>' +
+            '<th class="col-image">图片</th>' +
+            '<th class="col-time">提交时间</th>' +
+          '</tr></thead><tbody>';
+
+        stories.forEach(function(story, index) {
+          var textPreview = story.text || '';
+          var textDisplay = textPreview.length > 100
+            ? '<div class="story-text-preview" data-id="' + story.id + '">' + escapeHtml(textPreview) + '</div>'
+            : '<div style="line-height:1.6;">' + escapeHtml(textPreview) + '</div>';
+
+          var imageDisplay = story.image
+            ? '<img class="story-thumb" src="' + story.image + '" alt="故事图片" data-id="' + story.id + '" style="cursor:pointer;" />'
+            : '<span style="color:var(--text-tertiary);font-size:12px;">无</span>';
+
+          html += '<tr>' +
+            '<td class="col-index">' + (index + 1) + '</td>' +
+            '<td class="col-user">' + escapeHtml(story.user || '匿名用户') + '</td>' +
+            '<td class="col-text">' + textDisplay + '</td>' +
+            '<td class="col-image">' + imageDisplay + '</td>' +
+            '<td class="col-time">' + escapeHtml(story.time || '') + '</td>' +
+            '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+
+        // 绑定展开/收起事件
+        container.querySelectorAll('.story-text-preview').forEach(function(el) {
+          el.addEventListener('click', function() {
+            this.classList.toggle('expanded');
+          });
+        });
+
+        // 绑定图片点击预览
+        container.querySelectorAll('.story-thumb').forEach(function(img) {
+          img.addEventListener('click', function() {
+            openImagePreview(this.src);
+          });
+        });
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      // 图片预览
+      var imageModal = document.getElementById('imageModal');
+      var imageModalImg = document.getElementById('imageModalImg');
+      var imageModalClose = document.getElementById('imageModalClose');
+
+      function openImagePreview(src) {
+        imageModalImg.src = src;
+        imageModal.classList.add('open');
+      }
+
+      imageModalClose.addEventListener('click', function() {
+        imageModal.classList.remove('open');
+      });
+
+      imageModal.addEventListener('click', function(e) {
+        if (e.target === imageModal) imageModal.classList.remove('open');
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && imageModal.classList.contains('open')) imageModal.classList.remove('open');
+      });
+
+      // 初始渲染
+      renderStories();
+
+      // 每 5 秒自动刷新
+      setInterval(renderStories, 5000);
+    })();
+  </script>
+</body>
+</html>
