@@ -134,6 +134,12 @@
     </div>
 
     <div class="section-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;background:var(--accent-soft);border:1px solid rgba(0,179,136,0.15);font-size:0.8rem;color:var(--accent);font-weight:500;">
+          <span>⏰</span>
+          <span>提交后默认 <strong>48 小时</strong> 自动通过审核</span>
+        </div>
+      </div>
       <div class="filter-bar" id="filterBar">
         <button class="filter-btn active" data-filter="all">全部</button>
         <button class="filter-btn" data-filter="pending">待审核</button>
@@ -151,7 +157,9 @@
               <th>链接</th>
               <th>验证码</th>
               <th>提交时间</th>
+              <th>自动通过期限</th>
               <th>状态</th>
+              <th>拒绝理由</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -167,9 +175,31 @@
     </div>
   </div>
 
+  <!-- 拒绝理由弹窗 -->
+  <div class="modal-overlay" id="rejectModal" style="position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px;">
+    <div class="modal-box" style="background:#fff;border-radius:16px;padding:28px 24px 24px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.15);text-align:center;animation:modalSlideUp 0.3s ease;">
+      <div style="font-size:36px;margin-bottom:10px;">❌</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:6px;letter-spacing:-0.3px;">拒绝理由</div>
+      <div style="font-size:13px;color:var(--text-tertiary);margin-bottom:16px;line-height:1.6;">请填写拒绝原因，用户将收到通知</div>
+      <textarea id="rejectReasonInput" style="width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid #e8ecf0;font-family:inherit;font-size:14px;color:var(--text);outline:none;resize:vertical;min-height:80px;margin-bottom:18px;background:#fafbfc;" placeholder="例如：链接与 1011 主题无关，请重新提交"></textarea>
+      <div class="modal-box-actions" style="display:flex;gap:10px;">
+        <button class="modal-btn-cancel" id="rejectModalCancel" style="flex:1;padding:12px 20px;border-radius:60px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:#f1f5f9;color:var(--muted);transition:all 0.2s;">取消</button>
+        <button class="modal-btn-confirm" id="rejectModalConfirm" style="flex:1;padding:12px 20px;border-radius:60px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:#c0392b;color:#fff;transition:all 0.2s;">确认拒绝</button>
+      </div>
+    </div>
+  </div>
+  <style>
+    @keyframes modalSlideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-overlay.open { display: flex !important; }
+  </style>
+
   <script src="load-admin-sidebar.js"></script>
 
   <script>
+
     (function() {
       var currentFilter = 'all';
 
@@ -192,18 +222,92 @@
         return str.replace(/&/g, '&').replace(/"/g, '"').replace(/'/g, '&#39;').replace(/</g, '<').replace(/>/g, '>');
       }
 
+      // ===== 静态模拟数据（不与用户端关联） =====
+      var STORAGE_KEY = '1011_admin_mock_data';
+
+      function generateMockData() {
+        var now = new Date();
+        function fmtDate(d) {
+          return d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0') + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+        }
+
+        // 过去的时间点用于模拟
+        var t1 = new Date(now); t1.setHours(t1.getHours() - 72);  // 72小时前 → 自动通过期限已过
+        var t2 = new Date(now); t2.setHours(t2.getHours() - 30);  // 30小时前 → 未超期
+        var t3 = new Date(now); t3.setHours(t3.getHours() - 50);  // 50小时前 → 超过48h
+        var t4 = new Date(now); t4.setHours(t4.getHours() - 10);  // 10小时前 → 未超期
+        var t5 = new Date(now); t5.setHours(t5.getHours() - 96);  // 96小时前 → 已通过
+
+        return {
+          twitter: { uid: 'u_001', username: '加密探险家', link: 'https://x.com/user1/status/123456', code: 'SF-A3X7K9P2', time: fmtDate(t1), status: 'pending', views: 0, likes: 0, shares: 0 },
+          tiktok: { uid: 'u_002', username: '链上观察者', link: 'https://tiktok.com/@user2/video/789', code: 'SF-B5M8N1Q4', time: fmtDate(t2), status: 'pending', views: 0, likes: 0, shares: 0 },
+          youtube: { uid: 'u_003', username: 'DeFi研究员', link: 'https://youtube.com/watch?v=abc123', code: 'SF-C9K2R6T8', time: fmtDate(t3), status: 'pending', views: 0, likes: 0, shares: 0 },
+          twitter2: { uid: 'u_004', username: '牛市守望者', link: 'https://x.com/user4/status/234567', code: 'SF-D4H7J1L5', time: fmtDate(t4), status: 'pending', views: 0, likes: 0, shares: 0 },
+          twitter3: { uid: 'u_005', username: '合约大师', link: 'https://x.com/user5/status/345678', code: 'SF-E6N3Q9W2', time: fmtDate(t5), status: 'approved', views: 1280, likes: 86, shares: 23 },
+          youtubeRejected: { uid: 'u_006', username: '空投猎人', link: 'https://youtube.com/watch?v=def456', code: 'SF-F8K2M5N1', time: fmtDate(t3), status: 'rejected', views: 0, likes: 0, shares: 0, rejectReason: '链接内容与 1011 主题无关，请重新提交' }
+        };
+
+      }
+
       function loadData() {
-        try {
-          var data = localStorage.getItem('1011_share_links');
-          return data ? JSON.parse(data) : {};
-        } catch(e) { return {}; }
+        // 每次刷新页面重新生成初始模拟数据，不保留之前操作
+        var mock = generateMockData();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(mock));
+        return mock;
       }
 
       function saveData(data) {
-        localStorage.setItem('1011_share_links', JSON.stringify(data));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       }
 
+      // ===== 拒绝理由弹窗 =====
+      var pendingRejectPlatform = null;
+      var rejectModal = document.getElementById('rejectModal');
+      var rejectInput = document.getElementById('rejectReasonInput');
+      var rejectCancel = document.getElementById('rejectModalCancel');
+      var rejectConfirm = document.getElementById('rejectModalConfirm');
+
+      function openRejectModal(platform) {
+        pendingRejectPlatform = platform;
+        rejectInput.value = '';
+        rejectModal.classList.add('open');
+        setTimeout(function() { rejectInput.focus(); }, 100);
+      }
+      function closeRejectModal() {
+        rejectModal.classList.remove('open');
+        pendingRejectPlatform = null;
+      }
+
+      rejectCancel.addEventListener('click', closeRejectModal);
+      rejectConfirm.addEventListener('click', function() {
+        var platform = pendingRejectPlatform;
+        var reason = rejectInput.value.trim();
+        if (!reason) {
+          rejectInput.style.borderColor = '#c0392b';
+          rejectInput.setAttribute('placeholder', '请填写拒绝理由');
+          return;
+        }
+        var data = loadData();
+        if (data[platform]) {
+          data[platform].status = 'rejected';
+          data[platform].rejectReason = reason;
+          saveData(data);
+          renderTable();
+        }
+        closeRejectModal();
+      });
+      rejectModal.addEventListener('click', function(e) {
+        if (e.target === rejectModal) closeRejectModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && rejectModal.classList.contains('open')) closeRejectModal();
+      });
+      rejectInput.addEventListener('input', function() {
+        this.style.borderColor = '#e8ecf0';
+      });
+
       function renderTable() {
+
         var data = loadData();
         var tbody = document.getElementById('reviewBody');
         var empty = document.getElementById('emptyState');
@@ -232,7 +336,32 @@
 
           var statusClass = item.status === 'pending' ? 'pending' : (item.status === 'approved' ? 'approved' : 'rejected');
 
+          // 计算自动通过期限（提交时间 + 48 小时）
+          var autoPassTime = '-';
+          if (item.time) {
+            var timeParts = item.time.split(/[\/ :]/);
+            if (timeParts.length === 5) {
+              var d = new Date(timeParts[0], timeParts[1] - 1, timeParts[2], timeParts[3], timeParts[4]);
+              d.setHours(d.getHours() + 48);
+              var y = d.getFullYear();
+              var m = String(d.getMonth() + 1).padStart(2, '0');
+              var day = String(d.getDate()).padStart(2, '0');
+              var h = String(d.getHours()).padStart(2, '0');
+              var min = String(d.getMinutes()).padStart(2, '0');
+              autoPassTime = y + '/' + m + '/' + day + ' ' + h + ':' + min;
+            }
+          }
+
+          // 判断是否已超过自动通过期限
+          var isOverdue = false;
+          if (item.status === 'pending' && autoPassTime !== '-') {
+            var deadlineParts = autoPassTime.split(/[\/ :]/);
+            var deadline = new Date(deadlineParts[0], deadlineParts[1] - 1, deadlineParts[2], deadlineParts[3], deadlineParts[4]);
+            if (new Date() > deadline) isOverdue = true;
+          }
+
           var actionHtml = '';
+
           if (item.status === 'pending') {
             actionHtml = '<button class="btn-sm approve" data-platform="' + p + '" data-action="approve">通过</button>' +
                          '<button class="btn-sm reject" data-platform="' + p + '" data-action="reject" style="margin-left:6px;">拒绝</button>';
@@ -254,6 +383,20 @@
 
           }
 
+          // 自动通过期限显示文案
+          var deadlineHtml = autoPassTime;
+          if (isOverdue) {
+            deadlineHtml += ' <span style="color:#c0392b;font-weight:700;">⚠️</span>';
+          }
+
+          // 拒绝理由列
+          var rejectReasonHtml = '-';
+          if (item.status === 'rejected') {
+            rejectReasonHtml = item.rejectReason
+              ? '<span style="font-size:0.75rem;color:#c0392b;max-width:180px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + escHtml(item.rejectReason) + '">' + escHtml(item.rejectReason) + '</span>'
+              : '<span style="font-size:0.75rem;color:var(--text-tertiary);">已拒绝</span>';
+          }
+
           html += '<tr>' +
             '<td style="font-size:0.78rem;color:var(--text-tertiary);">' + escHtml(item.uid || '-') + '</td>' +
             '<td style="font-size:0.78rem;color:var(--text);">' + escHtml(item.username || '-') + '</td>' +
@@ -261,9 +404,12 @@
             '<td><a class="link-cell" href="' + item.link + '" target="_blank" rel="noopener noreferrer" title="' + item.link + '">' + item.link + '</a></td>' +
             '<td><span class="code-cell">' + (item.code || '-') + '</span></td>' +
             '<td style="font-size:0.78rem;color:var(--text-tertiary);">' + (item.time || '-') + '</td>' +
+            '<td style="font-size:0.78rem;' + (isOverdue ? 'color:#c0392b;font-weight:600;' : 'color:var(--text-tertiary);') + '">' + deadlineHtml + '</td>' +
             '<td><span class="status-badge ' + statusClass + '">' + statusLabel + '</span></td>' +
+            '<td>' + rejectReasonHtml + '</td>' +
             '<td>' + actionHtml + '</td>' +
             '</tr>';
+
         });
         tbody.innerHTML = html;
 
@@ -280,17 +426,14 @@
           });
         });
 
+        // 拒绝按钮：打开弹窗输入理由
         tbody.querySelectorAll('.btn-sm.reject').forEach(function(btn) {
           btn.addEventListener('click', function() {
             var platform = this.dataset.platform;
-            var data = loadData();
-            if (data[platform]) {
-              data[platform].status = 'rejected';
-              saveData(data);
-              renderTable();
-            }
+            openRejectModal(platform);
           });
         });
+
 
         // 绑定保存指标按钮事件
         tbody.querySelectorAll('.btn-sm[data-action="save-metrics"]').forEach(function(btn) {

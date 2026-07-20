@@ -1022,6 +1022,60 @@
     }
     .modal-btn-confirm:hover { opacity: 0.9; }
 
+    /* ===== 我的排名卡片 ===== */
+    .leaderboard-my-rank {
+      background: linear-gradient(135deg, rgba(3,201,184,0.06) 0%, rgba(3,201,184,0.12) 100%);
+      border: 1px solid rgba(3,201,184,0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+      animation: fadeSlideUp 0.35s ease;
+    }
+    .my-rank-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+    .my-rank-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 0;
+    }
+    .my-rank-item {
+      text-align: center;
+      flex: 1;
+    }
+    .my-rank-num {
+      display: block;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.5px;
+    }
+    .my-rank-num.my-rank-reward {
+      font-size: 22px;
+      color: var(--primary-dark);
+    }
+    .my-rank-unit {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .my-rank-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(3,201,184,0.2);
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
     /* ===== 排行榜 ===== */
     .leaderboard-section {
       background: var(--white);
@@ -1276,6 +1330,10 @@
           <p class="share-hint">
             🌐 将你的故事分享到社交平台，提交链接即可获得验证码，写入内容简介完成验证。
           </p>
+          <div style="display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:10px;background:rgba(3,201,184,0.08);border:1px solid rgba(3,201,184,0.15);font-size:13px;color:var(--primary-dark);font-weight:500;margin-bottom:16px;">
+            <span>⏰</span>
+            <span>提交后默认 <strong>48 小时</strong> 自动通过审核，通过后方可累计积分</span>
+          </div>
           <div class="share-field">
             <span class="share-field-icon">𝕏</span>
             <input type="text" placeholder="Twitter / X 链接" id="twitterLink" />
@@ -1382,6 +1440,26 @@
 
       <!-- 排行榜面板 -->
       <div class="tab-panel" id="tabLeaderboard">
+        <!-- 我的排名卡片 -->
+        <div class="leaderboard-my-rank" id="myRankCard">
+          <div class="my-rank-label">🏆 我的排名</div>
+          <div class="my-rank-row">
+            <div class="my-rank-item">
+              <span class="my-rank-num" id="myRankNum">-</span>
+              <span class="my-rank-unit">名</span>
+            </div>
+            <div class="my-rank-divider"></div>
+            <div class="my-rank-item">
+              <span class="my-rank-num" id="myRankScore">0</span>
+              <span class="my-rank-unit">积分</span>
+            </div>
+            <div class="my-rank-divider"></div>
+            <div class="my-rank-item">
+              <span class="my-rank-num my-rank-reward" id="myRankReward">—</span>
+              <span class="my-rank-unit">奖励</span>
+            </div>
+          </div>
+        </div>
         <div class="leaderboard-table-wrap">
           <table class="leaderboard-table" id="leaderboardTable">
             <thead>
@@ -1422,7 +1500,7 @@
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
       </div>
       <div class="modal-box-title">故事已提交！你已成功登船</div>
-      <div class="modal-box-desc">现在可以分享故事或完成任务赚取积分，积分越高，USDT 奖励越多。</div>
+      <div class="modal-box-desc">现在可以分享故事或完成任务赚取积分，积分越高，USDC 奖励越多。</div>
       <div class="modal-box-actions">
         <button class="modal-btn-confirm" id="sailModalClose" style="flex:1;">开始探索</button>
       </div>
@@ -1453,6 +1531,18 @@
       </div>
       <div class="modal-box-actions">
         <button class="modal-btn-confirm" id="scoreModalClose" style="flex:1;">知道了</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 拒绝理由弹窗 -->
+  <div class="modal-overlay" id="rejectReasonModal">
+    <div class="modal-box">
+      <div class="modal-box-icon" style="font-size:36px;">❌</div>
+      <div class="modal-box-title">审核未通过</div>
+      <div class="modal-box-desc" id="rejectReasonDesc" style="margin-bottom:24px;">链接内容与 1011 主题无关</div>
+      <div class="modal-box-actions">
+        <button class="modal-btn-confirm" id="rejectReasonClose" style="flex:1;">知道了</button>
       </div>
     </div>
   </div>
@@ -1676,6 +1766,22 @@
 
       // ===== 积分记录 =====
       var scoreHistory = [];
+      // 模拟数据：覆盖所有类型
+      (function() {
+        scoreHistory.push(
+          { reason: '每日签到 ×7（连续 7 天）', points: 35, time: '2026/7/19 09:15' },
+          { reason: '关注 Story.fun', points: 10, time: '2026/7/19 10:30' },
+          { reason: '绑定 Twitter 账号', points: 20, time: '2026/7/18 14:22' },
+          { reason: '转推推文', points: 5, time: '2026/7/18 15:10' },
+          { reason: '点赞推文', points: 2, time: '2026/7/18 15:11' },
+          { reason: '发布短剧', points: 30, time: '2026/7/17 20:05' },
+          { reason: '完播 1 集短剧', points: 15, time: '2026/7/17 21:30' },
+          { reason: '派遣演员挖矿', points: 25, time: '2026/7/16 18:45' },
+          { reason: 'Twitter 分享通过审核', points: 10, time: '2026/7/16 10:00' },
+          { reason: 'TikTok 分享通过审核', points: 10, time: '2026/7/15 16:20' },
+          { reason: 'YouTube 分享通过审核', points: 10, time: '2026/7/14 11:40' },
+        );
+      })();
       function addScoreRecord(reason, points) {
         var now = new Date();
         var timeStr = now.getFullYear() + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
@@ -1892,10 +1998,13 @@
 
       function renderLeaderboard() {
         var html = '';
+        var myRank = 7; // 假设当前用户排第7名
+        var myScore = 0;
         // 模拟100条排名数据
         for (var i = 1; i <= 100; i++) {
           var mockScore = Math.max(0, 672 - (i - 1) * 5 - Math.floor(Math.random() * 10));
-          var isMe = i === 7; // 假设当前用户排第7
+          var isMe = i === myRank;
+          if (isMe) myScore = mockScore;
           var rankClass = i <= 3 ? ' rank-top' : '';
           var reward = getReward(i);
           html += '<tr' + (isMe ? ' class="is-me"' : '') + '>' +
@@ -1906,6 +2015,11 @@
             '</tr>';
         }
         leaderboardBody.innerHTML = html;
+
+        // 更新顶部「我的排名」卡片
+        document.getElementById('myRankNum').textContent = myRank;
+        document.getElementById('myRankScore').textContent = myScore;
+        document.getElementById('myRankReward').textContent = getReward(myRank);
       }
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -2220,7 +2334,39 @@
       // 初始化按钮状态
       refreshShareButtons();
 
+      // ===== 拒绝理由弹窗 =====
+      var rejectReasonModal = document.getElementById('rejectReasonModal');
+      var rejectReasonDesc = document.getElementById('rejectReasonDesc');
+      var rejectReasonClose = document.getElementById('rejectReasonClose');
+
+      function openRejectReasonModal(reason) {
+        rejectReasonDesc.textContent = reason || '管理员未填写具体拒绝理由';
+        rejectReasonModal.classList.add('open');
+      }
+      function closeRejectReasonModal() {
+        rejectReasonModal.classList.remove('open');
+      }
+      rejectReasonClose.addEventListener('click', closeRejectReasonModal);
+      rejectReasonModal.addEventListener('click', function(e) {
+        if (e.target === rejectReasonModal) closeRejectReasonModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && rejectReasonModal.classList.contains('open')) closeRejectReasonModal();
+      });
+
+      // 点击「❌ 未通过」状态标签打开拒绝理由弹窗
+      document.addEventListener('click', function(e) {
+        var statusTag = e.target.closest('.share-status-tag');
+        if (!statusTag) return;
+        var platform = statusTag.dataset.platform;
+        var data = loadShareLinks();
+        var item = data[platform];
+        if (!item || item.status !== 'rejected') return;
+        openRejectReasonModal(item.rejectReason || '管理员未填写具体拒绝理由');
+      });
+
       // ===== 活动状态切换 =====
+
       function setActivityStatus(status) {
         activityStatus = status;
         updateActivityTimeDisplay();
@@ -2311,6 +2457,7 @@
         Object.keys(data).forEach(function(p) {
           if (data[p].status === 'pending') {
             data[p].status = 'rejected';
+            data[p].rejectReason = '链接内容与 1011 主题无关，请重新提交';
             changed = true;
           }
         });

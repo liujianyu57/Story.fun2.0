@@ -291,9 +291,11 @@
       border: 2px solid var(--gold);
       z-index: 1;
     }
-    .timeline-item:nth-child(3) .timeline-dot,
     .timeline-item:nth-child(4) .timeline-dot,
-    .timeline-item:nth-child(5) .timeline-dot { border-color: var(--red); }
+    .timeline-item:nth-child(5) .timeline-dot,
+    .timeline-item:nth-child(6) .timeline-dot,
+    .timeline-item:nth-child(7) .timeline-dot,
+    .timeline-item:nth-child(8) .timeline-dot { border-color: var(--red); }
     .timeline-time {
       font-size: 13px;
       font-weight: 600;
@@ -317,24 +319,6 @@
       color: var(--red);
       font-weight: 600;
     }
-    .timeline-chart {
-      margin-top: 40px;
-      background: var(--bg-card);
-      border-radius: 8px;
-      padding: 32px;
-      border: 1px solid var(--border);
-    }
-    .timeline-chart svg {
-      width: 100%;
-      height: auto;
-    }
-    .chart-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      letter-spacing: 0.08em;
-    }
-
     /* ============================================
        DATA HALL
        ============================================ */
@@ -902,91 +886,67 @@
     <div class="section-inner">
       <div class="section-header">
         <div class="section-label">Chronology</div>
-        <h2 class="section-title">逐分钟时间线</h2>
-        <p class="section-desc">2025年10月10日 20:50 UTC 起（北京时间 10月11日 04:50），以小时为单位记录市场崩解的每一帧。</p>
+        <h2 class="section-title">事件时间线</h2>
+        <p class="section-desc">该时间线主要由 Galaxy、Amberdata 和 Binance 事后报告构成。不同数据机构对最早触发时间的记录存在数分钟至数小时差异，但对 20:50—21:30 UTC 为核心清算窗口基本一致。</p>
       </div>
 
       <div class="timeline-track">
         <div class="timeline-line"></div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">04:50 BJT · 20:50 UTC</div>
-          <div class="timeline-event">特朗普发布贸易威胁，宣布将对中国商品加征 100% 关税</div>
-          <div class="timeline-price">BTC 从 $126,000 区域开始下跌</div>
+          <div class="timeline-time">10月9日</div>
+          <div class="timeline-event">一个 Hyperliquid 账户开始注入资金，建立 BTC 空头</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">07:30 BJT · 23:30 UTC</div>
-          <div class="timeline-event">BTC <span>$68,200 → $65,800</span></div>
+          <div class="timeline-time">10月9日 — 10月10日 20:49 UTC</div>
+          <div class="timeline-event">账户逐步建立约 4 亿美元 BTC 空头，并在特朗普发文前一分钟停止加仓</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">08:12 BJT · 00:12 UTC</div>
-          <div class="timeline-event">爆仓突破 <span style="color:var(--red);">$5 亿</span></div>
+          <div class="timeline-time">10月10日 20:50 UTC</div>
+          <div class="timeline-event">特朗普在 Truth Social 威胁对中国商品额外征收 100% 关税</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">09:30 BJT · 01:30 UTC</div>
-          <div class="timeline-event">BTC 跌破 $62,000 · ETH 跌破 $2,400</div>
-          <div class="timeline-price">USDe 在 Binance 开始明显偏离 $1</div>
+          <div class="timeline-time">20:50 — 21:20 UTC</div>
+          <div class="timeline-event">BTC、ETH 和美股风险资产同步下跌，做市商收缩报价，期权波动率急升</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">10:45 BJT · 02:45 UTC</div>
-          <div class="timeline-event">爆仓突破 <span style="color:var(--red);">$15 亿</span> · 约 80 万地址被清算</div>
-          <div class="timeline-price">USDe Binance 最低触及 <span>$0.65</span></div>
+          <div class="timeline-time">20:50 — 21:30 UTC</div>
+          <div class="timeline-event">核心清算窗口，大量仓位被强制平仓</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">12:00 BJT · 04:00 UTC</div>
-          <div class="timeline-event">BTC 最低 $59,800 · 160 万地址受影响</div>
-          <div class="timeline-price">山寨币普遍跌幅 <span>40%+</span>，部分极端插针接近零</div>
+          <div class="timeline-time">21:20 — 21:42 UTC</div>
+          <div class="timeline-event">USDe 在 Binance 开始明显低于 1 美元，BTC、ETH 已接近日内低位</div>
         </div>
-      </div>
-
-      <div class="timeline-chart">
-        <div class="chart-label">BTC 价格走势示意（1011 事件窗口）</div>
-        <svg viewBox="0 0 800 240" preserveAspectRatio="xMidYMid meet">
-          <!-- Grid -->
-          <line x1="80" y1="20" x2="80" y2="200" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-          <line x1="80" y1="200" x2="760" y2="200" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <line x1="80" y1="110" x2="760" y2="110" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="4 4"/>
-          <!-- Y labels -->
-          <text x="70" y="25" fill="#5A646E" font-size="10" text-anchor="end">$126K</text>
-          <text x="70" y="115" fill="#5A646E" font-size="10" text-anchor="end">$68K</text>
-          <text x="70" y="205" fill="#5A646E" font-size="10" text-anchor="end">$60K</text>
-          <!-- X labels -->
-          <text x="80" y="220" fill="#5A646E" font-size="9" text-anchor="middle">20:50</text>
-          <text x="240" y="220" fill="#5A646E" font-size="9" text-anchor="middle">23:30</text>
-          <text x="420" y="220" fill="#5A646E" font-size="9" text-anchor="middle">01:30</text>
-          <text x="580" y="220" fill="#5A646E" font-size="9" text-anchor="middle">02:45</text>
-          <text x="720" y="220" fill="#C44B4B" font-size="9" text-anchor="middle">04:00</text>
-          <!-- BTC Price line -->
-          <polyline points="80,30 150,166 240,172 340,184 460,190 560,195 720,196"
-            fill="none" stroke="url(#btcGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Area fill -->
-          <polygon points="80,200 80,30 150,166 240,172 340,184 460,190 560,195 720,196 720,200"
-            fill="url(#btcArea)" opacity="0.4"/>
-          <!-- Gradient defs -->
-          <defs>
-            <linearGradient id="btcGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#C9A96E"/>
-              <stop offset="100%" stop-color="#C44B4B"/>
-            </linearGradient>
-            <linearGradient id="btcArea" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#C44B4B" stop-opacity="0.6"/>
-              <stop offset="100%" stop-color="#C44B4B" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <!-- Data points -->
-          <circle cx="80" cy="30" r="4" fill="#C9A96E"/>
-          <circle cx="150" cy="166" r="3" fill="#C9A96E"/>
-          <circle cx="240" cy="172" r="3" fill="#C9A96E"/>
-          <circle cx="340" cy="184" r="3" fill="#C9A96E"/>
-          <circle cx="460" cy="190" r="3" fill="#C44B4B"/>
-          <circle cx="560" cy="195" r="3" fill="#C44B4B"/>
-          <circle cx="720" cy="196" r="5" fill="#C44B4B"/>
-        </svg>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">21:42 — 21:51 UTC</div>
+          <div class="timeline-event">USDe 最低约 0.65 美元，WBETH 和 BNSOL 也出现极端折价</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">10月11日后</div>
+          <div class="timeline-event">Binance 公布 USDe、BNSOL、WBETH 受影响用户赔偿方案</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">10月12日</div>
+          <div class="timeline-event">Binance 调整 K 线前端显示，随后因争议撤回</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">10月14日后</div>
+          <div class="timeline-event">Binance 推出 3 亿美元善意补助及 1 亿美元机构低息贷款计划</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">截至 10月22日</div>
+          <div class="timeline-event">Binance 称已向符合条件的用户支付超过 3.28 亿美元直接赔偿</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1073,6 +1033,53 @@
           <span class="exchange-bar-note">WS 限制 1笔/秒</span>
         </div>
       </div>
+
+      <!-- Hyperliquid actual loss detail (doc 4.3) -->
+      <div class="exchange-bars" style="margin-top:20px;">
+        <div class="exchange-bars-title">以 Hyperliquid 为例：名义爆仓 vs. 真实本金损失（文档 4.3）</div>
+        <p style="color:var(--text-dim); line-height:1.7; font-size:15px; margin-bottom:8px;">
+          CoinGlass 捕获 Hyperliquid 名义爆仓约 <strong style="color:#fff;">$102 亿</strong>，但真实的交易者资本损失约 <strong style="color:var(--red);">$12.3 亿</strong>。
+        </p>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <span style="background:var(--bg-card-hover); padding:12px 18px; border-radius:4px; font-size:13px; color:var(--text-dim);">
+            <strong style="color:var(--red); display:block; font-size:24px;">1000+</strong> 钱包被完全清算
+          </span>
+          <span style="background:var(--bg-card-hover); padding:12px 18px; border-radius:4px; font-size:13px; color:var(--text-dim);">
+            <strong style="color:var(--text-dim); display:block; font-size:24px;">~6300</strong> 钱包出现亏损
+          </span>
+          <span style="background:var(--bg-card-hover); padding:12px 18px; border-radius:4px; font-size:13px; color:var(--text-dim);">
+            <strong style="color:var(--gold); display:block; font-size:24px;">~205</strong> 钱包损失超 $100 万
+          </span>
+        </div>
+        <div class="data-card-src" style="margin-top:12px;">来源：CoinDesk 报道 / Hyperliquid 链上数据</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       MESSAGE CHAIN
+       =============================== -->
+  <section class="section reveal" style="position:relative;">
+    <div class="data-bg">
+      <img src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1920&q=60" alt="" loading="lazy" />
+    </div>
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-label">Message Chain</div>
+        <h2 class="section-title">传播链</h2>
+        <p class="section-desc">关键推文、用户与媒体传播链——哪些有存档，哪些不应写入确定性结论（文档第 9 节）。</p>
+      </div>
+
+      <div class="exchange-bars">
+        <div class="exchange-bars-title">可以确认</div>
+        <p style="color:var(--text-dim); line-height:1.7; font-size:15px; margin-bottom:20px;">
+        最值得保存的"删除内容"是 Garrett Jin 否认与特朗普存在关联的帖子。Galaxy 已经记录该帖子曾经存在并随后删除，但删除本身不能证明原说法为假，也不能反向证明其与特朗普有关。
+        </p>
+        <div class="exchange-bars-title">不应写入确定性结论</div>
+        <p style="color:var(--text-dim); line-height:1.7; font-size:15px;">
+        对于其他所谓"交易所删帖""KOL 删除爆仓截图""内部员工提前预告"等内容，目前缺少可靠网页存档、原始链接或链上对应关系，不应写入确定性结论。
+        </p>
+      </div>
     </div>
   </section>
 
@@ -1096,7 +1103,7 @@
           <div class="causal-body">
             <div class="causal-role">第一层 · 火花</div>
             <h3>中美贸易冲突消息触发下跌</h3>
-            <p>特朗普发布加征 100% 关税威胁，BTC 从 $126K 历史高点迅速下挫。期权隐含波动率激增，下行保护需求飙升。高置信度直接触发因素。</p>
+            <p>特朗普发布加征 100% 关税威胁，BTC 迅速跌入约 10.5 万—10.7 万美元区域。期权隐含波动率激增，下行保护需求飙升。高置信度直接触发因素。</p>
           </div>
         </div>
         <div class="causal-node">
@@ -1164,32 +1171,42 @@
           <div class="char-card">
             <div class="char-name">麻吉大哥</div>
             <span class="char-role-tag tag-red">知名人物</span>
-            <div class="char-desc">公开钱包在事件中遭受重大损失，引发社区广泛关注</div>
+            <div class="char-desc">文档 13.4.1 所列的知名损失者</div>
           </div>
           <div class="char-card">
             <div class="char-name">TheWhiteWhale</div>
             <span class="char-role-tag tag-red">大型交易者</span>
-            <div class="char-desc">Hyperliquid 上被完全清算的知名钱包之一</div>
+            <div class="char-desc">文档 13.4.1 所列的大型交易者</div>
           </div>
           <div class="char-card">
             <div class="char-name">CyantArb</div>
             <span class="char-role-tag tag-red">套利基金</span>
-            <div class="char-desc">在 ADL 中遭受异常价格清算的机构账户</div>
+            <div class="char-desc">文档 13.4.1 所列的套利基金</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">抵押借币清算者</div>
+            <span class="char-role-tag tag-red">案例</span>
+            <div class="char-desc">某创始人抵押数百万美元 Doge 借贷 USDT，1011 后被全部清空（文档 13.1）</div>
           </div>
           <div class="char-card">
             <div class="char-name">USDe 抵押品用户</div>
             <span class="char-role-tag tag-red">群体</span>
-            <div class="char-desc">持有"高收益稳定币"作为抵押品，因 Binance 局部脱锚被连带清算</div>
+            <div class="char-desc">持有"高收益稳定币"作为抵押品，因 Binance 局部脱锚被连带清算（文档 13.3.3）</div>
           </div>
           <div class="char-card">
             <div class="char-name">无法划转保证金的用户</div>
             <span class="char-role-tag tag-red">群体</span>
-            <div class="char-desc">因 Binance 资产划转 33 分钟性能下降，在"核心系统正常"的情况下失去自救窗口</div>
+            <div class="char-desc">因 Binance 资产划转 33 分钟性能下降，在"核心系统正常"的情况下失去自救窗口（文档 13.3.2）</div>
           </div>
           <div class="char-card">
             <div class="char-name">被 ADL 做市商</div>
             <span class="char-role-tag tag-red">机构</span>
-            <div class="char-desc">盈利仓位被异常价格强制削减，原有对冲结构被打破</div>
+            <div class="char-desc">盈利仓位被异常价格强制削减，原有对冲结构被打破（文档 13.3.1）</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">"损失 $200 万，收到 $0.26 券"</div>
+            <span class="char-role-tag tag-red">网络案例</span>
+            <div class="char-desc">自称用户损失超 200 万美元，最初仅收到价值约 0.26 美元代金券（文档 13.3.4）</div>
           </div>
         </div>
 
@@ -1199,22 +1216,22 @@
           <div class="char-card">
             <div class="char-name">匿名空头鲸鱼</div>
             <span class="char-role-tag tag-green">$1.6 亿利润</span>
-            <div class="char-desc">最后一笔建仓结束于特朗普发文前一分钟。两组账户当日获利约 $1.6 亿</div>
+            <div class="char-desc">最后一笔建仓结束于特朗普发文前一分钟。两组账户当日获利约 $1.6 亿（文档 6.8）</div>
           </div>
           <div class="char-card">
             <div class="char-name">最大盈利钱包</div>
             <span class="char-role-tag tag-green">Hyperliquid</span>
-            <div class="char-desc">事件前从 10 月 9 日开始注入资金，建立约 $4 亿 BTC 空头</div>
+            <div class="char-desc">从 10 月 9 日开始注入资金，建立约 $4 亿 BTC 空头。WSJ 报道这些仓位可能基于此前中国稀土限制建立（文档 6.8）</div>
           </div>
           <div class="char-card">
             <div class="char-name">跨交易所套利者</div>
             <span class="char-role-tag tag-green">机构</span>
-            <div class="char-desc">在 Binance 与 Coinbase 出现极大价差时，部分套利基金从中获利</div>
+            <div class="char-desc">在 Binance 与 Coinbase 出现极大价差时，部分套利基金从中获利（文档 6.7/6.8）</div>
           </div>
           <div class="char-card">
             <div class="char-name">极端插针买家</div>
             <span class="char-role-tag tag-green">散户</span>
-            <div class="char-desc">在 Binance 低价买入异常插针资产（如接近零的 ATOM、IOTX）的幸运交易者</div>
+            <div class="char-desc">在 Binance 低价买入异常插针资产（如接近零的 ATOM、IOTX）的幸运交易者（文档 8.1 K线修改争议）</div>
           </div>
         </div>
 
@@ -1222,34 +1239,39 @@
         <div>
           <div class="gallery-col-label explainers">解释者</div>
           <div class="char-card">
+            <div class="char-name">Amberdata</div>
+            <span class="char-role-tag tag-blue">数据机构</span>
+            <div class="char-desc">捕获约 $98.9 亿爆仓（14 小时窗口），与 CoinGlass 191.3 亿口径不同（文档 4.1）</div>
+          </div>
+          <div class="char-card">
             <div class="char-name">CoinGlass</div>
             <span class="char-role-tag tag-blue">数据机构</span>
-            <div class="char-desc">公开捕获 $191.3 亿爆仓、161.8 万账户。事后将真实规模上调至 $300–400 亿</div>
+            <div class="char-desc">公开捕获 $191.3 亿爆仓、161.8 万账户。事后将真实规模上调至 $300–400 亿（文档 4.1）</div>
           </div>
           <div class="char-card">
             <div class="char-name">Galaxy</div>
             <span class="char-role-tag tag-blue">研究机构</span>
-            <div class="char-desc">提供最完整的逐分钟时间线重建，确认 BTC 第一轮下跌早于 USDe 脱锚</div>
+            <div class="char-desc">提供最完整的逐分钟时间线重建，确认 BTC 第一轮下跌早于 USDe 脱锚（文档 第 3 节）</div>
           </div>
           <div class="char-card">
             <div class="char-name">Wintermute</div>
             <span class="char-role-tag tag-blue">做市商 · 受影响者</span>
-            <div class="char-desc">既是受 ADL 影响的机构，也是事后反对将崩盘全部归咎于 Binance 的声音</div>
+            <div class="char-desc">既是受 ADL 影响的机构，也是事后反对将崩盘全部归咎于 Binance 的声音（文档 13.3.1）</div>
           </div>
           <div class="char-card">
             <div class="char-name">Haseeb Qureshi</div>
             <span class="char-role-tag tag-blue">Dragonfly 合伙人</span>
-            <div class="char-desc">用时间线反驳"USDe 引发全球崩盘"的说法，认为 USDe 是放大器而非触发因素</div>
+            <div class="char-desc">用时间线反驳"USDe 引发全球崩盘"的说法：BTC 阶段性底部比 USDe 最严重偏离早约 30 分钟（文档 13.3.7）</div>
           </div>
           <div class="char-card">
             <div class="char-name">Ethena</div>
             <span class="char-role-tag tag-blue">USDe 发行方</span>
-            <div class="char-desc">辩护称底层对冲和赎回机制仍然运作，问题来自局部流动性和交易所抵押品定价</div>
+            <div class="char-desc">核心辩护：底层对冲和赎回机制仍然运作，USDe 严重下跌主要在 Binance 本地订单簿（文档 13.3.8）</div>
           </div>
           <div class="char-card">
             <div class="char-name">学术研究者</div>
             <span class="char-role-tag tag-blue">独立</span>
-            <div class="char-desc">预印本论文估算 Hyperliquid ADL 给盈利交易者带来约 $6.3 亿不必要利润削减</div>
+            <div class="char-desc">预印本论文估算 Hyperliquid ADL 给盈利交易者带来约 $6.3 亿不必要利润削减（文档 6.4）</div>
           </div>
         </div>
 
@@ -1259,27 +1281,32 @@
           <div class="char-card">
             <div class="char-name">Donald Trump</div>
             <span class="char-role-tag tag-gold">美国前总统</span>
-            <div class="char-desc">关税推文是整个事件的直接导火索——火花本身</div>
+            <div class="char-desc">关税推文是整个事件的直接导火索（文档 6.1）</div>
           </div>
           <div class="char-card">
             <div class="char-name">Cathie Wood</div>
             <span class="char-role-tag tag-gold">ARK Invest</span>
-            <div class="char-desc">最初称事件为"Binance 软件故障"引发，后修正为"Binance 有软件问题但未触发闪崩"</div>
+            <div class="char-desc">最初称事件为"Binance 软件故障"引发，后在 2026 年 5 月与 CZ 对话中修正为"Binance 有软件问题但未触发闪崩"（文档 13.3.5）</div>
           </div>
           <div class="char-card">
             <div class="char-name">徐明星 (Star Xu)</div>
             <span class="char-role-tag tag-gold">OKX 创始人</span>
-            <div class="char-desc">最明确的"Binance 责任论"发出者。详细说明 USDe 杠杆循环机制</div>
+            <div class="char-desc">最明确的"Binance 责任论"发出者，详细说明 USDe 杠杆循环（12%→24%/36%+）——但他是 OKX 创始人，OKX 是 Binance 直接竞争对手（文档 13.3.6）</div>
           </div>
           <div class="char-card">
             <div class="char-name">CZ (赵长鹏)</div>
             <span class="char-role-tag tag-gold">Binance 联合创始人</span>
-            <div class="char-desc">事件发生时已卸任 CEO，后续公开讨论中为 Binance 立场发声</div>
+            <div class="char-desc">事件发生时已卸任 CEO，后续公开讨论中为 Binance 立场发声（文档 13.4.4）</div>
           </div>
           <div class="char-card">
             <div class="char-name">ZachXBT</div>
             <span class="char-role-tag tag-gold">链上侦探</span>
-            <div class="char-desc">追踪空头鲸鱼钱包关联，指出相关钱包可能属于多个实体</div>
+            <div class="char-desc">追踪空头鲸鱼钱包关联，指出相关钱包可能属于多个实体而非一个人（文档 6.8）</div>
+          </div>
+          <div class="char-card">
+            <div class="char-name">Garrett Jin</div>
+            <span class="char-role-tag tag-gold">资金归因对象</span>
+            <div class="char-desc">Eyeonchains 将空头资金路径指向此人，但其表示资金属于客户，并在一条已删除帖子中否认与特朗普有关联（文档 6.8 / 第 9 节）</div>
           </div>
         </div>
       </div>
@@ -1332,14 +1359,6 @@
         <div class="compare-card">
           <h3>Coinbase</h3>
           <div class="exch-tag coinbase">美国最大合规交易所</div>
-          <div class="compare-stat">
-            <span class="compare-stat-lbl">核心撮合系统</span>
-            <span class="compare-stat-val ok">正常运行</span>
-          </div>
-          <div class="compare-stat">
-            <span class="compare-stat-lbl">资产划转</span>
-            <span class="compare-stat-val ok">正常</span>
-          </div>
           <div class="compare-stat">
             <span class="compare-stat-lbl">抵押品脱锚</span>
             <span class="compare-stat-val ok">无</span>
@@ -1417,6 +1436,10 @@
 
       <div class="aftermath-timeline">
         <h3>关键后续数据</h3>
+        <div class="am-row" style="background:rgba(255,255,255,0.02);">
+          <span class="am-date">闪崩后 BTC 短期反弹</span>
+          <span class="am-event">BTC 迅速重回 $11 万以上并一度反弹至 $11.4—$11.5 万（文档 7.2）</span>
+        </div>
         <div class="am-row">
           <span class="am-date">BTC 价格</span>
           <span class="am-event">从 $126,000+ 历史高点持续回撤</span>
