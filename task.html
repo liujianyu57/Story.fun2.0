@@ -1198,8 +1198,8 @@
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
       </div>
       <div class="sail-card-title">你已成功登船</div>
-      <div class="sail-card-sub">故事已提交，等待方舟启航</div>
-      <div class="sail-card-hint">启航前可随时完成任务，积分越多奖励越高</div>
+      <div class="sail-card-sub" id="sailCardSub">故事已提交，等待方舟启航</div>
+      <div class="sail-card-hint" id="sailCardHint">启航前可随时完成任务，积分越多奖励越高</div>
       <div class="sail-card-meta" id="sailCardMeta">
         <span class="sail-card-meta-item">
           <span class="meta-dot"></span>
@@ -1230,7 +1230,7 @@
         <div class="story-intro-meta">
           <span class="story-intro-meta-item">
             <span class="meta-dot"></span>
-            截止 <strong>2026.12.31</strong>
+            <span id="storyTimeLabel">截止</span> <strong>2026.12.31</strong>
           </span>
           <span class="story-intro-meta-item">
             <span class="meta-dot"></span>
@@ -1508,10 +1508,20 @@
 
       // 更新页面上的活动时间显示
       function updateActivityTimeDisplay() {
-        // 更新故事表单中的截止时间
+        // 更新故事表单中的时间显示（根据状态显示开始或截止）
         var introMetaItems = document.querySelectorAll('.story-intro-meta-item strong');
-        if (introMetaItems.length > 0 && ACTIVITY_TIME.end) {
-          introMetaItems[0].textContent = formatDateDisplay(ACTIVITY_TIME.end);
+        if (introMetaItems.length > 0) {
+          // 第一个 meta 项：未开始显示开始时间，进行中/已结束显示截止时间
+          if (activityStatus === 'not_started' && ACTIVITY_TIME.start) {
+            introMetaItems[0].textContent = formatDateDisplay(ACTIVITY_TIME.start);
+          } else if (ACTIVITY_TIME.end) {
+            introMetaItems[0].textContent = formatDateDisplay(ACTIVITY_TIME.end);
+          }
+        }
+        // 更新第一个 meta 项的标签（截止 → 开始）
+        var storyTimeLabel = document.getElementById('storyTimeLabel');
+        if (storyTimeLabel) {
+          storyTimeLabel.textContent = activityStatus === 'not_started' ? '开始' : '截止';
         }
         // 更新启航信息卡中的截止时间
         var sailEndDate = document.getElementById('sailEndDate');
@@ -1520,55 +1530,128 @@
         }
       }
 
-      // 根据活动状态控制页面行为
+      // 根据活动状态控制页面行为（可重复调用，不会重复添加提示）
       function applyActivityStatus() {
         var submitBtn = document.getElementById('submitStoryBtn');
         var storyTextarea = document.getElementById('storyText');
         var checkinBtn = document.getElementById('checkinBtn');
+        var form = document.getElementById('storyForm');
+        var uploadZone = document.getElementById('uploadZone');
+        var storyImageInput = document.getElementById('storyImage');
+
+        // 启航信息卡文案元素
+        var sailCardSub = document.getElementById('sailCardSub');
+        var sailCardHint = document.getElementById('sailCardHint');
+        var sailCardMeta = document.getElementById('sailCardMeta');
+
+        // 移除旧的提示元素（防止重复添加）
+        var oldHint = document.getElementById('activityStatusHint');
+        if (oldHint) oldHint.remove();
+
+        // 恢复默认状态（进行中）
+        if (submitBtn) {
+          submitBtn.style.display = '';
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '';
+          submitBtn.style.cursor = '';
+          submitBtn.textContent = '提交故事 · 登船';
+        }
+        if (storyTextarea) storyTextarea.disabled = false;
+        if (checkinBtn) {
+          checkinBtn.disabled = false;
+          checkinBtn.textContent = '签到领积分';
+        }
+        if (uploadZone) {
+          uploadZone.style.pointerEvents = '';
+          uploadZone.style.opacity = '';
+        }
+        if (storyImageInput) storyImageInput.disabled = false;
+
+        // 恢复 Tab 按钮显示（分享、任务、排行榜）
+        var tabShareBtn = document.querySelector('.tab-btn[data-tab="share"]');
+        var tabTasksBtn = document.querySelector('.tab-btn[data-tab="tasks"]');
+        if (tabShareBtn) { tabShareBtn.style.display = ''; }
+        if (tabTasksBtn) { tabTasksBtn.style.display = ''; }
+
+        // 恢复启航信息卡默认文案（进行中）
+        if (sailCardSub) {
+          sailCardSub.textContent = '故事已提交，方舟正在航行中';
+        }
+        if (sailCardHint) {
+          sailCardHint.textContent = '继续完成任务赢取积分，提升最终排名';
+        }
+        if (sailCardMeta) {
+          sailCardMeta.innerHTML =
+            '<span class="sail-card-meta-item">' +
+              '<span class="meta-dot"></span>' +
+              '截止 <strong id="sailEndDate">' + (ACTIVITY_TIME.end ? formatDateDisplay(ACTIVITY_TIME.end) : '2026.12.31') + '</strong>' +
+            '</span>' +
+            '<span class="sail-card-meta-item">' +
+              '<span class="meta-dot"></span>' +
+              '按最终积分排名发放 <span class="reward-highlight">$XX ~ $XXXX</span>' +
+            '</span>';
+        }
 
         if (activityStatus === 'not_started') {
-          // 活动未开始：禁用提交按钮和签到
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.5';
-            submitBtn.style.cursor = 'not-allowed';
-            submitBtn.textContent = '⏳ 活动尚未开始';
-          }
+          if (submitBtn) { submitBtn.style.display = 'none'; }
           if (storyTextarea) storyTextarea.disabled = true;
           if (checkinBtn) {
             checkinBtn.disabled = true;
             checkinBtn.textContent = '⏳ 活动尚未开始';
           }
-          // 显示活动时间提示
-          var hint = document.createElement('div');
-          hint.style.cssText = 'text-align:center;margin-top:16px;padding:12px 20px;border-radius:12px;background:var(--accent);color:var(--primary-dark);font-size:14px;font-weight:600;';
-          if (ACTIVITY_TIME.start) {
-            hint.textContent = '活动将于 ' + formatDateDisplay(ACTIVITY_TIME.start) + ' 开始';
-          } else {
-            hint.textContent = '活动尚未开始，敬请期待';
+          if (uploadZone) {
+            uploadZone.style.pointerEvents = 'none';
+            uploadZone.style.opacity = '0.5';
           }
-          var form = document.getElementById('storyForm');
+          if (storyImageInput) storyImageInput.disabled = true;
+          var hint = document.createElement('div');
+          hint.id = 'activityStatusHint';
+          hint.style.cssText = 'text-align:center;margin-top:16px;padding:12px 20px;border-radius:12px;background:var(--accent);color:var(--primary-dark);font-size:14px;font-weight:600;';
+          hint.textContent = ACTIVITY_TIME.start ? '活动将于 ' + formatDateDisplay(ACTIVITY_TIME.start) + ' 开始' : '活动尚未开始，敬请期待';
           if (form) form.appendChild(hint);
         } else if (activityStatus === 'ended') {
-          // 活动已结束：禁用提交按钮和签到
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.5';
-            submitBtn.style.cursor = 'not-allowed';
-            submitBtn.textContent = '⏰ 活动已结束';
-          }
+          if (submitBtn) { submitBtn.style.display = 'none'; }
           if (storyTextarea) storyTextarea.disabled = true;
           if (checkinBtn) {
             checkinBtn.disabled = true;
             checkinBtn.textContent = '⏰ 活动已结束';
           }
-          // 显示活动已结束提示
+          if (uploadZone) {
+            uploadZone.style.pointerEvents = 'none';
+            uploadZone.style.opacity = '0.5';
+          }
+          if (storyImageInput) storyImageInput.disabled = true;
           var endedHint = document.createElement('div');
+          endedHint.id = 'activityStatusHint';
           endedHint.style.cssText = 'text-align:center;margin-top:16px;padding:12px 20px;border-radius:12px;background:#fde8e8;color:#c0392b;font-size:14px;font-weight:600;';
-          endedHint.textContent = '活动已于 ' + formatDateDisplay(ACTIVITY_TIME.end) + ' 结束';
-          var form = document.getElementById('storyForm');
+          endedHint.textContent = '活动已于 2026.12.31 结束';
           if (form) form.appendChild(endedHint);
+
+          // 已登船 + 已结束：隐藏「分享故事」和「做任务赚积分」，仅保留「排行榜」
+          if (tabShareBtn) { tabShareBtn.style.display = 'none'; }
+          if (tabTasksBtn) { tabTasksBtn.style.display = 'none'; }
+          // 如果当前激活的是隐藏的 tab，自动切换到排行榜
+          var activeTab = document.querySelector('.tab-btn.active');
+          if (activeTab && activeTab.dataset.tab !== 'leaderboard') {
+            document.querySelector('.tab-btn[data-tab="leaderboard"]').click();
+          }
+
+          // 更新启航信息卡文案（已结束）
+          if (sailCardSub) {
+            sailCardSub.textContent = '感谢参与 1011 · 诺亚方舟';
+          }
+          if (sailCardHint) {
+            sailCardHint.textContent = '活动已结束，奖励正按榜单发放中';
+          }
+          if (sailCardMeta) {
+            sailCardMeta.innerHTML =
+              '<span class="sail-card-meta-item">' +
+                '<span class="meta-dot"></span>' +
+                '活动已于 2026.12.31 结束' +
+              '</span>';
+          }
         }
+        // activityStatus === 'active': 默认已恢复，无需额外操作
       }
 
       updateActivityTimeDisplay();
@@ -1710,8 +1793,13 @@
             } else if (t3State === 'followed') {
               btnHtml = '<button class="task-btn" data-t3-action="claim" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">可领取</button>';
             } else {
-              btnHtml = '<button class="task-btn" data-t3-action="follow" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">我已关注</button>';
+              btnHtml = '<button class="task-btn" data-t3-action="follow" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">我已完成</button>';
             }
+          } else if (task.tweetUrl) {
+            // 转推/点赞推文任务：显示"我已完成"按钮
+            btnHtml = done
+              ? '<button class="task-btn done-btn" disabled>✅ 已完成</button>'
+              : '<button class="task-btn" data-tweet-action="done" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">我已完成</button>';
           } else {
             btnHtml = done
               ? '<button class="task-btn done-btn" disabled>✅ 已完成</button>'
@@ -1755,6 +1843,18 @@
           addScoreRecord('关注 Story.fun', 10);
           refreshAll();
           showToast('🎉 领取成功！积分 +10');
+        }
+      });
+
+      // ===== 转推/点赞推文任务的事件处理 =====
+      document.addEventListener('click', function(e) {
+        var tweetBtn = e.target.closest('[data-tweet-action]');
+        if (!tweetBtn) return;
+        var taskId = tweetBtn.dataset.taskId;
+        if (taskId === 't6') {
+          showToast('请先在推特中点赞该推文');
+        } else {
+          showToast('请先在推特中转发该推文');
         }
       });
 
@@ -2120,13 +2220,70 @@
       // 初始化按钮状态
       refreshShareButtons();
 
+      // ===== 活动状态切换 =====
+      function setActivityStatus(status) {
+        activityStatus = status;
+        updateActivityTimeDisplay();
+        applyActivityStatus();
+        // 更新调试按钮高亮
+        document.querySelectorAll('.debug-status-btn').forEach(function(b) {
+          var s = b.dataset.status;
+          if (s === status) {
+            b.style.borderColor = status === 'not_started' ? '#7f8c8d' : status === 'active' ? '#03C9B8' : '#e74c3c';
+            b.style.background = status === 'not_started' ? 'rgba(127,140,141,0.25)' : status === 'active' ? 'rgba(3,201,184,0.2)' : 'rgba(231,76,60,0.2)';
+          } else {
+            b.style.borderColor = '#d0d5dd';
+            b.style.background = 'rgba(208,213,221,0.06)';
+          }
+        });
+        var labels = { not_started: '未开始', active: '进行中', ended: '已结束' };
+        showToast('🔀 活动状态切换为「' + labels[status] + '」');
+      }
+
       // ===== 调试按钮组 =====
       var debugContainer = document.createElement('div');
-      debugContainer.style.cssText = 'position:fixed;right:16px;bottom:100px;z-index:9999;display:flex;flex-direction:column;gap:8px;';
+      debugContainer.style.cssText = 'position:fixed;right:16px;bottom:100px;z-index:9999;display:flex;flex-direction:column;gap:6px;';
 
+      // 状态切换标题
+      var statusLabel = document.createElement('div');
+      statusLabel.textContent = '🔘 活动状态';
+      statusLabel.style.cssText = 'font-size:10px;font-weight:700;color:#7f8c8d;text-transform:uppercase;letter-spacing:0.5px;padding:2px 0 0;text-align:center;';
+
+      // 状态按钮样式
+      var statusBtnStyle = 'padding:7px 14px;border-radius:16px;border:1.5px solid #d0d5dd;background:rgba(208,213,221,0.06);font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;';
+
+      // 未开始
+      var notStartedBtn = document.createElement('button');
+      notStartedBtn.className = 'debug-status-btn';
+      notStartedBtn.dataset.status = 'not_started';
+      notStartedBtn.textContent = '⏹ 未开始';
+      notStartedBtn.style.cssText = statusBtnStyle;
+      notStartedBtn.addEventListener('click', function() { setActivityStatus('not_started'); });
+
+      // 进行中
+      var activeBtn = document.createElement('button');
+      activeBtn.className = 'debug-status-btn';
+      activeBtn.dataset.status = 'active';
+      activeBtn.textContent = '▶️ 进行中';
+      activeBtn.style.cssText = statusBtnStyle + 'border-color:rgba(3,201,184,0.5);background:rgba(3,201,184,0.12);';
+      activeBtn.addEventListener('click', function() { setActivityStatus('active'); });
+
+      // 已结束
+      var endedBtn = document.createElement('button');
+      endedBtn.className = 'debug-status-btn';
+      endedBtn.dataset.status = 'ended';
+      endedBtn.textContent = '⏹ 已结束';
+      endedBtn.style.cssText = statusBtnStyle;
+      endedBtn.addEventListener('click', function() { setActivityStatus('ended'); });
+
+      // 分割线
+      var divider = document.createElement('div');
+      divider.style.cssText = 'height:1px;background:#e2e6ea;margin:2px 0 4px;';
+
+      // 原有调试按钮
       var approveBtn = document.createElement('button');
       approveBtn.textContent = '✅ 审核通过';
-      approveBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #27ae60;background:rgba(39,174,96,0.1);color:#1e8449;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      approveBtn.style.cssText = 'padding:7px 14px;border-radius:16px;border:1px solid #27ae60;background:rgba(39,174,96,0.1);color:#1e8449;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);';
       approveBtn.addEventListener('click', function() {
         var data = loadShareLinks();
         var changed = false;
@@ -2147,7 +2304,7 @@
 
       var rejectBtn = document.createElement('button');
       rejectBtn.textContent = '❌ 审核拒绝';
-      rejectBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #e74c3c;background:rgba(231,76,60,0.08);color:#c0392b;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      rejectBtn.style.cssText = 'padding:7px 14px;border-radius:16px;border:1px solid #e74c3c;background:rgba(231,76,60,0.08);color:#c0392b;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);';
       rejectBtn.addEventListener('click', function() {
         var data = loadShareLinks();
         var changed = false;
@@ -2168,7 +2325,7 @@
 
       var resetBtn = document.createElement('button');
       resetBtn.textContent = '🔄 重置提交';
-      resetBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #7f8c8d;background:rgba(127,140,141,0.08);color:#5d6d7e;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      resetBtn.style.cssText = 'padding:7px 14px;border-radius:16px;border:1px solid #7f8c8d;background:rgba(127,140,141,0.08);color:#5d6d7e;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);';
       resetBtn.addEventListener('click', function() {
         localStorage.removeItem('1011_share_links');
         // 恢复输入框
@@ -2183,7 +2340,7 @@
       // ===== t3 关注任务调试按钮 =====
       var t3FollowBtn = document.createElement('button');
       t3FollowBtn.textContent = '👀 t3: 标记已关注';
-      t3FollowBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #3498db;background:rgba(52,152,219,0.1);color:#2980b9;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      t3FollowBtn.style.cssText = 'padding:7px 14px;border-radius:16px;border:1px solid #3498db;background:rgba(52,152,219,0.1);color:#2980b9;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);';
       t3FollowBtn.addEventListener('click', function() {
         localStorage.setItem('1011_t3_state', 'followed');
         renderTasks();
@@ -2192,7 +2349,7 @@
 
       var t3ResetBtn = document.createElement('button');
       t3ResetBtn.textContent = '🔄 t3: 重置状态';
-      t3ResetBtn.style.cssText = 'padding:8px 14px;border-radius:20px;border:1px solid #e67e22;background:rgba(230,126,34,0.1);color:#d35400;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      t3ResetBtn.style.cssText = 'padding:7px 14px;border-radius:16px;border:1px solid #e67e22;background:rgba(230,126,34,0.1);color:#d35400;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);';
       t3ResetBtn.addEventListener('click', function() {
         localStorage.removeItem('1011_t3_state');
         completed.delete('t3');
@@ -2200,6 +2357,12 @@
         showToast('🔄 t3 已重置为初始状态');
       });
 
+      // 组装调试面板
+      debugContainer.appendChild(statusLabel);
+      debugContainer.appendChild(notStartedBtn);
+      debugContainer.appendChild(activeBtn);
+      debugContainer.appendChild(endedBtn);
+      debugContainer.appendChild(divider);
       debugContainer.appendChild(approveBtn);
       debugContainer.appendChild(rejectBtn);
       debugContainer.appendChild(resetBtn);
