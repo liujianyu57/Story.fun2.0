@@ -232,6 +232,7 @@
         var html = '<div class="table-wrap"><table class="data-table">' +
           '<thead><tr>' +
             '<th class="col-index">#</th>' +
+            '<th>UID</th>' +
             '<th class="col-user">用户</th>' +
             '<th class="col-text">故事内容</th>' +
             '<th class="col-image">图片</th>' +
@@ -250,6 +251,7 @@
 
           html += '<tr>' +
             '<td class="col-index">' + (index + 1) + '</td>' +
+            '<td style="font-size:0.78rem;color:var(--text-tertiary);">' + escapeHtml(story.uid || '-') + '</td>' +
             '<td class="col-user">' + escapeHtml(story.user || '匿名用户') + '</td>' +
             '<td class="col-text">' + textDisplay + '</td>' +
             '<td class="col-image">' + imageDisplay + '</td>' +

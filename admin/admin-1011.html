@@ -145,6 +145,8 @@
         <table class="data-table">
           <thead>
             <tr>
+              <th>UID</th>
+              <th>用户名</th>
               <th>平台</th>
               <th>链接</th>
               <th>验证码</th>
@@ -184,6 +186,11 @@
         approved: '已通过',
         rejected: '已拒绝'
       };
+
+      function escHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&').replace(/"/g, '"').replace(/'/g, '&#39;').replace(/</g, '<').replace(/>/g, '>');
+      }
 
       function loadData() {
         try {
@@ -248,6 +255,8 @@
           }
 
           html += '<tr>' +
+            '<td style="font-size:0.78rem;color:var(--text-tertiary);">' + escHtml(item.uid || '-') + '</td>' +
+            '<td style="font-size:0.78rem;color:var(--text);">' + escHtml(item.username || '-') + '</td>' +
             '<td><span style="font-weight:500;">' + label.name + '</span></td>' +
             '<td><a class="link-cell" href="' + item.link + '" target="_blank" rel="noopener noreferrer" title="' + item.link + '">' + item.link + '</a></td>' +
             '<td><span class="code-cell">' + (item.code || '-') + '</span></td>' +

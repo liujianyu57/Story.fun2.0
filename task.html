@@ -1876,10 +1876,11 @@
         var timeStr = now.getFullYear() + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
         // 尝试获取用户信息
         var userName = '匿名用户';
+        var userId = '';
         try {
-          if (typeof getUserInfo === 'function') {
-            var user = getUserInfo();
-            if (user && user.username) userName = user.username;
+          if (window.currentUser) {
+            userId = window.currentUser.id || '';
+            userName = window.currentUser.name || '匿名用户';
           }
         } catch(e) {}
         stories.push({
@@ -1887,7 +1888,8 @@
           text: text,
           image: imageData || null,
           time: timeStr,
-          user: userName
+          user: userName,
+          uid: userId
         });
         localStorage.setItem('1011_stories', JSON.stringify(stories));
       }
@@ -2048,7 +2050,7 @@
           var timeStr = now.getFullYear() + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
 
           // 保存到 localStorage，状态为 pending（审核中）
-          data[platform] = { link: input.value.trim(), code: code, status: 'pending', time: timeStr };
+          data[platform] = { link: input.value.trim(), code: code, status: 'pending', time: timeStr, uid: (window.currentUser && window.currentUser.id) || '', username: (window.currentUser && window.currentUser.name) || '' };
           saveShareLinks(data);
 
           // 禁用输入框
