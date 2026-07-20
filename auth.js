@@ -129,6 +129,9 @@ function injectAuthStyles() {
   .auth-dropdown-main{font-weight:700;font-size:18px;color:#0b1720}
   .auth-dropdown-sub{color:#8b98a6;margin-top:4px}
 
+  .auth-network-badge{display:flex;align-items:center;gap:8px;padding:10px 12px;margin:4px 0 8px;background:linear-gradient(135deg,rgba(153,69,255,0.08),rgba(20,241,149,0.08));border-radius:10px;font-weight:600;font-size:13px;color:#0b1720}
+  .auth-network-badge svg{flex-shrink:0}
+
   .auth-balance-list{margin-top:8px}
   .auth-balance-item{display:flex;align-items:center;justify-content:space-between;background:#f7f8f9;padding:12px;border-radius:12px;margin-bottom:10px}
   .auth-balance-left{display:flex;align-items:center;gap:12px}
@@ -255,13 +258,27 @@ function renderAuthUI(container) {
             </div>
           </div>
 
+          <div class="auth-network-badge">
+            <svg width="16" height="16" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="20" fill="url(#solana-grad)"/>
+              <path d="M12.5 25.5L17.5 14.5L22.5 25.5L27.5 14.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="solana-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#9945FF"/>
+                  <stop offset="1" stop-color="#14F195"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span>Solana</span>
+          </div>
+
           <div class="auth-balance-list">
             <div class="auth-balance-item">
               <div class="auth-balance-left">
                 <div class="auth-token-icon token-story"></div>
                 <div>
                   <div class="auth-token-name">STORY</div>
-                  <div class="auth-token-sub">Story</div>
+                  <div class="auth-token-sub">Solana</div>
                 </div>
               </div>
               <div class="auth-balance-amount">${currentUser.balances?.story ?? '-'}
@@ -273,7 +290,7 @@ function renderAuthUI(container) {
                 <div class="auth-token-icon token-usdc"></div>
                 <div>
                   <div class="auth-token-name">USDC</div>
-                  <div class="auth-token-sub">USD Coin</div>
+                  <div class="auth-token-sub">Solana</div>
                 </div>
               </div>
               <div class="auth-balance-amount">${usdcDisplay}</div>
