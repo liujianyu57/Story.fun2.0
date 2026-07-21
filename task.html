@@ -483,27 +483,6 @@
       border-radius: 50%;
       background: var(--primary);
     }
-    .checkin-streak {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-    }
-    .checkin-streak-num {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: -0.5px;
-    }
-    .checkin-streak-unit {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .checkin-fire {
-      font-size: 18px;
-    }
     .checkin-days {
       display: flex;
       gap: 6px;
@@ -1332,7 +1311,7 @@
           </p>
           <div style="display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:10px;background:rgba(3,201,184,0.08);border:1px solid rgba(3,201,184,0.15);font-size:13px;color:var(--primary-dark);font-weight:500;margin-bottom:16px;">
             <span>⏰</span>
-            <span>提交后默认 <strong>48 小时</strong> 自动通过审核，通过后方可累计积分</span>
+            <span>活动结束时根据传播数据获得积分</span>
           </div>
           <div class="share-field">
             <span class="share-field-icon">𝕏</span>
@@ -1420,10 +1399,6 @@
         <div class="checkin-card" id="checkinCard">
           <div class="checkin-top">
             <div class="checkin-label">每日签到</div>
-            <div class="checkin-streak">
-              连续签到 <span class="checkin-streak-num" id="checkinStreak">0</span> <span class="checkin-streak-unit">天</span>
-
-            </div>
           </div>
           <div class="checkin-days" id="checkinDays">
             <!-- JS 动态渲染 -->
@@ -1770,13 +1745,13 @@
       (function() {
         scoreHistory.push(
           { reason: '签到', points: 35, time: '2026/7/19 09:15' },
-          { reason: '关注Twitter账号', points: 10, time: '2026/7/19 10:30' },
+          { reason: '关注 Story.fun', points: 10, time: '2026/7/19 10:30' },
           { reason: '转推推文', points: 5, time: '2026/7/18 15:10' },
           { reason: '点赞推文', points: 2, time: '2026/7/18 15:11' },
           { reason: 'Twitter 传播数据', points: 8, time: '2026/7/18 09:20' },
           { reason: 'TikTok 传播数据', points: 12, time: '2026/7/17 14:30' },
           { reason: '发布短剧', points: 30, time: '2026/7/17 20:05' },
-          { reason: '完播短剧', points: 15, time: '2026/7/17 21:30' },
+          { reason: '完播 1 集短剧', points: 15, time: '2026/7/17 21:30' },
           { reason: 'YouTube 传播数据', points: 10, time: '2026/7/16 22:15' },
           { reason: '派遣演员挖矿', points: 25, time: '2026/7/16 18:45' },
         );
@@ -1812,7 +1787,6 @@
       function renderCheckin() {
         var streak = checkinData.streak;
         var todayDone = checkinData.todayDone;
-        document.getElementById('checkinStreak').textContent = streak;
 
         var daysHtml = '';
         for (var i = 0; i < 7; i++) {
@@ -1905,6 +1879,16 @@
             btnHtml = done
               ? '<button class="task-btn done-btn" disabled>✅ 已完成</button>'
               : '<button class="task-btn" data-tweet-action="done" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">我已完成</button>';
+          } else if (task.id === 't9' || task.id === 't10' || task.id === 't20') {
+            // 产品互动任务：去完成 → 可领取 → 已完成
+            var taskState = localStorage.getItem('1011_' + task.id + '_state') || 'todo';
+            if (taskState === 'claimed') {
+              btnHtml = '<button class="task-btn done-btn" disabled>✅ 已完成</button>';
+            } else if (taskState === 'done') {
+              btnHtml = '<button class="task-btn" data-product-action="claim" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">可领取</button>';
+            } else {
+              btnHtml = '<button class="task-btn" data-product-action="goto" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">去完成</button>';
+            }
           } else {
             btnHtml = done
               ? '<button class="task-btn done-btn" disabled>✅ 已完成</button>'
@@ -1948,6 +1932,32 @@
           addScoreRecord('关注 Story.fun', 10);
           refreshAll();
           showToast('🎉 领取成功！积分 +10');
+        }
+      });
+
+      // ===== 产品互动任务的事件处理（去完成 → 可领取 → 已完成） =====
+      document.addEventListener('click', function(e) {
+        var productBtn = e.target.closest('[data-product-action]');
+        if (!productBtn) return;
+        var action = productBtn.dataset.productAction;
+        var taskId = productBtn.dataset.taskId;
+
+        if (action === 'goto') {
+          // 仅标记为已完成（未领取），不做跳转
+          localStorage.setItem('1011_' + taskId + '_state', 'done');
+          renderTasks();
+          showToast('👀 已标记完成，点击「可领取」领取积分');
+        } else if (action === 'claim') {
+          // 领取积分
+          localStorage.setItem('1011_' + taskId + '_state', 'claimed');
+          completed.add(taskId);
+          var task = TASKS.find(function(t) { return t.id === taskId; });
+          if (task) {
+            score += task.points;
+            addScoreRecord(task.name, task.points);
+          }
+          refreshAll();
+          showToast('🎉 领取成功！积分 +' + (task ? task.points : ''));
         }
       });
 
@@ -2494,13 +2504,17 @@
       });
 
       var t3ResetBtn = document.createElement('button');
-      t3ResetBtn.textContent = '🔄 t3: 重置状态';
+      t3ResetBtn.textContent = '🔄 重置所有任务';
       t3ResetBtn.style.cssText = 'padding:7px 14px;border-radius:16px;border:1px solid #e67e22;background:rgba(230,126,34,0.1);color:#d35400;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);';
       t3ResetBtn.addEventListener('click', function() {
-        localStorage.removeItem('1011_t3_state');
-        completed.delete('t3');
+        // 重置所有任务状态
+        ['t3', 't5', 't6', 't9', 't10', 't20'].forEach(function(id) {
+          localStorage.removeItem('1011_' + id + '_state');
+          localStorage.removeItem('1011_t3_state');
+          completed.delete(id);
+        });
         renderTasks();
-        showToast('🔄 t3 已重置为初始状态');
+        showToast('🔄 所有任务已重置为初始状态');
       });
 
       // 组装调试面板

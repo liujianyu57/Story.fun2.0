@@ -81,6 +81,56 @@
   color: #00BBA7;
   border-radius: 999px;
 }
+
+/* ── 1011 Dropdown ── */
+.story-header-wrapper .nav-dropdown {
+  position: relative;
+  display: inline-flex;
+}
+.story-header-wrapper .nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 140px;
+  background: #ffffff;
+  border: 0.5px solid #ECECF0;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: all 0.22s ease;
+  z-index: 300;
+  padding: 4px;
+}
+.story-header-wrapper .nav-dropdown:hover .nav-dropdown-menu,
+.story-header-wrapper .nav-dropdown-menu:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.story-header-wrapper .nav-dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 18px;
+  color: #1C2024;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+.story-header-wrapper .nav-dropdown-item:hover {
+  background: #F5F5F7;
+}
+.story-header-wrapper .nav-dropdown-item.active {
+  color: #00BBA7;
+  background: rgba(0,187,167,0.08);
+}
 .story-header-wrapper .header-actions {
   display: flex;
   align-items: center;
@@ -376,8 +426,18 @@
       { href: 'whitepaper.html', label: '白皮书' },
     ];
 
+    const is1011Page = currentPage === '1011.html' || currentPage === 'task.html';
     const navLinksHtml = navItems.map(item => {
       const activeClass = item.href === currentPage ? ' active' : '';
+      if (item.href === '1011.html') {
+        return `
+<a class="mobile-drawer-link${is1011Page ? ' active' : ''}" style="cursor:default;">1011 ▾</a>
+<div style="display:flex;flex-direction:column;padding-left:20px;gap:2px;">
+  <a class="mobile-drawer-link${currentPage === '1011.html' ? ' active' : ''}" href="1011.html" style="font-size:14px;padding:10px 16px;">1011专题</a>
+  <a class="mobile-drawer-link${currentPage === '1011-museum.html' ? ' active' : ''}" href="1011 Museum/1011-museum.html" target="_blank" style="font-size:14px;padding:10px 16px;">1011博物馆</a>
+  <a class="mobile-drawer-link${currentPage === 'task.html' ? ' active' : ''}" href="task.html" style="font-size:14px;padding:10px 16px;">1011诺亚方舟</a>
+</div>`;
+      }
       return `<a class="mobile-drawer-link${activeClass}" href="${item.href}">${item.label}</a>`;
     }).join('');
 
@@ -456,6 +516,20 @@
       const href = link.getAttribute('href');
       if (href === currentPage) {
         link.classList.add('active');
+        // 如果该 nav-link 位于 nav-dropdown 内，标记父级 1011 link 也 active
+        const parentDropdown = link.closest('.nav-dropdown');
+        if (parentDropdown) {
+          const parentLink = parentDropdown.querySelector('.nav-link');
+          if (parentLink) parentLink.classList.add('active');
+        }
+      }
+    });
+    // 标记 dropdown-item 的 active
+    const dropItems = document.querySelectorAll('.nav-dropdown-item');
+    dropItems.forEach(item => {
+      const href = item.getAttribute('href');
+      if (href === currentPage && href) {
+        item.classList.add('active');
       }
     });
 
@@ -522,7 +596,14 @@
     </div>
 
     <nav class="nav-links">
-      <a class="nav-link nav-link-1011" href="1011.html">1011</a>
+      <div class="nav-dropdown">
+        <a class="nav-link nav-link-1011" href="1011.html">1011</a>
+        <div class="nav-dropdown-menu">
+          <a class="nav-dropdown-item" href="1011.html">1011专题</a>
+          <a class="nav-dropdown-item" href="1011 Museum/1011-museum.html" target="_blank">1011博物馆</a>
+          <a class="nav-dropdown-item" href="task.html">1011诺亚方舟</a>
+        </div>
+      </div>
       <a class="nav-link" href="index.html">剧场</a>
       <a class="nav-link" href="actors.html">演员 IP</a>
       <a class="nav-link" href="studio.html">经纪工坊</a>
