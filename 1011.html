@@ -118,15 +118,15 @@
     .facts-stat-val { font-size: 24px; font-weight: 700; line-height: 30px; }
     .facts-stat-lbl { font-size: 16px; font-weight: 400; color: var(--muted); line-height: 24px; }
     .facts-card { background: var(--white); border-radius: 24px; display: flex; align-items: center; padding-left: 32px; gap: 16px; }
-    .facts-tl { width: 832px; max-width: 50%; flex-shrink: 0; padding: 32px; display: flex; flex-direction: column; gap: 24px; position: relative; }
-    .facts-tl-item { display: flex; align-items: center; gap: 44px; }
-    .facts-tl-time { font-size: 20px; font-weight: 510; white-space: nowrap; width: 103px; flex-shrink: 0; }
-    .facts-tl-event { font-size: 20px; font-weight: 510; line-height: 28px; }
-    .facts-tl-line { position: absolute; left: 38px; top: 56px; bottom: 32px; width: 0.5px; background: var(--dark); opacity: 0.2; }
+    .facts-tl { width: 832px; max-width: 50%; flex-shrink: 0; padding: 32px; display: flex; flex-direction: column; gap: 16px; position: relative; }
+    .facts-tl-item { display: flex; align-items: center; gap: 32px; }
+    .facts-tl-time { font-size: 15px; font-weight: 510; white-space: nowrap; width: 120px; flex-shrink: 0; }
+    .facts-tl-event { font-size: 15px; font-weight: 510; line-height: 22px; }
+    .facts-tl-line { position: absolute; left: 38px; top: 52px; bottom: 32px; width: 0.5px; background: var(--dark); opacity: 0.2; }
     .facts-img { flex: 1; align-self: stretch; border-radius: 16px; overflow: hidden; }
     .facts-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
     @media (max-width: 1200px) { .facts-card { flex-direction: column; padding-left: 0; } .facts-tl { width: 100%; max-width: 100%; } .facts-img { width: 100%; height: 320px; } }
-    @media (max-width: 768px) { .facts-stats { flex-direction: column; } .facts-tl { padding: 20px; gap: 16px; } .facts-tl-item { gap: 20px; } .facts-tl-time { font-size: 16px; width: 72px; } .facts-tl-event { font-size: 16px; line-height: 24px; } .facts-tl-line { left: 24px; top: 44px; } }
+    @media (max-width: 768px) { .facts-stats { flex-direction: column; } .facts-tl { padding: 20px; gap: 12px; } .facts-tl-item { gap: 16px; } .facts-tl-time { font-size: 14px; width: 80px; } .facts-tl-event { font-size: 14px; line-height: 20px; } .facts-tl-line { left: 24px; top: 40px; } }
 
     /* ═══════════════════════════════════════════
        叙事角色
@@ -245,14 +245,18 @@
         <div class="facts-stat"><span class="facts-stat-val">6 小时</span><span class="facts-stat-lbl">主要清算窗口</span></div>
       </div>
       <div class="facts-card">
-        <div class="facts-tl">
+          <div class="facts-tl">
           <div class="facts-tl-line"></div>
-          <div class="facts-tl-item"><span class="facts-tl-time">23:30</span><span class="facts-tl-event">BTC $68,200 → $65,800</span></div>
-          <div class="facts-tl-item"><span class="facts-tl-time">00:12</span><span class="facts-tl-event">爆仓突破 $5 亿</span></div>
-          <div class="facts-tl-item"><span class="facts-tl-time">01:30</span><span class="facts-tl-event">BTC 跌破 $62,000 · ETH 跌破 $2,400</span></div>
-          <div class="facts-tl-item"><span class="facts-tl-time">02:45</span><span class="facts-tl-event">爆仓突破 $15 亿 · 80 万地址</span></div>
-          <div class="facts-tl-item"><span class="facts-tl-time">04:00</span><span class="facts-tl-event">BTC 最低 $59,800 · 160 万地址</span></div>
-          <div class="facts-tl-item"><span class="facts-tl-time">06:00</span><span class="facts-tl-event">山寨币跌幅超 40%</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">10月9日 04:40</span><span class="facts-tl-event">某 Hyperliquid 账户存入 8000 万 USDC，建 BTC 空头</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">10月10日 20:49</span><span class="facts-tl-event">建仓约 $4 亿 BTC 空头，特朗普发文前 1 分钟停止</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">20:50</span><span class="facts-tl-event">特朗普关税威胁 · BTC/ETH/美股同步下跌</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">20:50–21:30</span><span class="facts-tl-event">约 $69.3 亿爆仓，占总 70%（核心清算窗口）</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">21:15</span><span class="facts-tl-event">清算峰值 · 一分钟 $32.1 亿仓位被强平</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">21:20–21:42</span><span class="facts-tl-event">USDe 在 Binance 低于 $1 · BTC/ETH 已近日低</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">21:42–21:51</span><span class="facts-tl-event">USDe 最低 $0.65 · WBETH/BNSOL 折价 80–90%</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">21:51 后</span><span class="facts-tl-event">USDe 恢复 · WBETH/BNSOL 逐步恢复锚定</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">10月11日</span><span class="facts-tl-event">Binance 公布 USDe/BNSOL/WBETH 赔偿方案</span></div>
+          <div class="facts-tl-item"><span class="facts-tl-time">截至10月22日</span><span class="facts-tl-event">Binance 支付 $3.28 亿+ 直接赔偿</span></div>
         </div>
         <div class="facts-img"><img src="image/facts-timeline-img.png" alt="烛火" /></div>
       </div>
