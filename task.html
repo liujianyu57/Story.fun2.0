@@ -1864,35 +1864,19 @@
             handleHtml = '<div style="font-size:12px;color:var(--muted);margin-top:2px;"><a href="' + task.tweetUrl + '" target="_blank" rel="noopener noreferrer" style="color:var(--primary);text-decoration:none;font-weight:500;">查看推文 <span style="font-size:10px;opacity:0.7;">↗</span></a></div>';
           }
           var btnHtml = '';
-          if (task.id === 't3') {
-            // 关注 Story.fun 任务：我已关注 → 可领取 → 已完成
-            var t3State = localStorage.getItem('1011_t3_state') || 'todo';
-            if (t3State === 'claimed') {
-              btnHtml = '<button class="task-btn done-btn" disabled>✅ 已完成</button>';
-            } else if (t3State === 'followed') {
-              btnHtml = '<button class="task-btn" data-t3-action="claim" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">可领取</button>';
-            } else {
-              btnHtml = '<button class="task-btn" data-t3-action="follow" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">我已完成</button>';
-            }
-          } else if (task.tweetUrl) {
-            // 转推/点赞推文任务：显示"我已完成"按钮
-            btnHtml = done
-              ? '<button class="task-btn done-btn" disabled>✅ 已完成</button>'
-              : '<button class="task-btn" data-tweet-action="done" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">我已完成</button>';
-          } else if (task.id === 't9' || task.id === 't10' || task.id === 't20') {
-            // 产品互动任务：去完成 → 可领取 → 已完成
-            var taskState = localStorage.getItem('1011_' + task.id + '_state') || 'todo';
-            if (taskState === 'claimed') {
-              btnHtml = '<button class="task-btn done-btn" disabled>✅ 已完成</button>';
-            } else if (taskState === 'done') {
-              btnHtml = '<button class="task-btn" data-product-action="claim" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">可领取</button>';
+          // 所有任务统一使用 去完成 → 可领取 → 已完成 三态流程
+          var taskState = localStorage.getItem('1011_' + task.id + '_state') || 'todo';
+          if (taskState === 'claimed') {
+            btnHtml = '<button class="task-btn done-btn" disabled>✅ 已完成</button>';
+          } else if (taskState === 'done') {
+            btnHtml = '<button class="task-btn" data-product-action="claim" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">可领取</button>';
+          } else {
+            // 有关联链接的跳转到链接，没有的用 go 标记
+            if (task.linkUrl) {
+              btnHtml = '<a class="task-btn" href="' + task.linkUrl + '" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;" data-product-action="goto" data-task-id="' + task.id + '" onclick="localStorage.setItem(\'1011_' + task.id + '_state\', \'done\')">去完成</a>';
             } else {
               btnHtml = '<button class="task-btn" data-product-action="goto" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">去完成</button>';
             }
-          } else {
-            btnHtml = done
-              ? '<button class="task-btn done-btn" disabled>✅ 已完成</button>'
-              : '<a class="task-btn" href="' + (task.linkUrl || '#') + '" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">去完成</a>';
           }
           html += `
             <div class="task-item${done ? ' done' : ''}">
@@ -1913,29 +1897,7 @@
 
       }
 
-      // ===== t3 关注任务的事件处理 =====
-      document.addEventListener('click', function(e) {
-        var btn = e.target.closest('[data-t3-action]');
-        if (!btn) return;
-        var action = btn.dataset.t3Action;
-
-        if (action === 'follow') {
-          // 用户点击「我已关注」→ 变为「可领取」
-          localStorage.setItem('1011_t3_state', 'followed');
-          renderTasks();
-          showToast('👀 已标记关注，请点击「可领取」领取积分');
-        } else if (action === 'claim') {
-          // 领取积分
-          localStorage.setItem('1011_t3_state', 'claimed');
-          completed.add('t3');
-          score += 10;
-          addScoreRecord('关注 Story.fun', 10);
-          refreshAll();
-          showToast('🎉 领取成功！积分 +10');
-        }
-      });
-
-      // ===== 产品互动任务的事件处理（去完成 → 可领取 → 已完成） =====
+      // ===== 统一的任务事件处理（去完成 → 可领取 → 已完成） =====
       document.addEventListener('click', function(e) {
         var productBtn = e.target.closest('[data-product-action]');
         if (!productBtn) return;
@@ -1943,7 +1905,7 @@
         var taskId = productBtn.dataset.taskId;
 
         if (action === 'goto') {
-          // 仅标记为已完成（未领取），不做跳转
+          // 无链接任务：仅标记为已完成（未领取）
           localStorage.setItem('1011_' + taskId + '_state', 'done');
           renderTasks();
           showToast('👀 已标记完成，点击「可领取」领取积分');
@@ -1958,18 +1920,6 @@
           }
           refreshAll();
           showToast('🎉 领取成功！积分 +' + (task ? task.points : ''));
-        }
-      });
-
-      // ===== 转推/点赞推文任务的事件处理 =====
-      document.addEventListener('click', function(e) {
-        var tweetBtn = e.target.closest('[data-tweet-action]');
-        if (!tweetBtn) return;
-        var taskId = tweetBtn.dataset.taskId;
-        if (taskId === 't6') {
-          showToast('请先在推特中点赞该推文');
-        } else {
-          showToast('请先在推特中转发该推文');
         }
       });
 
@@ -2495,12 +2445,13 @@
 
       // ===== t3 关注任务调试按钮 =====
       var t3FollowBtn = document.createElement('button');
-      t3FollowBtn.textContent = '👀 t3: 标记已关注';
+      t3FollowBtn.textContent = '👀 t3: 重置为未完成';
       t3FollowBtn.style.cssText = 'padding:7px 14px;border-radius:16px;border:1px solid #3498db;background:rgba(52,152,219,0.1);color:#2980b9;font-size:12px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.06);';
       t3FollowBtn.addEventListener('click', function() {
-        localStorage.setItem('1011_t3_state', 'followed');
+        localStorage.removeItem('1011_t3_state');
+        completed.delete('t3');
         renderTasks();
-        showToast('👀 t3 已标记为「已关注」，可点击领取');
+        showToast('🔄 t3 已重置为未完成状态');
       });
 
       var t3ResetBtn = document.createElement('button');
