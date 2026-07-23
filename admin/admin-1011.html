@@ -122,6 +122,69 @@
       color: var(--text-secondary);
       letter-spacing: 0.5px;
     }
+
+    /* ===== 确认最终活动数据 ===== */
+    .confirm-btn {
+      padding: 10px 24px;
+      border-radius: 30px;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--accent);
+      color: #fff;
+    }
+    .confirm-btn:disabled {
+      background: #d0d8e0;
+      color: #8b8d98;
+      cursor: not-allowed;
+    }
+    .confirm-btn:not(:disabled):hover {
+      opacity: 0.85;
+    }
+
+    /* ===== 调试面板 ===== */
+    .debug-panel {
+      position: fixed;
+      right: 16px;
+      bottom: 100px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 10px 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.20);
+    }
+    .debug-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.40);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+    .debug-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.75);
+      font-size: 0.72rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .debug-btn:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -130,7 +193,10 @@
   <div class="app-shell">
     <div class="page-header">
       <h1>📖 1011分享审核</h1>
-      <span style="font-size:0.85rem;color:var(--text-secondary);">审核用户提交的分享链接是否与 1011 相关</span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:0.85rem;color:var(--text-secondary);">审核用户提交的分享链接是否与 1011 相关</span>
+        <button class="confirm-btn" id="confirmFinalBtn" disabled>🔒 确认最终活动数据</button>
+      </div>
     </div>
 
     <div class="section-card">
@@ -198,10 +264,32 @@
 
   <script src="load-admin-sidebar.js"></script>
 
-  <script>
+  <!-- 确认最终活动数据弹窗 -->
+  <div class="modal-overlay" id="confirmFinalModal" style="position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px;">
+    <div class="modal-box" style="background:#fff;border-radius:16px;padding:28px 24px 24px;max-width:480px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.15);text-align:center;animation:modalSlideUp 0.3s ease;">
+      <div style="font-size:40px;margin-bottom:12px;">🔒</div>
+      <div style="font-size:20px;font-weight:700;margin-bottom:12px;letter-spacing:-0.3px;">确认最终活动数据</div>
+      <div style="font-size:14px;color:var(--text-tertiary);line-height:1.7;margin-bottom:20px;padding:0 8px;">
+        请确认所有数据无误，提交后无法再更改数据，用户积分排行榜将最终定稿。
+      </div>
+      <div class="modal-box-actions" style="display:flex;gap:10px;">
+        <button class="modal-btn-cancel" id="confirmFinalCancel" style="flex:1;padding:12px 20px;border-radius:60px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:#f1f5f9;color:var(--muted);transition:all 0.2s;">取消</button>
+        <button class="modal-btn-confirm" id="confirmFinalConfirm" style="flex:1;padding:12px 20px;border-radius:60px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:var(--accent);color:#fff;transition:all 0.2s;">确认提交</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- 调试面板 -->
+  <div class="debug-panel" id="debugPanel">
+    <div class="debug-label">🎛️ 调试工具</div>
+    <button class="debug-btn" id="debugNotEnded">⏳ 活动未结束</button>
+    <button class="debug-btn" id="debugEnded">✅ 活动已结束</button>
+  </div>
+
+  <script>
     (function() {
       var currentFilter = 'all';
+
 
       // 平台名称映射
       var PLATFORM_LABELS = {
@@ -250,7 +338,15 @@
       }
 
       function loadData() {
-        // 每次刷新页面重新生成初始模拟数据，不保留之前操作
+        // 首次加载时从 localStorage 读取，如果不存在则使用初始模拟数据
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          try {
+            return JSON.parse(raw);
+          } catch(e) {
+            // fallback
+          }
+        }
         var mock = generateMockData();
         localStorage.setItem(STORAGE_KEY, JSON.stringify(mock));
         return mock;
@@ -360,27 +456,45 @@
             if (new Date() > deadline) isOverdue = true;
           }
 
+          // 判断是否已最终确认定稿
+          var isFinalConfirmed = localStorage.getItem('1011_final_confirmed') === 'true';
+
           var actionHtml = '';
 
           if (item.status === 'pending') {
-            actionHtml = '<button class="btn-sm approve" data-platform="' + p + '" data-action="approve">通过</button>' +
-                         '<button class="btn-sm reject" data-platform="' + p + '" data-action="reject" style="margin-left:6px;">拒绝</button>';
+            if (isFinalConfirmed) {
+              actionHtml = '<span style="font-size:0.75rem;color:var(--text-tertiary);">已定稿</span>';
+            } else {
+              actionHtml = '<button class="btn-sm approve" data-platform="' + p + '" data-action="approve">通过</button>' +
+                           '<button class="btn-sm reject" data-platform="' + p + '" data-action="reject" style="margin-left:6px;">拒绝</button>';
+            }
           } else if (item.status === 'approved') {
             var views = item.views || 0;
             var likes = item.likes || 0;
             var shares = item.shares || 0;
-            actionHtml = '<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">' +
-              '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">播放</span>' +
-              '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="views" value="' + views + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
-              '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">点赞</span>' +
-              '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="likes" value="' + likes + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
-              '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">转发</span>' +
-              '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="shares" value="' + shares + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
-              '<button class="btn-sm approve" data-platform="' + p + '" data-action="save-metrics" style="margin-left:4px;padding:4px 10px;font-size:0.7rem;">保存</button>' +
-              '</div>';
+            if (isFinalConfirmed) {
+              actionHtml = '<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">' +
+                '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">播放</span>' +
+                '<span style="font-size:0.78rem;font-weight:600;color:var(--text);min-width:40px;text-align:center;">' + views + '</span>' +
+                '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">点赞</span>' +
+                '<span style="font-size:0.78rem;font-weight:600;color:var(--text);min-width:40px;text-align:center;">' + likes + '</span>' +
+                '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">转发</span>' +
+                '<span style="font-size:0.78rem;font-weight:600;color:var(--text);min-width:40px;text-align:center;">' + shares + '</span>' +
+                '<span style="font-size:0.65rem;color:var(--accent);font-weight:500;margin-left:4px;">🔒 已定稿</span>' +
+                '</div>';
+            } else {
+              actionHtml = '<div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">' +
+                '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">播放</span>' +
+                '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="views" value="' + views + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
+                '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">点赞</span>' +
+                '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="likes" value="' + likes + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
+                '<span style="font-size:0.7rem;color:var(--text-tertiary);white-space:nowrap;">转发</span>' +
+                '<input type="number" class="metric-input" data-platform="' + p + '" data-metric="shares" value="' + shares + '" style="width:50px;padding:3px 4px;border:1px solid var(--border-light);border-radius:6px;font-size:0.75rem;text-align:center;" />' +
+                '<button class="btn-sm approve" data-platform="' + p + '" data-action="save-metrics" style="margin-left:4px;padding:4px 10px;font-size:0.7rem;">保存</button>' +
+                '</div>';
+            }
           } else if (item.status === 'rejected') {
             actionHtml = '<span style="font-size:0.75rem;color:var(--text-tertiary);">已拒绝</span>';
-
           }
 
           // 自动通过期限显示文案
@@ -471,8 +585,122 @@
         });
       });
 
+      // ===== 确认最终活动数据 =====
+      var confirmFinalBtn = document.getElementById('confirmFinalBtn');
+      var confirmFinalModal = document.getElementById('confirmFinalModal');
+      var confirmFinalCancel = document.getElementById('confirmFinalCancel');
+      var confirmFinalConfirm = document.getElementById('confirmFinalConfirm');
+
+      // 判断活动是否已结束（从 localStorage 读取 1011_activity_time）
+      function isActivityEnded() {
+        try {
+          var activityTimeData = localStorage.getItem('1011_activity_time');
+          if (!activityTimeData) return false;
+          var activityTime = JSON.parse(activityTimeData);
+          if (!activityTime.end) return false;
+          var endTime = new Date(activityTime.end).getTime();
+          return !isNaN(endTime) && Date.now() > endTime;
+        } catch(e) {
+          return false;
+        }
+      }
+
+      function updateConfirmBtnState() {
+        if (isActivityEnded()) {
+          confirmFinalBtn.disabled = false;
+          confirmFinalBtn.textContent = '✅ 确认最终活动数据';
+        } else {
+          confirmFinalBtn.disabled = true;
+          confirmFinalBtn.textContent = '🔒 确认最终活动数据';
+        }
+      }
+
+      function openConfirmFinalModal() {
+        confirmFinalModal.classList.add('open');
+      }
+
+      function closeConfirmFinalModal() {
+        confirmFinalModal.classList.remove('open');
+      }
+
+      confirmFinalBtn.addEventListener('click', function() {
+        if (this.disabled) return;
+        openConfirmFinalModal();
+      });
+
+      confirmFinalCancel.addEventListener('click', closeConfirmFinalModal);
+
+      confirmFinalConfirm.addEventListener('click', function() {
+        // 执行最终确认逻辑：标记已确认
+        localStorage.setItem('1011_final_confirmed', 'true');
+        closeConfirmFinalModal();
+        // 按钮置为已确认状态
+        confirmFinalBtn.disabled = true;
+        confirmFinalBtn.textContent = '✅ 已确认定稿';
+        confirmFinalBtn.style.background = '#0a7e3c';
+        // 弹出提示（简单 toast）
+        var toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background:#13202e;color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:10000;box-shadow:0 12px 40px rgba(0,0,0,0.15);';
+        toast.textContent = '✅ 活动数据已最终确认，积分排行榜已定稿';
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.remove(); }, 3000);
+      });
+
+      confirmFinalModal.addEventListener('click', function(e) {
+        if (e.target === confirmFinalModal) closeConfirmFinalModal();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && confirmFinalModal.classList.contains('open')) closeConfirmFinalModal();
+      });
+
+      // ===== 调试按钮：模拟活动状态 =====
+      var debugNotEnded = document.getElementById('debugNotEnded');
+      var debugEnded = document.getElementById('debugEnded');
+
+      debugNotEnded.addEventListener('click', function() {
+        // 设置活动结束时间为未来（活动未结束）
+        var farFuture = new Date();
+        farFuture.setFullYear(farFuture.getFullYear() + 10);
+        localStorage.setItem('1011_activity_time', JSON.stringify({
+          start: new Date().toISOString(),
+          end: farFuture.toISOString()
+        }));
+        updateConfirmBtnState();
+        // 显示反馈
+        var orig = this.textContent;
+        this.textContent = '✓ 已设为活动未结束';
+        var self = this;
+        setTimeout(function() { self.textContent = orig; }, 1500);
+      });
+
+      debugEnded.addEventListener('click', function() {
+        // 设置活动结束时间为过去（活动已结束）
+        var past = new Date();
+        past.setFullYear(past.getFullYear() - 1);
+        localStorage.setItem('1011_activity_time', JSON.stringify({
+          start: new Date(past.getTime() - 86400000).toISOString(),
+          end: past.toISOString()
+        }));
+        updateConfirmBtnState();
+        // 显示反馈
+        var orig = this.textContent;
+        this.textContent = '✓ 已设为活动已结束';
+        var self = this;
+        setTimeout(function() { self.textContent = orig; }, 1500);
+      });
+
       // 初始渲染
       renderTable();
+
+      // 初始化确认按钮状态
+      updateConfirmBtnState();
+      // 检查是否已经确认过
+      if (localStorage.getItem('1011_final_confirmed') === 'true') {
+        confirmFinalBtn.disabled = true;
+        confirmFinalBtn.textContent = '✅ 已确认定稿';
+        confirmFinalBtn.style.background = '#0a7e3c';
+      }
 
       // 每 3 秒自动刷新
       setInterval(renderTable, 3000);

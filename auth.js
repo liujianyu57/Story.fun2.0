@@ -901,7 +901,7 @@ function openDepositModal() {
         </div>
         <div class="deposit-body">
           <div class="deposit-info-banner">
-            <span class="deposit-info-text">您使用邮箱登录，平台已为您生成托管钱包地址。请从交易所或其他钱包向下方地址转账 USDC，确认到账后余额会自动更新。</span>
+            <span class="deposit-info-text">请从交易所或其他钱包向下方地址转账 USDC，确认到账后余额会自动更新。</span>
           </div>
           <div class="deposit-field-group">
             <div class="deposit-field-label">充值币种</div>
@@ -925,7 +925,7 @@ function openDepositModal() {
             <span class="deposit-network-helper">Assets can only be transferred within the same network.</span>
           </div>
           <div class="deposit-field-group">
-            <div class="deposit-field-label">托管钱包充值地址</div>
+            <div class="deposit-field-label">充值地址</div>
             <div class="deposit-address-field">
               <span class="deposit-address-text">0xcc345ff2905f5672227e848eac4e0124123fa7e4</span>
               <button class="deposit-copy-btn" onclick="depositCopyAddress()">📋</button>
