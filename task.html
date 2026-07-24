@@ -1728,12 +1728,14 @@
         { id: 't3', category: '关注 Twitter 账号', name: '关注Twitter账号', points: 10, linkUrl: 'https://x.com/Story.fun' },
         { id: 't5', category: '社交传播', name: '转推推文', points: 5, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
         { id: 't6', category: '社交传播', name: '点赞推文', points: 2, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
-        { id: 't9', category: '产品互动', name: '在 Story.fun 发布短剧', points: 30, linkUrl: 'create-actor.html' },
-        { id: 't10', category: '产品互动', name: '完播短剧', points: 15, linkUrl: 'drama-player.html' },
+        { id: 't9', category: '产品互动', name: '在 Story.fun 发布短剧', points: 30, linkUrl: 'narrator.html' },
+        { id: 't10', category: '产品互动', name: '完播短剧', points: 15, linkUrl: 'index.html' },
         { id: 't20', category: '产品互动', name: '在 Story.fun 上派遣演员挖矿', points: 25, linkUrl: 'studio.html' },
       ];
 
-      const TASKS = loadConfig('1011_task_config', DEFAULT_TASKS);
+      // 直接使用代码中的默认配置，不从 localStorage 读取（避免缓存旧数据导致跳转错误）
+      localStorage.removeItem('1011_task_config');
+      const TASKS = DEFAULT_TASKS;
 
       let completed = new Set();
       let score = 0;
@@ -1873,7 +1875,7 @@
           } else {
             // 有关联链接的跳转到链接，没有的用 go 标记
             if (task.linkUrl) {
-              btnHtml = '<a class="task-btn" href="' + task.linkUrl + '" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;" data-product-action="goto" data-task-id="' + task.id + '" onclick="localStorage.setItem(\'1011_' + task.id + '_state\', \'done\')">去完成</a>';
+              btnHtml = '<a class="task-btn" href="' + task.linkUrl + '" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;" data-product-action="goto" data-task-id="' + task.id + '" onclick="localStorage.setItem(\'1011_' + task.id + '_state\', \'done\')">去完成</a>';
             } else {
               btnHtml = '<button class="task-btn" data-product-action="goto" data-task-id="' + task.id + '" style="border-color:var(--primary);color:var(--primary-dark);font-weight:700;">去完成</button>';
             }

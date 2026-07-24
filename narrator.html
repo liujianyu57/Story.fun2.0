@@ -54,6 +54,7 @@
     .status-pending { background: linear-gradient(135deg, #ff9f2c, #f59e0b); }
     .status-approved { background: linear-gradient(135deg, #00b388, #00c797); }
     .status-rejected { background: linear-gradient(135deg, #f45b69, #e74c5a); }
+    .status-delisted { background: linear-gradient(135deg, #8e8e93, #6b6b70); }
     .status-badge .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.7); flex-shrink: 0; animation: statusPulse 2s ease-in-out infinite; }
     .status-approved .status-dot, .status-rejected .status-dot { animation: none; }
     @keyframes statusPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } }
@@ -315,7 +316,7 @@
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="迷雾之城" />
               <div class="badge-row">
-                <span class="status-badge status-rejected">
+                <span class="status-badge status-rejected" onclick="event.stopPropagation();showStatusReason('rejected','迷雾之城','包含敏感词汇')" style="cursor:pointer;">
                   <span class="status-dot"></span> 未通过
                 </span>
               </div>
@@ -340,6 +341,38 @@
             </div>
             <div class="card-action">
               <button class="button" style="flex:1;background:transparent;color:var(--accent);border:1px solid rgba(0,179,136,0.25);font-weight:600;" onclick="openEditDramaModal(this)"><span class="btn-icon">✏️</span> 编辑</button>
+            </div>
+          </article>
+
+          <article class="card-list-item" data-status="delisted">
+            <div class="card-header">
+              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80" alt="雪山传说" />
+              <div class="badge-row">
+                <span class="status-badge status-delisted" onclick="event.stopPropagation();showStatusReason('delisted','雪山传说','版权投诉')" style="cursor:pointer;">
+                  <span class="status-dot"></span> 已下架
+                </span>
+              </div>
+              <div class="card-menu">
+                <button class="card-menu-btn" onclick="event.stopPropagation();toggleCardMenu(this)">⋯</button>
+                <div class="card-menu-dropdown">
+                  <div class="menu-item danger" onclick="event.stopPropagation();confirmDelete('雪山传说')"><span class="menu-icon">🗑️</span> 删除短剧</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>雪山传说</h3>
+              <div class="card-sub"><span>8 集 ｜ 雪域高原上流传千年的神秘传说，探险者追寻真相之路</span></div>
+              <div class="props-row"><span class="props-pill">冒险</span><span class="props-pill">悬疑</span></div>
+              <div class="card-actors">
+                <span class="card-actors-label">参演演员 IP</span>
+                <div class="card-actors-list">
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="上官婉儿" /><span class="actor-tooltip">上官婉儿</span></div>
+                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="李云飞" /><span class="actor-tooltip">李云飞</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-action">
+              <button class="button" style="flex:1;background:transparent;color:var(--text-muted);border:1px solid rgba(101,117,134,0.25);font-weight:600;" disabled><span class="btn-icon">🚫</span> 已下架</button>
             </div>
           </article>
         </div>
@@ -508,6 +541,24 @@
       </div>
     </div>
 
+    <!-- Status Reason Modal -->
+    <div class="modal-overlay" id="statusReasonModal">
+      <div class="modal" style="max-width: 440px;">
+        <div class="modal-header">
+          <h3 id="statusReasonTitle">状态说明</h3>
+          <button class="modal-close" onclick="closeStatusReasonModal()">✕</button>
+        </div>
+        <div class="modal-body" style="padding: 24px 28px;">
+          <div style="padding:18px 20px;border-radius:16px;background:#f8fbff;border:1px solid #eef4ff;line-height:1.7;">
+            <p id="statusReasonText" style="margin:0;color:var(--text-muted);font-size:0.95rem;line-height:1.7;"></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="button-secondary" onclick="closeStatusReasonModal()">关闭</button>
+        </div>
+      </div>
+    </div>
+
     <div class="toast-notification" id="toastNotification">
       <span class="toast-icon">💡</span>
       <span id="toastMessage"></span>
@@ -544,7 +595,12 @@
       btn.classList.add('active');
       document.querySelectorAll('#dramaGrid .card-list-item').forEach(card => {
         const status = card.dataset.status;
-        card.style.display = (filter === 'all' || status === filter) ? '' : 'none';
+        // "未通过" 下同时展示未通过(rejected)和已下架(delisted)的视频
+        if (filter === 'rejected') {
+          card.style.display = (status === 'rejected' || status === 'delisted') ? '' : 'none';
+        } else {
+          card.style.display = (filter === 'all' || status === filter) ? '' : 'none';
+        }
       });
     }
 
@@ -945,6 +1001,30 @@
       window.location.href = 'edit-drama.html?title=' + encodeURIComponent(title);
     }
 
+    // === 状态原因弹窗 ===
+    const statusReasonModal = document.getElementById('statusReasonModal');
+
+    function showStatusReason(type, title, reason) {
+      const text = document.getElementById('statusReasonText');
+      const titleEl = document.getElementById('statusReasonTitle');
+
+      if (type === 'rejected') {
+        titleEl.textContent = '⚠️ 未通过';
+      } else if (type === 'delisted') {
+        titleEl.textContent = '🚫 已下架';
+      }
+      text.textContent = reason;
+      statusReasonModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStatusReasonModal() {
+      statusReasonModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    statusReasonModal.addEventListener('click', function(e) { if (e.target === this) closeStatusReasonModal(); });
+
     // === 统一 Escape 键关闭所有弹窗 ===
     document.addEventListener('keydown', function(e) {
       if (e.key !== 'Escape') return;
@@ -952,6 +1032,7 @@
         { el: document.getElementById('mintModal'), close: closeMintModal },
         { el: document.getElementById('bindActorModal'), close: closeBindActorModal },
         { el: document.getElementById('actorDramaModal'), close: closeActorDramaModal },
+        { el: document.getElementById('statusReasonModal'), close: closeStatusReasonModal },
       ];
       for (const { el, close } of overlays) {
         if (el && el.classList.contains('open')) {
