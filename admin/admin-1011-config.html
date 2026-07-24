@@ -189,6 +189,7 @@
     <div class="section-card">
       <div class="section-card-title">
         <span>⏰ 活动时间配置</span>
+        <button class="btn-sm primary" id="saveActivityTimeBtn">💾 保存配置</button>
       </div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;">
         <div style="flex:1;min-width:200px;">
@@ -230,8 +231,8 @@
         </table>
       </div>
       <div class="flex justify-between mt-3">
-        <span style="font-size:0.78rem;color:var(--text-tertiary);">修改后点击「保存全部配置」生效</span>
-        <button class="btn-save" id="saveAllBtn">💾 保存全部配置</button>
+        <span style="font-size:0.78rem;color:var(--text-tertiary);">修改后点击「保存配置」生效</span>
+        <button class="btn-save" id="saveAllBtn">💾 保存配置</button>
       </div>
     </div>
 
@@ -240,6 +241,7 @@
     <div class="section-card">
       <div class="section-card-title">
         <span>📅 签到积分配置</span>
+        <button class="btn-sm primary" id="saveCheckinBtn">💾 保存配置</button>
       </div>
       <div class="flex flex-wrap gap-2 items-center" id="checkinConfigContainer">
         <!-- JS 动态渲染 -->
@@ -253,6 +255,7 @@
     <div class="section-card">
       <div class="section-card-title">
         <span>📊 传播加分标准</span>
+        <button class="btn-sm primary" id="saveBonusBtn">💾 保存配置</button>
       </div>
       <div id="bonusConfigContainer">
         <!-- JS 动态渲染 -->
@@ -264,7 +267,10 @@
     <div class="section-card">
       <div class="section-card-title">
         <span>🏆 排行榜奖励配置</span>
-        <button class="btn-sm primary" id="addRewardBtn">+ 新增档位</button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-sm primary" id="saveRewardBtn">💾 保存配置</button>
+          <button class="btn-sm primary" id="addRewardBtn">+ 新增档位</button>
+        </div>
       </div>
       <div class="table-wrap">
         <table class="data-table">
@@ -584,6 +590,30 @@
         } else {
           activityTime.end = '';
         }
+      });
+
+      // ===== 保存活动时间配置 =====
+      document.getElementById('saveActivityTimeBtn').addEventListener('click', function() {
+        saveData('1011_activity_time', activityTime);
+        showToast('✅ 活动时间配置已保存');
+      });
+
+      // ===== 保存签到积分配置 =====
+      document.getElementById('saveCheckinBtn').addEventListener('click', function() {
+        saveData('1011_checkin_config', checkinPoints);
+        showToast('✅ 签到积分配置已保存');
+      });
+
+      // ===== 保存传播加分标准 =====
+      document.getElementById('saveBonusBtn').addEventListener('click', function() {
+        saveData('1011_bonus_config', bonusConfig);
+        showToast('✅ 传播加分标准已保存');
+      });
+
+      // ===== 保存排行榜奖励配置 =====
+      document.getElementById('saveRewardBtn').addEventListener('click', function() {
+        saveData('1011_reward_config', rewards);
+        showToast('✅ 排行榜奖励配置已保存');
       });
 
       // ===== 保存全部配置 =====
