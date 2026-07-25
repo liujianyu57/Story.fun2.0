@@ -719,7 +719,7 @@
         <div class="pricing-mode-field visible" id="pricingFixedField">
           <div class="form-group">
             <label>固定价格（USDC）</label>
-            <input type="number" placeholder="请输入每个演员的固定价格" step="0.1" min="0" id="nftPriceFixed" />
+            <input type="number" placeholder="请输入每个演员的固定价格" step="0.1" min="0" id="nftPriceFixed" oninput="updatePriceCoefficient('fixed')" />
             <span class="hint-text">每个演员都以固定不变的价格购买，不会随销量变化。</span>
           </div>
         </div>
@@ -728,9 +728,16 @@
         <div class="pricing-mode-field" id="pricingCurveField">
           <div class="form-group">
             <label>初始价格（USDC）</label>
-            <input type="number" placeholder="请输入联合曲线初始价" step="0.1" min="0" id="nftPriceCurve" />
+            <input type="number" placeholder="请输入联合曲线初始价" step="0.1" min="0" id="nftPriceCurve" oninput="updatePriceCoefficient('curve')" />
             <span class="hint-text">初始价格为联合曲线起始价，每签约一个演员，价格按公式 <code>P = P₀ × 5^(已签约数/发行总量)</code> 自动上涨，早期签约更优惠。</span>
           </div>
+        </div>
+
+        <!-- 价格系数实时显示 -->
+        <div id="priceCoeffRow" style="display:none;display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--accent-soft);border-radius:12px;margin-top:6px;margin-bottom:16px;">
+          <span style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">价格系数</span>
+          <span style="font-size:1rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;" id="priceCoeffValue">—</span>
+          <button class="price-coeff-help" id="priceCoeffHelp" type="button" onclick="event.stopPropagation();togglePriceCoeffTooltip()" style="width:18px;height:18px;border-radius:50%;border:1.2px solid var(--accent);background:transparent;color:var(--accent);font-size:0.55rem;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:all 0.2s ease;flex-shrink:0;line-height:1;padding:0;" onmouseenter="this.style.background='var(--accent)';this.style.color='#fff'" onmouseleave="this.style.background='transparent';this.style.color='var(--accent)'">?</button>
         </div>
 
 
@@ -751,6 +758,21 @@
       <button class="button-primary" id="submitBtn" onclick="handleSubmit()">确定发行</button>
     </div>
 
+  </div>
+
+  <!-- 价格系数说明 tooltip -->
+  <div id="priceCoeffTooltip" style="display:none;position:fixed;z-index:10000;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(15,23,42,0.18);padding:20px 22px 18px;max-width:380px;font-size:0.85rem;line-height:1.7;color:var(--text-muted);text-align:left;">
+    <div style="font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:8px;">💰 价格系数说明</div>
+    <div style="margin-bottom:8px;">
+      <strong>P0 ≤ 100 USDC：</strong><br>
+      价格系数 = P0 ÷ 100（线性增长）
+    </div>
+    <div style="margin-bottom:8px;">
+      <strong>P0 > 100 USDC：</strong><br>
+      价格系数 = 1.6 × (P0/100)^1.3 / [(P0/100)^1.3 + 0.6]<br>
+      <span style="font-size:0.78rem;color:var(--text-hint);">增速渐缓，上限 1.6</span>
+    </div>
+    <button onclick="togglePriceCoeffTooltip()" style="margin-top:6px;padding:6px 16px;border-radius:999px;border:1px solid var(--border-dark);background:var(--surface);cursor:pointer;font-size:0.8rem;color:var(--text-muted);">关闭</button>
   </div>
 
   <!-- Success Modal -->
@@ -1129,6 +1151,51 @@
   // ── Pricing Mode (global) ──
   var _pricingMode = 'fixed'; // 'fixed' or 'curve'
 
+  // ═══ 价格系数计算 ═══
+  function computePriceCoefficient(P0) {
+    if (P0 == null || P0 <= 0) return 0;
+    var x = P0 / 100;
+    if (P0 <= 100) return x;
+    var powX = Math.pow(x, 1.3);
+    return 1.6 * powX / (powX + 0.6);
+  }
+
+  function updatePriceCoefficient(mode) {
+    var input = mode === 'fixed' ? document.getElementById('nftPriceFixed') : document.getElementById('nftPriceCurve');
+    var val = parseFloat(input.value);
+    var row = document.getElementById('priceCoeffRow');
+    var coeffEl = document.getElementById('priceCoeffValue');
+    if (isNaN(val) || val <= 0) {
+      row.style.display = 'none';
+    } else {
+      row.style.display = 'flex';
+      coeffEl.textContent = computePriceCoefficient(val).toFixed(4);
+    }
+  }
+
+  function togglePriceCoeffTooltip() {
+    var tt = document.getElementById('priceCoeffTooltip');
+    var btn = document.getElementById('priceCoeffHelp');
+    if (tt.style.display === 'none' || !tt.style.display) {
+      var rect = btn.getBoundingClientRect();
+      tt.style.display = 'block';
+      tt.style.left = Math.min(rect.left, window.innerWidth - 400) + 'px';
+      tt.style.top = (rect.bottom + 8) + 'px';
+    } else {
+      tt.style.display = 'none';
+    }
+  }
+
+  // 点击外部关闭 tooltip
+  document.addEventListener('click', function(e) {
+    var tt = document.getElementById('priceCoeffTooltip');
+    if (tt && tt.style.display === 'block') {
+      if (!e.target.closest('#priceCoeffTooltip') && !e.target.closest('#priceCoeffHelp')) {
+        tt.style.display = 'none';
+      }
+    }
+  });
+
   // ── Submit ──
 
   function handleSubmit() {
@@ -1165,6 +1232,7 @@
       available: nftSupply,
       holders: 0,
       price: nftPrice + ' USDC',
+      initPrice: parseFloat(nftPrice) || 0,
       reserved: 0,
       contract: '—',
       standard: 'Solana SPL',
