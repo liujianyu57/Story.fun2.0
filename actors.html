@@ -171,6 +171,7 @@
     .mpb-badge-row {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
       margin-bottom: 10px;
     }
@@ -215,6 +216,28 @@
       color: var(--text-muted);
       font-weight: 500;
     }
+    /* Price coefficient inline */
+    .mpb-coeff-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+      margin-left: auto;
+    }
+    .mpb-coeff-inline strong {
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+    .mpb-coeff-inline .actor-price-help {
+      width: 16px;
+      height: 16px;
+      font-size: 0.55rem;
+    }
+
     /* Progress text — compact "总发行 X · 剩余 Y" */
     .mpb-progress {
       font-size: 0.8rem;
@@ -1262,6 +1285,24 @@
       </div>
     </div>
 
+    <!-- 价格系数说明弹窗 -->
+    <div class="stat-tooltip-overlay" id="priceCoeffTooltip" style="z-index:10001;">
+      <div class="stat-tooltip-box" style="text-align:left;padding:28px 24px 22px;">
+        <h3 style="text-align:center;margin-bottom:18px;">价格系数</h3>
+        <div style="background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;">
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">P0 ≤ 100 USDC</div>
+          <div style="font-size:0.92rem;font-weight:600;color:var(--text);font-family:SF Mono,monospace;letter-spacing:-0.01em;">系数 = P0 ÷ 100</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">线性增长</div>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;">
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">P0 > 100 USDC</div>
+          <div style="font-size:0.82rem;font-weight:600;color:var(--text);font-family:SF Mono,monospace;letter-spacing:-0.01em;line-height:1.6;">系数 = 1.6 × (P0/100)<sup>1.3</sup> / [(P0/100)<sup>1.3</sup> + 0.6]</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">增速渐缓，上限 1.6</div>
+        </div>
+        <button class="button-secondary price-coeff-tooltip-close" style="width:100%;margin-top:8px;">知道了</button>
+      </div>
+    </div>
+
     <!-- 完播/热度说明弹窗 -->
     <div class="stat-tooltip-overlay" id="statTooltip">
       <div class="stat-tooltip-box">
@@ -1290,6 +1331,7 @@
           <div class="mint-price-bar" id="mintPriceBar">
             <div class="mpb-badge-row">
               <span class="mpb-pricing-tag" id="mpbPricingTag"><span id="mpbPricingLabel">曲线价格</span><button class="actor-price-help" id="mintPriceHelp" type="button">?</button></span>
+              <span class="mpb-coeff-inline" id="mintCoeffRow">价格系数 <strong id="mintCoeffValue">—</strong><button class="actor-price-help" id="mintCoeffHelp" type="button">?</button></span>
             </div>
             <div class="mpb-price-row">
               <span class="mpb-price-value" id="mintEstimate">10.0 USDC</span>
@@ -1559,6 +1601,17 @@
         mpbRemain.textContent = (total - minted).toLocaleString();
         mpbPctTotal.textContent = total.toLocaleString();
 
+        // 价格系数
+        var coeffRow = document.getElementById('mintCoeffRow');
+        var coeffVal = document.getElementById('mintCoeffValue');
+        var initPrice = data.initPrice ? parseFloat(data.initPrice) : 0;
+        if (coeffRow && coeffVal && initPrice > 0) {
+          coeffRow.style.display = '';
+          coeffVal.textContent = computePriceCoefficient(initPrice).toFixed(4);
+        } else if (coeffRow) {
+          coeffRow.style.display = 'none';
+        }
+
         // 固定价格模式隐藏滑点保护提示
         const slippageNotice = document.getElementById('slippageNotice');
         if (slippageNotice) {
@@ -1587,7 +1640,8 @@
             total: parseInt(total),
             pricing: pricing,
             tag: '演员 IP',
-            image: imageSrc
+            image: imageSrc,
+            initPrice: card.dataset.initPrice || 0
           });
         });
       });
@@ -1932,6 +1986,28 @@
           document.getElementById('ipPowerModal').classList.add('active');
         });
       });
+
+      // 价格系数说明 tooltip
+      var priceCoeffTooltip = document.getElementById('priceCoeffTooltip');
+      var mintCoeffHelp = document.getElementById('mintCoeffHelp');
+      if (mintCoeffHelp && priceCoeffTooltip) {
+        mintCoeffHelp.addEventListener('click', function(e) {
+          e.stopPropagation();
+          priceCoeffTooltip.classList.add('active');
+        });
+      }
+      var priceCoeffTooltipClose = document.querySelector('#priceCoeffTooltip .price-coeff-tooltip-close');
+      if (priceCoeffTooltipClose && priceCoeffTooltip) {
+        priceCoeffTooltipClose.addEventListener('click', function() {
+          priceCoeffTooltip.classList.remove('active');
+        });
+        priceCoeffTooltip.addEventListener('click', function(e) {
+          if (e.target === priceCoeffTooltip) priceCoeffTooltip.classList.remove('active');
+        });
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && priceCoeffTooltip.classList.contains('active')) priceCoeffTooltip.classList.remove('active');
+        });
+      }
 
       var ipPowerModal = document.getElementById('ipPowerModal');
       var ipPowerModalClose = document.getElementById('ipPowerModalClose');
