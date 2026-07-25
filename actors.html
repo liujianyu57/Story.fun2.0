@@ -961,12 +961,12 @@
       <span class="sort-tag active" data-sort="price-asc">价格最低</span>
       <span class="sort-tag" data-sort="price-desc">价格最高</span>
       <span class="sort-tag" data-sort="views-desc">完播最高</span>
-      <span class="sort-tag" data-sort="heat-desc">热度系数最高</span>
+      <span class="sort-tag" data-sort="power-desc">IP 算力最高</span>
     </div>
 
     <div class="grid grid-3">
       <!-- Luna (已售罄示例, 曲线价格) -->
-      <article class="card" data-actor="Luna" data-issuance-type="official" data-pricing="curve" data-actor-id="1" data-total="5000" data-minted="5000" data-available="0" data-holders="4900" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="3.3">
+      <article class="card" data-actor="Luna" data-issuance-type="official" data-pricing="curve" data-actor-id="1" data-total="5000" data-minted="5000" data-available="0" data-holders="4900" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="3.3" data-init-price="30">
 
         <div class="card-banner banner-1">
           <div class="actor-avatar">
@@ -986,8 +986,8 @@
             <p>未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。</p>
           </div>
           <div class="actor-stats">
+            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">IP算力</span><span class="num" id="ipPower1">0.99</span></span>
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">2.6万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">3.3x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 已售罄</span>
@@ -1002,7 +1002,7 @@
       </article>
 
       <!-- 苏婉清（固定价格） -->
-      <article class="card" data-actor="苏婉清" data-issuance-type="official" data-pricing="fixed" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio" data-collection="C002" data-views="24.1万" data-heat="2.5">
+      <article class="card" data-actor="苏婉清" data-issuance-type="official" data-pricing="fixed" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio" data-collection="C002" data-views="24.1万" data-heat="2.5" data-init-price="80">
 
         <div class="card-banner banner-2">
           <div class="actor-avatar">
@@ -1022,8 +1022,8 @@
             <p>温婉端庄，琴棋书画样样精通，举止间尽显大家闺秀风范。</p>
           </div>
           <div class="actor-stats">
+            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">IP算力</span><span class="num" id="ipPower2">2.00</span></span>
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">2.5x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
@@ -1038,7 +1038,7 @@
       </article>
 
       <!-- 李云飞（曲线价格） -->
-      <article class="card" data-actor="李云飞" data-issuance-type="partner" data-pricing="curve" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs" data-collection="C003" data-views="24.7万" data-heat="4.8">
+      <article class="card" data-actor="李云飞" data-issuance-type="partner" data-pricing="curve" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs" data-collection="C003" data-views="24.7万" data-heat="4.8" data-init-price="45">
 
         <div class="card-banner banner-3">
           <div class="actor-avatar">
@@ -1058,8 +1058,8 @@
             <p>身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。</p>
           </div>
           <div class="actor-stats">
+            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">IP算力</span><span class="num" id="ipPower3">2.16</span></span>
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.7万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">4.8x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 7,500 个</span>
@@ -1074,7 +1074,7 @@
       </article>
 
       <!-- 林梦瑶（曲线价格） -->
-      <article class="card" data-actor="林梦瑶" data-issuance-type="partner" data-pricing="curve" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art" data-collection="C004" data-views="27.7万" data-heat="7.2">
+      <article class="card" data-actor="林梦瑶" data-issuance-type="partner" data-pricing="curve" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art" data-collection="C004" data-views="27.7万" data-heat="7.2" data-init-price="120">
 
         <div class="card-banner" style="background:linear-gradient(135deg, #e6e0ff, #ffffff)">
           <div class="actor-avatar">
@@ -1094,8 +1094,8 @@
             <p>聪慧机敏，擅长推理分析，拥有敏锐的洞察力。</p>
           </div>
           <div class="actor-stats">
+            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">IP算力</span><span class="num" id="ipPower4">9.13</span></span>
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">27.7万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">7.2x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
@@ -1110,7 +1110,7 @@
       </article>
 
       <!-- 赵无极（固定价格） -->
-      <article class="card" data-actor="赵无极" data-issuance-type="certified" data-pricing="fixed" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art" data-collection="C005" data-views="5.5万" data-heat="3.2">
+      <article class="card" data-actor="赵无极" data-issuance-type="certified" data-pricing="fixed" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art" data-collection="C005" data-views="5.5万" data-heat="3.2" data-init-price="200">
 
         <div class="card-banner" style="background:linear-gradient(135deg, #ffe4e0, #fffaf8)">
           <div class="actor-avatar">
@@ -1130,8 +1130,8 @@
             <p>深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。</p>
           </div>
           <div class="actor-stats">
+            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">IP算力</span><span class="num" id="ipPower5">6.84</span></span>
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">5.5万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">3.2x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 5,500 个</span>
@@ -1146,7 +1146,7 @@
       </article>
 
       <!-- 上官婉儿（固定价格） -->
-      <article class="card" data-actor="上官婉儿" data-issuance-type="community" data-pricing="fixed" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio" data-collection="C006" data-views="24.1万" data-heat="4.9">
+      <article class="card" data-actor="上官婉儿" data-issuance-type="community" data-pricing="fixed" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio" data-collection="C006" data-views="24.1万" data-heat="4.9" data-init-price="30">
 
         <div class="card-banner" style="background:linear-gradient(135deg, #f5e6ff, #fffaff)">
           <div class="actor-avatar">
@@ -1166,8 +1166,8 @@
             <p>才情横溢，精通诗词歌赋，智慧与美貌并重。</p>
           </div>
           <div class="actor-stats">
+            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">IP算力</span><span class="num" id="ipPower6">1.47</span></span>
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
-            <span class="actor-stat-item" data-stat="heat"><span class="actor-stat-label">热度系数</span><span class="num">4.9x</span></span>
           </div>
           <div class="actor-price">
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 10,000 个</span>
@@ -1249,6 +1249,18 @@
       </div>
     </div>
 
+
+    <!-- IP算力详情弹窗 -->
+    <div class="stat-tooltip-overlay" id="ipPowerModal" style="z-index:10000;">
+      <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;">
+        <h3 id="ipPowerModalTitle" style="font-size:1.15rem;margin:0 0 4px;">IP算力详情</h3>
+        <div id="ipPowerModalName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
+        <div id="ipPowerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;">
+          <!-- 由 JS 动态填充 -->
+        </div>
+        <button class="button-secondary" id="ipPowerModalClose" style="width:100%;">关闭</button>
+      </div>
+    </div>
 
     <!-- 完播/热度说明弹窗 -->
     <div class="stat-tooltip-overlay" id="statTooltip">
@@ -1430,6 +1442,9 @@
             return parseFloat((card.dataset.price || '0').replace(/[^0-9.]/g, '')) || 0;
           case 'views-desc':
             return parseChineseNum(card.dataset.views);
+          case 'power-desc':
+            const ipw = computeIPPower(card);
+            return isNaN(ipw) ? 0 : ipw;
           case 'heat-desc':
             return parseChineseNum(card.dataset.heat);
           default:
@@ -1676,11 +1691,12 @@
           if (stat === 'views') {
             statTooltipTitle.textContent = '完播';
             statTooltipDesc.textContent = '该演员 IP 参演的所有短剧的完播次数之和';
+            statTooltip.classList.add('active');
           } else if (stat === 'heat') {
             statTooltipTitle.textContent = '热度系数';
             statTooltipDesc.textContent = '热度系数是演员 IP 的近30天热度乘子，用于决定该演员在派遣中的产出。';
+            statTooltip.classList.add('active');
           }
-          statTooltip.classList.add('active');
         });
       });
 
@@ -1859,6 +1875,82 @@
       });
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && priceTooltip.classList.contains('active')) closePriceTooltip();
+      });
+
+      // ═══ IP算力 ═══
+      function computePriceCoefficient(P0) {
+        if (P0 == null || P0 <= 0) return 0;
+        var x = P0 / 100;
+        if (P0 <= 100) return x;
+        var powX = Math.pow(x, 1.3);
+        return 1.6 * powX / (powX + 0.6);
+      }
+
+      function computeIPPower(card) {
+        var initPrice = parseFloat(card.dataset.initPrice) || 0;
+        var heat = parseFloat(card.dataset.heat) || 0;
+        return computePriceCoefficient(initPrice) * heat;
+      }
+
+      // 点击 IP算力 stat 时打开弹窗
+      document.querySelectorAll('.actor-stat-item[data-stat="ip-power"]').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var card = this.closest('.card');
+          if (!card) return;
+          var name = card.dataset.actor || card.querySelector('h3').textContent;
+          var initPrice = parseFloat(card.dataset.initPrice) || 0;
+          var heat = parseFloat(card.dataset.heat) || 0;
+          var priceCoeff = computePriceCoefficient(initPrice);
+          var ipPower = priceCoeff * heat;
+
+          document.getElementById('ipPowerModalTitle').textContent = name + ' · IP算力';
+          document.getElementById('ipPowerModalName').textContent = 'IP算力 = 价格系数 × 热度系数 × CP系数 × Trust1';
+          document.getElementById('ipPowerModalBreakdown').innerHTML =
+            '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">价格系数</span>' +
+                '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + priceCoeff.toFixed(4) + '</span>' +
+              '</div>' +
+              '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">根据发行 IP 时的初始价格 P0 计算。P0 ≤ 100 USDC 时线性增长，P0 > 100 USDC 时增速渐缓，上限 1.6</div>' +
+
+            '</div>' +
+            '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">热度系数</span>' +
+                '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + heat.toFixed(1) + '</span>' +
+              '</div>' +
+              '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">演员 IP 近 30 天热度乘子，取决于短剧完播、点赞、收藏等互动表现</div>' +
+            '</div>' +
+            '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">CP 系数</span>' +
+                '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× 1.0</span>' +
+              '</div>' +
+              '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">暂未开放</div>' +
+            '</div>' +
+            '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">Trust1</span>' +
+                '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× 1.0</span>' +
+              '</div>' +
+              '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">平台风控系数，默认值为 1.0</div>' +
+            '</div>';
+          document.getElementById('ipPowerModal').classList.add('active');
+        });
+      });
+
+      var ipPowerModal = document.getElementById('ipPowerModal');
+      var ipPowerModalClose = document.getElementById('ipPowerModalClose');
+      function closeIPPowerModal() {
+        ipPowerModal.classList.remove('active');
+      }
+      ipPowerModalClose.addEventListener('click', closeIPPowerModal);
+      ipPowerModal.addEventListener('click', function(e) {
+        if (e.target === ipPowerModal) closeIPPowerModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && ipPowerModal.classList.contains('active')) closeIPPowerModal();
       });
 
     });

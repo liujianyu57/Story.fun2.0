@@ -1106,16 +1106,16 @@
           </div>
         </div>
         <p class="actor-desc" id="actorDesc">—</p>
-        <!-- 完播 / 热度系数 -->
+        <!-- 完播 / IP算力 -->
         <div class="actor-hero-stats">
           <div class="ahs-item">
             <span class="ahs-label">完播</span>
             <span class="ahs-value" id="heroViews">—</span>
           </div>
           <div class="ahs-divider"></div>
-          <div class="ahs-item">
-            <span class="ahs-label">热度系数</span>
-            <span class="ahs-value" id="heroHeat">—</span>
+          <div class="ahs-item" onclick="openIPPowerModal()" style="cursor:pointer;">
+            <span class="ahs-label">IP算力</span>
+            <span class="ahs-value" id="heroIPPower">—</span>
           </div>
         </div>
         <!-- 签约价格（匹配 actors.html 卡片风格） -->
@@ -1354,6 +1354,18 @@
     </div>
   </div>
 
+  <!-- ═══ IP算力详情弹窗 ═══ -->
+  <div class="stat-tooltip-overlay" id="ipPowerModal" style="z-index:10000;">
+    <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;">
+      <h3 id="ipPowerModalTitle" style="font-size:1.15rem;margin:0 0 4px;">IP算力详情</h3>
+      <div id="ipPowerModalName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
+      <div id="ipPowerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;">
+        <!-- 由 JS 动态填充 -->
+      </div>
+      <button class="button-secondary" id="ipPowerModalClose" style="width:100%;">关闭</button>
+    </div>
+  </div>
+
   <!-- ═══ Stat Tooltip ═══ -->
   <div class="stat-tooltip-overlay" id="statTooltip">
 
@@ -1385,7 +1397,7 @@
         avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 900,
         price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '24.1万', heat: '2.5x', treasuryUSDC: '124,567.89',
+        views: '24.1万', heat: '2.5x', initPrice: 80, treasuryUSDC: '124,567.89',
         creator: 'wanqing_studio', collection: 'C002',
         childActors: [
           { childId: '#C-001', name: '陆小曼', holder: '0x8f3A...bE12', dramas: [
@@ -1407,7 +1419,7 @@
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 8000, minted: 500, available: 7500, holders: 450,
         price: '8 USDC', reserved: 500, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '24.7万', heat: '4.8x', treasuryUSDC: '89,230.45',
+        views: '24.7万', heat: '4.8x', initPrice: 45, treasuryUSDC: '89,230.45',
         creator: 'feige_labs', collection: 'C003',
         childActors: [
           { childId: '#C-004', name: '赵刚', holder: '0x1aE4...fB77', dramas: [
@@ -1425,7 +1437,7 @@
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
         totalSupply: 10000, minted: 1000, available: 9000, holders: 800,
         price: '10 USDC', reserved: 1000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '27.7万', heat: '7.2x', treasuryUSDC: '256,789.12',
+        views: '27.7万', heat: '7.2x', initPrice: 120, treasuryUSDC: '256,789.12',
         creator: 'mengyao_art', collection: 'C004',
         childActors: [
           { childId: '#C-006', name: '白露', holder: '0x5fB8...2dC4', dramas: [
@@ -1443,6 +1455,7 @@
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
         totalSupply: 6000, minted: 500, available: 5500, holders: 300,
         price: '15 USDC', reserved: 500, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        initPrice: 200,
         creator: 'wuji_art', collection: 'C005', treasuryUSDC: '45,678.00',
         childActors: [
           { childId: '#C-008', name: '李承钰', holder: '0x3dE7...8aC2', dramas: [
@@ -1457,6 +1470,7 @@
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
         totalSupply: 12000, minted: 2000, available: 10000, holders: 1500,
         price: '12 USDC', reserved: 2000, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
+        initPrice: 30,
         creator: 'palace_studio', collection: 'C006', treasuryUSDC: '198,345.67',
         childActors: [
           { childId: '#C-009', name: '周明远', holder: '0x6cF4...1bD8', dramas: [
@@ -1471,7 +1485,7 @@
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
         totalSupply: 5000, minted: 5000, available: 0, holders: 4900,
         price: '10 USDC', reserved: 0, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
-        views: '1.2万', heat: '3.3x', treasuryUSDC: '12,345.67',
+        views: '1.2万', heat: '3.3x', initPrice: 30, treasuryUSDC: '12,345.67',
         creator: 'storyfun_labs', collection: 'C001',
         childActors: [
           { childId: '#C-010', name: 'AI 助手', holder: '0xdE4a...7cF1', dramas: [
@@ -1559,7 +1573,59 @@
         issuanceBadge.style.display = 'none';
       }
       document.getElementById('heroViews').textContent = actor.views || '—';
-      document.getElementById('heroHeat').textContent = actor.heat || '—';
+
+      // ═══ IP算力计算 ═══
+      function computePriceCoefficient(P0) {
+        if (P0 == null || P0 <= 0) return 0;
+        var x = P0 / 100;
+        if (P0 <= 100) return x;
+        var powX = Math.pow(x, 1.3);
+        return 1.6 * powX / (powX + 0.6);
+      }
+      var ipPowerVal = computePriceCoefficient(actor.initPrice || 0) * parseFloat(actor.heat) || 0;
+      document.getElementById('heroIPPower').textContent = ipPowerVal.toFixed(2);
+
+      // ═══ IP算力辅助（供短剧footer使用） ═══
+      function computeIPPowerDisplay(data) {
+        var pc = computePriceCoefficient(data.initPrice || 0);
+        var h = parseFloat(data.heat) || 0;
+        return (pc * h).toFixed(2);
+      }
+
+      // ═══ IP算力弹窗 ═══
+      window.openIPPowerModal = function() {
+        var priceCoeff = computePriceCoefficient(actor.initPrice || 0);
+        var heat = parseFloat(actor.heat) || 0;
+        document.getElementById('ipPowerModalTitle').textContent = actor.name + ' · IP算力';
+        document.getElementById('ipPowerModalName').textContent = 'IP算力 = 价格系数 × 热度系数 × Trust1';
+        document.getElementById('ipPowerModalBreakdown').innerHTML =
+          '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">价格系数</span>' +
+              '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + priceCoeff.toFixed(4) + '</span>' +
+            '</div>' +
+            '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">根据发行 IP 时的初始价格 P0 计算。P0 ≤ 100 USDC 时线性增长，P0 > 100 USDC 时增速渐缓，上限 1.6</div>' +
+          '</div>' +
+          '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">热度系数</span>' +
+              '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + heat.toFixed(1) + '</span>' +
+            '</div>' +
+            '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">演员 IP 近 30 天热度乘子，取决于短剧完播、点赞、收藏等互动表现</div>' +
+          '</div>' +
+          '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">Trust1</span>' +
+              '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× 1.0</span>' +
+            '</div>' +
+            '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">平台风控系数，默认值为 1.0</div>' +
+          '</div>';
+        document.getElementById('ipPowerModal').classList.add('active');
+      };
+      var ipPowerModal = document.getElementById('ipPowerModal');
+      document.getElementById('ipPowerModalClose').addEventListener('click', function() { ipPowerModal.classList.remove('active'); });
+      ipPowerModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+
       // 更新 actor-price 区域
       var priceVal = document.getElementById('priceValue');
       if (priceVal) priceVal.textContent = actor.price;
@@ -2029,7 +2095,7 @@
                   '</div>' +
                 '</div>' +
               '</div>' +
-              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>' + (actor.heat || '—') + '热度系数</span><span class="drama-rating"><span class="star-icon">★</span> ' + (DRAMA_RATINGS[d.title] || '--') + '</span></div></div>' +
+              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>IP算力 ' + computeIPPowerDisplay(actor) + '</span><span class="drama-rating"><span class="star-icon">★</span> ' + (DRAMA_RATINGS[d.title] || '--') + '</span></div></div>' +
             '</div>';
           });
         }
