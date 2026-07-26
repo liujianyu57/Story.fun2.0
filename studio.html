@@ -1650,125 +1650,104 @@
 
         <!-- 第一步 -->
         <div class="rules-section">
-          <h3>1. 派人，去挖矿</h3>
-          <p>把空闲的演员<strong>「派遣」</strong>到下面的 5 个槽位里，他就开始自动挖矿、产出 <strong>STORY</strong> 了。</p>
+          <h3>派遣</h3>
+          <p>把空闲的演员<strong>「派遣」</strong>到下面的 5 个槽位里，他就开始自动挖矿、产出 STORY。</p>
           <ul>
-            <li>每人最多同时派遣 <strong>5 位演员</strong></li>
+            <li>每人最多同时派遣 5 位演员</li>
             <li>同一个演员 IP 也可以多张卡一起派遣</li>
-            <li>派遣后每过 <strong>1 小时消耗 1 点 ⚡体力</strong>，体力 > 0 就一直产出，体力 = 0 就停工</li>
+            <li>派遣后每小时消耗 1 点体力，体力 > 0 就一直产出，体力 = 0 就停工</li>
           </ul>
         </div>
 
         <!-- 第二步 -->
         <div class="rules-section">
-          <h3>2. 算钱，产出公式</h3>
-          <p>每张卡每小时的产出由<strong>演员算力</strong>决定：</p>
-          <div class="rules-formula">单卡小时产出 = 演员算力 × 1 STORY</div>
-          <p><strong>演员算力</strong> = IP算力 × 挖矿系数 × CP系数 × Trust2，其中 <strong>IP算力</strong> = 价格系数 × 热度系数 × Trust1：</p>
-          <ul>
-            <li><strong>挖矿系数</strong> 🔼——咖位越高系数越大。Lv1=1.0 → Lv2=2.2 → Lv3=5.0 → Lv4=11 → Lv5=24</li>
-            <li><strong>价格系数</strong> 💰——由发行 IP 时的初始价格 P0 决定。P0≤100U 时线性增长，P0>100U 时渐近 1.6</li>
-            <li><strong>热度</strong> 🔥——演员近期的剧表现越好热度越高。有人刷他的剧、完播、点赞、收藏、评论，热度就涨</li>
-            <li><strong>CP系数、trust1、trust2</strong>——平台风控系数，默认均为 1.0</li>
-          </ul>
-          <p><strong>⚠️ 体力只看"有没有"，不看剩多少：</strong>168 点和 1 点体力的每小时产出一样多，体力只看你有没有在挖。</p>
+          <h3>产出公式</h3>
+          <div class="rules-formula" style="text-align:center;font-size:0.92rem;">单卡小时产出 = 演员算力 × 1 STORY</div>
+          <p style="margin-top:10px;">其中：</p>
+          <table class="rules-table">
+            <tr><td style="width:90px;font-weight:600;">演员算力</td><td>= IP算力 × 挖矿系数 × CP系数 × Trust2</td></tr>
+            <tr><td style="font-weight:600;">IP 算力</td><td>= 价格系数 × 热度系数 × Trust1</td></tr>
+          </table>
+          <p style="margin-top:14px;font-weight:600;">各系数说明</p>
+          <table class="rules-table">
+            <tr><th>系数</th><th>决定因素</th><th>说明</th></tr>
+            <tr><td>挖矿系数</td><td>咖位</td><td>Lv1=1.0 · Lv2=2.2 · Lv3=5.0 · Lv4=11 · Lv5=24</td></tr>
+            <tr><td>价格系数</td><td>发行价 P0</td><td>P0≤100U 线性增长 · P0>100U 渐近上限 1.6</td></tr>
+            <tr><td>热度系数</td><td>近期剧表现</td><td>完播、点赞、收藏、评论越多，热度越高</td></tr>
+            <tr><td>CP 系数</td><td>—</td><td>暂未开放</td></tr>
+            <tr><td>Trust</td><td>平台风控</td><td>默认 1.0</td></tr>
+          </table>
           <div class="rules-example">
-            <strong>🧮 举个栗子：</strong><br>
-            你的「林梦瑶」是 Lv3 主角（挖矿系数 5.0），当前热度 3.5，<br>
-            每小时产出 = <strong>5.0 × 3.5 × 1 = 17.5 STORY</strong><br>
-            一天产出 = 17.5 × 24 = <strong>420 STORY</strong><br>
-            一周产出 = 17.5 × 168 = <strong>2,940 STORY</strong>
+            <strong>示例</strong><br>
+            林梦瑶 Lv3 主角 · P0=120U（价格系数 ≈1.5046）· 热度 3.5<br>
+            → 每小时产出 = 5.0 × 1.5046 × 3.5 × 1 = <strong>26.3 STORY</strong>
           </div>
         </div>
 
         <!-- 第三步 -->
         <div class="rules-section">
-          <h3>3. 发钱，但是有上限</h3>
-          <p>每周全平台有一个<strong>总奖池（周硬顶）</strong>，初始约 <strong>2,115,385 STORY</strong>，之后逐周递减（每周 × 0.99572）。</p>
-          <p>发钱分三种情况：</p>
+          <h3>结算分配</h3>
+          <p>每周全平台有一个总奖池（周硬顶），初始约 2,115,385 STORY，之后逐周递减（每周 × 0.99572）。</p>
           <table class="rules-table">
-            <tr>
-              <td style="width:28px;"><span class="rules-tag green">✅</span></td>
-              <td>全平台名义产出 ≤ 本周奖池</td>
-              <td><strong>每人照单全收</strong>，剩余奖池不发、不补</td>
-            </tr>
-            <tr>
-              <td><span class="rules-tag orange">⚖️</span></td>
-              <td>全平台名义产出 > 本周奖池</td>
-              <td><strong>等比缩放</strong>：你实得 = 你的名义产出 × 奖池 ÷ 全平台产出</td>
-            </tr>
-            <tr>
-              <td><span class="rules-tag red">🔒</span></td>
-              <td>单地址超过奖池 5%</td>
-              <td>超出部分<strong>不发</strong>、不回流、不补分</td>
-            </tr>
+            <tr><th>条件</th><th>分配规则</th></tr>
+            <tr><td>全网名义产出 ≤ 当周硬顶</td><td>每人照单全收，剩余部分不发、不补</td></tr>
+            <tr><td>全网名义产出 > 当周硬顶</td><td>等比缩放：你实得 = 你的名义产出 × 奖池 ÷ 全网产出</td></tr>
+            <tr><td>单地址超过奖池 5%</td><td>超出部分不发，不回流，不补分</td></tr>
           </table>
           <div class="rules-example">
-            <strong>🧮 再举个栗子：</strong><br>
-            假设本周奖池 <strong>100,000 STORY</strong>：<br>
-            <strong>情况 A：</strong>全平台只有你一个人，你一周产出 134 → 你拿 134，剩下 99,866 不发<br>
-            <strong>情况 B：</strong>全平台总产出 250,000，每人缩放到 40%（100,000÷250,000）<br>
-            <strong>情况 C：</strong>缩放后某人应得 6,000，但单地址封顶 5,000 → 只发 5,000
+            <strong>示例</strong><br>
+            假设本周奖池 100,000 STORY：<br>
+            情况 A：全平台只有你产出 134 → 你拿 134，剩下不发放<br>
+            情况 B：全网产出 250,000 → 等比缩放到 40%<br>
+            情况 C：缩放后某人应得 6,000，但上限 5,000 → 只发 5,000
           </div>
         </div>
 
         <!-- 第四步 -->
         <div class="rules-section">
-          <h3>4. 管好体力，才能一直挖</h3>
+          <h3>体力管理</h3>
           <table class="rules-table">
-            <tr>
-              <th>状态</th>
-              <th>体力变化</th>
-              <th>产出</th>
-            </tr>
-            <tr>
-              <td>🎬 派遣中（挖矿）</td>
-              <td>每小时 -1</td>
-              <td><span class="rules-tag green">✅ 正常产出</span></td>
-            </tr>
-            <tr>
-              <td>🛑 体力 = 0</td>
-              <td>不再变化</td>
-              <td><span class="rules-tag red">❌ 产出为 0</span></td>
-            </tr>
-            <tr>
-              <td>🛌 召回休息</td>
-              <td>每小时 +1（自动恢复）</td>
-              <td><span class="rules-tag gray">暂停产出</span></td>
-            </tr>
-            <tr>
-              <td>⚡ 补充体力（付费）</td>
-              <td>瞬间回满 168</td>
-              <td><span class="rules-tag green">恢复产出</span></td>
-            </tr>
+            <tr><th>状态</th><th>体力变化</th><th>产出</th></tr>
+            <tr><td>派遣中（挖矿）</td><td>每小时 −1</td><td>正常产出</td></tr>
+            <tr><td>体力耗尽</td><td>不再变化</td><td>产出为 0</td></tr>
+            <tr><td>召回休息</td><td>每小时 +1（自动恢复）</td><td>暂停产出</td></tr>
+            <tr><td>补充体力（付费）</td><td>瞬间回满 168</td><td>恢复产出</td></tr>
           </table>
-          <p style="margin-top:10px;"><strong>关于补充体力的 3 件事：</strong></p>
+          <p style="margin-top:10px;">体力只看"有没有"：168 点和 1 点体力的每小时产出一样多。</p>
+          <p style="margin-top:12px;font-weight:600;">补充体力须知</p>
           <ul>
-            <li><strong>只能一键加满</strong>，不能只买 10 点</li>
-            <li><strong>价格只看咖位</strong>，不看还剩多少体力。体力 0 时加满和体力 100 时加满，花的钱一样多</li>
-            <li><strong>越靠近 0 时补充越划算</strong>——同样花一份钱，你买到了最多的新增挖矿时长</li>
+            <li>只能一键加满，不能只买 10 点</li>
+            <li>价格只看咖位，与剩余体力无关</li>
+            <li>越靠近 0 补充越划算——同样价格买到最多的挖矿时长</li>
           </ul>
-          <p style="margin-top:10px;font-weight:700;">各咖位补充价格：</p>
+          <p style="margin-top:12px;font-weight:600;">补充价格</p>
           <table class="rules-table">
             <tr><th>咖位</th><th>一键加满</th></tr>
-            <tr><td>Lv1 群演</td><td>15 USDC</td></tr>
-            <tr><td>Lv2 配角</td><td>36 USDC</td></tr>
-            <tr><td>Lv3 主角</td><td>87 USDC</td></tr>
-            <tr><td>Lv4 巨星</td><td>203 USDC</td></tr>
-            <tr><td>Lv5 顶流</td><td>465 USDC</td></tr>
+            <tr><td>Lv1 群演</td><td>10 USDC</td></tr>
+            <tr><td>Lv2 配角</td><td>20 USDC</td></tr>
+            <tr><td>Lv3 主角</td><td>50 USDC</td></tr>
+            <tr><td>Lv4 巨星</td><td>130 USDC</td></tr>
+            <tr><td>Lv5 顶流</td><td>320 USDC</td></tr>
           </table>
         </div>
 
         <!-- 第五步 -->
         <div class="rules-section">
-          <h3>5. 升级咖位，赚更多</h3>
+          <h3>升级咖位</h3>
           <p>3 张同演员同咖位的卡 + 合成费 + 该演员累计完播达标 = 升 1 级。升级后挖矿系数暴涨，每小时产出翻倍甚至翻几倍。</p>
+          <p style="margin-top:12px;font-weight:600;">升级路径</p>
+          <table class="rules-table">
+            <tr><th>升级路径</th><th>累计完播门槛</th><th>合成费</th></tr>
+            <tr><td>Lv1 → Lv2</td><td>≥ 10,000</td><td>10 USDC</td></tr>
+            <tr><td>Lv2 → Lv3</td><td>≥ 50,000</td><td>20 USDC</td></tr>
+            <tr><td>Lv3 → Lv4</td><td>≥ 200,000</td><td>40 USDC</td></tr>
+            <tr><td>Lv4 → Lv5</td><td>≥ 1,000,000</td><td>80 USDC</td></tr>
+          </table>
         </div>
 
         <!-- 总结 -->
-        <div class="rules-section" style="background:var(--accent-soft);border-radius:14px;padding:14px;">
-          <h3>💡 一句话总结</h3>
-          <p style="margin:0;font-size:0.92rem;">派人 → 看热度 → 盯体力 → 领产出。体力快没了就补充或召回休息，热度靠演员的剧表现提升，升级让产出起飞。</p>
+        <div class="rules-section" style="background:var(--bg);border-radius:12px;padding:16px;">
+          <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">派人 → 产出 → 盯体力 → 领钱。体力快没了就补充或召回休息，热度靠演员的剧表现提升，升级让产出起飞。</p>
         </div>
 
       </div>
@@ -1791,10 +1770,10 @@
     const LEVEL_CONFIG = [
       null,
       { level: 1, name: '群演',  miningCoeff: 1.0,  costCoeff: 1.0,  energyMax: 168,  color: '#8a9bb5' },
-      { level: 2, name: '配角',  miningCoeff: 2.2,  costCoeff: 2.4,  energyMax: 168,  color: '#5bc0de' },
-      { level: 3, name: '主角',  miningCoeff: 5.0,  costCoeff: 5.8,  energyMax: 168,  color: '#5cb85c' },
-      { level: 4, name: '巨星',  miningCoeff: 11,   costCoeff: 13.5, energyMax: 168,  color: '#f0ad4e' },
-      { level: 5, name: '顶流',  miningCoeff: 24,   costCoeff: 31,   energyMax: 168,  color: '#d9534f' },
+      { level: 2, name: '配角',  miningCoeff: 2.2,  costCoeff: 2.0,  energyMax: 168,  color: '#5bc0de' },
+      { level: 3, name: '主角',  miningCoeff: 5.0,  costCoeff: 5.0,  energyMax: 168,  color: '#5cb85c' },
+      { level: 4, name: '巨星',  miningCoeff: 11,   costCoeff: 13,   energyMax: 168,  color: '#f0ad4e' },
+      { level: 5, name: '顶流',  miningCoeff: 24,   costCoeff: 32,   energyMax: 168,  color: '#d9534f' },
     ];
 
     // ============================================================
@@ -1865,10 +1844,10 @@
     const LEVEL_UP_THRESHOLDS = [
       null,
       { playsRequired: 0,     cost: 0     },
-      { playsRequired: 10000,   cost: 500   },
-      { playsRequired: 50000,   cost: 2000  },
-      { playsRequired: 200000,  cost: 8000  },
-      { playsRequired: 1000000, cost: 30000 },
+      { playsRequired: 10000,   cost: 10  },
+      { playsRequired: 50000,   cost: 20  },
+      { playsRequired: 200000,  cost: 40  },
+      { playsRequired: 1000000, cost: 80  },
     ];
 
     // ============================================================
