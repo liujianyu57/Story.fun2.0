@@ -58,7 +58,7 @@
 }
 
 .bottom-nav-item.active {
-  color: #007AFF;
+  color: #00BBA7;
 }
 
 .bottom-nav-icon {
@@ -107,7 +107,7 @@
 }
 
 .bottom-nav-wrapper.nav-dark .bottom-nav-item.active {
-  color: #fff;
+  color: #00BBA7;
 }
 
 /* ── 只在 H5 手机宽度下显示 ── */
@@ -177,6 +177,7 @@
     if (currentPage === 'index.html') {
       label.textContent = '返回';
       navHome.setAttribute('href', 'recommend.html');
+      navHome.classList.add('active');
     } else if (currentPage === 'recommend.html') {
       label.textContent = '首页';
       navHome.setAttribute('href', 'index.html');
@@ -219,8 +220,10 @@
     </a>
     <a class="bottom-nav-item" href="actors.html" data-tab="actors">
       <svg class="bottom-nav-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="9" y="3" width="6" height="6" rx="3" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M5 21c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M3 3h12l8 8H3V3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M3 11v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M7 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M7 17h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
       <span class="bottom-nav-label">演员IP</span>
     </a>
@@ -232,9 +235,11 @@
     </a>
     <a class="bottom-nav-item" href="studio.html" data-tab="studio">
       <svg class="bottom-nav-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M9 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M12 9v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M3 7h18v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="7" y="12" width="3" height="4" rx="0.5" stroke="currentColor" stroke-width="1.3"/>
+        <rect x="14" y="12" width="3" height="4" rx="0.5" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M2 7h20M10 12v4m4-4v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
       <span class="bottom-nav-label">经纪工坊</span>
     </a>
