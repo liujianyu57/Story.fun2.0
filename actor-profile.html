@@ -1078,13 +1078,119 @@
       color: #fff;
     }
 
+    /* ═══ Mobile Back Button ═══ */
+    .mobile-back-btn { display: none; }
+
+    /* ═══ APP 级别移动端优化 (< 600px) ═══ */
+    @media (max-width: 599px) {
+      .app-shell { padding: 12px; }
+
+      /* 返回按钮 */
+      .mobile-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+      }
+      .mobile-back-btn:active { background: var(--accent-soft); }
+      .breadcrumb { display: none; }
+
+      /* Hero — 头像全宽 + 信息紧凑 */
+      .actor-hero {
+        grid-template-columns: 1fr;
+        text-align: left;
+        border-radius: 16px;
+        margin-bottom: 20px;
+      }
+      .actor-hero-avatar { width: 100%; aspect-ratio: 3/2; height: auto; }
+      .actor-hero-avatar img { height: 100%; }
+      .actor-hero-info { padding: 18px 16px 20px; gap: 12px; }
+      .actor-hero-info .actor-name { font-size: 1.5rem; margin-bottom: 10px; }
+      .actor-hero-info .actor-tags { gap: 6px; }
+      .actor-hero-info .actor-tags .tag { padding: 4px 10px; font-size: 0.72rem; }
+      .actor-hero-info .actor-desc { font-size: 0.85rem; line-height: 1.6; }
+      .actor-hero-stats { width: 100%; padding: 8px 0; border-radius: 12px; }
+      .actor-hero-stats .ahs-item { padding: 4px 16px; }
+      .actor-hero-stats .ahs-value { font-size: 1rem; }
+      .actor-hero-stats .ahs-divider { height: 24px; }
+      .actor-price { padding: 8px 12px; border-radius: 10px; }
+      .action-btn, .action-btn.primary, .action-btn.danger { width: 100%; justify-content: center; padding: 14px; font-size: 0.95rem; border-radius: 14px; min-width: unset; }
+      #floorPriceTag { width: 100%; justify-content: center; border-radius: 14px; }
+
+      /* NFT Info Panel */
+      .nft-info-panel { padding: 18px 16px; margin-bottom: 20px; border-radius: 14px; }
+      .nft-info-panel h3 { font-size: 0.95rem; margin-bottom: 14px; }
+      .nft-info-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .nft-info-item { padding: 10px 12px; }
+      .nft-info-item .info-label { font-size: 0.7rem; }
+      .nft-info-item .info-value { font-size: 0.92rem; }
+      .curve-section { padding: 14px 14px !important; }
+      .curve-section canvas { height: 160px !important; }
+
+      /* Treasury */
+      .treasury-panel { padding: 18px 16px 14px; margin-bottom: 20px; border-radius: 14px; }
+      .treasury-panel .treasury-header h3 { font-size: 0.88rem; }
+      .treasury-amount-row { padding: 14px 0 10px; }
+      .treasury-amount-row .ta-value { font-size: 1.5rem; }
+      .treasury-tags { gap: 12px; flex-wrap: wrap; justify-content: center; }
+      .treasury-tags .tt-item { font-size: 0.68rem; }
+
+      /* Drama Section */
+      .drama-section { margin-bottom: 28px; }
+      .drama-section-header { margin-bottom: 14px; }
+      .drama-section-header h3 { font-size: 1rem; }
+      .drama-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
+      .drama-card { min-height: auto; border-radius: 20px; }
+      .drama-card .drama-cover { height: 200px; }
+      .drama-card .drama-body { padding: 16px 16px 12px; }
+      .drama-card .drama-body h3 { font-size: 1.15rem; margin-bottom: 8px; }
+      .drama-card .drama-body p { font-size: 0.82rem; margin: 8px 0 0; }
+      .drama-card .drama-meta .badge, .drama-card .drama-meta .episode { padding: 6px 10px; font-size: 0.75rem; }
+      .drama-card .drama-footer { padding: 14px 16px 16px; flex-direction: column; align-items: flex-start; gap: 8px; }
+      .drama-card .drama-footer .info-row { font-size: 0.8rem; gap: 8px; }
+
+      /* Mint Modal — bottom sheet */
+      .mint-modal-overlay { padding: 0; align-items: flex-end; }
+      .mint-modal { border-radius: 20px 20px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; max-width: 100%; }
+      .mint-modal-overlay.active .mint-modal { transform: translateY(0); }
+      .mint-modal-hero { aspect-ratio: 16/10; }
+      .mint-modal-body { padding: 18px 18px 22px; gap: 14px; }
+      .mint-modal-header #mintModalTitle { font-size: 0.88rem; }
+      .mint-modal-actor-name { font-size: 1.15rem; }
+      .mint-price-bar { padding: 14px 14px 14px; border-radius: 14px; }
+      .mpb-price-value { font-size: 1.35rem; }
+      .mint-modal-footer .mint-btn { padding: 14px; font-size: 0.95rem; border-radius: 14px; }
+      .mint-modal-success { padding: 36px 20px 24px; }
+      .mint-slippage-notice { font-size: 0.7rem; }
+
+      /* Auth Modal — bottom sheet */
+      .auth-modal { border-radius: 20px 20px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-top: auto; max-width: 100%; }
+      .auth-modal-overlay { align-items: flex-end; }
+      .auth-modal-header { padding: 28px 20px 16px; }
+      .auth-modal-body { padding: 8px 20px 24px; }
+
+      /* Tooltips */
+      .price-tooltip-box { padding: 20px 16px 16px; max-width: 100%; border-radius: 20px; }
+      .stat-tooltip-box { padding: 20px 16px 16px; border-radius: 20px; max-width: 100%; }
+      .toast-notification { top: 12px; max-width: 90%; font-size: 0.82rem; padding: 10px 18px; border-radius: 14px; }
+    }
+
   </style>
 </head>
 <body>
-  <script>
-  if (window.innerWidth > 768) document.write('<div id="header-placeholder"></div>');
-  </script>
   <div class="app-shell">
+
+    <!-- Back Button (mobile only) -->
+    <a href="actors.html" class="mobile-back-btn">← 返回</a>
 
     <!-- Breadcrumb -->
     <div class="breadcrumb">
@@ -1385,7 +1491,6 @@
     <span id="toastMessage"></span>
   </div>
 
-  <script src="load-header.js"></script>
   <script src="auth.js"></script>
   <script src="ai-chat.js"></script>
   <script>
@@ -2114,8 +2219,6 @@
       grid.innerHTML = html;
     }
   </script>
-  <div id="bottom-nav-placeholder"></div>
-  <script src="load-bottom-nav.js"></script>
 </body>
 </html>
 
