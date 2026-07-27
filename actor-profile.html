@@ -1077,10 +1077,13 @@
       background: var(--accent);
       color: #fff;
     }
+
   </style>
 </head>
 <body>
-  <div id="header-placeholder"></div>
+  <script>
+  if (window.innerWidth > 768) document.write('<div id="header-placeholder"></div>');
+  </script>
   <div class="app-shell">
 
     <!-- Breadcrumb -->
