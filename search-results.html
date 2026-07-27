@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>搜索结果 - Story.fun</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5f7fa;--surface:#ffffff;--accent:#00b388;--text:#1d1d1f;--text-muted:#86868b;--border:rgba(0,0,0,.08);font-family:-apple-system,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif}
+html,body{width:100%;height:100%;background:var(--bg);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-font-smoothing:antialiased}
+body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0))}
+.shell{max-width:480px;margin:0 auto}
+/* Top bar */
+.top-bar{padding:0 16px;padding-top:calc(12px + env(safe-area-inset-top,0));background:var(--surface);position:sticky;top:0;z-index:10;border-bottom:.5px solid var(--border)}
+.search-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.search-back{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.search-back:active{background:rgba(0,179,136,.08)}
+.search-back svg{width:20px;height:20px;stroke:var(--accent)}
+.search-field{flex:1;display:flex;align-items:center;gap:8px;padding:8px 14px;background:#f5f7fa;border-radius:12px;border:1.5px solid transparent;transition:border-color .25s,box-shadow .25s}
+.search-field:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,179,136,.08);background:var(--surface)}
+.search-field svg{width:16px;height:16px;flex-shrink:0;color:var(--text-muted)}
+.search-field input{flex:1;border:none;background:none;font-size:15px;color:var(--text);outline:none;font-family:inherit}
+.search-field input::placeholder{color:#c7c7cc}
+.search-clear{width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.06);border:none;color:var(--text-muted);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;visibility:hidden}
+.search-clear.show{visibility:visible}
+
+/* Tabs */
+.tab-bar{display:flex;gap:0;padding:0 16px;background:var(--surface);position:sticky;top:56px;top:calc(56px + env(safe-area-inset-top,0));z-index:9;border-bottom:.5px solid var(--border)}
+.tab-item{flex:1;text-align:center;padding:11px 0 10px;font-size:14px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-left:none;border-right:none;border-top:none;font-family:inherit}
+.tab-item.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tab-count{font-size:11px;color:var(--text-muted);margin-left:3px}
+.tab-item.active .tab-count{color:var(--accent)}
+
+/* Results container */
+.results{padding:12px 16px}
+.result-card{display:flex;gap:12px;padding:12px;border-radius:14px;background:var(--surface);margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.result-card:active{transform:scale(.98);background:rgba(0,0,0,.02)}
+.result-card .rc-cover{width:72px;height:100px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#e5e5ea}
+.result-card .rc-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.result-card .rc-title{font-size:16px;font-weight:600;color:var(--text);line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.result-card .rc-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.result-card .rc-tag{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:500;background:rgba(0,179,136,.08);color:var(--accent)}
+.result-card .rc-rating{font-size:12px;color:#f5a623;font-weight:600}
+.result-card .rc-rating .star{color:#f5a623}
+.result-card .rc-ep{font-size:12px;color:var(--text-muted)}
+.result-card .rc-desc{font-size:12px;color:var(--text-muted);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Actor card */
+.actor-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--surface);margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.actor-card:active{transform:scale(.98)}
+.actor-card .ac-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e5e5ea;border:2px solid rgba(0,0,0,.06)}
+.actor-card .ac-info{flex:1;min-width:0}
+.actor-card .ac-name{font-size:15px;font-weight:600;color:var(--text)}
+.actor-card .ac-sub{font-size:13px;color:var(--text-muted);margin-top:2px}
+.actor-card .ac-arrow{color:var(--text-muted);font-size:18px}
+
+/* User card */
+.user-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--surface);margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.user-card:active{transform:scale(.98)}
+.user-card .uc-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e5e5ea;border:2px solid rgba(0,0,0,.06)}
+.user-card .uc-info{flex:1;min-width:0}
+.user-card .uc-name{font-size:15px;font-weight:600;color:var(--text)}
+.user-card .uc-handle{font-size:13px;color:var(--text-muted);margin-top:1px}
+.user-card .uc-follow-btn{padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:var(--accent);color:#fff;transition:all .2s;flex-shrink:0;font-family:inherit}
+.user-card .uc-follow-btn:active{opacity:.7}
+
+/* Empty state */
+.empty-state{padding:60px 20px;text-align:center;color:var(--text-muted);font-size:15px;display:none}
+.empty-state svg{width:48px;height:48px;margin-bottom:16px;color:#c7c7cc}
+.empty-state.show{display:block}
+
+/* Bottom Nav */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:100;height:50px;padding-bottom:env(safe-area-inset-bottom,0);background:rgba(255,255,255,.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:.5px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center}
+.bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;height:100%;padding:4px 4px 2px;text-decoration:none;color:rgba(0,0,0,.45);transition:color .2s;-webkit-tap-highlight-color:transparent}
+.bnav a.active{color:var(--accent)}
+.bnav svg{width:28px;height:28px;display:block;flex-shrink:0}
+.bnav span{font-weight:400;font-size:10px;line-height:12px;letter-spacing:.008em;text-align:center}
+@media(min-width:769px){.bnav{max-width:480px;left:50%;transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top-bar">
+    <div class="search-row">
+      <button class="search-back" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="search-field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input id="searchInput" type="text" placeholder="搜索短剧、演员、用户" />
+        <button class="search-clear" id="searchClear">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-bar" id="tabBar">
+    <button class="tab-item active" data-tab="drama">短剧</button>
+    <button class="tab-item" data-tab="actor">演员</button>
+    <button class="tab-item" data-tab="user">用户</button>
+  </div>
+
+  <div class="results" id="results"></div>
+  <div class="empty-state" id="emptyState">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <div id="emptyText">未找到相关结果</div>
+  </div>
+</div>
+
+<script>
+var DATA = [
+  {id:'001',title:'凤骨琉璃',cat:'古风',rt:4.6,ep:'全44集',totalEp:44,author:'JACK',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','李云飞'],cover:'image/fenggu_cover.jpg',video:'video/凤骨琉璃.mp4',likes:33300,cmts:890,desc:'一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。'},
+  {id:'002',title:'我卸甲后天下大乱了',cat:'古风',rt:4.4,ep:'全12集',totalEp:12,author:'EVA',avatar:'https://images.unsplash.com/photo-1457449940276-e8deed18bfff?auto=format&fit=crop&w=200&q=80',actors:['赵无极','林梦瑶'],cover:'image/xiejia_cover.jpg',video:'video/我卸甲后天下大乱了.mp4',likes:28600,cmts:567,desc:'卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。'},
+  {id:'003',title:'丞相府今日开饭',cat:'喜剧',rt:4.5,ep:'全24集',totalEp:24,author:'LENS',avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','上官婉儿'],cover:'image/chengxiangfu_cover.jpg',video:'video/丞相府今日开饭.mp4',likes:19800,cmts:423,desc:'丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。'},
+  {id:'004',title:'时间管理局',cat:'科幻',rt:4.8,ep:'全16集',totalEp:16,author:'NOVA',avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',likes:32100,cmts:891,desc:'穿梭时空，修复那些被篡改的历史关键节点'},
+  {id:'005',title:'迷途恋人',cat:'爱情',rt:3.9,ep:'全20集',totalEp:20,author:'ROSE',avatar:'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',actors:['郑一','冯二'],cover:'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80',likes:56000,cmts:1203,desc:'失忆后重遇初恋，命运却开了一个残酷的玩笑'},
+  {id:'006',title:'代码风暴',cat:'动作',rt:4.2,ep:'第7集 / 共30集',totalEp:30,author:'CYPHER',avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',actors:['陈三','刘四'],cover:'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80',likes:27800,cmts:654,desc:'天才程序员被诬陷入狱，出狱后展开惊天复仇计划'},
+  {id:'007',title:'笑面人生',cat:'喜剧',rt:4.5,ep:'全36集',totalEp:36,author:'SMILE',avatar:'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80',actors:['杨五','朱六'],cover:'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80',likes:42000,cmts:987,desc:'平凡小人物用笑声治愈身边每一个受伤的灵魂'},
+  {id:'008',title:'第七层梦境',cat:'悬疑',rt:4.3,ep:'第2集 / 共18集',totalEp:18,author:'DREAMER',avatar:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',actors:['黄七','曹八'],cover:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',likes:31500,cmts:756,desc:'进入他人梦境，却发现再也分不清真假虚实'},
+  {id:'009',title:'金融暗战',cat:'金融',rt:4.0,ep:'全44集',totalEp:44,author:'BULL',avatar:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',likes:22000,cmts:534,desc:'华尔街之狼 vs 国内资本大鳄，谁是最后赢家'},
+  {id:'010',title:'星际拓荒者',cat:'科幻',rt:4.7,ep:'全26集',totalEp:26,author:'STELLAR',avatar:'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=200&q=80',actors:['何九','吕十'],cover:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80',likes:48900,cmts:1123,desc:'人类最后的希望，踏上前所未有的星际征程'}
+];
+
+var searchInput = document.getElementById('searchInput');
+var searchClear = document.getElementById('searchClear');
+var resultsEl = document.getElementById('results');
+var emptyState = document.getElementById('emptyState');
+var emptyText = document.getElementById('emptyText');
+var currentTab = 'drama';
+
+/* Get query from URL */
+var params = new URLSearchParams(location.search);
+var query = params.get('q') || '';
+searchInput.value = query;
+if (query) searchClear.classList.add('show');
+
+/* Match helper */
+function match(str, q) {
+  if (!q) return true; /* empty query returns all */
+  str = str.toLowerCase();
+  q = q.toLowerCase();
+  return str.indexOf(q) !== -1;
+}
+
+/* Search functions */
+function searchDramas(q) {
+  if (!q) return DATA;
+  return DATA.filter(function(d){
+    return match(d.title, q) || match(d.cat, q) || (d.desc && match(d.desc, q));
+  });
+}
+
+function searchActors(q) {
+  var map = {};
+  DATA.forEach(function(d){
+    d.actors.forEach(function(a){
+      if (!q) {
+        if (!map[a]) map[a] = { name: a, count: 1, dramas: [d.title] };
+        else { map[a].count++; map[a].dramas.push(d.title); }
+        return;
+      }
+      if (match(a, q) && !map[a]) {
+        map[a] = { name: a, count: 1, dramas: [d.title] };
+      } else if (match(a, q) && map[a]) {
+        map[a].count++;
+        map[a].dramas.push(d.title);
+      }
+    });
+  });
+  return Object.values(map);
+}
+
+function searchUsers(q) {
+  var map = {};
+  DATA.forEach(function(d){
+    if (!q) {
+      if (!map[d.author]) map[d.author] = { name: d.author, avatar: d.avatar, handle: '@' + d.author.toLowerCase(), count: 1 };
+      else map[d.author].count++;
+      return;
+    }
+    if (match(d.author, q) && !map[d.author]) {
+      map[d.author] = { name: d.author, avatar: d.avatar, handle: '@' + d.author.toLowerCase(), count: 1 };
+    } else if (match(d.author, q) && map[d.author]) {
+      map[d.author].count++;
+    }
+  });
+  return Object.values(map);
+}
+
+/* Render based on tab */
+function renderTab(tab) {
+  currentTab = tab;
+  var html = '';
+  var dramaResults = searchDramas(query);
+  var actorResults = searchActors(query);
+  var userResults = searchUsers(query);
+
+  if (tab === 'all') {
+    // Drama cards
+    dramaResults.forEach(function(d){
+      html += '<div class="result-card" data-id="'+d.id+'" data-type="drama"><img class="rc-cover" src="'+d.cover+'" alt="'+d.title+'"><div class="rc-info"><div class="rc-title">'+d.title+'</div><div class="rc-meta"><span class="rc-tag">'+d.cat+'</span><span class="rc-rating"><span class="star">★</span> '+d.rt+'</span><span class="rc-ep">'+d.ep+'</span></div><div class="rc-desc">'+d.desc+'</div></div></div>';
+    });
+    // Actor rows
+    actorResults.forEach(function(a){
+      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">演员 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
+    });
+    // User rows
+    userResults.forEach(function(u){
+      html += '<div class="user-card" data-name="'+u.name+'" data-type="user"><img class="uc-avatar" src="'+u.avatar+'" alt="'+u.name+'"><div class="uc-info"><div class="uc-name">'+u.name+'</div><div class="uc-handle">'+u.handle+'</div></div><button class="uc-follow-btn" onclick="event.stopPropagation();toggleFollow(this)">关注</button></div>';
+    });
+    if (!dramaResults.length && !actorResults.length && !userResults.length) {
+      emptyState.classList.add('show');
+      emptyText.textContent = '未找到 "'+query+'" 的相关结果';
+    } else {
+      emptyState.classList.remove('show');
+    }
+  } else if (tab === 'drama') {
+    dramaResults.forEach(function(d){
+      html += '<div class="result-card" data-id="'+d.id+'" data-type="drama"><img class="rc-cover" src="'+d.cover+'" alt="'+d.title+'"><div class="rc-info"><div class="rc-title">'+d.title+'</div><div class="rc-meta"><span class="rc-tag">'+d.cat+'</span><span class="rc-rating"><span class="star">★</span> '+d.rt+'</span><span class="rc-ep">'+d.ep+'</span></div><div class="rc-desc">'+d.desc+'</div></div></div>';
+    });
+    if (!dramaResults.length) {
+      emptyState.classList.add('show');
+      emptyText.textContent = '未找到相关短剧';
+    } else {
+      emptyState.classList.remove('show');
+    }
+  } else if (tab === 'actor') {
+    actorResults.forEach(function(a){
+      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">演员 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
+    });
+    if (!actorResults.length) {
+      emptyState.classList.add('show');
+      emptyText.textContent = '未找到相关演员';
+    } else {
+      emptyState.classList.remove('show');
+    }
+  } else if (tab === 'user') {
+    userResults.forEach(function(u){
+      html += '<div class="user-card" data-name="'+u.name+'" data-type="user"><img class="uc-avatar" src="'+u.avatar+'" alt="'+u.name+'"><div class="uc-info"><div class="uc-name">'+u.name+'</div><div class="uc-handle">'+u.handle+'</div></div><button class="uc-follow-btn" onclick="event.stopPropagation();toggleFollow(this)">关注</button></div>';
+    });
+    if (!userResults.length) {
+      emptyState.classList.add('show');
+      emptyText.textContent = '未找到相关用户';
+    } else {
+      emptyState.classList.remove('show');
+    }
+  }
+
+  resultsEl.innerHTML = html;
+  bindResultClicks();
+}
+
+function bindResultClicks() {
+  resultsEl.querySelectorAll('.result-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var d = DATA.find(function(x){ return x.id === this.dataset.id; });
+      if (!d) return;
+      location.href = 'drama-player.html?id='+d.id+'&title='+encodeURIComponent(d.title)+'&total='+d.totalEp+'&cat='+encodeURIComponent(d.cat)+'&author='+encodeURIComponent(d.author)+'&avatar='+encodeURIComponent(d.avatar)+'&cover='+encodeURIComponent(d.cover)+'&desc='+encodeURIComponent(d.desc)+'&video='+encodeURIComponent(d.video||'');
+    });
+  });
+  resultsEl.querySelectorAll('.actor-card, .user-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      showToast('👤 '+this.dataset.name+' 的主页开发中');
+    });
+  });
+}
+
+function toggleFollow(btn) {
+  if (btn.textContent === '关注') {
+    btn.textContent = '已关注';
+    btn.style.background = 'rgba(0,0,0,.08)';
+    btn.style.color = 'var(--text)';
+  } else {
+    btn.textContent = '关注';
+    btn.style.background = '';
+    btn.style.color = '';
+  }
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:999;background:rgba(0,0,0,.82);color:#fff;padding:10px 22px;border-radius:10px;font-size:14px;font-family:-apple-system,sans-serif;pointer-events:none;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.style.opacity='0'; t.style.transition='opacity .3s'; }, 1200);
+  setTimeout(function(){ t.remove(); }, 1500);
+}
+
+/* Tab switch */
+document.querySelectorAll('.tab-item').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tab-item').forEach(function(b){ b.classList.remove('active'); });
+    this.classList.add('active');
+    renderTab(this.dataset.tab);
+  });
+});
+
+/* Search input */
+searchInput.addEventListener('input', function(){
+  searchClear.classList.toggle('show', this.value.length > 0);
+  query = this.value.trim();
+  renderTab(currentTab);
+});
+searchClear.addEventListener('click', function(){
+  searchInput.value = '';
+  searchClear.classList.remove('show');
+  query = '';
+  renderTab(currentTab);
+  searchInput.focus();
+});
+searchInput.addEventListener('keydown', function(e){
+  if (e.key === 'Enter') {
+    query = this.value.trim();
+    renderTab(currentTab);
+  }
+});
+
+/* Init */
+renderTab('drama');
+</script>
+</body>
+</html>

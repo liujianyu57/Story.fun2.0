@@ -31,6 +31,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .menu-btn{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:200;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;-webkit-tap-highlight-color:transparent}
 .menu-btn svg{width:22px;height:22px;stroke:#fff}
 .menu-btn:active{transform:scale(.88);background:rgba(0,0,0,.55)}
+.search-btn{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:200;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;-webkit-tap-highlight-color:transparent}
+.search-btn svg{width:22px;height:22px;stroke:#fff}
+.search-btn:active{transform:scale(.88);background:rgba(0,0,0,.55)}
 /* 侧边抽屉 */
 .side-overlay{position:fixed;inset:0;z-index:298;background:rgba(0,0,0,.5);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .side-overlay.open{opacity:1;visibility:visible}
@@ -160,12 +163,39 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .cm-item .cm-actions button:active{background:rgba(0,179,136,.1);color:#00b388}
 .comment-count{font-size:12px;color:rgba(94,111,131,.6)}
 @media(max-width:768px){body{padding-bottom:0!important}}
-@media(min-width:769px){#app{position:relative;max-width:400px;height:100vh;margin:0 auto}body{background:var(--bg);display:flex;align-items:center;justify-content:center}.bnav{max-width:400px;left:50%;transform:translateX(-50%)}.watch-bar{max-width:400px;left:50%!important;transform:translateX(-50%)!important}.player-progress{max-width:400px;left:50%!important;transform:translateX(-50%)}.cm-drawer .cm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.cm-drawer.open .cm-panel{transform:translateX(-50%) translateY(0)}}
+@media(min-width:769px){#app{position:relative;max-width:400px;height:100vh;margin:0 auto}body{background:var(--bg);display:flex;align-items:center;justify-content:center}.bnav{max-width:400px;left:50%;transform:translateX(-50%)}.watch-bar{max-width:400px;left:50%!important;transform:translateX(-50%)!important}.player-progress{max-width:400px;left:50%!important;transform:translateX(-50%)}.cm-drawer .cm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.cm-drawer.open .cm-panel{transform:translateX(-50%) translateY(0)}.dm-send-drawer .dm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.dm-send-drawer.open .dm-panel{transform:translateX(-50%) translateY(0)}}
+/* ---- 弹幕发送弹窗 ---- */
+.dm-send-drawer{position:fixed;inset:0;z-index:310;visibility:hidden;transition:visibility .3s}
+.dm-send-drawer.open{visibility:visible}
+.dm-send-drawer .dm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .3s}
+.dm-send-drawer.open .dm-overlay{opacity:1}
+.dm-send-drawer .dm-panel{position:absolute;left:0;right:0;bottom:50px;background:#ffffff;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);padding:12px 16px 16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 -4px 30px rgba(0,0,0,.12)}
+.dm-send-drawer.open .dm-panel{transform:translateY(0)}
+.dm-send-drawer .dm-handle{width:36px;height:4px;border-radius:2px;background:rgba(0,0,0,.15);margin:0 auto 4px;flex-shrink:0}
+.dm-send-drawer .dm-input-wrap{display:flex;gap:10px;align-items:flex-end}
+.dm-send-drawer .dm-textarea-wrap{flex:1;min-width:0;position:relative}
+.dm-send-drawer .dm-input-wrap textarea{display:block;width:100%;padding:10px 14px;padding-right:48px;border-radius:12px;border:1.5px solid rgba(0,0,0,.1);background:#f5f7fa;color:#13202e;font-size:14px;line-height:1.5;outline:none;resize:none;overflow:hidden;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.dm-send-drawer .dm-input-wrap textarea:focus{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
+.dm-send-drawer .dm-input-wrap textarea::placeholder{color:rgba(94,111,131,.6)}
+.dm-send-drawer .dm-char-count{position:absolute;right:10px;bottom:6px;font-size:10px;color:rgba(94,111,131,.45);pointer-events:none;line-height:1}
+.dm-send-drawer .dm-send-btn{border:none;border-radius:999px;padding:10px 22px;background:linear-gradient(135deg,#00b388,#00c9a0);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,179,136,.3);flex-shrink:0;white-space:nowrap;align-self:flex-end}
+.dm-send-drawer .dm-send-btn:active{transform:scale(.95);box-shadow:0 1px 4px rgba(0,179,136,.2)}
+.dm-send-drawer .dm-emoji-bar{display:flex;align-items:center;gap:0}
+.dm-send-drawer .dm-emoji-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;flex:1;max-height:38px;overflow:hidden;transition:max-height .3s}
+.dm-send-drawer .dm-emoji-row.expanded{max-height:140px}
+.dm-send-drawer .dm-emoji-row button{background:rgba(0,0,0,.04);border:none;border-radius:10px;font-size:20px;cursor:pointer;padding:6px 0;text-align:center;transition:background .15s;line-height:1}
+.dm-send-drawer .dm-emoji-row button:active{background:rgba(0,179,136,.15)}
+.dm-send-drawer .dm-emoji-toggle{flex-shrink:0;width:32px;height:38px;border:none;background:rgba(0,0,0,.04);border-radius:10px;color:rgba(94,111,131,.7);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-left:6px}
+.dm-send-drawer .dm-emoji-toggle:active{background:rgba(0,179,136,.15);color:#00b388}
+.dm-send-drawer .dm-hint{font-size:11px;color:rgba(94,111,131,.55);text-align:center;margin-top:-6px}
 </style>
 </head>
 <body>
 <button class="menu-btn" id="menuBtn" aria-label="Menu">
   <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</button>
+<button class="search-btn" id="searchBtn" aria-label="Search" onclick="location.href='search.html'">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
 </button>
 <div class="side-overlay" id="sideOverlay"></div>
 <div class="side-drawer" id="sideDrawer">
@@ -231,6 +261,26 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
       <button class="cm-close" id="cmClose">✕</button>
     </div>
     <div class="cm-body" id="cmBody"></div>
+  </div>
+</div>
+
+<!-- 弹幕发送弹窗 -->
+<div class="dm-send-drawer" id="dmSendDrawer">
+  <div class="dm-overlay" id="dmOverlay"></div>
+  <div class="dm-panel">
+    <div class="dm-handle"></div>
+    <div class="dm-input-wrap">
+      <div class="dm-textarea-wrap">
+        <textarea id="dmInput" placeholder="发送一条友善的弹幕..." maxlength="30" rows="1"></textarea>
+        <span class="dm-char-count" id="dmCharCount">0/30</span>
+      </div>
+      <button class="dm-send-btn" id="dmSendBtn">发送</button>
+    </div>
+    <div class="dm-emoji-bar" id="dmEmojiBar">
+      <div class="dm-emoji-row" id="dmEmojiRow"></div>
+      <button class="dm-emoji-toggle" id="dmEmojiToggle" title="展开表情">›</button>
+    </div>
+
   </div>
 </div>
 
@@ -493,7 +543,7 @@ function bindEvents(){
   document.querySelectorAll('[data-act="fav"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(!d)return;d.fav=!d.fav;const ic=this.querySelector('.act-icon');if(d.fav){ic.classList.add('bookmarked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>';showToast('已收藏')}else{ic.classList.remove('bookmarked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>'}})});
   document.querySelectorAll('[data-act="cmt"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(d)openDrawer(d.id)})});
   document.querySelectorAll('[data-act="share"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();showToast('📋 分享功能开发中')})});
-  document.querySelectorAll('.danmaku-btn').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();showToast('💬 弹幕功能暂未开放')})});
+  document.querySelectorAll('.danmaku-btn').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();openDanmakuDrawer()})});
   document.querySelectorAll('.act-creator').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();showToast('👤 创作者主页')})});
   document.querySelectorAll('.info-author').forEach(el=>{el.addEventListener('click',function(){showToast(`👤 跳转 ${this.dataset.author} 的主页`)})});
   document.querySelectorAll('.desc-expand').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();openDrawer(this.dataset.id)})});
@@ -526,6 +576,130 @@ function initDanmaku(i) {
     layer.appendChild(el);
   }
 }
+
+/* ---- 弹幕发送弹窗逻辑 ---- */
+var dmSendDrawer = document.getElementById('dmSendDrawer');
+var dmOverlay = document.getElementById('dmOverlay');
+var dmInput = document.getElementById('dmInput');
+var dmSendBtn = document.getElementById('dmSendBtn');
+var dmCharCount = document.getElementById('dmCharCount');
+var dmEmojiRow = document.getElementById('dmEmojiRow');
+var dmEmojiToggle = document.getElementById('dmEmojiToggle');
+var dmEmojiExpanded = false;
+
+var DM_EMOJI_LIST = ['😀','😂','❤️','🔥','👍','🎉','😭','😍','🤔','👏','💪','✨','🎬','📺','🍿','💬','🎵','💯','🙌','😱','💀'];
+
+function buildEmojiRow() {
+  dmEmojiRow.innerHTML = DM_EMOJI_LIST.map(function(emoji) {
+    return '<button data-emoji="' + emoji + '">' + emoji + '</button>';
+  }).join('');
+  // 绑定点击
+  dmEmojiRow.querySelectorAll('button').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var emoji = this.dataset.emoji;
+      insertAtCursor(dmInput, emoji);
+      updateTextareaHeight();
+      updateCharCount();
+    });
+  });
+}
+
+function insertAtCursor(textarea, text) {
+  var start = textarea.selectionStart;
+  var end = textarea.selectionEnd;
+  var before = textarea.value.substring(0, start);
+  var after = textarea.value.substring(end);
+  textarea.value = before + text + after;
+  textarea.selectionStart = textarea.selectionEnd = start + text.length;
+  textarea.focus();
+}
+
+function updateTextareaHeight() {
+  dmInput.style.height = 'auto';
+  var lineHeight = 21; // 14px * 1.5
+  var minRows = 1;
+  var maxRows = 4;
+  var rows = Math.max(minRows, Math.min(maxRows, Math.ceil((dmInput.scrollHeight - 20) / lineHeight)));
+  dmInput.rows = rows;
+}
+
+function updateCharCount() {
+  var len = dmInput.value.length;
+  dmCharCount.textContent = len + '/30';
+  if (len >= 28) dmCharCount.style.color = 'rgba(255,45,85,.7)';
+  else dmCharCount.style.color = 'rgba(94,111,131,.45)';
+}
+
+function openDanmakuDrawer() {
+  dmInput.value = '';
+  dmInput.rows = 1;
+  dmInput.style.height = 'auto';
+  updateCharCount();
+  dmSendDrawer.classList.add('open');
+  // 收起 emoji
+  dmEmojiExpanded = false;
+  dmEmojiRow.classList.remove('expanded');
+  dmEmojiToggle.textContent = '›';
+  setTimeout(function(){ dmInput.focus(); }, 400);
+}
+
+function closeDanmakuDrawer() {
+  dmSendDrawer.classList.remove('open');
+}
+
+function sendDanmaku() {
+  var text = dmInput.value.trim();
+  if (!text) { showToast('请输入弹幕内容'); return; }
+  if (text.length > 30) { showToast('弹幕不能超过30字'); return; }
+  var layer = document.getElementById('dm_' + idx);
+  if (!layer) { showToast('弹幕发送失败'); return; }
+  var usedTops = [];
+  layer.querySelectorAll('.dm-item').forEach(function(el){ usedTops.push(parseInt(el.style.top)||0); });
+  var topPos = 4;
+  var candidates = [4, 52, 100, 76, 28];
+  for (var ci = 0; ci < candidates.length; ci++) {
+    if (usedTops.indexOf(candidates[ci]) === -1) { topPos = candidates[ci]; break; }
+  }
+  var el = document.createElement('div');
+  el.className = 'dm-item';
+  el.textContent = text;
+  el.style.top = topPos + 'px';
+  el.style.animationDuration = (7 + Math.random() * 5) + 's';
+  layer.appendChild(el);
+  dmInput.value = '';
+  dmInput.rows = 1;
+  dmInput.style.height = 'auto';
+  updateCharCount();
+  closeDanmakuDrawer();
+  showToast('弹幕已发送 🎉');
+}
+
+/* textarea 输入事件 */
+dmInput.addEventListener('input', function() {
+  updateTextareaHeight();
+  updateCharCount();
+});
+
+/* emoji toggle */
+dmEmojiToggle.addEventListener('click', function(e) {
+  e.stopPropagation();
+  dmEmojiExpanded = !dmEmojiExpanded;
+  if (dmEmojiExpanded) {
+    dmEmojiRow.classList.add('expanded');
+    dmEmojiToggle.textContent = '‹';
+  } else {
+    dmEmojiRow.classList.remove('expanded');
+    dmEmojiToggle.textContent = '›';
+  }
+});
+
+dmSendBtn.addEventListener('click', function(e){ e.stopPropagation(); sendDanmaku(); });
+dmInput.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendDanmaku(); } });
+dmOverlay.addEventListener('click', closeDanmakuDrawer);
+
+/* 初始化 emoji 面板 */
+buildEmojiRow();
 let ts=0,td=0,sw=0;
 document.addEventListener('touchstart',function(e){
   if(e.target.closest('.actions')||e.target.closest('.info')||e.target.closest('.bnav')||e.target.closest('.player-progress'))return;
