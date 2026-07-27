@@ -175,11 +175,16 @@
     var label = navHome.querySelector('.bottom-nav-label');
 
     if (currentPage === 'index.html') {
+      sessionStorage.setItem('nav_return_mode', '1');
       label.textContent = '返回';
       navHome.setAttribute('href', 'recommend.html');
       navHome.classList.add('active');
     } else if (currentPage === 'recommend.html') {
+      sessionStorage.removeItem('nav_return_mode');
       label.textContent = '首页';
+      navHome.setAttribute('href', 'index.html');
+    } else if (sessionStorage.getItem('nav_return_mode') === '1') {
+      label.textContent = '返回';
       navHome.setAttribute('href', 'index.html');
     } else {
       label.textContent = '首页';
