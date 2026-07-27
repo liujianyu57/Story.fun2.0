@@ -395,6 +395,11 @@
     display: block;
   }
 }
+@media (max-width: 768px) {
+  .story-header-wrapper .header {
+    display: none !important;
+  }
+}
 @media (max-width: 480px) {
   .story-header-wrapper .header-inner {
     padding: 10px 16px;
@@ -655,14 +660,21 @@
   // ============================================================
   //  主加载流程
   // ============================================================
-  fetch(headerPath)
-    .then(response => {
-      if (!response.ok) throw new Error('Header 加载失败');
-      return response.text();
-    })
-    .then(insertHeaderHtml)
-    .catch(err => {
-      console.warn('Header fetch 失败，尝试 XHR 或直接回退:', err);
-      tryLoadHeaderByXHR();
-    });
+  // 立即使用内联 HTML 渲染（保证 Web 端始终可见），
+  // 然后异步尝试加载 header.html 以获取最新版本
+  var headerRendered = false;
+  injectHeaderStyles();
+
+  function renderInlineHeader() {
+    if (headerRendered) return;
+    headerRendered = true;
+    insertHeaderFallback();
+  }
+
+  // 立即渲染
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderInlineHeader);
+  } else {
+    renderInlineHeader();
+  }
 })();

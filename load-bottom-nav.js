@@ -232,7 +232,7 @@
       </svg>
       <span class="bottom-nav-label">演员IP</span>
     </a>
-    <a class="bottom-nav-item bottom-nav-create" href="narrator.html" data-tab="create">
+    <a class="bottom-nav-item bottom-nav-create" href="publish.html" data-tab="create">
       <svg class="bottom-nav-icon-create" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
         <path d="M12 7v10M7 12h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
