@@ -18,7 +18,7 @@
     if (document.getElementById('story-bottom-nav-styles')) return;
 
     const css = `
-/* ── Story.fun Bottom Navigation Styles ── */
+/* ── Story.fun Bottom Navigation ── */
 .bottom-nav-wrapper {
   display: none;
   position: fixed;
@@ -26,17 +26,18 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(60px);
-  -webkit-backdrop-filter: blur(60px);
-  border-top: 0.5px solid #D9D9E0;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-top: 0.5px solid rgba(0, 0, 0, 0.08);
 }
 
 .bottom-nav {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  height: 50px;
+  height: 52px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
   max-width: 100%;
   margin: 0 auto;
 }
@@ -45,35 +46,68 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 2px;
+  justify-content: flex-end;
+  gap: 3px;
   flex: 1;
   height: 100%;
-  padding: 4px 4px 2px;
+  padding: 0 0 6px;
   text-decoration: none;
-  color: #60646C;
+  color: #8E8E93;
   transition: color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 .bottom-nav-item.active {
-  color: #1C2024;
+  color: #007AFF;
 }
 
 .bottom-nav-icon {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   display: block;
   flex-shrink: 0;
 }
 
 .bottom-nav-label {
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 10px;
-  line-height: 12px;
-  letter-spacing: 0.008em;
+  line-height: 1;
+  letter-spacing: 0.02em;
   text-align: center;
+}
+
+.bottom-nav-item.active .bottom-nav-label {
+  font-weight: 600;
+}
+
+/* 创作 - 仅加号，无文字，垂直居中 */
+.bottom-nav-item.bottom-nav-create {
+  justify-content: center;
+  padding-bottom: 2px;
+}
+
+.bottom-nav-icon-create {
+  width: 28px;
+  height: 28px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* 暗色导航 - 首页视频沉浸 */
+.bottom-nav-wrapper.nav-dark {
+  background: rgba(15, 24, 37, 0.82);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.bottom-nav-wrapper.nav-dark .bottom-nav-item {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.bottom-nav-wrapper.nav-dark .bottom-nav-item.active {
+  color: #fff;
 }
 
 /* ── 只在 H5 手机宽度下显示 ── */
@@ -82,7 +116,6 @@
     display: block;
   }
 
-  /* 给页面底部留出空间，避免内容被底部导航遮挡 */
   body {
     padding-bottom: 60px;
   }
@@ -124,7 +157,51 @@
     }
 
     activateCurrentTab();
+    updateHomeNavItem();
+    applyNavTheme();
+    bindHomeToggle();
     document.dispatchEvent(new CustomEvent('bottom-nav-loaded'));
+  }
+
+  // ============================================================
+  //  首页按钮双页面模式
+  //  - recommend.html → 显示"首页" → 跳转 index.html
+  //  - index.html → 显示"返回" → 跳转 recommend.html
+  // ============================================================
+  function updateHomeNavItem() {
+    var navHome = document.getElementById('navHome');
+    if (!navHome) return;
+
+    var label = navHome.querySelector('.bottom-nav-label');
+
+    if (currentPage === 'index.html') {
+      label.textContent = '返回';
+      navHome.setAttribute('href', 'recommend.html');
+    } else if (currentPage === 'recommend.html') {
+      label.textContent = '首页';
+      navHome.setAttribute('href', 'index.html');
+    } else {
+      label.textContent = '首页';
+      navHome.setAttribute('href', 'recommend.html');
+    }
+  }
+
+  // ============================================================
+  //  首页点击切换 Feed/列表
+  // ============================================================
+  function bindHomeToggle() {
+    // 首页按钮已改为双页面跳转模式，不再拦截点击做 feed/list 切换
+  }
+
+  // ============================================================
+  //  首页暗色导航
+  // ============================================================
+  function applyNavTheme() {
+    const isHome = currentPage === 'recommend.html';
+    const wrapper = document.querySelector('.bottom-nav-wrapper');
+    if (wrapper) {
+      wrapper.classList.toggle('nav-dark', isHome);
+    }
   }
 
   // ============================================================
@@ -133,48 +210,40 @@
   function insertFallbackBottomNav() {
     const html = `<div class="bottom-nav-wrapper">
   <div class="bottom-nav">
-    <a class="bottom-nav-item" href="1011.html" data-tab="1011">
-      <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="3.5" y="3.5" width="21" height="21" rx="4" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M9.5 14.5L12.5 17.5L18.5 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <a class="bottom-nav-item" href="recommend.html" data-tab="home" id="navHome">
+      <svg class="bottom-nav-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:rotate(90deg)">
+        <path d="M20 8l-4-4m0 0l-4 4m4-4v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 16l4 4m0 0l4-4m-4 4V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <span class="bottom-nav-label">1011</span>
+      <span class="bottom-nav-label">首页</span>
     </a>
-
-    <a class="bottom-nav-item" href="index.html" data-tab="theater">
-      <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M24.8376 14.0001C24.8376 19.9861 19.9849 24.8388 13.9989 24.8388C8.01281 24.8388 3.16016 19.9861 3.16016 14.0001C3.16016 8.014 8.01281 3.16135 13.9989 3.16135C19.9849 3.16135 24.8376 8.014 24.8376 14.0001Z" fill="none" stroke="currentColor" stroke-width="1.49333" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M18.9263 14.4331C19.2596 14.2407 19.2596 13.7595 18.9263 13.5671L11.9101 9.51633C11.5768 9.32388 11.1601 9.56444 11.1601 9.94934V18.0509C11.1601 18.4358 11.5768 18.6763 11.9101 18.4839L18.9263 14.4331Z" fill="currentColor"/>
-      </svg>
-      <span class="bottom-nav-label">剧场</span>
-    </a>
-
-    <a class="bottom-nav-item" href="actors.html" data-tab="nft">
-      <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13.9053 2.66797C13.9639 2.63382 14.0361 2.63382 14.0947 2.66797L23.6611 8.24805C23.719 8.2818 23.7549 8.34415 23.7549 8.41113V19.5889C23.7549 19.6559 23.719 19.7182 23.6611 19.752L14.0947 25.332C14.0361 25.3662 13.9639 25.3662 13.9053 25.332L4.33887 19.752C4.28101 19.7182 4.24512 19.6558 4.24512 19.5889V8.41113C4.24512 8.34415 4.28101 8.2818 4.33887 8.24805L13.9053 2.66797Z" stroke="currentColor" stroke-width="1.49"/>
-        <path d="M22.6563 8.44303C23.016 8.24379 23.4695 8.3734 23.669 8.73307C23.8682 9.09289 23.7377 9.54634 23.3779 9.74576C21.6325 10.7132 20.1068 11.5637 18.5801 12.4137C17.0633 13.2582 15.5452 14.1028 13.8125 15.0631V24.3102C13.8125 24.7217 13.4788 25.0553 13.0674 25.0553C12.656 25.0552 12.3223 24.7216 12.3223 24.3102V14.4225L7.04103 11.3434C6.68599 11.136 6.56634 10.6791 6.77345 10.3239C6.98081 9.96862 7.43763 9.84903 7.79298 10.0563L13.584 13.4333C13.5983 13.4416 13.6115 13.4515 13.625 13.4606C15.1372 12.6218 16.4962 11.8682 17.8545 11.112C19.3813 10.2619 20.9093 9.41129 22.6563 8.44303ZM8.43947 5.54069C8.64694 5.18573 9.10378 5.0659 9.459 5.27311L13.6924 7.74283C14.0472 7.95035 14.1671 8.40721 13.96 8.76237C13.7526 9.11733 13.2957 9.237 12.9404 9.02994L8.70704 6.56022C8.35201 6.35277 8.23224 5.89593 8.43947 5.54069Z" fill="currentColor"/>
+    <a class="bottom-nav-item" href="actors.html" data-tab="actors">
+      <svg class="bottom-nav-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="9" y="3" width="6" height="6" rx="3" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M5 21c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
       <span class="bottom-nav-label">演员IP</span>
     </a>
-
+    <a class="bottom-nav-item bottom-nav-create" href="narrator.html" data-tab="create">
+      <svg class="bottom-nav-icon-create" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M12 7v10M7 12h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </a>
     <a class="bottom-nav-item" href="studio.html" data-tab="studio">
-      <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4.66797 5.83333V22.1667C4.66797 22.811 5.1903 23.3333 5.83464 23.3333H22.168C22.8123 23.3333 23.3346 22.811 23.3346 22.1667V5.83333C23.3346 5.18899 22.8123 4.66666 22.168 4.66666H5.83464C5.1903 4.66666 4.66797 5.18899 4.66797 5.83333Z" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M14 11.6667V18.6667" stroke="currentColor" stroke-width="1.49" stroke-linecap="round"/>
-        <path d="M10.5 15.1667H17.5" stroke="currentColor" stroke-width="1.49" stroke-linecap="round"/>
+      <svg class="bottom-nav-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M9 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M12 9v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
       <span class="bottom-nav-label">经纪工坊</span>
     </a>
-
-    <a class="bottom-nav-item" href="narrator.html" data-tab="create">
-      <svg class="bottom-nav-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M22.168 4.66666H5.83464C5.1903 4.66666 4.66797 5.18899 4.66797 5.83332V8.16666C4.66797 8.81099 5.1903 9.33332 5.83464 9.33332H22.168C22.8123 9.33332 23.3346 8.81099 23.3346 8.16666V5.83332C23.3346 5.18899 22.8123 4.66666 22.168 4.66666Z" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M10.5013 14H5.83464C5.1903 14 4.66797 14.5223 4.66797 15.1667V22.1667C4.66797 22.811 5.1903 23.3333 5.83464 23.3333H10.5013C11.1456 23.3333 11.668 22.811 11.668 22.1667V15.1667C11.668 14.5223 11.1456 14 10.5013 14Z" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16.332 14H23.332" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16.332 18.6667H23.332" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16.332 23.3333H23.332" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/>
+    <a class="bottom-nav-item" href="profile-center.html" data-tab="profile">
+      <svg class="bottom-nav-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M5 21a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
-      <span class="bottom-nav-label">创作</span>
+      <span class="bottom-nav-label">我</span>
     </a>
   </div>
 </div>`;

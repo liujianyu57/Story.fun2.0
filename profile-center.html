@@ -8,56 +8,57 @@
     :root {
       --bg: #F8F9FB;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.12);
-      --accent-glow: rgba(0, 179, 136, 0.25);
+      --accent: #007AFF;
+      --accent-soft: rgba(0, 122, 255, 0.08);
       --text: #1C2024;
       --text-muted: #60646C;
       --text-sub: #8B8D98;
       --border: #D9D9E0;
       --border-light: #F0F0F3;
-      --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
-      --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
-      --shadow-lg: 0 20px 45px rgba(27, 45, 71, 0.10);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
       --radius: 12px;
-      --radius-lg: 16px;
-      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
 
-    /* Gradient */
-    .gradient-text { background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .gradient-bg { background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%); }
+    .gradient-text { background: linear-gradient(135deg, #007AFF, #5856D6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-bg { background: linear-gradient(135deg, #007AFF, #5856D6); }
 
     /* Main Content */
-    .main-content { padding: 32px 44px 96px; display: flex; flex-direction: column; gap: 32px; }
+    .main-content { padding: 32px 24px 96px; display: flex; flex-direction: column; gap: 28px; }
 
-    /* ===== User Info Header Card ===== */
-    .user-info-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow-sm); }
-    .user-info-inner { display: flex; align-items: center; gap: 32px; }
+    /* ===== User Info Card ===== */
+    .user-info-card { background: var(--surface); border-radius: var(--radius); padding: 28px 24px; box-shadow: var(--shadow-sm); }
+    .user-info-inner { display: flex; align-items: center; gap: 20px; }
 
     .avatar-wrap { flex-shrink: 0; }
-    .avatar-gradient { width: 128px; height: 128px; border-radius: 99px; padding: 4px; background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%); box-shadow: 0px 4px 6px -4px rgba(0,0,0,0.1), 0px 10px 15px -3px rgba(0,0,0,0.1); }
-    .avatar-bg { width: 100%; height: 100%; border-radius: 88px; overflow: hidden; background: var(--surface); display: flex; align-items: center; justify-content: center; }
+    .avatar-gradient { width: 88px; height: 88px; border-radius: 99px; padding: 2.5px; background: linear-gradient(135deg, #007AFF, #5856D6); }
+    .avatar-bg { width: 100%; height: 100%; border-radius: 99px; overflow: hidden; background: var(--bg); display: flex; align-items: center; justify-content: center; }
     .avatar-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .avatar-bg .avatar-letter { font-size: 30px; font-weight: 700; }
+    .avatar-bg .avatar-letter { font-size: 26px; font-weight: 700; }
 
-    .user-info-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-    .user-info-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-    .user-info-texts { display: flex; flex-direction: column; gap: 8px; }
-    .user-name { font-size: 24px; font-weight: 700; color: var(--text); }
-    .user-bio { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 480px; }
+    .user-info-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+    .user-info-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .user-info-texts { display: flex; flex-direction: column; gap: 4px; }
+    .user-name { font-size: 20px; font-weight: 700; color: var(--text); }
+    .user-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
-    .btn-edit { padding: 10px 24px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; height: 44px; display: flex; align-items: center; gap: 6px; }
-    .btn-edit:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .btn-edit { padding: 8px 18px; border: 1.5px solid var(--accent); border-radius: 999px; background: transparent; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; height: 36px; display: flex; align-items: center; gap: 4px; }
+    .btn-edit:active { background: var(--accent-soft); }
 
-    /* ===== Tabs ===== */
-    .tab-bar { display: flex; align-items: center; gap: 32px; border-bottom: 1px solid var(--border); }
-    .tab-item { padding: 14px 0 18px; font-size: 16px; font-weight: 510; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; }
-    .tab-item:hover { color: var(--text); }
-    .tab-item.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+    /* Stats row */
+    .user-stats { display: flex; gap: 24px; margin-top: 4px; }
+    .user-stat-item { display: flex; flex-direction: column; gap: 2px; }
+    .user-stat-item .stat-num { font-size: 16px; font-weight: 700; color: var(--text); }
+    .user-stat-item .stat-label { font-size: 11px; color: var(--text-sub); }
+
+    /* ===== Tabs (Segmented Control style) ===== */
+    .tab-bar { display: flex; align-items: center; gap: 0; background: rgba(0,0,0,0.04); border-radius: 10px; padding: 3px; width: fit-content; }
+    .tab-item { padding: 8px 20px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.25s; background: none; border: none; border-radius: 8px; }
+    .tab-item.active { background: var(--surface); color: var(--accent); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 
     /* ===== Drama Cards (完全复刻 index.html 短剧卡片) ===== */
     .works-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; margin-bottom: 34px; }
@@ -148,18 +149,26 @@
 
     /* Responsive */
     @media (max-width: 1120px) { .works-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-    @media (max-width: 900px) {
-      .main-content { padding: 24px 20px 64px; }
-      .user-info-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
-      .user-info-top { flex-direction: column; align-items: flex-start; }
-      .avatar-gradient { width: 96px; height: 96px; }
-    }
-    @media (max-width: 760px) { .works-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 540px) {
-      .works-grid { grid-template-columns: 1fr; }
-      .tab-bar { gap: 16px; overflow-x: auto; }
-      .tab-item { font-size: 14px; padding: 12px 0 14px; white-space: nowrap; }
-      .user-info-card { padding: 24px; }
+    @media (max-width: 760px) {
+      .app-shell { padding: 16px 12px; }
+      .main-content { padding: 16px 0 80px; gap: 20px; }
+      .user-info-card { padding: 20px 16px; border-radius: 14px; }
+      .user-info-inner { gap: 14px; }
+      .avatar-gradient { width: 72px; height: 72px; padding: 2px; }
+      .user-name { font-size: 18px; }
+      .user-bio { font-size: 12px; }
+      .btn-edit { padding: 6px 14px; font-size: 12px; height: 32px; }
+      .user-stats { gap: 18px; }
+      .user-stat-item .stat-num { font-size: 15px; }
+      .works-grid { grid-template-columns: 1fr; gap: 12px; }
+      .work-card { min-height: auto; border-radius: 14px; }
+      .work-card .card-thumb { height: 240px; }
+      .work-card .card-body { padding: 14px 16px; }
+      .work-card .card-foot { padding: 12px 16px; }
+      .tab-bar { gap: 0; flex-shrink: 1; width: auto; }
+      .tab-item { font-size: 13px; padding: 7px 16px; }
+      .modal-card { max-width: 90vw; padding: 20px; }
+      .edit-avatar-preview { width: 64px; height: 64px; }
     }
   </style>
 </head>

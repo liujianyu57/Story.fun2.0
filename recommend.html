@@ -1,4 +1,4 @@
-ang<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -19,16 +19,50 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 #track{position:absolute;left:0;top:0;width:100%;will-change:transform}
 .slide{position:absolute;left:0;width:100%;height:100vh;overflow:hidden}
 .slide-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.slide-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .slide-mask{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,24,37,0.1),rgba(15,24,37,0.05) 30%,rgba(15,24,37,0.4) 70%,rgba(15,24,37,0.82));pointer-events:none}
 .play-btn{position:absolute;top:50%;left:50%;z-index:3;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.35)}
 .play-btn.show{opacity:1}
 .play-btn svg{width:30px;height:30px;fill:#fff;margin-left:3px}
-.story-header-wrapper{position:fixed!important;top:0;left:0;right:0;z-index:200!important}.story-header-wrapper .header{background:rgba(18,24,35,.48)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:.5px solid rgba(255,255,255,.08)!important}.story-header-wrapper .hamburger-btn svg path{stroke:rgba(255,255,255,.9)!important}.story-header-wrapper .brand-text{opacity:.9}.story-header-wrapper .nav-link,.story-header-wrapper .lang-btn,.story-header-wrapper .lang-btn span{color:rgba(255,255,255,.75)!important}.story-header-wrapper .lang-btn svg circle,.story-header-wrapper .lang-btn svg path{stroke:rgba(255,255,255,.65)!important}
 .info{position:absolute;left:18px;right:80px;bottom:calc(12px + 44px + 44px + 12px + env(safe-area-inset-bottom,0px));z-index:2;display:flex;flex-direction:column;gap:8px}
 .danmaku-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px 4px 8px;border-radius:999px;font-size:11px;font-weight:500;color:rgba(255,255,255,.95);background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.2);cursor:pointer;transition:background .15s;align-self:flex-start;margin-bottom:2px}
 .danmaku-btn:active{background:rgba(255,255,255,.25)}
+/* 菜单按钮 */
+.menu-btn{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:200;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;-webkit-tap-highlight-color:transparent}
+.menu-btn svg{width:22px;height:22px;stroke:#fff}
+.menu-btn:active{transform:scale(.88);background:rgba(0,0,0,.55)}
+/* 侧边抽屉 */
+.side-overlay{position:fixed;inset:0;z-index:298;background:rgba(0,0,0,.5);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.side-overlay.open{opacity:1;visibility:visible}
+.side-drawer{position:fixed;top:0;left:0;bottom:0;z-index:299;width:300px;max-width:82vw;background:rgba(255,255,255,.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);transform:translateX(-100%);transition:transform .35s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:4px 0 40px rgba(0,0,0,.12);border-right:.5px solid rgba(0,0,0,.06)}
+.side-drawer.open{transform:translateX(0)}
+.sd-header{display:flex;align-items:center;justify-content:flex-end;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+.sd-close{width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.06);border:none;color:#666;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sd-close:active{background:rgba(0,0,0,.12);color:#333}
+.sd-user{display:flex;flex-direction:column;align-items:center;padding:8px 20px 20px;gap:10px}
+.sd-avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,.12);box-shadow:0 0 24px rgba(0,179,136,.15)}
+.sd-nickname{font-size:16px;font-weight:700;color:#1a1a2e}
+.sd-uid{font-size:11px;color:rgba(0,0,0,.4)}
+.sd-section-label{font-size:10px;font-weight:700;color:rgba(0,0,0,.4);letter-spacing:.08em;text-transform:uppercase;padding:8px 20px 6px}
+.sd-notify-list{padding:0 16px}
+.sd-notify-item{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:12px;transition:background .15s;cursor:pointer}
+.sd-notify-item:hover,.sd-notify-item:active{background:rgba(0,0,0,.03)}
+.sd-notify-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0}
+.sd-notify-text{font-size:13px;color:rgba(0,0,0,.7);line-height:1.4;flex:1}
+.sd-notify-time{font-size:10px;color:rgba(0,0,0,.35);margin-top:2px}
+.sd-history-list{padding:0 16px;flex:1;overflow-y:auto}
+.sd-history-item{display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:12px;transition:background .15s;cursor:pointer}
+.sd-history-item:hover,.sd-history-item:active{background:rgba(0,0,0,.03)}
+.sd-history-cover{width:44px;height:60px;border-radius:8px;object-fit:cover;flex-shrink:0}
+.sd-history-info{flex:1;min-width:0}
+.sd-history-title{font-size:13px;font-weight:600;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd-history-ep{font-size:11px;color:rgba(0,0,0,.45);margin-top:2px}
+/* 弹幕 */
+.dm-layer{position:absolute;left:0;right:0;top:calc(56px + env(safe-area-inset-top,0px));z-index:3;height:120px;overflow:hidden;pointer-events:none}
+.dm-item{position:absolute;white-space:nowrap;font-size:15px;font-weight:600;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.65);animation:dmScroll linear infinite backwards}
+@keyframes dmScroll{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
 .danmaku-btn svg{width:15px;height:15px;flex-shrink:0}
-.info-title{font-size:20px;font-weight:700;color:#fff;line-height:1.3;text-shadow:0 2px 12px rgba(0,0,0,.5);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.info-title{font-size:17px;font-weight:700;color:#fff;line-height:1.3;text-shadow:0 2px 12px rgba(0,0,0,.5);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
 .info-title>.gt{color:rgba(255,255,255,.45);font-size:17px;margin-left:1px}
 .info-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .info-tag{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);color:#fff;border:.5px solid rgba(255,255,255,.25)}
@@ -53,11 +87,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .act-creator .ac-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);box-shadow:0 2px 12px rgba(0,0,0,.3);transition:transform .15s}
 .act-creator:active .ac-avatar{transform:scale(.85)}
 .act-creator .ac-label{font-size:9px;font-weight:500;color:rgba(255,255,255,.8);line-height:1;padding:1px 6px;border-radius:999px;background:rgba(255,255,255,.12);backdrop-filter:blur(4px);max-width:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac-follow{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:#ff2d55;border:2px solid rgba(255,255,255,.3);color:#fff;font-size:14px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;transition:all .2s;box-shadow:0 2px 6px rgba(255,45,85,.4)}
+.ac-follow.followed{background:rgba(255,255,255,.3);border-color:rgba(255,255,255,.4);color:#fff;font-size:10px;box-shadow:none}
+.act-creator{position:relative}
 .act-btn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;padding:0;color:#fff;-webkit-tap-highlight-color:transparent;transition:transform .15s}
 .act-btn:active{transform:scale(.82)}
-.act-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);font-size:18px;transition:all .2s}
-.act-icon.liked{color:#fff;background:var(--accent)}
-.act-icon.bookmarked{color:#fff;background:#ffbb3a}
+.act-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:none;font-size:18px;transition:all .2s}
+.act-icon.liked{color:#ff4d6a}
+.act-icon.bookmarked{color:#ffbb3a}
 .act-label{font-size:10px;font-weight:500;color:rgba(255,255,255,.75);line-height:1}
 /* ---- Player Progress Bar ---- */
 .player-progress{position:fixed;left:0;right:0;bottom:50px;z-index:103;height:6px;background:rgba(0,0,0,.25);cursor:pointer;pointer-events:auto;touch-action:none;border-radius:3px;overflow:hidden}
@@ -127,7 +164,31 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 </style>
 </head>
 <body>
-<div id="header-placeholder"></div>
+<button class="menu-btn" id="menuBtn" aria-label="Menu">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</button>
+<div class="side-overlay" id="sideOverlay"></div>
+<div class="side-drawer" id="sideDrawer">
+  <div class="sd-header"><button class="sd-close" id="sdClose">✕</button></div>
+  <div class="sd-user">
+    <img class="sd-avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="avatar">
+    <div class="sd-nickname">清风明月</div>
+    <div class="sd-uid">@qingfeng</div>
+  </div>
+  <div class="sd-section-label" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="location.href='notifications.html'">通知消息<span style="font-size:16px;color:rgba(0,0,0,.25);margin-right:4px">›</span></div>
+  <div class="sd-notify-list">
+    <div class="sd-notify-item"><span class="sd-notify-dot"></span><div><div class="sd-notify-text">你的短剧《凤骨琉璃》收到128条新评论</div><div class="sd-notify-time">32分钟前</div></div></div>
+    <div class="sd-notify-item"><span class="sd-notify-dot"></span><div><div class="sd-notify-text">演员苏婉清发布了新作品《捧月将军》</div><div class="sd-notify-time">2小时前</div></div></div>
+    <div class="sd-notify-item"><span class="sd-notify-dot"></span><div><div class="sd-notify-text">你的收藏《凤骨琉璃》更新了第44集</div><div class="sd-notify-time">昨天</div></div></div>
+  </div>
+  <div class="sd-section-label">观看历史</div>
+  <div class="sd-history-list">
+    <div class="sd-history-item"><img class="sd-history-cover" src="image/fenggu_cover.jpg" alt=""><div class="sd-history-info"><div class="sd-history-title">凤骨琉璃</div><div class="sd-history-ep">3/44集</div></div></div>
+    <div class="sd-history-item"><img class="sd-history-cover" src="image/xiejia_cover.jpg" alt=""><div class="sd-history-info"><div class="sd-history-title">我卸甲后天下大乱了</div><div class="sd-history-ep">7/12集</div></div></div>
+    <div class="sd-history-item"><img class="sd-history-cover" src="image/chengxiangfu_cover.jpg" alt=""><div class="sd-history-info"><div class="sd-history-title">丞相府今日开饭</div><div class="sd-history-ep">12/24集</div></div></div>
+  </div>
+</div>
+
 <div id="loading"><div class="spinner"></div></div>
 <div id="toast"></div>
 <div id="app">
@@ -175,16 +236,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 
 <script>
 const DATA = [
-  {id:'001',title:'重生之我在币圈当大佬',cat:'金融',rt:8.6,ep:'第3集 / 共44集',totalEp:44,author:'JACK',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=JACK',actors:['张三','李四'],cover:'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=800&q=80',likes:12800,cmts:342,fav:false,like:false,desc:'从穷小子到币圈传奇，看他如何玩转加密世界'},
-  {id:'002',title:'深渊回响',cat:'悬疑',rt:9.2,ep:'全12集',totalEp:12,author:'EVA',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=EVA',actors:['王五'],cover:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',likes:24500,cmts:567,fav:true,like:false,desc:'废弃医院连续失踪三人，隐藏着怎样的惊天秘密'},
-  {id:'003',title:'暗流涌动',cat:'真实改编',rt:8.9,ep:'第18集 / 共24集',totalEp:24,author:'LENS',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=LENS',actors:['赵六','钱七','孙八'],cover:'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=800&q=80',likes:18300,cmts:423,fav:false,like:true,desc:'根据真实事件改编，一场权力与正义的殊死较量'},
-  {id:'004',title:'时间管理局',cat:'科幻',rt:9.5,ep:'全16集',totalEp:16,author:'NOVA',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=NOVA',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',likes:32100,cmts:891,fav:false,like:false,desc:'穿梭时空，修复那些被篡改的历史关键节点'},
-  {id:'005',title:'迷途恋人',cat:'爱情',rt:7.8,ep:'全20集',totalEp:20,author:'ROSE',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=ROSE',actors:['郑一','冯二'],cover:'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80',likes:56000,cmts:1203,fav:true,like:false,desc:'失忆后重遇初恋，命运却开了一个残酷的玩笑'},
-  {id:'006',title:'代码风暴',cat:'动作',rt:8.3,ep:'第7集 / 共30集',totalEp:30,author:'CYPHER',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=CYPHER',actors:['陈三','刘四'],cover:'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80',likes:27800,cmts:654,fav:false,like:false,desc:'天才程序员被诬陷入狱，出狱后展开惊天复仇计划'},
-  {id:'007',title:'笑面人生',cat:'喜剧',rt:9.0,ep:'全36集',totalEp:36,author:'SMILE',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=SMILE',actors:['杨五','朱六'],cover:'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80',likes:42000,cmts:987,fav:false,like:true,desc:'平凡小人物用笑声治愈身边每一个受伤的灵魂'},
-  {id:'008',title:'第七层梦境',cat:'悬疑',rt:8.7,ep:'第2集 / 共18集',totalEp:18,author:'DREAMER',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=DREAMER',actors:['黄七','曹八'],cover:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',likes:31500,cmts:756,fav:false,like:false,desc:'进入他人梦境，却发现再也分不清真假虚实'},
-  {id:'009',title:'金融暗战',cat:'金融',rt:8.1,ep:'全44集',totalEp:44,author:'BULL',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=BULL',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',likes:22000,cmts:534,fav:true,like:false,desc:'华尔街之狼 vs 国内资本大鳄，谁是最后赢家'},
-  {id:'010',title:'星际拓荒者',cat:'科幻',rt:9.4,ep:'全26集',totalEp:26,author:'STELLAR',avatar:'https://api.dicebear.com/7.x/thumbs/svg?seed=STELLAR',actors:['何九','吕十'],cover:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80',likes:48900,cmts:1123,fav:false,like:false,desc:'人类最后的希望，踏上前所未有的星际征程'}
+  {id:'001',title:'凤骨琉璃',cat:'古风',rt:4.6,ep:'全44集',totalEp:44,author:'JACK',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','李云飞'],cover:'image/fenggu_cover.jpg',video:'video/凤骨琉璃.mp4',likes:33300,cmts:890,fav:false,like:false,desc:'一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。'},
+  {id:'002',title:'我卸甲后天下大乱了',cat:'古风',rt:4.4,ep:'全12集',totalEp:12,author:'EVA',avatar:'https://images.unsplash.com/photo-1457449940276-e8deed18bfff?auto=format&fit=crop&w=200&q=80',actors:['赵无极','林梦瑶'],cover:'image/xiejia_cover.jpg',video:'video/我卸甲后天下大乱了.mp4',likes:28600,cmts:567,fav:true,like:false,desc:'卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。'},
+  {id:'003',title:'丞相府今日开饭',cat:'喜剧',rt:4.5,ep:'全24集',totalEp:24,author:'LENS',avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','上官婉儿'],cover:'image/chengxiangfu_cover.jpg',video:'video/丞相府今日开饭.mp4',likes:19800,cmts:423,fav:false,like:true,desc:'丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。'},
+  {id:'004',title:'时间管理局',cat:'科幻',rt:4.8,ep:'全16集',totalEp:16,author:'NOVA',avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',likes:32100,cmts:891,fav:false,like:false,desc:'穿梭时空，修复那些被篡改的历史关键节点'},
+  {id:'005',title:'迷途恋人',cat:'爱情',rt:3.9,ep:'全20集',totalEp:20,author:'ROSE',avatar:'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',actors:['郑一','冯二'],cover:'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80',likes:56000,cmts:1203,fav:true,like:false,desc:'失忆后重遇初恋，命运却开了一个残酷的玩笑'},
+  {id:'006',title:'代码风暴',cat:'动作',rt:4.2,ep:'第7集 / 共30集',totalEp:30,author:'CYPHER',avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',actors:['陈三','刘四'],cover:'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80',likes:27800,cmts:654,fav:false,like:false,desc:'天才程序员被诬陷入狱，出狱后展开惊天复仇计划'},
+  {id:'007',title:'笑面人生',cat:'喜剧',rt:4.5,ep:'全36集',totalEp:36,author:'SMILE',avatar:'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80',actors:['杨五','朱六'],cover:'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80',likes:42000,cmts:987,fav:false,like:true,desc:'平凡小人物用笑声治愈身边每一个受伤的灵魂'},
+  {id:'008',title:'第七层梦境',cat:'悬疑',rt:4.3,ep:'第2集 / 共18集',totalEp:18,author:'DREAMER',avatar:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',actors:['黄七','曹八'],cover:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',likes:31500,cmts:756,fav:false,like:false,desc:'进入他人梦境，却发现再也分不清真假虚实'},
+  {id:'009',title:'金融暗战',cat:'金融',rt:4.0,ep:'全44集',totalEp:44,author:'BULL',avatar:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',likes:22000,cmts:534,fav:true,like:false,desc:'华尔街之狼 vs 国内资本大鳄，谁是最后赢家'},
+  {id:'010',title:'星际拓荒者',cat:'科幻',rt:4.7,ep:'全26集',totalEp:26,author:'STELLAR',avatar:'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=200&q=80',actors:['何九','吕十'],cover:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80',likes:48900,cmts:1123,fav:false,like:false,desc:'人类最后的希望，踏上前所未有的星际征程'}
 ];
 
 const total=DATA.length;
@@ -205,6 +266,7 @@ function startPlayProgress(){
     if (paused) return;
     playProgress = Math.min(1, playProgress + PROGRESS_SPEED);
     updatePlayProgressUI();
+    updateCountdown();
     if (playProgress >= 1) {
       clearInterval(playInterval);
       playInterval = null;
@@ -262,7 +324,38 @@ function onProgressPointerUp(e){
 
 function fmt(n){return n>=1e4?(n/1e4).toFixed(1)+'w':n>=1e3?(n/1e3).toFixed(1)+'k':n}
 function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toast.classList.remove('show'),1600)}
+function toggleFollow(el,authorName){
+  el.classList.toggle('followed');
+  if (el.classList.contains('followed')) {
+    el.textContent = '✓';
+    showToast('已关注 ' + authorName);
+  } else {
+    el.textContent = '+';
+    showToast('已取消关注 ' + authorName);
+  }
+}
 function updateWatchBar(){const d=DATA[idx];if(!d)return;watchBar.querySelector('.wb-text').textContent=`观看完整短剧 · 全${d.totalEp}集`}
+function resetWatchBarRight(){
+  const wbr = watchBar.querySelector('.wb-right');
+  if (!wbr) return;
+  wbr.innerHTML = `<svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+let countdownSec = 0;
+function updateCountdown(){
+  const d = DATA[idx];
+  if (!d) return;
+  const remaining = Math.ceil((1 - playProgress) * EP_DURATION_SEC);
+  const wbr = watchBar.querySelector('.wb-right');
+  if (!wbr) return;
+  if (remaining <= 3 && remaining > 0) {
+    countdownSec = remaining;
+    wbr.innerHTML = `<span style="color:rgba(255,255,255,.9);font-size:12px;font-weight:500;white-space:nowrap">${remaining}秒后播放下一集</span>`;
+  } else if (countdownSec > 0 && remaining <= 0) {
+    countdownSec = 0;
+    const url = `drama-player.html?id=${d.id}&title=${encodeURIComponent(d.title)}&total=${d.totalEp}&cat=${encodeURIComponent(d.cat)}&author=${encodeURIComponent(d.author)}&avatar=${encodeURIComponent(d.avatar)}&cover=${encodeURIComponent(d.cover)}&desc=${encodeURIComponent(d.desc)}&video=${encodeURIComponent(d.video||'')}`;
+    location.href = url;
+  }
+}
 
 function ensureComments(d){
   if (d.comments) return;
@@ -345,8 +438,9 @@ function render(){
   for(let i=0;i<total;i++){
     const d=DATA[i];
     const acts=d.actors.slice(0,2).map(a=>`<span class="c-name">${a}</span>`).join('<span class="c-div"> / </span>');
-    const epText=d.ep.replace(/ \/ 共\d+集$/,'');
-    h+=`<div class="slide" style="top:${i*100}vh"><img class="slide-img" src="${d.cover}" alt="${d.title}" loading="${i===0?'eager':'lazy'}" onerror="this.style.display='none'"/><div class="slide-mask"></div><div class="play-btn" id="pb_${d.id}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><div class="danmaku-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 6.5h7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 8.5h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 10.5h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>弹幕</div><div class="info-title" onclick="location.href='drama-detail.html'">${d.title}<span class="gt"> ›</span></div><div class="info-tags"><span class="info-rating"><span class="star">★</span>${d.rt}</span><span class="info-tag">${d.cat}</span><span class="info-tag">演员 · ${acts}</span></div><div class="info-desc"><span class="desc-ep">${epText}</span><span class="desc-sep">|</span><span class="desc-text">${d.desc}</span><span class="desc-expand" data-id="${d.id}">展开</span></div></div><div class="actions"><button class="act-creator"><img class="ac-avatar" src="${d.avatar}" alt="${d.author}"><span class="ac-label">${d.author}</span></button><button class="act-btn" data-act="fav" data-id="${d.id}"><div class="act-icon ${d.fav?'bookmarked':''}">${d.fav?'⭐':'☆'}</div><span class="act-label">收藏</span></button><button class="act-btn" data-act="cmt" data-id="${d.id}"><div class="act-icon">💬</div><span class="act-label">${fmt(d.cmts)}</span></button><button class="act-btn" data-act="like" data-id="${d.id}"><div class="act-icon ${d.like?'liked':''}">${d.like?'❤️':'🤍'}</div><span class="act-label">${fmt(d.likes)}</span></button><button class="act-btn" data-act="share" data-id="${d.id}"><div class="act-icon">↗</div><span class="act-label">分享</span></div></div></div>`;
+    const videoHTML = d.video ? `<video class="slide-video" src="${d.video}" muted loop playsinline poster="${d.cover}"${i===0?' autoplay':''}></video>` : `<img class="slide-img" src="${d.cover}" alt="${d.title}" loading="${i===0?'eager':'lazy'}" onerror="this.style.display='none'"/>`;
+    const favIcon=d.fav?'bookmarked':'';
+    h+=`<div class="slide" style="top:${i*100}vh">${videoHTML}<div class="dm-layer" id="dm_${i}"></div><div class="slide-mask"></div><div class="play-btn" id="pb_${d.id}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><div class="danmaku-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 6.5h7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 8.5h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 10.5h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>弹幕</div><div class="info-title" onclick="location.href='drama-detail.html'">${d.title}<span class="gt"> ›</span></div><div class="info-tags"><span class="info-rating"><span class="star">★</span>${d.rt}</span><span class="info-tag">演员 · ${acts}</span></div><div class="info-desc"><span class="desc-ep">第1集</span><span class="desc-sep">|</span><span class="desc-text">${d.desc}</span><span class="desc-expand" data-id="${d.id}">展开</span></div></div><div class="actions"><button class="act-creator"><img class="ac-avatar" src="${d.avatar}" alt="${d.author}"><span class="ac-follow${d.followed?' followed':''}" data-follow="${d.author}" onclick="event.stopPropagation();toggleFollow(this,'${d.author}')">${d.followed?'✓':'+'}</span></button><button class="act-btn" data-act="fav" data-id="${d.id}"><div class="act-icon${d.fav?' bookmarked':''}"><svg viewBox="0 0 24 24" width="20" height="20" fill="${d.fav?'currentColor':'none'}" stroke="${d.fav?'currentColor':'currentColor'}" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><span class="act-label">收藏</span></button><button class="act-btn" data-act="cmt" data-id="${d.id}"><div class="act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><span class="act-label">${fmt(d.cmts)}</span></button><button class="act-btn" data-act="like" data-id="${d.id}"><div class="act-icon${d.like?' liked':''}"><svg viewBox="0 0 24 24" width="20" height="20" fill="${d.like?'#ff4d6a':'none'}" stroke="${d.like?'#ff4d6a':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="act-label">${fmt(d.likes)}</span></button><button class="act-btn" data-act="share" data-id="${d.id}"><div class="act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div><span class="act-label">分享</span></div></div></div>`;
   }
   track.innerHTML=h;
   track.style.height=(total*100)+'vh';
@@ -361,12 +455,20 @@ function goTo(i,animate){
   if(animFlag)return;
   if(animate)animFlag=true;
   i=Math.max(0,Math.min(total-1,i));idx=i;
+  // 暂停所有视频
+  document.querySelectorAll('.slide-video').forEach(v=>v.pause());
   track.style.transition=animate?'transform .38s cubic-bezier(.22,1,.36,1)':'none';
   track.style.transform=`translateY(${-i*wh}px)`;
+  // 播放当前视频
+  const curV=document.querySelector(`#track .slide:nth-child(${i+1}) .slide-video`);
+  if(curV){curV.currentTime=0;curV.play().catch(()=>{})}
+  initDanmaku(i);
   updateWatchBar();
   if(animate)setTimeout(()=>{animFlag=false},400);
   /* Reset play progress on slide switch */
   playProgress = 0;
+  countdownSec = 0;
+  resetWatchBarRight();
   updatePlayProgressUI();
   if (!playInterval) startPlayProgress();
 }
@@ -379,11 +481,16 @@ function togglePause(e){
   const btn=document.querySelector(`#pb_${DATA[idx].id}`);
   if(!btn)return;
   btn.classList.toggle('show',paused);
+  const curV=document.querySelector(`#track .slide:nth-child(${idx+1}) .slide-video`);
+  if(curV){
+    if(paused) curV.pause();
+    else curV.play().catch(()=>{});
+  }
 }
 
 function bindEvents(){
-  document.querySelectorAll('[data-act="like"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(!d)return;d.like=!d.like;const ic=this.querySelector('.act-icon'),lb=this.querySelector('.act-label');if(d.like){ic.classList.add('liked');ic.textContent='❤️';d.likes++;showToast('已点赞 ❤️')}else{ic.classList.remove('liked');ic.textContent='🤍';d.likes--}lb.textContent=fmt(d.likes)})});
-  document.querySelectorAll('[data-act="fav"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(!d)return;d.fav=!d.fav;const ic=this.querySelector('.act-icon');if(d.fav){ic.classList.add('bookmarked');ic.textContent='⭐';showToast('已收藏 ⭐')}else{ic.classList.remove('bookmarked');ic.textContent='☆'}})});
+  document.querySelectorAll('[data-act="like"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(!d)return;d.like=!d.like;const ic=this.querySelector('.act-icon'),lb=this.querySelector('.act-label');if(d.like){ic.classList.add('liked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="#ff4d6a"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';d.likes++;showToast('已点赞')}else{ic.classList.remove('liked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';d.likes--}lb.textContent=fmt(d.likes)})});
+  document.querySelectorAll('[data-act="fav"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(!d)return;d.fav=!d.fav;const ic=this.querySelector('.act-icon');if(d.fav){ic.classList.add('bookmarked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>';showToast('已收藏')}else{ic.classList.remove('bookmarked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>'}})});
   document.querySelectorAll('[data-act="cmt"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const d=DATA.find(x=>x.id===this.dataset.id);if(d)openDrawer(d.id)})});
   document.querySelectorAll('[data-act="share"]').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();showToast('📋 分享功能开发中')})});
   document.querySelectorAll('.danmaku-btn').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();showToast('💬 弹幕功能暂未开放')})});
@@ -396,13 +503,29 @@ function bindEvents(){
   watchBar.addEventListener('click',function(){
     const d=DATA[idx];
     if(!d)return;
-    location.href=`drama-player.html?id=${d.id}&title=${encodeURIComponent(d.title)}&total=${d.totalEp}&cat=${encodeURIComponent(d.cat)}&author=${encodeURIComponent(d.author)}&avatar=${encodeURIComponent(d.avatar)}&cover=${encodeURIComponent(d.cover)}`;
+    location.href=`drama-player.html?id=${d.id}&title=${encodeURIComponent(d.title)}&total=${d.totalEp}&cat=${encodeURIComponent(d.cat)}&author=${encodeURIComponent(d.author)}&avatar=${encodeURIComponent(d.avatar)}&cover=${encodeURIComponent(d.cover)}&desc=${encodeURIComponent(d.desc)}&video=${encodeURIComponent(d.video||'')}`;
   });
   /* Player progress bar events */
   playerProg.addEventListener('mousedown', onProgressPointerDown);
   playerProg.addEventListener('touchstart', onProgressPointerDown, {passive: true});
 }
 
+function initDanmaku(i) {
+  var layer = document.getElementById('dm_' + i);
+  if (!layer) return;
+  layer.innerHTML = '';
+  var texts = ['好剧！已追', '节奏太棒了', '画面绝美', '演技在线', '这剧我爱了', '期待下一集', '反转太绝了', '追剧中…', '强烈推荐', '今年最佳', '剧情扎实', '这编剧太强了', '收藏了', '台词满分', '越看越上头'];
+  for (var j = 0; j < 3; j++) {
+    var t = texts[Math.floor(Math.random() * texts.length)];
+    var el = document.createElement('div');
+    el.className = 'dm-item';
+    el.textContent = t;
+    el.style.top = (j * 48 + 4) + 'px';
+    el.style.animationDuration = (6 + Math.random() * 8) + 's';
+    el.style.animationDelay = (Math.random() * 1.5) + 's';
+    layer.appendChild(el);
+  }
+}
 let ts=0,td=0,sw=0;
 document.addEventListener('touchstart',function(e){
   if(e.target.closest('.actions')||e.target.closest('.info')||e.target.closest('.bnav')||e.target.closest('.player-progress'))return;
@@ -423,8 +546,21 @@ document.addEventListener('touchend',function(){
 },{passive:true});
 window.addEventListener('resize',function(){wh=window.innerHeight;goTo(idx,false)});
 document.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowRight')nextSlide();else if(e.key==='ArrowUp'||e.key==='ArrowLeft')prevSlide()});
+
+var menuBtn = document.getElementById("menuBtn");
+var sideDrawer = document.getElementById("sideDrawer");
+var sideOverlay = document.getElementById("sideOverlay");
+var sdClose = document.getElementById("sdClose");
+function openSide() { sideDrawer.classList.add("open"); sideOverlay.classList.add("open"); }
+function closeSide() { sideDrawer.classList.remove("open"); sideOverlay.classList.remove("open"); }
+menuBtn.addEventListener("click", function(e) { e.stopPropagation(); openSide(); });
+sdClose.addEventListener("click", closeSide);
+sideOverlay.addEventListener("click", closeSide);
+
 render();
+  initDanmaku(0);
 </script>
-<script src="load-header.js"></script>
+<div id="bottom-nav-placeholder"></div>
+<script src="load-bottom-nav.js"></script>
 </body>
 </html>

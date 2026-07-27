@@ -137,7 +137,7 @@
   gap: 16px;
   flex-shrink: 0;
 }
-.story-header-wrapper .lang-btn {
+.story-header-wrapper .search-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -155,10 +155,10 @@
   transition: all 0.2s ease;
   white-space: nowrap;
 }
-.story-header-wrapper .lang-btn:hover {
+.story-header-wrapper .search-btn:hover {
   background: rgba(0,0,0,0.04);
 }
-.story-header-wrapper .lang-btn svg {
+.story-header-wrapper .search-btn svg {
   flex-shrink: 0;
 }
 .story-header-wrapper .auth-container {
@@ -611,7 +611,7 @@
       <a class="nav-link" href="whitepaper.html">白皮书</a>
     </nav>
     <div class="header-actions">
-      <button class="lang-btn" aria-label="Language">
+      <button class="search-btn" aria-label="Language">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60646C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/>
           <path d="M2 12h20"/>
