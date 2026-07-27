@@ -596,6 +596,8 @@
       white-space: nowrap;
     }
     .card-bottom { display: flex; flex-direction: column; gap: 10px; }
+    .card-bottom-price { display: none; }
+    .card-ip-code { display: none; }
 
     /* Price pill — Apple style subtle tag */
     .actor-price {
@@ -958,8 +960,9 @@
       background: linear-gradient(135deg, #94a3b8, #64748b);
       color: #fff;
     }
-    @media (max-width: 960px) {
-      .grid-3 { grid-template-columns: 1fr; }
+    /* ═══ 平板：两列布局 (600px - 960px) ═══ */
+    @media (min-width: 600px) and (max-width: 960px) {
+      .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
       .app-shell { padding: 16px; }
       .page-header { display: none; }
       .page-header-left h1 { font-size: 1.5rem; }
@@ -973,51 +976,318 @@
       .sort-container { gap: 6px; margin-bottom: 16px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .sort-container::-webkit-scrollbar { display: none; }
       .sort-tag { font-size: 0.8rem; padding: 6px 12px; white-space: nowrap; flex-shrink: 0; }
-      .card-banner { height: 180px; }
+
+      .card {
+        border-radius: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+        border: 0.5px solid rgba(0,0,0,0.05);
+      }
+      .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 12px 28px rgba(0,0,0,0.05); }
+      .card:active { transform: scale(0.985); transition: transform 0.15s ease; }
+      .card-banner { height: 165px; }
       .card-body { padding: 14px 14px 12px; gap: 8px; }
-      .card h3 { font-size: 1.1rem; }
-      .card p { font-size: 0.8rem; }
-      .actor-stats { gap: 6px; }
-      .actor-stat-item { padding: 8px 4px 6px; }
-      .actor-stat-label { font-size: 0.6rem; }
-      .actor-stat-item .num { font-size: 1rem; }
-      .actor-price { padding: 6px 10px; }
-      .actor-price-label { font-size: 0.72rem; }
-      .actor-price-value { font-size: 0.95rem; }
+      .card h3 { font-size: 1.08rem; font-weight: 700; letter-spacing: -0.015em; }
+      .card p { font-size: 0.76rem; color: #8e8e93; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+      .actor-stats { gap: 4px; }
+      .actor-stat-item { padding: 6px 4px 5px; border-radius: 10px; background: rgba(0,0,0,0.015); }
+      .actor-stat-item:hover { background: rgba(0,0,0,0.04); }
+      .actor-stat-item:hover .num { color: var(--accent); }
+      .actor-stat-label { font-size: 0.6rem; color: #8e8e93; font-weight: 500; letter-spacing: 0.03em; }
+      .actor-stat-item .num { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.015em; }
+      .actor-price { padding: 6px 10px; border-radius: 10px; background: rgba(0,179,136,0.04); }
+      .actor-price-label { font-size: 0.7rem; color: #8e8e93; }
+      .actor-price-value { font-size: 0.95rem; font-weight: 700; }
       .card-actions .button-secondary,
-      .card-actions .actor-mint-btn { padding: 10px 12px; font-size: 0.82rem; }
+      .card-actions .actor-mint-btn { padding: 10px 14px; font-size: 0.82rem; font-weight: 600; border-radius: 12px; background: linear-gradient(135deg, #00b388, #00c89a); box-shadow: 0 2px 6px rgba(0,179,136,0.16); transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+      .card-actions .button-secondary:active,
+      .card-actions .actor-mint-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(0,179,136,0.1); }
       .card-actions-soldout { gap: 6px; }
       .card-actions-soldout .floor-price-tag { padding: 2px 8px 2px 0; }
-      .card-actions-soldout .actor-trade-btn { padding: 10px 12px; font-size: 0.82rem; }
+      .card-actions-soldout .floor-price-tag .fpt-label { font-size: 0.62rem; color: #8e8e93; }
+      .card-actions-soldout .floor-price-tag .fpt-value { font-size: 0.88rem; }
+      .card-actions-soldout .actor-trade-btn { padding: 10px 14px; font-size: 0.82rem; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 2px 6px rgba(245,158,11,0.16); transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+      .card-actions-soldout .actor-trade-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(245,158,11,0.1); }
       .banner-bottom-badges { left: 8px; right: 8px; bottom: 8px; }
-      .badge { font-size: 0.7rem; padding: 4px 8px; }
-      .badge-issuance-corner { top: 8px; left: 8px; }
+      .badge { font-size: 0.66rem; padding: 4px 8px; border-radius: 999px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+      .badge-issuance-corner { top: 10px; left: 10px; }
       .mint-modal-overlay { padding: 12px; align-items: flex-end; }
       .mint-modal { border-radius: 24px 24px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
       .mint-modal-overlay.active .mint-modal { transform: translateY(0); }
       .mint-modal-body { padding: 18px 18px 22px; gap: 14px; }
       .mint-modal-header h2 { font-size: 0.9rem; }
-      .mint-modal-actor-name { font-size: 1.25rem; }
-      .mint-price-bar { padding: 16px 14px 14px; }
-      .mpb-price-value { font-size: 1.4rem; }
+      .mint-modal-actor-name { font-size: 1.2rem; }
+      .mint-price-bar { padding: 14px 14px 14px; border-radius: 14px; }
+      .mpb-price-value { font-size: 1.35rem; }
       .mint-slippage-notice { font-size: 0.72rem; }
-      .mint-modal-footer .mint-btn { padding: 14px; font-size: 0.95rem; }
+      .mint-modal-footer .mint-btn { padding: 14px; font-size: 0.95rem; border-radius: 14px; }
       .mint-modal-success { padding: 36px 20px 24px; }
-      .price-tooltip-box { padding: 20px 16px 16px; max-width: 100%; }
-      .stat-tooltip-box { padding: 20px 16px 16px; }
+      .price-tooltip-box { padding: 20px 16px 16px; max-width: 100%; border-radius: 20px; }
+      .stat-tooltip-box { padding: 20px 16px 16px; border-radius: 20px; }
       .auth-modal { border-radius: 24px 24px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-top: auto; max-width: 100%; }
       .auth-modal-overlay { align-items: flex-end; }
       .auth-modal-header { padding: 28px 20px 16px; }
       .auth-modal-body { padding: 8px 20px 24px; }
-      .auth-toast { top: 12px; max-width: 90%; font-size: 0.82rem; padding: 10px 18px; }
+      .auth-toast { top: 12px; max-width: 90%; font-size: 0.82rem; padding: 10px 18px; border-radius: 14px; }
     }
-    @media (max-width: 480px) {
+
+    /* ═══ 手机：单列 + 全高侧边头像卡片 (< 600px) ═══ */
+    @media (max-width: 599px) {
+      .grid-3 { grid-template-columns: 1fr; gap: 12px; }
       .app-shell { padding: 12px; }
+      .page-header { display: none; }
       .page-header-left h1 { font-size: 1.35rem; }
-      .card-banner { height: 200px; }
+      .page-header-left p { font-size: 0.85rem; }
+      .page-header-actions { width: 100%; }
+      .btn-primary { width: 100%; justify-content: center; padding: 12px 20px; }
+      .search-wrapper { margin-bottom: 12px; cursor: pointer; }
+      .search-input { font-size: 16px; padding: 12px 16px 12px 38px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.04); cursor: pointer; caret-color: transparent; color: var(--text-muted); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2386868b' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='M21 21l-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 12px center; pointer-events: auto; }
+      .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0,179,136,.1); outline: none; }
+      .search-dropdown { display: none !important; }
+      .sort-container { gap: 6px; margin-bottom: 12px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .sort-container::-webkit-scrollbar { display: none; }
+      .sort-tag { font-size: 0.78rem; padding: 6px 12px; white-space: nowrap; flex-shrink: 0; }
+
+      /* ── 卡片容器：overflow hidden + 全高侧边头像 ── */
+      .card {
+        position: relative;
+        flex-direction: row;
+        align-items: stretch;
+        overflow: hidden;
+        border-radius: 16px;
+        gap: 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+        border: 0.5px solid rgba(0,0,0,0.05);
+        background: var(--surface);
+        min-height: 130px;
+      }
+      .card:hover { transform: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03); }
+      .card:hover .actor-avatar img { transform: none; }
+      .card:active { transform: scale(0.985); transition: transform 0.15s ease; }
+
+      /* 头像：绝对定位，全高贴左侧边缘 */
+      .card-banner {
+        position: absolute;
+        top: 0; bottom: 0; left: 0;
+        width: 140px;
+        height: 100%;
+        flex-shrink: 0;
+        margin: 0;
+        border-radius: 0;
+      }
+      .card-banner::after { display: none; }
+      .actor-avatar {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        overflow: hidden;
+      }
+      .actor-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+      }
+
+      /* 隐藏 banner bottom badges */
+      .banner-bottom-badges { display: none; }
+
+      /* 发行标识：贴紧卡片左上角，零间距 */
+      .badge-issuance-corner {
+        display: block;
+        top: 0;
+        left: 0;
+        z-index: 3;
+      }
+      .badge-issuance-corner .badge {
+        padding: 3px 8px;
+        font-size: 0.55rem;
+        font-weight: 600;
+        border-radius: 0;
+        backdrop-filter: blur(6px);
+      }
+      .badge-issuance-corner .badge.badge-issuance.official { background: #34C759; color: #fff; }
+      .badge-issuance-corner .badge.badge-issuance.partner { background: #007AFF; color: #fff; }
+      .badge-issuance-corner .badge.badge-issuance.certified { background: #FF9500; color: #fff; }
+      .badge-issuance-corner .badge.badge-issuance.community { background: linear-gradient(135deg, #8E8E93, #636366); color: #fff; }
+
+      /* ── 右侧信息区 (margin-left 避开头像) ── */
+      .card-body {
+        flex: 1;
+        min-width: 0;
+        margin-left: 140px;
+        padding: 12px 14px 12px 14px;
+        gap: 4px;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+      }
+      .card-body > div:first-child {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: nowrap;
+      }
+      .card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.2;
+        flex-shrink: 0;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+      .card-body .card-ip-code {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #8e8e93;
+        background: rgba(0,0,0,0.02);
+        padding: 2px 6px;
+        border-radius: 5px;
+        white-space: nowrap;
+        letter-spacing: 0.04em;
+        flex-shrink: 0;
+      }
+
+      .card p { display: none; }
+
+      /* 统计行 — 简洁内联 */
+      .actor-stats {
+        gap: 0;
+        margin-top: 0;
+        align-items: baseline;
+      }
+      .actor-stat-item {
+        padding: 0;
+        border-radius: 0;
+        background: none;
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 2px;
+      }
+      .actor-stat-item:first-child::after {
+        content: '·';
+        margin: 0 8px;
+        color: #c7c7cc;
+        font-weight: 400;
+        font-size: 0.7rem;
+      }
+      .actor-stat-label { font-size: 0.65rem; color: #8e8e93; font-weight: 500; letter-spacing: 0.02em; }
+      .actor-stat-item .num { font-size: 0.92rem; font-weight: 700; color: var(--text); letter-spacing: -0.015em; font-variant-numeric: tabular-nums; }
+
+      /* 价格 + 按钮区 — 隐藏原价格行，用 .card-bottom-price 同行显示 */
+      .actor-price {
+        display: none;
+      }
+      .card-bottom {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .card-bottom .card-actions {
+        flex: 0 0 auto;
+        min-width: 0;
+      }
+      .card-bottom-price {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #00b388;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .card-actions {
+        display: flex;
+      }
+      .card-actions .button-secondary,
+      .card-actions .actor-mint-btn {
+        padding: 9px 16px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 10px;
+        flex: none;
+        white-space: nowrap;
+        background: linear-gradient(135deg, #00b388, #00c89a);
+        box-shadow: 0 2px 6px rgba(0,179,136,0.16);
+        transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .card-actions .button-secondary:active,
+      .card-actions .actor-mint-btn:active {
+        transform: scale(0.97);
+        box-shadow: 0 1px 3px rgba(0,179,136,0.1);
+      }
+
+      /* 已售罄 — 地板价已在价格位置显示 */
+      .card-actions-soldout {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        gap: 8px;
+        align-items: center;
+      }
+      .card-actions-soldout .floor-price-tag { display: none; }
+      .card-actions-soldout .floor-price-tag .fpt-label {
+        font-size: 0.62rem;
+        color: #8e8e93;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+      .card-actions-soldout .floor-price-tag .fpt-value {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+      }
+      .card-actions-soldout .actor-trade-btn {
+        padding: 9px 16px;
+        font-size: 0.85rem;
+        border-radius: 10px;
+        flex: none;
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        box-shadow: 0 2px 6px rgba(245,158,11,0.16);
+        transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .card-actions-soldout .actor-trade-btn:active {
+        transform: scale(0.97);
+        box-shadow: 0 1px 3px rgba(245,158,11,0.1);
+      }
+
+      /* 清理 JS 注入的 card-left-col */
+      .card-left-col { display: contents; }
+      .card-left-col .card-banner { margin: 0; }
+      .card-issuance-tag-below { display: none; }
+
+      /* Modal */
+      .mint-modal-overlay { padding: 0; align-items: flex-end; }
+      .mint-modal { border-radius: 20px 20px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+      .mint-modal-overlay.active .mint-modal { transform: translateY(0); }
       .mint-modal-hero { aspect-ratio: 16 / 10; }
-      .mint-modal-actor-name { font-size: 1.15rem; }
+      .mint-modal-body { padding: 18px 18px 22px; gap: 14px; }
+      .mint-modal-header h2 { font-size: 0.88rem; color: #8e8e93; }
+      .mint-modal-actor-name { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
+      .mint-price-bar { padding: 16px 14px 14px; border-radius: 14px; background: rgba(0,0,0,0.015); }
+      .mpb-price-value { font-size: 1.4rem; }
       .mpb-price-row { margin-bottom: 16px; }
+      .mint-slippage-notice { font-size: 0.7rem; color: #8e8e93; }
+      .mint-modal-footer .mint-btn { padding: 14px; font-size: 0.95rem; border-radius: 14px; font-weight: 700; }
+      .mint-modal-footer .mint-btn.primary { background: linear-gradient(135deg, #00b388, #00c89a); }
+      .mint-modal-footer .mint-btn.primary:active { transform: scale(0.97); }
+      .mint-modal-footer .mint-btn.secondary { color: #8e8e93; }
+      .mint-modal-success { padding: 36px 20px 24px; }
+      .price-tooltip-box { padding: 22px 18px 18px; max-width: 100%; border-radius: 20px; }
+      .stat-tooltip-box { padding: 22px 18px 18px; border-radius: 20px; }
+      .auth-modal { border-radius: 20px 20px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-top: auto; max-width: 100%; }
+      .auth-modal-overlay { align-items: flex-end; }
+      .auth-modal-header { padding: 28px 20px 16px; }
+      .auth-modal-body { padding: 8px 20px 24px; }
+      .auth-toast { top: 12px; max-width: 90%; font-size: 0.82rem; padding: 10px 18px; border-radius: 14px; }
     }
   </style>
 </head>
@@ -1055,7 +1325,7 @@
             <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="演员 Luna" />
           </div>
           <div class="badge-issuance-corner">
-            <span class="badge badge-issuance official">⭐ 官方发行</span>
+            <span class="badge badge-issuance official">官方</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 storyfun_labs</span>
@@ -1065,6 +1335,7 @@
         <div class="card-body">
           <div>
             <h3>Luna</h3>
+            <span class="card-ip-code">C001</span>
             <p>未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。</p>
           </div>
           <div class="actor-stats">
@@ -1075,7 +1346,8 @@
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 已售罄</span>
             <span class="actor-price-value">10 USDC</span>
           </div>
-          <div class="card-bottom" style="margin-top:8px">
+          <div class="card-bottom">
+            <span class="card-bottom-price">10 USDC</span>
             <div class="card-actions">
               <button class="button-secondary actor-mint-btn" data-actor="Luna" data-total-supply="5000" data-minted="5000" data-available="0" data-price="10 USDC" data-creator="storyfun_labs">签约</button>
             </div>
@@ -1091,7 +1363,7 @@
             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80" alt="演员 苏婉清" />
           </div>
           <div class="badge-issuance-corner">
-            <span class="badge badge-issuance official">⭐ 官方发行</span>
+            <span class="badge badge-issuance official">官方</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 wanqing_studio</span>
@@ -1101,6 +1373,7 @@
         <div class="card-body">
           <div>
             <h3>苏婉清</h3>
+            <span class="card-ip-code">C002</span>
             <p>温婉端庄，琴棋书画样样精通，举止间尽显大家闺秀风范。</p>
           </div>
           <div class="actor-stats">
@@ -1111,7 +1384,8 @@
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
             <span class="actor-price-value">10 USDC</span>
           </div>
-          <div class="card-bottom" style="margin-top:8px">
+          <div class="card-bottom">
+            <span class="card-bottom-price">10 USDC</span>
             <div class="card-actions">
               <button class="button-secondary actor-mint-btn" data-actor="苏婉清" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="wanqing_studio">签约</button>
             </div>
@@ -1127,7 +1401,7 @@
             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="演员 李云飞" />
           </div>
           <div class="badge-issuance-corner">
-            <span class="badge badge-issuance partner">🤝 合作方发行</span>
+            <span class="badge badge-issuance partner">合作</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 feige_labs</span>
@@ -1137,6 +1411,7 @@
         <div class="card-body">
           <div>
             <h3>李云飞</h3>
+            <span class="card-ip-code">C003</span>
             <p>身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。</p>
           </div>
           <div class="actor-stats">
@@ -1147,7 +1422,8 @@
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 7,500 个</span>
             <span class="actor-price-value">8 USDC</span>
           </div>
-          <div class="card-bottom" style="margin-top:8px">
+          <div class="card-bottom">
+            <span class="card-bottom-price">8 USDC</span>
             <div class="card-actions">
               <button class="button-secondary actor-mint-btn" data-actor="李云飞" data-total-supply="8000" data-minted="500" data-available="7500" data-price="8 USDC" data-creator="feige_labs">签约</button>
             </div>
@@ -1163,7 +1439,7 @@
             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" alt="演员 林梦瑶" />
           </div>
           <div class="badge-issuance-corner">
-            <span class="badge badge-issuance partner">🤝 合作方发行</span>
+            <span class="badge badge-issuance partner">合作</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 mengyao_art</span>
@@ -1173,6 +1449,7 @@
         <div class="card-body">
           <div>
             <h3>林梦瑶</h3>
+            <span class="card-ip-code">C004</span>
             <p>聪慧机敏，擅长推理分析，拥有敏锐的洞察力。</p>
           </div>
           <div class="actor-stats">
@@ -1183,7 +1460,8 @@
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
             <span class="actor-price-value">10 USDC</span>
           </div>
-          <div class="card-bottom" style="margin-top:8px">
+          <div class="card-bottom">
+            <span class="card-bottom-price">10 USDC</span>
             <div class="card-actions">
               <button class="button-secondary actor-mint-btn" data-actor="林梦瑶" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="mengyao_art">签约</button>
             </div>
@@ -1199,7 +1477,7 @@
             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80" alt="演员 赵无极" />
           </div>
           <div class="badge-issuance-corner">
-            <span class="badge badge-issuance certified">✓ 认证创作者发行</span>
+            <span class="badge badge-issuance certified">认证</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 wuji_art</span>
@@ -1209,6 +1487,7 @@
         <div class="card-body">
           <div>
             <h3>赵无极</h3>
+            <span class="card-ip-code">C005</span>
             <p>深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。</p>
           </div>
           <div class="actor-stats">
@@ -1219,7 +1498,8 @@
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 5,500 个</span>
             <span class="actor-price-value">15 USDC</span>
           </div>
-          <div class="card-bottom" style="margin-top:8px">
+          <div class="card-bottom">
+            <span class="card-bottom-price">15 USDC</span>
             <div class="card-actions">
               <button class="button-secondary actor-mint-btn" data-actor="赵无极" data-total-supply="6000" data-minted="500" data-available="5500" data-price="15 USDC" data-creator="wuji_art">签约</button>
             </div>
@@ -1235,7 +1515,7 @@
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="演员 上官婉儿" />
           </div>
           <div class="badge-issuance-corner">
-            <span class="badge badge-issuance community">🌐 社区发行</span>
+            <span class="badge badge-issuance community">社区</span>
           </div>
           <div class="banner-bottom-badges">
             <span class="badge">发行者 palace_studio</span>
@@ -1245,6 +1525,7 @@
         <div class="card-body">
           <div>
             <h3>上官婉儿</h3>
+            <span class="card-ip-code">C006</span>
             <p>才情横溢，精通诗词歌赋，智慧与美貌并重。</p>
           </div>
           <div class="actor-stats">
@@ -1255,7 +1536,8 @@
             <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 10,000 个</span>
             <span class="actor-price-value">12 USDC</span>
           </div>
-          <div class="card-bottom" style="margin-top:8px">
+          <div class="card-bottom">
+            <span class="card-bottom-price">12 USDC</span>
             <div class="card-actions">
               <button class="button-secondary actor-mint-btn" data-actor="上官婉儿" data-total-supply="12000" data-minted="2000" data-available="10000" data-price="12 USDC" data-creator="palace_studio">签约</button>
             </div>
@@ -1600,18 +1882,20 @@
       }
 
       function applySoldoutCard(card) {
+        const priceValueEl = card.querySelector('.actor-price-value');
         const actionsEl = card.querySelector('.card-actions');
         if (!actionsEl) return;
         const actorName = card.dataset.actor || card.querySelector('h3')?.textContent || '';
         const priceStr = card.dataset.price || '10 USDC';
-        const floorPrice = priceStr;
+
+        // 将价格替换为地板价
+        if (priceValueEl) {
+          priceValueEl.textContent = priceStr;
+        }
+
         actionsEl.innerHTML = `
           <div class="card-actions-soldout">
-            <div class="floor-price-tag">
-              <span class="fpt-label">地板价</span>
-              <span class="fpt-value">${floorPrice}</span>
-            </div>
-            <button class="actor-trade-btn" data-actor="${actorName}">去交易</button>
+            <button class="actor-trade-btn" data-actor="${actorName}">交易</button>
           </div>
         `;
         const tradeBtn = actionsEl.querySelector('.actor-trade-btn');
