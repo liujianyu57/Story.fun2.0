@@ -125,7 +125,8 @@
     /* Cover upload */
     .cover-upload { position: relative; border: 2px dashed var(--border); border-radius: 18px; padding: 40px 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #f8fbff; }
     .cover-upload:hover { border-color: var(--accent); background: var(--accent-soft); }
-    .cover-upload .upload-icon { font-size: 2.4rem; color: var(--text-muted); margin-bottom: 12px; }
+    .cover-upload .upload-icon { color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; justify-content: center; }
+    .cover-upload .upload-icon svg { width: 40px; height: 40px; }
     .cover-upload p { color: var(--text-muted); font-size: 0.95rem; }
     .cover-upload p strong { color: var(--accent); }
 
@@ -315,7 +316,308 @@
     /* Responsive */
     @media (max-width: 1200px) { .char-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 900px) { .form-row, .form-row.three { grid-template-columns: 1fr; } .steps-bar { border-radius: var(--radius); flex-wrap: nowrap; } .char-grid { grid-template-columns: repeat(2, 1fr); } .pricing-panel { padding: 20px; } }
-    @media (max-width: 680px) { .form-panel-body, .form-panel-header, .form-panel-footer { padding-left: 20px; padding-right: 20px; } .char-grid { grid-template-columns: 1fr; } .char-panel-header { flex-direction: column; align-items: stretch; gap: 12px; } }
+    @media (max-width: 680px) {
+      /* ── Apple 设计：背景色 ── */
+      body { background: #F2F2F7; padding-bottom: 80px; }
+
+      /* ── 隐藏无用标题 ── */
+      .page-header { display: none; }
+
+      /* ── 全局紧凑 ── */
+      .app-shell { padding: 0; }
+
+      /* ── 步骤条：Apple 风格 sticky header ── */
+      .steps-bar {
+        margin-bottom: 0;
+        border-radius: 0;
+        padding: 12px 20px;
+        gap: 10px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255,255,255,0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: none;
+        border-bottom: 0.33px solid rgba(0,0,0,0.10);
+        box-shadow: none;
+      }
+      .step-item { gap: 8px; }
+      .step-item .step-circle {
+        width: 28px; height: 28px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.06);
+        color: var(--text-muted);
+      }
+      .step-item.active .step-circle { background: var(--accent); color: #fff; }
+      .step-item.active .step-label { color: #000; font-weight: 600; }
+      .step-item.done .step-circle { background: #34C759; color: #fff; }
+      .step-item.done .step-label { color: #34C759; }
+      .step-item .step-label { font-size: 0.82rem; font-weight: 500; color: #8E8E93; }
+      .step-item.inactive .step-circle { background: rgba(0,0,0,0.04); color: #C7C7CC; }
+      .step-item.inactive .step-label { color: #C7C7CC; }
+
+      /* ── 表单面板：Apple 风格卡片 ── */
+      .form-panel {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        margin-top: 0;
+        background: transparent;
+      }
+      .form-panel-header { display: none; }
+      .form-panel-body {
+        padding: 20px 20px 20px;
+      }
+      .form-panel-footer {
+        padding: 16px 20px 24px;
+        flex-direction: column;
+        gap: 12px;
+        border-top: none;
+        background: transparent;
+      }
+      .form-panel-footer .button,
+      .form-panel-footer .button-ghost,
+      .form-panel-footer .button-outline {
+        width: 100%;
+        justify-content: center;
+        height: 50px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      /* ── 表单字段：Apple 风格输入框 ── */
+      .form-row { gap: 16px; margin-bottom: 16px; }
+      .form-group label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #6C6C70;
+        text-transform: none;
+        letter-spacing: 0;
+        padding-left: 4px;
+      }
+      .form-group label .hint { color: #AEAEB2; }
+      .form-group input[type="text"],
+      .form-group input[type="number"],
+      .form-group select,
+      .form-group textarea {
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        border: none;
+        background: #fff;
+        color: #000;
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+        transition: box-shadow 0.2s ease;
+        -webkit-appearance: none;
+      }
+      .form-group input[type="text"]:focus,
+      .form-group input[type="number"]:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: transparent;
+        box-shadow: 0 0 0 3px rgba(0,179,136,0.18), 0 0 0 1px rgba(0,179,136,0.25);
+      }
+      .form-group textarea { min-height: 80px; }
+
+      /* ── 封面上传：简化小框 ── */
+      .cover-upload {
+        width: 80px;
+        height: 80px;
+        padding: 0;
+        border-radius: 14px;
+        border: 2px dashed rgba(0,0,0,0.12);
+        background: rgba(255,255,255,0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cover-upload .upload-icon {
+        width: 28px;
+        height: 28px;
+        color: #AEAEB2;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cover-upload .upload-icon svg {
+        width: 28px;
+        height: 28px;
+      }
+      .cover-upload p { display: none; }
+
+      /* ── 标签：Apple Music 胶囊风格 ── */
+      .tag-options { gap: 10px; }
+      .tag-option {
+        padding: 9px 18px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border-radius: 999px;
+        border: none;
+        background: #fff;
+        color: #3C3C43;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        transition: all 0.2s ease;
+      }
+      .tag-option.selected {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(0,179,136,0.25);
+      }
+      .tag-option:hover { transform: scale(1.03); }
+
+      /* ── 视频上传区：Apple 风格 ── */
+      .batch-upload-zone {
+        padding: 32px 20px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+        border: 2px dashed rgba(0,0,0,0.12);
+        background: rgba(255,255,255,0.6);
+      }
+      .batch-upload-zone .upload-icon { font-size: 2.2rem; color: #8E8E93; margin-bottom: 10px; }
+      .batch-upload-zone p { font-size: 0.85rem; color: #8E8E93; }
+      .batch-upload-hint { gap: 16px; }
+      .batch-upload-hint span { font-size: 0.72rem; color: #AEAEB2; }
+      .upload-item {
+        padding: 12px 14px;
+        gap: 12px;
+        border-radius: 14px;
+        border: none;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        transition: box-shadow 0.2s;
+      }
+      .upload-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      .upload-item .thumb { width: 44px; height: 44px; border-radius: 12px; }
+      .upload-item .info .name { font-size: 0.88rem; font-weight: 600; }
+      .upload-item .info .meta { font-size: 0.74rem; gap: 10px; }
+      .upload-item .title-edit input { font-size: 0.85rem; width: 120px; border-radius: 10px; }
+
+      /* ── 角色卡片：Apple 风格 ── */
+      .char-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 20px; }
+      .char-panel-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 0 0 14px;
+        margin: 0 20px 20px;
+        border-bottom: 0.33px solid rgba(0,0,0,0.10);
+      }
+      .char-panel-header h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .char-card {
+        border: none;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        overflow: hidden;
+      }
+      .char-card .char-avatar-area { height: 130px; }
+      .char-card .char-body { padding: 16px 18px 18px; }
+      .char-card .char-name { font-size: 1rem; font-weight: 600; }
+      .char-card .char-desc { font-size: 0.8rem; color: #8E8E93; margin-bottom: 12px; }
+      .char-card.add-card {
+        min-height: 200px;
+        border: 2px dashed rgba(0,0,0,0.10);
+        background: rgba(255,255,255,0.5);
+        box-shadow: none;
+      }
+      .char-add-btn {
+        font-size: 0.88rem;
+        padding: 8px 18px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .char-bind-btn {
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        border: none;
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+      .char-bind-btn.bound {
+        background: rgba(52,199,89,0.08);
+        color: #34C759;
+      }
+      .char-action-btn {
+        padding: 8px 14px;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        border: none;
+        background: rgba(0,0,0,0.04);
+        color: #3C3C43;
+      }
+      .char-action-btn.danger { color: #FF3B30; }
+
+      /* ── 角色提示文字 ── */
+      .char-panel-header + div { font-size: 0.78rem !important; padding: 0 20px 16px !important; color: #8E8E93 !important; }
+
+      /* ── 按钮：Apple 风格 ── */
+      .button {
+        padding: 0 24px;
+        height: 50px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 14px;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: none;
+        letter-spacing: -0.01em;
+      }
+      .button:hover { transform: none; box-shadow: 0 4px 12px rgba(0,179,136,0.25); }
+      .button-secondary {
+        height: 50px;
+        border-radius: 14px;
+        font-weight: 600;
+      }
+      .button-ghost {
+        height: 50px;
+        border-radius: 14px;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .button-outline {
+        height: 50px;
+        border-radius: 14px;
+        font-weight: 600;
+        border: 1px solid rgba(0,0,0,0.12);
+        color: #3C3C43;
+      }
+      .char-add-btn { font-size: 0.85rem; padding: 6px 14px; }
+
+      /* ── 上传队列 ── */
+      .upload-queue-header { padding: 10px 0; }
+      .upload-queue-header h4 { font-size: 0.95rem; font-weight: 600; }
+      .batch-toolbar { padding: 12px 0; }
+      .upload-queue-empty { padding: 40px 16px; color: #8E8E93; }
+
+      /* ── Modal 优化 ── */
+      .char-modal {
+        border-radius: 20px 20px 0 0;
+        max-width: 100%;
+        margin: 0;
+      }
+      .char-modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+      .char-modal-body { padding: 12px 24px 20px; }
+      .char-modal-header { padding: 20px 24px 14px; }
+      .char-modal-footer { padding: 14px 24px 24px; }
+    }
   </style>
 </head>
 <body>
@@ -366,7 +668,7 @@
           <div class="form-group">
             <label>封面图</label>
             <div class="cover-upload">
-              <div class="upload-icon">🖼️</div>
+              <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
               <p>点击或拖拽上传封面图<br /><strong>支持 JPG、PNG，建议比例 6:5</strong></p>
             </div>
           </div>

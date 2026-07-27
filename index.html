@@ -67,39 +67,41 @@
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
     /* ============================================================
-       首页特有：Header 透明化（banner 背景透出）
+       首页特有：Header 透明化（banner 背景透出）— 仅 Web 端
        ============================================================ */
-    .story-header-wrapper {
-      position: relative;
-      z-index: 10;
-    }
-    .story-header-wrapper .header {
-      background: rgba(10, 20, 35, 0.45) !important;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 0.5px solid rgba(255,255,255,0.10) !important;
-    }
-    .story-header-wrapper .nav-link { color: rgba(255,255,255,0.80) !important; }
-    .story-header-wrapper .nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.10) !important; }
-    .story-header-wrapper .nav-link.active { color: #00d4a3 !important; }
-    .story-header-wrapper .search-btn { color: rgba(255,255,255,0.75) !important; }
-    .story-header-wrapper .search-btn:hover { background: rgba(255,255,255,0.08) !important; }
-    .story-header-wrapper .search-btn svg * { stroke: rgba(255,255,255,0.75); }
-    .story-header-wrapper .auth-login-btn {
-      border-color: rgba(255,255,255,0.25) !important;
-      background: rgba(255,255,255,0.12) !important;
-      color: #fff !important;
-    }
-    .story-header-wrapper .auth-login-btn:hover {
-      background: rgba(255,255,255,0.20) !important;
-      border-color: var(--accent) !important;
-    }
-    .story-header-wrapper .hamburger-btn svg path { stroke: #fff; }
-    .story-header-wrapper .brand-text {
-      background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    @media (min-width: 769px) {
+      .story-header-wrapper {
+        position: relative;
+        z-index: 10;
+      }
+      .story-header-wrapper .header {
+        background: rgba(10, 20, 35, 0.45) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 0.5px solid rgba(255,255,255,0.10) !important;
+      }
+      .story-header-wrapper .nav-link { color: rgba(255,255,255,0.80) !important; }
+      .story-header-wrapper .nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.10) !important; }
+      .story-header-wrapper .nav-link.active { color: #00d4a3 !important; }
+      .story-header-wrapper .search-btn { color: rgba(255,255,255,0.75) !important; }
+      .story-header-wrapper .search-btn:hover { background: rgba(255,255,255,0.08) !important; }
+      .story-header-wrapper .search-btn svg * { stroke: rgba(255,255,255,0.75); }
+      .story-header-wrapper .auth-login-btn {
+        border-color: rgba(255,255,255,0.25) !important;
+        background: rgba(255,255,255,0.12) !important;
+        color: #fff !important;
+      }
+      .story-header-wrapper .auth-login-btn:hover {
+        background: rgba(255,255,255,0.20) !important;
+        border-color: var(--accent) !important;
+      }
+      .story-header-wrapper .hamburger-btn svg path { stroke: #fff; }
+      .story-header-wrapper .brand-text {
+        background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
     }
 
     /* ============================================================
@@ -623,6 +625,56 @@
 
     @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(2, minmax(0,1fr)); } }
     @media (max-width: 760px) {
+      /* ── 移动端浅色模式 ── */
+      :root {
+        --bg: #f7fbff;
+        --surface: #ffffff;
+        --accent: #00b388;
+        --accent-soft: rgba(0, 179, 136, 0.12);
+        --text: #1a232f;
+        --text-muted: #657586;
+        --border: #deeaf7;
+      }
+      body { background: var(--bg); color: var(--text); }
+      .card { background: var(--surface); box-shadow: 0 2px 12px rgba(27,45,71,0.06); border: 1px solid var(--border); }
+      .card:hover { box-shadow: 0 4px 20px rgba(27,45,71,0.10); }
+      .card-foot { border-top: 1px solid var(--border); }
+      .card-body p { color: var(--text-muted); }
+      .card-actors { border-top: 1px solid var(--border); }
+      .card-actor-name { color: var(--text-muted); }
+      .card-actor-avatar { border-color: var(--border); }
+      .info-row { color: var(--text-muted); }
+      .episode { background: rgba(0,0,0,0.04); color: var(--text-muted); }
+      .badge { background: var(--accent-soft); color: var(--accent); }
+      .search-box { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+      .filter-tag { background: var(--surface); color: var(--text-muted); }
+      .filter-tag.active { background: var(--accent); color: #fff; }
+      .top-search-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        margin-bottom: 0;
+        padding: 11px 16px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-muted);
+        font-size: 15px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        position: relative;
+        z-index: 1;
+      }
+      .top-search-bar svg { flex-shrink: 0; color: var(--text-muted); }
+      .top-search-bar span { flex: 1; font-family: "PingFang SC", "Segoe UI", Roboto, sans-serif; font-weight: 400; }
+      .top-search-bar:active { background: rgba(0,0,0,0.03); }
+      #noResults { background: var(--surface); border-color: var(--border); }
+      #noResults h3 { color: var(--text); }
+      #noResults p { color: var(--text-muted); }
+      .hero-panel h2 { color: var(--text); }
+      .hero-panel p { color: var(--text-muted); }
+
       .app-shell { padding: 20px 16px 32px; }
       .featured-wrapper { display: none; }
       .featured-section { padding: 0 16px; min-height: 500px; }
@@ -649,38 +701,6 @@
       .gallery .card { min-height: auto; }
 
       /* ── 顶部搜索栏 (移动端) ── */
-      .top-search-bar {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 14px;
-        margin-bottom: 0;
-        padding: 11px 16px;
-        background: rgba(255,255,255,0.10);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 12px;
-        color: rgba(255,255,255,0.55);
-        font-size: 15px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-        -webkit-tap-highlight-color: transparent;
-        position: relative;
-        z-index: 1;
-      }
-      .top-search-bar:active {
-        background: rgba(255,255,255,0.18);
-      }
-      .top-search-bar svg {
-        flex-shrink: 0;
-        color: rgba(255,255,255,0.45);
-      }
-      .top-search-bar span {
-        flex: 1;
-        font-family: "PingFang SC", "Segoe UI", Roboto, sans-serif;
-        font-weight: 400;
-      }
 
       /* 隐藏原搜索框 */
       .search-container { display: none; }
