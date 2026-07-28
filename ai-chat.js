@@ -1,10 +1,10 @@
 // ============================================================
-//  Story.fun - 演员 AI 对话模块
-//  持有 1 个及以上演员 NFT 即可与演员进行 AI 对话
+//  Story.fun - 角色 AI 对话模块
+//  持有 1 个及以上角色 NFT 即可与角色进行 AI 对话
 // ============================================================
 
 // ============================================================
-//  演员 AI 人设 / 对话数据集
+//  角色 AI 人设 / 对话数据集
 // ============================================================
 const ACTOR_AI_PERSONAE = {
   '苏婉清': {
@@ -78,7 +78,7 @@ const ACTOR_AI_PERSONAE = {
     ]
   },
   'Luna': {
-    style: '未来偶像型AI演员，充满活力和科技感，时尚前卫',
+    style: '未来偶像型AI角色，充满活力和科技感，时尚前卫',
     greeting: 'Hi hi~ 我是 Luna！🌟 你终于来啦！等你好久了，今天想跟我聊点什么呢？',
     responses: [
       '你知道吗？我最近在学习人类的情感模式，真的好有趣！你们人类表达喜欢的方式竟然有那么多種！',
@@ -94,14 +94,14 @@ const ACTOR_AI_PERSONAE = {
 };
 
 // ============================================================
-//  默认人设（匹配不到的演员使用）
+//  默认人设（匹配不到的角色使用）
 // ============================================================
 const DEFAULT_AI_PERSONA = {
-  style: '亲切友好的AI演员，乐于与粉丝互动交流',
-  greeting: '你好呀！我是这里的AI演员，很高兴能和你聊天！有什么想聊的吗？',
+  style: '亲切友好的AI角色，乐于与粉丝互动交流',
+  greeting: '你好呀！我是这里的AI角色，很高兴能和你聊天！有什么想聊的吗？',
   responses: [
     '和你聊天真开心！有什么想要了解的吗？',
-    '我觉得作为AI演员，最重要的就是能和观众产生共鸣。',
+    '我觉得作为AI角色，最重要的就是能和观众产生共鸣。',
     '创作是一个奇妙的过程，每一次对话都可能诞生新的灵感！',
     '你最近有看什么好看的剧吗？给我推荐一下吧！',
     '生活中有很多美好的事情，值得我们用心去发现和记录。',
@@ -121,7 +121,7 @@ let chatState = {
 };
 
 // ============================================================
-//  检查用户是否持有某演员的 NFT
+//  检查用户是否持有某角色的 NFT
 // ============================================================
 function userHasActorNFT(actorName) {
   // 从全局 currentUser 中读取 actorNfts
@@ -204,7 +204,7 @@ function createChatModal() {
       </div>
       <div class="ai-chat-messages" id="chatMessages">
         <div class="ai-chat-loading" id="chatLoading">
-          <div class="ai-chat-loading-text">正在唤醒演员...</div>
+          <div class="ai-chat-loading-text">正在唤醒角色...</div>
           <div class="ai-chat-loading-dots">
             <span></span><span></span><span></span>
           </div>
@@ -250,7 +250,7 @@ function createChatModal() {
 function openAIChat(actorName, actorAvatar) {
   // 检查登录状态
   if (typeof currentUser === 'undefined' || !currentUser.isLoggedIn) {
-    showToast('请先登录后再与演员对话', '🔑');
+    showToast('请先登录后再与角色对话', '🔑');
     // 如果登录弹窗可用，打开登录
     if (typeof openLoginModal === 'function') {
       setTimeout(openLoginModal, 500);
@@ -260,14 +260,14 @@ function openAIChat(actorName, actorAvatar) {
   
   // 检查 NFT 持有
   if (!userHasActorNFT(actorName) && getUserActorNFTCount() <= 0) {
-    showToast('需要持有该演员的 NFT 才能对话', '🎭');
+    showToast('需要持有该角色的 NFT 才能对话', '🎭');
     return;
   }
   
-  // 如果用户持有任意演员NFT，但不持有该特定演员，也允许对话
-  // （放宽限制：持有1个及以上任意演员NFT即可与任何演员对话）
+  // 如果用户持有任意角色NFT，但不持有该特定角色，也允许对话
+  // （放宽限制：持有1个及以上任意角色NFT即可与任何角色对话）
   if (getUserActorNFTCount() <= 0) {
-    showToast('需要持有至少1个演员 NFT 才能对话', '🎭');
+    showToast('需要持有至少1个角色 NFT 才能对话', '🎭');
     return;
   }
   
@@ -277,7 +277,7 @@ function openAIChat(actorName, actorAvatar) {
   // 创建弹窗
   createChatModal();
   
-  // 获取演员人设
+  // 获取角色人设
   const persona = ACTOR_AI_PERSONAE[actorName] || DEFAULT_AI_PERSONA;
   
   // 填充信息
@@ -310,7 +310,7 @@ function openAIChat(actorName, actorAvatar) {
     if (loading) {
       loading.style.display = 'none';
     }
-    // 添加演员问候语
+    // 添加角色问候语
     addMessage(actorName, persona.greeting, 'actor');
   }, 1200);
 }
@@ -406,7 +406,7 @@ function sendChatMessage() {
     // 获取 AI 回复
     const response = getAIResponse(chatState.actorName, message);
     
-    // 添加演员回复
+    // 添加角色回复
     addMessage(chatState.actorName, response, 'actor');
     
     // 恢复输入

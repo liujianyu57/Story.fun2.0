@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Story.fun | 创建新演员</title>
+  <title>Story.fun | 创建新角色</title>
   <style>
     :root {
       --bg: #f6f6f6;
@@ -875,11 +875,11 @@
           <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <span class="step-nav-title">发行演员IP</span>
+      <span class="step-nav-title">发行角色IP</span>
     </div>
 
-    <h1 class="page-title">发行演员 IP</h1>
-    <p class="page-subtitle">发行一个演员 IP 之后可在该 IP 下签约演员，演员可派遣产生收益。</p>
+    <h1 class="page-title">发行角色 IP</h1>
+    <p class="page-subtitle">发行一个角色 IP 之后可在该 IP 下签约角色，角色可派遣产生收益。</p>
 
     <div class="form-panel">
 
@@ -887,13 +887,13 @@
       <div class="dreamos-section" id="dreamosSection">
         <div class="dreamos-section-title">
           <div class="dreamos-title-left">
-            选择演员素材
+            选择角色素材
             <span class="badge-dreamos">DreamOS</span>
           </div>
         </div>
-        <div class="dreamos-section-hint">选择你在 DreamOS 中已创建的演员素材，自动填充演员 IP 信息。</div>
+        <div class="dreamos-section-hint">选择你在 DreamOS 中已创建的角色素材，自动填充角色 IP 信息。</div>
         <div class="dreamos-search-wrap">
-          <input type="text" class="dreamos-search" id="dreamosSearch" placeholder="搜索演员姓名..." autocomplete="off" />
+          <input type="text" class="dreamos-search" id="dreamosSearch" placeholder="搜索角色姓名..." autocomplete="off" />
           <span class="dreamos-search-icon">🔍</span>
           <span class="dreamos-search-clear" id="dreamosSearchClear">✕</span>
         </div>
@@ -904,15 +904,15 @@
       <div class="basic-info-section">
         <div class="form-row full">
           <div class="form-group">
-            <label>演员姓名</label>
-            <input type="text" placeholder="请输入演员姓名" maxlength="20" id="actorName" />
+            <label>角色姓名</label>
+            <input type="text" placeholder="请输入角色姓名" maxlength="20" id="actorName" />
             <span class="char-count" id="nameCount">0/20</span>
           </div>
         </div>
         <div class="form-row full">
           <div class="form-group">
             <label>简介</label>
-            <textarea placeholder="请输入演员 IP 介绍" id="actorBio"></textarea>
+            <textarea placeholder="请输入角色 IP 介绍" id="actorBio"></textarea>
             <span class="char-count" id="bioCount">0/500</span>
           </div>
         </div>
@@ -922,12 +922,12 @@
       <hr class="nft-section-divider" />
 
       <div>
-        <h3 class="nft-section-title">演员 IP 发行参数</h3>
-        <p class="nft-section-desc">设定演员 IP 的发行参数，发行后不可修改。</p>
+        <h3 class="nft-section-title">角色 IP 发行参数</h3>
+        <p class="nft-section-desc">设定角色 IP 的发行参数，发行后不可修改。</p>
 
-        <!-- 演员发行总量（两种模式共享） -->
+        <!-- 角色发行总量（两种模式共享） -->
         <div class="form-group" style="margin-bottom: 20px;">
-          <label>演员发行总量</label>
+          <label>角色发行总量</label>
           <input type="number" value="1000" min="100" max="5000" step="100" id="nftSupply" />
           <span class="hint-text">发行总量范围 100 - 5,000。</span>
         </div>
@@ -942,8 +942,8 @@
         <div class="pricing-mode-field visible" id="pricingFixedField">
           <div class="form-group">
             <label>固定价格（USDC）</label>
-            <input type="number" placeholder="请输入每个演员的固定价格" step="0.1" min="0" id="nftPriceFixed" oninput="updatePriceCoefficient('fixed')" />
-            <span class="hint-text">每个演员都以固定不变的价格购买，不会随销量变化。</span>
+            <input type="number" placeholder="请输入每个角色的固定价格" step="0.1" min="0" id="nftPriceFixed" oninput="updatePriceCoefficient('fixed')" />
+            <span class="hint-text">每个角色都以固定不变的价格购买，不会随销量变化。</span>
           </div>
         </div>
 
@@ -952,7 +952,7 @@
           <div class="form-group">
             <label>初始价格（USDC）</label>
             <input type="number" placeholder="请输入联合曲线初始价" step="0.1" min="0" id="nftPriceCurve" oninput="updatePriceCoefficient('curve')" />
-            <span class="hint-text">初始价格为联合曲线起始价，每签约一个演员，价格按公式 <code>P = P₀ × 5^(已签约数/发行总量)</code> 自动上涨，早期签约更优惠。</span>
+            <span class="hint-text">初始价格为联合曲线起始价，每签约一个角色，价格按公式 <code>P = P₀ × 5^(已签约数/发行总量)</code> 自动上涨，早期签约更优惠。</span>
           </div>
         </div>
 
@@ -1014,7 +1014,7 @@
     'Luna': {
       name: 'Luna',
       image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
-      description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。',
+      description: '未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。',
       gender: 'female'
     },
     '苏婉清': {
@@ -1142,13 +1142,13 @@
       container.innerHTML =
         '<div class="dreamos-empty">' +
         '  <div class="empty-icon">🔐</div>' +
-        '  <p>请先登录，查看你在 DreamOS 中已创建的演员素材。</p>' +
+        '  <p>请先登录，查看你在 DreamOS 中已创建的角色素材。</p>' +
         '</div>';
     } else {
       container.innerHTML =
         '<div class="dreamos-empty">' +
         '  <div class="empty-icon">🎭</div>' +
-        '  <p>您还没有在 DreamOS 中创建演员素材。请先前往 DreamOS 创建演员，再回来进行 NFT 发行。</p>' +
+        '  <p>您还没有在 DreamOS 中创建角色素材。请先前往 DreamOS 创建角色，再回来进行 NFT 发行。</p>' +
         '  <a class="dreamos-btn" href="DreamOS/dreamos-user-actors.html" target="_blank">前往 DreamOS 创建 →</a>' +
         '</div>';
     }
@@ -1271,7 +1271,7 @@
         container.innerHTML =
           '<div class="dreamos-empty">' +
           '  <div class="empty-icon">🔍</div>' +
-          '  <p>未找到与「' + query + '」匹配的演员素材</p>' +
+          '  <p>未找到与「' + query + '」匹配的角色素材</p>' +
           '</div>';
       } else {
         // Use _origRenderActorGrid directly to avoid recursion with the override
@@ -1454,7 +1454,7 @@
     }
 
 
-    if (!name) { showToast('请输入演员姓名'); return; }
+    if (!name) { showToast('请输入角色姓名'); return; }
     if (!nftPrice) { showToast('请输入价格'); return; }
 
     // Get avatar from selected DreamOS material or use default

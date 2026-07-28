@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Story.fun | 演员主页</title>
+  <title>Story.fun | 角色主页</title>
   <style>
     :root {
       --bg: #f5faff;
@@ -987,7 +987,7 @@
     .stat-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; background: rgba(15, 22, 42, 0.05); color: var(--text); border: none; cursor: pointer; border-radius: 999px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
     .stat-tooltip-box .button-secondary:hover { background: rgba(0,179,136,0.08); color: var(--accent); }
 
-    /* ═══ Treasury / 演员IP金库 — 极简重构 ═══ */
+    /* ═══ Treasury / 角色IP金库 — 极简重构 ═══ */
     .treasury-panel {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1194,15 +1194,15 @@
 
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="actors.html">演员 IP</a>
+      <a href="actors.html">角色 IP</a>
       <span class="sep">›</span>
-      <span id="breadcrumbActor">演员主页</span>
+      <span id="breadcrumbActor">角色主页</span>
     </div>
 
     <!-- Actor Hero -->
     <section class="actor-hero" id="actorHero">
       <div class="actor-hero-avatar">
-        <img id="actorAvatar" src="" alt="演员头像" />
+        <img id="actorAvatar" src="" alt="角色头像" />
       </div>
       <div class="actor-hero-info">
         <div>
@@ -1310,10 +1310,10 @@
       </div>
     </section>
 
-    <!-- ═══ 演员 IP 金库 ═══ -->
+    <!-- ═══ 角色 IP 金库 ═══ -->
     <section class="treasury-panel" id="treasuryPanel">
       <div class="treasury-header">
-        <h3><span>🏦</span> 演员 IP 金库</h3>
+        <h3><span>🏦</span> 角色 IP 金库</h3>
         <button class="info-help-btn" id="treasuryHelp" type="button" aria-label="金库说明">?</button>
       </div>
       <div class="treasury-amount-row">
@@ -1345,9 +1345,9 @@
     <div class="mint-modal" role="dialog" aria-modal="true" aria-labelledby="mintModalTitle">
       <button class="mint-modal-close" type="button" id="mintModalClose" aria-label="关闭弹窗">✕</button>
       <div class="mint-modal-hero">
-        <img id="mintModalImage" src="" alt="演员预览" />
+        <img id="mintModalImage" src="" alt="角色预览" />
         <div class="mint-modal-hero-overlay"></div>
-        <div class="mint-modal-badge" id="mintModalTag">演员 IP</div>
+        <div class="mint-modal-badge" id="mintModalTag">角色 IP</div>
         <div class="soldout-overlay" id="mintSoldoutOverlay" style="display:none"><span>已售罄</span></div>
       </div>
       <div class="mint-modal-body" id="mintModalBody">
@@ -1387,9 +1387,9 @@
         </div>
         <div class="success-content">
           <h2>签约成功</h2>
-          <p id="successText"><strong id="successActorName">—</strong> 已加入你的经纪工坊，快去安排演出吧。</p>
+          <p id="successText"><strong id="successActorName">—</strong> 已加入你的经纪人，快去安排演出吧。</p>
           <div class="success-actions">
-            <button class="success-btn primary" id="viewNftBtn">查看我的演员</button>
+            <button class="success-btn primary" id="viewNftBtn">查看我的角色</button>
             <button class="success-btn secondary" id="continueBtn">继续浏览</button>
           </div>
         </div>
@@ -1452,7 +1452,7 @@
       <!-- 固定价格模式 -->
       <div id="priceTooltipFixed" style="display:none;">
         <h3>💰 固定价格</h3>
-        <p class="price-tip-sub" style="margin-bottom:16px;">该演员 IP 采用固定价格模式，每个演员都以统一价格签约，销量变化不影响价格。</p>
+        <p class="price-tip-sub" style="margin-bottom:16px;">该角色 IP 采用固定价格模式，每个角色都以统一价格签约，销量变化不影响价格。</p>
         <div style="background:var(--bg); border-radius:12px; padding:16px; margin-bottom:12px; text-align:left; font-size:0.85rem; line-height:1.7; color:var(--text-muted);">
           • 发行者设定固定价格后，所有签约均按此价格结算<br/>
           • 不会因已签约数增加而价格上涨<br/>
@@ -1495,7 +1495,7 @@
   <script src="ai-chat.js"></script>
   <script>
     // ============================================================
-    //  演员数据（模拟链上数据）
+    //  角色数据（模拟链上数据）
     // ============================================================
     const ACTORS_DATA = {
       '苏婉清': {
@@ -1589,7 +1589,7 @@
       'Luna': {
         id: 'C001', name: 'Luna', pricing: 'curve', issuanceType: 'official',
 
-        desc: '未来偶像型AI演员，适合对话与剧情分润场景。拥有独特的未来感和科技气质。',
+        desc: '未来偶像型AI角色，适合对话与剧情分润场景。拥有独特的未来感和科技气质。',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
         totalSupply: 5000, minted: 5000, available: 0, holders: 4900,
         price: '10 USDC', reserved: 0, contract: '0x7A2b...3fD8', standard: 'Solana SPL',
@@ -1633,8 +1633,8 @@
       }
 
       if (!actor) {
-        document.getElementById('actorName').textContent = '未知演员';
-        document.getElementById('actorDesc').textContent = '未找到该演员的信息';
+        document.getElementById('actorName').textContent = '未知角色';
+        document.getElementById('actorDesc').textContent = '未找到该角色的信息';
         return;
       }
 
@@ -1647,7 +1647,7 @@
       document.getElementById('actorName').textContent = actor.name;
       
       document.getElementById('actorCreatorTag').textContent = '发行者 ' + (actor.creator || '—');
-      document.getElementById('actorCollectionTag').textContent = '演员 IP ' + (actor.collection || actor.id || '—');
+      document.getElementById('actorCollectionTag').textContent = '角色 IP ' + (actor.collection || actor.id || '—');
       document.getElementById('actorDesc').textContent = actor.desc;
 
       // ═══ Trust 风险标签 ═══
@@ -1659,7 +1659,7 @@
         riskTag.title = '点击查看详情';
         riskTag.addEventListener('click', function(e) {
           e.stopPropagation();
-          openStatTooltip('⚠️ 风险IP', '该演员IP信任系数异常，挖矿权重将受影响。');
+          openStatTooltip('⚠️ 风险IP', '该角色IP信任系数异常，挖矿权重将受影响。');
         });
         tagsContainer.appendChild(riskTag);
       }
@@ -1719,7 +1719,7 @@
               '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">热度系数</span>' +
               '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + heat.toFixed(1) + '</span>' +
             '</div>' +
-            '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">演员 IP 近 30 天热度乘子，取决于短剧完播、点赞、收藏等互动表现</div>' +
+            '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">角色 IP 近 30 天热度乘子，取决于短剧完播、点赞、收藏等互动表现</div>' +
           '</div>' +
           '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
             '<div style="display:flex;justify-content:space-between;align-items:center;">' +
@@ -1849,8 +1849,8 @@
       if (treasuryHelp) {
         treasuryHelp.addEventListener('click', function(e) {
           e.stopPropagation();
-          openStatTooltip('🏦 演员 IP 金库',
-            '签约收入的 30% 自动沉淀至演员 IP 金库，用于支撑 IP 生态的长期发展。\n' +
+          openStatTooltip('🏦 角色 IP 金库',
+            '签约收入的 30% 自动沉淀至角色 IP 金库，用于支撑 IP 生态的长期发展。\n' +
             '二级市场版税收入的 30% 同样归入金库，形成持续资金蓄水池。\n\n' +
             'V1 版本金库仅提供数据展示，暂不开放分配。'
           );
@@ -1909,8 +1909,8 @@
       document.querySelectorAll('.ahs-item').forEach(function(el) {
         el.addEventListener('click', function() {
           var label = this.querySelector('.ahs-label').textContent.trim();
-          if (label === '完播') openStatTooltip('完播', '该演员 IP 参演的所有短剧的完播次数之和');
-          else if (label === '热度系数') openStatTooltip('热度系数', '热度系数是演员 IP 的近30天热度乘子，用于决定该演员在派遣中的产出。');
+          if (label === '完播') openStatTooltip('完播', '该角色 IP 参演的所有短剧的完播次数之和');
+          else if (label === '热度系数') openStatTooltip('热度系数', '热度系数是角色 IP 的近30天热度乘子，用于决定该角色在派遣中的产出。');
         });
       });
       document.getElementById('statTooltipClose').addEventListener('click', function() { statTooltip.classList.remove('active'); });
@@ -1932,7 +1932,7 @@
       function openMintModal(actorData) {
         mintModalActorName.textContent = actorData.name;
         mintModalImage.src = actorData.avatar;
-        mintModalTag.textContent = '演员 IP • ' + (actorData.collection || actorData.id || '—');
+        mintModalTag.textContent = '角色 IP • ' + (actorData.collection || actorData.id || '—');
         mintSoldoutOverlay.style.display = actorData.available <= 0 ? 'flex' : 'none';
         mintModalSuccess.classList.remove('show');
         mintModalBody.style.display = 'flex';
@@ -1955,7 +1955,7 @@
           slipNotice.style.display = 'none';
         } else if (actorData.available <= 0) {
           slipNotice.style.display = 'block';
-          slipNotice.textContent = '该演员 IP 已售罄';
+          slipNotice.textContent = '该角色 IP 已售罄';
         } else {
           slipNotice.style.display = 'block';
           slipNotice.textContent = '已开启 1% 滑点保护，价格超出时将取消交易';
@@ -2135,7 +2135,7 @@
       '星际迷航': 'community',
     };
 
-    // ═══ 渲染参演短剧 — 完全复刻 index.html 卡片结构（含多演员） ═══
+    // ═══ 渲染参演短剧 — 完全复刻 index.html 卡片结构（含多角色） ═══
 
     function renderDramas(actor) {
 

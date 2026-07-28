@@ -425,8 +425,8 @@
     const navItems = [
       { href: '1011.html', label: '1011' },
       { href: 'index.html', label: '剧场' },
-      { href: 'actors.html', label: '演员 IP' },
-      { href: 'studio.html', label: '经纪工坊' },
+      { href: 'actors.html', label: '角色 IP' },
+      { href: 'studio.html', label: '经纪人' },
       { href: 'narrator.html', label: '创作' },
       { href: 'whitepaper.html', label: '白皮书' },
     ];
@@ -610,8 +610,8 @@
         </div>
       </div>
       <a class="nav-link" href="index.html">剧场</a>
-      <a class="nav-link" href="actors.html">演员 IP</a>
-      <a class="nav-link" href="studio.html">经纪工坊</a>
+      <a class="nav-link" href="actors.html">角色 IP</a>
+      <a class="nav-link" href="studio.html">经纪人</a>
       <a class="nav-link" href="narrator.html">创作</a>
       <a class="nav-link" href="whitepaper.html">白皮书</a>
     </nav>

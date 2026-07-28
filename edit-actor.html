@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Story.fun | 编辑演员</title>
+  <title>Story.fun | 编辑角色</title>
   <style>
     :root {
       --bg: #f6f6f6;
@@ -574,7 +574,7 @@
     <div class="page-header">
       <div class="page-header-left">
         <a class="back-link" href="narrator.html">← 返回</a>
-        <h1 class="page-title" id="pageTitle">编辑演员</h1>
+        <h1 class="page-title" id="pageTitle">编辑角色</h1>
       </div>
       <span id="statusBadge" class="status-indicator approved" style="display:none;">
         <span class="status-dot"></span>
@@ -602,8 +602,8 @@
         <div class="fields-column">
           <div class="form-row">
             <div class="form-group">
-              <label>演员姓名</label>
-              <input type="text" id="actorName" placeholder="请输入演员姓名" maxlength="20" />
+              <label>角色姓名</label>
+              <input type="text" id="actorName" placeholder="请输入角色姓名" maxlength="20" />
               <span class="char-count" id="nameCount">0/20</span>
             </div>
             <div class="form-group">
@@ -639,7 +639,7 @@
 
       <div>
         <h3 class="nft-section-title">🔗 NFT 发行参数</h3>
-        <p class="nft-section-desc">设定演员 NFT 的链上发行参数，发布后重新提交审核。</p>
+        <p class="nft-section-desc">设定角色 NFT 的链上发行参数，发布后重新提交审核。</p>
 
         <div class="params-row">
           <div class="form-group">
@@ -660,7 +660,7 @@
           <div class="form-group">
             <label>最低持有门槛（数量）</label>
             <input type="number" id="holdThreshold" placeholder="请输入" min="0" />
-            <span class="hint-text">持有≥该数量才能参与AI演员对话</span>
+            <span class="hint-text">持有≥该数量才能参与AI角色对话</span>
           </div>
         </div>
 
@@ -676,7 +676,7 @@
 
         <!-- Info note -->
         <div class="info-note">
-          <span>修改发行参数后，演员需重新提交审核。审核通过之后可铸造演员 NFT。</span>
+          <span>修改发行参数后，角色需重新提交审核。审核通过之后可铸造角色 NFT。</span>
         </div>
       </div>
 
@@ -685,7 +685,7 @@
     <!-- Footer -->
     <div class="form-footer">
       <button class="button-danger" onclick="confirmDeleteActor()" id="deleteBtn">
-        🗑️ 删除演员
+        🗑️ 删除角色
       </button>
       <button class="button-outline" onclick="location.href='narrator.html'">取消</button>
       <button class="button-primary" id="saveBtn">保存修改</button>
@@ -737,7 +737,7 @@
         '你需要支付 ' + (cost > 0 ? cost : '--') + ' USDC 用于创作者保留';
     }
 
-    // === 模拟演员数据（未铸造，无 readonly） ===
+    // === 模拟角色数据（未铸造，无 readonly） ===
     const actorData = {
       '苏婉清': {
         name: '苏婉清',
@@ -798,10 +798,10 @@
       if (data) {
         loadActorData(data);
       } else if (name) {
-        document.getElementById('pageTitle').textContent = '编辑演员';
+        document.getElementById('pageTitle').textContent = '编辑角色';
         document.getElementById('statusBadge').style.display = 'none';
       } else {
-        document.getElementById('pageTitle').textContent = '编辑演员';
+        document.getElementById('pageTitle').textContent = '编辑角色';
         document.getElementById('statusBadge').style.display = 'none';
       }
 
@@ -841,7 +841,7 @@
 
     function loadActorData(data) {
       // 页面标题
-      document.getElementById('pageTitle').textContent = '编辑演员 · ' + data.name;
+      document.getElementById('pageTitle').textContent = '编辑角色 · ' + data.name;
 
       // 姓名
       document.getElementById('actorName').value = data.name;
@@ -896,27 +896,27 @@
       if (this.disabled) return;
       const name = document.getElementById('actorName').value.trim();
       if (!name) {
-        showToast('请输入演员姓名');
+        showToast('请输入角色姓名');
         return;
       }
       this.textContent = '保存中...';
       this.disabled = true;
       setTimeout(() => {
-        showToast('✅ 演员「' + name + '」信息已保存成功');
+        showToast('✅ 角色「' + name + '」信息已保存成功');
         this.textContent = '保存修改';
         this.disabled = false;
       }, 1000);
     });
 
-    // === 删除演员 ===
+    // === 删除角色 ===
     function confirmDeleteActor() {
       const name = document.getElementById('actorName').value.trim();
       if (!name) {
-        showToast('请先加载演员数据');
+        showToast('请先加载角色数据');
         return;
       }
-      if (confirm('确定要删除演员「' + name + '」吗？删除后将不可恢复。')) {
-        showToast('✅ 演员「' + name + '」已删除');
+      if (confirm('确定要删除角色「' + name + '」吗？删除后将不可恢复。')) {
+        showToast('✅ 角色「' + name + '」已删除');
         setTimeout(() => {
           location.href = 'narrator.html';
         }, 800);

@@ -879,15 +879,15 @@
         <div style="font-size:0.85rem;color:var(--text-muted);padding:0 0 16px;display:flex;flex-direction:column;gap:6px;">
           <div style="display:flex;align-items:center;gap:6px;">
             <span>💡</span>
-            <span>每位创作者最多可添加 <strong style="color:var(--accent);">5</strong> 个角色，并可从中选择最多 <strong style="color:var(--accent);">5</strong> 个角色绑定演员 IP，必须持有演员才能使用该 IP。</span>
+            <span>每位创作者最多可添加 <strong style="color:var(--accent);">5</strong> 个角色，并可从中选择最多 <strong style="color:var(--accent);">5</strong> 个角色绑定角色 IP，必须持有角色才能使用该 IP。</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px;padding-left:22px;">
             <span>⏳</span>
-            <span>短剧上架后 <strong style="color:var(--accent);">7 天内</strong> 可新增绑定演员 IP，期间产生的播放数据将同步积累到所绑定的演员 IP 上。</span>
+            <span>短剧上架后 <strong style="color:var(--accent);">7 天内</strong> 可新增绑定角色 IP，期间产生的播放数据将同步积累到所绑定的角色 IP 上。</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px;padding-left:22px;">
             <span>🔒</span>
-            <span>已绑定参演的演员，审核通过后不可解除或更换。</span>
+            <span>已绑定参演的角色，审核通过后不可解除或更换。</span>
           </div>
         </div>
 
@@ -950,11 +950,11 @@
     <div class="char-modal-overlay" id="actorBindModal">
       <div class="char-modal">
         <div class="char-modal-header">
-          <h3 id="actorBindModalTitle">🎭 选择演员 IP</h3>
+          <h3 id="actorBindModalTitle">🎭 选择角色 IP</h3>
           <button class="char-modal-close" onclick="charManager.closeBindModal()">✕</button>
         </div>
         <div class="char-modal-body">
-          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;" id="actorBindModalHint">选择一名演员 IP 来饰演该角色</p>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;" id="actorBindModalHint">选择一名角色 IP 来饰演该角色</p>
           <div id="actorBindGrid" class="actor-bind-grid"></div>
         </div>
         <div class="char-modal-footer" style="justify-content:space-between;">
@@ -1062,7 +1062,7 @@ function goToStep(num) {
 
     // === Actor IP Database ===
     const ACTOR_IP_DB = {
-      'Luna': { name: 'Luna', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。' },
+      'Luna': { name: 'Luna', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。' },
       '苏婉清': { name: '苏婉清', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。' },
       '李云飞': { name: '李云飞', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。' },
       '林梦瑶': { name: '林梦瑶', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。' },
@@ -1249,13 +1249,13 @@ function goToStep(num) {
           bindHtml = '<div style="margin-top:8px;">'
             + '<button class="char-bind-btn bound js-bind-actor" data-char-id="' + char.id + '">'
             + '<img class="char-bind-actor-avatar" src="' + actor.image + '" alt="" />'
-            + this.escapeHtml(actor.name) + (actorNum ? ' <span style="font-size:0.75rem;font-weight:400;">演员IP' + actorNum + '</span>' : '')
+            + this.escapeHtml(actor.name) + (actorNum ? ' <span style="font-size:0.75rem;font-weight:400;">角色IP' + actorNum + '</span>' : '')
             + '</button>'
             + '</div>';
 
         } else {
           bindHtml = '<div style="margin-top:8px;">'
-            + '<button class="char-bind-btn js-bind-actor" data-char-id="' + char.id + '">🎭 演员参演</button>'
+            + '<button class="char-bind-btn js-bind-actor" data-char-id="' + char.id + '">🎭 角色参演</button>'
             + '</div>';
         }
 
@@ -1298,7 +1298,7 @@ function goToStep(num) {
         this.bindCharId = charId;
 
         const hint = document.getElementById('actorBindModalHint');
-        hint.textContent = '选择一名演员 IP 来饰演「' + char.name + '」';
+        hint.textContent = '选择一名角色 IP 来饰演「' + char.name + '」';
 
         this.renderBindModal();
         document.getElementById('actorBindModal').classList.add('active');
@@ -1315,7 +1315,7 @@ function goToStep(num) {
         const actorKeys = this.getUserActorKeys();
 
         if (actorKeys.length === 0) {
-          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何演员 IP<br/>请先前往 DreamOS 创建或购买演员素材</div>';
+          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何角色 IP<br/>请先前往 DreamOS 创建或购买角色素材</div>';
           countEl.textContent = '';
           return;
         }
@@ -1332,7 +1332,7 @@ function goToStep(num) {
           html += '<div class="actor-bind-item js-bind-select" data-actor-key="' + key + '" style="' + (isBoundToOther ? 'opacity:0.5;' : '') + '">'
             + '<img class="abi-avatar" src="' + actor.image + '" alt="" onerror="this.outerHTML=\'<div class=abi-avatar style=display:grid;place-items:center;font-size:1.2rem;>🎭</div>\'" />'
             + '<div class="abi-info">'
-            + '<div class="abi-name">' + this.escapeHtml(actor.name) + ' <span style="font-size:0.78rem;color:var(--accent);font-weight:500;">演员IP' + actorNum + '</span></div>'
+            + '<div class="abi-name">' + this.escapeHtml(actor.name) + ' <span style="font-size:0.78rem;color:var(--accent);font-weight:500;">角色IP' + actorNum + '</span></div>'
 
             + '<div class="abi-desc">' + this.escapeHtml(actor.description || '') + '</div>'
             + (isBoundToOther ? '<div style="font-size:0.7rem;color:var(--warning);margin-top:2px;">⚠️ 已被其他角色绑定</div>' : '')
@@ -1340,7 +1340,7 @@ function goToStep(num) {
         });
 
         grid.innerHTML = html;
-        countEl.textContent = '持有 ' + actorKeys.length + ' 个演员 IP';
+        countEl.textContent = '持有 ' + actorKeys.length + ' 个角色 IP';
 
         // Bind click events
         grid.querySelectorAll('.js-bind-select').forEach(el => {
@@ -1349,7 +1349,7 @@ function goToStep(num) {
             // Check if already bound to another character
             const boundChar = this.characters.find(c => c.actorKey === key && c.id !== this.bindCharId);
             if (boundChar) {
-              this.showToast('该演员 IP 已被角色「' + boundChar.name + '」绑定');
+              this.showToast('该角色 IP 已被角色「' + boundChar.name + '」绑定');
               return;
             }
             this.bindActor(this.bindCharId, key);
@@ -1363,7 +1363,7 @@ function goToStep(num) {
         char.actorKey = actorKey;
         this.closeBindModal();
         this.render();
-        this.showToast('✅ 已绑定演员「' + ACTOR_IP_DB[actorKey].name + '」');
+        this.showToast('✅ 已绑定角色「' + ACTOR_IP_DB[actorKey].name + '」');
       },
 
       saveDraft() {

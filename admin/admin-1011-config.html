@@ -303,9 +303,9 @@
         { id: 't3', type: '关注推特账号', category: '关注 Twitter 账号', name: '关注 Story.fun', points: 10, linkUrl: 'https://x.com/Story.fun' },
         { id: 't5', type: '转发推文', category: '社交传播', name: '转推推文', points: 5, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
         { id: 't6', type: '点赞推文', category: '社交传播', name: '点赞推文', points: 2, tweetUrl: 'https://x.com/Story_fun/status/1912345678901234567', linkUrl: 'https://x.com/Story_fun/status/1912345678901234567' },
-        { id: 't9', type: '发布短剧', category: '产品互动', name: '在 Story.fun 发布短剧', points: 30, linkUrl: 'create-actor.html' },
+        { id: 't9', type: '发布叙事', category: '产品互动', name: '在 Story.fun 发布叙事', points: 30, linkUrl: 'create-actor.html' },
         { id: 't10', type: '完播短剧', category: '产品互动', name: '在 Story.fun 上完播1集短剧', points: 15, linkUrl: 'drama-player.html' },
-        { id: 't20', type: '演员挖矿', category: '产品互动', name: '在 Story.fun 上派遣演员挖矿', points: 25, linkUrl: 'studio.html' },
+        { id: 't20', type: '角色挖矿', category: '产品互动', name: '在 Story.fun 上派遣角色挖矿', points: 25, linkUrl: 'studio.html' },
       ];
 
       var DEFAULT_CHECKIN = [5, 8, 12, 16, 20, 25, 35];
@@ -382,9 +382,9 @@
                 '<option value="关注推特账号"' + (task.type === '关注推特账号' ? ' selected' : '') + '>关注推特账号</option>' +
                 '<option value="转发推文"' + (task.type === '转发推文' ? ' selected' : '') + '>转发推文</option>' +
                 '<option value="点赞推文"' + (task.type === '点赞推文' ? ' selected' : '') + '>点赞推文</option>' +
-                '<option value="发布短剧"' + (task.type === '发布短剧' ? ' selected' : '') + '>发布短剧</option>' +
+                '<option value="发布叙事"' + (task.type === '发布叙事' ? ' selected' : '') + '>发布叙事</option>' +
                 '<option value="完播短剧"' + (task.type === '完播短剧' ? ' selected' : '') + '>完播短剧</option>' +
-                '<option value="演员挖矿"' + (task.type === '演员挖矿' ? ' selected' : '') + '>演员挖矿</option>' +
+                '<option value="角色挖矿"' + (task.type === '角色挖矿' ? ' selected' : '') + '>角色挖矿</option>' +
               '</select></td>' +
               '<td><select class="config-input" data-task-idx="' + idx + '" data-field="category" style="min-width:140px;">' +
                 '<option value="关注 Twitter 账号"' + (task.category === '关注 Twitter 账号' ? ' selected' : '') + '>关注 Twitter 账号</option>' +

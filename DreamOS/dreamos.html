@@ -385,7 +385,7 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
         <div class="ud-nav">
           <div class="ud-nav-item" onclick="goToActorNFT()">
             <span class="ud-nav-icon">🎭</span>
-            <span>演员素材</span>
+            <span>角色素材</span>
             <span class="ud-nav-badge">13</span>
 
           </div>
@@ -715,17 +715,17 @@ body{font-family:"DM Mono",monospace;background:var(--ink-900);color:var(--t1)}
       <button class="modal-close" onclick="closeModal('char-modal')">×</button>
     </div>
     <div class="modal-body" style="display:flex;flex-direction:column;gap:16px">
-      <!-- 从持有的演员 NFT 中选择 -->
+      <!-- 从持有的角色 NFT 中选择 -->
       <div id="char-select-nft-section">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <div class="form-label" style="margin-bottom:0">从您持有的演员素材中选择</div>
+          <div class="form-label" style="margin-bottom:0">从您持有的角色素材中选择</div>
           <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(255,170,0,.12);color:var(--amber);border:1px solid rgba(255,170,0,.2)">快速填充</span>
         </div>
         <div id="char-nft-list" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;min-height:48px">
           <!-- 由 JS 动态渲染 -->
         </div>
         <div style="margin-top:6px">
-          <button id="btn-clear-nft" onclick="clearActorNftSelection()" style="font-size:10px;padding:4px 12px;border-radius:5px;background:none;border:1px solid var(--bs);color:var(--t3);cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s;display:none" onmouseover="this.style.borderColor='rgba(255,92,92,.4)';this.style.color='#FF5C5C'" onmouseout="this.style.borderColor='var(--bs)';this.style.color='var(--t3)'">✕ 不使用演员 NFT，手动输入</button>
+          <button id="btn-clear-nft" onclick="clearActorNftSelection()" style="font-size:10px;padding:4px 12px;border-radius:5px;background:none;border:1px solid var(--bs);color:var(--t3);cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s;display:none" onmouseover="this.style.borderColor='rgba(255,92,92,.4)';this.style.color='#FF5C5C'" onmouseout="this.style.borderColor='var(--bs)';this.style.color='var(--t3)'">✕ 不使用角色 NFT，手动输入</button>
         </div>
       </div>
       <div style="border-top:1px solid var(--bs)"></div>
@@ -1024,10 +1024,10 @@ privyLoginSuccess = function(info) {
 };
 
 // ══════════════════════════════════════════
-// ── 原有代码（演员信息、页面、导航等）
+// ── 原有代码（角色信息、页面、导航等）
 // ══════════════════════════════════════════
 
-// ── 演员信息（从 URL 读取）──
+// ── 角色信息（从 URL 读取）──
 const _actorParams = new URLSearchParams(window.location.search);
 const _actorName = _actorParams.get('actor') || '—';
 
@@ -1068,7 +1068,7 @@ document.querySelectorAll('.modal-wrap').forEach(function(m) {
 });
 // ── Actor NFT Database (for char modal quick-fill) ──
 const ACTOR_NFT_DB = {
-      'Luna': { image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。', face_lora_cid: 'ipfs://QmXa...luna_lora.safetensors', face_lora_trigger: 'luna_face', face_samples: 5, face_verified: true },
+      'Luna': { image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。', face_lora_cid: 'ipfs://QmXa...luna_lora.safetensors', face_lora_trigger: 'luna_face', face_samples: 5, face_verified: true },
       '苏婉清': { image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。', face_lora_cid: 'ipfs://QmYb...swq_lora.safetensors', face_lora_trigger: 'swq_face', face_samples: 5, face_verified: true },
       '李云飞': { image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。', face_lora_cid: 'ipfs://QmZc...lyf_lora.safetensors', face_lora_trigger: 'lyf_face', face_samples: 4, face_verified: true },
       '林梦瑶': { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。', face_lora_cid: 'ipfs://QmAd...lmy_lora.safetensors', face_lora_trigger: 'lmy_face', face_samples: 3, face_verified: true },
@@ -1084,7 +1084,7 @@ const ACTOR_NFT_DB = {
 };
 
 function openCharModal() {
-  // 渲染持有的演员 NFT 列表
+  // 渲染持有的角色 NFT 列表
   var listEl = document.getElementById('char-nft-list');
   var heldNames = [];
   try {
@@ -1105,7 +1105,7 @@ function openCharModal() {
     listEl.innerHTML = html;
     document.getElementById('char-select-nft-section').style.display = 'block';
   } else {
-    listEl.innerHTML = '<div style="font-size:11px;color:var(--t3);padding:4px 0">暂未持有演员 NFT</div>';
+    listEl.innerHTML = '<div style="font-size:11px;color:var(--t3);padding:4px 0">暂未持有角色 NFT</div>';
   }
 
   openModal('char-modal');
@@ -1130,7 +1130,7 @@ function selectActorNft(name) {
   });
 }
 
-// ── 取消选择演员 NFT（回退到手动输入模式）──
+// ── 取消选择角色 NFT（回退到手动输入模式）──
 function clearActorNftSelection() {
   _selectedActorNft = null;
   document.getElementById('btn-clear-nft').style.display = 'none';
@@ -1458,12 +1458,12 @@ function openPublishModal() {
     '  <div style="text-align:center;padding:20px 0 16px">' +
     '    <div style="font-size:48px;margin-bottom:12px">✅</div>' +
     '    <div style="font-family:\'EB Garamond\',serif;font-style:italic;font-size:22px;color:var(--t1);margin-bottom:6px">生成完成</div>' +
-    '    <div style="font-size:11px;color:var(--t2);line-height:1.6">视频已自动保存到项目文件夹<br>演员参演数据将计入累计完播与热度系数</div>' +
+    '    <div style="font-size:11px;color:var(--t2);line-height:1.6">视频已自动保存到项目文件夹<br>角色参演数据将计入累计完播与热度系数</div>' +
     '  </div>' +
     '  <div style="background:var(--ink-700);border-radius:8px;padding:14px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start">' +
     '    <span style="font-size:14px;flex-shrink:0">🎭</span>' +
     '    <div style="font-size:10px;color:var(--t2);line-height:1.7">' +
-    '      参演演员的完播数据将计入 <strong style="color:var(--t1)">累计完播</strong>（升咖资格）和 <strong style="color:var(--t1)">热度系数</strong>（挖矿产出）' +
+    '      参演角色的完播数据将计入 <strong style="color:var(--t1)">累计完播</strong>（升咖资格）和 <strong style="color:var(--t1)">热度系数</strong>（挖矿产出）' +
     '    </div>' +
     '  </div>' +
     '  <div style="display:flex;gap:8px">' +

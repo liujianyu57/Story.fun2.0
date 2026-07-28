@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的演员素材 · DreamOS</title>
+<title>我的角色素材 · DreamOS</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -471,10 +471,10 @@ body {
 <div class="topbar">
   <div class="tb-left">
     <button class="back-btn" onclick="goBack()">← 返回</button>
-    <span class="tb-title">我的演员素材</span>
+    <span class="tb-title">我的角色素材</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
-    <button class="tb-right-btn" onclick="window.open('../studio.html','_blank')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:6px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">进入经纪工坊 →</button>
+    <button class="tb-right-btn" onclick="window.open('../studio.html','_blank')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:6px;background:var(--amber);color:var(--ink-900);border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Mono',monospace;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">进入经纪人 →</button>
     <span class="tb-count" id="nft-count">0 个</span>
   </div>
 </div>
@@ -497,13 +497,13 @@ body {
         <button class="modal-copy-btn" id="modalCopyBtn" onclick="copyContract()">复制</button>
       </div>
       <div class="modal-clone-section">
-        <div class="modal-clone-label">持有的演员</div>
+        <div class="modal-clone-label">持有的角色</div>
         <div class="modal-clone-list" id="modalCloneList"></div>
         <button class="modal-clone-load-more" id="modalLoadMore" onclick="loadMoreClones()" style="display:none">加载更多 ↓</button>
       </div>
     </div>
     <div class="modal-footer">
-      <a class="modal-btn-primary" id="modalStudioBtn" href="../studio.html" target="_blank">进入经纪工坊</a>
+      <a class="modal-btn-primary" id="modalStudioBtn" href="../studio.html" target="_blank">进入经纪人</a>
     </div>
   </div>
 </div>
@@ -520,7 +520,7 @@ const ACTOR_IP_DB = {
   'Luna': {
     name: 'Luna',
     image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80',
-    description: '未来偶像型AI演员，科技感造型，适合对话与剧情分润场景。',
+    description: '未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。',
     contractAddress: '0x8F3C...9A2B'
   },
   '苏婉清': {
@@ -619,8 +619,8 @@ function renderPage() {
     body.innerHTML =
       '<div class="login-prompt">' +
       '  <div class="prompt-icon">🎭</div>' +
-      '  <div class="prompt-title">登录后查看持有的演员素材</div>' +
-      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的演员素材。</div>' +
+      '  <div class="prompt-title">登录后查看持有的角色素材</div>' +
+      '  <div class="prompt-desc">请先登录 DreamOS / Story.fun 账户，查看你拥有的角色素材。</div>' +
       '  <button class="prompt-btn" onclick="goLogin()">去登录 →</button>' +
       '</div>';
     document.getElementById('nft-count').textContent = '未登录';
@@ -647,9 +647,9 @@ function renderPage() {
     body.innerHTML =
       '<div class="empty-state">' +
       '  <div class="empty-icon">🎭</div>' +
-      '  <div class="empty-title">还没有持有演员素材</div>' +
-      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买演员素材，即可在这里查看你持有的演员素材。</div>' +
-      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建演员素材</button>' +
+      '  <div class="empty-title">还没有持有角色素材</div>' +
+      '  <div class="empty-desc">前往 Story.fun 市场 Mint 或购买角色素材，即可在这里查看你持有的角色素材。</div>' +
+      '  <button class="empty-btn" onclick="openCreateModal()">+ 创建角色素材</button>' +
       '</div>';
     return;
   }
@@ -657,10 +657,10 @@ function renderPage() {
   // ── Render cards (one per IP) ──
   var html = '';
   html += '<div class="sec-name-row">';
-  html += '  <div class="sec-name">我的演员素材</div>';
-  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建演员素材</button>';
+  html += '  <div class="sec-name">我的角色素材</div>';
+  html += '  <button class="sec-create-btn" onclick="openCreateModal()">+ 创建角色素材</button>';
   html += '</div>';
-  html += '<div class="sec-sub">持有演员素材即可使用该形象参演短剧。</div>';
+  html += '<div class="sec-sub">持有角色素材即可使用该形象参演短剧。</div>';
   html += '<hr class="sec-div">';
   html += '<div class="actor-grid">';
 

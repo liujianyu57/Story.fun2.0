@@ -87,7 +87,7 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
       </button>
       <div class="search-field">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input id="searchInput" type="text" placeholder="搜索短剧、演员、用户" />
+        <input id="searchInput" type="text" placeholder="搜索短剧、角色、用户" />
         <button class="search-clear" id="searchClear">✕</button>
       </div>
     </div>
@@ -95,7 +95,7 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 
   <div class="tab-bar" id="tabBar">
     <button class="tab-item active" data-tab="drama">短剧</button>
-    <button class="tab-item" data-tab="actor">演员</button>
+    <button class="tab-item" data-tab="actor">角色</button>
     <button class="tab-item" data-tab="user">用户</button>
   </div>
 
@@ -201,7 +201,7 @@ function renderTab(tab) {
     });
     // Actor rows
     actorResults.forEach(function(a){
-      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">演员 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
+      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">角色 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
     });
     // User rows
     userResults.forEach(function(u){
@@ -225,11 +225,11 @@ function renderTab(tab) {
     }
   } else if (tab === 'actor') {
     actorResults.forEach(function(a){
-      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">演员 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
+      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">角色 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
     });
     if (!actorResults.length) {
       emptyState.classList.add('show');
-      emptyText.textContent = '未找到相关演员';
+      emptyText.textContent = '未找到相关角色';
     } else {
       emptyState.classList.remove('show');
     }

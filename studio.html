@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Story.fun | 经纪工坊</title>
+  <title>Story.fun | 经纪人</title>
   <style>
     :root {
       --bg: #f5faff;
@@ -257,7 +257,7 @@
       .sort-tag { font-size: 0.75rem; padding: 5px 12px; white-space: nowrap; border-radius: 999px; border: none; background: #fff; color: #6C6C70; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
       .sort-tag.active { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(0,179,136,0.2); }
 
-      /* ── 演员卡片：Apple 风格 ── */
+      /* ── 角色卡片：Apple 风格 ── */
       .actor-grid { grid-template-columns: 1fr; gap: 12px; padding: 0 16px; margin-bottom: 20px; }
       .actor-card { border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 0.5px solid rgba(0,0,0,0.06); }
       .actor-card-hero { aspect-ratio: 2 / 1; }
@@ -317,7 +317,7 @@
       }
       .deploy-carousel-arrow { display: none !important; }
 
-      /* ── 行式演员卡片 ── */
+      /* ── 行式角色卡片 ── */
       .actor-list-row {
         display: flex;
         flex-direction: column;
@@ -872,7 +872,7 @@
       gap: 5px;
     }
 
-    /* ===== 派遣演员 Modal ===== */
+    /* ===== 派遣角色 Modal ===== */
     .modal-overlay {
       position: fixed; inset: 0; z-index: 9999;
       display: flex; align-items: center; justify-content: center;
@@ -1571,11 +1571,11 @@
     <!-- ===== Page Header ===== -->
     <div class="page-header">
       <div class="page-header-left">
-        <h1>经纪工坊 <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;">⚠️ 风险账户</span></h1>
-        <p>管理你的演员，派遣产生收益。</p>
+        <h1>经纪人 <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;">⚠️ 风险账户</span></h1>
+        <p>管理你的角色，派遣产生收益。</p>
       </div>
       <div class="page-header-actions">
-        <a class="btn-primary" href="actors.html">签约演员</a>
+        <a class="btn-primary" href="actors.html">签约角色</a>
       </div>
     </div>
 
@@ -1608,7 +1608,7 @@
     <div class="deployment-panel" id="deploymentPanel">
       <div class="deploy-panel-header">
         <div class="deploy-panel-title">
-          <span>派遣中的演员</span>
+          <span>派遣中的角色</span>
         </div>
         <div class="deploy-panel-stats">
           
@@ -1621,7 +1621,7 @@
 
     <!-- ===== Actor Grid Section ===== -->
     <div class="section-header">
-      <h2>我的演员 <span class="count-badge" id="actorCount">(0)</span></h2>
+      <h2>我的角色 <span class="count-badge" id="actorCount">(0)</span></h2>
       <div style="width:100%;"></div>
       <div class="sort-container" style="margin-top:-10px;">
         <span class="sort-tag active" data-sort="level-desc">等级最高</span>
@@ -1637,9 +1637,9 @@
 
     <div class="empty-state" id="emptyState" style="display:none;">
       <div class="empty-icon">🎬</div>
-      <h3>还没有签约演员</h3>
-      <p>去 NFT 市场浏览演员形象，Mint 一个属于你自己的演员 NFT，开始经营经纪公司。</p>
-      <a class="btn-primary" href="actors.html" style="text-decoration:none;">🎭 签约演员</a>
+      <h3>还没有签约角色</h3>
+      <p>去 NFT 市场浏览角色形象，Mint 一个属于你自己的角色 NFT，开始经营经纪公司。</p>
+      <a class="btn-primary" href="actors.html" style="text-decoration:none;">🎭 签约角色</a>
     </div>
 
   </div>
@@ -1647,8 +1647,8 @@
   <!-- ===== Slot Picker Modal (空槽位点击选人) ===== -->
   <div class="modal-overlay" id="slotPickerModal">
     <div class="modal-card">
-      <h2>选择派遣演员</h2>
-      <p class="modal-sub">选择一位空闲中的演员进行派遣</p>
+      <h2>选择派遣角色</h2>
+      <p class="modal-sub">选择一位空闲中的角色进行派遣</p>
       <div class="slot-picker-list" id="slotPickerList">
         <!-- 由 JS 渲染 -->
       </div>
@@ -1656,15 +1656,15 @@
     </div>
   </div>
 
-  <!-- ===== 派遣演员 Modal ===== -->
+  <!-- ===== 派遣角色 Modal ===== -->
   <div class="modal-overlay" id="stakeModal">
     <div class="modal-card">
-      <h2>派遣演员</h2>
+      <h2>派遣角色</h2>
       <div style="text-align:center;margin-bottom:4px;">
         <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="modalStakeActorName">—</div>
         <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="modalStakeActorLevel">—</div>
       </div>
-      <p class="modal-sub" style="font-size:0.88rem;color:var(--text-muted);margin-bottom:22px;border-top:1px solid var(--border);padding-top:16px;">该演员将自动进行质押挖矿，持续为你产出 STORY 收益。注意：每个整点消耗 1 点体力，体力耗尽则停止产出。</p>
+      <p class="modal-sub" style="font-size:0.88rem;color:var(--text-muted);margin-bottom:22px;border-top:1px solid var(--border);padding-top:16px;">该角色将自动进行质押挖矿，持续为你产出 STORY 收益。注意：每个整点消耗 1 点体力，体力耗尽则停止产出。</p>
       <button class="modal-btn confirm" onclick="confirmStake()">确认派遣</button>
       <button class="modal-btn cancel" onclick="closeStakeModal()">取消</button>
     </div>
@@ -1724,7 +1724,7 @@
             <span id="modalLevelCost" style="font-weight:700;color:var(--accent);">0 USDC</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-            <span style="color:var(--text-muted);">消耗同IP同等级演员</span>
+            <span style="color:var(--text-muted);">消耗同IP同等级角色</span>
             <span id="modalLevelConsume" style="font-weight:700;color:var(--danger);">0 / 2</span>
           </div>
         </div>
@@ -1732,7 +1732,7 @@
 
       <!-- 可选同IP同等级分身列表 -->
       <div class="consume-list" id="consumeList">
-        <div class="consume-list-title">选择要消耗的同IP同等级演员 <span class="checked-count" id="consumeCheckedCount">0/2</span></div>
+        <div class="consume-list-title">选择要消耗的同IP同等级角色 <span class="checked-count" id="consumeCheckedCount">0/2</span></div>
         <div class="consume-grid" id="consumeGrid">
           <!-- 由 JS 渲染 -->
         </div>
@@ -1752,7 +1752,7 @@
   <div class="modal-overlay" id="chargeModal">
     <div class="modal-card">
       <h2>恢复体力</h2>
-      <p class="modal-sub" id="modalChargeActor">为演员补充体力</p>
+      <p class="modal-sub" id="modalChargeActor">为角色补充体力</p>
       <div style="background:rgba(255,159,44,0.08);border-radius:14px;padding:18px;margin-bottom:18px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
           <span style="font-size:0.85rem;color:var(--text-muted);">当前体力</span>
@@ -1805,7 +1805,7 @@
     <div class="modal-card" style="max-width:440px;">
       <h2>本周名义产出</h2>
       <div style="background:var(--accent-soft);border-radius:14px;padding:14px;margin-bottom:16px;text-align:center;">
-        <div style="font-size:0.85rem;font-weight:600;color:var(--text);">我的所有演员的周累计名义产出累加</div>
+        <div style="font-size:0.85rem;font-weight:600;color:var(--text);">我的所有角色的周累计名义产出累加</div>
         <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">单卡公式见下方说明 ↓</div>
       </div>
       <p class="modal-sub" style="margin-bottom:12px;">单卡名义产出 = 单卡小时权重 × R_base × 有效挖矿时长</p>
@@ -1813,10 +1813,10 @@
         <div style="font-size:0.85rem;line-height:1.8;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
             <span>单卡小时权重</span>
-            <span style="font-weight:700;color:var(--accent);text-align:right;">= 演员算力</span>
+            <span style="font-weight:700;color:var(--accent);text-align:right;">= 角色算力</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>演员算力</span>
+            <span>角色算力</span>
             <span style="font-weight:700;color:var(--text);text-align:right;">= IP算力 × 挖矿系数 × CP系数 × Trust2</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -1869,7 +1869,7 @@
   <!-- ===== 算力详情弹窗 ===== -->
   <div class="modal-overlay" id="actorPowerModal">
     <div class="modal-card" style="max-width:420px;padding:24px 20px 20px;">
-      <h2 style="font-size:1.15rem;margin:0 0 4px;">演员算力详情</h2>
+      <h2 style="font-size:1.15rem;margin:0 0 4px;">角色算力详情</h2>
       <div id="powerModalActorName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
       <div id="powerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;">
         <!-- 由 JS 动态填充 -->
@@ -1882,7 +1882,7 @@
   <div class="modal-overlay" id="recallConfirmModal">
     <div class="modal-card" style="text-align:center;">
       <h2>确认召回</h2>
-      <p class="modal-sub" style="margin-bottom:8px;">演员休息期间暂停挖矿产出，体力会随时间恢复。</p>
+      <p class="modal-sub" style="margin-bottom:8px;">角色休息期间暂停挖矿产出，体力会随时间恢复。</p>
       <div style="text-align:center;margin-bottom:16px;">
         <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="recallModalName">—</div>
         <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="recallModalLevel">—</div>
@@ -1901,10 +1901,10 @@
         <!-- 第一步 -->
         <div class="rules-section">
           <h3>派遣</h3>
-          <p>把空闲的演员<strong>「派遣」</strong>到下面的 5 个槽位里，他就开始自动挖矿、产出 STORY。</p>
+          <p>把空闲的角色<strong>「派遣」</strong>到下面的 5 个槽位里，他就开始自动挖矿、产出 STORY。</p>
           <ul>
-            <li>每人最多同时派遣 5 位演员</li>
-            <li>同一个演员 IP 也可以多张卡一起派遣</li>
+            <li>每人最多同时派遣 5 位角色</li>
+            <li>同一个角色 IP 也可以多张卡一起派遣</li>
             <li>派遣后每小时消耗 1 点体力，体力 > 0 就一直产出，体力 = 0 就停工</li>
           </ul>
         </div>
@@ -1912,10 +1912,10 @@
         <!-- 第二步 -->
         <div class="rules-section">
           <h3>产出公式</h3>
-          <div class="rules-formula" style="text-align:center;font-size:0.92rem;">单卡小时产出 = 演员算力 × 1 STORY</div>
+          <div class="rules-formula" style="text-align:center;font-size:0.92rem;">单卡小时产出 = 角色算力 × 1 STORY</div>
           <p style="margin-top:10px;">其中：</p>
           <table class="rules-table">
-            <tr><td style="width:90px;font-weight:600;">演员算力</td><td>= IP算力 × 挖矿系数 × CP系数 × Trust2</td></tr>
+            <tr><td style="width:90px;font-weight:600;">角色算力</td><td>= IP算力 × 挖矿系数 × CP系数 × Trust2</td></tr>
             <tr><td style="font-weight:600;">IP 算力</td><td>= 价格系数 × 热度系数 × Trust1</td></tr>
           </table>
           <p style="margin-top:14px;font-weight:600;">各系数说明</p>
@@ -1984,7 +1984,7 @@
         <!-- 第五步 -->
         <div class="rules-section">
           <h3>升级咖位</h3>
-          <p>3 张同演员同咖位的卡 + 合成费 + 该演员累计完播达标 = 升 1 级。升级后挖矿系数暴涨，每小时产出翻倍甚至翻几倍。</p>
+          <p>3 张同角色同咖位的卡 + 合成费 + 该角色累计完播达标 = 升 1 级。升级后挖矿系数暴涨，每小时产出翻倍甚至翻几倍。</p>
           <p style="margin-top:12px;font-weight:600;">升级路径</p>
           <table class="rules-table">
             <tr><th>升级路径</th><th>累计完播门槛</th><th>合成费</th></tr>
@@ -1997,7 +1997,7 @@
 
         <!-- 总结 -->
         <div class="rules-section" style="background:var(--bg);border-radius:12px;padding:16px;">
-          <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">派人 → 产出 → 盯体力 → 领钱。体力快没了就补充或召回休息，热度靠演员的剧表现提升，升级让产出起飞。</p>
+          <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">派人 → 产出 → 盯体力 → 领钱。体力快没了就补充或召回休息，热度靠角色的剧表现提升，升级让产出起飞。</p>
         </div>
 
       </div>
@@ -2042,7 +2042,7 @@
 
     // ============================================================
     //  IP算力 = 价格系数 × 热度系数 × Trust1
-    //  演员算力 = IP算力 × 挖矿系数 × CP系数 × Trust2
+    //  角色算力 = IP算力 × 挖矿系数 × CP系数 × Trust2
     // ============================================================
     function computeIPPower(actor) {
       const priceCoeff = computePriceCoefficient(actor.initPrice || 0);
@@ -2061,7 +2061,7 @@
     }
 
     // ============================================================
-    //  获取演员算力的各项分解参数（供弹窗展示）
+    //  获取角色算力的各项分解参数（供弹窗展示）
     // ============================================================
     function getActorPowerBreakdown(actor) {
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
@@ -2105,7 +2105,7 @@
     const MAX_STAKING_SLOTS = 5;
 
     // ============================================================
-    //  模拟数据：用户持有的子级演员 NFT
+    //  模拟数据：用户持有的子级角色 NFT
     // ============================================================
     let MY_ACTORS = [
       {
@@ -2222,7 +2222,7 @@
     }
 
     // ============================================================
-    //  获取当前派遣中的演员（插槽数据）
+    //  获取当前派遣中的角色（插槽数据）
     // ============================================================
     function getDeployedActors() {
       return MY_ACTORS.filter(a => a.isStaking).slice(0, MAX_STAKING_SLOTS);
@@ -2313,7 +2313,7 @@
               + '<span class="deploy-slot-energy-pct">⚡' + actor.energy + '/' + actor.energyMax + '</span>'
               + '</div>'
               + '<div class="deploy-slot-row" style="cursor:pointer;margin-bottom:4px;" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">'
-              + '<span style="font-size:0.65rem;color:var(--text-sub);font-weight:500;">演员算力</span>'
+              + '<span style="font-size:0.65rem;color:var(--text-sub);font-weight:500;">角色算力</span>'
               + '<span class="deploy-slot-output">' + computeActorPower(actor).toFixed(2) + '</span>'
               + '</div>'
               + '<div class="deploy-slot-row">'
@@ -2331,8 +2331,8 @@
             slidesHtml += '<div class="deploy-carousel-slide" data-index="' + i + '">'
               + '<div class="deploy-carousel-slide-empty" onclick="openSlotPicker()" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;color:#8E8E93;font-size:0.92rem;cursor:pointer;border-radius:16px;border:2px dashed rgba(0,0,0,0.10);background:rgba(255,255,255,0.5);">'
               + '<div style="font-size:2.5rem;color:#AEAEB2;margin-bottom:8px;">+</div>'
-              + '<div style="font-weight:600;font-size:0.85rem;color:#8E8E93;">派遣演员</div>'
-              + '<div style="font-size:0.7rem;color:#AEAEB2;margin-top:4px;">点击选择空闲演员</div>'
+              + '<div style="font-weight:600;font-size:0.85rem;color:#8E8E93;">派遣角色</div>'
+              + '<div style="font-size:0.7rem;color:#AEAEB2;margin-top:4px;">点击选择空闲角色</div>'
               + '</div>'
               + '</div>';
           }
@@ -2390,7 +2390,7 @@
                   <span class="deploy-slot-energy-pct">⚡${actor.energy}/${actor.energyMax}</span>
                 </div>
                 <div class="deploy-slot-row" style="cursor:pointer;margin-bottom:4px;" onclick="event.stopPropagation();openActorPowerModal('${actor.id}')">
-                  <span style="font-size:0.7rem;color:var(--text-sub);font-weight:500;">演员算力</span>
+                  <span style="font-size:0.7rem;color:var(--text-sub);font-weight:500;">角色算力</span>
                   <span class="deploy-slot-output">${computeActorPower(actor).toFixed(2)}</span>
                 </div>
                 <div class="deploy-slot-row">
@@ -2417,7 +2417,7 @@
           slotsHtml.push(`
             <div class="deploy-slot empty" onclick="openSlotPicker()">
               <div class="deploy-slot-empty-icon">+</div>
-              <div class="deploy-slot-empty-label">派遣演员</div>
+              <div class="deploy-slot-empty-label">派遣角色</div>
             </div>
           `);
         }
@@ -2427,7 +2427,7 @@
     }
 
     // ============================================================
-    //  渲染：演员网格
+    //  渲染：角色网格
     // ============================================================
     function renderActors() {
       var isMobile = window.innerWidth <= 640;
@@ -2517,7 +2517,7 @@
               </div>
               <div style="position:absolute;bottom:8px;left:8px;z-index:5;display:flex;gap:4px;align-items:center;">
                 <span style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:0.3px;">${actor.id}</span>
-                <span style="background:rgba(0,179,136,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:6px;cursor:pointer;" onclick="event.stopPropagation();location.href='${profileLink}'">演员IP：${actor.ipCode}</span>
+                <span style="background:rgba(0,179,136,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:6px;cursor:pointer;" onclick="event.stopPropagation();location.href='${profileLink}'">角色IP：${actor.ipCode}</span>
               </div>
               <div style="position:absolute;bottom:8px;right:8px;z-index:5;">
                 <div class="actor-hero-status">
@@ -2542,14 +2542,14 @@
                 <button class="energy-help-btn" onclick="event.stopPropagation();">?</button>
                 <div class="energy-help-tip">
                   <b>⛽ 体力机制</b><br>
-                  派遣中的演员每小时消耗 1 点体力。体力耗尽后停止产出，休息时自动恢复。可用 USDC 即时补充体力。
+                  派遣中的角色每小时消耗 1 点体力。体力耗尽后停止产出，休息时自动恢复。可用 USDC 即时补充体力。
                 </div>
               </div>
             </div>
             <div class="mining-stats" style="grid-template-columns:1fr 1fr;">
               <div class="ms-item" style="cursor:pointer;" onclick="event.stopPropagation();openActorPowerModal('${actor.id}')">
                 <div class="ms-info">
-                  <span class="ms-label">演员算力</span>
+                  <span class="ms-label">角色算力</span>
                   <span class="ms-value">${computeActorPower(actor).toFixed(2)}</span>
                 </div>
               </div>
@@ -2598,7 +2598,7 @@
     }
 
     // ============================================================
-    //  派遣演员 Modal
+    //  派遣角色 Modal
     // ============================================================
     function openStakeModal(actorId) {
       pendingStakeActorId = actorId;
@@ -2770,7 +2770,7 @@
       const modal = document.getElementById('slotPickerModal');
 
       if (available.length === 0) {
-        list.innerHTML = '<div class="slot-picker-empty">没有空闲的演员可供派遣</div>';
+        list.innerHTML = '<div class="slot-picker-empty">没有空闲的角色可供派遣</div>';
       } else {
         list.innerHTML = available.map(a => {
           const levelCfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
@@ -2884,7 +2884,7 @@
 
       const grid = document.getElementById('consumeGrid');
       if (sameIpSameLevel.length === 0) {
-        grid.innerHTML = '<div class="consume-empty">没有可消耗的同IP同等级演员</div>';
+        grid.innerHTML = '<div class="consume-empty">没有可消耗的同IP同等级角色</div>';
       } else {
         grid.innerHTML = sameIpSameLevel.map(a => `
           <div class="consume-item" data-actor-id="${a.id}" onclick="toggleConsumeActor('${a.id}')">
@@ -3065,7 +3065,7 @@
       if (!actor) return;
 
       const bd = getActorPowerBreakdown(actor);
-      document.getElementById('powerModalActorName').textContent = '演员算力 = IP算力 × 挖矿系数 × CP系数 × Trust2';
+      document.getElementById('powerModalActorName').textContent = '角色算力 = IP算力 × 挖矿系数 × CP系数 × Trust2';
 
       document.getElementById('powerModalBreakdown').innerHTML =
         // IP算力卡片（含子项展开）

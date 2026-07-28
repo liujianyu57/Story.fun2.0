@@ -246,7 +246,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!--  USDC 页签 — 演员签约分成                                   -->
+    <!--  USDC 页签 — 角色签约分成                                   -->
     <!-- ============================================================ -->
     <div id="tab-usdc" class="tab-content">
 
@@ -415,7 +415,7 @@
 
     function generateUsdcFlow() {
       const flow = [];
-      // 演员签约分成 — Mint 发行人份额 (40%)
+      // 角色签约分成 — Mint 发行人份额 (40%)
       const mintBase = [
         { actor:'苏婉清', ip:'#1001', amount: 126.80, date: '06-18' },
         { actor:'林梦瑶', ip:'#1002', amount: 253.60, date: '06-18' },
@@ -444,7 +444,7 @@
           actor: r.actor,
           ip: r.ip,
           type: 'mint_share',
-          typeLabel: '演员签约分成',
+          typeLabel: '角色签约分成',
           amount: r.amount,
         });
       });

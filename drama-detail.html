@@ -805,15 +805,15 @@
       const grid = document.getElementById('castGrid');
       grid.innerHTML = DRAMA_DATA.cast.map(c => {
         const bound = c.bound && c.actor;
-        // 有演员 → 显示演员头像；无演员 → 显示角色自己的动漫形象头像
+        // 有角色 → 显示角色头像；无角色 → 显示角色自己的动漫形象头像
         const avatarHtml = `<img src="${c.actorAvatar || c.characterAvatar}" alt="${c.name}" />`;
         const badgeHtml = bound
           ? `<div class="c-badge bound">✓</div>`
           : `<div class="c-badge unbound">⏳</div>`;
-        // 演员名在上面（大字），角色名在下面（"饰" + 角色名）
+        // 角色名在上面（大字），角色名在下面（"饰" + 角色名）
         const actorLineHtml = bound
           ? `<div class="c-actor-line bound">${c.actor}</div>`
-          : `<div class="c-actor-line unbound">待定演员</div>`;
+          : `<div class="c-actor-line unbound">待定角色</div>`;
         const onClick = bound
           ? `location.href='actor-profile.html?name=${encodeURIComponent(c.actor)}'`
           : undefined; // 不可点击
