@@ -635,12 +635,225 @@
       .app-shell { padding: 60px 32px; }
       .params-row { grid-template-columns: 1fr; }
     }
+    /* 桌面端隐藏移动端导航栏 + 底部按钮栏 */
+    .step-nav-bar, .close-dropdown, .bottom-submit-bar { display: none; }
+
     @media (max-width: 680px) {
-      .app-shell { padding: 40px 16px; }
-      .form-panel { padding: 20px; gap: 32px; }
-      .form-row { grid-template-columns: 1fr; }
-      .form-footer { flex-direction: column; width: 100%; }
-      .button-outline, .button-primary { width: 100%; }
+      /* ── Apple 设计：背景色 ── */
+      body { background: #F2F2F7; padding-bottom: 0; }
+
+      /* ── 隐藏桌面版元素 ── */
+      .page-title { display: none; }
+      .page-subtitle { display: none; }
+      .form-footer { display: none; }
+      .dev-toggle-fixed { display: none; }
+
+      /* ── 全局紧凑 ── */
+      .app-shell { padding: 0; }
+
+      /* ── 顶部导航栏 ── */
+      .step-nav-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 48px;
+        padding: 0 16px;
+        margin-top: 40px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255,255,255,0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 0.33px solid rgba(0,0,0,0.10);
+      }
+
+      /* ── 关闭下拉菜单 ── */
+      .close-dropdown {
+        display: none;
+        position: absolute;
+        top: 44px;
+        left: 8px;
+        background: #FFFFFF;
+        border-radius: 14px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12), 0 0 0 0.5px rgba(0,0,0,0.06);
+        overflow: hidden;
+        z-index: 200;
+        min-width: 130px;
+        flex-direction: column;
+      }
+
+      .close-dropdown.active { display: flex; }
+
+      .close-dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 13px 20px;
+        border: none;
+        background: none;
+        font-family: inherit;
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: #1C1C1E;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.12s;
+        -webkit-tap-highlight-color: transparent;
+        white-space: nowrap;
+      }
+
+      .close-dropdown-item:active { background: rgba(0,0,0,0.04); }
+      .close-dropdown-item:first-child { color: #FF3B30; }
+
+      .step-nav-left {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 8px;
+        border: none;
+        background: none;
+        color: var(--accent);
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background 0.15s;
+        -webkit-tap-highlight-color: transparent;
+        white-space: nowrap;
+      }
+
+      .step-nav-left:active { background: rgba(0,0,0,0.05); }
+      .step-nav-left svg { flex-shrink: 0; }
+
+      .step-nav-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 7px 18px;
+        border: 1.5px solid var(--accent);
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 20px;
+        transition: opacity 0.15s;
+        -webkit-tap-highlight-color: transparent;
+        white-space: nowrap;
+      }
+
+      .step-nav-right { display: none; }
+
+      .step-nav-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1C1C1E;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+      }
+
+      /* ── 表单面板 ── */
+      .form-panel {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        margin-top: 0;
+        background: transparent;
+        padding: 20px 20px 80px;
+        gap: 32px;
+      }
+
+      .dreamos-section {
+        background: #fff;
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      /* ── 表单字段：Apple 风格输入框 ── */
+      .form-row { grid-template-columns: 1fr; gap: 16px; margin-bottom: 0; }
+      .form-group label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #6C6C70;
+        padding-left: 4px;
+      }
+      .form-group input[type="text"],
+      .form-group input[type="number"],
+      .form-group select,
+      .form-group textarea {
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        border: none;
+        background: #fff;
+        color: #000;
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+        transition: box-shadow 0.2s ease;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: transparent;
+        box-shadow: 0 0 0 3px rgba(1,186,178,0.18), 0 0 0 1px rgba(1,186,178,0.25);
+      }
+      .form-group textarea { min-height: 80px; }
+
+      /* ── DreamOS 搜索框 ── */
+      .dreamos-search {
+        border-radius: 14px;
+        border: none;
+        background: rgba(0,0,0,0.04);
+        padding: 12px 36px;
+        font-size: 0.9rem;
+      }
+
+      /* ── 定价模式切换 ── */
+      .pricing-mode-toggle { margin: 0 auto 20px; }
+
+      /* ── NFT 区域 ── */
+      .nft-section-title { font-size: 1rem; }
+      .nft-section-desc { font-size: 0.82rem; color: #8E8E93; }
+      .hint-text { font-size: 0.75rem; color: #AEAEB2; }
+
+      /* ── 底部发行按钮 ── */
+      .bottom-submit-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0));
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(255,255,255,0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 0.33px solid rgba(0,0,0,0.10);
+      }
+
+      .bottom-submit-bar .button-full {
+        width: 100%;
+        height: 50px;
+        border-radius: 14px;
+        border: none;
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: -0.01em;
+        transition: opacity 0.15s;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .bottom-submit-bar .button-full:active { opacity: 0.8; }
     }
   </style>
 </head>
@@ -654,6 +867,16 @@
   </div>
   <div id="header-placeholder"></div>
   <div class="app-shell">
+
+    <!-- Mobile Navigation Bar -->
+    <div class="step-nav-bar" id="stepNavBar">
+      <button class="step-nav-left" id="closeBtn" onclick="history.back()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <span class="step-nav-title">发行演员IP</span>
+    </div>
 
     <h1 class="page-title">发行演员 IP</h1>
     <p class="page-subtitle">发行一个演员 IP 之后可在该 IP 下签约演员，演员可派遣产生收益。</p>
@@ -755,7 +978,12 @@
     <!-- Footer -->
     <div class="form-footer">
       <button class="button-outline" onclick="location.href='narrator.html'">取消</button>
-      <button class="button-primary" id="submitBtn" onclick="handleSubmit()">确定发行</button>
+      <button class="button-primary" id="submitBtn" onclick="handleSubmit()">发行</button>
+    </div>
+
+    <!-- 底部发行按钮 (移动端) -->
+    <div class="bottom-submit-bar">
+      <button class="button-full" onclick="handleSubmit()">发行</button>
     </div>
 
   </div>
@@ -775,23 +1003,8 @@
     <button onclick="togglePriceCoeffTooltip()" style="margin-top:6px;padding:6px 16px;border-radius:999px;border:1px solid var(--border-dark);background:var(--surface);cursor:pointer;font-size:0.8rem;color:var(--text-muted);">关闭</button>
   </div>
 
-  <!-- Success Modal -->
-  <div class="success-modal-overlay" id="successModal" onclick="closeSuccessModal()">
-    <div class="success-modal" onclick="event.stopPropagation()">
-      <div class="success-modal-icon">✅</div>
-      <h2>🎉 发行成功！</h2>
-      <p>演员 IP <span class="success-actor-name" id="successActorName"></span> 已成功发行！</p>
-      <div class="success-buttons">
-        <a class="success-btn-primary" id="successViewLink" href="javascript:;">查看演员主页 →</a>
-        <button class="success-btn-outline" onclick="closeSuccessModal()">关闭</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="bottom-nav-placeholder"></div>
   <script src="load-header.js"></script>
   <script src="auth.js"></script>
-  <script src="load-bottom-nav.js"></script>
 
   <script>
   // ══════════════════════════════════════════════
@@ -1095,6 +1308,34 @@
       });
     }
 
+    // ── Close button dropdown ──
+    var closeBtn = document.getElementById('closeBtn');
+    var closeDropdown = document.getElementById('closeDropdown');
+    var closeDontSave = document.getElementById('closeDontSave');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeDropdown.classList.toggle('active');
+      });
+    }
+
+    if (closeDontSave) {
+      closeDontSave.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeDropdown.classList.remove('active');
+        history.back();
+      });
+    }
+
+    // Click outside to close dropdown
+    document.addEventListener('click', function(e) {
+      if (closeDropdown && closeDropdown.classList.contains('active')) {
+        if (!closeDropdown.contains(e.target) && e.target !== closeBtn && !closeBtn.contains(e.target)) {
+          closeDropdown.classList.remove('active');
+        }
+      }
+    });
+
     // ── Dev toggle (fixed right edge): switch between "有素材" / "无素材" ──
 
     var _devToggleState = true; // true = 有素材, false = 无素材
@@ -1259,26 +1500,9 @@
       localStorage.setItem('storyfun_created_actors', JSON.stringify(createdActors));
     } catch(e) {}
 
-    // Show success modal
-    showSuccessModal(name);
-  }
-
-  // ── Success Modal ──
-  function showSuccessModal(actorName) {
-    var modal = document.getElementById('successModal');
-    if (!modal) return;
-    document.getElementById('successActorName').textContent = actorName;
-    document.getElementById('successViewLink').href = 'actor-profile.html?name=' + encodeURIComponent(actorName);
-    modal.classList.add('active');
-  }
-
-  function closeSuccessModal() {
-    document.getElementById('successModal').classList.remove('active');
-  }
-
-  function goToActorProfile() {
-    var actorName = document.getElementById('successActorName').textContent;
-    location.href = 'actor-profile.html?name=' + encodeURIComponent(actorName);
+    // Show success toast and go back
+    showToast('✅ 发行成功！');
+    setTimeout(function() { history.back(); }, 800);
   }
 
   // ── Toast ──
