@@ -231,7 +231,78 @@
       .actor-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
-      .actor-grid { grid-template-columns: 1fr; }
+      /* ── Apple 风格背景 ── */
+      body { background: #F2F2F7; padding-bottom: 80px; }
+      .app-shell { padding: 0; }
+
+      /* ── 隐藏页面标题 ── */
+      .page-header { display: none; }
+
+      /* ── 挖矿汇总：紧凑卡片 ── */
+      .mining-summary { margin-top: 0 !important; padding: 16px; }
+      .mining-summary > div:first-child { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 8px !important; }
+      .mining-summary > div:first-child > div { padding: 12px 8px !important; border-radius: 14px !important; border: none !important; background: #fff !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important; }
+      .mining-summary > div:first-child > div > div:first-child { font-size: 0.62rem !important; margin-bottom: 2px !important; color: #8E8E93 !important; }
+      .mining-summary > div:first-child > div > div:nth-child(2) { font-size: 1rem !important; }
+      .mining-summary > div:first-child > div > div:nth-child(3) { font-size: 0.58rem !important; color: #AEAEB2 !important; }
+      .mining-summary > div:last-child { padding: 0 4px !important; }
+      .mining-summary > div:last-child > span { font-size: 0.75rem !important; }
+      .mining-summary > div:last-child > a { font-size: 0.72rem !important; }
+
+      /* ── section-header ── */
+      .section-header { padding: 0 16px; margin-bottom: 12px; }
+      .section-header h2 { font-size: 1.05rem; }
+      .sort-container { padding: 0 16px; gap: 6px; margin-top: 8px !important; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .sort-container::-webkit-scrollbar { display: none; }
+      .sort-tag { font-size: 0.75rem; padding: 5px 12px; white-space: nowrap; border-radius: 999px; border: none; background: #fff; color: #6C6C70; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+      .sort-tag.active { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(0,179,136,0.2); }
+
+      /* ── 演员卡片：Apple 风格 ── */
+      .actor-grid { grid-template-columns: 1fr; gap: 12px; padding: 0 16px; margin-bottom: 20px; }
+      .actor-card { border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 0.5px solid rgba(0,0,0,0.06); }
+      .actor-card-hero { aspect-ratio: 2 / 1; }
+      .actor-card-name-row { padding: 12px 16px 0; }
+      .actor-card-name-row .actor-name { font-size: 0.95rem; }
+      .actor-card-body { padding: 10px 16px 12px; gap: 8px; }
+      .energy-row { padding: 6px 10px; border-radius: 10px; }
+      .energy-icon { font-size: 0.75rem; }
+      .energy-bar-bg { height: 4px; }
+      .energy-text { font-size: 0.65rem; }
+      .mining-stats { gap: 6px; }
+      .ms-item { padding: 6px 4px 5px; border-radius: 10px; }
+      .ms-label { font-size: 0.6rem; }
+      .ms-value { font-size: 0.9rem; }
+      .actor-card-footer { padding: 0 16px 12px; gap: 6px; }
+      .card-action-btn { padding: 7px 10px; font-size: 0.78rem; border-radius: 12px; }
+      .upgrade-float-badge { font-size: 0.72rem; padding: 4px 10px 4px 8px; }
+
+      /* ── 派遣面板：Banner 轮播 ── */
+      .deploy-slots { display: block !important; }
+      .deployment-panel { padding: 0 !important; background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 20px; }
+      .deploy-panel-header { padding: 0 16px; margin-bottom: 12px; }
+      .deploy-carousel { position: relative; overflow: hidden; margin: 0 16px; border-radius: 20px; background: transparent; box-shadow: none; min-height: 200px; }
+      .deploy-carousel-slide { display: none; }
+      .deploy-carousel-slide.active { display: block; }
+      .deploy-carousel-slide-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; color: #8E8E93; font-size: 0.92rem; cursor: pointer; border-radius: 16px; border: 2px dashed rgba(0,0,0,0.10); background: rgba(255,255,255,0.5); }
+      .deploy-carousel-slide-empty .empty-plus { font-size: 2rem; margin-bottom: 8px; }
+      .deploy-carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,0.85); color: #3C3C43; font-size: 1.2rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+      .deploy-carousel-arrow:active { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.10); transform: translateY(-50%) scale(0.95); }
+      .deploy-carousel-arrow.left { left: 8px; }
+      .deploy-carousel-arrow.right { right: 8px; }
+      .deploy-carousel-arrow:disabled { opacity: 0.3; }
+      .deploy-carousel-dots { display: flex; justify-content: center; gap: 10px; padding: 14px 16px 8px; }
+      .deploy-carousel-dot { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; cursor: pointer; opacity: 0.45; transition: all 0.2s ease; border: 2px solid rgba(0,0,0,0.06); flex-shrink: 0; }
+      .deploy-carousel-dot.active { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 2px #fff; transform: scale(1.12); }
+      .deploy-carousel-dot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .deploy-carousel-dot.empty-dot { background: rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #AEAEB2; }
+
+      /* ── 空槽位恢复 block 布局（与占用卡片一致） ── */
+      .deploy-slot.empty { display: block; min-height: auto; border: none; background: transparent; }
+      .deploy-slot.empty .deploy-slot-empty-icon { display: none; }
+      .deploy-slot.empty .deploy-slot-empty-label { display: none; }
+
+      /* ── 空状态 ── */
+      .empty-state { padding: 40px 20px; border-radius: 16px; margin: 0 16px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     }
 
     .actor-card {
@@ -1645,7 +1716,6 @@
   <div class="modal-overlay" id="rulesModal">
     <div class="modal-card" style="max-width:560px;padding:24px;">
       <h2>派遣挖矿怎么玩</h2>
-      <p class="modal-sub" style="margin-bottom:14px;">一张图看懂从派人到领钱的全流程</p>
       <div class="rules-modal-scroll">
 
         <!-- 第一步 -->
@@ -2024,15 +2094,119 @@
     }
 
     // ============================================================
+    //  轮播索引（移动端）
+    // ============================================================
+    let currentCarouselIndex = 0;
+
+    // ============================================================
     //  渲染：派遣槽位
     // ============================================================
     function renderDeploySlots() {
-
-      const container = document.getElementById('deploySlots');
-      const deployed = getDeployedActors();
-      const count = document.getElementById('deployCount');
+      var isMobile = window.innerWidth <= 640;
+      var container = document.getElementById('deploySlots');
+      var deployed = getDeployedActors();
+      var count = document.getElementById('deployCount');
       count.textContent = `(${deployed.length}/${MAX_STAKING_SLOTS})`;
 
+      if (isMobile) {
+        // ── 移动端：Banner 轮播 ──
+        if (currentCarouselIndex >= MAX_STAKING_SLOTS) currentCarouselIndex = 0;
+
+        var slidesHtml = '';
+        for (var i = 0; i < MAX_STAKING_SLOTS; i++) {
+          var actor = deployed[i];
+          if (actor) {
+            var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+            var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+            var barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
+            var activeClass = i === currentCarouselIndex ? ' active' : '';
+            slidesHtml += '<div class="deploy-carousel-slide' + activeClass + '" data-index="' + i + '">'
+              + '<div class="deploy-slot occupied border-' + barCls + '" style="border-radius:16px;box-shadow:none;background:transparent;">'
+              + '<div class="deploy-slot-top" style="aspect-ratio:16/9;">'
+              + '<img src="' + actor.avatar + '" alt="' + actor.name + '" />'
+              + '<div class="deploy-slot-overlay"></div>'
+              + '<span class="deploy-slot-level" style="background:' + levelCfg.color + '99;">Lv' + actor.level + '</span>'
+              + '</div>'
+              + '<div class="deploy-slot-body">'
+              + '<div class="deploy-slot-name">' + actor.name + ' <span style="font-weight:400;font-size:0.6rem;color:var(--text-sub);margin-left:4px;">' + actor.id + '</span></div>'
+              + '<div class="deploy-slot-energy-row">'
+              + '<div class="deploy-slot-energy-bar"><div class="fill ' + barCls + '" style="width:' + pct + '%;"></div></div>'
+              + '<span class="deploy-slot-energy-pct">⚡' + actor.energy + '/' + actor.energyMax + '</span>'
+              + '</div>'
+              + '<div class="deploy-slot-row" style="cursor:pointer;margin-bottom:4px;" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">'
+              + '<span style="font-size:0.65rem;color:var(--text-sub);font-weight:500;">演员算力</span>'
+              + '<span class="deploy-slot-output">' + computeActorPower(actor).toFixed(2) + '</span>'
+              + '</div>'
+              + '<div class="deploy-slot-row">'
+              + '<span style="font-size:0.65rem;color:var(--text-sub);font-weight:500;">本周名义产出</span>'
+              + '<span class="deploy-slot-output">' + (actor.cumulativeStory || 0).toFixed(1) + '<span class="muted"> STORY</span></span>'
+              + '</div>'
+              + '<div class="deploy-slot-actions">'
+              + (actor.energy < actor.energyMax ? '<button class="deploy-slot-charge-btn' + (actor.energy > 8 ? ' soft' : ' yellow') + '" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">⚡ 补充</button>' : '')
+              + '<button class="deploy-slot-rest-btn' + (actor.energy > 8 ? ' soft' : actor.energy <= 0 ? ' red' : '') + '" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">⏹ 休息</button>'
+              + '</div>'
+              + '</div>'
+              + '</div>'
+              + '</div>';
+          } else {
+            var activeClassEmpty = i === currentCarouselIndex ? ' active' : '';
+            slidesHtml += '<div class="deploy-carousel-slide' + activeClassEmpty + '" data-index="' + i + '">'
+              + '<div class="deploy-slot empty" style="margin:0;border-radius:16px;border:2px dashed rgba(0,0,0,0.10);background:rgba(255,255,255,0.5);" onclick="openSlotPicker()">'
+              + '<div class="deploy-slot-top" style="aspect-ratio:16/9;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;">'
+              + '<div style="font-size:2.5rem;color:#AEAEB2;">+</div>'
+              + '</div>'
+              + '<div class="deploy-slot-body" style="text-align:center;padding:16px;">'
+              + '<div style="font-weight:600;font-size:0.85rem;color:#8E8E93;">派遣演员</div>'
+              + '<div style="font-size:0.7rem;color:#AEAEB2;margin-top:4px;">点击选择空闲演员</div>'
+              + '</div>'
+              + '</div>'
+              + '</div>';
+          }
+        }
+
+        var dotsHtml = '';
+        for (var i = 0; i < MAX_STAKING_SLOTS; i++) {
+          var dotActor = deployed[i];
+          var activeClass = i === currentCarouselIndex ? ' active' : '';
+          if (dotActor) {
+            dotsHtml += '<div class="deploy-carousel-dot' + activeClass + '" data-carousel-dot="' + i + '"><img src="' + dotActor.avatar + '" alt="" /></div>';
+          } else {
+            dotsHtml += '<div class="deploy-carousel-dot empty-dot' + activeClass + '" data-carousel-dot="' + i + '">+</div>';
+          }
+        }
+
+        container.innerHTML = '<div class="deploy-carousel" id="deployCarousel">'
+          + slidesHtml
+          + '<button class="deploy-carousel-arrow left" data-carousel-arrow="prev" ' + (deployed.length <= 1 ? 'disabled' : '') + '>‹</button>'
+          + '<button class="deploy-carousel-arrow right" data-carousel-arrow="next" ' + (deployed.length <= 1 ? 'disabled' : '') + '>›</button>'
+          + '</div>'
+          + '<div class="deploy-carousel-dots" id="deployCarouselDots">' + dotsHtml + '</div>';
+
+        // 事件绑定
+        var dePanel = document.getElementById('deploymentPanel');
+        if (dePanel && !dePanel._carouselBound) {
+          dePanel._carouselBound = true;
+          dePanel.addEventListener('click', function(e) {
+            var btn = e.target.closest('[data-carousel-arrow]');
+            if (btn) {
+              e.preventDefault();
+              var dir = btn.getAttribute('data-carousel-arrow');
+              if (dir === 'prev' && currentCarouselIndex > 0) { switchCarouselSlot(currentCarouselIndex - 1); }
+              if (dir === 'next' && currentCarouselIndex < MAX_STAKING_SLOTS - 1) { switchCarouselSlot(currentCarouselIndex + 1); }
+              return;
+            }
+            var dot = e.target.closest('[data-carousel-dot]');
+            if (dot) {
+              var idx = parseInt(dot.getAttribute('data-carousel-dot'));
+              switchCarouselSlot(idx);
+            }
+          });
+        }
+
+        return;
+      }
+
+      // ── Web 端：原有 5 列网格逻辑 ──
       const slotsHtml = [];
       for (let i = 0; i < MAX_STAKING_SLOTS; i++) {
         const actor = deployed[i];
@@ -2295,6 +2469,14 @@
       }
       closeRecallModal();
       renderAll();
+    }
+
+    function switchCarouselSlot(index) {
+      currentCarouselIndex = index;
+      var slides = document.querySelectorAll('.deploy-carousel-slide');
+      var dots = document.querySelectorAll('.deploy-carousel-dot');
+      slides.forEach(function(s, i) { s.classList.toggle('active', i === index); });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === index); });
     }
 
     function unstakeActor(actorId) {

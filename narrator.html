@@ -215,6 +215,7 @@
         <button class="filter-pill" onclick="filterCards('approved',this)">已通过</button>
         <button class="filter-pill" onclick="filterCards('pending',this)">审核中</button>
         <button class="filter-pill" onclick="filterCards('rejected',this)">未通过</button>
+        <button class="filter-pill" onclick="filterCards('delisted',this)">已下架</button>
       </div>
 
       <!-- Tab 1 -->
@@ -595,12 +596,7 @@
       btn.classList.add('active');
       document.querySelectorAll('#dramaGrid .card-list-item').forEach(card => {
         const status = card.dataset.status;
-        // "未通过" 下同时展示未通过(rejected)和已下架(delisted)的视频
-        if (filter === 'rejected') {
-          card.style.display = (status === 'rejected' || status === 'delisted') ? '' : 'none';
-        } else {
-          card.style.display = (filter === 'all' || status === filter) ? '' : 'none';
-        }
+        card.style.display = (filter === 'all' || status === filter) ? '' : 'none';
       });
     }
 
