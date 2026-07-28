@@ -120,6 +120,135 @@
     padding-bottom: 60px;
   }
 }
+
+/* ── 加号弹出菜单 Overlay ── */
+.create-action-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.create-action-overlay.active {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 1;
+}
+
+.create-action-sheet {
+  width: 100%;
+  max-width: 500px;
+  background: #F2F2F7;
+  border-radius: 24px 24px 0 0;
+  padding: 12px 16px calc(16px + env(safe-area-inset-bottom, 0));
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.create-action-overlay.active .create-action-sheet {
+  transform: translateY(0);
+}
+
+.create-action-sheet-header {
+  text-align: center;
+  padding: 10px 0 6px;
+}
+
+.create-action-sheet-title {
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8E8E93;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.create-action-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #1C1C1E;
+  transition: background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.create-action-option:active {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.create-action-option-icon {
+  font-size: 2rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F2F2F7;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.create-action-option-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.create-action-option-label {
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #1C1C1E;
+}
+
+.create-action-option-desc {
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: #8E8E93;
+  line-height: 1.4;
+}
+
+.create-action-option svg {
+  flex-shrink: 0;
+  color: #C7C7CC;
+}
+
+.create-action-cancel {
+  width: 100%;
+  padding: 16px;
+  background: #FFFFFF;
+  border: none;
+  border-radius: 16px;
+  font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1C1C1E;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: -0.01em;
+}
+
+.create-action-cancel:active {
+  background: rgba(0, 0, 0, 0.06);
+}
 `;
 
     const style = document.createElement('style');
@@ -160,6 +289,7 @@
     updateHomeNavItem();
     applyNavTheme();
     bindHomeToggle();
+    bindCreateActionSheet();
     document.dispatchEvent(new CustomEvent('bottom-nav-loaded'));
   }
 
@@ -197,6 +327,44 @@
   // ============================================================
   function bindHomeToggle() {
     // 首页按钮已改为双页面跳转模式，不再拦截点击做 feed/list 切换
+  }
+
+  // ============================================================
+  //  加号按钮 → 弹出 Action Sheet（仅移动端）
+  // ============================================================
+  function bindCreateActionSheet() {
+    var createBtn = document.querySelector('.bottom-nav-create');
+    var overlay = document.getElementById('createActionOverlay');
+    var cancelBtn = document.getElementById('createActionCancel');
+
+    if (!createBtn || !overlay || !cancelBtn) return;
+
+    // 点击加号 → 显示弹窗
+    createBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    // 关闭弹窗
+    function closeSheet() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // 点击遮罩关闭
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        closeSheet();
+      }
+    });
+
+    // 取消按钮关闭
+    cancelBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeSheet();
+    });
   }
 
   // ============================================================
@@ -255,6 +423,41 @@
       </svg>
       <span class="bottom-nav-label">我</span>
     </a>
+  </div>
+
+  <!-- 加号弹出菜单 Overlay (fallback) -->
+  <div class="create-action-overlay" id="createActionOverlay">
+    <div class="create-action-sheet">
+      <a class="create-action-option" href="publish.html">
+        <span class="create-action-option-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M3 9h18" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9 21V9" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 7v2M16 5v2M8 5v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="create-action-option-text">
+          <span class="create-action-option-label">发布短剧</span>
+        </span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a class="create-action-option" href="create-actor.html">
+        <span class="create-action-option-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="17" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <path d="M14 14h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+          </svg>
+        </span>
+        <span class="create-action-option-text">
+          <span class="create-action-option-label">发行演员IP</span>
+        </span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <button class="create-action-cancel" id="createActionCancel">取消</button>
+    </div>
   </div>
 </div>`;
     insertBottomNav(html);

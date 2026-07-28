@@ -232,14 +232,14 @@
     }
     @media (max-width: 640px) {
       /* ── Apple 风格背景 ── */
-      body { background: #F2F2F7; padding-bottom: 80px; }
+      body { background: #F2F2F7; padding: 44px 0 80px; }
       .app-shell { padding: 0; }
 
       /* ── 隐藏页面标题 ── */
       .page-header { display: none; }
 
       /* ── 挖矿汇总：紧凑卡片 ── */
-      .mining-summary { margin-top: 0 !important; padding: 16px; }
+      .mining-summary { margin-top: 12px !important; padding: 16px; }
       .mining-summary > div:first-child { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 8px !important; }
       .mining-summary > div:first-child > div { padding: 12px 8px !important; border-radius: 14px !important; border: none !important; background: #fff !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important; }
       .mining-summary > div:first-child > div > div:first-child { font-size: 0.62rem !important; margin-bottom: 2px !important; color: #8E8E93 !important; }
@@ -280,9 +280,8 @@
       .deploy-slots { display: block !important; }
       .deployment-panel { padding: 0 !important; background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 20px; }
       .deploy-panel-header { padding: 0 16px; margin-bottom: 12px; }
-      .deploy-carousel { position: relative; overflow: hidden; margin: 0 16px; border-radius: 20px; background: transparent; box-shadow: none; min-height: 200px; }
-      .deploy-carousel-slide { display: none; }
-      .deploy-carousel-slide.active { display: block; }
+      .deploy-carousel { position: relative; overflow: hidden; margin: 0 16px; border-radius: 20px; background: transparent; box-shadow: none; }
+      .deploy-carousel-slide { display: block; }
       .deploy-carousel-slide-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; color: #8E8E93; font-size: 0.92rem; cursor: pointer; border-radius: 16px; border: 2px dashed rgba(0,0,0,0.10); background: rgba(255,255,255,0.5); }
       .deploy-carousel-slide-empty .empty-plus { font-size: 2rem; margin-bottom: 8px; }
       .deploy-carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,0.85); color: #3C3C43; font-size: 1.2rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
@@ -300,6 +299,188 @@
       .deploy-slot.empty { display: block; min-height: auto; border: none; background: transparent; }
       .deploy-slot.empty .deploy-slot-empty-icon { display: none; }
       .deploy-slot.empty .deploy-slot-empty-label { display: none; }
+
+      /* ── 触控轮播 ── */
+      .deploy-carousel { touch-action: pan-y; }
+      .deploy-carousel-track {
+        display: flex;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+      }
+      .deploy-carousel-track.dragging { transition: none; }
+      .deploy-carousel-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        display: block;
+        padding: 0 2px;
+        box-sizing: border-box;
+      }
+      .deploy-carousel-arrow { display: none !important; }
+
+      /* ── 行式演员卡片 ── */
+      .actor-list-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        background: #fff;
+        border-radius: 14px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        cursor: pointer;
+        transition: background 0.2s ease;
+        overflow: hidden;
+      }
+      .actor-list-row:active { background: rgba(0,0,0,0.02); }
+      .alr-top {
+        display: flex;
+        align-items: stretch;
+      }
+      .alr-avatar-wrap {
+        position: relative;
+        width: 68px;
+        flex-shrink: 0;
+      }
+      .alr-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 0;
+        border: none;
+      }
+      .alr-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 12px;
+      }
+      .alr-name-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .alr-name {
+        font-weight: 700;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .alr-id {
+        font-size: 0.62rem;
+        color: var(--text-sub);
+        background: rgba(0,0,0,0.04);
+        padding: 1px 6px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+      .alr-level {
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: #fff;
+        padding: 1px 7px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+      .alr-energy-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .alr-energy-bar {
+        flex: 1;
+        height: 3px;
+        background: rgba(0,0,0,0.06);
+        border-radius: 999px;
+        overflow: hidden;
+        max-width: 80px;
+      }
+      .alr-energy-fill {
+        height: 100%;
+        border-radius: 999px;
+      }
+      .alr-energy-fill.green { background: var(--accent); }
+      .alr-energy-fill.yellow { background: var(--warning); }
+      .alr-energy-fill.red { background: var(--danger); }
+      .alr-energy-text {
+        font-size: 0.6rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        white-space: nowrap;
+      }
+      .alr-stats {
+        display: flex;
+        gap: 12px;
+        font-size: 0.68rem;
+        color: var(--text-muted);
+      }
+      .alr-stats span { white-space: nowrap; }
+      .alr-stats strong { color: var(--text); }
+      .alr-actions {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        padding: 8px 12px 12px;
+      }
+      .alr-btn {
+        flex: 1;
+        padding: 7px 8px;
+        border-radius: 14px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+        text-align: center;
+      }
+      .alr-btn.stake {
+        background: var(--accent);
+        color: #fff;
+      }
+      .alr-btn.stake:active { opacity: 0.8; }
+      .alr-btn.unstake {
+        background: rgba(244,91,105,0.08);
+        color: var(--danger);
+      }
+      .alr-btn.unstake:active { background: rgba(244,91,105,0.15); }
+      .alr-btn.charge {
+        background: rgba(255,159,44,0.08);
+        color: var(--warning);
+      }
+      .alr-btn.charge:active { background: rgba(255,159,44,0.15); }
+      .alr-btn.upgrade {
+        background: linear-gradient(135deg, #f5b042, #f7d06a);
+        color: #5a3e00;
+        font-weight: 700;
+        box-shadow: 0 2px 6px rgba(245,176,66,0.3);
+      }
+      .alr-btn.upgrade:active { opacity: 0.85; transform: scale(0.96); }
+      .alr-btn.disabled {
+        background: rgba(0,0,0,0.04);
+        color: #AEAEB2;
+        font-weight: 500;
+        box-shadow: none;
+      }
+      .alr-btn.disabled:active { opacity: 1; transform: none; }
+      .alr-status {
+        font-size: 0.58rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .alr-status .dot {
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .alr-status .dot.mining { background: #22c55e; }
+      .alr-status .dot.exhausted { background: var(--text-sub); }
+      .alr-status .dot.idle { background: var(--text-sub); }
 
       /* ── 空状态 ── */
       .empty-state { padding: 40px 20px; border-radius: 16px; margin: 0 16px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
@@ -1427,8 +1608,7 @@
     <div class="deployment-panel" id="deploymentPanel">
       <div class="deploy-panel-header">
         <div class="deploy-panel-title">
-          <span>🎬 派遣中的演员</span>
-          <span class="count-badge" id="deployCount">(0/5)</span>
+          <span>派遣中的演员</span>
         </div>
         <div class="deploy-panel-stats">
           
@@ -2106,10 +2286,10 @@
       var container = document.getElementById('deploySlots');
       var deployed = getDeployedActors();
       var count = document.getElementById('deployCount');
-      count.textContent = `(${deployed.length}/${MAX_STAKING_SLOTS})`;
+      if (count) { count.textContent = `(${deployed.length}/${MAX_STAKING_SLOTS})`; }
 
       if (isMobile) {
-        // ── 移动端：Banner 轮播 ──
+        // ── 移动端：触控滑动轮播 ──
         if (currentCarouselIndex >= MAX_STAKING_SLOTS) currentCarouselIndex = 0;
 
         var slidesHtml = '';
@@ -2119,8 +2299,7 @@
             var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
             var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
             var barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
-            var activeClass = i === currentCarouselIndex ? ' active' : '';
-            slidesHtml += '<div class="deploy-carousel-slide' + activeClass + '" data-index="' + i + '">'
+            slidesHtml += '<div class="deploy-carousel-slide" data-index="' + i + '">'
               + '<div class="deploy-slot occupied border-' + barCls + '" style="border-radius:16px;box-shadow:none;background:transparent;">'
               + '<div class="deploy-slot-top" style="aspect-ratio:16/9;">'
               + '<img src="' + actor.avatar + '" alt="' + actor.name + '" />'
@@ -2149,16 +2328,11 @@
               + '</div>'
               + '</div>';
           } else {
-            var activeClassEmpty = i === currentCarouselIndex ? ' active' : '';
-            slidesHtml += '<div class="deploy-carousel-slide' + activeClassEmpty + '" data-index="' + i + '">'
-              + '<div class="deploy-slot empty" style="margin:0;border-radius:16px;border:2px dashed rgba(0,0,0,0.10);background:rgba(255,255,255,0.5);" onclick="openSlotPicker()">'
-              + '<div class="deploy-slot-top" style="aspect-ratio:16/9;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;">'
-              + '<div style="font-size:2.5rem;color:#AEAEB2;">+</div>'
-              + '</div>'
-              + '<div class="deploy-slot-body" style="text-align:center;padding:16px;">'
+            slidesHtml += '<div class="deploy-carousel-slide" data-index="' + i + '">'
+              + '<div class="deploy-carousel-slide-empty" onclick="openSlotPicker()" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;color:#8E8E93;font-size:0.92rem;cursor:pointer;border-radius:16px;border:2px dashed rgba(0,0,0,0.10);background:rgba(255,255,255,0.5);">'
+              + '<div style="font-size:2.5rem;color:#AEAEB2;margin-bottom:8px;">+</div>'
               + '<div style="font-weight:600;font-size:0.85rem;color:#8E8E93;">派遣演员</div>'
               + '<div style="font-size:0.7rem;color:#AEAEB2;margin-top:4px;">点击选择空闲演员</div>'
-              + '</div>'
               + '</div>'
               + '</div>';
           }
@@ -2176,32 +2350,12 @@
         }
 
         container.innerHTML = '<div class="deploy-carousel" id="deployCarousel">'
-          + slidesHtml
-          + '<button class="deploy-carousel-arrow left" data-carousel-arrow="prev" ' + (deployed.length <= 1 ? 'disabled' : '') + '>‹</button>'
-          + '<button class="deploy-carousel-arrow right" data-carousel-arrow="next" ' + (deployed.length <= 1 ? 'disabled' : '') + '>›</button>'
+          + '<div class="deploy-carousel-track" id="deployCarouselTrack">' + slidesHtml + '</div>'
           + '</div>'
           + '<div class="deploy-carousel-dots" id="deployCarouselDots">' + dotsHtml + '</div>';
 
-        // 事件绑定
-        var dePanel = document.getElementById('deploymentPanel');
-        if (dePanel && !dePanel._carouselBound) {
-          dePanel._carouselBound = true;
-          dePanel.addEventListener('click', function(e) {
-            var btn = e.target.closest('[data-carousel-arrow]');
-            if (btn) {
-              e.preventDefault();
-              var dir = btn.getAttribute('data-carousel-arrow');
-              if (dir === 'prev' && currentCarouselIndex > 0) { switchCarouselSlot(currentCarouselIndex - 1); }
-              if (dir === 'next' && currentCarouselIndex < MAX_STAKING_SLOTS - 1) { switchCarouselSlot(currentCarouselIndex + 1); }
-              return;
-            }
-            var dot = e.target.closest('[data-carousel-dot]');
-            if (dot) {
-              var idx = parseInt(dot.getAttribute('data-carousel-dot'));
-              switchCarouselSlot(idx);
-            }
-          });
-        }
+        // 触控滑动绑定
+        bindCarouselTouch();
 
         return;
       }
@@ -2276,9 +2430,10 @@
     //  渲染：演员网格
     // ============================================================
     function renderActors() {
-      const grid = document.getElementById('actorGrid');
-      const empty = document.getElementById('emptyState');
-      const count = document.getElementById('actorCount');
+      var isMobile = window.innerWidth <= 640;
+      var grid = document.getElementById('actorGrid');
+      var empty = document.getElementById('emptyState');
+      var count = document.getElementById('actorCount');
 
       if (!MY_ACTORS || MY_ACTORS.length === 0) {
         grid.innerHTML = '';
@@ -2290,8 +2445,56 @@
       empty.style.display = 'none';
       count.textContent = '(' + MY_ACTORS.length + ')';
 
-      const sortedActors = applySort(MY_ACTORS);
+      var sortedActors = applySort(MY_ACTORS);
 
+      if (isMobile) {
+        // ── 移动端：行式卡片 ──
+        grid.innerHTML = sortedActors.map(function(actor) {
+          var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+          var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+          var barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
+          var statusInfo = getStatusInfo(actor.status);
+          var canUpgrade = actor.level < 5 && (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || Infinity);
+
+          var upgradeBtn = '<button class="alr-btn upgrade' + (canUpgrade ? '' : ' disabled') + '" onclick="event.stopPropagation();openLevelModal(\'' + actor.id + '\')">升级</button>';
+          var chargeBtn = '<button class="alr-btn charge' + (actor.energy < actor.energyMax ? '' : ' disabled') + '" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">⚡补充</button>';
+          var actionBtn = actor.isStaking
+            ? '<button class="alr-btn unstake" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">休息</button>'
+            : '<button class="alr-btn stake" onclick="event.stopPropagation();openStakeModal(\'' + actor.id + '\')">派遣</button>';
+
+          return '<div class="actor-list-row" data-actor-id="' + actor.id + '" onclick="openActorPowerModal(\'' + actor.id + '\')">'
+            + '<div class="alr-top">'
+            + '<div class="alr-avatar-wrap">'
+            + '<img class="alr-avatar" src="' + actor.avatar + '" alt="' + actor.name + '" />'
+            + '</div>'
+            + '<div class="alr-info">'
+            + '<div class="alr-name-row">'
+            + '<span class="alr-name">' + actor.name + '</span>'
+            + '<span class="alr-id">' + actor.id + '</span>'
+            + '<span class="alr-level" style="background:' + levelCfg.color + '99;">Lv' + actor.level + '</span>'
+            + '</div>'
+            + '<div class="alr-energy-row">'
+            + '<div class="alr-energy-bar"><div class="alr-energy-fill ' + barCls + '" style="width:' + pct + '%;"></div></div>'
+            + '<span class="alr-energy-text">' + actor.energy + '/' + actor.energyMax + '</span>'
+            + '<span class="alr-status"><span class="dot ' + statusInfo.dot + '"></span>' + statusInfo.label + '</span>'
+            + '</div>'
+            + '<div class="alr-stats">'
+            + '<span>算力 <strong>' + computeActorPower(actor).toFixed(1) + '</strong></span>'
+            + '<span>本周产出 <strong>' + ((actor.cumulativeStory || 0).toFixed(1)) + '</strong></span>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="alr-actions">'
+            + upgradeBtn
+            + chargeBtn
+            + actionBtn
+            + '</div>'
+            + '</div>';
+        }).join('');
+        return;
+      }
+
+      // ── Web 端：原有卡片 ──
       grid.innerHTML = sortedActors.map(actor => {
         const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
         const energyState = getEnergyState(actor.energy, actor.energyMax);
@@ -2473,10 +2676,77 @@
 
     function switchCarouselSlot(index) {
       currentCarouselIndex = index;
-      var slides = document.querySelectorAll('.deploy-carousel-slide');
+      var track = document.getElementById('deployCarouselTrack');
       var dots = document.querySelectorAll('.deploy-carousel-dot');
-      slides.forEach(function(s, i) { s.classList.toggle('active', i === index); });
+      if (track) {
+        track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      }
       dots.forEach(function(d, i) { d.classList.toggle('active', i === index); });
+    }
+
+    function bindCarouselTouch() {
+      var carousel = document.getElementById('deployCarousel');
+      if (!carousel || carousel._touchBound) return;
+      carousel._touchBound = true;
+
+      var track = document.getElementById('deployCarouselTrack');
+      var startX = 0, currentX = 0, isDragging = false;
+      var carouselWidth = 0;
+
+      carousel.addEventListener('touchstart', function(e) {
+        if (e.target.closest('button')) return;
+        startX = e.touches[0].clientX;
+        carouselWidth = carousel.offsetWidth;
+        isDragging = true;
+        if (track) {
+          track.classList.add('dragging');
+          track.style.transform = 'translateX(-' + (currentCarouselIndex * 100) + '%)';
+        }
+      }, { passive: true });
+
+      carousel.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        var deltaX = e.touches[0].clientX - startX;
+        var offset = (-currentCarouselIndex * 100) + (deltaX / carouselWidth * 100);
+        if (track) {
+          track.style.transform = 'translateX(' + offset + '%)';
+        }
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        if (track) track.classList.remove('dragging');
+
+        var deltaX = currentX - startX || 0;
+        // Use last known delta from track transform
+        var finalDelta = 0;
+        if (track && track.style.transform) {
+          var match = track.style.transform.match(/translateX\(([-\d.]+)%\)/);
+          if (match) {
+            var currentOffset = parseFloat(match[1]);
+            finalDelta = currentOffset + currentCarouselIndex * 100;
+          }
+        }
+
+        if (finalDelta > 15 && currentCarouselIndex > 0) {
+          switchCarouselSlot(currentCarouselIndex - 1);
+        } else if (finalDelta < -15 && currentCarouselIndex < MAX_STAKING_SLOTS - 1) {
+          switchCarouselSlot(currentCarouselIndex + 1);
+        } else {
+          // Snap back
+          switchCarouselSlot(currentCarouselIndex);
+        }
+      });
+
+      // Click on dots
+      carousel.addEventListener('click', function(e) {
+        var dot = e.target.closest('[data-carousel-dot]');
+        if (dot) {
+          var idx = parseInt(dot.getAttribute('data-carousel-dot'));
+          switchCarouselSlot(idx);
+        }
+      });
     }
 
     function unstakeActor(actorId) {
@@ -2875,6 +3145,24 @@
         if (e.target === this) this.remove();
       });
     }
+    // ============================================================
+    //  移动端布局重排：将挖矿汇总块移动到派遣面板下方
+    // ============================================================
+    function reorderMobileLayout() {
+      var appShell = document.querySelector('.app-shell');
+      var summary = document.querySelector('.mining-summary');
+      var deployPanel = document.getElementById('deploymentPanel');
+      if (!appShell || !summary || !deployPanel) return;
+
+      if (window.innerWidth <= 640) {
+        // 移动端：将 mining-summary 移到 deployment-panel 之后
+        deployPanel.parentNode.insertBefore(summary, deployPanel.nextSibling);
+      } else {
+        // 桌面端：将 mining-summary 恢复到 deployment-panel 之前
+        appShell.insertBefore(summary, deployPanel);
+      }
+    }
+
     //  每 1 秒消耗/恢复 1 点体力
     // ============================================================
     function energyTick() {
@@ -2915,6 +3203,14 @@
 
       // 启动体力模拟（每 1 秒 = 1 点体力）
       setInterval(energyTick, 1000);
+
+      // 移动端布局重排
+      reorderMobileLayout();
+      var resizeDebounce;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeDebounce);
+        resizeDebounce = setTimeout(reorderMobileLayout, 150);
+      });
 
       // 排序标签点击事件
       document.querySelectorAll('.sort-tag').forEach(tag => {
