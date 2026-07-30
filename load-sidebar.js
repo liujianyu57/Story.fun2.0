@@ -13,7 +13,7 @@
         var style = document.createElement('style');
         style.id = 'sb-injected-styles';
         style.textContent = [
-            '.app-sidebar{position:fixed;top:0;left:0;bottom:0;z-index:900;width:220px;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid rgba(0,0,0,0.06);display:flex;flex-direction:column;padding:0 12px;transition:transform 0.3s ease;overflow-y:auto}',
+            '.app-sidebar{position:fixed;top:0;left:0;bottom:0;z-index:900;width:160px;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;flex-direction:column;padding:0 12px;transition:transform 0.3s ease;overflow-y:auto}',
             '.sb-logo{display:flex;align-items:center;gap:10px;padding:20px 12px 24px;text-decoration:none;flex-shrink:0}',
             '.sb-logo-img{width:32px;height:32px;border-radius:8px;flex-shrink:0}',
             '.sb-logo-text{font-size:18px;font-weight:700;color:#13202e;letter-spacing:-0.3px;white-space:nowrap}',
@@ -24,14 +24,7 @@
             '.sb-nav-item.active{color:#13202e;background:rgba(167,139,250,0.12)}',
             '.sb-nav-item svg{width:22px;height:22px;flex-shrink:0;stroke:currentColor;fill:none}',
             '.sb-nav-item .sb-label{white-space:nowrap}',
-            '.sb-bottom{padding:12px 0 20px;border-top:1px solid rgba(0,0,0,0.06);flex-shrink:0}',
-            '.sb-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background 0.15s;text-decoration:none}',
-            '.sb-user:hover{background:rgba(0,0,0,0.04)}',
-            '.sb-user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,0,0,0.1);flex-shrink:0;background:rgba(0,0,0,0.06)}',
-            '.sb-user-info{flex:1;min-width:0}',
-            '.sb-user-name{font-size:13px;font-weight:600;color:#13202e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
-            '.sb-user-sub{font-size:11px;color:#8b8d98}',
-            '.sb-main-offset{margin-left:220px}',
+            '.sb-main-offset{margin-left:160px}',
             '@media(max-width:768px){.app-sidebar{display:none}}'
         ].join('');
         document.head.appendChild(style);
@@ -45,7 +38,6 @@
                     '<img src="image/storyfun-logo-icon.png" alt="StoryFun" class="sb-logo-img">' +
                     '<div>' +
                         '<div class="sb-logo-text">StoryFun</div>' +
-                        '<div class="sb-logo-sub">故事即力量</div>' +
                     '</div>' +
                 '</a>' +
                 '<nav class="sb-nav" id="sbNav">' +
@@ -86,15 +78,6 @@
                         '<span class="sb-label">白皮书</span>' +
                     '</a>' +
                 '</nav>' +
-                '<div class="sb-bottom">' +
-                    '<a href="profile-center.html" class="sb-user" id="sbUser">' +
-                        '<img class="sb-user-avatar" id="sbAvatarImg" src="" alt="avatar">' +
-                        '<div class="sb-user-info">' +
-                            '<div class="sb-user-name" id="sbUserName">登录</div>' +
-                            '<div class="sb-user-sub">查看个人主页 ›</div>' +
-                        '</div>' +
-                    '</a>' +
-                '</div>' +
             '</aside>';
     }
 
@@ -122,26 +105,6 @@
 
         // 给 body 添加偏移 class
         document.body.classList.add('sb-main-offset');
-
-        // 刷新登录状态
-        function refreshAuth() {
-            var isLoggedIn = !!localStorage.getItem('storyfun_token');
-            var avatarImg = document.getElementById('sbAvatarImg');
-            var nameEl = document.getElementById('sbUserName');
-            if (avatarImg && nameEl) {
-                if (isLoggedIn) {
-                    var savedAvatar = localStorage.getItem('storyfun_avatar');
-                    if (savedAvatar) avatarImg.src = savedAvatar;
-                    else avatarImg.src = 'image/character-empty-state.svg';
-                    var savedName = localStorage.getItem('storyfun_nickname');
-                    nameEl.textContent = savedName || '用户';
-                } else {
-                    avatarImg.src = 'image/character-empty-state.svg';
-                    nameEl.textContent = '登录';
-                }
-            }
-        }
-        refreshAuth();
     }
 
     // 主流程
