@@ -6,13 +6,13 @@
   <title>Story.fun | 剧场</title>
   <style>
     :root {
-      --bg: #0a1428;
-      --surface: #141f33;
+      --bg: #f7fbff;
+      --surface: #ffffff;
       --accent: #00d4a3;
       --accent-soft: rgba(0, 212, 163, 0.12);
-      --text: #e8edf5;
-      --text-muted: #8896a8;
-      --border: #1e2d42;
+      --text: #1a232f;
+      --text-muted: #657586;
+      --border: #deeaf7;
       font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
@@ -42,7 +42,7 @@
     .auth-dropdown-item span { font-size: 1.1rem; }
     .auth-dropdown-logout { color: #f45b69; }
     .auth-dropdown-logout:hover { background: rgba(244,91,105,0.06); }
-    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .auth-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,0.25); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .auth-modal-overlay.active { opacity: 1; visibility: visible; }
     .auth-modal { background: var(--surface); border-radius: 28px; width: 100%; max-width: 420px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; }
     .auth-modal-overlay.active .auth-modal { transform: scale(1) translateY(0); }
@@ -63,7 +63,7 @@
     .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
     .auth-modal-tos a { color: var(--accent); text-decoration: none; }
     .auth-modal-tos a:hover { text-decoration: underline; }
-    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
+    .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); color: #1a232f; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
     /* ============================================================
@@ -110,9 +110,9 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.45);
+      background: rgba(255,255,255,0.85);
       border: none;
-      color: #fff;
+      color: #1a232f;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -123,7 +123,7 @@
     }
     .featured-video-btn .vol-icon { width: 22px; height: 22px; display: block; }
     .featured-video-btn:hover {
-      background: rgba(0,0,0,0.70);
+      background: rgba(0,0,0,0.15);
       transform: scale(1.10);
     }
     .featured-video-btn.hidden { opacity: 0; pointer-events: none; }
@@ -145,9 +145,9 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(0deg,   rgba(10,20,35,0.92) 0%,   rgba(10,20,35,0.40) 40%, transparent 70%),
-        linear-gradient(90deg,  rgba(10,20,35,0.65) 0%,   rgba(10,20,35,0.10) 60%, transparent 85%),
-        linear-gradient(180deg, rgba(10,20,35,0.30) 0%,   transparent 45%);
+        linear-gradient(0deg,   rgba(247,251,255,0.92) 0%,   rgba(247,251,255,0.40) 40%, transparent 70%),
+        linear-gradient(90deg,  rgba(247,251,255,0.65) 0%,   rgba(247,251,255,0.10) 60%, transparent 85%),
+        linear-gradient(180deg, rgba(247,251,255,0.30) 0%,   transparent 45%);
       pointer-events: none;
     }
 
@@ -164,13 +164,13 @@
     }
 
     /* ===== Banner 内容区 ===== */
-    .featured-content {
+    .featured-content { color: #1a232f; 
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       padding: 64px 0 56px;
-      color: #fff;
+      color: #1a232f;
     }
     .featured-content-inner {
       max-width: 680px;
@@ -202,7 +202,7 @@
       font-weight: 800;
       line-height: 1.08;
       letter-spacing: -0.02em;
-      text-shadow: 0 4px 30px rgba(0,0,0,0.40);
+      text-shadow: 0 2px 12px rgba(0,0,0,0.10);
     }
     .featured-meta {
       display: flex;
@@ -212,9 +212,9 @@
       margin-bottom: 14px;
     }
     .featured-meta .badge, .featured-meta .episode { font-size: 0.85rem; padding: 6px 14px; }
-    .featured-meta .badge { background: rgba(0,179,136,0.20); color: #00d4a3; }
-    .featured-meta .episode { background: rgba(255,255,255,0.12); color: #eee; }
-    .featured-meta .meta-text { color: rgba(255,255,255,0.75); font-size: 0.92rem; }
+    .featured-meta .badge { background: var(--accent-soft); color: var(--accent); }
+    .featured-meta .episode { background: rgba(0,0,0,0.06); color: #1a232f; }
+    .featured-meta .meta-text { color: rgba(0,0,0,0.65); font-size: 0.92rem; }
     .featured-meta .meta-rating { display: inline-flex; align-items: center; gap: 3px; color: #ffc107; font-size: 0.92rem; font-weight: 600; }
     .featured-meta .meta-rating .star-icon { font-size: 0.82rem; }
 
@@ -222,9 +222,9 @@
       margin: 0 0 24px;
       font-size: 1.1rem;
       line-height: 1.75;
-      color: rgba(255,255,255,0.85);
+      color: rgba(0,0,0,0.75);
       max-width: 560px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
     .featured-content .button {
       background: var(--accent);
@@ -275,19 +275,19 @@
     /* 合作方短剧 — 蓝色 */
     .drama-badge.partner {
       background: linear-gradient(135deg, #60a5fa, #6366f1);
-      color: #fff;
+      color: #1a232f;
       box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
     }
     /* 认证创作者短剧 — 紫色 */
     .drama-badge.creator {
       background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-      color: #fff;
+      color: #1a232f;
       box-shadow: 0 2px 8px rgba(139, 92, 246, 0.35);
     }
     /* 社区短剧 — 灰色 */
     .drama-badge.community {
       background: linear-gradient(135deg, #94a3b8, #64748b);
-      color: #fff;
+      color: #1a232f;
       box-shadow: 0 2px 4px rgba(100, 116, 139, 0.25);
     }
     .featured-cert-wrapper {
@@ -335,7 +335,7 @@
     .featured-cast-label {
       font-size: 0.78rem;
       font-weight: 600;
-      color: rgba(255,255,255,0.55);
+      color: rgba(0,0,0,0.45);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       writing-mode: vertical-lr;
@@ -365,8 +365,8 @@
       height: 64px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2.5px solid rgba(255,255,255,0.25);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.30);
+      border: 2.5px solid rgba(0,0,0,0.12);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
       transition: border-color 0.3s ease;
       flex-shrink: 0;
     }
@@ -382,9 +382,9 @@
     .featured-cast-name {
       font-size: 0.72rem;
       font-weight: 600;
-      color: rgba(255,255,255,0.80);
+      color: rgba(0,0,0,0.7);
       white-space: nowrap;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.40);
+      text-shadow: none;
     }
     @media (max-width: 760px) {
       .featured-cast { gap: 12px; }
@@ -425,7 +425,7 @@
       bottom: 0; left: 0; right: 0;
       padding: 6px 10px;
       background: linear-gradient(transparent, rgba(0,0,0,0.75));
-      color: #fff;
+      color: #1a232f;
       font-size: 0.75rem;
       font-weight: 600;
       white-space: nowrap;
@@ -521,14 +521,14 @@
     .filter-tag.active { background: var(--accent); color: white; }
 
     .gallery { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; margin-bottom: 34px; }
-    .card { border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 12px 30px rgba(0,0,0,0.25); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+    .card { border-radius: 24px; min-height: 450px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 2px 12px rgba(27,45,71,0.06); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 4px 20px rgba(27,45,71,0.10); }
     .card-thumb { width: 100%; height: 320px; object-fit: cover; border-bottom: 1px solid var(--border); display: block; }
     .card-body { padding: 24px 26px 20px; flex-grow: 1; }
     .card-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .badge, .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
     .badge { background: var(--accent-soft); color: var(--accent); }
-    .episode { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .episode { background: rgba(0,0,0,0.04); color: var(--text-muted); }
     .card h3 { margin: 0 0 12px; font-size: 1.4rem; line-height: 1.25; }
     .card p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
     .card-actors {
@@ -590,7 +590,7 @@
     .card-rating .star-icon { font-size: 0.82rem; }
 
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.25s ease; }
-    .button { background: var(--accent); color: #fff; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
+    .button { background: var(--accent); color: #1a232f; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
     .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
 
     @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(2, minmax(0,1fr)); } }
@@ -618,7 +618,7 @@
       .badge { background: var(--accent-soft); color: var(--accent); }
       .search-box { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
       .filter-tag { background: var(--surface); color: var(--text-muted); }
-      .filter-tag.active { background: var(--accent); color: #fff; }
+      .filter-tag.active { background: var(--accent); color: #1a232f; }
       .top-search-bar {
         display: flex;
         align-items: center;
@@ -651,7 +651,7 @@
       .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .card-foot { flex-direction: column; align-items: flex-start; }
       .card { min-height: auto; }
-      .featured-content { padding: 64px 0 16px; }
+      .featured-content { color: #1a232f;  padding: 64px 0 16px; }
       .featured-content h2 { font-size: 2rem; }
       .featured-content p { font-size: 0.95rem; }
       .featured-content .button { padding: 12px 28px; font-size: 0.95rem; }
@@ -694,7 +694,7 @@
       }
       .filter-tag.active {
         background: var(--accent);
-        color: #fff;
+        color: #1a232f;
       }
 
       /* ── Banner 手机端精简 ── */
@@ -720,7 +720,7 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.35);
+        background: rgba(0,0,0,0.2);
         cursor: pointer;
         transition: all 0.3s ease;
         border: none;
@@ -820,7 +820,7 @@
       </div>
     </section>
 
-    <div id="noResults" class="no-results" style="display:none; text-align:center; padding:60px 20px; margin-bottom:34px; background:rgba(20,31,51,0.8); border-radius:32px; border:2px dashed var(--border);">
+    <div id="noResults" class="no-results" style="display:none; text-align:center; padding:60px 20px; margin-bottom:34px; background:var(--surface); border-radius:32px; border:2px dashed var(--border);">
       <div style="font-size:3rem; margin-bottom:16px;">🔍</div>
       <h3 style="margin:0 0 8px; color:var(--text); font-size:1.3rem;">没有找到结果</h3>
       <p style="margin:0; color:var(--text-muted); font-size:0.95rem;">试试更换搜索关键词或筛选条件</p>
