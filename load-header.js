@@ -1,6 +1,8 @@
 // ============================================================
 //  Story.fun - 统一 Header 加载脚本
 //  自包含 Header 样式（自动注入），各页面无需重复编写
+//  桌面端 (≥769px)：左侧固定侧边导航栏（抖音 Web 风格）
+//  移动端 (≤768px)：保持原底部导航
 // ============================================================
 
 (function() {
@@ -410,6 +412,215 @@
   }
 }
 
+/* ============================================================
+   桌面端侧边导航栏 (>768px) — 抖音 Web 风格
+   ============================================================ */
+@media (min-width: 769px) {
+  /* 所有页面内容右移，为侧边栏留出空间 */
+  body {
+    padding-left: 220px;
+  }
+
+  .story-header-wrapper .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 220px;
+    background: #0d1525;
+    border-bottom: none;
+    border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+    z-index: 1000;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .story-header-wrapper .header-inner {
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 14px;
+    gap: 14px;
+    max-width: none;
+    margin: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  /* Logo 区域 */
+  .story-header-wrapper .brand {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 4px 8px 14px;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 4px;
+  }
+
+  .story-header-wrapper .brand-logo-wrapper {
+    gap: 8px;
+  }
+
+  .story-header-wrapper .brand-text {
+    color: #e8edf5;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .story-header-wrapper .brand-dropdown-arrow {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* 导航链接 — 纵向排列 */
+  .story-header-wrapper .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 2px;
+    flex: 0 1 auto;
+  }
+
+  .story-header-wrapper .nav-link {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8896a8;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .story-header-wrapper .nav-link:hover {
+    color: #e8edf5;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .story-header-wrapper .nav-link.active {
+    color: #00d4a3;
+    background: rgba(0, 212, 163, 0.1);
+    border-radius: 8px;
+  }
+
+  /* 搜索 & 用户区 — 推到底部 */
+  .story-header-wrapper .header-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 8px 8px;
+    margin-top: auto;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .story-header-wrapper .search-btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #8896a8;
+    font-size: 14px;
+    gap: 10px;
+    height: auto;
+    background: transparent;
+  }
+
+  .story-header-wrapper .search-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e8edf5;
+  }
+
+  .story-header-wrapper .search-btn svg * {
+    stroke: #8896a8;
+  }
+
+  .story-header-wrapper .search-btn:hover svg * {
+    stroke: #00d4a3;
+  }
+
+  .story-header-wrapper .auth-login-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .story-header-wrapper .auth-container {
+    width: 100%;
+  }
+
+  /* 1011 子菜单 — 内嵌展开（hover 显示） */
+  .story-header-wrapper .nav-dropdown {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .story-header-wrapper .nav-dropdown-menu {
+    position: static;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0 0 0 14px;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    display: none;
+    min-width: auto;
+  }
+
+  .story-header-wrapper .nav-dropdown:hover .nav-dropdown-menu,
+  .story-header-wrapper .nav-dropdown-menu:hover {
+    display: block;
+  }
+
+  .story-header-wrapper .nav-dropdown-item {
+    color: #8896a8;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 6px;
+  }
+
+  .story-header-wrapper .nav-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e8edf5;
+  }
+
+  .story-header-wrapper .nav-dropdown-item.active {
+    color: #00d4a3;
+    background: rgba(0, 212, 163, 0.1);
+  }
+
+  /* Brand 下拉菜单位置修正 */
+  .story-header-wrapper .brand-dropdown {
+    left: 0;
+    top: calc(100% + 8px);
+    background: #141f33;
+    border: 0.5px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .story-header-wrapper .brand-dropdown-item {
+    color: #e8edf5;
+  }
+
+  .story-header-wrapper .brand-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .story-header-wrapper .brand-dropdown-item:first-child {
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* 桌面端隐藏汉堡按钮和移动端抽屉 */
+  .story-header-wrapper .hamburger-btn {
+    display: none !important;
+  }
+
+  .story-header-wrapper .mobile-drawer-overlay {
+    display: none !important;
+  }
+
+  .story-header-wrapper .mobile-drawer {
+    display: none !important;
+  }
+}
+
 `;
 
     const style = document.createElement('style');
@@ -609,6 +820,7 @@
           <a class="nav-dropdown-item" href="task.html">1011诺亚方舟</a>
         </div>
       </div>
+      <a class="nav-link" href="recommend.html">推荐</a>
       <a class="nav-link" href="index.html">剧场</a>
       <a class="nav-link" href="actors.html">角色 IP</a>
       <a class="nav-link" href="studio.html">经纪人</a>
@@ -616,7 +828,7 @@
       <a class="nav-link" href="whitepaper.html">白皮书</a>
     </nav>
     <div class="header-actions">
-      <button class="search-btn" aria-label="Language">
+      <button class="search-btn" aria-label="Search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60646C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/>
           <path d="M2 12h20"/>

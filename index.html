@@ -67,52 +67,14 @@
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
     /* ============================================================
-       首页特有：Header 透明化（banner 背景透出）— 仅 Web 端
-       ============================================================ */
-    @media (min-width: 769px) {
-      .story-header-wrapper {
-        position: relative;
-        z-index: 10;
-      }
-      .story-header-wrapper .header {
-        background: rgba(10, 20, 35, 0.45) !important;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 0.5px solid rgba(255,255,255,0.10) !important;
-      }
-      .story-header-wrapper .nav-link { color: rgba(255,255,255,0.80) !important; }
-      .story-header-wrapper .nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.10) !important; }
-      .story-header-wrapper .nav-link.active { color: #00d4a3 !important; }
-      .story-header-wrapper .search-btn { color: rgba(255,255,255,0.75) !important; }
-      .story-header-wrapper .search-btn:hover { background: rgba(255,255,255,0.08) !important; }
-      .story-header-wrapper .search-btn svg * { stroke: rgba(255,255,255,0.75); }
-      .story-header-wrapper .auth-login-btn {
-        border-color: rgba(255,255,255,0.25) !important;
-        background: rgba(255,255,255,0.12) !important;
-        color: #fff !important;
-      }
-      .story-header-wrapper .auth-login-btn:hover {
-        background: rgba(255,255,255,0.20) !important;
-        border-color: var(--accent) !important;
-      }
-      .story-header-wrapper .hamburger-btn svg path { stroke: #fff; }
-      .story-header-wrapper .brand-text {
-        background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-    }
-
-    /* ============================================================
        编辑精选 Banner — 全宽背景，从 header 下方延伸到背后
        ============================================================ */
     .featured-wrapper {
       position: relative;
       width: 100vw;
       margin-left: calc(-50vw + 50%);
-      margin-top: -80px;        /* 往上拉到 header 背后 */
-      padding-top: 80px;        /* 内容从 header 底部开始 */
+      margin-top: 0;
+      padding-top: 0;
       margin-bottom: 0;
       overflow: hidden;         /* 裁切背景动画溢出部分 */
     }
@@ -168,6 +130,14 @@
 
     @media (max-width: 760px) {
       .featured-video-btn { bottom: 140px; right: 16px; width: 38px; height: 38px; font-size: 1.1rem; }
+    }
+
+    /* 桌面端侧边栏适配：Banner 宽度减去侧边栏宽度 */
+    @media (min-width: 769px) {
+      .featured-wrapper {
+        width: calc(100vw - 220px);
+        margin-left: calc(-50vw + 50% + 110px);
+      }
     }
 
     /* 渐变遮罩 */
@@ -770,7 +740,7 @@
   </style>
 </head>
 <body>
-  <div id="header-placeholder"></div>
+  <script src="load-sidebar.js"></script>
 
   <!-- ===== 编辑精选 Banner（全宽背景，延伸到 Header 背后） ===== -->
   <div class="featured-wrapper">
@@ -1338,6 +1308,5 @@
 
     });
   </script>
-  <script src="load-header.js"></script>
 </body>
 </html>

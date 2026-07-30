@@ -154,7 +154,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .cm-item .cm-actions button:active{background:rgba(0,179,136,.1);color:#00b388}
 .comment-count{font-size:12px;color:rgba(94,111,131,.6)}
 @media(max-width:768px){body{padding-bottom:0!important}}
-@media(min-width:769px){#app{position:relative;max-width:400px;height:100vh;margin:0 auto}body{background:var(--bg);display:flex;align-items:center;justify-content:center}.bnav{max-width:400px;left:50%;transform:translateX(-50%)}.watch-bar{max-width:400px;left:50%!important;transform:translateX(-50%)!important}.player-progress{max-width:400px;left:50%!important;transform:translateX(-50%)}.cm-drawer .cm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.cm-drawer.open .cm-panel{transform:translateX(-50%) translateY(0)}.dm-send-drawer .dm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.dm-send-drawer.open .dm-panel{transform:translateX(-50%) translateY(0)}}
+@media(min-width:769px){#app{position:relative;margin:20px 70px 20px 20px;height:calc(100vh - 40px);border-radius:20px;overflow:hidden}body{background:#0a1428}.slide{overflow:hidden}body{display:block;align-items:unset;justify-content:unset}.top-tab-bar{display:none!important}.bnav{display:none}.watch-bar{left:240px!important;right:70px!important;bottom:12px!important;transform:none!important}.player-progress{left:240px!important;right:70px!important;bottom:62px!important;transform:none!important}.cm-drawer .cm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.cm-drawer.open .cm-panel{transform:translateX(-50%) translateY(0)}.dm-send-drawer .dm-panel{max-width:400px;left:50%;transform:translateX(-50%) translateY(100%)}.dm-send-drawer.open .dm-panel{transform:translateX(-50%) translateY(0)}.feed-nav-btns{position:fixed;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:16px;z-index:500}.feed-nav-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}.feed-nav-btn:hover{background:rgba(255,255,255,.25);transform:scale(1.1)}.feed-nav-btn:active{transform:scale(.9)}.desktop-actions{display:flex!important;position:fixed;right:32px;bottom:120px;z-index:500;flex-direction:column;align-items:center;gap:18px}.desktop-actions .act-icon{width:48px!important;height:48px!important}.desktop-actions .act-creator .ac-avatar{width:48px!important;height:48px!important}.actions{display:none!important}}
 .dm-send-drawer{position:fixed;inset:0;z-index:310;visibility:hidden;transition:visibility .3s}
 .dm-send-drawer.open{visibility:visible}
 .dm-send-drawer .dm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .3s}
@@ -395,5 +395,6 @@ initDanmaku(0);
 </script>
 <div id="bottom-nav-placeholder"></div>
 <script src="load-bottom-nav.js"></script>
+<script src="load-sidebar.js"></script>
 </body>
 </html>
