@@ -608,42 +608,8 @@
     <button class="mtab-item" data-mtab="favorited" onclick="switchMobileTab('favorited')">收藏</button>
   </div>
 
-  <!-- ===== MOBILE DRAMA GRID ===== -->
-  <div id="mobileTabPublished" class="mobile-drama-grid">
-    <div class="mdc" onclick="location.href='drama-detail.html'">
-      <img class="mdc-thumb" src="image/fenggu_cover.jpg" alt="凤骨琉璃" loading="lazy" />
-      <div class="mdc-body">
-        <div class="mdc-title">凤骨琉璃</div>
-        <div class="mdc-meta">
-          <span class="mdc-badge">古风</span>
-          <span class="mdc-rating">★ 4.8</span>
-          <span class="mdc-ep">44集</span>
-        </div>
-      </div>
-    </div>
-    <div class="mdc" onclick="location.href='drama-detail.html'">
-      <img class="mdc-thumb" src="image/xiejia_cover.jpg" alt="我卸甲后天下大乱了" loading="lazy" />
-      <div class="mdc-body">
-        <div class="mdc-title">我卸甲后天下大乱了</div>
-        <div class="mdc-meta">
-          <span class="mdc-badge">古风</span>
-          <span class="mdc-rating">★ 4.6</span>
-          <span class="mdc-ep">12集</span>
-        </div>
-      </div>
-    </div>
-    <div class="mdc" onclick="location.href='drama-detail.html'">
-      <img class="mdc-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" loading="lazy" />
-      <div class="mdc-body">
-        <div class="mdc-title">丞相府今日开饭</div>
-        <div class="mdc-meta">
-          <span class="mdc-badge">喜剧</span>
-          <span class="mdc-rating">★ 4.7</span>
-          <span class="mdc-ep">24集</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- ===== MOBILE DRAMA GRID (dynamic) ===== -->
+  <div id="mobileTabPublished" class="mobile-drama-grid"></div>
   <div id="mobileTabLiked" class="mobile-empty" style="display:none;">
     <div class="me-icon">❤️</div>
     <p>暂无赞过的短剧</p>
@@ -687,94 +653,14 @@
       <!-- Desktop Tabs -->
       <div>
         <div class="tab-bar">
-          <button class="tab-item active" data-tab="published" onclick="switchTab('published')">发布叙事</button>
+          <button class="tab-item active" data-tab="published" onclick="switchTab('published')">作品</button>
           <button class="tab-item" data-tab="liked" onclick="switchTab('liked')">点赞</button>
           <button class="tab-item" data-tab="favorited" onclick="switchTab('favorited')">收藏</button>
         </div>
       </div>
 
-      <!-- Desktop Works Grid -->
-      <div id="tabPublished" class="works-grid">
-        <article class="work-card" onclick="location.href='drama-detail.html'">
-          <img class="card-thumb" src="image/fenggu_cover.jpg" alt="凤骨琉璃" />
-          <div class="card-body">
-            <h3>凤骨琉璃</h3>
-            <div class="card-meta"><span class="badge">古风</span><span class="episode">全44集</span></div>
-            <p>一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
-            <div class="card-actors">
-              <div class="card-actors-list">
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=苏婉清'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div>
-                  <span class="card-actor-name">苏婉清</span>
-                </div>
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=李云飞'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div>
-                  <span class="card-actor-name">李云飞</span>
-                </div>
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
-                  <span class="card-actor-name">林梦瑶</span>
-                </div>
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=上官婉儿'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div>
-                  <span class="card-actor-name">上官婉儿</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-foot"><div class="info-row"><span>JACK</span><span>22.3万完播</span><span>333.2万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.8</span></div></div>
-        </article>
-        <article class="work-card" onclick="location.href='drama-detail.html'">
-          <img class="card-thumb" src="image/xiejia_cover.jpg" alt="我卸甲后天下大乱了" />
-          <div class="card-body">
-            <h3>我卸甲后天下大乱了</h3>
-            <div class="card-meta"><span class="badge">古风</span><span class="episode">全12集</span></div>
-            <p>卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。</p>
-            <div class="card-actors">
-              <div class="card-actors-list">
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=李云飞'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div>
-                  <span class="card-actor-name">李云飞</span>
-                </div>
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=赵无极'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="赵无极" loading="lazy" /></div>
-                  <span class="card-actor-name">赵无极</span>
-                </div>
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
-                  <span class="card-actor-name">林梦瑶</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4k 观看</span><span>286.5万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
-        </article>
-        <article class="work-card" onclick="location.href='drama-detail.html'">
-          <img class="card-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" />
-          <div class="card-body">
-            <h3>丞相府今日开饭</h3>
-            <div class="card-meta"><span class="badge">喜剧</span><span class="episode">全24集</span></div>
-            <p>丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。</p>
-            <div class="card-actors">
-              <div class="card-actors-list">
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=苏婉清'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div>
-                  <span class="card-actor-name">苏婉清</span>
-                </div>
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=上官婉儿'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div>
-                  <span class="card-actor-name">上官婉儿</span>
-                </div>
-                <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=Luna'">
-                  <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Luna" loading="lazy" /></div>
-                  <span class="card-actor-name">Luna</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8k 观看</span><span>198.4万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.7</span></div></div>
-        </article>
-      </div>
+      <!-- Desktop Works Grid (dynamic) -->
+      <div id="tabPublished" class="works-grid"></div>
 
       <!-- Desktop Empty States -->
       <div id="tabLiked" class="empty-state" style="display:none;">
@@ -1079,7 +965,96 @@
       if (menuBtn) menuBtn.addEventListener('click', openProfileDrawer);
       const overlay = document.getElementById('profileDrawerOverlay');
       if (overlay) overlay.addEventListener('click', closeProfileDrawer);
+      renderWorks();
     });
+
+    // ============================================================
+    //  我的作品数据（短剧 + 视频混合）
+    // ============================================================
+    const MY_WORKS = [
+      { type: 'drama', title: '凤骨琉璃', cat: '古风', rt: 4.8, ep: '全44集', author: 'JACK', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', cover: 'image/fenggu_cover.jpg', actors: ['苏婉清','李云飞','林梦瑶','上官婉儿'], link: 'drama-detail.html' },
+      { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集，每一帧都燃爆了！', cover: 'image/chengxiangfu_cover.jpg', link: '#' },
+      { type: 'drama', title: '我卸甲后天下大乱了', cat: '古风', rt: 4.6, ep: '全12集', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg', actors: ['李云飞','赵无极','林梦瑶'], link: 'drama-detail.html' },
+      { type: 'drama', title: '丞相府今日开饭', cat: '喜剧', rt: 4.7, ep: '全24集', author: 'LENS', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', cover: 'image/chengxiangfu_cover.jpg', actors: ['苏婉清','上官婉儿','Luna'], link: 'drama-detail.html' },
+      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密，揭开千年谜团。', cover: 'image/cover-pyramid.png', link: '#' },
+    ];
+
+    const SIMULATED_ACTORS = {
+      '苏婉清': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+      '李云飞': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+      '林梦瑶': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+      '上官婉儿': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      '赵无极': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      'Luna': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+    };
+
+    function renderWorks() {
+      renderDesktopWorks();
+      renderMobileWorks();
+    }
+
+    function renderDesktopWorks() {
+      const grid = document.getElementById('tabPublished');
+      if (!grid) return;
+      grid.innerHTML = MY_WORKS.map(w => {
+        if (w.type === 'video') {
+          return `<article class="work-card" onclick="location.href='${w.link}'">
+            <img class="card-thumb" src="${w.cover}" alt="${w.title}" style="aspect-ratio:16/9;height:auto;" />
+            <div class="card-body">
+              <h3>${w.title}</h3>
+              <div class="card-meta"><span class="badge" style="background:rgba(0,179,136,0.1);color:var(--accent)">视频</span><span class="episode">@${w.author}</span></div>
+              <p>${w.desc}</p>
+            </div>
+          </article>`;
+        } else {
+          const actorsHtml = (w.actors || []).map(a => {
+            const av = SIMULATED_ACTORS[a] || '';
+            return `<div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=${encodeURIComponent(a)}'"><div class="card-actor-avatar"><img src="${av}" alt="${a}" loading="lazy" /></div><span class="card-actor-name">${a}</span></div>`;
+          }).join('');
+          return `<article class="work-card" onclick="location.href='${w.link}'">
+            <img class="card-thumb" src="${w.cover}" alt="${w.title}" />
+            <div class="card-body">
+              <h3>${w.title}</h3>
+              <div class="card-meta"><span class="badge">${w.cat}</span><span class="episode">${w.ep}</span></div>
+              <p>${w.desc}</p>
+              <div class="card-actors"><div class="card-actors-list">${actorsHtml}</div></div>
+            </div>
+            <div class="card-foot"><div class="info-row"><span>${w.author}</span><span class="card-rating"><span class="star-icon">★</span> ${w.rt}</span></div></div>
+          </article>`;
+        }
+      }).join('');
+    }
+
+    function renderMobileWorks() {
+      const grid = document.getElementById('mobileTabPublished');
+      if (!grid) return;
+      grid.innerHTML = MY_WORKS.map(w => {
+        if (w.type === 'video') {
+          return `<div class="mdc" onclick="location.href='${w.link}'">
+            <img class="mdc-thumb" src="${w.cover}" alt="${w.title}" loading="lazy" />
+            <div class="mdc-body">
+              <div class="mdc-title">${w.title}</div>
+              <div class="mdc-meta">
+                <span class="mdc-badge">视频</span>
+                <span class="mdc-ep">@${w.author}</span>
+              </div>
+            </div>
+          </div>`;
+        } else {
+          return `<div class="mdc" onclick="location.href='${w.link}'">
+            <img class="mdc-thumb" src="${w.cover}" alt="${w.title}" loading="lazy" />
+            <div class="mdc-body">
+              <div class="mdc-title">${w.title}</div>
+              <div class="mdc-meta">
+                <span class="mdc-badge">${w.cat}</span>
+                <span class="mdc-rating">★ ${w.rt}</span>
+                <span class="mdc-ep">${w.ep.replace('全','')}集</span>
+              </div>
+            </div>
+          </div>`;
+        }
+      }).join('');
+    }
   </script>
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>

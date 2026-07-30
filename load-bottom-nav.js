@@ -286,48 +286,49 @@
     }
 
     activateCurrentTab();
-    updateHomeNavItem();
+    // updateHomeNavItem(); // 双模式已注释：首页按钮不再切换"首页/返回"
     applyNavTheme();
-    bindHomeToggle();
+    // bindHomeToggle(); // 双模式已注释
     bindCreateActionSheet();
     document.dispatchEvent(new CustomEvent('bottom-nav-loaded'));
   }
 
   // ============================================================
-  //  首页按钮双页面模式
+  //  首页按钮双页面模式 (已注释)
   //  - recommend.html → 显示"首页" → 跳转 index.html
   //  - index.html → 显示"返回" → 跳转 recommend.html
+  //  保留注释以备后续需要恢复
   // ============================================================
-  function updateHomeNavItem() {
-    var navHome = document.getElementById('navHome');
-    if (!navHome) return;
-
-    var label = navHome.querySelector('.bottom-nav-label');
-
-    if (currentPage === 'index.html') {
-      sessionStorage.setItem('nav_return_mode', '1');
-      label.textContent = '返回';
-      navHome.setAttribute('href', 'recommend.html');
-      navHome.classList.add('active');
-    } else if (currentPage === 'recommend.html') {
-      sessionStorage.removeItem('nav_return_mode');
-      label.textContent = '首页';
-      navHome.setAttribute('href', 'index.html');
-    } else if (sessionStorage.getItem('nav_return_mode') === '1') {
-      label.textContent = '返回';
-      navHome.setAttribute('href', 'index.html');
-    } else {
-      label.textContent = '首页';
-      navHome.setAttribute('href', 'recommend.html');
-    }
-  }
+  // function updateHomeNavItem() {
+  //   var navHome = document.getElementById('navHome');
+  //   if (!navHome) return;
+  //
+  //   var label = navHome.querySelector('.bottom-nav-label');
+  //
+  //   if (currentPage === 'index.html') {
+  //     sessionStorage.setItem('nav_return_mode', '1');
+  //     label.textContent = '返回';
+  //     navHome.setAttribute('href', 'recommend.html');
+  //     navHome.classList.add('active');
+  //   } else if (currentPage === 'recommend.html') {
+  //     sessionStorage.removeItem('nav_return_mode');
+  //     label.textContent = '首页';
+  //     navHome.setAttribute('href', 'index.html');
+  //   } else if (sessionStorage.getItem('nav_return_mode') === '1') {
+  //     label.textContent = '返回';
+  //     navHome.setAttribute('href', 'index.html');
+  //   } else {
+  //     label.textContent = '首页';
+  //     navHome.setAttribute('href', 'recommend.html');
+  //   }
+  // }
 
   // ============================================================
-  //  首页点击切换 Feed/列表
+  //  首页点击切换 Feed/列表 (已注释)
   // ============================================================
-  function bindHomeToggle() {
-    // 首页按钮已改为双页面跳转模式，不再拦截点击做 feed/list 切换
-  }
+  // function bindHomeToggle() {
+  //   // 首页按钮已改为双页面跳转模式，不再拦截点击做 feed/list 切换
+  // }
 
   // ============================================================
   //  加号按钮 → 弹出 Action Sheet（仅移动端）

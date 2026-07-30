@@ -1130,6 +1130,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.search.includes('embed=1')) {
+      var sc = document.querySelector('.search-container');
+      if (sc) sc.style.display = 'none';
+      var tsb = document.querySelector('.top-search-bar');
+      if (tsb) tsb.style.display = 'none';
+    }
+
       const tc = document.getElementById('featured-thumbnails');
       // 首页加载时：第一个短剧显示视频背景（无声音静音播放）
       const video = document.getElementById('featured-video');

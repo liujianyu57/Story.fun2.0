@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story.fun | 观看历史</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.12);
+      --text: #13202e;
+      --text-muted: #5e6f83;
+      --text-sub: #8b8d98;
+      --border: #deeaf7;
+      --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.04);
+      --radius: 16px;
+      font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+
+    /* 页面标题 */
+    .page-title { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 24px; text-align: center; }
+
+    /* 历史列表 — 桌面三列卡片 */
+    .history-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .history-item {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
+    }
+    .history-item:hover { box-shadow: 0 4px 16px rgba(27,45,71,0.08); transform: translateY(-2px); }
+    .history-item:active { transform: scale(0.985); }
+
+    .history-cover {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      background: var(--border);
+    }
+
+    .history-info { padding: 12px 14px 10px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .history-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .history-meta { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .history-meta .h-progress { color: var(--accent); font-weight: 600; }
+    .history-meta .h-time { color: var(--text-sub); }
+
+    .history-arrow { display: none; }
+
+    /* 空状态 */
+    .empty-state { text-align: center; padding: 80px 24px; color: var(--text-sub); }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state p { font-size: 15px; }
+
+    /* 清空按钮 */
+    .history-actions { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+    .clear-btn {
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .clear-btn:hover { border-color: #f45b69; color: #f45b69; background: rgba(244,91,105,0.04); }
+
+    /* 移动端返回箭头 */
+    .mobile-back-btn {
+      display: none;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 900;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      border: none;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      transition: background 0.2s ease, transform 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-back-btn:hover { background: rgba(255, 255, 255, 1); }
+    .mobile-back-btn:active { transform: scale(0.92); }
+
+    @media (max-width: 680px) {
+      .app-shell { padding: 8px 12px; }
+      .page-title { font-size: 1.25rem; margin-bottom: 16px; padding-top: 12px; }
+      .history-list { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .history-item { flex-direction: column; border-radius: 12px; }
+      .history-cover { aspect-ratio: 3/4; border-radius: 0; }
+      .history-info { padding: 6px 8px 8px; gap: 2px; }
+      .history-title { font-size: 12px; }
+      .history-meta { font-size: 10px; gap: 4px; }
+      .mobile-back-btn { display: flex; }
+      .header { display: none !important; }
+      body { padding-bottom: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 移动端返回箭头 -->
+  <button class="mobile-back-btn" onclick="history.back()" aria-label="返回">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6" />
+    </svg>
+  </button>
+
+  <div id="header-placeholder"></div>
+  <div class="app-shell">
+    <h1 class="page-title">观看历史</h1>
+
+    <div class="history-actions">
+      <button class="clear-btn" onclick="clearHistory()">清空历史</button>
+    </div>
+
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <script src="load-header.js"></script>
+  <script>
+    // ============================================================
+    //  模拟观看历史数据
+    // ============================================================
+    const HISTORY_DATA = [
+      {
+        id: 1,
+        type: 'drama',
+        title: '凤骨琉璃',
+        cover: 'image/fenggu_cover.jpg',
+        progress: '3/44集',
+        time: '32分钟前',
+        link: 'drama-detail.html',
+      },
+      {
+        id: 2,
+        type: 'drama',
+        title: '我卸甲后天下大乱了',
+        cover: 'image/xiejia_cover.jpg',
+        progress: '7/12集',
+        time: '2小时前',
+        link: 'drama-detail.html',
+      },
+      {
+        id: 3,
+        type: 'drama',
+        title: '丞相府今日开饭',
+        cover: 'image/chengxiangfu_cover.jpg',
+        progress: '12/24集',
+        time: '昨天',
+        link: 'drama-detail.html',
+      },
+      {
+        id: 4,
+        type: 'video',
+        title: '打斗精彩片段',
+        cover: 'image/chengxiangfu_cover.jpg',
+        progress: '已看完',
+        time: '昨天 22:30',
+        link: '#',
+      },
+      {
+        id: 5,
+        type: 'drama',
+        title: '时间管理局',
+        cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80',
+        progress: '5/16集',
+        time: '3天前',
+        link: 'drama-detail.html',
+      },
+      {
+        id: 6,
+        type: 'drama',
+        title: '金融暗战',
+        cover: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80',
+        progress: '22/44集',
+        time: '一周前',
+        link: 'drama-detail.html',
+      },
+      {
+        id: 7,
+        type: 'video',
+        title: '金字塔探险',
+        cover: 'image/cover-pyramid.png',
+        progress: '看完 45%',
+        time: '2周前',
+        link: '#',
+      },
+    ];
+
+    function renderHistory() {
+      const list = document.getElementById('historyList');
+      if (HISTORY_DATA.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-icon">🕐</div><p>暂无观看历史</p></div>';
+        return;
+      }
+      list.innerHTML = HISTORY_DATA.map(item => `
+        <a class="history-item" href="${item.link}" ${item.link === '#' ? 'onclick="return false"' : ''}>
+          <img class="history-cover" src="${item.cover}" alt="${item.title}" loading="lazy" onerror="this.style.background='#eef1f5'" />
+          <div class="history-info">
+            <div class="history-title">${item.title}</div>
+            <div class="history-meta">
+              <span class="h-progress">${item.progress}</span>
+              <span class="h-time">${item.time}</span>
+            </div>
+          </div>
+          <span class="history-arrow">›</span>
+        </a>
+      `).join('');
+    }
+
+    function clearHistory() {
+      if (confirm('确定要清空所有观看历史吗？')) {
+        HISTORY_DATA.length = 0;
+        renderHistory();
+      }
+    }
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      renderHistory();
+    });
+  </script>
+</body>
+</html>

@@ -1492,6 +1492,18 @@
   </div>
 
   <script src="auth.js"></script>
+  <script>
+    (function(){
+      if (new URLSearchParams(window.location.search).get('visitor') === '1') {
+        document.addEventListener('DOMContentLoaded', function(){
+          var tp = document.getElementById('treasuryPanel');
+          if (tp) tp.style.display = 'none';
+          document.querySelectorAll('.auth-container').forEach(function(el){ el.style.display = 'none'; });
+        });
+      }
+    })();
+  </script>
+
   <script src="ai-chat.js"></script>
   <script>
     // ============================================================
