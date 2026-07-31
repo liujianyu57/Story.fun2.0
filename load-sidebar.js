@@ -16,7 +16,7 @@
             '.app-sidebar{position:fixed;top:0;left:0;bottom:0;z-index:900;width:160px;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;flex-direction:column;padding:0 12px;transition:transform 0.3s ease;overflow-y:auto}',
             '.sb-logo{display:flex;align-items:center;gap:10px;padding:20px 12px 24px;text-decoration:none;flex-shrink:0}',
             '.sb-logo-img{width:32px;height:32px;border-radius:8px;flex-shrink:0}',
-            '.sb-logo-text{font-size:18px;font-weight:700;color:#13202e;letter-spacing:-0.3px;white-space:nowrap}',
+            '.sb-logo-text{font-size:18px;font-weight:700;background:linear-gradient(135deg,#00b388,#34d399,#00c9a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.3px;white-space:nowrap}',
             '.sb-logo-sub{font-size:10px;color:#7c3aed;font-weight:400;line-height:1.2}',
             '.sb-nav{display:flex;flex-direction:column;gap:2px;flex:1;padding:4px 0}',
             '.sb-nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#5e6f83;text-decoration:none;font-size:15px;font-weight:500;transition:all 0.2s ease;cursor:pointer;border:none;background:none;text-align:left;width:100%}',
@@ -24,6 +24,24 @@
             '.sb-nav-item.active{color:#13202e;background:rgba(167,139,250,0.12)}',
             '.sb-nav-item svg{width:22px;height:22px;flex-shrink:0;stroke:currentColor;fill:none}',
             '.sb-nav-item .sb-label{white-space:nowrap}',
+            '.sb-divider{height:1px;background:rgba(0,0,0,.06);margin:4px 8px}',
+            '.sb-nav-dropdown{position:relative}',
+            '.sb-submenu{position:absolute;left:100%;top:0;background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:10px;padding:4px;min-width:140px;box-shadow:0 8px 30px rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.06);opacity:0;visibility:hidden;transform:translateX(-6px);transition:all 0.2s ease;pointer-events:none;z-index:9999}',
+            '.app-sidebar{position:fixed;top:0;left:0;bottom:0;z-index:900;width:160px;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;flex-direction:column;padding:0 12px;transition:transform 0.3s ease;overflow:visible}',
+            '.sb-nav-dropdown:hover .sb-submenu{opacity:1;visibility:visible;transform:translateX(0);pointer-events:auto}',
+            '.sb-submenu::before{content:"";position:absolute;right:100%;top:0;width:8px;height:100%}.sb-submenu a{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:7px;color:#5e6f83;text-decoration:none;font-size:14px;font-weight:500;transition:all 0.15s;white-space:nowrap}',
+            '.sb-submenu a:hover{background:rgba(0,0,0,0.04);color:#13202e}',
+            '.sb-submenu a svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;fill:none}',
+            '.sb-settings{position:relative;margin-top:auto;padding:8px 0 12px;border-top:1px solid rgba(0,0,0,.06)}',
+            '.sb-settings-trigger{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#5e6f83;cursor:pointer;transition:all .2s}',
+            '.sb-settings-trigger:hover{background:rgba(0,0,0,.04);color:#13202e}',
+            '.sb-settings-trigger svg{width:22px;height:22px;flex-shrink:0;stroke:currentColor;fill:none}',
+            '.sb-settings-menu{position:absolute;left:0;bottom:100%;margin-bottom:4px;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:10px;padding:4px;min-width:140px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);opacity:0;visibility:hidden;transform:translateY(6px);transition:all .2s ease;pointer-events:none;z-index:9999}',
+            '.sb-settings:hover .sb-settings-menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}',
+            '.sb-settings-menu::after{content:"";position:absolute;left:0;top:100%;width:100%;height:8px}',
+            '.sb-settings-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:7px;color:#5e6f83;text-decoration:none;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;border:none;background:none;width:100%;text-align:left;font-family:inherit}',
+            '.sb-settings-item:hover{background:rgba(0,0,0,.04);color:#13202e}',
+            '.sb-settings-item svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;fill:none}',
             '.sb-main-offset{margin-left:160px}',
             '@media(max-width:768px){.app-sidebar{display:none}}'
         ].join('');
@@ -41,10 +59,18 @@
                     '</div>' +
                 '</a>' +
                 '<nav class="sb-nav" id="sbNav">' +
-                    '<a href="1011.html" class="sb-nav-item" data-page="1011.html">' +
-                        '<svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>' +
-                        '<span class="sb-label">1011</span>' +
-                    '</a>' +
+                    '<div class="sb-nav-dropdown">' +
+                        '<a href="1011.html" class="sb-nav-item">' +
+                            '<svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>' +
+                            '<span class="sb-label">1011</span>' +
+                        '</a>' +
+                        '<div class="sb-submenu">' +
+                            '<a href="1011.html"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>1011主题</a>' +
+                            '<a href="1011-museum.html"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>1011博物馆</a>' +
+                            '<a href="task.html"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2l10 6v14H2V8l10-6z"/><path d="M12 22V10"/></svg>1011诺亚方舟</a>' +
+                        '</div>' +
+                    '</div>' +
+                '<div class="sb-divider"></div>' +
                     '<a href="recommend.html" class="sb-nav-item" data-page="recommend.html">' +
                         '<svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>' +
                         '<span class="sb-label">推荐</span>' +
@@ -61,23 +87,27 @@
                         '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' +
                         '<span class="sb-label">经纪人</span>' +
                     '</a>' +
-                    '<a href="narrator.html" class="sb-nav-item" data-page="narrator.html">' +
-                        '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>' +
-                        '<span class="sb-label">创作</span>' +
+                    '<a href="profile-center.html" class="sb-nav-item" data-page="profile-center.html">' +
+                        '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+                        '<span class="sb-label">我的</span>' +
                     '</a>' +
-                    '<a href="fund-dashboard.html" class="sb-nav-item" data-page="fund-dashboard.html">' +
-                        '<svg viewBox="0 0 24 24" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>' +
-                        '<span class="sb-label">资金</span>' +
-                    '</a>' +
-                    '<a href="rewards.html" class="sb-nav-item" data-page="rewards.html">' +
-                        '<svg viewBox="0 0 24 24" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
-                        '<span class="sb-label">奖励</span>' +
-                    '</a>' +
+                '<div class="sb-divider"></div>' +
                     '<a href="whitepaper.html" class="sb-nav-item" data-page="whitepaper.html">' +
                         '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
                         '<span class="sb-label">白皮书</span>' +
                     '</a>' +
                 '</nav>' +
+                '<div class="sb-settings">' +
+                    '<div class="sb-settings-trigger">' +
+                        '<svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>' +
+                        '<span class="sb-label">设置</span>' +
+                    '</div>' +
+                    '<div class="sb-settings-menu">' +
+                        '<button class="sb-settings-item" onclick="showToast(\'浅色模式暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>浅色模式</button>' +
+                        '<button class="sb-settings-item" onclick="showToast(\'深色模式暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>深色模式</button>' +
+                        '<button class="sb-settings-item" onclick="showToast(\'语言切换暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>语言</button>' +
+                    '</div>' +
+                '</div>' +
             '</aside>';
     }
 

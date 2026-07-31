@@ -124,8 +124,8 @@ function injectAuthStyles() {
   .auth-dropdown{position:absolute;right:0;top:64px;width:340px;background:#fff;border-radius:16px;padding:18px;box-shadow:0 18px 40px rgba(22,33,51,0.08);border:1px solid rgba(22,33,51,0.04);opacity:0;transform:translateY(-8px);pointer-events:none;transition:all 220ms ease;z-index:9999}
   .auth-dropdown.active,.auth-dropdown.active{opacity:1;transform:translateY(0);pointer-events:auto}
 
-  .auth-dropdown-top{display:flex;gap:12px;align-items:center;padding-bottom:12px}
-  .auth-dropdown-top-avatar{width:56px;height:56px;border-radius:12px;object-fit:cover}
+  .auth-dropdown-top{display:flex;cursor:pointer;gap:12px;align-items:center;padding-bottom:12px}
+  .auth-dropdown-top-avatar{width:56px;height:56px;border-radius:50%;object-fit:cover}
   .auth-dropdown-main{font-weight:700;font-size:18px;color:#0b1720}
   .auth-dropdown-sub{color:#8b98a6;margin-top:4px}
 
@@ -223,6 +223,9 @@ function injectAuthStyles() {
   .withdraw-submit-btn:hover{opacity:0.9}
   .withdraw-warning-text{display:flex;flex-direction:column;gap:6px}
   .withdraw-warning-text p{margin:0;font-size:12px;line-height:16px;color:#60646C}
+  .auth-copy-btn{width:22px;height:22px;border:none;background:transparent;color:var(--text-muted,#8b98a6);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;padding:0;border-radius:4px}
+  .auth-copy-btn:hover{color:var(--accent,#00b388);background:rgba(0,0,0,.04)}
+  .auth-copy-btn svg{width:14px;height:14px}
   `;
 
   const style = document.createElement('style');
@@ -238,15 +241,10 @@ function renderAuthUI(container) {
   if (currentUser.isLoggedIn) {
     // 根据登录方式展示不同内容：邮箱登录展示充值/提现按钮，钱包登录不展示
     const isEmail = currentUser.authMethod === 'email';
-    const displayName = isEmail ? currentUser.email : currentUser.name;
+    var displayName = currentUser.name || (isEmail ? currentUser.email : 'User');
     var walletAddr = currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF';
   var shortWallet = walletAddr.slice(0,6) + '...' + walletAddr.slice(-4);
-  var subLabel;
-  if (isEmail) {
-    subLabel = currentUser.email || '邮箱账户';
-  } else {
-    subLabel = '<div class="auth-wallet-row"><span class="auth-wallet-addr">'+shortWallet+'</span><button class="auth-copy-btn" data-wallet="'+walletAddr+'" title="复制地址"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>';
-  }
+  var subLabel = isEmail ? '邮箱用户' : '钱包用户';
     const usdcDisplay = typeof currentUser.balances?.usdc === 'number' ? `$${currentUser.balances.usdc.toFixed(2)}` : '-';
     container.innerHTML = `
       <div class="auth-user-menu">
@@ -255,7 +253,7 @@ function renderAuthUI(container) {
           <span class="auth-avatar-dot"></span>
         </div>
         <div class="auth-dropdown" id="authDropdown">
-          <div class="auth-dropdown-top">
+          <div class="auth-dropdown-top" onclick="openProfileCenter()">
             <div class="auth-dropdown-top-left">
               <img class="auth-dropdown-top-avatar" src="${currentUser.avatar}" alt="${currentUser.name}" />
             </div>
@@ -276,7 +274,7 @@ function renderAuthUI(container) {
                 </linearGradient>
               </defs>
             </svg>
-            <span>Solana</span>
+            <span>Solana</span><span class="auth-wallet-addr" style="font-size:0.72rem;margin-left:6px">${shortWallet}</span><button class="auth-copy-btn" data-wallet="${walletAddr}" title="复制地址" style="margin-left:4px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9z"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
           </div>
 
           <div class="auth-balance-list">
@@ -285,10 +283,10 @@ function renderAuthUI(container) {
                 <div class="auth-token-icon token-story"></div>
                 <div>
                   <div class="auth-token-name">STORY</div>
-                  <div class="auth-token-sub">Solana</div>
+                  <div class="auth-token-sub">Story</div>
                 </div>
               </div>
-              <div class="auth-balance-amount">${currentUser.balances?.story ?? '-'}
+              <div class="auth-balance-amount">${typeof currentUser.balances?.story === 'number' ? currentUser.balances.story.toFixed(4) : '-'}
               </div>
             </div>
 
@@ -297,7 +295,7 @@ function renderAuthUI(container) {
                 <div class="auth-token-icon token-usdc"></div>
                 <div>
                   <div class="auth-token-name">USDC</div>
-                  <div class="auth-token-sub">Solana</div>
+                  <div class="auth-token-sub">USD Coin</div>
                 </div>
               </div>
               <div class="auth-balance-amount">${usdcDisplay}</div>
@@ -306,16 +304,12 @@ function renderAuthUI(container) {
 
           ${isEmail ? `
             <div class="auth-balance-actions">
-              <button class="btn btn-primary" onclick="openDepositModal()">充值 USDC</button>
-              <button class="btn btn-outline" onclick="openWithdrawModal()">提现 USDC</button>
+              <button class="btn btn-primary" onclick="openDepositModal()">充值</button>
+              <button class="btn btn-outline" onclick="openWithdrawModal()">提现</button>
             </div>
           ` : ''}
 
           <div class="auth-dropdown-divider"></div>
-          <a class="auth-dropdown-item" href="#" onclick="openProfileCenter()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            个人中心
-          </a>
              <a class="auth-dropdown-item" href="referral.html">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             邀请
@@ -533,7 +527,7 @@ function openWithdrawModal() {
     <div class="withdraw-overlay">
       <div class="withdraw-card">
         <div class="withdraw-header">
-          <span class="withdraw-title">提现 USDC</span>
+          <span class="withdraw-title">提现</span>
           <button class="withdraw-close" onclick="closeWithdrawModal()">✕</button>
         </div>
         <div class="withdraw-body">
@@ -898,7 +892,7 @@ function openDepositModal() {
     <div class="deposit-overlay">
       <div class="deposit-card">
         <div class="deposit-header">
-          <span class="deposit-title">充值 USDC</span>
+          <span class="deposit-title">充值</span>
           <button class="deposit-close" onclick="closeDepositModal()">✕</button>
         </div>
         <div class="deposit-body">
