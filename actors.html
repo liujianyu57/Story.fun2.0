@@ -1755,7 +1755,7 @@
   <script src="ai-chat.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.getElementById('actorSearch');
+      var searchInput = document.getElementById('actorSearch'); if (!searchInput) { searchInput = document.createElement('div'); searchInput.addEventListener = function(){}; }
       const cards = document.querySelectorAll('.card');
       const mintModal = document.getElementById('mintModal');
       const mintModalClose = document.getElementById('mintModalClose');
@@ -1793,12 +1793,12 @@
       });
 
       // ═══ Search dropdown ═══
-      const searchDropdown = document.getElementById('searchDropdown');
+      var searchDropdown = document.getElementById('searchDropdown') || document.createElement('div');
 
-      function renderSearchDropdown(query) {
+      function renderSearchDropdown(query) { if(!searchDropdown) return;
         const q = query.toLowerCase().trim();
         if (!q) {
-          searchDropdown.classList.remove('show');
+          if(searchDropdown) searchDropdown.classList.remove('show');
           return;
         }
         const results = Array.from(cards).filter(card => {
@@ -1808,11 +1808,11 @@
         });
         const limited = results.slice(0, 6);
         if (limited.length === 0) {
-          searchDropdown.innerHTML = '<div class="search-dropdown-empty">未找到匹配的角色</div>';
-          searchDropdown.classList.add('show');
+          if(searchDropdown) searchDropdown.innerHTML = '<div class="search-dropdown-empty">未找到匹配的角色</div>';
+          if(searchDropdown) searchDropdown.classList.add('show');
           return;
         }
-        searchDropdown.innerHTML = limited.map(card => {
+        if(searchDropdown) searchDropdown.innerHTML = limited.map(card => {
           const name = card.dataset.actor || card.querySelector('h3')?.textContent || '';
           const collection = card.dataset.collection || '';
           const imgSrc = card.querySelector('.actor-avatar img')?.src || '';
@@ -1826,17 +1826,17 @@
             <span class="sdi-collection">角色IP ${collection}</span>
           </a>`;
         }).join('');
-        searchDropdown.classList.add('show');
+        if(searchDropdown) searchDropdown.classList.add('show');
       }
 
       // 移动端下输入为只读，不可真正输入；点击跳转 search.html
-      if(searchInput)searchInput.addEventListener('click', function() {
+      if(searchInput && typeof searchInput.addEventListener === 'function') searchInput.addEventListener('click', function() {
         window.location.href = 'search.html';
       });
 
       document.addEventListener('click', function(e) {
         if (!e.target.closest('.search-wrapper')) {
-          searchDropdown.classList.remove('show');
+          if(searchDropdown) searchDropdown.classList.remove('show');
         }
       });
 
@@ -1869,7 +1869,7 @@
       }
 
       function applyCurrentSort() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
+        var searchTerm = (searchInput && searchInput.value) ? searchInput.value.toLowerCase().trim() : '';
         const visible = Array.from(cards).filter(card => {
           if (!searchTerm) return true;
           const name = card.querySelector('h3').textContent.toLowerCase();
