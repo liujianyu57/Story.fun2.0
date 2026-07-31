@@ -43,6 +43,16 @@
     @media(max-width:768px){.desktop-header{display:none}}
 
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-bottom: 12px; margin-top: 8px; padding: 8px 16px; position: relative; z-index: 1;
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--text-secondary); text-decoration: none;
+      border-radius: 10px; background: var(--surface);
+      border: 1px solid var(--border-light);
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover { background: var(--accent-soft); color: var(--accent); }
 
     /* Tabs */
     .tab-bar {
@@ -160,6 +170,7 @@
 </div>
 
 <div class="app-shell">
+  <a href="javascript:history.back()" class="back-btn">← 返回</a>
   <div class="tab-bar">
     <button class="tab-item active" data-tab="following" onclick="switchTab('following')">关注</button>
     <button class="tab-item" data-tab="followers" onclick="switchTab('followers')">粉丝</button>
