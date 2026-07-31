@@ -43,7 +43,7 @@
             '.sb-settings-item:hover{background:rgba(0,0,0,.04);color:#13202e}',
             '.sb-settings-item svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;fill:none}',
             '.sb-main-offset{margin-left:160px}',
-            '@media(max-width:768px){.app-sidebar{display:none}}'
+            '@media(max-width:768px){.app-sidebar{display:none}.sb-main-offset{margin-left:0!important}}'
         ].join('');
         document.head.appendChild(style);
     }
