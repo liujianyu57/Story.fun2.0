@@ -257,8 +257,67 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .dh-avatar-dropdown .dd-bal-val small{display:block;font-size:10px;color:var(--text-muted);font-weight:400}
 .dh-avatar-dropdown .dd-item{display:flex;align-items:center;gap:10px;padding:12px 18px;color:var(--text);text-decoration:none;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s;border:none;background:none;width:100%;text-align:left}
 .dh-avatar-dropdown .dd-item:hover{background:rgba(0,0,0,.025)}
-.dh-avatar-dropdown .dd-item.logout{color:#f45b69}
+.dh-avatar-dropdown .dd-item.logout{color:#f45b69}.dd-actions{padding:10px 18px 12px;display:flex;flex-direction:column;gap:8px}.dd-actions .dd-btn-row{display:flex;gap:8px}.dd-actions .dd-btn{flex:1;padding:8px 0;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;text-align:center;font-family:inherit}.dd-actions .dd-btn.dd-trade{width:100%;background:rgba(0,0,0,.04);color:var(--text)}.dd-actions .dd-btn.dd-trade:hover{background:rgba(0,0,0,.08)}.dd-actions .dd-btn.dd-deposit{background:var(--accent);color:#fff;font-size:13px;padding:10px 0}.dd-actions .dd-btn.dd-deposit:hover{opacity:.9}.dd-actions .dd-btn.dd-withdraw{background:rgba(0,0,0,.04);color:var(--text)}.dd-actions .dd-btn.dd-withdraw:hover{background:rgba(0,0,0,.08)}
 
+/* ── Auth (Login / Logout) ── */
+.auth-container{display:flex;align-items:center}
+.auth-login-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,.15);background:var(--surface);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+.auth-login-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.auth-user-menu{position:relative}
+.auth-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;cursor:pointer;border:2px solid var(--accent-soft);transition:border-color .2s;position:relative;flex-shrink:0}
+.auth-avatar:hover{border-color:var(--accent)}
+.auth-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.auth-dropdown{position:absolute;top:calc(100% + 10px);right:0;width:240px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 12px 40px rgba(27,45,71,.15);opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s ease;z-index:100;overflow:hidden}
+.auth-dropdown.active{opacity:1;visibility:visible;transform:translateY(0)}
+.auth-dropdown-header{display:flex;align-items:center;gap:12px;padding:16px 18px}
+.auth-dropdown-header img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.auth-dropdown-name{font-weight:600;font-size:.92rem;color:var(--text)}
+.auth-dropdown-wallet{font-size:.78rem;color:var(--text-muted);font-family:monospace;margin-top:2px}
+.auth-dropdown-divider{height:1px;background:var(--border);margin:0}
+.auth-dropdown-item{display:flex;align-items:center;gap:10px;padding:12px 18px;color:var(--text);text-decoration:none;font-size:.9rem;transition:background .15s;cursor:pointer}
+.auth-dropdown-item:hover{background:rgba(0,0,0,.03)}
+.auth-dropdown-logout{color:#f45b69}
+.auth-dropdown-logout:hover{background:rgba(244,91,105,.06)}
+.auth-modal-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s}
+.auth-modal-overlay.active{opacity:1}
+.auth-modal{background:#fff;border-radius:20px;padding:32px 28px;width:90%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.15);position:relative}
+.auth-modal-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,.05);font-size:16px;cursor:pointer}
+.auth-modal-header{text-align:center;margin-bottom:24px}
+.auth-modal-logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#00b388,#34d399);color:#fff;font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.auth-modal-header h2{font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px}
+.auth-modal-header p{font-size:13px;color:var(--text-muted)}
+.auth-social-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--surface);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:12px;transition:all .15s}
+.auth-social-btn:hover{background:var(--accent-soft);border-color:var(--accent)}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--text-muted);font-size:12px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.auth-wallet-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00b388,#34d399);color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:12px;transition:opacity .15s}
+.auth-wallet-btn:hover{opacity:.9}
+.auth-modal-tos{text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px}
+.auth-modal-tos a{color:var(--accent);text-decoration:none}
+.auth-balance-row{display:flex;align-items:center;justify-content:space-between;padding:10px 18px}
+.auth-balance-label{font-size:.8rem;color:var(--text-muted);font-weight:500}
+.auth-balance-val{font-size:.95rem;font-weight:600;color:var(--text)}
+.auth-balance-actions{display:flex;gap:8px;padding:8px 18px 12px}
+.auth-balance-actions .btn{padding:8px 0;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;flex:1;text-align:center}
+.auth-balance-actions .btn-primary{background:var(--accent);color:#fff}
+.auth-balance-actions .btn-outline{background:rgba(0,0,0,.04);color:var(--text)}
+/*
+ * Prevent desktop header auth styles from colliding with .dh-avatar
+ */
+.desktop-header .auth-login-btn{margin-left:auto}
+
+/* ── Confirm Modal ── */
+.confirm-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s}
+.confirm-overlay.active{opacity:1}
+.confirm-modal{background:#fff;border-radius:16px;padding:24px 28px;width:90%;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.15);text-align:center}
+.confirm-modal .confirm-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px}
+.confirm-modal .confirm-desc{font-size:13px;color:var(--text-muted);margin-bottom:20px}
+.confirm-modal .confirm-btns{display:flex;gap:10px}
+.confirm-modal .confirm-btns button{flex:1;padding:10px 0;border-radius:10px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.confirm-modal .confirm-cancel{background:rgba(0,0,0,.05);color:var(--text)}
+.confirm-modal .confirm-cancel:hover{background:rgba(0,0,0,.1)}
+.confirm-modal .confirm-ok{background:linear-gradient(135deg,#00b388,#34d399);color:#fff}
+.confirm-modal .confirm-ok:hover{opacity:.9}
 /* ── Desktop Header ── */
 .desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,0,0,0.06)}
 .desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
@@ -329,44 +388,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   <button class="dh-publish-btn" onclick="location.href='publish.html'">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>发布
   </button>
-  <div class="dh-avatar-wrap">
-    <span class="dh-usdc-badge" id="dhUsdcBadge"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" fill="#3b82f6"/><text x="8" y="12" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="monospace">$</text></svg>3,580 USDC
-      <img class="dh-avatar" id="dhAvatarImg" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="头像"></span>
-    <div class="dh-avatar-dropdown" id="dhAvatarDropdown">
-      <div class="dd-header">
-        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="">
-        <div>
-          <div class="dd-name">清风明月</div>
-          <div class="dd-sub"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#9945FF" rx="11"/><path d="M7.5 7.5h9l-2 10h-9l2-10z" fill="#14F195"/></svg> <span class="dd-wallet">0x7A2b...3fD8</span><button class="dd-copy-btn" onclick="event.stopPropagation();navigator.clipboard.writeText('0x7A2b3fD81234567890abcdef1234567890abCDEF').then(()=>showToast('已复制钱包地址'))" title="复制地址"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>
-        </div>
-      </div>
-      <div class="dd-divider"></div>
-      <div class="dd-balance">
-        <div class="dd-bal-row">
-          <div class="dd-bal-left">
-            <div class="dd-bal-icon story">S</div>
-            <div class="dd-bal-name">Story<small>生态代币</small></div>
-          </div>
-          <div class="dd-bal-val">12,500</div>
-        </div>
-        <div class="dd-bal-row">
-          <div class="dd-bal-left">
-            <div class="dd-bal-icon usdc">$</div>
-            <div class="dd-bal-name">USD Coin<small>稳定币</small></div>
-          </div>
-          <div class="dd-bal-val">3,580.00</div>
-        </div>
-      </div>
-      <div class="dd-divider"></div>
-      <a class="dd-item" href="profile-center.html">👤 个人主页</a>
-      <a class="dd-item" href="rewards.html">💰 收益中心</a>
-      <a class="dd-item" href="referral.html">👥 邀请好友</a>
-      <a class="dd-item" href="rewards.html#records">📋 交易记录</a>
-      <div class="dd-divider"></div>
-      <button class="dd-item logout" onclick="showToast('已退出登录')">退出登录</button>
-    </div>
-  </div>
+  <div class="auth-container" id="authContainer"></div>
 </div>
+
 <div id="app">
   <div id="track"></div>
   <div class="player-progress" id="playerProgress"><div class="pp-fill" id="ppFill"><div class="pp-thumb" id="ppThumb"></div></div></div>
@@ -575,9 +599,18 @@ function toggleDesktopEmoji(){
 }
 document.addEventListener('click',function(e){if(dtEmojiOpen&&!e.target.closest('.dt-emoji-btn')&&!e.target.closest('#dtEmojiPanel')){dtEmojiOpen=false;var p=document.getElementById('dtEmojiPanel');if(p)p.classList.remove('show')}});
 
-var dhBadge=document.getElementById('dhUsdcBadge');var dhAvatarDropdown=document.getElementById('dhAvatarDropdown');
-dhBadge.addEventListener('click',function(e){e.stopPropagation();dhAvatarDropdown.classList.toggle('active')});
-document.addEventListener('click',function(e){if(!e.target.closest('.dh-usdc-badge')){dhAvatarDropdown.classList.remove('active')}});
+// Auth handled by auth.js
+function showConfirmModal(title, desc, onOk){
+  var d = document.createElement('div');
+  d.className = 'confirm-overlay';
+  d.innerHTML = '<div class="confirm-modal"><div class="confirm-title">'+title+'</div><div class="confirm-desc">'+desc+'</div><div class="confirm-btns"><button class="confirm-cancel">取消</button><button class="confirm-ok">确定</button></div></div>';
+  document.body.appendChild(d);
+  requestAnimationFrame(function(){d.classList.add('active')});
+  d.querySelector('.confirm-cancel').addEventListener('click',function(){d.remove()});
+  d.addEventListener('click',function(e){if(e.target===d)d.remove()});
+  d.querySelector('.confirm-ok').addEventListener('click',function(){d.remove();onOk()});
+}
+
 function toggleDesktopDanmaku(){desktopDanmakuOn=!desktopDanmakuOn;var btn=document.getElementById('dtDanmakuBtn');if(desktopDanmakuOn){btn.classList.add('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display=''});showToast('弹幕已开启')}else{btn.classList.remove('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display='none'});showToast('弹幕已关闭')}}
 function sendDesktopDanmaku(){var input=document.getElementById('dtDanmakuInput');if(!input)return;var text=input.value.trim();if(!text){showToast('请输入弹幕内容');return}if(text.length>30){showToast('弹幕不能超过30字');return}var layer=document.getElementById('dm_'+idx);if(!layer){showToast('弹幕发送失败');return}var usedTops=[];layer.querySelectorAll('.dm-item').forEach(function(el){usedTops.push(parseInt(el.style.top)||0)});var topPos=4;var candidates=[4,52,100,76,28];for(var ci=0;ci<candidates.length;ci++){if(usedTops.indexOf(candidates[ci])===-1){topPos=candidates[ci];break}}var el=document.createElement('div');el.className='dm-item';el.textContent=text;el.style.top=topPos+'px';el.style.animationDuration=(7+Math.random()*5)+'s';layer.appendChild(el);input.value='';showToast('弹幕已发送 🎉')}
 function toggleCleanMode(){cleanMode=!cleanMode;var btn=document.getElementById('dtCleanBtn');var infoEls=document.querySelectorAll('.slide .info');var actionEls=document.querySelectorAll('.slide .actions');var maskEls=document.querySelectorAll('.slide-mask');if(cleanMode){btn.classList.add('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display='none'});infoEls.forEach(function(el){el.style.display='none'});actionEls.forEach(function(el){el.style.display='none'});maskEls.forEach(function(el){el.style.opacity='0'});showToast('清屏模式')}else{btn.classList.remove('dt-active');if(desktopDanmakuOn){document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display=''})}infoEls.forEach(function(el){el.style.display=''});actionEls.forEach(function(el){el.style.display=''});maskEls.forEach(function(el){el.style.opacity=''})}}
@@ -589,6 +622,8 @@ render();
 initDanmaku(0);
 </script>
 <div id="bottom-nav-placeholder"></div>
+<script src="auth.js"></script>
+<script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
 <script src="load-bottom-nav.js"></script>
 <script src="load-sidebar.js"></script>
 </body>

@@ -239,7 +239,14 @@ function renderAuthUI(container) {
     // 根据登录方式展示不同内容：邮箱登录展示充值/提现按钮，钱包登录不展示
     const isEmail = currentUser.authMethod === 'email';
     const displayName = isEmail ? currentUser.email : currentUser.name;
-    const subLabel = isEmail ? '邮箱账户' : '钱包账户';
+    var walletAddr = currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF';
+  var shortWallet = walletAddr.slice(0,6) + '...' + walletAddr.slice(-4);
+  var subLabel;
+  if (isEmail) {
+    subLabel = currentUser.email || '邮箱账户';
+  } else {
+    subLabel = '<div class="auth-wallet-row"><span class="auth-wallet-addr">'+shortWallet+'</span><button class="auth-copy-btn" data-wallet="'+walletAddr+'" title="复制地址"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>';
+  }
     const usdcDisplay = typeof currentUser.balances?.usdc === 'number' ? `$${currentUser.balances.usdc.toFixed(2)}` : '-';
     container.innerHTML = `
       <div class="auth-user-menu">
@@ -451,27 +458,16 @@ function mockLogin(method) {
 //  退出登录
 // ============================================================
 function handleLogout() {
-  if (!confirm('确定要退出登录吗？')) return;
-
-  currentUser.isLoggedIn = false;
-  currentUser.authMethod = null;
-
-  // 清除 localStorage 中的登录态
-  clearUserFromStorage();
-
-  // 关闭下拉菜单
-  closeDropdown();
-
-  // 重新渲染所有 auth-container
-  const containers = document.querySelectorAll('.auth-container');
-  containers.forEach(container => {
-    renderAuthUI(container);
+  showConfirmModal('退出登录', '确定要退出登录吗？', function(){
+    currentUser.isLoggedIn = false;
+    currentUser.authMethod = null;
+    clearUserFromStorage();
+    closeDropdown();
+    var containers = document.querySelectorAll(".auth-container");
+    containers.forEach(function(container){ renderAuthUI(container); });
+    showToast('\u{1F44B} 已退出登录', '\u{1F44B}');
+    document.dispatchEvent(new CustomEvent('auth-ready'));
   });
-
-  showToast('👋 已退出登录', '👋');
-
-  // 触发 auth-ready 事件，通知其他页面更新
-  document.dispatchEvent(new CustomEvent('auth-ready'));
 }
 
 // ============================================================
@@ -493,7 +489,13 @@ function closeDropdown() {
 }
 
 // 点击外部关闭下拉菜单
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function(e){
+  var copyBtn = e.target.closest('.auth-copy-btn');
+  if (copyBtn && copyBtn.dataset.wallet) {
+    e.stopPropagation();
+    navigator.clipboard.writeText(copyBtn.dataset.wallet).then(function(){ showToast('已复制钱包地址'); });
+    return;
+  }
   const dropdown = document.getElementById('authDropdown');
   if (dropdown && dropdown.classList.contains('active')) {
     const userMenu = dropdown.closest('.auth-user-menu');
