@@ -1830,7 +1830,7 @@
       }
 
       // 移动端下输入为只读，不可真正输入；点击跳转 search.html
-      searchInput.addEventListener('click', function() {
+      if(searchInput)searchInput.addEventListener('click', function() {
         window.location.href = 'search.html';
       });
 
