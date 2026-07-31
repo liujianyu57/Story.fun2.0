@@ -66,7 +66,7 @@
                         '</a>' +
                         '<div class="sb-submenu">' +
                             '<a href="1011.html"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>1011主题</a>' +
-                            '<a href="1011-museum.html"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>1011博物馆</a>' +
+                            '<a href="1011-museum.html" target="_blank"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>1011博物馆</a>' +
                             '<a href="task.html"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2l10 6v14H2V8l10-6z"/><path d="M12 22V10"/></svg>1011诺亚方舟</a>' +
                         '</div>' +
                     '</div>' +

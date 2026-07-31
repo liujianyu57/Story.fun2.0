@@ -1289,25 +1289,58 @@
       .auth-modal-body { padding: 8px 20px 24px; }
       .auth-toast { top: 12px; max-width: 90%; font-size: 0.82rem; padding: 10px 18px; border-radius: 14px; }
     }
-  </style>
+  
+/* ── Desktop Header ── */
+.desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
+.desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
+.desktop-header .dh-search:focus-within{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
+.desktop-header .dh-search svg{width:16px;height:16px;flex-shrink:0;color:rgba(0,0,0,0.35)}
+.desktop-header .dh-search input{flex:1;border:none;outline:none;background:none;font-size:13px;color:#13202e;font-family:inherit}
+.desktop-header .dh-search input::placeholder{color:rgba(0,0,0,0.35)}.dh-search-dropdown{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);padding:16px;z-index:200;max-height:360px;overflow-y:auto}.dh-search-dropdown.show{display:block}.dh-search-dropdown .sd-section{margin-bottom:14px}.dh-search-dropdown .sd-section:last-child{margin-bottom:0}.dh-search-dropdown .sd-section-title{font-size:12px;font-weight:600;color:#5e6f83;margin-bottom:8px}.dh-search-dropdown .sd-tags{display:flex;flex-wrap:wrap;gap:6px}.dh-search-dropdown .sd-tag{padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;color:#13202e;cursor:pointer;transition:all .15s;border:none;font-family:inherit}.dh-search-dropdown .sd-tag:hover{background:rgba(0,179,136,.1);color:#00b388}.dh-search-dropdown .sd-list{display:flex;flex-direction:column;gap:2px}.dh-search-dropdown .sd-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;color:#13202e;cursor:pointer;transition:background .1s}.dh-search-dropdown .sd-item:hover{background:rgba(0,0,0,.03)}.dh-search-dropdown .sd-item .sd-del{color:#5e6f83;font-size:11px;padding:2px 6px;border-radius:4px;cursor:pointer;border:none;background:none}.dh-search-dropdown .sd-item .sd-del:hover{color:#f45b69}.desktop-header .dh-search-btn{padding:3px 12px;height:auto;border-radius:6px;border:none;background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid transparent;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-right:-4px}.desktop-header .dh-search-btn:hover{background:#00b388;color:#fff;border-color:#00b388}
+.desktop-header .dh-icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;flex-shrink:0}
+.desktop-header .dh-icon-btn:hover{background:rgba(0,0,0,0.06);color:#13202e}
+.desktop-header .dh-icon-btn svg{width:20px;height:20px}
+.desktop-header .dh-notify-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff2d55;border:1.5px solid #fff}
+.desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
+.desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
+.desktop-header .dh-publish-btn svg{width:16px;height:16px}
+.desktop-header .auth-container{display:flex;align-items:center}
+.desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+.desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
+@media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
+@media(max-width:768px){.desktop-header{display:none}}
+
+</style>
 </head>
 <body>
+<div class="desktop-header" id="desktopHeader">
+  <div class="dh-search" id="dhSearch">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="dhSearchInput" placeholder="搜索短剧、角色、用户..." autocomplete="off"><button class="dh-search-btn" id="dhSearchBtn">搜索</button>
+    <div class="dh-search-dropdown" id="dhSearchDropdown">
+      <div class="sd-section" id="sdHotSection">
+        <div class="sd-section-title">🔥 热门搜索</div>
+        <div class="sd-tags" id="sdHotTags"></div>
+      </div>
+      <div class="sd-section" id="sdRecentSection" style="display:none">
+        <div class="sd-section-title">🕐 最近搜索</div>
+        <div class="sd-list" id="sdRecentList"></div>
+      </div>
+    </div>
+  </div>
+  <button class="dh-icon-btn" onclick="location.href='notifications.html'" title="通知">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span class="dh-notify-dot"></span>
+  </button>
+  <button class="dh-publish-btn" onclick="location.href='publish.html'">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>发布
+  </button>
+  <div class="auth-container" id="authContainer"></div>
+</div>
+
   <div class="app-shell">
 
-    <div class="page-header">
-      <div class="page-header-left">
-        <h1>角色 IP</h1>
-        <p>每个角色 IP 代表一组由创作者发行的角色合辑，签约即获得专属角色。</p>
-      </div>
-      <div class="page-header-actions">
-        <a href="create-actor.html" class="btn-primary">发行角色 IP</a>
-      </div>
-    </div>
 
-    <div class="search-wrapper">
-      <input type="text" class="search-input" id="actorSearch" placeholder="搜索角色姓名或角色IP" autocomplete="off" />
-      <div class="search-dropdown" id="searchDropdown"></div>
-    </div>
 
     <div class="sort-container" id="sortContainer">
       <span class="sort-tag active" data-sort="price-asc">价格最低</span>
@@ -2370,5 +2403,14 @@
   <div id="bottom-nav-placeholder"></div>
   <script src="load-sidebar.js"></script>
   <script src="load-bottom-nav.js"></script>
+<script src="auth.js"></script>
+<script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
+<script>
+function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
+function saveRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});list.unshift(q);if(list.length>8)list.pop();localStorage.setItem("dh_recent_searches",JSON.stringify(list))}
+function renderSearchDropdown(){var hotTags=["凤骨琉璃","打斗精彩片段","古风短剧","1011","AI短剧","苏婉清","星际拓荒者","时间管理局"];var hotEl=document.getElementById("sdHotTags");if(hotEl){hotEl.innerHTML=hotTags.map(function(t){return '<button class="sd-tag" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+t+'\';doSearch(\''+t+'\')">'+t+'</button>'}).join("")}var recent=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");var recentSection=document.getElementById("sdRecentSection");var recentList=document.getElementById("sdRecentList");if(recentSection&&recentList&&recent.length>0){recentSection.style.display="";recentList.innerHTML=recent.map(function(r){return '<div class="sd-item" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+r+'\';doSearch(\''+r+'\')"><span>'+r+'</span><button class="sd-del" onclick="event.stopPropagation();event.preventDefault();removeRecentSearch(\''+r+'\')">✕</button></div>'}).join("")}else if(recentSection){recentSection.style.display="none"}}
+function removeRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});localStorage.setItem("dh_recent_searches",JSON.stringify(list));renderSearchDropdown()}
+(function(){var inp=document.getElementById("dhSearchInput");var dropdown=document.getElementById("dhSearchDropdown");var searchBox=document.getElementById("dhSearch");var searchBtn=document.getElementById("dhSearchBtn");if(!inp||!dropdown||!searchBox)return;renderSearchDropdown();inp.addEventListener("focus",function(){renderSearchDropdown();dropdown.classList.add("show")});inp.addEventListener("input",function(){if(inp.value.trim()){dropdown.classList.remove("show")}else{renderSearchDropdown();dropdown.classList.add("show")}});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){var q=inp.value.trim();if(q)doSearch(q)}});searchBtn.addEventListener("click",function(e){e.stopPropagation();var q=inp.value.trim();if(q)doSearch(q)});document.addEventListener("click",function(e){if(!searchBox.contains(e.target)){dropdown.classList.remove("show")}})})();
+</script>
 </body>
 </html>
