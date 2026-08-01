@@ -71,21 +71,18 @@
        ============================================================ */
     .featured-wrapper {
       position: relative;
-      width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      margin-top: 0;
-      margin-bottom: 0;
+      width: 100%;
+      margin: 0;
       overflow: hidden;
       background: #0a111c;
       border-radius: 20px;
     }
 
-    /* 桌面端侧边栏适配：Banner 宽度减去侧边栏宽度 */
+    /* 桌面端侧边栏适配 */
     @media (min-width: 769px) {
       .featured-wrapper {
-        width: calc(100vw - 220px);max-width:1416px;
-        margin-left: calc(-50vw + 50% + 110px);
-        margin-top: 68px;
+        max-width:1416px;
+        margin: 68px auto 0 auto;
       }
     }
 
@@ -301,7 +298,7 @@
     .featured-video-btn.hidden { opacity: 0; pointer-events: none; }
 
     @media (max-width: 760px) {
-      .featured-section { flex-direction: column; min-height: auto; max-height: none; }
+      .featured-section { flex-direction: column; min-height: 400px; max-height: 400px; }
       .featured-left { flex: none; padding: 24px 20px; }
       .featured-right { flex: none; height: 220px; }
       .featured-content h2 { font-size: 1.6rem; }
@@ -760,7 +757,7 @@
       .card { background: var(--surface); box-shadow: 0 2px 12px rgba(27,45,71,0.06); border: 1px solid var(--border); }
       .card:hover { box-shadow: 0 4px 20px rgba(27,45,71,0.10); }
       .card-body p { color: var(--text-muted); }
-      .card-actors { border-top: 1px solid var(--border); }
+      .card-actors { border-top: none; }
       .card-actor-name { color: var(--text-muted); }
       .card-actor-avatar { border-color: var(--border); }
       .info-row { color: var(--text-muted); }
@@ -796,14 +793,14 @@
       .hero-panel p { color: var(--text-muted); }
 
       .app-shell { padding: 20px 16px 32px; }
-      .featured-wrapper { border-radius: 20px; display: none; }
-      .featured-section { padding: 0 16px; min-height: 500px; }
-      .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .featured-wrapper { border-radius: 0; display: block; width: 100%; margin-left: 0; }
+      .featured-section { padding: 0; height: 400px; min-height: 400px; max-height: 400px; }
+      .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
       .card { min-height: auto; }
-      .featured-content { color: #fff;  padding: 64px 0 16px; }
-      .featured-content h2 { color: #fff; font-size: 2rem; }
-      .featured-content p { font-size: 0.95rem; }
-      .featured-content .button { padding: 12px 28px; font-size: 0.95rem; }
+      .featured-content { color: #fff; padding: 0 20px 24px; }
+      .featured-content h2 { color: #fff; font-size: 1.8rem; }
+      .featured-content p { font-size: 0.85rem; }
+      .featured-content .button { padding: 10px 24px; font-size: 0.88rem; display: inline-block; width: fit-content; }
       .featured-thumb-item { width: 110px; height: 62px; }
 
       .gallery .card-thumb { aspect-ratio: 2/3; }
@@ -811,12 +808,13 @@
       .gallery .card-body h3 { font-size: 0.85rem; margin-bottom: 0; }
       .gallery .card-body p { display: none; }
       .gallery .card-meta { display: none; }
-      .gallery .card-actors { bottom: 6px; left: 6px; padding: 0; }
+      .gallery .card-actors { bottom: 30px; left: 8px; padding: 0; }
       .gallery .card-actor-name { display: none; }
-      .gallery .card-actor-avatar { width: 26px; height: 26px; border-width: 1.5px; }
+      .gallery .card-actor-avatar { width: 26px; height: 26px; border-width: 1.5px; border-color: rgba(255,255,255,0.6); }
       .gallery .card-actor-avatar-wrap { width: 26px; height: 26px; }
-      .gallery .card-actors-list { gap: 4px; padding: 3px 6px; border-radius: 8px; }
+      .gallery .card-actors-list { gap: 3px; padding: 3px 6px; border-radius: 8px; background: rgba(0,0,0,0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 0.5px solid rgba(255,255,255,0.12); }
       .gallery .card-actor-item { gap: 0; }
+      .gallery .card-caption .caption-left .badge { display: none; }
                   .gallery .card { min-height: auto; }
 
       /* ── 顶部搜索栏 (移动端) ── */
@@ -846,23 +844,24 @@
         color: #1a232f;
       }
 
-      /* ── Banner 手机端精简 ── */
-      .featured-content .button { display: none; }
+      /* ── Banner 手机端适配 ── */
       .featured-thumbnails { display: none; }
-      #featured-category { display: none; }
-      #featured-episodes { display: none; }
-      #featured-desc { display: none; }
-      #featured-meta .badge { display: none; }
-      #featured-meta .episode { display: none; }
+      #featured-title, #featured-title * { font-size: 1.8rem !important; }
+      #featured-desc { -webkit-line-clamp: 2; font-size: 0.85rem; }
 
+      /* ── Banner 手机端适配 ── */
+      .featured-arrow { display: none; }
       /* ── Banner 圆点指示器 ── */
-      .featured-dots { display: none;
+      .featured-dots { display: flex;
         justify-content: center;
         align-items: center;
         gap: 8px;
-        padding-bottom: 16px;
-        position: relative;
-        z-index: 1;
+        padding-bottom: 10px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
       }
       .featured-dot {
         width: 6px;
@@ -1356,10 +1355,14 @@
       // 首页加载时：第一个短剧显示视频（无声音静音播放）
       const video = document.getElementById('featured-video');
       video.muted = true;
-      video.play().catch(function(){});
-      // 隐藏默认poster
+      // 先尝试播放，成功后再隐藏 poster
       const poster = document.getElementById('featured-video-poster');
-      if (poster) poster.classList.add('hidden');
+      video.play().then(function() {
+        if (poster) poster.classList.add('hidden');
+      }).catch(function() {
+        // 移动端可能无法自动播放，保留 poster 作为封面
+        if (poster) poster.classList.remove('hidden');
+      });
       // 音量按钮：点击切换静音/取消静音（SVG 图标切换）
       const volBtn = document.getElementById('featured-video-btn');
       const iconOff = document.getElementById('vol-icon-off');
