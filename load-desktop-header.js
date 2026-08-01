@@ -221,11 +221,66 @@
         }
     });
 
+    // 增强已有 header：给发布按钮添加下拉菜单
+    function enhanceExistingHeader() {
+        var header = document.getElementById('desktopHeader');
+        if (!header) return false;
+
+        var btn = header.querySelector('.dh-publish-btn');
+        if (!btn) return false;
+
+        // 如果已被包裹，跳过
+        if (btn.parentNode && btn.parentNode.classList.contains('dh-publish-wrap')) return true;
+
+        // 创建包裹容器
+        var wrap = document.createElement('div');
+        wrap.className = 'dh-publish-wrap';
+
+        // 创建下拉菜单
+        var dropdown = document.createElement('div');
+        dropdown.className = 'dh-publish-dropdown';
+        dropdown.innerHTML =
+            '<a class="dh-publish-item" href="publish.html">' +
+                '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="3"/><path d="M2 6h12M6 14V6"/></svg>发布短剧' +
+            '</a>' +
+            '<a class="dh-publish-item" href="publish-video.html">' +
+                '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="2"/><polygon points="7,5.5 7,10.5 11.5,8" fill="currentColor"/></svg>发布视频' +
+            '</a>' +
+            '<a class="dh-publish-item" href="create-actor.html">' +
+                '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2"/><path d="M2 14v-1.3a2.7 2.7 0 0 1 2.7-2.7h2.6a2.7 2.7 0 0 1 2.7 2.7V14"/></svg>发行角色IP' +
+            '</a>';
+
+        // 用 wrap 替换 btn
+        btn.parentNode.insertBefore(wrap, btn);
+        wrap.appendChild(btn);
+        wrap.appendChild(dropdown);
+
+        return true;
+    }
+
+    // 动态加载 auth.js（如果尚未加载）
+    function ensureAuthScript(callback) {
+        if (typeof initAuth === 'function') { callback(); return; }
+        var script = document.createElement('script');
+        script.src = 'auth.js';
+        script.onload = callback;
+        script.onerror = callback;
+        document.head.appendChild(script);
+    }
+
     // 主流程
     function init() {
         injectStyles();
-        injectHeaderHTML();
+        if (!enhanceExistingHeader()) {
+            injectHeaderHTML();
+        }
         bindSearch();
+        // 确保 auth.js 已加载，然后渲染头像
+        ensureAuthScript(function() {
+            setTimeout(function() {
+                if (typeof initAuth === 'function') initAuth();
+            }, 50);
+        });
     }
 
     if (document.readyState === 'loading') {

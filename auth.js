@@ -119,7 +119,6 @@ function injectAuthStyles() {
   .auth-user-menu{position:relative;display:inline-block}
   .auth-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;border:3px solid rgba(0,0,0,0);box-sizing:border-box}
   .auth-avatar img{width:100%;height:100%;object-fit:cover;display:block}
-  .auth-avatar-dot{position:absolute;right:6px;bottom:6px;width:10px;height:10px;background:#13bba3;border-radius:50%;box-shadow:0 0 0 3px rgba(19,187,163,0.12)}
 
   .auth-dropdown{position:absolute;right:0;top:64px;width:340px;background:#fff;border-radius:16px;padding:18px;box-shadow:0 18px 40px rgba(22,33,51,0.08);border:1px solid rgba(22,33,51,0.04);opacity:0;transform:translateY(-8px);pointer-events:none;transition:all 220ms ease;z-index:9999}
   .auth-dropdown.active,.auth-dropdown.active{opacity:1;transform:translateY(0);pointer-events:auto}
@@ -250,7 +249,6 @@ function renderAuthUI(container) {
       <div class="auth-user-menu">
         <div class="auth-avatar" onclick="toggleDropdown(event)">
           <img src="${currentUser.avatar}" alt="${currentUser.name}" />
-          <span class="auth-avatar-dot"></span>
         </div>
         <div class="auth-dropdown" id="authDropdown">
           <div class="auth-dropdown-top" onclick="openProfileCenter()">
