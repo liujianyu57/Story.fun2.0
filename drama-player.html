@@ -848,7 +848,7 @@ if(!isPlayerMode){
     var ep=episodes[epIdx];if(!ep)return;
     var hasDrama=true;
       var hasActors=true;
-      cmTitle.innerHTML='<div class="cm-tabs"><button class="cm-tab active" data-cmtab="cmt">评论</button>'+(hasDrama?'<button class="cm-tab" data-cmtab="drama">短剧</button>':'')+(hasActors?'<button class="cm-tab" data-cmtab="role">角色</button>':'')+'</div>';
+      cmTitle.innerHTML='<div class="cm-tabs"><button class="cm-tab" data-cmtab="cmt">评论</button>'+(hasDrama?'<button class="cm-tab active" data-cmtab="drama">短剧</button>':'')+(hasActors?'<button class="cm-tab" data-cmtab="role">角色</button>':'')+'</div>';
       var detailHTML='';
       if(hasDrama){
         var views='3.3w';var heat='1.2w';
@@ -872,6 +872,7 @@ if(!isPlayerMode){
       document.getElementById('cmDrawer').querySelector('.cm-panel').insertAdjacentHTML('beforeend','<div class="cm-footer" id="cmFooter"><div class="comment-input-wrap"><input id="drawerCommentInput" placeholder="写下你的评论..." maxlength="200" /><button class="send-btn" id="drawerSendBtn">发送</button></div></div>');
       renderDrawerComments(epIdx);
       document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var tab=this.dataset.cmtab;document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(b){b.classList.toggle('active',b===t)});var showCmt=tab==='cmt';var cp=document.getElementById('commentPanel');var ft=document.getElementById('cmFooter');if(cp)cp.style.display=showCmt?'':'none';if(ft)ft.style.display=showCmt?'':'none';var dp=document.getElementById('cmDetailPanel');if(dp)dp.classList.toggle('show',tab=='drama');var rp=document.getElementById('cmRolePanel');if(rp)rp.style.display=tab=='role'?'block':'none'})});
+      var initTab=document.querySelector('#cmDrawer .cm-tab.active');if(initTab&&initTab.dataset.cmtab!=='cmt'){var cp=document.getElementById('commentPanel');var ft=document.getElementById('cmFooter');if(cp)cp.style.display='none';if(ft)ft.style.display='none';var dp=document.getElementById('cmDetailPanel');if(dp)dp.classList.add('show')}
       var sendBtn=document.getElementById('drawerSendBtn');if(sendBtn){sendBtn.addEventListener('click',function(e){e.stopPropagation();postDrawerComment(epIdx)})}
       var inp=document.getElementById('drawerCommentInput');if(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();postDrawerComment(epIdx)}})}
     cmDrawer.classList.add('open');
@@ -986,6 +987,7 @@ if(!isPlayerMode){
     document.querySelectorAll('[data-act="like"]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var ic=this.querySelector('.player-act-icon');if(ic.classList.contains('liked')){ic.classList.remove('liked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>'}else{ic.classList.add('liked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="#ff4d6a"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';showToast('已点赞')}})});
     document.querySelectorAll('[data-act="fav"]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var ic=this.querySelector('.player-act-icon');if(ic.classList.contains('bookmarked')){ic.classList.remove('bookmarked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>'}else{ic.classList.add('bookmarked');ic.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>';showToast('已收藏')}})});
     document.querySelectorAll('[data-act="cmt"]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var epIdx=parseInt(this.dataset.idx);if(!isNaN(epIdx))openDrawer(epIdx)})});
+    document.querySelectorAll('.pi-title').forEach(function(el){el.addEventListener('click',function(e){e.stopPropagation();openDrawer(idx);setTimeout(function(){var t=document.querySelector('#cmDrawer .cm-tab[data-cmtab="drama"]');if(t)t.click()},100)})});
     document.querySelectorAll('.desc-expand').forEach(function(el){el.addEventListener('click',function(e){e.stopPropagation();var txt=this.parentElement.querySelector('.desc-text');if(!txt)return;if(txt.classList.contains('expanded')){txt.classList.remove('expanded');this.textContent='展开'}else{txt.classList.add('expanded');this.textContent='收起'}})});
     document.querySelectorAll('.slide').forEach(function(el){el.addEventListener('click',togglePause)});
   }
@@ -1030,6 +1032,7 @@ if(!isPlayerMode){
 
   updateMeta();render();
   document.getElementById('loading').classList.add('hide');
+  openDrawer(0);
 }
 
 // ===== 举报系统（公共） =====
