@@ -579,45 +579,56 @@
     .gallery { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin-bottom: 34px; }
     .card { border-radius: 18px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 2px 12px rgba(27,45,71,0.06); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
     .card:hover { transform: translateY(-5px); box-shadow: 0 4px 20px rgba(27,45,71,0.10); }
-    .card-thumb { width: 100%; height: 240px; object-fit: cover; border-bottom: 1px solid var(--border); display: block; }
-    .card-body { padding: 16px 18px 14px; flex-grow: 1; }
+    .card-thumb-wrap { position: relative; overflow: hidden; }
+    .card-thumb { width: 100%; height: 240px; object-fit: cover; display: block; }
+    .card-body { padding: 12px 18px 10px; flex-grow: 1; }
     .card-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-    .badge, .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 7px 10px; font-size: 0.75rem; font-weight: 700; }
+    .badge, .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 8px; font-size: 0.7rem; font-weight: 700; }
     .badge { background: var(--accent-soft); color: var(--accent); }
     .episode { background: rgba(0,0,0,0.04); color: var(--text-muted); }
-    .card h3 { margin: 0 0 8px; font-size: 1.1rem; line-height: 1.25; }
+    .card h3 { margin: 0; font-size: 1rem; line-height: 1.25; }
     .card p { display: none; }
     .card-actors {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      z-index: 2;
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 8px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-    }
-    .card-actors-list {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
+      gap: 0;
+      padding: 0;
+      background: none;
+      border-top: none;
+      margin: 0;
+      pointer-events: none;
     }
     .card-actor-item {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 0;
       cursor: pointer;
       transition: transform 0.2s ease;
+      pointer-events: auto;
     }
     .card-actor-item:hover {
       transform: translateY(-2px);
     }
+    .card-actor-avatar-wrap {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
     .card-actor-avatar {
-      width: 22px;
-      height: 22px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       overflow: hidden;
-      border: 1.5px solid var(--border);
+      border: 2px solid rgba(255,255,255,0.5);
       flex-shrink: 0;
       transition: border-color 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .card-actor-item:hover .card-actor-avatar {
       border-color: var(--accent);
@@ -628,15 +639,73 @@
       object-fit: cover;
       display: block;
     }
-    .card-actor-name {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      white-space: nowrap;
+    .card-actor-mining-dot {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      border: 2px solid rgba(0,0,0,0.7);
+      animation: cardMiningPulse 2s ease-in-out infinite;
     }
-    .card-foot { padding: 14px 18px 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .info-row { display: flex; flex-wrap: wrap; gap: 8px; color: var(--text-muted); font-size: 0.82rem; }
+    @keyframes cardMiningPulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 5px rgba(52,211,153,.5); }
+      50% { opacity: 0.3; box-shadow: 0 0 1px rgba(52,211,153,.15); }
+    }
+    .card-actor-tooltip {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 8px;
+      padding: 5px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .card-actor-item:hover .card-actor-tooltip {
+      opacity: 1;
+    }
+    .card-actor-tooltip .ct-power {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #3affb1;
+      line-height: 1.2;
+    }
+    .card-actor-tooltip .ct-unit {
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+    .card-actors-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 10px;
+      padding: 4px 8px;
+      border: 0.5px solid rgba(255,255,255,0.08);
+    }
+    .card-actor-name {
+      display: none;
+    }
+    .card-foot { padding: 10px 18px 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .info-row { display: flex; flex-wrap: wrap; gap: 10px; color: var(--text-muted); font-size: 0.78rem; }
     .card-rating { display: inline-flex; align-items: center; gap: 2px; color: #ffc107; font-weight: 600; }
-    .card-rating .star-icon { font-size: 0.72rem; }
+    .card-rating .star-icon { font-size: 0.7rem; }
 
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.25s ease; }
     .button { background: var(--accent); color: #1a232f; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
@@ -711,11 +780,13 @@
       .gallery .card-body h3 { font-size: 0.85rem; margin-bottom: 0; }
       .gallery .card-body p { display: none; }
       .gallery .card-meta { display: none; }
-      .gallery .card-actors { margin-top: 6px; padding-top: 6px; border-top: 0.5px solid var(--border); }
+      .gallery .card-actors { bottom: 6px; left: 6px; padding: 0; }
       .gallery .card-actor-name { display: none; }
-      .gallery .card-actor-avatar { width: 20px; height: 20px; border-width: 1px; }
+      .gallery .card-actor-avatar { width: 26px; height: 26px; border-width: 1.5px; }
+      .gallery .card-actor-avatar-wrap { width: 26px; height: 26px; }
+      .gallery .card-actors-list { gap: 4px; padding: 3px 6px; border-radius: 8px; }
       .gallery .card-actor-item { gap: 0; }
-      .gallery .card-foot { padding: 8px 12px 10px; }
+      .gallery .card-foot { padding: 6px 12px 8px; }
       .gallery .card-foot .info-row { font-size: 0.7rem; gap: 4px; }
       .gallery .card { min-height: auto; }
 
@@ -936,152 +1007,177 @@
       <article class="card" data-category="古风" data-sort="recommended" onclick="location.href='drama-detail.html'">
         <div class="card-cert-corner"><span class="drama-badge official">🏅 官方</span></div>
 
+        <div class="card-thumb-wrap">
         <img class="card-thumb" src="image/fenggu_cover.jpg" alt="凤骨琉璃" />
-        <div class="card-body">
-          <h3>凤骨琉璃</h3>
-          <div class="card-meta"><span class="badge">古风</span><span class="episode">全44集</span></div>
-          <p>一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
           <div class="card-actors">
             <div class="card-actors-list">
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=苏婉清'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">8,562</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">苏婉清</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=李云飞'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">6,230</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">李云飞</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">5,891</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">林梦瑶</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=上官婉儿'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">4,720</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">上官婉儿</span>
               </div>
             </div>
           </div>
+        </div>
+        <div class="card-body">
+          <h3>凤骨琉璃</h3>
+          <div class="card-meta"><span class="badge">古风</span><span class="episode">全44集</span></div>
+          <p>一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
         </div>
         <div class="card-foot"><div class="info-row"><span>JACK</span><span>22.3万完播</span><span>333.2万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.8</span></div></div>
       </article>
       <article class="card" data-category="古风" data-sort="newest" onclick="location.href='drama-detail.html'">
         <div class="card-cert-corner"><span class="drama-badge community">🌐 社区</span></div>
-
+        <div class="card-thumb-wrap">
         <img class="card-thumb" src="image/xiejia_cover.jpg" alt="我卸甲后天下大乱了" />
-
-        <div class="card-body">
-          <h3>我卸甲后天下大乱了</h3>
-          <div class="card-meta"><span class="badge">古风</span><span class="episode">全12集</span></div>
-          <p>卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。</p>
           <div class="card-actors">
             <div class="card-actors-list">
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=李云飞'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">6,230</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">李云飞</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=赵无极'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="赵无极" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="赵无极" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">7,105</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">赵无极</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">5,891</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">林梦瑶</span>
               </div>
             </div>
           </div>
+        </div>
+        <div class="card-body">
+          <h3>我卸甲后天下大乱了</h3>
+          <div class="card-meta"><span class="badge">古风</span><span class="episode">全12集</span></div>
+          <p>卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。</p>
         </div>
         <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4万完播</span><span>286.5万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
       </article>
       <article class="card" data-category="喜剧" data-sort="hot" onclick="location.href='drama-detail.html'">
         <div class="card-cert-corner"><span class="drama-badge partner">🤝 合作</span></div>
-
+        <div class="card-thumb-wrap">
         <img class="card-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" />
-        <div class="card-body">
-          <h3>丞相府今日开饭</h3>
-          <div class="card-meta"><span class="badge">喜剧</span><span class="episode">全24集</span></div>
-          <p>丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。</p>
           <div class="card-actors">
             <div class="card-actors-list">
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=苏婉清'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">8,562</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">苏婉清</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=上官婉儿'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="上官婉儿" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">4,720</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">上官婉儿</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=Luna'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Luna" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Luna" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">5,230</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">Luna</span>
               </div>
             </div>
           </div>
+        </div>
+        <div class="card-body">
+          <h3>丞相府今日开饭</h3>
+          <div class="card-meta"><span class="badge">喜剧</span><span class="episode">全24集</span></div>
+          <p>丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。</p>
         </div>
         <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8万完播</span><span>198.4万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.7</span></div></div>
       </article>
       <article class="card" data-category="悬疑" data-sort="newest" onclick="location.href='drama-detail.html'">
         <div class="card-cert-corner"><span class="drama-badge official">🏅 官方</span></div>
+        <div class="card-thumb-wrap">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80" alt="隔世追凶" />
-        <div class="card-body">
-          <h3>隔世追凶</h3>
-          <div class="card-meta"><span class="badge">悬疑</span><span class="episode">全18集</span></div>
-          <p>跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。</p>
           <div class="card-actors">
             <div class="card-actors-list">
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">5,891</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">林梦瑶</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=赵无极'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="赵无极" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="赵无极" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">7,105</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">赵无极</span>
               </div>
             </div>
           </div>
         </div>
+        <div class="card-body">
+          <h3>隔世追凶</h3>
+          <div class="card-meta"><span class="badge">悬疑</span><span class="episode">全18集</span></div>
+          <p>跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。</p>
+        </div>
         <div class="card-foot"><div class="info-row"><span>NOVA</span><span>18.2万完播</span><span>412.7万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.3</span></div></div>
       </article>
       <article class="card" data-category="科幻" data-sort="newest" onclick="location.href='drama-detail.html'">
         <div class="card-cert-corner"><span class="drama-badge community">🌐 社区</span></div>
+        <div class="card-thumb-wrap">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80" alt="星河之约" />
-        <div class="card-body">
-          <h3>星河之约</h3>
-          <div class="card-meta"><span class="badge">科幻</span><span class="episode">全32集</span></div>
-          <p>在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。</p>
           <div class="card-actors">
             <div class="card-actors-list">
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=Luna'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Luna" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Luna" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">5,230</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">Luna</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=苏婉清'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="苏婉清" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">8,562</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">苏婉清</span>
               </div>
             </div>
           </div>
         </div>
+        <div class="card-body">
+          <h3>星河之约</h3>
+          <div class="card-meta"><span class="badge">科幻</span><span class="episode">全32集</span></div>
+          <p>在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。</p>
+        </div>
         <div class="card-foot"><div class="info-row"><span>STAR</span><span>21.6万完播</span><span>521.3万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
       </article>
       <article class="card" data-category="真实改编" data-sort="hot" onclick="location.href='drama-detail.html'">
         <div class="card-cert-corner"><span class="drama-badge creator">✅ 认证</span></div>
+        <div class="card-thumb-wrap">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1531685250784-7569952593d2?auto=format&fit=crop&w=1200&q=80" alt="暗网迷踪" />
-        <div class="card-body">
-          <h3>暗网迷踪</h3>
-          <div class="card-meta"><span class="badge">真实改编</span><span class="episode">全10集</span></div>
-          <p>改编自真实事件，一名网络安全分析师深入暗网追查神秘组织。</p>
           <div class="card-actors">
             <div class="card-actors-list">
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=李云飞'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="李云飞" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">6,230</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">李云飞</span>
               </div>
               <div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=林梦瑶'">
-                <div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div>
+                <div class="card-actor-avatar-wrap"><div class="card-actor-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="林梦瑶" loading="lazy" /></div><div class="card-actor-mining-dot"></div></div>
+                <div class="card-actor-tooltip"><span class="ct-power">5,891</span><span class="ct-unit">STORY/h</span></div>
                 <span class="card-actor-name">林梦瑶</span>
               </div>
             </div>
           </div>
+        </div>
+        <div class="card-body">
+          <h3>暗网迷踪</h3>
+          <div class="card-meta"><span class="badge">真实改编</span><span class="episode">全10集</span></div>
+          <p>改编自真实事件，一名网络安全分析师深入暗网追查神秘组织。</p>
         </div>
         <div class="card-foot"><div class="info-row"><span>VOID</span><span>28.9万完播</span><span>698.1万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.5</span></div></div>
       </article>
