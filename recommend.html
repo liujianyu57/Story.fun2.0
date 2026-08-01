@@ -88,7 +88,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .act-creator:active .ac-avatar{transform:scale(.85)}
 .act-creator .ac-label{font-size:9px;font-weight:500;color:rgba(255,255,255,.8);line-height:1;padding:1px 6px;border-radius:999px;background:rgba(0,0,0,.05);backdrop-filter:blur(4px);max-width:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ac-follow{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:#ff2d55;border:2px solid rgba(0,0,0,.1);color:#fff;font-size:14px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;transition:all .2s;box-shadow:0 2px 6px rgba(255,45,85,.4)}
-.ac-follow.followed{background:rgba(0,0,0,.8);border-color:rgba(255,255,255,.4);color:#fff;font-size:10px;box-shadow:none}
+.ac-follow.followed{background:rgba(0,0,0,.8);border-color:var(--text-muted);color:#fff;font-size:10px;box-shadow:none}
 .act-creator{position:relative}
 .act-btn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;padding:0;color:#fff;-webkit-tap-highlight-color:transparent;transition:transform .15s}
 .act-btn:active{transform:scale(.82)}
@@ -130,7 +130,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .cm-drawer .cm-body::-webkit-scrollbar{width:0}
 .cm-footer{padding:10px 16px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0));border-top:1px solid rgba(255,255,255,.1);flex-shrink:0}
 .cm-footer .comment-input-wrap{display:flex;gap:8px;margin-bottom:0;padding:0}
-.cm-footer .comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);font-size:14px;outline:none}
+.cm-footer .comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.15);background:rgba(0,0,0,.04);color:rgba(255,255,255,.9);font-size:14px;outline:none}
 .cm-footer .comment-input-wrap .send-btn{border:none;border-radius:999px;padding:10px 20px;background:linear-gradient(135deg,#00b388,#00c9a0);color:#fff;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
 .cm-tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.08);padding:0 16px;flex-shrink:0}
 .cm-tab{padding:10px 16px;font-size:14px;font-weight:500;color:rgba(255,255,255,.45);cursor:pointer;border:none;background:none;position:relative;transition:color .2s}
@@ -153,24 +153,24 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .cm-stat-label{display:block;font-size:11px;color:var(--accent);margin-top:2px;font-weight:500}
 .cm-detail-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6}
 .cm-detail-ep-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
-.cm-ep-item{display:flex;align-items:center;justify-content:center;padding:0;aspect-ratio:1/1;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;font-weight:500;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s}
+.cm-ep-item{display:flex;align-items:center;justify-content:center;padding:0;aspect-ratio:1/1;border-radius:4px;background:rgba(0,0,0,.04);border:1px solid rgba(255,255,255,.08);font-size:12px;font-weight:500;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s}
 .cm-ep-item:active{background:rgba(0,179,136,.2);transform:scale(.92)}
 .cm-role-panel{display:none;padding:0 16px;overflow-y:auto;flex:1}
 .cm-role-card{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05)}
 .cm-role-card.bound{cursor:pointer}
 .cm-role-card:last-child{border-bottom:none}
 .cm-role-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid rgba(0,179,136,.4)}
-.cm-role-avatar.unbound{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.1)}
+.cm-role-avatar.unbound{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.04);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.1)}
 .cm-role-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .cm-role-name{font-size:14px;font-weight:600;color:#fff;line-height:1.3}
 .cm-role-role{font-size:12px;font-weight:400;color:rgba(255,255,255,.45);margin-left:6px}
 .cm-role-ip{display:flex;align-items:center;gap:6px}
 .cm-role-ip-tag{font-size:11px;font-weight:600;color:var(--accent);background:rgba(0,179,136,.12);padding:1px 8px;border-radius:999px}
-.cm-role-status{font-size:11px;color:rgba(255,255,255,.3)}.cm-ip-modal-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:transparent;pointer-events:none}.cm-ip-modal-overlay.active{display:flex;pointer-events:none}.cm-ip-modal-box{background:#1a1a2e;border-radius:20px;max-width:340px;width:90%;padding:28px 24px 22px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;pointer-events:auto}.cm-ip-modal-box h3{color:#fff;font-size:1.1rem;margin:0 0 16px}.cm-ip-modal-close{width:100%;padding:12px;border-radius:12px;border:none;background:rgba(255,255,255,.08);color:#fff;font-size:0.9rem;font-weight:600;cursor:pointer;margin-top:16px;transition:background .2s}.cm-ip-modal-close:hover{background:rgba(255,255,255,.15)}
+.cm-role-status{font-size:11px;color:rgba(255,255,255,.3)}.cm-ip-modal-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:transparent;pointer-events:none}.cm-ip-modal-overlay.active{display:flex;pointer-events:none}.cm-ip-modal-box{background:#fff;border-radius:20px;max-width:340px;width:90%;padding:28px 24px 22px;box-shadow:0 20px 60px rgba(0,0,0,.12);text-align:center;pointer-events:auto}.cm-ip-modal-box h3{color:var(--text);font-size:1.1rem;margin:0 0 16px}.cm-ip-modal-close{width:100%;padding:12px;border-radius:12px;border:none;background:rgba(0,0,0,.06);color:var(--text);font-size:0.9rem;font-weight:600;cursor:pointer;margin-top:16px;transition:background .2s}.cm-ip-modal-close:hover{background:rgba(0,0,0,.1)}
 
 .cm-footer{padding:10px 16px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0));border-top:1px solid rgba(255,255,255,.1);flex-shrink:0}
 .cm-footer .comment-input-wrap{display:flex;gap:8px;margin-bottom:0;padding:0}
-.cm-footer .comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);font-size:14px;outline:none}
+.cm-footer .comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.15);background:rgba(0,0,0,.04);color:rgba(255,255,255,.9);font-size:14px;outline:none}
 .cm-footer .comment-input-wrap .send-btn{border:none;border-radius:999px;padding:10px 20px;background:linear-gradient(135deg,#00b388,#00c9a0);color:#fff;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
 .cm-item{display:flex;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
 .cm-item .cm-avatar{width:36px;height:36px;border-radius:50%;object-fit:contain;flex-shrink:0;border:1.5px solid rgba(255,255,255,.15)}
@@ -182,10 +182,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .cm-item.cm-intro{background:rgba(0,179,136,.1);border-radius:0;border-bottom:1px solid rgba(0,179,136,.2)}
 .cm-item.cm-intro .cm-meta .cm-name{color:#34d399}
 .comment-panel{padding:12px 16px 0}
-.comment-panel .comment-header{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.5);font-size:13px;margin-bottom:-2px;padding:0 4px}
+.comment-panel .comment-header{display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:13px;margin-bottom:-2px;padding:0 4px}
 .comment-panel .comment-header .comment-title{font-weight:600;color:rgba(255,255,255,.9);font-size:14px}
 .comment-input-wrap{display:flex;gap:8px;margin-bottom:14px;padding:0 4px}
-.comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.15);background:rgba(0,0,0,.04);color:rgba(255,255,255,.9);font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
 .comment-input-wrap input:focus{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
 .comment-input-wrap input::placeholder{color:rgba(255,255,255,.35)}
 .comment-input-wrap .send-btn{border:none;border-radius:999px;padding:10px 20px;background:linear-gradient(135deg,#00b388,#00c9a0);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,179,136,.3)}
@@ -194,7 +194,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .c-actions button{background:none;border:none;color:rgba(94,111,131,.7);font-size:12px;cursor:pointer;padding:3px 6px;transition:all .2s;display:inline-flex;align-items:center;gap:4px;border-radius:6px}
 .c-actions button:hover{color:#00b388;background:rgba(0,179,136,.06)}
 .cm-item .cm-actions{margin-top:6px;display:flex;gap:8px}
-.cm-item .cm-actions button{background:none;border:none;color:rgba(255,255,255,.55);font-size:11px;cursor:pointer;padding:3px 8px;border-radius:999px;transition:all .2s;display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,.06)}
+.cm-item .cm-actions button{background:none;border:none;color:rgba(255,255,255,.55);font-size:11px;cursor:pointer;padding:3px 8px;border-radius:999px;transition:all .2s;display:inline-flex;align-items:center;gap:3px;background:rgba(0,0,0,.04)}
 .cm-item .cm-actions button:active{background:rgba(0,179,136,.2);color:#34d399}
 .comment-count{font-size:12px;color:rgba(255,255,255,.45)}
 @media(max-width:768px){body{padding-bottom:0!important}}
@@ -253,7 +253,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .desktop-toolbar .dt-btn.dt-active{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.6)}
 .desktop-toolbar .dt-input{flex:1;max-width:260px;padding:5px 10px;border-radius:6px;border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);font-size:11px;outline:none;transition:border-color .2s;font-family:inherit}
 .desktop-toolbar .dt-input:focus{border-color:#00b388}
-.desktop-toolbar .dt-input::placeholder{color:rgba(255,255,255,.4)}
+.desktop-toolbar .dt-input::placeholder{color:var(--text-muted)}
 .dt-volume:hover 
 /* ── Desktop Page Nav ── */
 .dt-page-nav{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:500;display:flex;flex-direction:column;gap:8px}
@@ -275,7 +275,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .dt-emoji-btn:hover{background:rgba(255,255,255,.2);color:#fff}
 .dt-emoji-panel{position:fixed;bottom:70px;z-index:500;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);border-radius:12px;padding:10px;display:none;flex-wrap:wrap;gap:4px;width:220px;max-height:120px;overflow-y:auto;border:1px solid rgba(255,255,255,.1)}
 .dt-emoji-panel.show{display:flex}
-.dt-emoji-panel button{width:32px;height:32px;border-radius:6px;border:none;background:rgba(255,255,255,.06);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.dt-emoji-panel button{width:32px;height:32px;border-radius:6px;border:none;background:rgba(0,0,0,.04);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .dt-emoji-panel button:hover{background:rgba(255,255,255,.18)}.dt-send-btn{height:32px;padding:0 12px;border-radius:0 6px 6px 0;border:none;background:rgba(255,255,255,.08);color:#fff;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .15s}.dt-send-btn:hover{background:rgba(255,255,255,.15);color:rgba(255,255,255,.85)}
 
 /* ── Avatar Dropdown ── */
@@ -764,7 +764,7 @@ function setDesktopVolume(val){var vs=document.querySelectorAll('.slide-video');
 function toggleDesktopFullscreen(){var app=document.getElementById('app');if(!document.fullscreenElement){if(app.requestFullscreen){app.requestFullscreen()}else if(app.webkitRequestFullscreen){app.webkitRequestFullscreen()}showToast('已进入全屏')}else{if(document.exitFullscreen){document.exitFullscreen()}showToast('已退出全屏')}}
 
 
-var ipModal=document.createElement('div');ipModal.className='cm-ip-modal-overlay';ipModal.id='cmIPModal';ipModal.innerHTML='<div class="cm-ip-modal-box"><h3 id="cmIPModalTitle">IP算力</h3><div style="background:rgba(255,255,255,.06);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;"><span style="font-size:2rem;font-weight:800;color:var(--accent);display:block;margin:18px 0 2px;" id="cmIPModalVal">—</span><span style="font-size:0.8rem;color:rgba(255,255,255,.4);" id="cmIPModalActor">—</span></div><div style="font-size:0.78rem;color:rgba(255,255,255,.5);line-height:1.7;text-align:left;padding:0 4px;">IP算力反映该 IP 的挖矿能力，参演的短剧热度越高算力越高。</div><button class="cm-ip-modal-close">关闭</button></div>';document.body.appendChild(ipModal);ipModal.querySelector('.cm-ip-modal-close').addEventListener('click',function(){ipModal.classList.remove('active')});ipModal.querySelector('.cm-ip-modal-close').addEventListener('click',function(){ipModal.classList.remove('active')});ipModal.addEventListener('click',function(e){if(e.target===ipModal)ipModal.classList.remove('active')});
+var ipModal=document.createElement('div');ipModal.className='cm-ip-modal-overlay';ipModal.id='cmIPModal';ipModal.innerHTML='<div class="cm-ip-modal-box"><h3 id="cmIPModalTitle">IP算力</h3><div style="background:rgba(0,0,0,.04);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;"><span style="font-size:2rem;font-weight:800;color:var(--accent);display:block;margin:18px 0 2px;" id="cmIPModalVal">—</span><span style="font-size:0.8rem;color:var(--text-muted);" id="cmIPModalActor">—</span></div><div style="font-size:0.78rem;color:var(--text-muted);line-height:1.7;text-align:left;padding:0 4px;">IP算力反映该 IP 的挖矿能力，参演的短剧热度越高算力越高。</div><button class="cm-ip-modal-close">关闭</button></div>';document.body.appendChild(ipModal);ipModal.querySelector('.cm-ip-modal-close').addEventListener('click',function(){ipModal.classList.remove('active')});ipModal.querySelector('.cm-ip-modal-close').addEventListener('click',function(){ipModal.classList.remove('active')});ipModal.addEventListener('click',function(e){if(e.target===ipModal)ipModal.classList.remove('active')});
 function openIPModal(name,power){document.getElementById('cmIPModalActor').textContent='1级角色每小时挖矿产出STORY';document.getElementById('cmIPModalVal').textContent=power;document.getElementById('cmIPModal').classList.add('active')}
 
 
