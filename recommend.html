@@ -27,13 +27,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .info{position:absolute;left:18px;right:80px;bottom:calc(12px + 44px + 44px + 12px + env(safe-area-inset-bottom,0px));z-index:2;display:flex;flex-direction:column;gap:8px}
 .danmaku-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px 4px 8px;border-radius:999px;font-size:11px;font-weight:500;color:rgba(255,255,255,.95);background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.2);cursor:pointer;transition:background .15s;align-self:flex-start;margin-bottom:2px}
 .danmaku-btn:active{background:rgba(255,255,255,.25)}
-.menu-btn{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:200;width:44px;height:44px;border-radius:50%;background:transparent;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s;-webkit-tap-highlight-color:transparent}
+.menu-btn{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:230;width:44px;height:44px;border-radius:50%;background:transparent;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s;-webkit-tap-highlight-color:transparent}
 .menu-btn svg{width:22px;height:22px;stroke:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
 .menu-btn:active{transform:scale(.88)}
-.search-btn{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:200;width:44px;height:44px;border-radius:50%;background:transparent;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s;-webkit-tap-highlight-color:transparent}
+.search-btn{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:230;width:44px;height:44px;border-radius:50%;background:transparent;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s;-webkit-tap-highlight-color:transparent}
 .search-btn svg{width:22px;height:22px;stroke:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
 .search-btn:active{transform:scale(.88)}
-.side-overlay{position:fixed;inset:0;z-index:298;background:rgba(255,255,255,.85);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.side-overlay{position:fixed;inset:0;z-index:298;background:transparent;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .side-overlay.open{opacity:1;visibility:visible}
 .side-drawer{position:fixed;top:0;left:0;bottom:0;z-index:299;width:300px;max-width:82vw;background:rgba(255,255,255,.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);transform:translateX(-100%);transition:transform .35s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:4px 0 40px rgba(0,0,0,.12);border-right:.5px solid rgba(0,0,0,.06)}
 .side-drawer.open{transform:translateX(0)}
@@ -225,7 +225,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .dm-send-drawer .dm-emoji-toggle:active{background:rgba(0,179,136,.15);color:#00b388}
 .dm-send-drawer .dm-hint{font-size:11px;color:rgba(94,111,131,.55);text-align:center;margin-top:-6px}
 /* ── Top Tab Bar ── */
-.top-tab-bar{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;align-items:center;justify-content:center;gap:24px;height:46px;padding-top:calc(24px + env(safe-area-inset-top,0px));background:rgba(255,255,255,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.33px solid rgba(0,0,0,.08)}
+.top-tab-bar{position:fixed;top:0;left:0;right:0;z-index:220;display:flex;align-items:center;justify-content:center;gap:24px;height:46px;padding-top:calc(24px + env(safe-area-inset-top,0px));background:rgba(255,255,255,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.33px solid rgba(0,0,0,.08)}
 .top-tab-item{font-size:.92rem;font-weight:500;color:rgba(0,0,0,.45);border:none;background:none;cursor:pointer;padding:4px 0;transition:color .15s;position:relative}
 .top-tab-item.active{color:var(--accent);font-weight:600}
 .top-tab-item.active::after{content:"";position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:2px;background:var(--accent)}
@@ -234,7 +234,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .top-tab-bar.nav-dark .top-tab-item{color:rgba(255,255,255,.85)}
 .drama-iframe{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;border:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
 /* ── Drama Grid ── */
-.drama-grid-page{position:fixed;inset:0;z-index:10;background:#F2F2F7;display:none;flex-direction:column;padding-top:0;padding-bottom:0;overflow-y:auto}
+.drama-grid-page{position:fixed;inset:0;z-index:210;background:#F2F2F7;display:none;flex-direction:column;padding-top:0;padding-bottom:0;overflow-y:auto}
 .drama-grid-page.show{display:flex}
 .drama-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
 .drama-card{border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.04);cursor:pointer;transition:transform .15s}
@@ -399,7 +399,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 @media(min-width:769px){.app-fullscreen #playerProgress{left:0!important;right:0!important;bottom:48px!important}.app-fullscreen #desktopToolbar{left:0!important;right:0!important;bottom:0!important}.app-fullscreen #app{left:0!important;right:0!important}.app-fullscreen .desktop-header{display:none!important}}</style>
 </head>
 <body>
-<div class="top-tab-bar" id="topTabBar"><button class="top-tab-item" onclick="switchTab('drama',event)">短剧</button><button class="top-tab-item active" onclick="switchTab('rec',event)">推荐</button></div>
+<div class="top-tab-bar nav-dark" id="topTabBar"><button class="top-tab-item" onclick="switchTab('drama',event)">短剧</button><button class="top-tab-item active" onclick="switchTab('rec',event)">推荐</button></div>
 
 <div class="drama-grid-page" id="dramaGridPage"><iframe src="index.html?embed=1" class="drama-iframe" id="dramaIframe" frameborder="0" scrolling="yes"></iframe></div>
 
@@ -416,7 +416,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   <div class="sd-user">
     <img class="sd-avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="avatar">
     <div class="sd-nickname">清风明月</div>
-    <div class="sd-uid">@qingfeng</div>
+    <div class="sd-uid"></div>
   </div>
   <div class="sd-section-label" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">通知消息<span style="font-size:16px;color:rgba(0,0,0,.25);margin-right:4px">›</span></div>
   <div class="sd-notify-list">
@@ -503,7 +503,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 </div>
 
 <nav class="bnav">
-  <a href="index.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M24.8376 14.0001C24.8376 19.9861 19.9849 24.8388 13.9989 24.8388C8.01281 24.8388 3.16016 19.9861 3.16016 14.0001C3.16016 8.014 8.01281 3.16135 13.9989 3.16135C19.9849 3.16135 24.8376 8.014 24.8376 14.0001Z" fill="none" stroke="currentColor" stroke-width="1.49333" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.9263 14.4331C19.2596 14.2407 19.2596 13.7595 18.9263 13.5671L11.9101 9.51633C11.5768 9.32388 11.1601 9.56444 11.1601 9.94934V18.0509C11.1601 18.4358 11.5768 18.6763 11.9101 18.4839L18.9263 14.4331Z" fill="currentColor"/></svg><span>剧场</span></a>
+  <a href="recommend.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M24.8376 14.0001C24.8376 19.9861 19.9849 24.8388 13.9989 24.8388C8.01281 24.8388 3.16016 19.9861 3.16016 14.0001C3.16016 8.014 8.01281 3.16135 13.9989 3.16135C19.9849 3.16135 24.8376 8.014 24.8376 14.0001Z" fill="none" stroke="currentColor" stroke-width="1.49333" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.9263 14.4331C19.2596 14.2407 19.2596 13.7595 18.9263 13.5671L11.9101 9.51633C11.5768 9.32388 11.1601 9.56444 11.1601 9.94934V18.0509C11.1601 18.4358 11.5768 18.6763 11.9101 18.4839L18.9263 14.4331Z" fill="currentColor"/></svg><span>短剧</span></a>
   <a href="actors.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M13.9053 2.66797C13.9639 2.63382 14.0361 2.63382 14.0947 2.66797L23.6611 8.24805C23.719 8.2818 23.7549 8.34415 23.7549 8.41113V19.5889C23.7549 19.6559 23.719 19.7182 23.6611 19.752L14.0947 25.332C14.0361 25.3662 13.9639 25.3662 13.9053 25.332L4.33887 19.752C4.28101 19.7182 4.24512 19.6558 4.24512 19.5889V8.41113C4.24512 8.34415 4.28101 8.2818 4.33887 8.24805L13.9053 2.66797Z" stroke="currentColor" stroke-width="1.49"/><path d="M22.6563 8.44303C23.016 8.24379 23.4695 8.3734 23.669 8.73307C23.8682 9.09289 23.7377 9.54634 23.3779 9.74576C21.6325 10.7132 20.1068 11.5637 18.5801 12.4137C17.0633 13.2582 15.5452 14.1028 13.8125 15.0631V24.3102C13.8125 24.7217 13.4788 25.0553 13.0674 25.0553C12.656 25.0552 12.3223 24.7216 12.3223 24.3102V14.4225L7.04103 11.3434C6.68599 11.136 6.56634 10.6791 6.77345 10.3239C6.98081 9.96862 7.43763 9.84903 7.79298 10.0563L13.584 13.4333C13.5983 13.4416 13.6115 13.4515 13.625 13.4606C15.1372 12.6218 16.4962 11.8682 17.8545 11.112C19.3813 10.2619 20.9093 9.41129 22.6563 8.44303ZM8.43947 5.54069C8.64694 5.18573 9.10378 5.0659 9.459 5.27311L13.6924 7.74283C14.0472 7.95035 14.1671 8.40721 13.96 8.76237C13.7526 9.11733 13.2957 9.237 12.9404 9.02994L8.70704 6.56022C8.35201 6.35277 8.23224 5.89593 8.43947 5.54069Z" fill="currentColor"/></svg><span>角色IP</span></a>
   <a href="studio.html"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4.66797 5.83333V22.1667C4.66797 22.811 5.1903 23.3333 5.83464 23.3333H22.168C22.8123 23.3333 23.3346 22.811 23.3346 22.1667V5.83333C23.3346 5.18899 22.8123 4.66666 22.168 4.66666H5.83464C5.1903 4.66666 4.66797 5.18899 4.66797 5.83333Z" stroke="currentColor" stroke-width="1.49" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11.6667V18.6667" stroke="currentColor" stroke-width="1.49" stroke-linecap="round"/><path d="M10.5 15.1667H17.5" stroke="currentColor" stroke-width="1.49" stroke-linecap="round"/></svg><span>经纪人</span></a>
 </nav>
@@ -524,7 +524,7 @@ function switchTab(tab,ev){
   const playerProg=document.getElementById('playerProgress');
   const searchBtn=document.getElementById('searchBtn');
   const menuBtn=document.getElementById('menuBtn');
-  if(tab==='drama'){
+    if(tab==='drama'){
     tabBar.style.background = 'transparent';
     tabBar.style.backdropFilter = 'none';
     tabBar.style.webkitBackdropFilter = 'none';
@@ -532,6 +532,10 @@ function switchTab(tab,ev){
     dramaPg.classList.add('show');
     app.style.display='none';
     bnav.style.display='none';
+    var bnp = document.getElementById('bottom-nav-placeholder');
+    if (bnp) bnp.style.display = 'none';
+    var bw = document.querySelector('.bottom-nav-wrapper');
+    if (bw) bw.style.display = 'none';
     if(watchBar)watchBar.style.display='none';
     if(playerProg)playerProg.style.display='none';
     paused=false;
@@ -540,6 +544,10 @@ function switchTab(tab,ev){
     dramaPg.classList.remove('show');
     app.style.display='';
     bnav.style.display='';
+    var bnp = document.getElementById('bottom-nav-placeholder');
+    if (bnp) bnp.style.display = '';
+    var bw = document.querySelector('.bottom-nav-wrapper');
+    if (bw) bw.style.display = '';
     if(watchBar)watchBar.style.display='';
     if(playerProg)playerProg.style.display='';
     searchBtn.style.display='';
@@ -577,7 +585,6 @@ const DATA = [
   {id:'010',type:'drama',title:'星际拓荒者',cat:'科幻',rt:4.7,ep:'全26集',totalEp:26,author:'STELLAR',avatar:'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=200&q=80',actors:['何九','吕十'],cover:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80',likes:48900,cmts:1123,fav:false,like:false,desc:'人类最后的希望，踏上前所未有的星际征程'}
 ];
 
-document.getElementById('topTabBar').classList.add('nav-dark');
 var ACTOR_INFO = {
   '苏婉清':{avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',ipPower:'8,562'},
   '李云飞':{avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',ipPower:'6,230'},
@@ -658,6 +665,7 @@ window.addEventListener('resize',function(){wh=window.innerHeight;goTo(idx,false
 document.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowRight')nextSlide();else if(e.key==='ArrowUp'||e.key==='ArrowLeft')prevSlide()});
 
 var menuBtn=document.getElementById("menuBtn");var sideDrawer=document.getElementById("sideDrawer");var sideOverlay=document.getElementById("sideOverlay");var sdClose=document.getElementById("sdClose");
+searchBtn.addEventListener("click", function(e) { e.stopPropagation(); location.href = "search.html"; });
 function openSide(){sideDrawer.classList.add("open");sideOverlay.classList.add("open")}
 function closeSide(){sideDrawer.classList.remove("open");sideOverlay.classList.remove("open")}
 menuBtn.addEventListener("click",function(e){e.stopPropagation();openSide()});

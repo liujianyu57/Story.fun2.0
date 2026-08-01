@@ -1352,9 +1352,19 @@
       if (tsb) tsb.style.display = 'none';
       var fw = document.querySelector('.featured-wrapper');
       if (fw) { fw.style.margin = '0'; fw.style.borderRadius = '0'; }
+      var bnp = document.getElementById('bottom-nav-placeholder');
+      if (bnp) bnp.style.display = 'none';
+      // 延迟给底部导航链接加 target="_top"
+      setTimeout(function() {
+        var bw = document.querySelector('.bottom-nav-wrapper');
+        if (bw) {
+          var links = bw.querySelectorAll('a');
+          for (var i = 0; i < links.length; i++) {
+            links[i].setAttribute('target', '_top');
+          }
+        }
+      }, 200);
     }
-
-      // 首页加载时：第一个短剧显示视频（无声音静音播放）
       const video = document.getElementById('featured-video');
       video.muted = true;
       // 先尝试播放，成功后再隐藏 poster
