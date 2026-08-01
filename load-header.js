@@ -639,10 +639,12 @@
       { href: 'actors.html', label: '角色 IP' },
       { href: 'studio.html', label: '经纪人' },
       { href: 'narrator.html', label: '创作' },
+      { href: 'publish.html', label: '发布' },
       { href: 'whitepaper.html', label: '白皮书' },
     ];
 
     const is1011Page = currentPage === '1011.html' || currentPage === 'task.html';
+    const isPublishPage = currentPage === 'publish.html' || currentPage === 'publish-video.html' || currentPage === 'create-actor.html';
     const navLinksHtml = navItems.map(item => {
       const activeClass = item.href === currentPage ? ' active' : '';
       if (item.href === '1011.html') {
@@ -652,6 +654,15 @@
   <a class="mobile-drawer-link${currentPage === '1011.html' ? ' active' : ''}" href="1011.html" style="font-size:14px;padding:10px 16px;">1011专题</a>
   <a class="mobile-drawer-link${currentPage === '1011-museum.html' ? ' active' : ''}" href="1011 Museum/1011-museum.html" target="_blank" style="font-size:14px;padding:10px 16px;">1011博物馆</a>
   <a class="mobile-drawer-link${currentPage === 'task.html' ? ' active' : ''}" href="task.html" style="font-size:14px;padding:10px 16px;">1011诺亚方舟</a>
+</div>`;
+      }
+      if (item.href === 'publish.html') {
+        return `
+<a class="mobile-drawer-link${isPublishPage ? ' active' : ''}" style="cursor:default;">发布 ▾</a>
+<div style="display:flex;flex-direction:column;padding-left:20px;gap:2px;">
+  <a class="mobile-drawer-link${currentPage === 'publish.html' ? ' active' : ''}" href="publish.html" style="font-size:14px;padding:10px 16px;">发布短剧</a>
+  <a class="mobile-drawer-link${currentPage === 'publish-video.html' ? ' active' : ''}" href="publish-video.html" style="font-size:14px;padding:10px 16px;">发布视频</a>
+  <a class="mobile-drawer-link${currentPage === 'create-actor.html' ? ' active' : ''}" href="create-actor.html" style="font-size:14px;padding:10px 16px;">发行角色IP</a>
 </div>`;
       }
       return `<a class="mobile-drawer-link${activeClass}" href="${item.href}">${item.label}</a>`;
@@ -825,6 +836,14 @@
       <a class="nav-link" href="actors.html">角色 IP</a>
       <a class="nav-link" href="studio.html">经纪人</a>
       <a class="nav-link" href="narrator.html">创作</a>
+      <div class="nav-dropdown">
+        <a class="nav-link" href="publish.html">发布</a>
+        <div class="nav-dropdown-menu">
+          <a class="nav-dropdown-item" href="publish.html">发布短剧</a>
+          <a class="nav-dropdown-item" href="publish-video.html">发布视频</a>
+          <a class="nav-dropdown-item" href="create-actor.html">发行角色IP</a>
+        </div>
+      </div>
       <a class="nav-link" href="whitepaper.html">白皮书</a>
     </nav>
     <div class="header-actions">

@@ -379,11 +379,17 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
 .desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
 .desktop-header .dh-publish-btn svg{width:16px;height:16px}
+.dh-publish-wrap{position:relative;flex-shrink:0}
+.dh-publish-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:150px;background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.1);padding:4px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s ease;z-index:300}
+.dh-publish-wrap:hover .dh-publish-dropdown{opacity:1;visibility:visible;transform:translateY(0)}
+.dh-publish-item{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;color:#1C1C1E;text-decoration:none;font-size:13px;font-weight:600;transition:background .15s;white-space:nowrap}
+.dh-publish-item:hover{background:rgba(0,0,0,.04)}
+.dh-publish-item svg{width:16px;height:16px;flex-shrink:0;color:#8E8E93}
 .desktop-header .dh-avatar{width:34px;height:34px;border-radius:50%;object-fit:contain;cursor:pointer;border:1.5px solid rgba(0,0,0,.08);flex-shrink:0;transition:border-color .15s}
 .desktop-header .dh-avatar:hover{border-color:var(--accent)}
 .desktop-header .dh-login-btn{padding:6px 16px;border-radius:999px;border:1px solid var(--accent);background:none;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .15s}
 .desktop-header .dh-login-btn:hover{background:var(--accent-soft)}.desktop-header .dh-usdc-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 4px 3px 14px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;font-weight:600;color:var(--text);flex-shrink:0;cursor:pointer;position:relative}.desktop-header .dh-usdc-badge svg{width:14px;height:14px;flex-shrink:0}.desktop-header .dh-usdc-badge .dh-avatar-wrap{margin:0}.desktop-header .dh-usdc-badge .dh-avatar{width:30px;height:30px;border:none}
-@media(min-width:769px){.desktop-header{left:180px;right:0}}
+@media(min-width:769px){.desktop-header{left:160px;right:0}}
 @media(max-width:768px){.desktop-header{display:none}}
 @media(min-width:769px){#app.sqz{right:448px!important;border-radius:20px 0 0 0!important}.player-progress.sqz{right:448px!important}.desktop-toolbar.sqz{right:448px!important;border-radius:0 0 0 20px!important}#cmDrawer.sqz{right:68px!important}}@media(min-width:769px){#app.sqz{right:448px!important;border-radius:20px 0 0 0!important}.player-progress.sqz{right:448px!important}.desktop-toolbar.sqz{right:448px!important;border-radius:0 0 0 20px!important}#cmDrawer.sqz{right:68px!important}}
 /* ── App Fullscreen ── */
@@ -434,31 +440,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 
 <div id="loading"><div class="spinner"></div></div>
 <div id="toast"></div>
-<div class="desktop-header" id="desktopHeader">
-  <div class="dh-search" id="dhSearch">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="text" id="dhSearchInput" placeholder="搜索短剧、角色、用户..." autocomplete="off"><button class="dh-search-btn" id="dhSearchBtn">搜索</button>
-    <div class="dh-search-dropdown" id="dhSearchDropdown">
-      <div class="sd-section" id="sdHotSection">
-        <div class="sd-section-title">🔥 热门搜索</div>
-        <div class="sd-tags" id="sdHotTags"></div>
-      </div>
-      <div class="sd-section" id="sdRecentSection" style="display:none">
-        <div class="sd-section-title">🕐 最近搜索</div>
-        <div class="sd-list" id="sdRecentList"></div>
-      </div>
-    </div>
-  </div>
-  <button class="dh-icon-btn" title="通知">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-    <span class="dh-notify-dot"></span>
-  </button>
-  <button class="dh-publish-btn">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>发布
-  </button>
-  <div class="auth-container" id="authContainer"></div>
-</div>
-
 <div id="app">
   <div class="ip-mining-panel" id="ipMiningPanel"><div id="imActorList"></div></div>
   <div id="track"></div>
@@ -839,5 +820,6 @@ setTimeout(function(){
 <script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
 <script src="load-bottom-nav.js"></script>
 <script src="load-sidebar.js"></script>
+<script src="load-desktop-header.js"></script>
 </body>
 </html>
