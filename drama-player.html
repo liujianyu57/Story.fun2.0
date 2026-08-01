@@ -269,6 +269,89 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .report-drawer .report-submit:active{transform:scale(.97);opacity:.85}
 .report-drawer .report-submit:disabled{opacity:.3;cursor:not-allowed;transform:none}
 
+/* App Fullscreen */
+.app-fullscreen #playerApp{position:fixed!important;left:0!important;right:0!important;top:0!important;bottom:0!important;z-index:1000!important}
+.app-fullscreen #desktopToolbar{position:fixed!important;left:0!important;right:0!important;bottom:0!important;height:48px!important;z-index:1002!important;display:flex!important}
+.app-fullscreen #playerProgress{position:fixed!important;left:0!important;right:0!important;bottom:48px!important;height:6px!important;z-index:1003!important}
+.app-fullscreen #dtPageNav{position:fixed!important;right:12px!important;top:auto!important;bottom:calc(48px + 8px + 350px)!important;z-index:1005!important;display:flex!important}
+.app-fullscreen .top-back,.app-fullscreen .player-bottom-bar{display:none!important}
+.app-fullscreen .slide{height:100vh!important}
+@media(min-width:769px){.app-fullscreen #playerProgress{left:0!important;right:0!important;bottom:48px!important}.app-fullscreen #desktopToolbar{left:0!important;right:0!important;bottom:0!important}}
+
+/* Toolbar input group */
+.dt-input-group{flex:1;max-width:420px;display:flex;align-items:center;gap:0;background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.15);border-radius:6px;overflow:hidden}
+.dt-input-group .dt-emoji-btn{border-radius:0;border:none;background:transparent;width:36px;height:32px;color:rgba(255,255,255,.45);transition:color .2s}
+.dt-input-group .dt-emoji-btn:hover{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85)}
+.dt-input-group .dt-input{flex:1;min-width:0;border:none;border-radius:0;background:transparent;padding:5px 8px;color:rgba(255,255,255,.9);font-size:12px;outline:none}
+.dt-input-group .dt-send-btn{border-radius:0 6px 6px 0;height:32px;padding:0 12px;margin-left:auto;flex-shrink:0;border:none;background:rgba(255,255,255,.08);color:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.dt-input-group .dt-send-btn:hover{background:rgba(255,255,255,.15)}
+.dt-emoji-btn{width:32px;height:32px;border-radius:6px;border:none;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;transition:all .15s}
+.dt-emoji-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.dt-emoji-panel{position:fixed;bottom:70px;z-index:500;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);border-radius:12px;padding:10px;display:none;flex-wrap:wrap;gap:4px;width:220px;max-height:120px;overflow-y:auto;border:1px solid rgba(255,255,255,.1)}
+.dt-emoji-panel.show{display:flex}
+.dt-emoji-panel button{width:32px;height:32px;border-radius:6px;border:none;background:rgba(0,0,0,.04);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s;color:#fff}
+.dt-emoji-panel button:hover{background:rgba(255,255,255,.18)}
+.dt-btn.dt-active{color:rgba(255,255,255,.95)!important;background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.25)!important}
+
+/* cm-detail / role panels (from recommend) */
+.cm-detail-panel{display:none;padding:16px;overflow-y:auto;flex:1}
+.cm-detail-panel.show{display:flex;flex-direction:column;gap:14px}
+.cm-detail-header{display:flex;gap:12px}
+.cm-detail-cover{width:80px;height:110px;border-radius:8px;object-fit:cover;flex-shrink:0}
+.cm-detail-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;justify-content:center}
+.cm-detail-title{font-size:16px;font-weight:700;color:#13202e;line-height:1.3}
+.cm-detail-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cm-detail-rating{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.04);font-size:11px;font-weight:600;color:#13202e}
+.cm-detail-rating .star{color:#ffbb3a}
+.cm-detail-tag{padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.04);font-size:11px;color:rgba(0,0,0,.5)}
+.cm-detail-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.cm-stat{text-align:center;padding:10px 6px;border-radius:10px;background:rgba(0,179,136,.1);border:1px solid rgba(0,179,136,.15)}
+.cm-stat-num{display:block;font-size:16px;font-weight:800;color:var(--accent)}
+.cm-stat-label{display:block;font-size:11px;color:var(--accent);margin-top:2px;font-weight:500}
+.cm-detail-desc{font-size:13px;color:rgba(0,0,0,.5);line-height:1.6}
+.cm-detail-rating-stars{display:flex;align-items:center;gap:4px;margin-top:8px}
+.cm-detail-rating-stars .cr-label{font-size:12px;color:rgba(0,0,0,.4);margin-right:6px}
+.cm-detail-rating-stars .cr-star{font-size:22px;color:rgba(0,0,0,.12);cursor:pointer;transition:color .15s;line-height:1}
+.cm-detail-rating-stars .cr-star.active{color:#ffbb3a}
+.cm-detail-rating-stars .cr-score{font-size:13px;font-weight:600;color:rgba(0,0,0,.5);margin-left:8px}
+.cm-detail-ep-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
+.cm-ep-item{display:flex;align-items:center;justify-content:center;padding:0;aspect-ratio:1/1;border-radius:4px;background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06);font-size:12px;font-weight:500;color:#2d3e52;cursor:pointer;transition:all .15s}
+.cm-ep-item:active{background:rgba(0,179,136,.2);transform:scale(.92)}
+.cm-role-panel{display:none;padding:0 16px;overflow-y:auto;flex:1}
+.cm-role-card{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.cm-role-card.bound{cursor:pointer}
+.cm-role-card:last-child{border-bottom:none}
+.cm-role-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid rgba(0,179,136,.4)}
+.cm-role-avatar.unbound{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.04);display:flex;align-items:center;justify-content:center;border:2px solid rgba(0,0,0,.08)}
+.cm-role-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.cm-role-name{font-size:14px;font-weight:600;color:#13202e;line-height:1.3}
+.cm-role-role{font-size:12px;font-weight:400;color:rgba(0,0,0,.45);margin-left:6px}
+.cm-role-ip{display:flex;align-items:center;gap:6px}
+.cm-sign-btn{padding:2px 8px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:10px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0;margin-left:auto}
+.cm-sign-btn:active{opacity:.8}
+.cm-role-ip-tag{font-size:11px;font-weight:600;color:var(--accent);background:rgba(0,179,136,.12);padding:1px 8px;border-radius:999px}
+.cm-role-status{font-size:11px;color:rgba(0,0,0,.3)}
+.cm-tabs{display:flex;gap:0;border-bottom:1px solid rgba(0,0,0,.06);padding:0 16px;flex-shrink:0}
+.cm-tab{padding:10px 16px;font-size:14px;font-weight:500;color:rgba(0,0,0,.45);cursor:pointer;border:none;background:none;position:relative;transition:color .2s}
+.cm-tab.active{color:var(--accent);font-weight:600}
+.cm-tab.active::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:24px;height:2.5px;border-radius:2px;background:var(--accent)}
+.cm-drawer .cm-header .cm-tabs{padding:0;border-bottom:none;margin-right:auto}
+.cm-footer{padding:10px 16px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0));border-top:1px solid rgba(0,0,0,.06);flex-shrink:0}
+.cm-footer .comment-input-wrap{display:flex;gap:8px;margin-bottom:0;padding:0}
+.cm-footer .comment-input-wrap input{flex:1;min-width:0;padding:10px 16px;border-radius:999px;border:1.5px solid rgba(0,0,0,.08);background:#f5f7fa;color:#13202e;font-size:14px;outline:none}
+.cm-footer .comment-input-wrap .send-btn{border:none;border-radius:999px;padding:10px 20px;background:linear-gradient(135deg,#00b388,#00c9a0);color:#fff;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
+
+/* IP Mining Panel */
+.ip-mining-panel{display:none;position:absolute;left:16px;top:50%;transform:translateY(-50%);z-index:2;flex-direction:column;align-items:center;gap:10px;background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:16px;padding:12px 10px;border:.5px solid rgba(255,255,255,.12);pointer-events:auto;cursor:pointer}
+.im-actor-row{display:flex;flex-direction:column;align-items:center;gap:2px}
+.im-actor-row .im-avatar-wrap{position:relative;width:32px;height:32px}
+.im-actor-row .im-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);box-shadow:0 0 8px rgba(0,179,136,.2)}
+.im-actor-row .im-mining-dot{position:absolute;bottom:0;right:0;width:7px;height:7px;border-radius:50%;background:#34d399;border:1.5px solid rgba(0,0,0,.5);animation:miningPulse 2s ease-in-out infinite}
+@keyframes miningPulse{0%,100%{opacity:1;box-shadow:0 0 6px rgba(52,211,153,.6)}50%{opacity:.4;box-shadow:0 0 2px rgba(52,211,153,.2)}}
+.im-actor-row .im-hash{font-size:10px;font-weight:600;color:#fff;text-align:center;line-height:1.2;white-space:nowrap}
+.im-actor-row .im-hash small{display:block;font-size:8px;font-weight:400;color:rgba(255,255,255,.4)}
+@media(min-width:769px){.ip-mining-panel{display:flex}}@media(max-width:768px){.ip-mining-panel{display:none!important}}
+
 /* Clean mode */
 #playerApp.clean-mode .player-info,
 #playerApp.clean-mode .player-actions,
@@ -281,7 +364,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   body,#loading{background:#0f1825!important}
   .feed-app,#playerApp{position:fixed;inset:0}
   .player-bottom-bar{display:none!important}
-  .desktop-toolbar{display:flex!important;position:fixed;left:0;right:0;bottom:20px;z-index:102;height:48px;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid rgba(255,255,255,.1)}
+  .desktop-toolbar{display:flex!important;position:fixed;left:0;right:0;bottom:0;z-index:102;height:48px;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid rgba(255,255,255,.1)}
   .desktop-toolbar .dt-left,.desktop-toolbar .dt-right{display:flex;align-items:center;gap:10px}
   .dt-left{flex:1;min-width:0}
   .dt-btn{display:inline-flex;align-items:center;gap:3px;padding:0 10px;height:32px;border-radius:6px;background:rgba(255,255,255,.1);border:.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
@@ -293,8 +376,25 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   .dt-volume-panel input[type=range]{-webkit-appearance:slider-vertical;appearance:slider-vertical;width:4px;height:72px;background:rgba(255,255,255,.15);border-radius:2px;outline:none;cursor:pointer;writing-mode:bt-lr}
   .dt-volume-panel input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}
   .dt-volume-panel .vol-num{font-size:11px;color:rgba(255,255,255,.6);font-weight:500}
-  .player-progress{position:fixed;left:0;right:0;bottom:68px;z-index:103;height:6px}
+  .player-progress{position:fixed;left:0;right:0;bottom:48px;z-index:103;height:6px}
   .cm-drawer .cm-panel{width:380px;left:auto;right:0;top:0;bottom:0;max-height:none;border-radius:0;transform:translateX(100%);background:#1a1a2e}
+  .cm-detail-title,.cm-detail-desc,.cm-detail-rating,.cm-role-name,.cm-role-role,.cm-detail-rating-stars .cr-label,.cm-detail-rating-stars .cr-score,.cm-detail-tag,.cr-star{color:rgba(255,255,255,.9)!important}
+  .cm-detail-desc{color:rgba(255,255,255,.6)!important}
+  .cm-detail-rating{color:rgba(255,255,255,.85)!important}
+  .cm-detail-tag{color:rgba(255,255,255,.55)!important}
+  .cm-role-role{color:rgba(255,255,255,.45)!important}
+  .cm-role-status{color:rgba(255,255,255,.3)!important}
+  .cm-detail-rating-stars .cr-star{color:rgba(255,255,255,.2)!important}
+  .cm-detail-rating-stars .cr-star.active{color:#ffbb3a!important}
+  .cm-ep-item{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.08)!important;color:rgba(255,255,255,.7)!important}
+  .cm-role-card{border-bottom-color:rgba(255,255,255,.05)!important}
+  .cm-sign-btn{color:#fff!important}
+  .cm-role-ip-tag{color:var(--accent)!important}
+  .cm-footer{border-top-color:rgba(255,255,255,.1)!important}
+  .cm-tab{color:rgba(255,255,255,.45)!important}
+  .cm-footer .comment-input-wrap input{background:rgba(255,255,255,.06)!important;color:rgba(255,255,255,.9)!important;border-color:rgba(255,255,255,.15)!important}
+  .cm-footer .comment-input-wrap input::placeholder{color:rgba(255,255,255,.35)!important}
+  .cm-tabs{border-bottom-color:rgba(255,255,255,.08)!important}
   .cm-drawer.open .cm-panel{transform:translateX(0)}
   .cm-drawer .cm-overlay{background:transparent}
   .cm-drawer .cm-header{border-bottom-color:rgba(255,255,255,.1);background:#1a1a2e}
@@ -318,7 +418,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   .ep-drawer .ep-body{background:#1a1a2e}
   .ep-item{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
   .ep-item.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .dt-page-nav{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:500;display:flex;flex-direction:column;gap:12px}
+  .dt-page-nav{position:fixed;right:14px;top:auto;bottom:calc(90px + env(safe-area-inset-bottom,0px) + 400px);z-index:500;display:flex;flex-direction:column;gap:12px;transform:none}
   .dt-page-nav-btn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:rgba(255,255,255,.9);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s ease;box-shadow:0 2px 8px rgba(0,0,0,.08)}
   .dt-page-nav-btn:hover{background:rgba(0,0,0,.7);color:#fff;transform:scale(1.12);box-shadow:0 4px 16px rgba(0,0,0,.15)}
   .dt-page-nav-btn:active{transform:scale(.92)}
@@ -349,6 +449,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 
 <!-- ===== 播放器模式 ===== -->
 <div id="playerApp">
+  <div class="ip-mining-panel" id="ipMiningPanel"><div id="imActorList"></div></div>
   <div id="track"></div>
   <div class="top-back" id="topBar">
     <div class="back-btn" id="backBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -360,16 +461,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   </div>
   <div class="desktop-toolbar" id="desktopToolbar">
     <div class="dt-left">
-      <button class="dt-btn" id="dtEpBtn" title="选集" onclick="window.dtEpBtn&&window.dtEpBtn()"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9.5" y="1.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="9.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>选集</button>
-      <button class="dt-btn" id="dtCmtBtn" title="评论" onclick="window.dtCmtBtn&&window.dtCmtBtn()"><svg viewBox="0 0 16 16" fill="none"><path d="M14 7.5a5.5 5.5 0 0 1-.6 2.5 5.5 5.5 0 0 1-4.9 3 5.5 5.5 0 0 1-2.5-.6L2 14l1.2-3.7A5.5 5.5 0 0 1 2.6 7.5 5.5 5.5 0 0 1 7.5 2h.5a5.5 5.5 0 0 1 5.5 5v.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>评论</button>
-      <button class="dt-btn" id="dtCleanBtn" title="清屏" onclick="window.dtCleanBtn&&window.dtCleanBtn()"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>清屏</button>
+      <button class="dt-btn dt-active" id="dtDanmakuBtn" title="弹幕开关" onclick="toggleDesktopDanmaku()"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 6.5h7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 8.5h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 10.5h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>弹幕</button>
+      <div class="dt-input-group"><button class="dt-emoji-btn" id="dtEmojiBtn" title="表情" onclick="toggleDesktopEmoji()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></button><input class="dt-input" id="dtDanmakuInput" placeholder="发个弹幕…" maxlength="30"><button class="dt-send-btn" onclick="sendDesktopDanmaku()">发送</button></div><div class="dt-emoji-panel" id="dtEmojiPanel"></div>
     </div>
     <div class="dt-right">
+      <button class="dt-btn" id="dtCleanBtn" title="清屏播放" onclick="toggleCleanMode()"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>清屏</button>
       <div class="dt-volume">
         <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,6 5,6 8.5,2.5 8.5,13.5 5,10 1.5,10"/><path d="M11,5.5a3,3,0,0,1,0,5"/><path d="M13,3.5a6,6,0,0,1,0,9"/></svg>
-        <div class="dt-volume-panel"><span class="vol-num" id="dtVolNum">80</span><input type="range" id="dtVolume" min="0" max="100" value="80" oninput="window.setDesktopVolume&&window.setDesktopVolume(this.value);document.getElementById('dtVolNum').textContent=this.value"></div>
+        <div class="dt-volume-panel"><span class="vol-num" id="dtVolNum">80</span><input type="range" id="dtVolume" min="0" max="100" value="80" oninput="setDesktopVolume(this.value);document.getElementById('dtVolNum').textContent=this.value"></div>
       </div>
-      <button class="dt-btn dt-full" id="dtFullBtn" title="全屏" onclick="window.dtFullBtn&&window.dtFullBtn()"><svg viewBox="0 0 16 16" fill="none"><path d="M1.5 5.5V2a.5.5 0 0 1 .5-.5h3.5M10.5 1.5H14a.5.5 0 0 1 .5.5v3.5M14.5 10.5V14a.5.5 0 0 1-.5.5h-3.5M5.5 14.5H2a.5.5 0 0 1-.5-.5v-3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="dt-btn" id="dtFullscreenBtn" title="全屏" onclick="toggleAppFullscreen()"><svg viewBox="0 0 16 16" fill="none"><path d="M1.5 5.5V2a.5.5 0 0 1 .5-.5h3.5M10.5 1.5H14a.5.5 0 0 1 .5.5v3.5M14.5 10.5V14a.5.5 0 0 1-.5.5h-3.5M5.5 14.5H2a.5.5 0 0 1-.5-.5v-3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
   </div>
   <div class="player-progress" id="playerProgress">
@@ -747,18 +848,66 @@ if(!isPlayerMode){
 
   function openDrawer(epIdx){
     var ep=episodes[epIdx];if(!ep)return;
-    cmTitle.textContent=ep.label+' - 讨论';
-    cmBody.innerHTML='<div class="comment-panel"><div class="comment-header"><span class="comment-title">用户评论</span><span class="comment-count">(<span id="drawerCommentCount"></span>)</span></div><div class="comment-input-wrap"><input id="drawerCommentInput" placeholder="写下你的评论..." maxlength="200" /><button class="send-btn" id="drawerSendBtn">发送</button></div><div id="drawerCommentList"></div></div>';
+    var hasDrama=true;
+    var hasActors=true;
+    cmTitle.innerHTML='<div class="cm-tabs"><button class="cm-tab active" data-cmtab="cmt">评论</button>'+(hasDrama?'<button class="cm-tab" data-cmtab="drama">短剧</button>':'')+(hasActors?'<button class="cm-tab" data-cmtab="role">角色</button>':'')+'</div>';
+    var detailHTML='';
+    if(hasDrama){
+      var views='3.3w';var heat='1.2w';
+      var epGrid='';for(var ei=1;ei<=total&&ei<=60;ei++){epGrid+='<div class="cm-ep-item">'+ei+'</div>';}
+      detailHTML='<div class="cm-detail-panel" id="cmDetailPanel"><div class="cm-detail-header"><img class="cm-detail-cover" src="'+dramaCover+'" alt="'+dramaTitle+'"><div class="cm-detail-info"><div class="cm-detail-title">'+dramaTitle+'</div><div class="cm-detail-meta"><span class="cm-detail-rating"><span class="star">☆</span> 4.5</span><span class="cm-detail-tag">全'+total+'集</span></div></div></div><div class="cm-detail-stats"><div class="cm-stat"><span class="cm-stat-num">'+views+'</span><span class="cm-stat-label">完播</span></div><div class="cm-stat"><span class="cm-stat-num">'+heat+'</span><span class="cm-stat-label">热度</span></div></div><div class="cm-detail-desc">'+dramaDesc+'</div><div class="cm-detail-rating-stars"><span class="cr-label">我要评分</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-score">未评</span></div><div class="cm-detail-ep-grid">'+epGrid+'</div></div>';
+    }
+    var roleHTML='';
+    if(hasActors){
+      roleHTML='<div class="cm-role-panel" id="cmRolePanel">';
+      var rNames=actorNames.length>0?actorNames:['苏婉清','李云飞','林梦瑶','赵老四','王五爷'];
+      var rAvatars=actorAvatars.length>0?actorAvatars:['https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80','',''];
+      for(var ai=0;ai<rNames.length;ai++){
+        var aname=rNames[ai],aav=rAvatars[ai]||'';
+        var rPower={'苏婉清':'8,562','李云飞':'6,230','林梦瑶':'5,891'};
+        if(aav){roleHTML+='<div class="cm-role-card bound"><img class="cm-role-avatar" src="'+aav+'" alt="'+aname+'"><div class="cm-role-info"><div class="cm-role-name">'+aname+'<span class="cm-role-role"> 饰 '+aname+'</span></div><div class="cm-role-ip"><span class="cm-role-ip-tag">IP算力 '+(rPower[aname]||'—')+'</span></div></div><button class="cm-sign-btn">签约</button></div>'}
+        else{roleHTML+='<div class="cm-role-card"><div class="cm-role-avatar unbound"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(aname) + '" width="44" height="44" style="border-radius:50%"></div><div class="cm-role-info"><div class="cm-role-name">'+aname+'</div><div class="cm-role-status">未绑定 IP</div></div></div>'}
+      }
+      roleHTML+='</div>';
+    }
+    cmBody.innerHTML='<div class="comment-panel" id="commentPanel"><div class="comment-header"><span class="comment-title">用户评论</span><span class="comment-count">(<span id="drawerCommentCount"></span>)</span></div><div id="drawerCommentList"></div></div>'+detailHTML+roleHTML;
+    document.getElementById('cmDrawer').querySelector('.cm-panel').insertAdjacentHTML('beforeend','<div class="cm-footer" id="cmFooter"><div class="comment-input-wrap"><input id="drawerCommentInput" placeholder="写下你的评论..." maxlength="200" /><button class="send-btn" id="drawerSendBtn">发送</button></div></div>');
     renderDrawerComments(epIdx);
-    document.getElementById('drawerSendBtn').addEventListener('click',function(e){e.stopPropagation();postDrawerComment(epIdx)});
-    document.getElementById('drawerCommentInput').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();postDrawerComment(epIdx)}});
+    document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var tab=this.dataset.cmtab;document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(b){b.classList.toggle('active',b===t)});var showCmt=tab==='cmt';var cp=document.getElementById('commentPanel');var ft=document.getElementById('cmFooter');if(cp)cp.style.display=showCmt?'':'none';if(ft)ft.style.display=showCmt?'':'none';var dp=document.getElementById('cmDetailPanel');if(dp)dp.classList.toggle('show',tab=='drama');var rp=document.getElementById('cmRolePanel');if(rp)rp.style.display=tab=='role'?'block':'none'})});
+    var sendBtn=document.getElementById('drawerSendBtn');if(sendBtn){sendBtn.addEventListener('click',function(e){e.stopPropagation();postDrawerComment(epIdx)})}
+    var inp=document.getElementById('drawerCommentInput');if(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();postDrawerComment(epIdx)}})}
     cmDrawer.classList.add('open');
   }
 
-  function closeDrawer(){cmDrawer.classList.remove('open')}
+  function closeDrawer(){cmDrawer.classList.remove('open');var ft=document.getElementById('cmFooter');if(ft)ft.remove()}
   function gotoDetail(){location.href='drama-detail.html?title='+encodeURIComponent(dramaTitle)}
 
   function updateMeta(){epBadge.textContent=episodes[idx].label}
+
+  function updateMiningPanel(){
+    var panel=document.getElementById('ipMiningPanel');if(!panel)return;
+    var list=document.getElementById('imActorList');if(!list)return;
+    var h='';var rPwr={'苏婉清':'8,562','李云飞':'6,230','林梦瑶':'5,891'};
+    var rAv=['https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'];
+    var rNm=['苏婉清','李云飞','林梦瑶'];
+    for(var i=0;i<rNm.length;i++){h+='<div class="im-actor-row"><div class="im-avatar-wrap"><img class="im-avatar" src="'+rAv[i]+'" alt="'+rNm[i]+'" onerror="this.style.display=\'none\'"><div class="im-mining-dot"></div></div><div class="im-hash">'+rPwr[rNm[i]]+'<small>STORY/h</small></div></div>';}
+    list.innerHTML=h;panel.style.display='';
+  }
+  updateMiningPanel();
+  setTimeout(function(){
+    var miningPanel=document.getElementById('ipMiningPanel');
+    if(miningPanel){
+      miningPanel.style.cursor='pointer';
+      miningPanel.addEventListener('click',function(e){
+        e.stopPropagation();
+        openDrawer(idx);
+        setTimeout(function(){
+          var roleTab=document.querySelector('#cmDrawer .cm-tab[data-cmtab="role"]');
+          if(roleTab)roleTab.click();
+        },100);
+      });
+    }
+  },500);
 
   function render(){
     var h='';
@@ -773,7 +922,7 @@ if(!isPlayerMode){
     for(var i=0;i<total;i++){
       var ep=episodes[i];
       var mediaHTML = dramaVideo ? '<video class="slide-img" src="'+dramaVideo+'" muted loop playsinline poster="'+ep.cover+'"'+(i===0?' autoplay':'')+' onerror="this.style.display=\'none\'"></video>' : '<img class="slide-img" src="'+ep.cover+'" alt="'+ep.label+'" loading="'+(i===0?'eager':'lazy')+'" onerror="this.style.display=\'none\'"/>';
-      h+='<div class="slide" style="top:'+(i*100)+'vh">'+mediaHTML+'<div class="slide-mask"></div><div class="player-play-btn" id="pb_'+i+'"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="player-info"><div class="pi-title" onclick="event.stopPropagation();">'+dramaTitle+' <span class="pi-arrow">›</span></div>'+actorRow+'<div class="pi-desc" id="infoDesc_'+i+'" onclick="event.stopPropagation();if(this.classList.toggle(\'open\')){this.querySelector(\'.desc-toggle\').textContent=\'收起\'}else{this.querySelector(\'.desc-toggle\').textContent=\'展开\'}"><span class="desc-text">'+dramaDesc+'</span><span class="desc-toggle">展开</span></div></div><div class="player-actions"><button class="act-creator"><img class="ac-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt=""><span class="ac-follow" onclick="event.stopPropagation();toggleFollow(this)">+</span></button><button class="player-act-btn" data-act="fav" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><span class="player-act-label">收藏</span></button><button class="player-act-btn" data-act="cmt" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><span class="player-act-label">评论</span></button><button class="player-act-btn" data-act="like" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="player-act-label">点赞</span></button><button class="player-act-btn" data-act="share" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div><span class="player-act-label">分享</span></button></button></div></div>';
+      h+='<div class="slide" style="top:'+(i*100)+'vh">'+mediaHTML+'<div class="slide-mask"></div><div class="player-play-btn" id="pb_'+i+'"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="player-info"><div class="pi-title" onclick="event.stopPropagation();">'+dramaTitle+' <span class="pi-arrow">›</span></div>'+actorRow+'<div class="pi-desc" id="infoDesc_'+i+'" onclick="event.stopPropagation();if(this.classList.toggle(\'open\')){this.querySelector(\'.desc-toggle\').textContent=\'收起\'}else{this.querySelector(\'.desc-toggle\').textContent=\'展开\'}"><span class="desc-text">'+dramaDesc+'</span><span class="desc-toggle">展开</span></div></div><div class="player-actions"><button class="act-creator"><img class="ac-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt=""><span class="ac-follow" onclick="event.stopPropagation();toggleFollow(this)">+</span></button><button class="player-act-btn" data-act="fav" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><span class="player-act-label">1.0w</span></button><button class="player-act-btn" data-act="cmt" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><span class="player-act-label">890</span></button><button class="player-act-btn" data-act="like" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="player-act-label">3.3w</span></button><button class="player-act-btn" data-act="share" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div><span class="player-act-label">分享</span></button></button></div></div>';
     }
     track.innerHTML=h;track.style.height=(total*100)+'vh';wh=window.innerHeight;goTo(0,false);bindEvents();
   }
@@ -796,7 +945,33 @@ if(!isPlayerMode){
   window.dtEpBtn=openEpDrawer;window.dtCmtBtn=function(){openDrawer(idx)};
   window.dtCleanBtn=function(){cleanMode=!cleanMode;document.getElementById('playerApp').classList.toggle('clean-mode',cleanMode)};
   window.setDesktopVolume=function(val){var vs=document.querySelectorAll('#track .slide-img');vs.forEach(function(v){if(v.tagName==='VIDEO')v.volume=val/100})};
-  window.dtFullBtn=function(){var el=document.getElementById('playerApp');if(!document.fullscreenElement){if(el.requestFullscreen)el.requestFullscreen();else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen()}else{if(document.exitFullscreen)document.exitFullscreen()}};
+  function toggleAppFullscreen(){
+    var body=document.body;
+    var isFS=body.classList.contains('app-fullscreen');
+    if(isFS){
+      body.classList.remove('app-fullscreen');
+      showToast('已退出全屏');
+    }else{
+      body.classList.add('app-fullscreen');
+      showToast('已进入全屏');
+    }
+    wh=window.innerHeight;
+    goTo(idx,false);
+  }
+
+  /* Desktop toolbar functions */
+  function toggleDesktopDanmaku(){desktopDanmakuOn=!desktopDanmakuOn;var btn=document.getElementById('dtDanmakuBtn');if(desktopDanmakuOn){btn.classList.add('dt-active');showToast('弹幕已开启')}else{btn.classList.remove('dt-active');showToast('弹幕已关闭')}}
+  function sendDesktopDanmaku(){var input=document.getElementById('dtDanmakuInput');if(!input)return;var text=input.value.trim();if(!text){showToast('请输入弹幕内容');return}if(text.length>30){showToast('弹幕不能超过30字');return}input.value='';showToast('弹幕已发送 🎉')}
+  function buildDesktopEmojiPanel(){
+    var panel=document.getElementById('dtEmojiPanel');if(!panel||panel.children.length)return;
+    var emojis=['😀','😂','❤️','🔥','👍','🎉','😭','😍','🤔','👏','💪','✨','🎬','📺','🍿','💬','🎵','💯','🙌','😱','💀'];
+    emojis.forEach(function(emoji){var btn=document.createElement('button');btn.textContent=emoji;btn.addEventListener('click',function(e){e.stopPropagation();var inp=document.getElementById('dtDanmakuInput');if(inp){inp.value+=emoji;inp.focus()}});panel.appendChild(btn)});
+  }
+  function toggleDesktopEmoji(){var panel=document.getElementById('dtEmojiPanel');if(!panel)return;buildDesktopEmojiPanel();dtEmojiOpen=!dtEmojiOpen;panel.classList.toggle('show',dtEmojiOpen);var btn=document.getElementById('dtEmojiBtn');if(btn){var rect=btn.getBoundingClientRect();panel.style.left=rect.left+'px';panel.style.maxWidth=(window.innerWidth-rect.left-20)+'px'}}
+  function toggleCleanMode(){cleanMode=!cleanMode;var btn=document.getElementById('dtCleanBtn');if(cleanMode){btn.classList.add('dt-active');document.getElementById('playerApp').classList.add('clean-mode');showToast('清屏模式')}else{btn.classList.remove('dt-active');document.getElementById('playerApp').classList.remove('clean-mode')}}
+  function setDesktopVolume(val){var vs=document.querySelectorAll('#track .slide-img');vs.forEach(function(v){if(v.tagName==='VIDEO')v.volume=val/100})}
+  var desktopDanmakuOn=true,dtEmojiOpen=false;
+  document.addEventListener('click',function(e){if(dtEmojiOpen&&!e.target.closest('.dt-emoji-btn')&&!e.target.closest('#dtEmojiPanel')){dtEmojiOpen=false;var p=document.getElementById('dtEmojiPanel');if(p)p.classList.remove('show')}});
 
   function togglePause(e){
     if(e.target.closest('.player-actions')||e.target.closest('.player-info')||e.target.closest('.top-back')||e.target.closest('.cm-drawer')||e.target.closest('.player-bottom-bar')||e.target.closest('.ep-drawer'))return;
