@@ -395,6 +395,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   .cm-footer .comment-input-wrap input::placeholder{color:rgba(255,255,255,.35)!important}
   .cm-tabs{border-bottom-color:rgba(255,255,255,.08)!important}
   .cm-drawer.open .cm-panel{transform:translateX(0)}
+  #playerApp.sqz{right:380px!important}
+  #playerProgress.sqz{right:380px!important;bottom:48px!important}
+  #desktopToolbar.sqz{right:380px!important;bottom:0!important}
+  #topBar.sqz{right:380px!important}
+  #dtPageNav.sqz{display:none!important}
   .cm-drawer .cm-overlay{background:transparent}
   .cm-drawer .cm-header{border-bottom-color:rgba(255,255,255,.1);background:#1a1a2e}
   .cm-drawer .cm-header .cm-title{color:#fff}
@@ -876,9 +881,12 @@ if(!isPlayerMode){
       var sendBtn=document.getElementById('drawerSendBtn');if(sendBtn){sendBtn.addEventListener('click',function(e){e.stopPropagation();postDrawerComment(epIdx)})}
       var inp=document.getElementById('drawerCommentInput');if(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();postDrawerComment(epIdx)}})}
     cmDrawer.classList.add('open');
+    document.getElementById('playerApp').classList.add('sqz');
+    document.getElementById('playerProgress').classList.add('sqz');
+    document.getElementById('desktopToolbar').classList.add('sqz');
   }
 
-  function closeDrawer(){cmDrawer.classList.remove('open');var ft=document.getElementById('cmFooter');if(ft)ft.remove()}
+  function closeDrawer(){cmDrawer.classList.remove('open');document.getElementById('playerApp').classList.remove('sqz');document.getElementById('playerProgress').classList.remove('sqz');document.getElementById('desktopToolbar').classList.remove('sqz');var ft=document.getElementById('cmFooter');if(ft)ft.remove()}
   function gotoDetail(){location.href='drama-detail.html?title='+encodeURIComponent(dramaTitle)}
 
   function updateMeta(){epBadge.textContent=episodes[idx].label}
