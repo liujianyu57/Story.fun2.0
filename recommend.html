@@ -113,7 +113,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 #loading.hide{opacity:0;pointer-events:none}
 .spinner{width:32px;height:32px;border:3px solid var(--accent-soft);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-#toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);z-index:98;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);color:#fff;padding:12px 26px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap}
+#toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);z-index:98;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);color:var(--text);padding:12px 26px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap}
 #toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .cm-drawer{position:fixed;inset:0;z-index:300;display:none}
 .cm-drawer.open{display:block}
@@ -474,7 +474,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
       <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,6 5,6 8.5,2.5 8.5,13.5 5,10 1.5,10"/><path d="M11,5.5a3,3,0,0,1,0,5"/><path d="M13,3.5a6,6,0,0,1,0,9"/></svg>
       <div class="dt-volume-panel"><span class="vol-num" id="dtVolNum">80</span><input type="range" id="dtVolume" min="0" max="100" value="80" oninput="setDesktopVolume(this.value);document.getElementById('dtVolNum').textContent=this.value"></div>
     </div>
-    <button class="dt-btn" id="dtFullscreenBtn" title="全屏">
+    <button class="dt-btn" id="dtFullscreenBtn" title="全屏" disabled style="opacity:.3;pointer-events:none">
       <svg viewBox="0 0 16 16" fill="none"><path d="M1.5 5.5V2a.5.5 0 0 1 .5-.5h3.5M10.5 1.5H14a.5.5 0 0 1 .5.5v3.5M14.5 10.5V14a.5.5 0 0 1-.5.5h-3.5M5.5 14.5H2a.5.5 0 0 1-.5-.5v-3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
@@ -500,9 +500,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 
 <script>
 /* ── Tab Switch ── */
-function switchTab(tab){
+function switchTab(tab,ev){
   document.querySelectorAll('.top-tab-item').forEach(t=>t.classList.toggle('active',false));
-  event.target.classList.add('active');
+  ev.target.classList.add('active');
   const tabBar=document.getElementById('topTabBar');
   const dramaPg=document.getElementById('dramaGridPage');
   const app=document.getElementById('app');
@@ -606,9 +606,8 @@ document.getElementById('cmFooter').innerHTML='<div class="comment-input-wrap"><
 renderDrawerComments(d);
 document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var tab=this.dataset.cmtab;document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(b){b.classList.toggle('active',b===t)});var showCmt=tab==='cmt';document.getElementById('commentPanel').style.display=showCmt?'':'none';document.getElementById('cmFooter').style.display=showCmt?'':'none';var dp=document.getElementById('cmDetailPanel');if(dp)dp.classList.toggle('show',tab=='drama');var rp=document.getElementById('cmRolePanel');if(rp)rp.style.display=tab=='role'?'block':'none'})});
 document.getElementById('drawerSendBtn').addEventListener('click',function(e){e.stopPropagation();postDrawerComment(d.id)});
-document.getElementById('drawerCommentInput').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();postDrawerComment(d.id)}});cmDrawer.classList.add('open');document.getElementById('app').classList.add('sqz');document.getElementById('playerProgress').classList.add('sqz');document.getElementById('desktopToolbar').classList.add('sqz');
-;document.getElementById("app").classList.add("sqz");document.getElementById('playerProgress').classList.add('sqz');document.getElementById('desktopToolbar').classList.add('sqz');['app'].forEach(function(id){document.getElementById(id).classList.add('sqz')});['playerProgress','desktopToolbar'].forEach(function(id){document.getElementById(id).classList.add('sqz')})}
-function closeDrawer(){['app','playerProgress','desktopToolbar'].forEach(function(id){document.getElementById(id).classList.remove('sqz')});['app','playerProgress','desktopToolbar'].forEach(function(id){document.getElementById(id).classList.remove('sqz')});cmDrawer.classList.remove('open')}
+document.getElementById('drawerCommentInput').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();postDrawerComment(d.id)}});cmDrawer.classList.add('open');['app','playerProgress','desktopToolbar'].forEach(function(id){document.getElementById(id).classList.add('sqz')})}
+function closeDrawer(){['app','playerProgress','desktopToolbar'].forEach(function(id){document.getElementById(id).classList.remove('sqz')});cmDrawer.classList.remove('open')}
 
 function render(){let h='';for(let i=0;i<total;i++){const d=DATA[i];const acts=(d.actors||[]).slice(0,2).map(a=>`<span class="c-name">${a}</span>`).join('<span class="c-div"> / </span>');const isVideo=d.type==='video';const videoHTML=d.video?`<video class="slide-video" src="${d.video}" muted loop playsinline poster="${d.cover}"${i===0?' autoplay':''}></video>`:`<img class="slide-img" src="${d.cover}" alt="${d.title}" loading="${i===0?'eager':'lazy'}" onerror="this.style.display='none'"/>`;const titleHTML=isVideo?'@'+d.author:d.title;const tagsHTML=isVideo?'':'<span class="info-rating"><span class="star">★</span>'+d.rt+'';const descHTML=isVideo?'<span class="desc-text">'+d.desc+'</span>':'<span class="desc-ep">第1集</span><span class="desc-sep">|</span><span class="desc-text">'+d.desc+'</span>';const titleOnclick=isVideo?"location.href='user-profile-visitor.html?author="+d.author+"'":"location.href='drama-detail.html'";h+=`<div class="slide" style="top:${i*100}vh">${videoHTML}<div class="dm-layer" id="dm_${i}"></div><div class="slide-mask"></div><div class="play-btn" id="pb_${d.id}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><div class="danmaku-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 6.5h7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 8.5h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M4.5 10.5h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>弹幕</div><div class="info-title">${titleHTML}<span class="gt"> ›</span></div><div class="info-tags">${tagsHTML}</div><div class="info-desc">${descHTML}<span class="desc-expand" data-id="${d.id}">展开</span></div></div><div class="actions"><button class="act-creator"><img class="ac-avatar" src="${d.avatar}" alt="${d.author}"><span class="ac-follow${d.followed?' followed':''}" data-follow="${d.author}">${d.followed?'✓':'+'}</span></button><button class="act-btn" data-act="fav" data-id="${d.id}"><div class="act-icon${d.fav?' bookmarked':''}"><svg viewBox="0 0 24 24" width="20" height="20" fill="${d.fav?'currentColor':'none'}" stroke="${d.fav?'currentColor':'currentColor'}" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><span class="act-label">${fmt(Math.floor(d.likes*0.3))}</span></button><button class="act-btn" data-act="cmt" data-id="${d.id}"><div class="act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><span class="act-label">${fmt(d.cmts)}</span></button><button class="act-btn" data-act="like" data-id="${d.id}"><div class="act-icon${d.like?' liked':''}"><svg viewBox="0 0 24 24" width="20" height="20" fill="${d.like?'#ff4d6a':'none'}" stroke="${d.like?'#ff4d6a':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="act-label">${fmt(d.likes)}</span></button><button class="act-btn" data-act="share" data-id="${d.id}"><div class="act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div><span class="act-label">分享</span></button></div></div>`;}track.innerHTML=h;track.style.height=(total*100)+'vh';wh=window.innerHeight;goTo(0,false);bindEvents();setTimeout(()=>loading.classList.add('hide'),350);updateWatchBar()}
 function goTo(i,animate){if(animFlag)return;if(animate)animFlag=true;i=Math.max(0,Math.min(total-1,i));idx=i;document.querySelectorAll('.slide-video').forEach(v=>v.pause());track.style.transition=animate?'transform .38s cubic-bezier(.22,1,.36,1)':'none';track.style.transform=`translateY(${-i*wh}px)`;const curV=document.querySelector(`#track .slide:nth-child(${i+1}) .slide-video`);if(curV){curV.currentTime=0;curV.play().catch(()=>{})}initDanmaku(i);updateMiningPanel();updateWatchBar();if(cmDrawer.classList.contains("open")){openDrawer(DATA[idx].id)}if(cmDrawer.classList.contains("open")){openDrawer(DATA[idx].id)}if(animate)setTimeout(()=>{animFlag=false},400);playProgress=0;countdownSec=0;resetWatchBarRight();updatePlayProgressUI();if(!playInterval)startPlayProgress()}
@@ -766,7 +765,25 @@ function sendDesktopDanmaku(){var input=document.getElementById('dtDanmakuInput'
 function toggleCleanMode(){cleanMode=!cleanMode;var btn=document.getElementById('dtCleanBtn');var infoEls=document.querySelectorAll('.slide .info');var actionEls=document.querySelectorAll('.slide .actions');var maskEls=document.querySelectorAll('.slide-mask');if(cleanMode){btn.classList.add('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display='none'});infoEls.forEach(function(el){el.style.display='none'});actionEls.forEach(function(el){el.style.display='none'});maskEls.forEach(function(el){el.style.opacity='0'});showToast('清屏模式');var ipPanel=document.getElementById('ipMiningPanel');if(ipPanel)ipPanel.style.display='none'}else{btn.classList.remove('dt-active');if(desktopDanmakuOn){document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display=''})}infoEls.forEach(function(el){el.style.display=''});actionEls.forEach(function(el){el.style.display=''});maskEls.forEach(function(el){el.style.opacity=''});var ipPanel=document.getElementById('ipMiningPanel');if(ipPanel){var cur=DATA[idx];if(cur&&cur.type==='drama'&&cur.actors&&cur.actors.length)ipPanel.style.display=''}}}
 function showDesktopEpList(){var d=DATA[idx];if(!d||d.type==='video'){showToast('当前为短视频，无选集');return}location.href='drama-player.html?id='+d.id+'&title='+encodeURIComponent(d.title)+'&total='+d.totalEp+'&cat='+encodeURIComponent(d.cat)+'&author='+encodeURIComponent(d.author)+'&avatar='+encodeURIComponent(d.avatar)+'&cover='+encodeURIComponent(d.cover)+'&desc='+encodeURIComponent(d.desc)+'&video='+encodeURIComponent(d.video||'')}
 function setDesktopVolume(val){var vs=document.querySelectorAll('.slide-video');vs.forEach(function(v){v.volume=val/100})}
-function toggleDesktopFullscreen(){var app=document.getElementById('app');if(!document.fullscreenElement){if(app.requestFullscreen){app.requestFullscreen()}else if(app.webkitRequestFullscreen){app.webkitRequestFullscreen()}showToast('已进入全屏')}else{if(document.exitFullscreen){document.exitFullscreen()}showToast('已退出全屏')}}
+function toggleDesktopFullscreen(){
+  var app=document.getElementById('app');
+  var wb=document.getElementById('watchBar');
+  var pp=document.getElementById('playerProgress');
+  var dt=document.getElementById('desktopToolbar');
+  if(!document.fullscreenElement){
+    if(app.requestFullscreen){app.requestFullscreen()}else if(app.webkitRequestFullscreen){app.webkitRequestFullscreen()}
+    showToast('已进入全屏');
+    if(wb){wb.style.position='absolute';wb.style.bottom='0';wb.style.left='0';wb.style.right='0'}
+    if(pp){pp.style.position='absolute';pp.style.bottom='44px';pp.style.left='0';pp.style.right='0'}
+    if(dt){dt.style.position='absolute';dt.style.bottom='56px';dt.style.left='0';dt.style.right='0'}
+  }else{
+    if(document.exitFullscreen){document.exitFullscreen()}
+    showToast('已退出全屏');
+    if(wb){wb.style.cssText=''}
+    if(pp){pp.style.cssText=''}
+    if(dt){dt.style.cssText=''}
+  }
+}
 
 
 var ipModal=document.createElement('div');ipModal.className='cm-ip-modal-overlay';ipModal.id='cmIPModal';ipModal.innerHTML='<div class="cm-ip-modal-box"><h3 id="cmIPModalTitle">IP算力</h3><div style="background:rgba(0,0,0,.04);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;"><span style="font-size:2rem;font-weight:800;color:var(--accent);display:block;margin:18px 0 2px;" id="cmIPModalVal">—</span><span style="font-size:0.8rem;color:var(--text-muted);" id="cmIPModalActor">—</span></div><div style="font-size:0.78rem;color:var(--text-muted);line-height:1.7;text-align:left;padding:0 4px;">IP算力反映该 IP 的挖矿能力，参演的短剧热度越高算力越高。</div><button class="cm-ip-modal-close">关闭</button></div>';document.body.appendChild(ipModal);ipModal.querySelector('.cm-ip-modal-close').addEventListener('click',function(){ipModal.classList.remove('active')});ipModal.querySelector('.cm-ip-modal-close').addEventListener('click',function(){ipModal.classList.remove('active')});ipModal.addEventListener('click',function(e){if(e.target===ipModal)ipModal.classList.remove('active')});
@@ -774,15 +791,11 @@ function setDetailRating(did,star,el){var stars=document.querySelectorAll('#rati
 function openIPModal(name,power){document.getElementById('cmIPModalActor').textContent='1级角色每小时挖矿产出STORY';document.getElementById('cmIPModalVal').textContent=power;document.getElementById('cmIPModal').classList.add('active')}
 
 
-document.addEventListener('click',function(e){var el=e.target.closest('.cm-role-ip-tag');if(el){e.stopPropagation();var name=el.closest('.cm-role-card').querySelector('.cm-role-name').textContent.trim();var power=el.textContent.replace('IP算力 ','').trim();openIPModal(name,power)}});
-
-
+/* cm-role-ip-tag click handler */
 document.addEventListener('click',function(e){var tag=e.target.closest('.cm-role-ip-tag');if(tag){e.stopPropagation();var card=tag.closest('.cm-role-card');if(!card)return;var nameEl=card.querySelector('.cm-role-name');var name=nameEl?nameEl.childNodes[0]?nameEl.childNodes[0].textContent.trim():'':'';var power=tag.textContent.replace('IP算力 ','').trim();if(name&&power)openIPModal(name,power)}});
 
-
+/* cm-role-card.bound click -> actor profile */
 document.addEventListener('click',function(e){var card=e.target.closest('.cm-role-card.bound');if(card&&!e.target.closest('.cm-role-ip-tag')){e.stopPropagation();var nameEl=card.querySelector('.cm-role-name');var name=nameEl?nameEl.childNodes[0]?nameEl.childNodes[0].textContent.trim():'':'';if(name)location.href='actor-profile.html?name='+encodeURIComponent(name)}});
-
-document.addEventListener('click',function(e){var tag=e.target.closest('.cm-role-ip-tag');if(tag){e.stopPropagation();var card=tag.closest('.cm-role-card');if(!card)return;var nameEl=card.querySelector('.cm-role-name');var name=nameEl?nameEl.childNodes[0]?nameEl.childNodes[0].textContent.trim():'':'';var power=tag.textContent.replace('IP算力 ','').trim();if(name&&power)openIPModal(name,power)}});
 
 render();
 initDanmaku(0);
