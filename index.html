@@ -577,20 +577,56 @@
     .filter-tag.active { background: var(--accent); color: white; }
 
     .gallery { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin-bottom: 34px; }
+    .card-wrapper { display: flex; flex-direction: column; cursor: pointer; }
     .card { border-radius: 18px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 2px 12px rgba(27,45,71,0.06); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
     .card:hover { transform: translateY(-5px); box-shadow: 0 4px 20px rgba(27,45,71,0.10); }
     .card-thumb-wrap { position: relative; overflow: hidden; }
-    .card-thumb { width: 100%; height: 240px; object-fit: cover; display: block; }
-    .card-body { padding: 12px 18px 10px; flex-grow: 1; }
-    .card-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-    .badge, .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 8px; font-size: 0.7rem; font-weight: 700; }
-    .badge { background: var(--accent-soft); color: var(--accent); }
-    .episode { background: rgba(0,0,0,0.04); color: var(--text-muted); }
-    .card h3 { margin: 0; font-size: 1rem; line-height: 1.25; }
-    .card p { display: none; }
+    .card-thumb { width: 100%; height: 280px; object-fit: cover; display: block; }
+    .card-body { display: none; }
+    .card-caption { padding: 8px 2px 0; }
+    .card-caption h3 { margin: 0; font-size: 0.95rem; line-height: 1.25; font-weight: 600; color: var(--text); }
+    .card-caption .caption-row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+    .card-caption .caption-row .caption-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+    .card-caption .caption-row .caption-right { flex-shrink: 0; margin-left: 12px; font-size: 0.72rem; color: var(--text-muted); font-weight: 500; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+    .caption-creator { display: flex; align-items: center; gap: 4px; }
+    .caption-creator-avatar { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); }
+    .card-caption .badge, .card-caption .episode { display: inline-flex; align-items: center; border-radius: 4px; padding: 3px 7px; font-size: 0.68rem; font-weight: 500; border: 1px solid var(--border); color: var(--text-muted); background: transparent; }
+    .card-stats {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #fff;
+      pointer-events: none;
+    }
+    .card-stats .cs-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: #fff;
+    }
+    .card-stats .cs-stat svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      opacity: 0.9;
+      stroke: #fff;
+    }
+    .card-stats .cs-rating {
+      color: #fff;
+    }
+    .card-stats .cs-rating svg {
+      stroke: #fff;
+      opacity: 1;
+    }
     .card-actors {
       position: absolute;
-      bottom: 10px;
+      bottom: 34px;
       left: 10px;
       z-index: 2;
       display: flex;
@@ -702,16 +738,13 @@
     .card-actor-name {
       display: none;
     }
-    .card-foot { padding: 10px 18px 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .info-row { display: flex; flex-wrap: wrap; gap: 10px; color: var(--text-muted); font-size: 0.78rem; }
-    .card-rating { display: inline-flex; align-items: center; gap: 2px; color: #ffc107; font-weight: 600; }
-    .card-rating .star-icon { font-size: 0.7rem; }
+    .card-foot { display: none; }
 
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.25s ease; }
     .button { background: var(--accent); color: #1a232f; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
     .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
 
-    @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; } .card-thumb { height: 220px; } }
+    @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; } .card-thumb { height: 260px; } }
     @media (max-width: 760px) {
       /* ── 移动端浅色模式 ── */
       :root {
@@ -726,7 +759,6 @@
       body { background: var(--bg); color: var(--text); }
       .card { background: var(--surface); box-shadow: 0 2px 12px rgba(27,45,71,0.06); border: 1px solid var(--border); }
       .card:hover { box-shadow: 0 4px 20px rgba(27,45,71,0.10); }
-      .card-foot { border-top: 1px solid var(--border); }
       .card-body p { color: var(--text-muted); }
       .card-actors { border-top: 1px solid var(--border); }
       .card-actor-name { color: var(--text-muted); }
@@ -767,7 +799,6 @@
       .featured-wrapper { border-radius: 20px; display: none; }
       .featured-section { padding: 0 16px; min-height: 500px; }
       .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .card-foot { flex-direction: column; align-items: flex-start; }
       .card { min-height: auto; }
       .featured-content { color: #fff;  padding: 64px 0 16px; }
       .featured-content h2 { color: #fff; font-size: 2rem; }
@@ -775,7 +806,7 @@
       .featured-content .button { padding: 12px 28px; font-size: 0.95rem; }
       .featured-thumb-item { width: 110px; height: 62px; }
 
-      .gallery .card-thumb { height: 180px; }
+      .gallery .card-thumb { height: 220px; }
       .gallery .card-body { padding: 10px 12px 10px; }
       .gallery .card-body h3 { font-size: 0.85rem; margin-bottom: 0; }
       .gallery .card-body p { display: none; }
@@ -786,9 +817,7 @@
       .gallery .card-actor-avatar-wrap { width: 26px; height: 26px; }
       .gallery .card-actors-list { gap: 4px; padding: 3px 6px; border-radius: 8px; }
       .gallery .card-actor-item { gap: 0; }
-      .gallery .card-foot { padding: 6px 12px 8px; }
-      .gallery .card-foot .info-row { font-size: 0.7rem; gap: 4px; }
-      .gallery .card { min-height: auto; }
+                  .gallery .card { min-height: auto; }
 
       /* ── 顶部搜索栏 (移动端) ── */
 
@@ -1004,7 +1033,8 @@
     </div>
 
     <section class="gallery">
-      <article class="card" data-category="古风" data-sort="recommended" onclick="location.href='drama-detail.html'">
+      <div class="card-wrapper" onclick="location.href='drama-detail.html'">
+      <article class="card" data-category="古风" data-sort="recommended">
         <div class="card-cert-corner"><span class="drama-badge official">🏅 官方</span></div>
 
         <div class="card-thumb-wrap">
@@ -1034,14 +1064,12 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <h3>凤骨琉璃</h3>
-          <div class="card-meta"><span class="badge">古风</span><span class="episode">全44集</span></div>
-          <p>一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。</p>
-        </div>
-        <div class="card-foot"><div class="info-row"><span>JACK</span><span>22.3万完播</span><span>333.2万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.8</span></div></div>
+                <div class="card-stats"><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>22.3万</span><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>333.2万</span><span class="cs-stat cs-rating"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg><span>4.8</span></span></div>
       </article>
-      <article class="card" data-category="古风" data-sort="newest" onclick="location.href='drama-detail.html'">
+      <div class="card-caption"><h3>凤骨琉璃</h3><div class="caption-row"><div class="caption-left"><span class="badge">古风</span><span class="episode">全44集</span></div><div class="caption-right"><div class="caption-creator"><img class="caption-creator-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="JACK" />@JACK</div></div></div></div>
+      </div>
+      <div class="card-wrapper" onclick="location.href='drama-detail.html'">
+      <article class="card" data-category="古风" data-sort="newest">
         <div class="card-cert-corner"><span class="drama-badge community">🌐 社区</span></div>
         <div class="card-thumb-wrap">
         <img class="card-thumb" src="image/xiejia_cover.jpg" alt="我卸甲后天下大乱了" />
@@ -1065,14 +1093,12 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <h3>我卸甲后天下大乱了</h3>
-          <div class="card-meta"><span class="badge">古风</span><span class="episode">全12集</span></div>
-          <p>卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。</p>
-        </div>
-        <div class="card-foot"><div class="info-row"><span>EVA</span><span>2.4万完播</span><span>286.5万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
+                <div class="card-stats"><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>2.4万</span><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>286.5万</span><span class="cs-stat cs-rating"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg><span>4.6</span></span></div>
       </article>
-      <article class="card" data-category="喜剧" data-sort="hot" onclick="location.href='drama-detail.html'">
+      <div class="card-caption"><h3>我卸甲后天下大乱了</h3><div class="caption-row"><div class="caption-left"><span class="badge">古风</span><span class="episode">全12集</span></div><div class="caption-right"><div class="caption-creator"><img class="caption-creator-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="EVA" />@EVA</div></div></div></div>
+      </div>
+      <div class="card-wrapper" onclick="location.href='drama-detail.html'">
+      <article class="card" data-category="喜剧" data-sort="hot">
         <div class="card-cert-corner"><span class="drama-badge partner">🤝 合作</span></div>
         <div class="card-thumb-wrap">
         <img class="card-thumb" src="image/chengxiangfu_cover.jpg" alt="丞相府今日开饭" />
@@ -1096,14 +1122,12 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <h3>丞相府今日开饭</h3>
-          <div class="card-meta"><span class="badge">喜剧</span><span class="episode">全24集</span></div>
-          <p>丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。</p>
-        </div>
-        <div class="card-foot"><div class="info-row"><span>LENS</span><span>1.8万完播</span><span>198.4万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.7</span></div></div>
+          <div class="card-stats"><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>1.8万</span><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>198.4万</span><span class="cs-stat cs-rating"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg><span>4.7</span></span></div>
       </article>
-      <article class="card" data-category="悬疑" data-sort="newest" onclick="location.href='drama-detail.html'">
+      <div class="card-caption"><h3>丞相府今日开饭</h3><div class="caption-row"><div class="caption-left"><span class="badge">喜剧</span><span class="episode">全24集</span></div><div class="caption-right"><div class="caption-creator"><img class="caption-creator-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="LENS" />@LENS</div></div></div></div>
+      </div>
+      <div class="card-wrapper" onclick="location.href='drama-detail.html'">
+      <article class="card" data-category="悬疑" data-sort="newest">
         <div class="card-cert-corner"><span class="drama-badge official">🏅 官方</span></div>
         <div class="card-thumb-wrap">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80" alt="隔世追凶" />
@@ -1122,14 +1146,12 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <h3>隔世追凶</h3>
-          <div class="card-meta"><span class="badge">悬疑</span><span class="episode">全18集</span></div>
-          <p>跨越三十年的连环悬案，AI侦探与人类警探联手揭开尘封真相。</p>
-        </div>
-        <div class="card-foot"><div class="info-row"><span>NOVA</span><span>18.2万完播</span><span>412.7万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.3</span></div></div>
+          <div class="card-stats"><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>3.1万</span><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>412.7万</span><span class="cs-stat cs-rating"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg><span>4.3</span></span></div>
       </article>
-      <article class="card" data-category="科幻" data-sort="newest" onclick="location.href='drama-detail.html'">
+      <div class="card-caption"><h3>隔世追凶</h3><div class="caption-row"><div class="caption-left"><span class="badge">悬疑</span><span class="episode">全18集</span></div><div class="caption-right"><div class="caption-creator"><img class="caption-creator-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="NOVA" />@NOVA</div></div></div></div>
+      </div>
+      <div class="card-wrapper" onclick="location.href='drama-detail.html'">
+      <article class="card" data-category="科幻" data-sort="newest">
         <div class="card-cert-corner"><span class="drama-badge community">🌐 社区</span></div>
         <div class="card-thumb-wrap">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1462332420958-a05d1e002413?auto=format&fit=crop&w=1200&q=80" alt="星河之约" />
@@ -1148,14 +1170,12 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <h3>星河之约</h3>
-          <div class="card-meta"><span class="badge">科幻</span><span class="episode">全32集</span></div>
-          <p>在遥远的星际殖民时代，一段跨越光年的人性与AI觉醒之旅。</p>
-        </div>
-        <div class="card-foot"><div class="info-row"><span>STAR</span><span>21.6万完播</span><span>521.3万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.6</span></div></div>
+          <div class="card-stats"><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>4.2万</span><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>521.3万</span><span class="cs-stat cs-rating"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg><span>4.9</span></span></div>
       </article>
-      <article class="card" data-category="真实改编" data-sort="hot" onclick="location.href='drama-detail.html'">
+      <div class="card-caption"><h3>星河之约</h3><div class="caption-row"><div class="caption-left"><span class="badge">科幻</span><span class="episode">全32集</span></div><div class="caption-right"><div class="caption-creator"><img class="caption-creator-avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80" alt="STAR" />@STAR</div></div></div></div>
+      </div>
+      <div class="card-wrapper" onclick="location.href='drama-detail.html'">
+      <article class="card" data-category="真实改编" data-sort="hot">
         <div class="card-cert-corner"><span class="drama-badge creator">✅ 认证</span></div>
         <div class="card-thumb-wrap">
         <img class="card-thumb" src="https://images.unsplash.com/photo-1531685250784-7569952593d2?auto=format&fit=crop&w=1200&q=80" alt="暗网迷踪" />
@@ -1174,13 +1194,10 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <h3>暗网迷踪</h3>
-          <div class="card-meta"><span class="badge">真实改编</span><span class="episode">全10集</span></div>
-          <p>改编自真实事件，一名网络安全分析师深入暗网追查神秘组织。</p>
-        </div>
-        <div class="card-foot"><div class="info-row"><span>VOID</span><span>28.9万完播</span><span>698.1万热度</span><span class="card-rating"><span class="star-icon">★</span> 4.5</span></div></div>
+          <div class="card-stats"><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>28.9万</span><span class="cs-stat"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>698.1万</span><span class="cs-stat cs-rating"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg><span>4.5</span></span></div>
       </article>
+      <div class="card-caption"><h3>暗网迷踪</h3><div class="caption-row"><div class="caption-left"><span class="badge">真实改编</span><span class="episode">全10集</span></div><div class="caption-right"><div class="caption-creator"><img class="caption-creator-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="VOID" />@VOID</div></div></div></div>
+      </div>
     </section>
   </div>
 
