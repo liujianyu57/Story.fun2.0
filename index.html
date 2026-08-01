@@ -397,13 +397,13 @@
     }
     .featured-cast-list {
       display: flex;
-      gap: 14px;
+      gap: 22px;
       flex-wrap: wrap;
       background: rgba(255,255,255,0.06);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border-radius: 14px;
-      padding: 10px 14px 8px;
+      padding: 12px 20px 10px;
       border: 0.5px solid rgba(255,255,255,0.08);
     }
     .featured-cast-item {
@@ -463,16 +463,21 @@
       color: rgba(255,255,255,0.85);
       white-space: nowrap;
     }
-    .featured-cast-hash {
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: rgba(255,255,255,0.45);
-      white-space: nowrap;
+    .featured-cast-power {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #3affb1;
+      letter-spacing: -0.01em;
+      text-shadow: 0 0 12px rgba(58,255,177,0.4);
+      line-height: 1;
     }
-    .featured-cast-hash small {
-      font-size: 0.6rem;
-      font-weight: 400;
+    .featured-cast-unit {
+      font-size: 0.58rem;
+      font-weight: 500;
       color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      line-height: 1;
     }
     @media (max-width: 760px) {
       .featured-cast { gap: 10px; }
@@ -792,6 +797,7 @@
 #featured-meta,#featured-meta *{color:rgba(255,255,255,.8)!important}
 .featured-meta .episode{background:rgba(255,255,255,.12)!important;color:#fff!important}
 #featured-cast,#featured-cast *{color:rgba(255,255,255,.75)!important}
+.featured-cast-power,.featured-cast-power *{color:#3affb1!important;text-shadow:0 0 12px rgba(58,255,177,0.4)!important}
 .search-container,.top-search-bar{display:none!important}
 .featured-cast-label{color:rgba(255,255,255,.5)!important}
   
@@ -1149,7 +1155,7 @@
         var item = document.createElement('div');
         item.className = 'featured-cast-item';
         item.setAttribute('onclick', 'event.stopPropagation(); location.href="actor-profile.html?name=' + encodeURIComponent(name) + '"');
-        item.innerHTML = '<div class="featured-cast-avatar-wrap"><div class="featured-cast-avatar"><img src="' + avatarUrl + '" alt="' + name + '" loading="lazy" /></div><div class="featured-cast-mining-dot"></div></div><span class="featured-cast-name">' + name + '</span><span class="featured-cast-hash">' + power + ' <small>STORY/h</small></span>';
+        item.innerHTML = '<div class="featured-cast-avatar-wrap"><div class="featured-cast-avatar"><img src="' + avatarUrl + '" alt="' + name + '" loading="lazy" /></div><div class="featured-cast-mining-dot"></div></div><span class="featured-cast-name">' + name + '</span><span class="featured-cast-power" style="color:#3affb1!important;text-shadow:0 0 12px rgba(58,255,177,0.4)">' + power + '</span><span class="featured-cast-unit">STORY/h</span>';
         list.appendChild(item);
       });
     }
