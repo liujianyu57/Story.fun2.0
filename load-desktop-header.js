@@ -57,8 +57,8 @@
             '.desktop-header .dh-usdc-badge .dh-avatar-wrap{margin:0}',
             '.desktop-header .dh-usdc-badge .dh-avatar{width:30px;height:30px;border:none}',
             '.desktop-header .auth-login-btn{margin-left:auto}',
-            '@media(min-width:769px){.desktop-header{left:160px;right:0}}',
-            '@media(max-width:768px){.desktop-header{display:none}}'
+'@media(min-width:769px){.desktop-header{left:160px;right:0}body{padding-top:56px}}',
+'@media(max-width:768px){.desktop-header{display:none}}'
         ].join('');
         document.head.appendChild(style);
     }
