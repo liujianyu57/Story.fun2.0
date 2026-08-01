@@ -576,12 +576,12 @@
     .filter-tag:hover { background: rgba(0,179,136,0.2); }
     .filter-tag.active { background: var(--accent); color: white; }
 
-    .gallery { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin-bottom: 34px; }
+    .gallery { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 16px; margin-bottom: 34px; }
     .card-wrapper { display: flex; flex-direction: column; cursor: pointer; }
     .card { border-radius: 18px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 2px 12px rgba(27,45,71,0.06); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; }
     .card:hover { transform: translateY(-5px); box-shadow: 0 4px 20px rgba(27,45,71,0.10); }
     .card-thumb-wrap { position: relative; overflow: hidden; }
-    .card-thumb { width: 100%; height: 280px; object-fit: cover; display: block; }
+    .card-thumb { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
     .card-body { display: none; }
     .card-caption { padding: 8px 2px 0; }
     .card-caption h3 { margin: 0; font-size: 0.95rem; line-height: 1.25; font-weight: 600; color: var(--text); }
@@ -744,7 +744,7 @@
     .button { background: var(--accent); color: #1a232f; font-weight: 600; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
     .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
 
-    @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; } .card-thumb { height: 260px; } }
+    @media (max-width: 1120px) { .gallery { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; } .card-thumb { aspect-ratio: 2/3; } }
     @media (max-width: 760px) {
       /* ── 移动端浅色模式 ── */
       :root {
@@ -806,7 +806,7 @@
       .featured-content .button { padding: 12px 28px; font-size: 0.95rem; }
       .featured-thumb-item { width: 110px; height: 62px; }
 
-      .gallery .card-thumb { height: 220px; }
+      .gallery .card-thumb { aspect-ratio: 2/3; }
       .gallery .card-body { padding: 10px 12px 10px; }
       .gallery .card-body h3 { font-size: 0.85rem; margin-bottom: 0; }
       .gallery .card-body p { display: none; }
