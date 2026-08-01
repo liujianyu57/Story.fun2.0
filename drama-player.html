@@ -469,6 +469,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
       <div class="dt-input-group"><button class="dt-emoji-btn" id="dtEmojiBtn" title="表情" onclick="toggleDesktopEmoji()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></button><input class="dt-input" id="dtDanmakuInput" placeholder="发个弹幕…" maxlength="30"><button class="dt-send-btn" onclick="sendDesktopDanmaku()">发送</button></div><div class="dt-emoji-panel" id="dtEmojiPanel"></div>
     </div>
     <div class="dt-right">
+      <button class="dt-btn" id="dtAutoPlayBtn" title="连播" onclick="toggleAutoPlayNext()"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2v12l10-6z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></svg>连播</button>
       <button class="dt-btn" id="dtCleanBtn" title="清屏播放" onclick="toggleCleanMode()"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>清屏</button>
       <div class="dt-volume">
         <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,6 5,6 8.5,2.5 8.5,13.5 5,10 1.5,10"/><path d="M11,5.5a3,3,0,0,1,0,5"/><path d="M13,3.5a6,6,0,0,1,0,9"/></svg>
@@ -783,7 +784,7 @@ if(!isPlayerMode){
       ppFill.style.width=(playProgress*100)+'%';
       if(playProgress>=1){
         clearInterval(playInterval);playInterval=null;
-        nextSlide();
+        if(autoPlayNext)nextSlide();
       }
     },100);
   }
@@ -977,7 +978,8 @@ if(!isPlayerMode){
   function toggleDesktopEmoji(){var panel=document.getElementById('dtEmojiPanel');if(!panel)return;buildDesktopEmojiPanel();dtEmojiOpen=!dtEmojiOpen;panel.classList.toggle('show',dtEmojiOpen);var btn=document.getElementById('dtEmojiBtn');if(btn){var rect=btn.getBoundingClientRect();panel.style.left=rect.left+'px';panel.style.maxWidth=(window.innerWidth-rect.left-20)+'px'}}
   function toggleCleanMode(){cleanMode=!cleanMode;var btn=document.getElementById('dtCleanBtn');if(cleanMode){btn.classList.add('dt-active');document.getElementById('playerApp').classList.add('clean-mode');showToast('清屏模式')}else{btn.classList.remove('dt-active');document.getElementById('playerApp').classList.remove('clean-mode')}}
   function setDesktopVolume(val){var vs=document.querySelectorAll('#track .slide-img');vs.forEach(function(v){if(v.tagName==='VIDEO')v.volume=val/100})}
-  var desktopDanmakuOn=true,dtEmojiOpen=false;
+  var desktopDanmakuOn=true,autoPlayNext=false,dtEmojiOpen=false;
+  function toggleAutoPlayNext(){autoPlayNext=!autoPlayNext;var btn=document.getElementById("dtAutoPlayBtn");if(autoPlayNext){btn.classList.add("dt-active");showToast("连播已开启")}else{btn.classList.remove("dt-active");showToast("连播已关闭")}}
   document.addEventListener('click',function(e){if(dtEmojiOpen&&!e.target.closest('.dt-emoji-btn')&&!e.target.closest('#dtEmojiPanel')){dtEmojiOpen=false;var p=document.getElementById('dtEmojiPanel');if(p)p.classList.remove('show')}});
 
   function togglePause(e){
