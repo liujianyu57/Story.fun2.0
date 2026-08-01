@@ -30,10 +30,31 @@
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
 
-    .breadcrumb { display: flex; align-items: center; gap: 10px; margin-top: 32px; margin-bottom: 28px; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.01em; }
-    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-    .breadcrumb a:hover { color: var(--accent); }
-    .breadcrumb .sep { color: var(--border); font-size: 1.1rem; line-height: 1; }
+    .back-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: var(--text-secondary);
+      background: rgba(0,0,0,0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      text-decoration: none;
+      transition: all 0.25s ease;
+      margin-top: 22px;
+      margin-bottom: 20px;
+    }
+    .back-icon:hover {
+      background: rgba(0,0,0,0.12);
+      color: var(--text);
+      transform: scale(1.06);
+    }
+    .back-icon svg {
+      width: 20px;
+      height: 20px;
+    }
 
     /* ===== Auth Styles ===== */
     .auth-container { display: flex; align-items: center; }
@@ -85,7 +106,7 @@
     /* Hero Section */
     .actor-hero {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 360px 1fr;
       gap: 0;
       margin-bottom: 32px;
       padding: 0;
@@ -99,10 +120,11 @@
       .actor-hero { grid-template-columns: 1fr; text-align: center; }
     }
     .actor-hero-avatar {
-      width: 280px;
-      align-self: stretch;
+      width: 360px;
+      height: 360px;
       overflow: hidden;
       margin: 0;
+      flex-shrink: 0;
     }
     .actor-hero-avatar img {
       width: 100%;
@@ -147,48 +169,51 @@
       font-size: 0.96rem;
     }
 
-    /* Hero 完播/热度 inline stats */
+    /* Hero Stats — Apple inspired */
     .actor-hero-stats {
       display: flex;
-      align-items: center;
-      gap: 0;
-      background: var(--bg);
-      border-radius: 14px;
-      padding: 10px 0;
-      width: fit-content;
-      border: 1px solid var(--border);
+      gap: 12px;
+      width: 100%;
+    }
+    .actor-hero-stats .ahs-divider {
+      width: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+      align-self: stretch;
+      margin: 4px 0;
     }
     .actor-hero-stats .ahs-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
-      padding: 4px 24px;
+      gap: 2px;
+      padding: 14px 28px;
       cursor: pointer;
-      transition: all 0.2s;
-      border-radius: 10px;
+      transition: all 0.25s ease;
+      border-radius: 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      flex: 1;
     }
     .actor-hero-stats .ahs-item:hover {
-      background: var(--accent-soft);
+      background: rgba(0,0,0,0.02);
+    }
+    .actor-hero-stats .ahs-item:hover .ahs-value {
+      color: var(--accent);
     }
     .actor-hero-stats .ahs-label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 600;
       color: var(--text-muted);
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
     .actor-hero-stats .ahs-value {
-      font-size: 1.1rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--text);
+      letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
-    }
-    .actor-hero-stats .ahs-divider {
-      width: 1px;
-      height: 30px;
-      background: var(--border);
-      flex-shrink: 0;
     }
 
     /* NFT Info Panel */
@@ -480,31 +505,8 @@
       .drama-card .drama-footer { flex-direction: column; align-items: flex-start; }
     }
 
-    /* Price pill */
-    .actor-price {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-    .actor-price-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .actor-price-value {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: -0.01em;
-      font-variant-numeric: tabular-nums;
-    }
+    /* Price area — hidden, replaced by action area */
+    .actor-price { display: none; }
 
     /* Action Buttons */
     .action-row {
@@ -512,6 +514,7 @@
       gap: 12px;
       flex-wrap: wrap;
       margin-top: 12px;
+      width: 100%;
     }
     .action-btn {
       display: inline-flex;
@@ -1192,12 +1195,10 @@
     <!-- Back Button (mobile only) -->
     <a href="actors.html" class="mobile-back-btn">← 返回</a>
 
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-      <a href="actors.html">角色 IP</a>
-      <span class="sep">›</span>
-      <span id="breadcrumbActor">角色主页</span>
-    </div>
+    <!-- Back Icon -->
+    <a href="actors.html" class="back-icon" title="返回角色 IP 列表">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </a>
 
     <!-- Actor Hero -->
     <section class="actor-hero" id="actorHero">
@@ -1209,22 +1210,26 @@
           <h1 class="actor-name" id="actorName">—</h1>
           <div class="actor-tags" id="actorTags">
           <span class="badge-issuance" id="actorIssuanceBadge" style="display:none;"></span>
-          <span class="tag" id="actorCreatorTag">—</span>
+          <span class="tag muted" id="actorCreatorTag">—</span>
           <span class="tag muted" id="actorCollectionTag">—</span>
           <span class="tag soldout" id="actorSoldoutTag" style="display:none">已售罄</span>
           </div>
         </div>
         <p class="actor-desc" id="actorDesc">—</p>
-        <!-- 完播 / IP算力 -->
         <div class="actor-hero-stats">
+          <div class="ahs-item" onclick="openIPPowerModal()" style="cursor:pointer;">
+            <span class="ahs-label">Lv.1 算力</span>
+            <span class="ahs-value" id="heroIPPower">—</span>
+          </div>
+          <div class="ahs-divider"></div>
+          <div class="ahs-item" id="upgradeStat">
+            <span class="ahs-label">可升至 Lv.1</span>
+            <span class="ahs-value" id="heroTargetPower">—</span>
+          </div>
+          <div class="ahs-divider"></div>
           <div class="ahs-item">
             <span class="ahs-label">完播</span>
             <span class="ahs-value" id="heroViews">—</span>
-          </div>
-          <div class="ahs-divider"></div>
-          <div class="ahs-item" onclick="openIPPowerModal()" style="cursor:pointer;">
-            <span class="ahs-label">IP算力</span>
-            <span class="ahs-value" id="heroIPPower">—</span>
           </div>
         </div>
         <!-- 签约价格（匹配 actors.html 卡片风格） -->
@@ -1650,9 +1655,6 @@
         return;
       }
 
-      // 面包屑
-      document.getElementById('breadcrumbActor').textContent = actor.name;
-
       // Hero 区域
       document.getElementById('actorAvatar').src = actor.avatar;
       document.getElementById('actorAvatar').alt = actor.name;
@@ -1694,7 +1696,7 @@
       }
       document.getElementById('heroViews').textContent = actor.views || '—';
 
-      // ═══ IP算力计算 ═══
+      // ═══ IP算力计算 + 算力升级 ═══
       function computePriceCoefficient(P0) {
         if (P0 == null || P0 <= 0) return 0;
         var x = P0 / 100;
@@ -1703,7 +1705,82 @@
         return 1.6 * powX / (powX + 0.6);
       }
       var ipPowerVal = computePriceCoefficient(actor.initPrice || 0) * parseFloat(actor.heat) || 0;
-      document.getElementById('heroIPPower').textContent = ipPowerVal.toFixed(2);
+
+      // 算力升级体系
+      var UPGRADE_TABLE = [
+        { level: 1, threshold: 0, multiplier: 1.0 },
+        { level: 2, threshold: 10000, multiplier: 2.0 },
+        { level: 3, threshold: 50000, multiplier: 3.5 },
+        { level: 4, threshold: 200000, multiplier: 5.5 },
+        { level: 5, threshold: 500000, multiplier: 8.0 },
+      ];
+      function parseChineseNum(str) {
+        if (!str) return 0;
+        var s = str.replace(/,/g, '');
+        var match = s.match(/^([\d.]+)万$/);
+        if (match) return parseFloat(match[1]) * 10000;
+        return parseFloat(s) || 0;
+      }
+      var viewsNum = parseChineseNum(actor.views || '0');
+      var maxLevel = 1, maxMultiplier = 1.0;
+      for (var i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
+        if (viewsNum >= UPGRADE_TABLE[i].threshold) {
+          maxLevel = UPGRADE_TABLE[i].level;
+          maxMultiplier = UPGRADE_TABLE[i].multiplier;
+          break;
+        }
+      }
+      var targetPower = ipPowerVal * maxMultiplier;
+
+      // 更新 stats 行
+      var statItems = document.querySelectorAll('.actor-hero-stats .ahs-item');
+      if (statItems.length >= 3) {
+        statItems[0].querySelector('.ahs-label').textContent = 'Lv.1 算力';
+        statItems[0].querySelector('.ahs-value').textContent = ipPowerVal.toFixed(2);
+        statItems[1].querySelector('.ahs-label').textContent = '可升至 Lv.' + maxLevel;
+        statItems[1].querySelector('.ahs-value').textContent = targetPower.toFixed(2);
+        statItems[2].querySelector('.ahs-label').textContent = '完播';
+        statItems[2].querySelector('.ahs-value').textContent = actor.views || '—';
+      }
+
+      // ═══ 重构 action 区域 ═══
+      var actionRow = document.getElementById('actionRow');
+      var actorPriceRow = document.getElementById('actorPriceRow');
+      var mintBtn = document.getElementById('mintBtn');
+      var floorPriceTag = document.getElementById('floorPriceTag');
+      var tradeBtn = document.getElementById('tradeBtn');
+      var priceVal = document.getElementById('priceValue');
+      var remainLabel = document.getElementById('priceRemainLabel');
+
+      // 隐藏旧价格行和旧按钮
+      if (actorPriceRow) actorPriceRow.style.display = 'none';
+      if (mintBtn) mintBtn.style.display = 'none';
+      if (floorPriceTag) floorPriceTag.style.display = 'none';
+      if (tradeBtn) tradeBtn.style.display = 'none';
+
+      var isSoldout = actor.available <= 0;
+      if (actionRow) {
+        if (isSoldout) {
+          // 已售罄：全宽苹果风按钮
+          actionRow.innerHTML =
+            '<button class="action-btn danger" id="tradeBtnNew" style="width:100%;justify-content:center;padding:14px 36px;font-size:1rem;border-radius:14px;">' +
+              actor.price + ' · 去交易' +
+            '</button>';
+          document.getElementById('tradeBtnNew').addEventListener('click', function() {
+            window.open('https://market.story.fun/trade/' + actor.name.toLowerCase(), '_blank');
+          });
+        } else {
+          // 可签约：苹果风大按钮
+          actionRow.innerHTML =
+            '<button class="action-btn primary" id="mintBtnNew" style="width:100%;justify-content:center;padding:14px 36px;font-size:1rem;border-radius:14px;">' +
+              actor.price + ' 签约' +
+            '</button>';
+          var newMintBtn = document.getElementById('mintBtnNew');
+          if (newMintBtn) {
+            newMintBtn.addEventListener('click', function() { openMintModal(actor); });
+          }
+        }
+      }
 
       // ═══ IP算力辅助（供短剧footer使用） ═══
       function computeIPPowerDisplay(data) {
@@ -1885,29 +1962,13 @@
         curveGrid.style.display = 'none';
       }
 
-      // ═══ 已售罄状态 ═══
-      var isSoldout = actor.available <= 0;
-      var mintBtn = document.getElementById('mintBtn');
-      var floorPriceTag = document.getElementById('floorPriceTag');
-      var tradeBtn = document.getElementById('tradeBtn');
+      // ═══ 已售罄标签 ═══
       var soldoutTag = document.getElementById('actorSoldoutTag');
-
-      if (isSoldout) {
-        mintBtn.style.display = 'none';
-        floorPriceTag.style.display = 'inline-flex';
-        tradeBtn.style.display = 'inline-flex';
-        document.getElementById('floorPriceValue').textContent = actor.price;
+      if (actor.available <= 0) {
         soldoutTag.style.display = 'inline-block';
       } else {
-        mintBtn.style.display = 'inline-flex';
-        floorPriceTag.style.display = 'none';
-        tradeBtn.style.display = 'none';
         soldoutTag.style.display = 'none';
       }
-
-      document.getElementById('tradeBtn').addEventListener('click', function() {
-        window.open('https://market.story.fun/trade/' + actor.name.toLowerCase(), '_blank');
-      });
 
       renderDramas(actor);
 
@@ -2232,6 +2293,7 @@
     }
   </script>
 <script src="load-sidebar.js"></script>
+<script src="load-desktop-header.js"></script>
 </body>
 </html>
 
