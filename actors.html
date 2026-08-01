@@ -536,7 +536,7 @@
       background: rgba(0,0,0,0.03);
     }
     .grid { display: grid; gap: 20px; }
-    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
     /* ═══ Apple-Inspired Card Design ═══ */
     .card {
@@ -604,10 +604,85 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 12px 8px 14px;
-      margin-top: 2px;
-      background: rgba(0,179,136,0.06);
-      border-radius: 12px;
+      padding: 2px 4px 0;
+      margin-top: 0;
+      background: none;
+      border-radius: 0;
+    }
+    .actor-action-area {
+      margin-top: 8px;
+    }
+    .actor-action-area .actor-mint-btn {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #00b388, #00d4a3);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .actor-action-area .actor-mint-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,179,136,0.35);
+    }
+    .actor-action-area .actor-trade-btn {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .actor-action-area .actor-trade-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(245,158,11,0.35);
+    }
+    .actor-meta-foot {
+      text-align: center;
+      font-size: 0.68rem;
+      color: rgba(0,0,0,0.3);
+      padding: 4px 0 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .actor-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 2px;
+      margin-top: -2px;
+    }
+    .actor-progress-bar {
+      flex: 1;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .actor-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+    .actor-progress-text {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 0;
     }
     .actor-price-label {
       font-size: 0.78rem;
@@ -829,11 +904,11 @@
 
     /* Banner badges — bottom row */
     .banner-bottom-badges {
+      display: none;
       position: absolute;
       left: 12px;
       right: 12px;
       bottom: 12px;
-      display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
@@ -962,7 +1037,7 @@
     }
     /* ═══ 平板：两列布局 (600px - 960px) ═══ */
     @media (min-width: 600px) and (max-width: 960px) {
-      .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
       .app-shell { padding: 16px; }
       .page-header { display: none; }
       .page-header-left h1 { font-size: 1.5rem; }
@@ -1032,7 +1107,7 @@
 
     /* ═══ 手机：单列 + 全高侧边头像卡片 (< 600px) ═══ */
     @media (max-width: 599px) {
-      .grid-3 { grid-template-columns: 1fr; gap: 12px; }
+      .grid-4 { grid-template-columns: 1fr; gap: 12px; }
       .app-shell { padding: 12px; }
       .page-header { display: none; }
       .page-header-left h1 { font-size: 1.35rem; }
@@ -1345,11 +1420,11 @@
     <div class="sort-container" id="sortContainer">
       <span class="sort-tag active" data-sort="price-asc">价格最低</span>
       <span class="sort-tag" data-sort="price-desc">价格最高</span>
-      <span class="sort-tag" data-sort="views-desc">完播最高</span>
-      <span class="sort-tag" data-sort="power-desc">IP 算力最高</span>
+      <span class="sort-tag" data-sort="power-desc">Lv.1 算力最高</span>
+      <span class="sort-tag" data-sort="target-desc">可升算力最高</span>
     </div>
 
-    <div class="grid grid-3">
+    <div class="grid grid-4">
       <!-- Luna (已售罄示例, 曲线价格) -->
       <article class="card" data-actor="Luna" data-issuance-type="official" data-pricing="curve" data-actor-id="1" data-total="5000" data-minted="5000" data-available="0" data-holders="4900" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="3.3" data-init-price="30">
 
@@ -1376,7 +1451,7 @@
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">2.6万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 已售罄</span>
+            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 已售罄</span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom">
@@ -1414,7 +1489,7 @@
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
+            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom">
@@ -1452,7 +1527,7 @@
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.7万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 7,500 个</span>
+            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 7,500 个</span>
             <span class="actor-price-value">8 USDC</span>
           </div>
           <div class="card-bottom">
@@ -1490,7 +1565,7 @@
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">27.7万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
+            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
             <span class="actor-price-value">10 USDC</span>
           </div>
           <div class="card-bottom">
@@ -1528,7 +1603,7 @@
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">5.5万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 5,500 个</span>
+            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 5,500 个</span>
             <span class="actor-price-value">15 USDC</span>
           </div>
           <div class="card-bottom">
@@ -1566,7 +1641,7 @@
             <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
           </div>
           <div class="actor-price">
-            <span class="actor-price-label">签约价格 <button class="actor-price-help">?</button> · 剩余 10,000 个</span>
+            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 10,000 个</span>
             <span class="actor-price-value">12 USDC</span>
           </div>
           <div class="card-bottom">
@@ -1579,7 +1654,7 @@
       </article>
     </div>
 
-    <!-- 签约价格说明弹窗 -->
+    <!-- 签约价说明弹窗 -->
     <div class="price-tooltip-overlay" id="priceTooltip">
       <div class="price-tooltip-box">
 
@@ -1677,6 +1752,16 @@
       </div>
     </div>
 
+    <!-- 算力升级说明弹窗 -->
+    <div class="stat-tooltip-overlay" id="upgradeTooltip" style="z-index:10002;">
+      <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;text-align:left;">
+        <h3 style="text-align:center;margin:0 0 4px;font-size:1.15rem;">算力升级规则</h3>
+        <div id="upgradeModalCurrent" style="text-align:center;margin:0 0 16px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
+        <div id="upgradeTable" style="display:flex;flex-direction:column;gap:0;margin-bottom:16px;"></div>
+        <button class="button-secondary" id="upgradeModalClose" style="width:100%;">知道了</button>
+      </div>
+    </div>
+
     <!-- 完播/热度说明弹窗 -->
     <div class="stat-tooltip-overlay" id="statTooltip">
       <div class="stat-tooltip-box">
@@ -1709,7 +1794,7 @@
             </div>
             <div class="mpb-price-row">
               <span class="mpb-price-value" id="mintEstimate">10.0 USDC</span>
-              <span class="mpb-price-label">签约价格</span>
+              <span class="mpb-price-label">签约价</span>
             </div>
             <div class="mpb-progress" id="mpbProgress">
               <span class="mpb-progress-text">总发行 <strong id="mpbPctTotal">0</strong> &nbsp;·&nbsp; 剩余 <strong id="mpbRemain">0</strong></span>
@@ -1856,11 +1941,22 @@
           case 'price-asc':
           case 'price-desc':
             return parseFloat((card.dataset.price || '0').replace(/[^0-9.]/g, '')) || 0;
-          case 'views-desc':
-            return parseChineseNum(card.dataset.views);
           case 'power-desc':
             const ipw = computeIPPower(card);
             return isNaN(ipw) ? 0 : ipw;
+          case 'target-desc': {
+            const pw = computeIPPower(card);
+            const viewsN = parseChineseNum(card.dataset.views);
+            const T = [
+              { t: 0, m: 1.0 }, { t: 10000, m: 2.0 }, { t: 50000, m: 3.5 },
+              { t: 200000, m: 5.5 }, { t: 500000, m: 8.0 },
+            ];
+            let mult = 1.0;
+            for (let i = T.length - 1; i >= 0; i--) {
+              if (viewsN >= T[i].t) { mult = T[i].m; break; }
+            }
+            return pw * mult;
+          }
           case 'heat-desc':
             return parseChineseNum(card.dataset.heat);
           default:
@@ -1947,6 +2043,97 @@
       }
 
       initSoldoutUI();
+
+      // ═══ 渲染卡片进度条 ═══
+      function renderCardProgress() {
+        cards.forEach(card => {
+          const total = parseInt(card.dataset.total) || 0;
+          const minted = parseInt(card.dataset.minted) || 0;
+          const available = Math.max(total - minted, 0);
+          const pct = total > 0 ? Math.min(minted / total * 100, 100) : 0;
+          const isSoldout = available <= 0;
+          const priceVal = card.dataset.price || '';
+          const actorName = card.dataset.actor || '';
+
+          // 隐藏签约价/地板价标签行（价格已显示在大按钮中）
+          const priceRowEl = card.querySelector('.actor-price');
+          if (priceRowEl) priceRowEl.style.display = 'none';
+
+          // ═══ 算力升级体系 ═══
+          const viewsNum = parseChineseNum(card.dataset.views);
+          const UPGRADE_TABLE = [
+            { level: 1, threshold: 0, multiplier: 1.0 },
+            { level: 2, threshold: 10000, multiplier: 2.0 },
+            { level: 3, threshold: 50000, multiplier: 3.5 },
+            { level: 4, threshold: 200000, multiplier: 5.5 },
+            { level: 5, threshold: 500000, multiplier: 8.0 },
+          ];
+          let maxLevel = 1;
+          let maxMultiplier = 1.0;
+          for (let i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
+            if (viewsNum >= UPGRADE_TABLE[i].threshold) {
+              maxLevel = UPGRADE_TABLE[i].level;
+              maxMultiplier = UPGRADE_TABLE[i].multiplier;
+              break;
+            }
+          }
+          const currentPower = computeIPPower(card);
+          const targetPower = currentPower * maxMultiplier;
+
+          // 更新统计行
+          const statItems = card.querySelectorAll('.actor-stat-item');
+          if (statItems.length >= 2) {
+            const stat0 = statItems[0];
+            stat0.querySelector('.actor-stat-label').textContent = 'Lv.1 算力';
+            stat0.querySelector('.num').textContent = currentPower.toFixed(2);
+
+            const stat1 = statItems[1];
+            stat1.querySelector('.actor-stat-label').textContent = '可升至 Lv.' + maxLevel;
+            stat1.setAttribute('data-stat', 'target-power');
+            stat1.querySelector('.num').textContent = targetPower.toFixed(2);
+            stat1.onclick = function(e) { e.stopPropagation(); openUpgradeTooltip(card); };
+          }
+
+          // 苹果风格大按钮区域
+          let actionArea = card.querySelector('.actor-action-area');
+          if (!actionArea) {
+            actionArea = document.createElement('div');
+            actionArea.className = 'actor-action-area';
+            const anchor = card.querySelector('.actor-stats') || card.querySelector('.actor-price');
+            if (anchor) {
+              anchor.insertAdjacentElement('afterend', actionArea);
+            }
+          }
+          if (isSoldout) {
+            actionArea.innerHTML = '<button class="actor-trade-btn" data-actor="' + actorName + '">' + (priceVal ? priceVal + ' · 交易' : '交易') + '</button>';
+          } else {
+            actionArea.innerHTML = '<button class="actor-mint-btn" data-actor="' + actorName + '" data-total-supply="' + total + '" data-minted="' + minted + '" data-available="' + available + '" data-price="' + priceVal + '">' + (priceVal || '签约') + ' 签约</button>';
+          }
+
+          // 隐藏旧按钮区域
+          const oldActions = card.querySelector('.card-bottom');
+          if (oldActions) oldActions.style.display = 'none';
+          const oldPriceValue = card.querySelector('.actor-price-value');
+          if (oldPriceValue) oldPriceValue.style.display = 'none';
+
+          // 底部脚注：发行者 + 角色 IP
+          let metaFoot = card.querySelector('.actor-meta-foot');
+          if (!metaFoot) {
+            metaFoot = document.createElement('div');
+            metaFoot.className = 'actor-meta-foot';
+            if (actionArea) actionArea.insertAdjacentElement('afterend', metaFoot);
+          }
+          const creator = card.dataset.creator || '';
+          const collection = card.dataset.collection || '';
+          const remainText = available > 0 ? '剩余 ' + available.toLocaleString() : (minted > 0 ? '已售罄' : '');
+          const metaParts = [];
+          if (remainText) metaParts.push(remainText);
+          if (creator) metaParts.push(creator);
+          if (collection) metaParts.push(collection);
+          metaFoot.textContent = metaParts.join(' · ');
+        });
+      }
+      renderCardProgress();
 
       function openMintModal(data) {
         mintModalActorName.textContent = data.name;
@@ -2141,7 +2328,7 @@
         if (e.key === 'Escape' && statTooltip.classList.contains('active')) closeStatTooltip();
       });
 
-      // 签约价格 tooltip
+      // 签约价 tooltip
       const priceTooltip = document.getElementById('priceTooltip');
       const priceTooltipClose = document.getElementById('priceTooltipClose');
       const priceTooltipCurve = document.getElementById('priceTooltipCurve');
@@ -2196,7 +2383,7 @@
         ctx.fillStyle = '#8b9bb0';
         ctx.font = '8px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('签约价格 (USDC)', 0, 0);
+        ctx.fillText('签约价 (USDC)', 0, 0);
         ctx.restore();
 
         ctx.beginPath();
@@ -2384,6 +2571,62 @@
           if (e.key === 'Escape' && priceCoeffTooltip.classList.contains('active')) priceCoeffTooltip.classList.remove('active');
         });
       }
+
+      // ═══ 算力升级说明弹窗 ═══
+      var upgradeTooltip = document.getElementById('upgradeTooltip');
+      var upgradeModalClose = document.getElementById('upgradeModalClose');
+      var upgradeModalCurrent = document.getElementById('upgradeModalCurrent');
+      var upgradeTable = document.getElementById('upgradeTable');
+      var UPGRADE_TABLE = [
+        { level: 1, threshold: 0, multiplier: 1.0 },
+        { level: 2, threshold: 10000, multiplier: 2.0 },
+        { level: 3, threshold: 50000, multiplier: 3.5 },
+        { level: 4, threshold: 200000, multiplier: 5.5 },
+        { level: 5, threshold: 500000, multiplier: 8.0 },
+      ];
+
+      function formatThreshold(n) {
+        if (n === 0) return '0';
+        if (n >= 10000) return (n / 10000).toFixed(0).replace(/\.0$/, '') + '万';
+        return n.toLocaleString();
+      }
+
+      function openUpgradeTooltip(card) {
+        var viewsNum = parseChineseNum(card.dataset.views);
+        var viewsDisplay = card.dataset.views || '0';
+        var maxLevel = 1;
+        for (var i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
+          if (viewsNum >= UPGRADE_TABLE[i].threshold) {
+            maxLevel = UPGRADE_TABLE[i].level;
+            break;
+          }
+        }
+        upgradeModalCurrent.textContent = '当前完播：' + viewsDisplay + '  →  可升至 Lv.' + maxLevel;
+        upgradeTable.innerHTML = UPGRADE_TABLE.map(function(r) {
+          var isActive = r.level === maxLevel;
+          var bg = isActive ? 'var(--accent-soft)' : 'transparent';
+          return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:' + bg + ';margin-bottom:2px;">' +
+            '<span style="font-weight:600;font-size:0.85rem;color:var(--text);">' +
+              (isActive ? '✓ ' : '') + 'Lv.' + r.level +
+            '</span>' +
+            '<span style="font-size:0.78rem;color:var(--text-muted);">' + formatThreshold(r.threshold) + ' 完播</span>' +
+            '<span style="font-weight:600;font-size:0.85rem;color:var(--accent);">算力 ×' + r.multiplier.toFixed(1) + '</span>' +
+          '</div>';
+        }).join('');
+        upgradeTooltip.classList.add('active');
+      }
+
+      function closeUpgradeTooltip() {
+        upgradeTooltip.classList.remove('active');
+      }
+
+      upgradeModalClose.addEventListener('click', closeUpgradeTooltip);
+      upgradeTooltip.addEventListener('click', function(e) {
+        if (e.target === upgradeTooltip) closeUpgradeTooltip();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && upgradeTooltip.classList.contains('active')) closeUpgradeTooltip();
+      });
 
       var ipPowerModal = document.getElementById('ipPowerModal');
       var ipPowerModalClose = document.getElementById('ipPowerModalClose');
