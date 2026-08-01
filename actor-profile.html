@@ -1743,6 +1743,61 @@
         statItems[2].querySelector('.ahs-value').textContent = actor.views || '—';
       }
 
+      // ═══ Mint Modal 初始化（需在按钮绑定前定义） ═══
+      var mintModal = document.getElementById('mintModal');
+      var mintModalBody = document.getElementById('mintModalBody');
+      var mintModalSuccess = document.getElementById('mintModalSuccess');
+      var mintModalActorName = document.getElementById('mintModalActorName');
+      var mintModalImage = document.getElementById('mintModalImage');
+      var mintModalTag = document.getElementById('mintModalTag');
+      var mintEstimate = document.getElementById('mintEstimate');
+      var mintSoldoutOverlay = document.getElementById('mintSoldoutOverlay');
+      var mintConfirm = document.getElementById('mintConfirm');
+      window.openMintModal = function(actorData) {
+        if (!mintModal) return;
+        mintModalActorName.textContent = actorData.name;
+        mintModalImage.src = actorData.avatar;
+        mintModalTag.textContent = '角色 IP • ' + (actorData.collection || actorData.id || '—');
+        mintSoldoutOverlay.style.display = actorData.available <= 0 ? 'flex' : 'none';
+        mintModalSuccess && mintModalSuccess.classList.remove('show');
+        mintModalBody && (mintModalBody.style.display = 'flex');
+        var tagEl = document.getElementById('mpbPricingTag');
+        var labelEl = document.getElementById('mpbPricingLabel');
+        if (actorData.pricing === 'fixed') {
+          labelEl && (labelEl.textContent = '固定价格');
+          tagEl && tagEl.classList.add('fixed');
+        } else {
+          labelEl && (labelEl.textContent = '曲线价格');
+          tagEl && tagEl.classList.remove('fixed');
+        }
+        var me = document.getElementById('mintEstimate');
+        me && (me.textContent = actorData.price);
+        var pt = document.getElementById('mpbPctTotal');
+        pt && (pt.textContent = actorData.totalSupply.toLocaleString());
+        var mr = document.getElementById('mpbRemain');
+        mr && (mr.textContent = actorData.available.toLocaleString());
+        var sn = document.getElementById('slippageNotice');
+        if (sn) {
+          if (actorData.pricing === 'fixed') {
+            sn.style.display = 'none';
+          } else if (actorData.available <= 0) {
+            sn.style.display = 'block';
+            sn.textContent = '该角色 IP 已售罄';
+          } else {
+            sn.style.display = 'block';
+            sn.textContent = '已开启 1% 滑点保护，价格超出时将取消交易';
+          }
+        }
+        mintModal.classList.add('active');
+        mintModal.setAttribute('aria-hidden', 'false');
+      };
+      function closeMintModal() {
+        if (mintModal) {
+          mintModal.classList.remove('active');
+          mintModal.setAttribute('aria-hidden', 'true');
+        }
+      }
+
       // ═══ 重构 action 区域 ═══
       var actionRow = document.getElementById('actionRow');
       var actorPriceRow = document.getElementById('actorPriceRow');
@@ -1770,14 +1825,21 @@
             window.open('https://market.story.fun/trade/' + actor.name.toLowerCase(), '_blank');
           });
         } else {
-          // 可签约：苹果风大按钮
+          // 可签约：苹果风大按钮（直接绑定事件，更稳健）
+          window._profileActor = actor;
           actionRow.innerHTML =
-            '<button class="action-btn primary" id="mintBtnNew" style="width:100%;justify-content:center;padding:14px 36px;font-size:1rem;border-radius:14px;">' +
+            '<button class="action-btn primary js-open-mint" style="width:100%;justify-content:center;padding:14px 36px;font-size:1rem;border-radius:14px;">' +
               actor.price + ' 签约' +
             '</button>';
-          var newMintBtn = document.getElementById('mintBtnNew');
-          if (newMintBtn) {
-            newMintBtn.addEventListener('click', function() { openMintModal(actor); });
+          // 直接在创建按钮后绑定 click 事件
+          var mintClickBtn = actionRow.querySelector('.js-open-mint');
+          if (mintClickBtn) {
+            mintClickBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              if (window._profileActor) {
+                window.openMintModal(window._profileActor);
+              }
+            });
           }
         }
       }
@@ -1992,55 +2054,7 @@
         if (e.key === 'Escape' && statTooltip.classList.contains('active')) statTooltip.classList.remove('active');
       });
 
-      // ═══ Mint Modal ═══
-      var mintModal = document.getElementById('mintModal');
-      var mintModalBody = document.getElementById('mintModalBody');
-      var mintModalSuccess = document.getElementById('mintModalSuccess');
-      var mintModalActorName = document.getElementById('mintModalActorName');
-      var mintModalImage = document.getElementById('mintModalImage');
-      var mintModalTag = document.getElementById('mintModalTag');
-      var mintEstimate = document.getElementById('mintEstimate');
-      var mintSoldoutOverlay = document.getElementById('mintSoldoutOverlay');
-      var mintConfirm = document.getElementById('mintConfirm');
-      function openMintModal(actorData) {
-        mintModalActorName.textContent = actorData.name;
-        mintModalImage.src = actorData.avatar;
-        mintModalTag.textContent = '角色 IP • ' + (actorData.collection || actorData.id || '—');
-        mintSoldoutOverlay.style.display = actorData.available <= 0 ? 'flex' : 'none';
-        mintModalSuccess.classList.remove('show');
-        mintModalBody.style.display = 'flex';
-        // 新定价摘要
-        var tagEl = document.getElementById('mpbPricingTag');
-        var labelEl = document.getElementById('mpbPricingLabel');
-        if (actorData.pricing === 'fixed') {
-          labelEl.textContent = '固定价格';
-          tagEl.classList.add('fixed');
-        } else {
-          labelEl.textContent = '曲线价格';
-          tagEl.classList.remove('fixed');
-        }
-        document.getElementById('mintEstimate').textContent = actorData.price;
-        document.getElementById('mpbPctTotal').textContent = actorData.totalSupply.toLocaleString();
-        document.getElementById('mpbRemain').textContent = actorData.available.toLocaleString();
-        // 滑点提示（仅曲线价格需提示滑点保护）
-        var slipNotice = document.getElementById('slippageNotice');
-        if (actorData.pricing === 'fixed') {
-          slipNotice.style.display = 'none';
-        } else if (actorData.available <= 0) {
-          slipNotice.style.display = 'block';
-          slipNotice.textContent = '该角色 IP 已售罄';
-        } else {
-          slipNotice.style.display = 'block';
-          slipNotice.textContent = '已开启 1% 滑点保护，价格超出时将取消交易';
-        }
-        mintModal.classList.add('active');
-        mintModal.setAttribute('aria-hidden', 'false');
-      }
-      function closeMintModal() {
-        mintModal.classList.remove('active');
-        mintModal.setAttribute('aria-hidden', 'true');
-      }
-      mintBtn.addEventListener('click', function() { openMintModal(actor); });
+      // ═══ Mint Modal 事件绑定 ═══
       document.getElementById('mintModalClose').addEventListener('click', closeMintModal);
       document.getElementById('mintCancel').addEventListener('click', closeMintModal);
       mintModal.addEventListener('click', function(e) {
@@ -2060,6 +2074,7 @@
           mintConfirm.textContent = '确认签约';
         }, 1200);
       });
+
       // ═══ 价格 tooltip（? 按钮） ═══
       var priceTooltip = document.getElementById('priceTooltip');
       var profilePriceHelp = document.getElementById('profilePriceHelp');
