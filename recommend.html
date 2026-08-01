@@ -253,6 +253,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .desktop-toolbar .dt-btn:hover{}
 .desktop-toolbar .dt-btn svg{width:14px;height:14px;flex-shrink:0}
 .desktop-toolbar .dt-btn{color:rgba(255,255,255,.5);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}.desktop-toolbar .dt-btn.dt-active{color:rgba(255,255,255,.95);background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.25)}
+
 .desktop-toolbar .dt-input{flex:1;max-width:260px;padding:5px 10px;border-radius:6px;border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);font-size:11px;outline:none;transition:border-color .2s;font-family:inherit}
 .desktop-toolbar .dt-input:focus{border-color:#00b388}
 .desktop-toolbar .dt-input::placeholder{color:var(--text-muted)}
@@ -591,13 +592,13 @@ const ppTooltip=document.getElementById('ppTooltip'),ppTipImg=document.getElemen
 
 let playProgress=0;let playInterval=null;
 const PROGRESS_SPEED=0.003;const EP_DURATION_SEC=45;
-function startPlayProgress(){if(playInterval)return;if(DATA[idx]&&DATA[idx].type==='video')return;playInterval=setInterval(()=>{if(paused)return;playProgress=Math.min(1,playProgress+PROGRESS_SPEED);updatePlayProgressUI();updateCountdown();if(playProgress>=1){clearInterval(playInterval);playInterval=null;if(autoPlayNext)nextSlide();}},100)}
+function startPlayProgress(){if(playInterval)return;if(DATA[idx]&&DATA[idx].type==='video')return;playInterval=setInterval(()=>{if(paused)return;playProgress=Math.min(1,playProgress+PROGRESS_SPEED);updatePlayProgressUI();updateCountdown();if(playProgress>=1){clearInterval(playInterval);playInterval=null;if(autoPlayNext)nextSlide();else{playProgress=0;updatePlayProgressUI();if(!playInterval)startPlayProgress()}}},100)}
 function updatePlayProgressUI(){ppFill.style.width=(playProgress*100)+'%'}
 function fmtTime(progress){const t=Math.round(progress*EP_DURATION_SEC);const m=Math.floor(t/60);const s=t%60;const tm=Math.floor(EP_DURATION_SEC/60);const ts=EP_DURATION_SEC%60;return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} / ${String(tm).padStart(2,'0')}:${String(ts).padStart(2,'0')}`}
 function setPlayProgressFromEvent(e){const rect=playerProg.getBoundingClientRect();const x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;playProgress=Math.max(0,Math.min(1,x/rect.width));updatePlayProgressUI();ppTipImg.src=DATA[idx].cover;ppTipTime.textContent=fmtTime(playProgress)}
 function onProgressPointerDown(e){e.stopPropagation();playerProg.classList.add('show-thumb');ppTooltip.classList.add('show');setPlayProgressFromEvent(e);document.addEventListener('mousemove',onProgressPointerMove);document.addEventListener('mouseup',onProgressPointerUp);document.addEventListener('touchmove',onProgressPointerMove,{passive:true});document.addEventListener('touchend',onProgressPointerUp)}
 function onProgressPointerMove(e){e.preventDefault();setPlayProgressFromEvent(e)}
-function onProgressPointerUp(e){playerProg.classList.remove('show-thumb');ppTooltip.classList.remove('show');document.removeEventListener('mousemove',onProgressPointerMove);document.removeEventListener('mouseup',onProgressPointerUp);document.removeEventListener('touchmove',onProgressPointerMove);document.removeEventListener('touchend',onProgressPointerUp);if(!playInterval&&playProgress>=1){clearInterval(playInterval);playInterval=null;if(autoPlayNext)nextSlide()}startPlayProgress()}
+function onProgressPointerUp(e){playerProg.classList.remove('show-thumb');ppTooltip.classList.remove('show');document.removeEventListener('mousemove',onProgressPointerMove);document.removeEventListener('mouseup',onProgressPointerUp);document.removeEventListener('touchmove',onProgressPointerMove);document.removeEventListener('touchend',onProgressPointerUp);if(!playInterval&&playProgress>=1){clearInterval(playInterval);playInterval=null;if(autoPlayNext)nextSlide();else{playProgress=0;updatePlayProgressUI();if(!playInterval)startPlayProgress()}}startPlayProgress()}
 function fmt(n){return n>=1e4?(n/1e4).toFixed(1)+'w':n>=1e3?(n/1e3).toFixed(1)+'k':n}
 function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toast.classList.remove('show'),1600)}
 function toggleFollow(el,authorName){el.classList.toggle('followed');if(el.classList.contains('followed')){el.textContent='✓';showToast('已关注 '+authorName)}else{el.textContent='+';showToast('已取消关注 '+authorName)}}

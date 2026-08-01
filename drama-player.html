@@ -290,7 +290,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .dt-emoji-panel.show{display:flex}
 .dt-emoji-panel button{width:32px;height:32px;border-radius:6px;border:none;background:rgba(0,0,0,.04);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s;color:#fff}
 .dt-emoji-panel button:hover{background:rgba(255,255,255,.18)}
-.dt-btn.dt-active{color:rgba(255,255,255,.95)!important;background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.25)!important}
+  .dt-btn.dt-active{color:rgba(255,255,255,.95)!important;background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.25)!important}
+  
 
 /* cm-detail / role panels (from recommend) */
 .cm-detail-panel{display:none;padding:16px;overflow-y:auto;flex:1}
@@ -785,6 +786,7 @@ if(!isPlayerMode){
       if(playProgress>=1){
         clearInterval(playInterval);playInterval=null;
         if(autoPlayNext)nextSlide();
+        else{playProgress=0;ppFill.style.width="0%";startPlayProgress();}
       }
     },100);
   }
@@ -980,6 +982,7 @@ if(!isPlayerMode){
   function setDesktopVolume(val){var vs=document.querySelectorAll('#track .slide-img');vs.forEach(function(v){if(v.tagName==='VIDEO')v.volume=val/100})}
   var desktopDanmakuOn=true,autoPlayNext=false,dtEmojiOpen=false;
   function toggleAutoPlayNext(){autoPlayNext=!autoPlayNext;var btn=document.getElementById("dtAutoPlayBtn");if(autoPlayNext){btn.classList.add("dt-active");showToast("连播已开启")}else{btn.classList.remove("dt-active");showToast("连播已关闭")}}
+  window.toggleAutoPlayNext=toggleAutoPlayNext;
   document.addEventListener('click',function(e){if(dtEmojiOpen&&!e.target.closest('.dt-emoji-btn')&&!e.target.closest('#dtEmojiPanel')){dtEmojiOpen=false;var p=document.getElementById('dtEmojiPanel');if(p)p.classList.remove('show')}});
 
   function togglePause(e){
