@@ -1357,7 +1357,7 @@
       </div>
       <div class="mint-modal-body" id="mintModalBody">
         <div class="mint-modal-header">
-          <div id="mintModalTitle">确认签约</div>
+          <div id="mintModalTitle">确认签约 · Lv.1 群演</div>
           <div class="mint-modal-actor-name" id="mintModalActorName">—</div>
         </div>
 
@@ -1392,7 +1392,7 @@
         </div>
         <div class="success-content">
           <h2>签约成功</h2>
-          <p id="successText"><strong id="successActorName">—</strong> 已加入你的经纪人，快去安排演出吧。</p>
+          <p id="successText">已获得 Lv.1 群演「<strong id="successActorName">—</strong>」，快去安排演出吧。</p>
           <div class="success-actions">
             <button class="success-btn primary" id="viewNftBtn">查看我的角色</button>
             <button class="success-btn secondary" id="continueBtn">继续浏览</button>
@@ -1634,6 +1634,162 @@
     }
 
     // ============================================================
+    //  Mint Modal / 价格 Tooltip — 顶层交互绑定
+    //  不依赖 DOMContentLoaded 回调，彻底解决回调中途异常导致按钮失效
+    // ============================================================
+    // 全局价格系数计算（renderDramas 等顶层函数使用）
+    function computePriceCoefficient(P0) {
+      if (P0 == null || P0 <= 0) return 0;
+      var x = P0 / 100;
+      if (P0 <= 100) return x;
+      var powX = Math.pow(x, 1.3);
+      return 1.6 * powX / (powX + 0.6);
+    }
+    // 全局 IP 算力显示（renderDramas 等顶层函数使用）
+    function computeIPPowerDisplay(data) {
+      var pc = computePriceCoefficient(data.initPrice || 0);
+      var h = parseFloat(data.heat) || 0;
+      return (pc * h).toFixed(2);
+    }
+
+    // 关闭签约弹窗
+    function closeMintModal() {
+      var mintModal = document.getElementById('mintModal');
+      if (mintModal) {
+        mintModal.classList.remove('active');
+        mintModal.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    // 确认签约（模拟链上交互）
+    function doMintConfirm() {
+      var btn = document.getElementById('mintConfirm');
+      if (!btn) return;
+      btn.disabled = true;
+      btn.textContent = '处理中...';
+      setTimeout(function() {
+        var nameEl = document.getElementById('mintModalActorName');
+        var successName = document.getElementById('successActorName');
+        if (successName && nameEl) successName.textContent = (nameEl.textContent || '—') + ' #1';
+        var body = document.getElementById('mintModalBody');
+        if (body) body.style.display = 'none';
+        var success = document.getElementById('mintModalSuccess');
+        if (success) success.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = '确认签约';
+      }, 1200);
+    }
+
+    // 打开价格说明弹窗
+    function openPriceTooltip() {
+      var tooltip = document.getElementById('priceTooltip');
+      if (!tooltip) return;
+      var a = window._profileActor || {};
+      var curveDiv = document.getElementById('priceTooltipCurve');
+      var fixedDiv = document.getElementById('priceTooltipFixed');
+      if (curveDiv && fixedDiv) {
+        if (a.pricing === 'fixed') {
+          curveDiv.style.display = 'none';
+          fixedDiv.style.display = 'block';
+        } else {
+          curveDiv.style.display = 'block';
+          fixedDiv.style.display = 'none';
+        }
+      }
+      if (a.pricing !== 'fixed' && typeof drawTooltipCurve === 'function') {
+        drawTooltipCurve(a);
+      }
+      tooltip.classList.add('active');
+    }
+
+    // 打开签约弹窗（顶层版本，全部通过 ID 读取 DOM）
+    window.openMintModal = function(actorData) {
+      if (!actorData) return;
+      var mintModal = document.getElementById('mintModal');
+      if (!mintModal) return;
+      function setText(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+      function setDisplay(id, disp) { var el = document.getElementById(id); if (el) el.style.display = disp; }
+
+      setText('mintModalActorName', actorData.name);
+      var img = document.getElementById('mintModalImage');
+      if (img) img.src = actorData.avatar;
+      setText('mintModalTag', '角色 IP • ' + (actorData.collection || actorData.id || '—'));
+      setDisplay('mintSoldoutOverlay', actorData.available <= 0 ? 'flex' : 'none');
+
+      var success = document.getElementById('mintModalSuccess');
+      if (success) success.classList.remove('show');
+      var body = document.getElementById('mintModalBody');
+      if (body) body.style.display = 'flex';
+
+      var labelEl = document.getElementById('mpbPricingLabel');
+      if (labelEl) labelEl.textContent = actorData.pricing === 'fixed' ? '固定价格' : '曲线价格';
+      var tagEl = document.getElementById('mpbPricingTag');
+      if (tagEl) {
+        if (actorData.pricing === 'fixed') tagEl.classList.add('fixed');
+        else tagEl.classList.remove('fixed');
+      }
+      setText('mintEstimate', actorData.price);
+      setText('mpbPctTotal', actorData.totalSupply.toLocaleString());
+      setText('mpbRemain', actorData.available.toLocaleString());
+
+      var sn = document.getElementById('slippageNotice');
+      if (sn) {
+        if (actorData.pricing === 'fixed') {
+          sn.style.display = 'none';
+        } else if (actorData.available <= 0) {
+          sn.style.display = 'block';
+          sn.textContent = '该角色 IP 已售罄';
+        } else {
+          sn.style.display = 'block';
+          sn.textContent = '已开启 1% 滑点保护，价格超出时将取消交易';
+        }
+      }
+      mintModal.classList.add('active');
+      mintModal.setAttribute('aria-hidden', 'false');
+    };
+
+    // 绑定弹窗交互（顶层立即执行，脚本位于 body 尾部，DOM 已就绪）
+    function bindMintModalEvents() {
+      var closeBtn = document.getElementById('mintModalClose');
+      if (closeBtn) closeBtn.addEventListener('click', closeMintModal);
+      var cancelBtn = document.getElementById('mintCancel');
+      if (cancelBtn) cancelBtn.addEventListener('click', closeMintModal);
+      var confirmBtn = document.getElementById('mintConfirm');
+      if (confirmBtn) confirmBtn.addEventListener('click', doMintConfirm);
+      var helpBtn = document.getElementById('profilePriceHelp');
+      if (helpBtn) helpBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openPriceTooltip();
+      });
+      var tooltipClose = document.getElementById('priceTooltipClose');
+      if (tooltipClose) tooltipClose.addEventListener('click', function() {
+        var t = document.getElementById('priceTooltip');
+        if (t) t.classList.remove('active');
+      });
+      var tooltip = document.getElementById('priceTooltip');
+      if (tooltip) tooltip.addEventListener('click', function(e) {
+        if (e.target === tooltip) tooltip.classList.remove('active');
+      });
+      var mintModal = document.getElementById('mintModal');
+      if (mintModal) mintModal.addEventListener('click', function(e) {
+        if (e.target === mintModal || e.target.classList.contains('mint-modal-overlay')) closeMintModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          var mm = document.getElementById('mintModal');
+          if (mm && mm.classList.contains('active')) closeMintModal();
+          var pt = document.getElementById('priceTooltip');
+          if (pt && pt.classList.contains('active')) pt.classList.remove('active');
+        }
+      });
+      var viewBtn = document.getElementById('viewNftBtn');
+      if (viewBtn) viewBtn.addEventListener('click', function() { window.location.href = 'studio.html'; });
+      var continueBtn = document.getElementById('continueBtn');
+      if (continueBtn) continueBtn.addEventListener('click', closeMintModal);
+    }
+    bindMintModalEvents();
+
+    // ============================================================
     //  页面初始化
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
@@ -1696,14 +1852,7 @@
       }
       document.getElementById('heroViews').textContent = actor.views || '—';
 
-      // ═══ IP算力计算 + 算力升级 ═══
-      function computePriceCoefficient(P0) {
-        if (P0 == null || P0 <= 0) return 0;
-        var x = P0 / 100;
-        if (P0 <= 100) return x;
-        var powX = Math.pow(x, 1.3);
-        return 1.6 * powX / (powX + 0.6);
-      }
+      // ═══ IP算力计算 + 算力升级（computePriceCoefficient 已提升为顶层全局函数） ═══
       var ipPowerVal = computePriceCoefficient(actor.initPrice || 0) * parseFloat(actor.heat) || 0;
 
       // 算力升级体系
@@ -1743,60 +1892,7 @@
         statItems[2].querySelector('.ahs-value').textContent = actor.views || '—';
       }
 
-      // ═══ Mint Modal 初始化（需在按钮绑定前定义） ═══
-      var mintModal = document.getElementById('mintModal');
-      var mintModalBody = document.getElementById('mintModalBody');
-      var mintModalSuccess = document.getElementById('mintModalSuccess');
-      var mintModalActorName = document.getElementById('mintModalActorName');
-      var mintModalImage = document.getElementById('mintModalImage');
-      var mintModalTag = document.getElementById('mintModalTag');
-      var mintEstimate = document.getElementById('mintEstimate');
-      var mintSoldoutOverlay = document.getElementById('mintSoldoutOverlay');
-      var mintConfirm = document.getElementById('mintConfirm');
-      window.openMintModal = function(actorData) {
-        if (!mintModal) return;
-        mintModalActorName.textContent = actorData.name;
-        mintModalImage.src = actorData.avatar;
-        mintModalTag.textContent = '角色 IP • ' + (actorData.collection || actorData.id || '—');
-        mintSoldoutOverlay.style.display = actorData.available <= 0 ? 'flex' : 'none';
-        mintModalSuccess && mintModalSuccess.classList.remove('show');
-        mintModalBody && (mintModalBody.style.display = 'flex');
-        var tagEl = document.getElementById('mpbPricingTag');
-        var labelEl = document.getElementById('mpbPricingLabel');
-        if (actorData.pricing === 'fixed') {
-          labelEl && (labelEl.textContent = '固定价格');
-          tagEl && tagEl.classList.add('fixed');
-        } else {
-          labelEl && (labelEl.textContent = '曲线价格');
-          tagEl && tagEl.classList.remove('fixed');
-        }
-        var me = document.getElementById('mintEstimate');
-        me && (me.textContent = actorData.price);
-        var pt = document.getElementById('mpbPctTotal');
-        pt && (pt.textContent = actorData.totalSupply.toLocaleString());
-        var mr = document.getElementById('mpbRemain');
-        mr && (mr.textContent = actorData.available.toLocaleString());
-        var sn = document.getElementById('slippageNotice');
-        if (sn) {
-          if (actorData.pricing === 'fixed') {
-            sn.style.display = 'none';
-          } else if (actorData.available <= 0) {
-            sn.style.display = 'block';
-            sn.textContent = '该角色 IP 已售罄';
-          } else {
-            sn.style.display = 'block';
-            sn.textContent = '已开启 1% 滑点保护，价格超出时将取消交易';
-          }
-        }
-        mintModal.classList.add('active');
-        mintModal.setAttribute('aria-hidden', 'false');
-      };
-      function closeMintModal() {
-        if (mintModal) {
-          mintModal.classList.remove('active');
-          mintModal.setAttribute('aria-hidden', 'true');
-        }
-      }
+      // ═══ Mint Modal 交互已在顶层统一绑定（bindMintModalEvents），此处不再重复定义 ═══
 
       // ═══ 重构 action 区域 ═══
       var actionRow = document.getElementById('actionRow');
@@ -1842,13 +1938,6 @@
             });
           }
         }
-      }
-
-      // ═══ IP算力辅助（供短剧footer使用） ═══
-      function computeIPPowerDisplay(data) {
-        var pc = computePriceCoefficient(data.initPrice || 0);
-        var h = parseFloat(data.heat) || 0;
-        return (pc * h).toFixed(2);
       }
 
       // ═══ IP算力弹窗 ═══
@@ -2054,59 +2143,7 @@
         if (e.key === 'Escape' && statTooltip.classList.contains('active')) statTooltip.classList.remove('active');
       });
 
-      // ═══ Mint Modal 事件绑定 ═══
-      document.getElementById('mintModalClose').addEventListener('click', closeMintModal);
-      document.getElementById('mintCancel').addEventListener('click', closeMintModal);
-      mintModal.addEventListener('click', function(e) {
-        if (e.target === mintModal || e.target.classList.contains('mint-modal-overlay')) closeMintModal();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && mintModal.classList.contains('active')) closeMintModal();
-      });
-      mintConfirm.addEventListener('click', function() {
-        mintConfirm.disabled = true;
-        mintConfirm.textContent = '处理中...';
-        setTimeout(function() {
-          document.getElementById('successActorName').textContent = mintModalActorName.textContent || '—';
-          mintModalBody.style.display = 'none';
-          mintModalSuccess.classList.add('show');
-          mintConfirm.disabled = false;
-          mintConfirm.textContent = '确认签约';
-        }, 1200);
-      });
-
-      // ═══ 价格 tooltip（? 按钮） ═══
-      var priceTooltip = document.getElementById('priceTooltip');
-      var profilePriceHelp = document.getElementById('profilePriceHelp');
-      if (profilePriceHelp) {
-        profilePriceHelp.addEventListener('click', function(e) {
-          e.stopPropagation();
-          // 根据当前 actor 定价模式显示对应内容
-          var curveDiv = document.getElementById('priceTooltipCurve');
-          var fixedDiv = document.getElementById('priceTooltipFixed');
-          if (actor.pricing === 'fixed') {
-            curveDiv.style.display = 'none';
-            fixedDiv.style.display = 'block';
-          } else {
-            curveDiv.style.display = 'block';
-            fixedDiv.style.display = 'none';
-          }
-          // 如果是曲线模式，绘制 tooltip 里的曲线
-          if (actor.pricing !== 'fixed') {
-            drawTooltipCurve(actor);
-          }
-          priceTooltip.classList.add('active');
-        });
-      }
-      document.getElementById('priceTooltipClose').addEventListener('click', function() {
-        priceTooltip.classList.remove('active');
-      });
-      priceTooltip.addEventListener('click', function(e) {
-        if (e.target === this) priceTooltip.classList.remove('active');
-      });
-
-      document.getElementById('viewNftBtn').addEventListener('click', function() { window.location.href = 'studio.html'; });
-      document.getElementById('continueBtn').addEventListener('click', closeMintModal);
+      // ═══ Mint Modal / 价格 Tooltip 交互已在顶层统一绑定（bindMintModalEvents） ═══
     });
 
     // ═══ Tooltip 曲线绘制函数 ═══
