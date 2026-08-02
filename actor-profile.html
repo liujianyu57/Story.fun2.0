@@ -285,33 +285,7 @@
     .badge-issuance.certified { background: #FF8C00; }
     .badge-issuance.community { background: linear-gradient(135deg, #94a3b8, #64748b); }
 
-    /* ═══ 短剧标识徽章（与 index.html 保持一致） ═══ */
-    .drama-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-    }
-    .drama-badge.official { background: linear-gradient(135deg, #f59e0b, #f97316); color: #fff; }
-    .drama-badge.partner  { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
-    .drama-badge.creator  { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #fff; }
-    .drama-badge.community{ background: rgba(101,117,134,0.12); color: var(--text-muted); }
-    .drama-card {
-      position: relative;
-    }
-    .drama-card .drama-cert-corner {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      z-index: 2;
-    }
-
-    /* ═══ Drama Section — 完全复刻 index.html 卡片样式 ═══ */
+    /* ═══ Drama Section — 使用公共组件 drama-card.js（样式自动注入） ═══ */
     .drama-section {
 
       margin-bottom: 40px;
@@ -339,170 +313,21 @@
     }
     .drama-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 22px;
+      grid-template-columns: repeat(5, minmax(0,1fr));
+      gap: 16px;
       margin-bottom: 34px;
     }
+    @media (max-width: 1280px) {
+      .drama-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    }
     @media (max-width: 1120px) {
+      .drama-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+    @media (max-width: 860px) {
       .drama-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
-    @media (max-width: 760px) {
-      .drama-grid { grid-template-columns: 1fr; }
-    }
-    .drama-card {
-      border-radius: 24px;
-      min-height: 450px;
-      display: flex;
-      flex-direction: column;
-      background: var(--surface);
-      box-shadow: 0 12px 30px rgba(27,45,71,0.10);
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .drama-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 16px 40px rgba(27,45,71,0.14);
-    }
-    .drama-card .drama-cover {
-      width: 100%;
-      height: 320px;
-      object-fit: cover;
-      border-bottom: 1px solid var(--border);
-      display: block;
-    }
-    .drama-card .drama-body {
-      padding: 24px 26px 20px;
-      flex-grow: 1;
-    }
-    .drama-card .drama-body .drama-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .drama-card .drama-body .drama-meta .badge,
-    .drama-card .drama-body .drama-meta .episode {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-    .drama-card .drama-body .drama-meta .badge {
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-    .drama-card .drama-body .drama-meta .episode {
-
-      background: rgba(15,22,42,0.04);
-      color: var(--text-muted);
-    }
-    .drama-card .drama-body h3 {
-      margin: 0 0 12px;
-      font-size: 1.4rem;
-      line-height: 1.25;
-      font-weight: 700;
-    }
-    .drama-card .drama-body p {
-      margin: 12px 0 0;
-      color: var(--text-muted);
-      line-height: 1.6;
-      font-size: 0.95rem;
-    }
-    .drama-card .drama-body .drama-actors {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 10px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-    .drama-card .drama-body .drama-actors-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.06em;
-      white-space: nowrap;
-    }
-    .drama-card .drama-body .drama-actors-list {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .drama-card .drama-body .drama-actor-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .drama-card .drama-body .drama-actor-item:hover {
-      transform: translateY(-2px);
-    }
-    .drama-card .drama-body .drama-actor-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1.5px solid var(--border);
-      flex-shrink: 0;
-      transition: border-color 0.2s ease;
-    }
-    .drama-card .drama-body .drama-actor-item:hover .drama-actor-avatar {
-      border-color: var(--accent);
-    }
-    .drama-card .drama-body .drama-actor-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .drama-card .drama-body .drama-actor-name {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-    .drama-card .drama-footer {
-      padding: 20px 26px 26px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-    }
-    .drama-card .drama-footer .info-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-    .drama-card .drama-footer .drama-rating { display: inline-flex; align-items: center; gap: 3px; color: #ff9f2c; font-weight: 600; }
-    .drama-card .drama-footer .drama-rating .star-icon { font-size: 0.82rem; }
-
-    .drama-card .drama-footer .view-btn {
-      border: none;
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 12px 20px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(0,179,136,0.30);
-      transition: all 0.25s ease;
-    }
-    .drama-card .drama-footer .view-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,179,136,0.40);
-    }
-    @media (max-width: 760px) {
-      .drama-card { min-height: auto; }
-      .drama-card .drama-cover { height: 220px; }
-      .drama-card .drama-footer { flex-direction: column; align-items: flex-start; }
+    @media (max-width: 599px) {
+      .drama-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     }
 
     /* Price area — hidden, replaced by action area */
@@ -1147,19 +972,10 @@
       .treasury-tags { gap: 12px; flex-wrap: wrap; justify-content: center; }
       .treasury-tags .tt-item { font-size: 0.68rem; }
 
-      /* Drama Section */
+      /* Drama Section — 公共组件卡片，移动端 2 列紧凑布局 */
       .drama-section { margin-bottom: 28px; }
       .drama-section-header { margin-bottom: 14px; }
       .drama-section-header h3 { font-size: 1rem; }
-      .drama-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
-      .drama-card { min-height: auto; border-radius: 20px; }
-      .drama-card .drama-cover { height: 200px; }
-      .drama-card .drama-body { padding: 16px 16px 12px; }
-      .drama-card .drama-body h3 { font-size: 1.15rem; margin-bottom: 8px; }
-      .drama-card .drama-body p { font-size: 0.82rem; margin: 8px 0 0; }
-      .drama-card .drama-meta .badge, .drama-card .drama-meta .episode { padding: 6px 10px; font-size: 0.75rem; }
-      .drama-card .drama-footer { padding: 14px 16px 16px; flex-direction: column; align-items: flex-start; gap: 8px; }
-      .drama-card .drama-footer .info-row { font-size: 0.8rem; gap: 8px; }
 
       /* Mint Modal — bottom sheet */
       .mint-modal-overlay { padding: 0; align-items: flex-end; }
@@ -1497,6 +1313,7 @@
   </div>
 
   <script src="auth.js"></script>
+  <script src="drama-card.js"></script>
   <script>
     (function(){
       if (new URLSearchParams(window.location.search).get('visitor') === '1') {
@@ -2228,18 +2045,6 @@
       if (curveRemainEl) curveRemainEl.textContent = (total - minted).toLocaleString();
     }
 
-    // ═══ 短剧标识配置（与 index.html 保持一致） ═══
-    const BADGE_CONFIG = {
-      official: { cls: 'official', icon: '🏅', label: '官方', fullLabel: '官方短剧' },
-      partner:  { cls: 'partner',  icon: '🤝', label: '合作', fullLabel: '合作方短剧' },
-      creator:  { cls: 'creator',  icon: '✅', label: '认证', fullLabel: '认证创作者短剧' },
-      community:{ cls: 'community',icon: '🌐', label: '社区', fullLabel: '社区短剧' },
-    };
-    function getBadgeHTML(certType, longText) {
-      const cfg = BADGE_CONFIG[certType] || BADGE_CONFIG.community;
-      return `<span class="drama-badge ${cfg.cls}">${cfg.icon} ${longText ? cfg.fullLabel : cfg.label}</span>`;
-    }
-
     // ═══ 豆瓣评分映射 ═══
     var DRAMA_RATINGS = {
       '重生之我在币圈当大佬': '4.7',
@@ -2260,10 +2065,9 @@
       '星际迷航': 'community',
     };
 
-    // ═══ 渲染参演短剧 — 完全复刻 index.html 卡片结构（含多角色） ═══
+    // ═══ 渲染参演短剧 — 使用公共组件 drama-card.js（renderDramaCardList） ═══
 
     function renderDramas(actor) {
-
       var grid = document.getElementById('dramaGrid');
       var empty = document.getElementById('emptyState');
       var count = document.getElementById('dramaCount');
@@ -2273,15 +2077,10 @@
         count.textContent = '(0)';
         return;
       }
-      var totalDramas = 0, html = '';
-      var ACTOR_AVATARS = {
-        'Luna': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
-        '苏婉清': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
-        '李云飞': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-        '林梦瑶': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
-        '赵无极': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
-        '上官婉儿': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
-      };
+      var totalDramas = 0;
+      var cardItems = [];
+
+      // 合并同一短剧的多角色出演者（与原有逻辑一致）
       var dramaActorMap = {};
       for (var actorKey in ACTORS_DATA) {
         var ad = ACTORS_DATA[actorKey];
@@ -2298,50 +2097,60 @@
           });
         }
       }
+
       actor.childActors.forEach(function(child) {
         if (child.dramas && child.dramas.length > 0) {
           totalDramas += child.dramas.length;
           child.dramas.forEach(function(d) {
             var allActors = dramaActorMap[d.title] || [actor.name];
-            var actorItemsHtml = '';
-            allActors.forEach(function(aname) {
-              var avatarUrl = ACTOR_AVATARS[aname] || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80';
-              actorItemsHtml += '<div class="drama-actor-item" onclick="event.stopPropagation(); location.href=\'actor-profile.html?name=' + encodeURIComponent(aname) + '\'">' +
-                '<div class="drama-actor-avatar"><img src="' + avatarUrl + '" alt="' + aname + '" loading="lazy" /></div>' +
-                '<span class="drama-actor-name">' + aname + '</span>' +
-              '</div>';
+            var totalEp = parseInt(d.episodes) || 24;
+            cardItems.push({
+              title: d.title,
+              cover: d.cover,
+              category: d.category || '短剧',
+              certType: DRAMA_CERT_MAP[d.title] || 'community',
+              actors: allActors,
+              views: actor.views || '',
+              heat: '',
+              rating: DRAMA_RATINGS[d.title] || '--',
+              episodes: '全' + totalEp + '集',
+              creator: actor.creator || '',
+              creatorAvatar: actor.avatar || '',
+              link: ''
             });
-            // 获取该短剧的标识
-            var certType = DRAMA_CERT_MAP[d.title] || 'community';
-            var certBadge = getBadgeHTML(certType, false);
-            html += '<div class="drama-card" onclick="location.href=\'' + d.link + '\'">' +
-              '<img class="drama-cover" src="' + d.cover + '" alt="' + d.title + '" />' +
-              '<div class="drama-cert-corner">' + certBadge + '</div>' +
-              '<div class="drama-body">' +
-
-                '<h3>' + d.title + '</h3>' +
-                '<div class="drama-meta"><span class="badge">' + d.category + '</span><span class="episode">全' + d.episodes + '集</span></div>' +
-                '<p>' + d.title + ' — 精彩短剧，不容错过。</p>' +
-                '<div class="drama-actors">' +
-                  '<div class="drama-actors-list">' +
-                    actorItemsHtml +
-                  '</div>' +
-                '</div>' +
-              '</div>' +
-              '<div class="drama-footer"><div class="info-row"><span>' + actor.creator + '</span><span>' + (actor.views || '—') + '完播</span><span>IP算力 ' + computeIPPowerDisplay(actor) + '</span><span class="drama-rating"><span class="star-icon">★</span> ' + (DRAMA_RATINGS[d.title] || '--') + '</span></div></div>' +
-            '</div>';
           });
         }
       });
+
       empty.style.display = 'none';
       count.textContent = '(' + totalDramas + ')';
-      if (html === '') {
+      if (cardItems.length === 0) {
         grid.innerHTML = '';
         empty.style.display = 'block';
         count.textContent = '(0)';
         return;
       }
-      grid.innerHTML = html;
+
+      if (typeof window.renderDramaCardList === 'function') {
+        grid.innerHTML = window.renderDramaCardList(cardItems);
+
+        // 卡片点击统一跳转 drama-player.html（携带完整参数，与 index.html 一致）
+        var wrappers = grid.querySelectorAll('.card-wrapper');
+        for (var wi = 0; wi < wrappers.length; wi++) {
+          (function(i) {
+            var item = cardItems[i];
+            if (!item) return;
+            var total = (item.episodes || '全24集').match(/\d+/);
+            var qs = 'title=' + encodeURIComponent(item.title) +
+              '&total=' + encodeURIComponent(total ? total[0] : '24') +
+              '&cover=' + encodeURIComponent(item.cover) +
+              '&actorNames=' + encodeURIComponent((item.actors || []).join(','));
+            wrappers[i].setAttribute('onclick', 'location.href=\'drama-player.html?' + qs + '\'');
+          })(wi);
+        }
+      } else {
+        grid.innerHTML = '';
+      }
     }
   </script>
 <script src="load-sidebar.js"></script>
