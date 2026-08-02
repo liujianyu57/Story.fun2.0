@@ -1047,7 +1047,9 @@ if(!isPlayerMode){
 
   updateMeta();render();
   document.getElementById('loading').classList.add('hide');
-  openDrawer(0);
+  if (window.innerWidth >= 769) {
+    openDrawer(0);
+  }
 }
 
 // ===== 举报系统（公共） =====

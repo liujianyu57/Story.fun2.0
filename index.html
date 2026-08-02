@@ -1289,6 +1289,14 @@
       if (fw) { fw.style.margin = '0'; fw.style.borderRadius = '0'; }
       var bnp = document.getElementById('bottom-nav-placeholder');
       if (bnp) bnp.style.display = 'none';
+      // 卡片点击改为父窗口跳转（修复 iframe embed 场景）
+      var allWrappers = document.querySelectorAll('.card-wrapper');
+      for (var wi = 0; wi < allWrappers.length; wi++) {
+        var oc = allWrappers[wi].getAttribute('onclick');
+        if (oc && oc.indexOf('location.href') !== -1) {
+          allWrappers[wi].setAttribute('onclick', oc.replace("location.href='", "parent.location.href='"));
+        }
+      }
       // 延迟给底部导航链接加 target="_top"
       setTimeout(function() {
         var bw = document.querySelector('.bottom-nav-wrapper');
