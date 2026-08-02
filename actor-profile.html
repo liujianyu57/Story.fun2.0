@@ -169,6 +169,56 @@
       font-size: 0.96rem;
     }
 
+    /* ═══ Profile Tabs（参演 / 信息） ═══ */
+    .profile-tabs {
+      display: flex;
+      gap: 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+      position: relative;
+      background: var(--surface);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 0 24px;
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .pt-tab {
+      appearance: none;
+      border: none;
+      background: none;
+      padding: 16px 4px 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
+      font-family: inherit;
+    }
+    .pt-tab:hover { color: var(--text); }
+    .pt-tab.active {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .pt-tab.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 3px 3px 0 0;
+      background: var(--accent);
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    @media (max-width: 599px) {
+      .profile-tabs { gap: 20px; padding: 0 16px; margin-bottom: 16px; }
+      .pt-tab { font-size: 0.92rem; padding: 14px 4px 12px; }
+    }
+
     /* Hero Stats — Apple inspired */
     .actor-hero-stats {
       display: flex;
@@ -906,30 +956,10 @@
       color: #fff;
     }
 
-    /* ═══ Mobile Back Button ═══ */
-    .mobile-back-btn { display: none; }
-
     /* ═══ APP 级别移动端优化 (< 600px) ═══ */
     @media (max-width: 599px) {
       .app-shell { padding: 12px; }
 
-      /* 返回按钮 */
-      .mobile-back-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        padding: 10px 14px;
-        margin-bottom: 14px;
-        font-size: 0.88rem;
-        font-weight: 600;
-        color: var(--text-secondary);
-        text-decoration: none;
-        border-radius: 12px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        transition: all 0.2s ease;
-      }
-      .mobile-back-btn:active { background: var(--accent-soft); }
       .breadcrumb { display: none; }
 
       /* Hero — 头像全宽 + 信息紧凑 */
@@ -1008,9 +1038,6 @@
 <body>
   <div class="app-shell">
 
-    <!-- Back Button (mobile only) -->
-    <a href="actors.html" class="mobile-back-btn">← 返回</a>
-
     <!-- Back Icon -->
     <a href="actors.html" class="back-icon" title="返回角色 IP 列表">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1067,98 +1094,106 @@
       </div>
     </section>
 
-    <!-- NFT Info Panel -->
-    <section class="nft-info-panel">
-      <h3>发行信息</h3>
-      <div class="nft-info-grid">
-        <div class="nft-info-item">
-          <div class="info-label">合约地址</div>
-          <div class="info-value" id="infoContract" style="font-size:0.9rem;font-family:monospace;">—</div>
-        </div>
-        <div class="nft-info-item">
-          <div class="info-label">Token 标准</div>
-          <div class="info-value" id="infoStandard">Solana SPL</div>
-        </div>
-        <div class="nft-info-item">
-          <div class="info-label">定价类型</div>
-          <div class="info-value" id="infoPricingType" style="font-size:0.9rem;">—</div>
-        </div>
-        <div class="nft-info-item">
-          <div class="info-label">总发行量</div>
-          <div class="info-value" id="infoTotalSupply">—</div>
-        </div>
-        <div class="nft-info-item">
-          <div class="info-label">已签约</div>
-          <div class="info-value" id="infoMinted">—</div>
-        </div>
-        <div class="nft-info-item">
-          <div class="info-label">剩余</div>
-          <div class="info-value" id="infoRemain">—</div>
-        </div>
-      </div>
-      <!-- 价格联合曲线 -->
-      <div class="curve-section" id="curveSection" style="margin-top:18px;padding:18px 20px;background:#fafdff;border:1px solid var(--border);border-radius:16px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <span style="font-size:0.95rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;">
-            价格联合曲线
-          </span>
-          <div style="display:flex;gap:12px;font-size:0.72rem;color:var(--text-muted);">
-            <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#e65100;"></span> 价格曲线</span>
-            <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);"></span> 当前位置</span>
-          </div>
-        </div>
-        <div class="price-curve-formula" style="margin-bottom:12px;">
-          公式：<code>价格 = 初始价格 × 5<sup>(已签约数 ÷ 发行总量)</sup></code>
-        </div>
-        <div style="position:relative;">
-          <canvas id="inlineCurveCanvas" style="display:block;width:100%;height:200px;border-radius:10px;background:#fafdff;"></canvas>
-        </div>
-        <!-- 曲线价格 3字段网格（仅价格字段） -->
-        <div id="inlineCurveGrid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:12px;">
-          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
-            <div style="color:var(--text-muted); font-size:0.68rem;">初始价格</div>
-            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineInitPriceGrid">—</div>
-          </div>
-          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
-            <div style="color:var(--text-muted); font-size:0.68rem;">当前价格</div>
-            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineCurPriceGrid">—</div>
-          </div>
-          <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
-            <div style="color:var(--text-muted); font-size:0.68rem;">尾价</div>
-            <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineEndPriceGrid">—</div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- ═══ Profile Tabs（参演 / 信息） ═══ -->
+    <div class="profile-tabs" id="profileTabs">
+      <button class="pt-tab active" data-tab="drama">参演</button>
+      <button class="pt-tab" data-tab="info">信息</button>
+    </div>
 
-    <!-- ═══ 角色 IP 金库 ═══ -->
-    <section class="treasury-panel" id="treasuryPanel">
-      <div class="treasury-header">
-        <h3><span>🏦</span> 角色 IP 金库</h3>
-        <button class="info-help-btn" id="treasuryHelp" type="button" aria-label="金库说明">?</button>
-      </div>
-      <div class="treasury-amount-row">
-        <div class="ta-value"><span id="treasuryAmount">—</span> <span class="usdc">USDC</span></div>
-      </div>
-      <div class="treasury-tags">
-        <span class="tt-item"><span class="tt-dot green"></span> 签约收入 · 沉淀 <span class="tt-pct">30%</span></span>
-        <span class="tt-item"><span class="tt-dot orange"></span> 二级版税 · 沉淀 <span class="tt-pct">30%</span></span>
-      </div>
-    </section>
+    <!-- ═══ Tab: 参演 — 参演短剧（公共组件渲染） ═══ -->
+    <div class="tab-pane active" id="tabDrama">
+      <section class="drama-section">
+        <div class="drama-grid" id="dramaGrid">
+          <!-- 由 JS 动态渲染 -->
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none;">
+          <div class="empty-icon">🎭</div>
+          <p>暂无签约艺人参演任何短剧</p>
+        </div>
+      </section>
+    </div>
 
-    <!-- Drama Section -->
-    <section class="drama-section">
-      <div class="drama-section-header">
-        <h3>参演短剧 <span class="count" id="dramaCount">(0)</span></h3>
-      </div>
-      <div class="drama-grid" id="dramaGrid">
-        <!-- 由 JS 动态渲染 -->
-      </div>
-      <div class="empty-state" id="emptyState" style="display:none;">
-        <div class="empty-icon">🎭</div>
-        <p>暂无签约艺人参演任何短剧</p>
-      </div>
-    </section>
+    <!-- ═══ Tab: 信息 — 发行信息 + 角色 IP 金库 ═══ -->
+    <div class="tab-pane" id="tabInfo">
+      <!-- NFT Info Panel -->
+      <section class="nft-info-panel">
+        <h3>发行信息</h3>
+        <div class="nft-info-grid">
+          <div class="nft-info-item">
+            <div class="info-label">合约地址</div>
+            <div class="info-value" id="infoContract" style="font-size:0.9rem;font-family:monospace;">—</div>
+          </div>
+          <div class="nft-info-item">
+            <div class="info-label">Token 标准</div>
+            <div class="info-value" id="infoStandard">Solana SPL</div>
+          </div>
+          <div class="nft-info-item">
+            <div class="info-label">定价类型</div>
+            <div class="info-value" id="infoPricingType" style="font-size:0.9rem;">—</div>
+          </div>
+          <div class="nft-info-item">
+            <div class="info-label">总发行量</div>
+            <div class="info-value" id="infoTotalSupply">—</div>
+          </div>
+          <div class="nft-info-item">
+            <div class="info-label">已签约</div>
+            <div class="info-value" id="infoMinted">—</div>
+          </div>
+          <div class="nft-info-item">
+            <div class="info-label">剩余</div>
+            <div class="info-value" id="infoRemain">—</div>
+          </div>
+        </div>
+        <!-- 价格联合曲线 -->
+        <div class="curve-section" id="curveSection" style="margin-top:18px;padding:18px 20px;background:#fafdff;border:1px solid var(--border);border-radius:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span style="font-size:0.95rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;">
+              价格联合曲线
+            </span>
+            <div style="display:flex;gap:12px;font-size:0.72rem;color:var(--text-muted);">
+              <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#e65100;"></span> 价格曲线</span>
+              <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);"></span> 当前位置</span>
+            </div>
+          </div>
+          <div class="price-curve-formula" style="margin-bottom:12px;">
+            公式：<code>价格 = 初始价格 × 5<sup>(已签约数 ÷ 发行总量)</sup></code>
+          </div>
+          <div style="position:relative;">
+            <canvas id="inlineCurveCanvas" style="display:block;width:100%;height:200px;border-radius:10px;background:#fafdff;"></canvas>
+          </div>
+          <!-- 曲线价格 3字段网格（仅价格字段） -->
+          <div id="inlineCurveGrid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:12px;">
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">初始价格</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineInitPriceGrid">—</div>
+            </div>
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">当前价格</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineCurPriceGrid">—</div>
+            </div>
+            <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
+              <div style="color:var(--text-muted); font-size:0.68rem;">尾价</div>
+              <div style="color:var(--text); font-size:0.85rem; font-weight:600;" id="inlineEndPriceGrid">—</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 角色 IP 金库 ═══ -->
+      <section class="treasury-panel" id="treasuryPanel">
+        <div class="treasury-header">
+          <h3><span>🏦</span> 角色 IP 金库</h3>
+          <button class="info-help-btn" id="treasuryHelp" type="button" aria-label="金库说明">?</button>
+        </div>
+        <div class="treasury-amount-row">
+          <div class="ta-value"><span id="treasuryAmount">—</span> <span class="usdc">USDC</span></div>
+        </div>
+        <div class="treasury-tags">
+          <span class="tt-item"><span class="tt-dot green"></span> 签约收入 · 沉淀 <span class="tt-pct">30%</span></span>
+          <span class="tt-item"><span class="tt-dot orange"></span> 二级版税 · 沉淀 <span class="tt-pct">30%</span></span>
+        </div>
+      </section>
+    </div>
   </div>
 
   <!-- ═══ Mint Modal ═══ -->
@@ -1344,7 +1379,7 @@
         childActors: [
           { childId: '#C-001', name: '陆小曼', holder: '0x8f3A...bE12', dramas: [
             { title: '江南烟雨', role: '茶女·陆小曼', cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80', episodes: 24, royalty: '8%', category: '古装', link: 'drama-detail.html' },
-            { title: '梅花烙', role: '绣娘·云锦', cover: 'https://images.unsplash.com/photo-1449206474058-bcac4c28a371?auto=format&fit=crop&w=600&q=80', episodes: 18, royalty: '8%', category: '古装', link: 'drama-detail.html' },
+            { title: '梅花烙', role: '绣娘·云锦', cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80', episodes: 18, royalty: '8%', category: '古装', link: 'drama-detail.html' },
           ]},
           { childId: '#C-002', name: '沈清荷', holder: '0x4dC7...9aF3', dramas: [
             { title: '长安如梦', role: '才女·沈清荷', cover: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80', episodes: 30, royalty: '6%', category: '古装', link: 'drama-detail.html' },
@@ -1606,6 +1641,34 @@
     }
     bindMintModalEvents();
 
+    // ═══ Profile Tabs（参演 / 信息）切换逻辑 ═══
+    (function initProfileTabs() {
+      var tabs = document.querySelectorAll('.profile-tabs .pt-tab');
+      var panes = {
+        drama: document.getElementById('tabDrama'),
+        info: document.getElementById('tabInfo')
+      };
+      if (!tabs.length || !panes.drama || !panes.info) return;
+
+      function switchTab(tabName) {
+        tabs.forEach(function(tab) {
+          tab.classList.toggle('active', tab.getAttribute('data-tab') === tabName);
+        });
+        Object.keys(panes).forEach(function(key) {
+          if (panes[key]) panes[key].classList.toggle('active', key === tabName);
+        });
+      }
+
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          switchTab(this.getAttribute('data-tab'));
+        });
+      });
+
+      // 默认选中「参演」
+      switchTab('drama');
+    })();
+
     // ============================================================
     //  页面初始化
     // ============================================================
@@ -1822,6 +1885,11 @@
         var fixedInfo = curveSection.querySelector('.fixed-price-info');
         if (fixedInfo) fixedInfo.style.display = 'none';
 
+        // tabInfo 默认隐藏会导致 canvas 尺寸为 0，绘制前临时显示以取得真实宽度
+        var tabInfoElForCurve = document.getElementById('tabInfo');
+        var curveTmpShown = tabInfoElForCurve && !tabInfoElForCurve.classList.contains('active');
+        if (curveTmpShown) tabInfoElForCurve.style.display = 'block';
+
         var canvas = document.getElementById('inlineCurveCanvas');
         var dpr = window.devicePixelRatio || 1;
         var rect = canvas.getBoundingClientRect();
@@ -1884,6 +1952,9 @@
         ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(cx, cy); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(cx, pad.top + plotH); ctx.lineTo(cx, cy); ctx.stroke();
         ctx.setLineDash([]);
+
+        // 绘制完成后恢复 tabInfo 隐藏状态
+        if (curveTmpShown) tabInfoElForCurve.style.display = '';
       }
 
 
@@ -2071,10 +2142,11 @@
       var grid = document.getElementById('dramaGrid');
       var empty = document.getElementById('emptyState');
       var count = document.getElementById('dramaCount');
+      var setCount = function(val) { if (count) count.textContent = val; };
       if (!actor.childActors || actor.childActors.length === 0) {
         grid.innerHTML = '';
         empty.style.display = 'block';
-        count.textContent = '(0)';
+        setCount('(0)');
         return;
       }
       var totalDramas = 0;
@@ -2123,11 +2195,11 @@
       });
 
       empty.style.display = 'none';
-      count.textContent = '(' + totalDramas + ')';
+      setCount('(' + totalDramas + ')');
       if (cardItems.length === 0) {
         grid.innerHTML = '';
         empty.style.display = 'block';
-        count.textContent = '(0)';
+        setCount('(0)');
         return;
       }
 
