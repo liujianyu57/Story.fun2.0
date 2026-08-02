@@ -90,7 +90,6 @@
       transition: all 0.2s ease;
       white-space: nowrap;
       vertical-align: middle;
-      margin-bottom: 18px;
     }
     .trust-risk-badge:hover { background: rgba(245, 158, 11, 0.2); }
     .trust-risk-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #d97706; }
@@ -125,10 +124,9 @@
     /* ── 顶部状态 ── */
     .studio-topbar {
       display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 12px 24px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
       padding: 6px 0 14px;
     }
     .studio-topbar h1 {
@@ -281,7 +279,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
-      max-height: 60vh;
+      max-height: 82vh;
       overflow-y: auto;
       padding: 4px 4px 8px;
       margin-bottom: 16px;
@@ -323,7 +321,7 @@
     .upgrade-row .ur-avatar-wrap {
       position: relative;
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       flex-shrink: 0;
       z-index: 1;
@@ -992,7 +990,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      max-height: 52vh;
+      max-height: 82vh;
       overflow-y: auto;
       padding: 2px 2px 4px;
       margin-bottom: 16px;
@@ -1399,15 +1397,12 @@
 
   <div class="app-shell">
 
-    <!-- ===== 风险标签 ===== -->
-    <div style="padding:0 0 8px 0;">
-      <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;"><span class="dot"></span> 风险账户</span>
-    </div>
-
     <!-- ===== 顶部状态 ===== -->
     <div class="studio-topbar">
+      <h1>升级 · 演出 · 赚片酬</h1>
       <div class="studio-status">
         <span>本周片酬 <strong id="statusWeekly">0.0</strong> STORY</span>
+        <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
     </div>
 
@@ -1471,9 +1466,9 @@
 
     <!-- ===== 底部入口 ===== -->
     <div class="studio-links">
-      <a onclick="openRulesModal()">演出规则</a>
+      <a onclick="openRulesModal()">规则</a>
       <a onclick="openActualOutputModal()">片酬与奖池</a>
-      <a href="rewards.html">每周结算</a>
+      <a href="rewards.html">每周结算记录</a>
     </div>
 
     <!-- ===== 空状态（无角色） ===== -->
@@ -1487,31 +1482,21 @@
 
   <!-- ===== 全屏选角色（查看全部 / 空槽位点击） ===== -->
   <div class="modal-overlay" id="fullPickerModal">
-    <div class="modal-card wide">
+    <div class="modal-card wide" style="position:relative;">
       <h2>候选角色</h2>
-      <div class="picker-chips">
-        <button class="picker-chip active" data-sort="power-desc">按片酬</button>
-        <button class="picker-chip" data-sort="level-desc">按等级</button>
-        <button class="picker-chip" data-sort="energy-desc">按体力</button>
-      </div>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeFullPicker()">✕</button>
+      <p style="text-align:center;color:var(--text-muted);font-size:0.78rem;margin:0 0 12px 0;">休息中的角色每小时恢复1点体力</p>
       <div class="picker-grid" id="fullPickerGrid"></div>
-      <button class="modal-btn cancel" onclick="closeFullPicker()">关闭</button>
     </div>
   </div>
 
   <!-- ===== 升级管理全屏弹窗 ===== -->
   <div class="modal-overlay" id="upgradeModal">
-    <div class="modal-card upgrade-modal-card" style="max-width:88vw;width:min(95vw,1200px);">
-      <h2>升级管理</h2>
-      <p class="modal-sub" id="upgradeModalSub">可升级角色</p>
-      <div class="picker-chips">
-        <button class="picker-chip active" data-up-sort="upgrade">可升级优先</button>
-        <button class="picker-chip" data-up-sort="power-desc">按片酬</button>
-        <button class="picker-chip" data-up-sort="level-desc">按等级</button>
-        <button class="picker-chip" data-up-sort="gap">按缺口</button>
-      </div>
+    <div class="modal-card upgrade-modal-card" style="max-width:88vw;width:min(95vw,1200px);position:relative;">
+      <h2>升级角色</h2>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeUpgradeModal()">✕</button>
+      <p style="text-align:center;color:var(--text-muted);font-size:0.78rem;margin:0 0 12px 0;">休息中的角色才可以升级</p>
       <div class="upgrade-list" id="upgradeList"></div>
-      <button class="modal-btn cancel" onclick="closeUpgradeModal()">关闭</button>
     </div>
   </div>
 
@@ -1544,55 +1529,15 @@
 
   <!-- ===== Level Detail Modal (咖位升级) ===== -->
   <div class="modal-overlay" id="levelModal">
-    <div class="modal-card">
-      <h2 id="modalLevelTitle">咖位详情</h2>
-      <p class="modal-sub" id="modalLevelActor">—</p>
+    <div class="modal-card" style="position:relative;">
+      <h2 id="modalLevelTitle">升级角色</h2>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeLevelModal()">✕</button>
 
-      <div style="display:flex;align-items:center;gap:14px;background:var(--bg);border-radius:16px;padding:16px;margin-bottom:16px;">
-        <span style="font-size:2rem;font-weight:800;" id="modalLevelCurrent">Lv1</span>
-        <div>
-          <div style="font-weight:700;font-size:1rem;" id="modalLevelName">群演</div>
-          <div style="font-size:0.82rem;color:var(--text-muted);">片酬系数 ×<span id="modalLevelCoeff">1.0</span></div>
-          <div style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;" id="modalLevelEnergy">体力 0/0</div>
-        </div>
-      </div>
-
-      <div id="modalLevelComparison" style="background:linear-gradient(135deg,rgba(0,179,136,0.06),rgba(0,179,136,0.03));border-radius:16px;padding:16px;margin-bottom:16px;">
-        <div style="font-weight:700;font-size:0.9rem;margin-bottom:12px;text-align:center;">升级前后对比</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <div style="flex:1;text-align:center;">
-            <div style="font-size:1.2rem;font-weight:800;color:var(--text);" id="modalCompareBeforeLv">Lv1</div>
-            <div style="font-size:0.8rem;font-weight:600;margin-top:2px;color:var(--text);" id="modalCompareBeforeName">群演</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">片酬系数 ×<span id="modalCompareBeforeCoeff">1.0</span></div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-            <div style="font-size:1.5rem;color:var(--accent);font-weight:700;line-height:1;">→</div>
-            <div style="font-size:0.65rem;color:var(--accent);font-weight:600;background:var(--accent-soft);padding:2px 8px;border-radius:999px;white-space:nowrap;">升级</div>
-          </div>
-          <div style="flex:1;text-align:center;">
-            <div style="font-size:1.2rem;font-weight:800;color:var(--accent);" id="modalCompareAfterLv">Lv2</div>
-            <div style="font-size:0.8rem;font-weight:600;margin-top:2px;color:var(--accent);" id="modalCompareAfterName">配角</div>
-            <div style="font-size:0.75rem;color:var(--accent);margin-top:4px;">片酬系数 ×<span id="modalCompareAfterCoeff">2.2</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div id="modalLevelRequirement" style="background:rgba(255,159,44,0.06);border-radius:16px;padding:16px;margin-bottom:16px;border:1px dashed rgba(255,159,44,0.2);">
-        <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;">下一级升级要求</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-            <span style="color:var(--text-muted);">参演短剧累计完播</span>
-            <span><span id="modalLevelPlays">0</span> / <span id="modalLevelPlaysReq">0</span></span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-            <span style="color:var(--text-muted);">升级费用</span>
-            <span id="modalLevelCost" style="font-weight:700;color:var(--accent);">0 USDC</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-            <span style="color:var(--text-muted);">消耗同IP同等级角色</span>
-            <span id="modalLevelConsume" style="font-weight:700;color:var(--danger);">0 / 2</span>
-          </div>
-        </div>
+      <div id="modalLevelSummary" style="text-align:center;margin-bottom:16px;padding:10px 14px;border-radius:10px;background:rgba(0,179,136,0.05);">
+        <span id="modalLevelCompareSummary" style="font-size:0.92rem;font-weight:700;color:var(--text);">Lv1 → Lv2</span>
+        <span style="color:var(--text-sub);margin:0 6px;">·</span>
+        <span style="font-size:0.82rem;font-weight:600;color:var(--text-sub);">片酬</span>
+        <span id="modalLevelRateSummary" style="font-size:0.88rem;font-weight:700;color:var(--accent);">1.0 → 2.2 /h</span>
       </div>
 
       <div class="consume-list" id="consumeList">
@@ -1600,12 +1545,17 @@
         <div class="consume-grid" id="consumeGrid"></div>
       </div>
 
-      <button class="modal-btn confirm" id="modalLevelUpBtn" onclick="upgradeLevel()" style="display:none;">升级到下一级</button>
+      <div id="modalLevelCostRow" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,rgba(245,176,66,0.10),rgba(245,208,66,0.06));border:1px solid rgba(245,176,66,0.2);margin-bottom:16px;">
+        <span style="font-size:0.88rem;font-weight:600;color:var(--text);">升级费用</span>
+        <span id="modalLevelCost" style="font-size:1.15rem;font-weight:800;color:var(--gold);">0 USDC</span>
+      </div>
+
+      <button class="modal-btn confirm" id="modalLevelUpBtn" onclick="upgradeLevel()" style="display:none;">✦ 确认升级</button>
       <div id="modalLevelMaxMsg" style="text-align:center;padding:24px 12px;background:linear-gradient(135deg, rgba(245,176,66,0.12), rgba(245,208,66,0.08));border-radius:16px;margin-bottom:16px;display:none;">
         <div style="font-size:1.2rem;font-weight:800;color:var(--gold);">已达到顶级咖位</div>
       </div>
 
-      <button class="modal-btn cancel" onclick="closeLevelModal()">关闭</button>
+      <button class="modal-btn cancel" onclick="closeLevelModal()" style="width:100%;">取消</button>
     </div>
   </div>
 
@@ -1629,19 +1579,42 @@
     </div>
   </div>
 
-  <!-- ===== 实际产出公式说明弹窗 ===== -->
+  <!-- ===== 片酬与奖池说明弹窗 ===== -->
   <div class="modal-overlay" id="actualOutputModal">
     <div class="modal-card" style="max-width:440px;">
-      <h2>本周预估片酬</h2>
-      <p class="modal-sub" style="margin-bottom:12px;">预估片酬受周硬顶和单地址封顶约束，本周结束时产生实际收益</p>
+      <h2>片酬与奖池</h2>
       <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>本周总奖池</span>
+            <span style="font-weight:700;color:var(--accent);" id="actualOutputPoolTotal">2,115,385 STORY</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>├ 本周演出奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（75%）</span></span>
+            <span style="font-weight:700;color:var(--accent);" id="actualOutputPoolStaking">1,586,539 STORY</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>└ 本周邀请奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（25%）</span></span>
+            <span style="font-weight:700;color:var(--accent);" id="actualOutputPoolReferral">528,846 STORY</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>周衰减系数</span>
+            <span style="font-weight:700;color:var(--text);">× 0.99572</span>
+          </div>
+          <div style="padding:8px 0 4px;">
+            <div style="font-weight:600;color:var(--text);margin-bottom:4px;">每周实际发放 = min(全网名义产出, 当周硬顶)</div>
+            <div style="font-size:0.78rem;color:var(--text-sub);">未发出的剩余额度不发放、不回流、不补分</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:rgba(255,159,44,0.06);border:1px solid rgba(255,159,44,0.15);border-radius:14px;padding:16px;margin-bottom:16px;">
+        <div style="font-weight:700;font-size:0.88rem;margin-bottom:8px;">分配规则</div>
         <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
             <span style="flex:1;">若全网名义产出 ≤ 当周硬顶：</span>
           </div>
           <div style="padding:2px 0 8px 16px;border-bottom:1px solid var(--border);">
             <span style="font-weight:700;color:var(--text);">用户实得 = 用户名义产出</span>
-            <div style="font-size:0.78rem;color:var(--text-sub);margin-top:2px;">未发出的剩余额度不发放、不回流、不补分</div>
           </div>
           <div style="display:flex;justify-content:space-between;padding:8px 0 4px;border-bottom:1px solid var(--border);">
             <span style="flex:1;">若全网名义产出 > 当周硬顶：</span>
@@ -1953,7 +1926,6 @@
       { id: '#Zhao-001', name: '赵无极', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'zhaowuji', ipCode: 'C004', level: 5, energy: 100, energyMax: 168, heat: 5.2, dailyStory: 286.0, cumulativeStory: 8200.0, cumulativePlays: 350000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 200 },
       { id: '#Shang-001', name: '上官婉儿', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'shangguan', ipCode: 'C005', level: 1, energy: 65, energyMax: 168, heat: 0.8, dailyStory: 0, cumulativeStory: 0, cumulativePlays: 5000, isStaking: false, stakingDays: 0, status: 'paused', todayOutput: 0, outputRate: 0, initPrice: 30 },
       { id: '#Luna-001', name: 'Luna', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'shangguan', ipCode: 'C005', level: 1, energy: 50, energyMax: 168, heat: 0.8, dailyStory: 12.5, cumulativeStory: 38.0, cumulativePlays: 5000, isStaking: false, stakingDays: 0, status: 'paused', todayOutput: 0, outputRate: 0, initPrice: 30 },
-      { id: '#Su-004', name: '苏婉清', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'suvanqing', ipCode: 'C001', level: 2, energy: 100, energyMax: 168, heat: 2.1, dailyStory: 11.0, cumulativeStory: 80.0, cumulativePlays: 50000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 80 },
     ];
 
     // ============================================================
@@ -2103,15 +2075,12 @@
 
       wrap.innerHTML =
         '<div class="us-row"><span class="us-label">可升级角色</span><span class="us-value highlight">' + ready +  ' 位</span></div>'
-        + '<div class="us-row" style="margin-bottom:4px;"><span class="us-label">未满级角色</span><span class="us-value">' + upgradable.length + ' 位</span></div>'
         + '<button class="us-cta" onclick="openUpgradeModal()">去升级</button>';
     }
 
     // ============================================================
     //  升级管理全屏弹窗
     // ============================================================
-    let currentUpgradeSort = 'upgrade';
-
     function openUpgradeModal() {
       document.getElementById('upgradeModal').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -2123,38 +2092,18 @@
       document.body.style.overflow = '';
     }
 
-    function upgradeGap(actor) {
-      var sameLevel = MY_ACTORS.filter(function(x) { return x.parentIP === actor.parentIP && x.level === actor.level && x.id !== actor.id; }).length;
-      return Math.max(0, 2 - sameLevel);
-    }
-
     function renderUpgradeList() {
       var list = document.getElementById('upgradeList');
-      var sub = document.getElementById('upgradeModalSub');
       if (!list) return;
       var upgradable = getUpgradableActors();
       var readyCount = upgradable.filter(canUpgrade).length;
-      if (sub) sub.textContent = readyCount + ' 位可升级 · 共 ' + upgradable.length + ' 位未满级';
 
       if (upgradable.length === 0) {
         list.innerHTML = '<div class="ur-empty">暂无角色可升级</div>';
         return;
       }
 
-      var s = currentUpgradeSort;
-      if (s === 'upgrade') {
-        upgradable.sort(function(a, b) {
-          var ga = upgradeGap(a), gb = upgradeGap(b);
-          if (ga !== gb) return ga - gb; // 缺口小的在前
-          return computeActorPower(b) - computeActorPower(a);
-        });
-      } else if (s === 'power-desc') {
-        upgradable.sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
-      } else if (s === 'level-desc') {
-        upgradable.sort(function(a, b) { return (b.level || 0) - (a.level || 0); });
-      } else if (s === 'gap') {
-        upgradable.sort(function(a, b) { return upgradeGap(a) - upgradeGap(b); });
-      }
+      upgradable.sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
 
       list.innerHTML = upgradable.map(function(actor) {
         var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
@@ -2194,35 +2143,24 @@
           + '<div class="ur-conditions">'
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
-          + '<span class="ur-cond-label">同IP同等级角色</span>'
-          + '<span class="ur-cond-status' + (cloneReady ? ' done' : ' pending') + '"' + (!cloneReady ? ' onclick="event.stopPropagation();openNeedRoleModal(\'' + actor.name + '\',\'' + actor.parentIP + '\')"' : '') + '>' + (cloneReady ? '✓' : '+') + '</span>'
-          + '</div>'
-          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + Math.round((have / 2) * 100) + '%;"></i><span class="ur-cond-bar-text">' + have + '/2</span></div>'
-          + '</div>'
-          + '<div class="ur-cond">'
-          + '<div class="ur-cond-body">'
           + '<span class="ur-cond-label">参演短剧完播</span>'
           + '<span class="ur-cond-status' + (playDone ? ' done' : ' pending') + '"' + (!playDone ? ' onclick="event.stopPropagation();openNeedPlayModal(\'' + actor.name + '\')"' : '') + '>' + (playDone ? '✓' : '+') + '</span>'
           + '</div>'
           + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + playPct + '%;"></i><span class="ur-cond-bar-text">' + formatNumber(actor.cumulativePlays || 0) + '/' + formatNumber(playReq) + '</span></div>'
           + '</div>'
+          + '<div class="ur-cond">'
+          + '<div class="ur-cond-body">'
+          + '<span class="ur-cond-label">同IP同等级角色</span>'
+          + '<span class="ur-cond-status' + (cloneReady ? ' done' : ' pending') + '"' + (!cloneReady ? ' onclick="event.stopPropagation();openNeedRoleModal(\'' + actor.name + '\',\'' + actor.parentIP + '\')"' : '') + '>' + (cloneReady ? '✓' : '+') + '</span>'
           + '</div>'
-          + '<button class="ur-btn ' + (bothDone ? 'ready' : 'not-ready') + '" onclick="event.stopPropagation();openLevelModal(\'' + actor.id + '\')">'
-          + (bothDone ? '✦ 立即升级' : '查看详情')
+          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + Math.round((have / 2) * 100) + '%;"></i><span class="ur-cond-bar-text">' + have + '/2</span></div>'
+          + '</div>'
+          + '</div>'
+          + '<button class="ur-btn ' + (bothDone ? 'ready' : 'not-ready') + '" onclick="event.stopPropagation();' + (bothDone ? 'openLevelModal(\'' + actor.id + '\')' : (!playDone ? 'openNeedPlayModal(\'' + actor.name + '\')' : 'openNeedRoleModal(\'' + actor.name + '\',\'' + actor.parentIP + '\')')) + '">'
+          + '✦ 立即升级'
           + '</button>'
           + '</div>';
       }).join('');
-    }
-
-    function initUpgradeChips() {
-      document.querySelectorAll('#upgradeModal .picker-chip').forEach(function(chip) {
-        chip.addEventListener('click', function() {
-          document.querySelectorAll('#upgradeModal .picker-chip').forEach(function(c) { c.classList.remove('active'); });
-          this.classList.add('active');
-          currentUpgradeSort = this.dataset.upSort;
-          renderUpgradeList();
-        });
-      });
     }
 
     // ============================================================
@@ -2353,11 +2291,7 @@
       var countEl = document.getElementById('poolCount');
       if (!container) return;
       var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; })
-        .sort(function(a, b) {
-          var au = canUpgrade(a) ? 1 : 0, bu = canUpgrade(b) ? 1 : 0;
-          if (au !== bu) return bu - au;
-          return computeActorPower(b) - computeActorPower(a);
-        });
+        .sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
       if (countEl) countEl.textContent = idle.length;
 
       if (idle.length === 0) {
@@ -2367,19 +2301,13 @@
 
       container.innerHTML = idle.map(function(actor) {
         var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-        var canUp = canUpgrade(actor);
         var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
         var barCls = energyBarCls(actor.energy);
-        // 整卡点击：可升级→升级弹窗；否则→安排演出确认
-        var clickAction = canUp
-          ? 'openLevelModal(\'' + actor.id + '\')'
-          : 'openStakeModal(\'' + actor.id + '\')';
 
-        return '<div class="pool-item' + (canUp ? ' upgradable' : '') + '" onclick="' + clickAction + '" title="' + (canUp ? '可升级' : '点击安排演出') + '">'
+        return '<div class="pool-item" onclick="openStakeModal(\'' + actor.id + '\')" title="点击安排演出">'
           + '<div class="pool-av-wrap">'
           + '<img src="' + actor.avatar + '" alt="" />'
           + '<span class="pool-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
-          + (canUp ? '<span class="pool-up-dot"></span>' : '')
           + '</div>'
           + '<div class="pool-out">' + computeActorPower(actor).toFixed(1) + '<span class="u"> /h</span></div>'
           + '<span class="pool-energy"><span class="bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></span></span>'
@@ -2404,14 +2332,7 @@
 
     function getSortedIdle() {
       var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; });
-      var s = currentPickerSort;
-      if (s === 'power-desc') {
-        idle.sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
-      } else if (s === 'level-desc') {
-        idle.sort(function(a, b) { return (b.level || 0) - (a.level || 0); });
-      } else if (s === 'energy-desc') {
-        idle.sort(function(a, b) { return (b.energy || 0) - (a.energy || 0); });
-      }
+      idle.sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
       return idle;
     }
 
@@ -2451,18 +2372,6 @@
           + '</div>'
           + '</div>';
       }).join('');
-    }
-
-    // 选人 chips
-    function initPickerChips() {
-      document.querySelectorAll('#fullPickerModal .picker-chip').forEach(function(chip) {
-        chip.addEventListener('click', function() {
-          document.querySelectorAll('#fullPickerModal .picker-chip').forEach(function(c) { c.classList.remove('active'); });
-          this.classList.add('active');
-          currentPickerSort = this.dataset.sort;
-          renderFullPicker();
-        });
-      });
     }
 
     // ============================================================
@@ -2724,25 +2633,18 @@
       const nextCfg = nextLevel ? LEVEL_CONFIG[nextLevel] : null;
       const threshold = nextLevel ? LEVEL_UP_THRESHOLDS[nextLevel] : null;
 
-      document.getElementById('modalLevelTitle').textContent = actor.name;
-      document.getElementById('modalLevelActor').textContent = actor.id;
+      var actorNum = actor.id.match(/\d+/);
+      var actorNumStr = actorNum ? ' #' + parseInt(actorNum[0], 10) : '';
+      document.getElementById('modalLevelTitle').textContent = '升级 ' + actor.name + actorNumStr;
 
-      document.getElementById('modalLevelCurrent').textContent = 'Lv' + actor.level;
-      document.getElementById('modalLevelName').textContent = currentCfg.name;
-      document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
-      document.getElementById('modalLevelEnergy').textContent = '体力 ' + actor.energy + '/' + actor.energyMax;
-
-      const comparisonEl = document.getElementById('modalLevelComparison');
       if (nextLevel && nextCfg) {
-        comparisonEl.style.display = 'block';
-        document.getElementById('modalCompareBeforeLv').textContent = 'Lv' + actor.level;
-        document.getElementById('modalCompareBeforeName').textContent = currentCfg.name;
-        document.getElementById('modalCompareBeforeCoeff').textContent = currentCfg.miningCoeff;
-        document.getElementById('modalCompareAfterLv').textContent = 'Lv' + nextLevel;
-        document.getElementById('modalCompareAfterName').textContent = nextCfg.name;
-        document.getElementById('modalCompareAfterCoeff').textContent = nextCfg.miningCoeff;
+        var before = computeActorPower(actor);
+        var after = computeIPPower(actor) * nextCfg.miningCoeff * 1.0 * 1.0;
+        document.getElementById('modalLevelCompareSummary').textContent = 'Lv' + actor.level + ' → Lv' + nextLevel;
+        document.getElementById('modalLevelRateSummary').textContent = before.toFixed(1) + ' → ' + after.toFixed(1) + ' /h';
+        document.getElementById('modalLevelSummary').style.display = 'block';
       } else {
-        comparisonEl.style.display = 'none';
+        document.getElementById('modalLevelSummary').style.display = 'none';
       }
 
       const sameIpSameLevel = MY_ACTORS.filter(a => a.parentIP === actor.parentIP && a.level === actor.level && a.id !== actor.id);
@@ -2752,35 +2654,29 @@
       if (sameIpSameLevel.length === 0) {
         grid.innerHTML = '<div class="consume-empty">没有可消耗的同IP同等级角色</div>';
       } else {
-        grid.innerHTML = sameIpSameLevel.map(a => `
-          <div class="consume-item" data-actor-id="${a.id}" onclick="toggleConsumeActor('${a.id}')">
-            <div class="check-box"></div>
-            <span class="ci-id">${a.id}</span>
-            <span class="ci-name">${a.name}</span>
-            <span class="ci-lv">Lv${a.level}</span>
-            <span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto;white-space:nowrap;">体力 ${a.energy}/${a.energyMax}</span>
-          </div>
-        `).join('');
+        grid.innerHTML = sameIpSameLevel.map(a => {
+          var caNum = a.id.match(/\d+/);
+          var caNumStr = caNum ? ' #' + parseInt(caNum[0], 10) : '';
+          return '<div class="consume-item" data-actor-id="' + a.id + '" onclick="toggleConsumeActor(\'' + a.id + '\')">'
+            + '<div class="check-box"></div>'
+            + '<img src="' + a.avatar + '" style="width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0;" alt="" />'
+            + '<span class="ci-name">' + a.name + caNumStr + '</span>'
+            + '<span class="ci-lv">Lv' + a.level + '</span>'
+            + '<span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto;white-space:nowrap;">体力 ' + a.energy + '/' + a.energyMax + '</span>'
+            + '</div>';
+        }).join('');
       }
       updateConsumeUI();
 
       if (nextLevel && threshold) {
-        const plays = actor.cumulativePlays || 0;
-        document.getElementById('modalLevelPlays').textContent = formatNumber(plays);
-        document.getElementById('modalLevelPlaysReq').textContent = formatNumber(threshold.playsRequired);
         document.getElementById('modalLevelCost').textContent = threshold.cost + ' USDC';
-        document.getElementById('modalLevelConsume').textContent = Math.min(availableCount, 2) + ' / 2';
-        document.getElementById('modalLevelConsume').style.color = availableCount >= 2 ? 'var(--accent)' : 'var(--danger)';
-
+        document.getElementById('modalLevelCostRow').style.display = 'flex';
         document.getElementById('modalLevelUpBtn').style.display = 'block';
-        document.getElementById('modalLevelUpBtn').textContent = '升级到 Lv' + nextLevel + ' ' + nextCfg.name;
-
-        document.getElementById('modalLevelRequirement').style.display = 'block';
-        document.getElementById('modalLevelMaxMsg').style.display = 'none';
         document.getElementById('consumeList').style.display = 'block';
+        document.getElementById('modalLevelMaxMsg').style.display = 'none';
       } else {
+        document.getElementById('modalLevelCostRow').style.display = 'none';
         document.getElementById('modalLevelUpBtn').style.display = 'none';
-        document.getElementById('modalLevelRequirement').style.display = 'none';
         document.getElementById('consumeList').style.display = 'none';
         document.getElementById('modalLevelMaxMsg').style.display = 'block';
       }
@@ -2878,7 +2774,14 @@
     }
     function closeWeeklyPoolModal() { document.getElementById('weeklyPoolModal').classList.remove('active'); document.body.style.overflow = ''; }
 
-    function openActualOutputModal() { document.getElementById('actualOutputModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function openActualOutputModal() {
+      const weeklyPool = 2115385;
+      document.getElementById('actualOutputPoolTotal').textContent = weeklyPool.toLocaleString() + ' STORY';
+      document.getElementById('actualOutputPoolStaking').textContent = Math.floor(weeklyPool * 0.75).toLocaleString() + ' STORY';
+      document.getElementById('actualOutputPoolReferral').textContent = Math.floor(weeklyPool * 0.25).toLocaleString() + ' STORY';
+      document.getElementById('actualOutputModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
     function closeActualOutputModal() { document.getElementById('actualOutputModal').classList.remove('active'); document.body.style.overflow = ''; }
 
     function openNominalOutputModal() { document.getElementById('nominalOutputModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
@@ -3031,11 +2934,6 @@
     //  页面初始化
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-      var trustBadge = document.getElementById('trustRiskBadge');
-      if (trustBadge) trustBadge.style.display = 'inline-flex';
-
-      initPickerChips();
-      initUpgradeChips();
       renderAll();
 
       setInterval(energyTick, 1000);
