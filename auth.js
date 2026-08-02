@@ -225,6 +225,14 @@ function injectAuthStyles() {
   .auth-copy-btn{width:22px;height:22px;border:none;background:transparent;color:var(--text-muted,#8b98a6);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;padding:0;border-radius:4px}
   .auth-copy-btn:hover{color:var(--accent,#00b388);background:rgba(0,0,0,.04)}
   .auth-copy-btn svg{width:14px;height:14px}
+
+  /* ===== USDC + Avatar 连通胶囊 (桌面端顶栏) ===== */
+  .dh-usdc-badge{display:inline-flex;align-items:center;padding:0;border-radius:999px;background:rgba(0,0,0,.04);cursor:pointer;flex-shrink:0;transition:all .15s;height:36px}
+  .dh-usdc-badge:hover{background:rgba(0,0,0,.08)}
+  .dh-usdc-amount{padding:0 4px 0 14px;font-size:12px;font-weight:600;color:#13202e;white-space:nowrap;line-height:36px}
+  .dh-usdc-avatar-wrap{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(0,0,0,.08);flex-shrink:0;margin:1px;margin-left:6px;transition:border-color .15s}
+  .dh-usdc-badge:hover .dh-usdc-avatar-wrap{border-color:#00b388}
+  .dh-usdc-avatar-wrap img{width:100%;height:100%;object-fit:cover;display:block}
   `;
 
   const style = document.createElement('style');
@@ -244,11 +252,14 @@ function renderAuthUI(container) {
     var walletAddr = currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF';
   var shortWallet = walletAddr.slice(0,6) + '...' + walletAddr.slice(-4);
   var subLabel = isEmail ? '邮箱用户' : '钱包用户';
-    const usdcDisplay = typeof currentUser.balances?.usdc === 'number' ? `$${currentUser.balances.usdc.toFixed(2)}` : '-';
+    const usdcDisplay = typeof currentUser.balances?.usdc === 'number' ? `${currentUser.balances.usdc.toFixed(2)}` : '-';
     container.innerHTML = `
       <div class="auth-user-menu">
-        <div class="auth-avatar" onclick="toggleDropdown(event)">
-          <img src="${currentUser.avatar}" alt="${currentUser.name}" />
+        <div class="dh-usdc-badge" onclick="toggleDropdown(event)">
+          <span class="dh-usdc-amount">${usdcDisplay} USDC</span>
+          <div class="dh-usdc-avatar-wrap">
+            <img src="${currentUser.avatar}" alt="${currentUser.name}" />
+          </div>
         </div>
         <div class="auth-dropdown" id="authDropdown">
           <div class="auth-dropdown-top" onclick="openProfileCenter()">
