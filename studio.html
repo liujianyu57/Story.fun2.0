@@ -75,83 +75,12 @@
     .auth-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 10000; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.92rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
     .auth-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    /* ===== Page Header ===== */
-    .page-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-top: 28px;
-      margin-bottom: 28px;
-    }
-    .page-header-left {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .page-header-left h1 {
-      margin: 0;
-      font-size: 2rem;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-    .page-header-left p {
-      margin: 0;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-    .page-header-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 22px;
-      border-radius: 999px;
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,179,136,0.3);
-    }
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 22px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-    }
-    .btn-secondary:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
     /* ===== Trust 风险标签 ===== */
     .trust-risk-badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
+      gap: 6px;
+      padding: 3px 12px;
       border-radius: 999px;
       font-size: 0.72rem;
       font-weight: 700;
@@ -161,658 +90,10 @@
       transition: all 0.2s ease;
       white-space: nowrap;
       vertical-align: middle;
-      margin-left: 10px;
-    }
-    .trust-risk-badge:hover {
-      background: rgba(245, 158, 11, 0.2);
-    }
-
-    /* ===== Section Header ===== */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 18px;
-      flex-wrap: wrap;
-      gap: 12px;
     }
-    .section-header h2 {
-      margin: 0;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .section-header .count-badge {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-
-    /* ===== Sort Tags (参考 actors.html 样式) ===== */
-    .sort-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .sort-tag {
-      padding: 6px 14px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      border-radius: 999px;
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      user-select: none;
-    }
-    .sort-tag:hover {
-      background: rgba(0,179,136,0.2);
-    }
-    .sort-tag.active {
-      background: var(--accent);
-      color: white;
-    }
-    .section-header-left-group {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-
-    /* ===== Actor Grid ===== */
-    .actor-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 32px;
-    }
-    @media (max-width: 1024px) {
-      .actor-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      /* ── Apple 风格背景 ── */
-      body { background: #F2F2F7; padding: 44px 0 80px; }
-      .app-shell { padding: 0; }
-
-      /* ── 隐藏页面标题 ── */
-      .page-header { display: none; }
-
-      /* ── 挖矿汇总：紧凑卡片 ── */
-      .mining-summary { margin-top: 12px !important; padding: 16px; }
-      .mining-summary > div:first-child { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; margin-bottom: 8px !important; }
-      .mining-summary > div:first-child > div { padding: 12px 8px !important; border-radius: 14px !important; border: none !important; background: #fff !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important; }
-      .mining-summary > div:first-child > div > div:first-child { font-size: 0.62rem !important; margin-bottom: 2px !important; color: #8E8E93 !important; }
-      .mining-summary > div:first-child > div > div:nth-child(2) { font-size: 1rem !important; }
-      .mining-summary > div:first-child > div > div:nth-child(3) { font-size: 0.58rem !important; color: #AEAEB2 !important; }
-      .mining-summary > div:last-child { padding: 0 4px !important; }
-      .mining-summary > div:last-child > span { font-size: 0.75rem !important; }
-      .mining-summary > div:last-child > a { font-size: 0.72rem !important; }
-
-      /* ── section-header ── */
-      .section-header { padding: 0 16px; margin-bottom: 12px; }
-      .section-header h2 { font-size: 1.05rem; }
-      .sort-container { padding: 0 16px; gap: 6px; margin-top: 8px !important; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-      .sort-container::-webkit-scrollbar { display: none; }
-      .sort-tag { font-size: 0.75rem; padding: 5px 12px; white-space: nowrap; border-radius: 999px; border: none; background: #fff; color: #6C6C70; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
-      .sort-tag.active { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(0,179,136,0.2); }
-
-      /* ── 角色卡片：Apple 风格 ── */
-      .actor-grid { grid-template-columns: 1fr; gap: 12px; padding: 0 16px; margin-bottom: 20px; }
-      .actor-card { border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 0.5px solid rgba(0,0,0,0.06); }
-      .actor-card-hero { aspect-ratio: 2 / 1; }
-      .actor-card-name-row { padding: 12px 16px 0; }
-      .actor-card-name-row .actor-name { font-size: 0.95rem; }
-      .actor-card-body { padding: 10px 16px 12px; gap: 8px; }
-      .energy-row { padding: 6px 10px; border-radius: 10px; }
-      .energy-icon { font-size: 0.75rem; }
-      .energy-bar-bg { height: 4px; }
-      .energy-text { font-size: 0.65rem; }
-      .mining-stats { gap: 6px; }
-      .ms-item { padding: 6px 4px 5px; border-radius: 10px; }
-      .ms-label { font-size: 0.6rem; }
-      .ms-value { font-size: 0.9rem; }
-      .actor-card-footer { padding: 0 16px 12px; gap: 6px; }
-      .card-action-btn { padding: 7px 10px; font-size: 0.78rem; border-radius: 12px; }
-      .upgrade-float-badge { font-size: 0.72rem; padding: 4px 10px 4px 8px; }
-
-      /* ── 派遣面板：Banner 轮播 ── */
-      .deploy-slots { display: block !important; }
-      .deployment-panel { padding: 0 !important; background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 20px; }
-      .deploy-panel-header { padding: 0 16px; margin-bottom: 12px; }
-      .deploy-carousel { position: relative; overflow: hidden; margin: 0 16px; border-radius: 20px; background: transparent; box-shadow: none; }
-      .deploy-carousel-slide { display: block; }
-      .deploy-carousel-slide-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; color: #8E8E93; font-size: 0.92rem; cursor: pointer; border-radius: 16px; border: 2px dashed rgba(0,0,0,0.10); background: rgba(255,255,255,0.5); }
-      .deploy-carousel-slide-empty .empty-plus { font-size: 2rem; margin-bottom: 8px; }
-      .deploy-carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,0.85); color: #3C3C43; font-size: 1.2rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-      .deploy-carousel-arrow:active { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.10); transform: translateY(-50%) scale(0.95); }
-      .deploy-carousel-arrow.left { left: 8px; }
-      .deploy-carousel-arrow.right { right: 8px; }
-      .deploy-carousel-arrow:disabled { opacity: 0.3; }
-      .deploy-carousel-dots { display: flex; justify-content: center; gap: 10px; padding: 14px 16px 8px; }
-      .deploy-carousel-dot { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; cursor: pointer; opacity: 0.45; transition: all 0.2s ease; border: 2px solid rgba(0,0,0,0.06); flex-shrink: 0; }
-      .deploy-carousel-dot.active { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 2px #fff; transform: scale(1.12); }
-      .deploy-carousel-dot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .deploy-carousel-dot.empty-dot { background: rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #AEAEB2; }
-
-      /* ── 空槽位恢复 block 布局（与占用卡片一致） ── */
-      .deploy-slot.empty { display: block; min-height: auto; border: none; background: transparent; }
-      .deploy-slot.empty .deploy-slot-empty-icon { display: none; }
-      .deploy-slot.empty .deploy-slot-empty-label { display: none; }
-
-      /* ── 触控轮播 ── */
-      .deploy-carousel { touch-action: pan-y; }
-      .deploy-carousel-track {
-        display: flex;
-        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-        will-change: transform;
-      }
-      .deploy-carousel-track.dragging { transition: none; }
-      .deploy-carousel-slide {
-        flex: 0 0 100%;
-        width: 100%;
-        display: block;
-        padding: 0 2px;
-        box-sizing: border-box;
-      }
-      .deploy-carousel-arrow { display: none !important; }
-
-      /* ── 行式角色卡片 ── */
-      .actor-list-row {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-        padding: 0;
-        background: #fff;
-        border-radius: 14px;
-        margin-bottom: 10px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        cursor: pointer;
-        transition: background 0.2s ease;
-        overflow: hidden;
-      }
-      .actor-list-row:active { background: rgba(0,0,0,0.02); }
-      .alr-top {
-        display: flex;
-        align-items: stretch;
-      }
-      .alr-avatar-wrap {
-        position: relative;
-        width: 68px;
-        flex-shrink: 0;
-      }
-      .alr-avatar {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        border-radius: 0;
-        border: none;
-      }
-      .alr-info {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        padding: 10px 12px;
-      }
-      .alr-name-row {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .alr-name {
-        font-weight: 700;
-        font-size: 0.9rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .alr-id {
-        font-size: 0.62rem;
-        color: var(--text-sub);
-        background: rgba(0,0,0,0.04);
-        padding: 1px 6px;
-        border-radius: 4px;
-        flex-shrink: 0;
-      }
-      .alr-level {
-        font-size: 0.6rem;
-        font-weight: 700;
-        color: #fff;
-        padding: 1px 7px;
-        border-radius: 4px;
-        flex-shrink: 0;
-      }
-      .alr-energy-row {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .alr-energy-bar {
-        flex: 1;
-        height: 3px;
-        background: rgba(0,0,0,0.06);
-        border-radius: 999px;
-        overflow: hidden;
-        max-width: 80px;
-      }
-      .alr-energy-fill {
-        height: 100%;
-        border-radius: 999px;
-      }
-      .alr-energy-fill.green { background: var(--accent); }
-      .alr-energy-fill.yellow { background: var(--warning); }
-      .alr-energy-fill.red { background: var(--danger); }
-      .alr-energy-text {
-        font-size: 0.6rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        white-space: nowrap;
-      }
-      .alr-stats {
-        display: flex;
-        gap: 12px;
-        font-size: 0.68rem;
-        color: var(--text-muted);
-      }
-      .alr-stats span { white-space: nowrap; }
-      .alr-stats strong { color: var(--text); }
-      .alr-actions {
-        display: flex;
-        flex-direction: row;
-        gap: 6px;
-        padding: 8px 12px 12px;
-      }
-      .alr-btn {
-        flex: 1;
-        padding: 7px 8px;
-        border-radius: 14px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all 0.2s ease;
-        text-align: center;
-      }
-      .alr-btn.stake {
-        background: var(--accent);
-        color: #fff;
-      }
-      .alr-btn.stake:active { opacity: 0.8; }
-      .alr-btn.unstake {
-        background: rgba(244,91,105,0.08);
-        color: var(--danger);
-      }
-      .alr-btn.unstake:active { background: rgba(244,91,105,0.15); }
-      .alr-btn.charge {
-        background: rgba(255,159,44,0.08);
-        color: var(--warning);
-      }
-      .alr-btn.charge:active { background: rgba(255,159,44,0.15); }
-      .alr-btn.upgrade {
-        background: linear-gradient(135deg, #f5b042, #f7d06a);
-        color: #5a3e00;
-        font-weight: 700;
-        box-shadow: 0 2px 6px rgba(245,176,66,0.3);
-      }
-      .alr-btn.upgrade:active { opacity: 0.85; transform: scale(0.96); }
-      .alr-btn.disabled {
-        background: rgba(0,0,0,0.04);
-        color: #AEAEB2;
-        font-weight: 500;
-        box-shadow: none;
-      }
-      .alr-btn.disabled:active { opacity: 1; transform: none; }
-      .alr-status {
-        font-size: 0.58rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 3px;
-      }
-      .alr-status .dot {
-        width: 5px; height: 5px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
-      .alr-status .dot.mining { background: #22c55e; }
-      .alr-status .dot.exhausted { background: var(--text-sub); }
-      .alr-status .dot.idle { background: var(--text-sub); }
-
-      /* ── 空状态 ── */
-      .empty-state { padding: 40px 20px; border-radius: 16px; margin: 0 16px; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-    }
-
-    .actor-card {
-      background: var(--surface);
-      border: none;
-      border-radius: 24px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 2px 12px rgba(27,45,71,0.06);
-      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .actor-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(27,45,71,0.10), 0 2px 8px rgba(27,45,71,0.04);
-    }
-
-    /* ── Actor Card: Hero Avatar Layout ── */
-    .actor-card-hero {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      overflow: hidden;
-      background: linear-gradient(135deg, #e8f5ef, #d4ece5);
-    }
-    .actor-card-hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .actor-card:hover .actor-card-hero img {
-
-    }
-    /* Gradient overlay for readability */
-    .actor-card-hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
-      pointer-events: none;
-    }
-    /* Hero's bottom info bar (level badge + status dot) */
-    .actor-card-hero-info {
-      position: absolute;
-      bottom: 12px;
-      left: 16px;
-      right: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      pointer-events: none;
-    }
-    .actor-hero-lv {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #fff;
-      backdrop-filter: blur(4px);
-    }
-    .actor-hero-lv span {
-      background: rgba(255,255,255,0.2);
-      padding: 1px 8px;
-      border-radius: 999px;
-      font-size: 0.68rem;
-    }
-    .actor-hero-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #fff;
-      backdrop-filter: blur(4px);
-      background: rgba(0,0,0,0.25);
-    }
-    .actor-hero-status .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-    }
-    .actor-hero-status .dot.active { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.6); }
-    .actor-hero-status .dot.paused { background: var(--gold); }
-    .actor-hero-status .dot.idle { background: rgba(255,255,255,0.5); }
-
-    /* Card Name Row */
-    .actor-card-name-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 16px 18px 0;
-    }
-    .actor-card-name-row .actor-name {
-      font-weight: 700;
-      font-size: 1.1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .actor-card-name-row .charge-name-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-left:auto;
-      width:30px;
-      height:30px;
-      border-radius:50%;
-      border:none;
-      background:rgba(255,159,44,0.15);
-      color:var(--warning);
-      font-size:0.8rem;
-      cursor:pointer;
-      flex-shrink:0;
-      transition:all 0.2s ease;
-    }
-    .actor-card-name-row .charge-name-btn:hover {
-      background:var(--warning);
-      color:#fff;
-      transform:scale(1.1);
-    }
-
-    /* Card Body: stats — 与 actors.html 卡片风格统一 */
-    .actor-card-body {
-      padding: 16px 18px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    /* Energy Bar — 浅灰 pill 包裹 */
-    .energy-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 8px 12px;
-    }
-    .energy-icon { font-size: 0.85rem; flex-shrink: 0; }
-    .energy-bar-bg {
-      flex: 1;
-      height: 5px;
-      background: rgba(0,0,0,0.06);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .energy-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.6s ease;
-    }
-    .energy-bar-fill.high { background: linear-gradient(90deg, var(--accent), #00d9a3); }
-    .energy-bar-fill.medium { background: linear-gradient(90deg, var(--gold), #f5d042); }
-    .energy-bar-fill.low { background: linear-gradient(90deg, var(--danger), #f45b69); }
-    .energy-text {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      white-space: nowrap;
-      min-width: 40px;
-      text-align: right;
-    }
-
-    /* Mining Stats — 两列等宽 pill 组 */
-    .mining-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .ms-item {
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 8px 6px 7px;
-      text-align: center;
-      cursor: default;
-      transition: background 0.25s ease;
-    }
-    .ms-item[style*="cursor:pointer"] {
-      cursor: pointer;
-    }
-    .ms-item[style*="cursor:pointer"]:hover {
-      background: rgba(0,0,0,0.03);
-    }
-    .ms-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1px;
-      min-width: 0;
-    }
-    .ms-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.2;
-    }
-    .ms-value {
-      font-size: 1.1rem;
-      font-weight: 700;
-      line-height: 1.3;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-
-    /* Card Footer: actions */
-    .actor-card-footer {
-      display: flex;
-      gap: 8px;
-      padding: 0 18px 14px;
-      flex-wrap: wrap;
-    }
-    .card-action-btn {
-      flex: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: none;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-    .card-action-btn.film {
-      background: linear-gradient(135deg, #05DF72, #00BBA7);
-      color: #fff;
-    }
-    .card-action-btn.film:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0,187,167,0.35);
-    }
-    .card-action-btn.detail {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 1px solid var(--accent);
-    }
-    .card-action-btn.detail:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-    .card-action-btn.stake {
-      background: rgba(74,158,255,0.1);
-      color: #4a9eff;
-      border: 1px solid rgba(74,158,255,0.2);
-    }
-    .card-action-btn.stake:hover {
-      background: #4a9eff;
-      color: #fff;
-    }
-    .card-action-btn.unstake {
-      background: rgba(244,91,105,0.1);
-      color: var(--danger);
-      border: 1px solid rgba(244,91,105,0.2);
-    }
-    .card-action-btn.unstake:hover {
-      background: var(--danger);
-      color: #fff;
-    }
-    .card-action-btn.charge {
-      background: rgba(255,159,44,0.1);
-      color: var(--warning);
-      border: 1px solid rgba(255,159,44,0.2);
-    }
-    .card-action-btn.charge:hover {
-      background: var(--warning);
-      color: #fff;
-    }
-
-    /* Mining Status Dot */
-    .mining-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
-    .mining-status .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-    }
-    .mining-status .dot.active {
-      background: #22c55e;
-      box-shadow: 0 0 6px rgba(34,197,94,0.5);
-    }
-    .mining-status .dot.paused {
-      background: var(--gold);
-    }
-    .mining-status .dot.idle {
-      background: var(--text-sub);
-    }
-
-    /* ===== Empty State ===== */
-    .empty-state {
-      text-align: center;
-      padding: 60px 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-    }
-    .empty-state .empty-icon {
-      font-size: 3.5rem;
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-    .empty-state h3 {
-      margin: 0 0 8px;
-      font-size: 1.2rem;
-    }
-    .empty-state p {
-      margin: 0 0 20px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+    .trust-risk-badge:hover { background: rgba(245, 158, 11, 0.2); }
+    .trust-risk-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #d97706; }
 
     /* ===== Toast ===== */
     .toast-notification {
@@ -840,39 +121,969 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
-    .toast-notification .toast-icon { display: inline-block; margin-right: 8px; font-size: 1.1rem; }
 
-    /* ===== Can Upgrade Badge ===== */
-    .actor-hero-lv.can-upgrade {
-      box-shadow: 0 0 12px rgba(245, 176, 66, 0.5), 0 0 25px rgba(245, 176, 66, 0.2);
-      animation: breathe-gold 2s ease-in-out infinite;
+    /* ── 顶部状态 ── */
+    .studio-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px 24px;
+      padding: 6px 0 14px;
     }
-    @keyframes breathe-gold {
-      0%, 100% { box-shadow: 0 0 10px rgba(245, 176, 66, 0.4), 0 0 20px rgba(245, 176, 66, 0.15); }
-      50% { box-shadow: 0 0 18px rgba(245, 176, 66, 0.7), 0 0 35px rgba(245, 176, 66, 0.35); }
+    .studio-topbar h1 {
+      margin: 0;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
-    .upgrade-float-badge {
-      position: absolute;
-      top: 0;
-      right: 0;
+    .studio-status {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      flex-wrap: wrap;
+    }
+    .status-dots { display: inline-flex; gap: 5px; align-items: center; }
+    .status-dots i {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #c9d5e0;
+      flex-shrink: 0;
+    }
+    .status-dots i.on { background: var(--accent); box-shadow: 0 0 5px rgba(0,179,136,0.5); }
+    .status-sep { width: 1px; height: 14px; background: var(--border); }
+    .studio-status strong { color: var(--text); font-weight: 700; font-size: 1.05rem; }
+
+    /* ── 主内容列：演出角色 + 待办/升级 ── */
+    .main-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+    /* ── 底部双面板：待办 + 升级管理入口 ── */
+    .sub-panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .todo-panel, .upgrade-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px 18px;
+      box-shadow: var(--shadow-sm);
+      height: 152px;
+      overflow: hidden;
+    }
+    .sub-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .sub-panel-head h3 {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sub-panel-head .count { color: var(--text-muted); font-size: 0.78rem; font-weight: 500; }
+    .sub-panel-head .link-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 2px 4px;
+    }
+    .sub-panel-head .link-btn:hover { text-decoration: underline; }
+    /* 待办项 */
+    .todo-list { display: flex; flex-direction: column; gap: 6px; }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      background: var(--bg);
+    }
+    .todo-item .todo-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .todo-item .todo-msg { flex: 1; min-width: 0; }
+    .todo-item .todo-btn {
+      flex-shrink: 0;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .todo-item.play { background: rgba(0,179,136,0.07); }
+    .todo-item.play .todo-dot { background: var(--accent); }
+    .todo-item.play .todo-btn { background: var(--accent); color: #fff; }
+    .todo-item.danger { background: rgba(244,91,105,0.06); }
+    .todo-item.danger .todo-dot { background: var(--danger); }
+    .todo-item.danger .todo-btn { background: var(--danger); color: #fff; }
+    .todo-ok {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    /* 升级入口摘要 */
+    .upgrade-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .upgrade-summary .us-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      padding: 7px 10px;
+      border-radius: 10px;
+      background: var(--bg);
+    }
+    .upgrade-summary .us-row .us-label { color: var(--text-muted); }
+    .upgrade-summary .us-row .us-value { font-weight: 700; color: var(--text); }
+    .upgrade-summary .us-row .us-value.highlight { color: var(--gold); }
+    .upgrade-summary .us-cta {
+      margin-top: 4px;
+      width: 100%;
+      padding: 9px 0;
+      border-radius: 999px;
+      border: none;
       background: linear-gradient(135deg, #f5b042, #f7d06a);
       color: #5a3e00;
       font-size: 0.82rem;
-      font-weight: 800;
-      padding: 6px 14px 6px 12px;
-      border-radius: 0 0 0 12px;
-      box-shadow: 0 4px 16px rgba(245, 176, 66, 0.5);
-      z-index: 5;
+      font-weight: 700;
       cursor: pointer;
-      pointer-events: auto;
-      letter-spacing: 0.5px;
-      line-height: 1.3;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .upgrade-summary .us-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(245,176,66,0.3); }
+    .upgrade-summary .us-cta:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+    /* 全屏升级管理 */
+    .upgrade-modal-card { max-width: 1200px !important; width: 90vw !important; min-width: 600px !important; overflow: visible !important; }
+    .upgrade-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 4px 4px 8px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 800px) {
+      .upgrade-list { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .upgrade-list { grid-template-columns: 1fr; }
+    }
+    .upgrade-list::-webkit-scrollbar { width: 5px; }
+    .upgrade-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+    .upgrade-row {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 0 0 14px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(27,45,71,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .upgrade-row.ready-card {
+      border-color: rgba(0,179,136,0.35);
+      box-shadow: 0 4px 20px rgba(0,179,136,0.08), 0 2px 8px rgba(27,45,71,0.04);
+    }
+    .upgrade-row:hover {
+      box-shadow: 0 8px 28px rgba(27,45,71,0.10);
+    }
+    .upgrade-row.ready-card:hover {
+      box-shadow: 0 8px 32px rgba(0,179,136,0.14), 0 4px 16px rgba(27,45,71,0.08);
+      border-color: var(--accent);
+    }
+    .upgrade-row .ur-avatar-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .upgrade-row .ur-avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .upgrade-row .ur-avatar-wrap .ur-lv-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.2px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+    .upgrade-row .ur-header {
+      padding: 8px 12px 0;
+      text-align: center;
+      z-index: 1;
+    }
+    .upgrade-row .ur-header .ur-name {
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .upgrade-row .ur-compare-lv-row {
       display: flex;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
+      gap: 6px;
+    }
+    .upgrade-row .ur-compare {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin: 8px 12px 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(0,179,136,0.05);
+      z-index: 1;
+    }
+    .upgrade-row .ur-compare-lv-row .ur-lv-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(94,111,131,0.08);
+      white-space: nowrap;
+    }
+    .upgrade-row .ur-compare-lv-row .ur-arrow-icon {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .upgrade-row .ur-compare-lv-row .ur-lv-tag.next {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .upgrade-row .ur-rate-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .upgrade-row .ur-rate-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      background: rgba(94,111,131,0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .upgrade-row .ur-rate-row .ur-rate {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .upgrade-row .ur-conditions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0 12px 12px;
+      z-index: 1;
+    }
+    .upgrade-row .ur-cond {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .upgrade-row .ur-cond .ur-cond-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .upgrade-row .ur-cond .ur-cond-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+    .upgrade-row .ur-cond .ur-cond-status {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 6px;
+      white-space: nowrap;
+      cursor: default;
+      border: 1px solid transparent;
+      line-height: 1;
+    }
+    .ur-cond-status.done {
+      background: rgba(0,179,136,0.12);
+      color: var(--accent);
+      border-color: rgba(0,179,136,0.25);
+    }
+    .ur-cond-status.pending {
+      background: rgba(245,176,66,0.12);
+      color: #b8860b;
+      border-color: rgba(245,176,66,0.25);
+      cursor: pointer;
+    }
+    .upgrade-row .ur-cond .ur-cond-bar-wrap {
+      position: relative;
+      display: block;
+      height: 20px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #a0aab5;
+    }
+    .upgrade-row .ur-cond .ur-cond-bar-wrap i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+    .ur-cond-bar-wrap i.fill-amber {
+      background: linear-gradient(90deg, #00b388, #00d9a3);
+    }
+    .upgrade-row .ur-cond .ur-cond-bar-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      letter-spacing: 0.3px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .ur-btn {
+      width: calc(100% - 24px);
+      margin: 0 12px;
+      padding: 10px 0;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s ease;
+      z-index: 1;
+      position: relative;
+      letter-spacing: 0.2px;
+    }
+    .ur-btn.ready {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, #00b388, #00c99e);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,179,136,0.2);
+    }
+    .ur-btn.ready:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,179,136,0.3);
+      background: linear-gradient(135deg, #00c49a, #00d9ad);
+    }
+    .ur-btn.not-ready {
+      border-color: var(--border);
+      color: var(--text-sub);
+      cursor: pointer;
+      background: rgba(0,0,0,0.02);
+    }
+    .ur-btn.not-ready:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .ur-empty { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.88rem; }
+
+    /* ── 主分栏 ── */
+    .studio-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 132px;
+      gap: 16px;
+      align-items: stretch;
     }
 
-    /* ===== 派遣角色 Modal ===== */
+    .deploy-panel, .pool-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .panel-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-head .count {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .panel-head .link-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 2px 4px;
+    }
+    .panel-head .link-btn:hover { text-decoration: underline; }
+
+    /* ── 演出中的角色：5 槽位固定一行，内容区高度恒定（保证候场底边与升级对齐） ── */
+    #deployArea { height: 330px; display: flex; }
+    .deploy-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+    }
+    .slot {
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      height: 100%;
+      min-height: 190px;
+    }
+    /* 空槽位卡片同样撑满固定高度，与占用槽位完全一致 */
+    .deploy-grid .slot.empty {
+      height: 100%;
+      min-height: 190px;
+    }
+    .slot.occupied { background: var(--surface); }
+    .slot.occupied:hover { box-shadow: var(--shadow-sm); }
+    .slot-av-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e8f5ef, #d4ece5);
+    }
+    .slot-av-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .slot-lv {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.3px;
+      z-index: 2;
+    }
+    .slot-dot {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #b9c6d3;
+      border: 2px solid rgba(255,255,255,0.9);
+      z-index: 2;
+    }
+    .slot-dot.on { background: #22c55e; box-shadow: 0 0 5px rgba(34,197,94,0.6); }
+    .slot-body { padding: 8px 10px 7px; }
+    .slot-name {
+      font-weight: 700;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 5px;
+    }
+    .slot-energy {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+    .slot-bar {
+      flex: 1;
+      height: 4px;
+      background: #eaf4ee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .slot-bar i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.8s ease, background 0.4s ease;
+    }
+    .slot-bar i.green { background: linear-gradient(90deg, #00b388, #00d9a3); }
+    .slot-bar i.yellow { background: linear-gradient(90deg, #f5b042, #f5d042); }
+    .slot-bar i.red { background: linear-gradient(90deg, #f45b69, #f47882); }
+    .slot-energy-icon { flex-shrink: 0; }
+    .slot-energy-num {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .slot-out {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .slot-out span { color: var(--text-sub); font-weight: 400; }
+    .slot-actions {
+      display: flex;
+      gap: 5px;
+      padding: 0 10px 10px;
+      margin-top: auto;
+    }
+    .slot-actions .mini-btn {
+      flex: 1;
+      padding: 5px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.68rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      font-family: inherit;
+    }
+    .mini-btn.charge, .mini-btn.rest { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .mini-btn.charge:hover, .mini-btn.rest:hover { border-color: var(--accent); color: var(--accent); }
+    .mini-btn.disabled { background: var(--surface); color: #aeb9c6; border: 1px solid var(--border); cursor: default; pointer-events: none; }
+    .mini-btn.primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .mini-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,179,136,0.25); color: #fff; }
+
+    /* ── 空槽位：舞台聚光 + 人物虚影 ── */
+    .slot.empty {
+      border: none;
+      background:
+        radial-gradient(130% 90% at 50% 8%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 40%, rgba(222,234,247,0.25) 100%),
+        linear-gradient(180deg, #f0f7ff 0%, #eaf3fc 100%);
+      cursor: pointer;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 120px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .slot.empty:hover {
+      background:
+        radial-gradient(130% 90% at 50% 8%, #ffffff 0%, rgba(0,179,136,0.10) 48%, rgba(222,234,247,0.35) 100%);
+    }
+    .slot-empty-vision {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding-top: 16px;
+    }
+    .slot-empty-vision .ve-glow {
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 84%;
+      height: 52px;
+      background: radial-gradient(ellipse at center, rgba(0,179,136,0.22) 0%, rgba(255,255,255,0) 72%);
+      border-radius: 50%;
+      filter: blur(5px);
+      pointer-events: none;
+    }
+    .slot-empty-vision svg {
+      position: relative;
+      width: 72%;
+      opacity: 0.78;
+      filter: drop-shadow(0 3px 8px rgba(27,45,71,0.10));
+      transition: all 0.25s ease;
+    }
+    .slot.empty:hover .slot-empty-vision svg {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      filter: drop-shadow(0 4px 12px rgba(0,179,136,0.25));
+    }
+    .slot-empty-vision .ve-label {
+      position: relative;
+      margin-top: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      letter-spacing: 0.05em;
+      transition: color 0.25s ease;
+    }
+    .slot.empty:hover .ve-label { color: var(--accent); }
+
+    /* ── 批量操作栏 ── */
+    .batch-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .batch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .batch-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .batch-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .batch-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,179,136,0.3); color: #fff; }
+    .batch-btn.charge, .batch-btn.rest { background: var(--surface); color: var(--text); border-color: var(--border); }
+    .batch-btn.charge:hover, .batch-btn.rest:hover { border-color: var(--accent); color: var(--accent); }
+    .batch-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+    /* ── 候场角色：窄竖排卡 + 单列滚动（面板高度固定，列表内部滚动） ── */
+    .pool-panel { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; }
+    .pool-wrapper { flex: 1; min-height: 0; overflow: hidden; position: relative; }
+    .pool-list {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    .pool-list::-webkit-scrollbar { width: 4px; }
+    .pool-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+    .pool-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 10px 6px 9px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .pool-open-all {
+      display: block;
+      width: 100%;
+      padding: 7px 0;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .pool-open-all:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .pool-item:hover { border-color: var(--accent); background: var(--surface); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+    .pool-item.upgradable { border-color: rgba(245, 176, 66, 0.55); box-shadow: 0 0 0 1px rgba(245, 176, 66, 0.3); }
+    .pool-av-wrap { position: relative; width: 52px; height: 52px; }
+    .pool-av-wrap img { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: block; }
+    .pool-lv {
+      position: absolute;
+      bottom: -4px;
+      left: -4px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.52rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.4;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .pool-up-dot {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--surface);
+      box-shadow: 0 0 4px rgba(245, 176, 66, 0.6);
+    }
+    .pool-out {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+      margin-top: 3px;
+    }
+    .pool-out .u { font-size: 0.58rem; font-weight: 500; color: var(--text-sub); }
+    .pool-energy { width: 100%; margin-top: 1px; }
+    .pool-energy .bar {
+      display: block;
+      height: 4px;
+      background: #e3ecf4;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .pool-energy .bar i { display: block; height: 100%; border-radius: 999px; }
+    .pool-energy .bar i.green { background: linear-gradient(90deg, #00b388, #00d9a3); }
+    .pool-energy .bar i.yellow { background: linear-gradient(90deg, #f5b042, #f5d042); }
+    .pool-energy .bar i.red { background: linear-gradient(90deg, #f45b69, #f47882); }
+    .pool-name {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      margin-top: 2px;
+    }
+    .pool-empty {
+      text-align: center;
+      padding: 36px 6px;
+      color: var(--text-sub);
+      font-size: 0.78rem;
+    }
+
+    /* ── 底部链接 ── */
+    .studio-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .studio-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .studio-links a:hover { color: var(--accent); }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      margin-top: 24px;
+      text-align: center;
+      padding: 60px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    .empty-state h3 { margin: 0 0 8px; font-size: 1.2rem; }
+    .empty-state p { margin: 0 0 20px; color: var(--text-muted); line-height: 1.7; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 24px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,179,136,0.25); }
+
+    /* ── 全屏选角色：排序 chips + 网格 ── */
+    .picker-chips {
+      display: flex;
+      gap: 6px;
+      margin: 4px 0 14px;
+      flex-wrap: wrap;
+    }
+    .picker-chip {
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .picker-chip.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+    .picker-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .picker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding: 2px 2px 4px;
+      margin-bottom: 16px;
+    }
+    .picker-grid::-webkit-scrollbar { width: 4px; }
+    .picker-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+    @media (min-width: 640px) {
+      .picker-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .picker-card {
+      position: relative;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .picker-card:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+    .picker-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+    .picker-card .pc-lv {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #fff;
+      z-index: 2;
+    }
+    .picker-card .pc-up {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: #b8860b;
+      background: rgba(245,176,66,0.9);
+      z-index: 2;
+    }
+    .picker-card .pc-body { padding: 8px 10px 10px; }
+    .picker-card .pc-name {
+      font-weight: 700;
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .picker-card .pc-energy { margin-bottom: 5px; }
+    .picker-card .pc-energy .bar {
+      display: block;
+      height: 4px;
+      background: #e3ecf4;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .picker-card .pc-energy .bar i { display: block; height: 100%; border-radius: 999px; }
+    .picker-card .pc-energy .bar i.green { background: var(--accent); }
+    .picker-card .pc-energy .bar i.yellow { background: var(--warning); }
+    .picker-card .pc-energy .bar i.red { background: var(--danger); }
+    .picker-card .pc-out {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 7px;
+    }
+    .picker-card .pc-out span { color: var(--text-sub); font-weight: 400; }
+    .picker-card .pc-btn {
+      width: 100%;
+      padding: 6px 0;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .picker-card .pc-btn.gold { background: linear-gradient(135deg, #f5b042, #f7d06a); color: #5a3e00; }
+    .picker-card .pc-btn:hover { opacity: 0.88; }
+    .picker-empty { text-align: center; padding: 30px 0; color: var(--text-muted); font-size: 0.85rem; grid-column: 1 / -1; }
+
+    /* ===== Modal ===== */
     .modal-overlay {
       position: fixed; inset: 0; z-index: 9999;
       display: flex; align-items: center; justify-content: center;
@@ -887,25 +1098,27 @@
       background: var(--surface);
       border-radius: 28px;
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
       box-shadow: 0 40px 80px rgba(27,45,71,0.2);
       overflow: hidden;
       transform: scale(0.95) translateY(10px);
       transition: transform 0.3s ease;
-      padding: 28px;
+      padding: 24px 24px 26px;
     }
     .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
-    .modal-card h2 { margin: 0 0 8px; font-size: 1.25rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .modal-card .modal-sub { color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 20px; }
+    .modal-card h2 { margin: 0 0 4px; font-size: 1.2rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .modal-card .modal-sub { color: var(--text-muted); font-size: 0.88rem; text-align: center; margin-bottom: 14px; }
+    .modal-card.wide { max-width: 1200px; width: 90vw; }
     .modal-card .modal-btn {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border-radius: 999px;
       border: none;
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
+      font-family: inherit;
     }
     .modal-card .modal-btn.confirm {
       background: linear-gradient(135deg, #05DF72, #00BBA7);
@@ -943,67 +1156,6 @@
     .consume-item .ci-name { font-size:0.85rem; font-weight:600; flex:1; }
     .consume-item .ci-lv { font-size:0.72rem; color:var(--text-muted); }
     .consume-empty { text-align:center; color:var(--text-muted); font-size:0.82rem; padding:16px 0; }
-
-    /* ===== 体力问号 tooltip ===== */
-    .energy-help-wrap {
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      flex-shrink:0;
-    }
-    .energy-help-btn {
-      width:18px;height:18px;border-radius:50%;
-      background:rgba(0,0,0,0.05);border:none;
-      font-size:0.65rem;color:var(--text-muted);
-      cursor:pointer;display:grid;place-items:center;
-      transition:all 0.2s;
-    }
-    .energy-help-btn:hover { background:var(--accent-soft); color:var(--accent); }
-    .energy-help-tip {
-      position:absolute;
-      bottom:calc(100% + 8px);
-      right:-8px;
-      width:260px;
-      padding:14px 16px;
-      border-radius:14px;
-      background:rgba(26,35,47,0.95);
-      backdrop-filter:blur(8px);
-      color:#e8edf4;
-      font-size:0.78rem;
-      line-height:1.7;
-      font-weight:500;
-      box-shadow:0 8px 28px rgba(27,45,71,0.25);
-      opacity:0;
-      visibility:hidden;
-      transition:all 0.2s ease;
-      pointer-events:none;
-      z-index:20;
-      text-align:left;
-    }
-    .energy-help-tip::after {
-      content:'';
-      position:absolute;
-      bottom:-6px;
-      right:12px;
-      width:0;height:0;
-      border-left:6px solid transparent;
-      border-right:6px solid transparent;
-      border-top:6px solid rgba(26,35,47,0.95);
-    }
-    .energy-help-wrap:hover .energy-help-tip {
-      opacity:1;
-      visibility:visible;
-    }
-
-    /* ===== 体力行改进 ===== */
-    .energy-row-ext {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:6px;
-      margin-top:2px;
-    }
 
     /* ===== 规则弹窗内容区 ===== */
     .rules-modal-scroll {
@@ -1089,522 +1241,135 @@
       color: var(--text-muted);
       margin-top: 4px;
     }
-  
-/* ── Desktop Header ── */
-.desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
-.desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
-.desktop-header .dh-search:focus-within{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
-.desktop-header .dh-search svg{width:16px;height:16px;flex-shrink:0;color:rgba(0,0,0,0.35)}
-.desktop-header .dh-search input{flex:1;border:none;outline:none;background:none;font-size:13px;color:#13202e;font-family:inherit}
-.desktop-header .dh-search input::placeholder{color:rgba(0,0,0,0.35)}.dh-search-dropdown{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);padding:16px;z-index:200;max-height:360px;overflow-y:auto}.dh-search-dropdown.show{display:block}.dh-search-dropdown .sd-section{margin-bottom:14px}.dh-search-dropdown .sd-section:last-child{margin-bottom:0}.dh-search-dropdown .sd-section-title{font-size:12px;font-weight:600;color:#5e6f83;margin-bottom:8px}.dh-search-dropdown .sd-tags{display:flex;flex-wrap:wrap;gap:6px}.dh-search-dropdown .sd-tag{padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;color:#13202e;cursor:pointer;transition:all .15s;border:none;font-family:inherit}.dh-search-dropdown .sd-tag:hover{background:rgba(0,179,136,.1);color:#00b388}.dh-search-dropdown .sd-list{display:flex;flex-direction:column;gap:2px}.dh-search-dropdown .sd-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;color:#13202e;cursor:pointer;transition:background .1s}.dh-search-dropdown .sd-item:hover{background:rgba(0,0,0,.03)}.dh-search-dropdown .sd-item .sd-del{color:#5e6f83;font-size:11px;padding:2px 6px;border-radius:4px;cursor:pointer;border:none;background:none}.dh-search-dropdown .sd-item .sd-del:hover{color:#f45b69}.desktop-header .dh-search-btn{padding:3px 12px;height:auto;border-radius:6px;border:none;background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid transparent;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-right:-4px}.desktop-header .dh-search-btn:hover{background:#00b388;color:#fff;border-color:#00b388}
-.desktop-header .dh-icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;flex-shrink:0}
-.desktop-header .dh-icon-btn:hover{background:rgba(0,0,0,0.06);color:#13202e}
-.desktop-header .dh-icon-btn svg{width:20px;height:20px}
-.desktop-header .dh-notify-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff2d55;border:1.5px solid #fff}
-.desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
-.desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
-.desktop-header .dh-publish-btn svg{width:16px;height:16px}
-.desktop-header .auth-container{display:flex;align-items:center}
-.desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
-.desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
-@media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
-@media(max-width:768px){.desktop-header{display:none}}
 
-</style>
-  <!-- Deployment Panel Styles - 游戏派遣编队 UI -->
-  <style>
-    /* ── 派遣面板容器 ── */
-    .deployment-panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px 24px;
-      margin-bottom: 28px;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow 0.3s ease;
-    }
-    .deployment-panel:hover {
-      box-shadow: var(--shadow-md);
-    }
-    .deploy-panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .deploy-panel-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1rem;
-      font-weight: 700;
-    }
-    .deploy-panel-title .count-badge {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-    .deploy-panel-stats {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .deploy-panel-stats .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .deploy-panel-stats .stat-value {
-      font-weight: 700;
-      color: var(--accent);
-    }
+    /* ── Desktop Header ── */
+    .desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
+    .desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
+    .desktop-header .dh-search:focus-within{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
+    .desktop-header .dh-search svg{width:16px;height:16px;flex-shrink:0;color:rgba(0,0,0,0.35)}
+    .desktop-header .dh-search input{flex:1;border:none;outline:none;background:none;font-size:13px;color:#13202e;font-family:inherit}
+    .desktop-header .dh-search input::placeholder{color:rgba(0,0,0,0.35)}.dh-search-dropdown{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);padding:16px;z-index:200;max-height:360px;overflow-y:auto}.dh-search-dropdown.show{display:block}.dh-search-dropdown .sd-section{margin-bottom:14px}.dh-search-dropdown .sd-section:last-child{margin-bottom:0}.dh-search-dropdown .sd-section-title{font-size:12px;font-weight:600;color:#5e6f83;margin-bottom:8px}.dh-search-dropdown .sd-tags{display:flex;flex-wrap:wrap;gap:6px}.dh-search-dropdown .sd-tag{padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;color:#13202e;cursor:pointer;transition:all .15s;border:none;font-family:inherit}.dh-search-dropdown .sd-tag:hover{background:rgba(0,179,136,.1);color:#00b388}.dh-search-dropdown .sd-list{display:flex;flex-direction:column;gap:2px}.dh-search-dropdown .sd-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;color:#13202e;cursor:pointer;transition:background .1s}.dh-search-dropdown .sd-item:hover{background:rgba(0,0,0,.03)}.dh-search-dropdown .sd-item .sd-del{color:#5e6f83;font-size:11px;padding:2px 6px;border-radius:4px;cursor:pointer;border:none;background:none}.dh-search-dropdown .sd-item .sd-del:hover{color:#f45b69}.desktop-header .dh-search-btn{padding:3px 12px;height:auto;border-radius:6px;border:none;background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid transparent;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-right:-4px}.desktop-header .dh-search-btn:hover{background:#00b388;color:#fff;border-color:#00b388}
+    .desktop-header .dh-icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;flex-shrink:0}
+    .desktop-header .dh-icon-btn:hover{background:rgba(0,0,0,0.06);color:#13202e}
+    .desktop-header .dh-icon-btn svg{width:20px;height:20px}
+    .desktop-header .dh-notify-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff2d55;border:1.5px solid #fff}
+    .desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
+    .desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
+    .desktop-header .dh-publish-btn svg{width:16px;height:16px}
+    .desktop-header .auth-container{display:flex;align-items:center}
+    .desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+    .desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
+    @media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
+    @media(max-width:768px){.desktop-header{display:none}}
 
-    /* ── 5 槽位布局 ── */
-    .deploy-slots {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 1024px) {
-      .deploy-slots { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .deploy-slots { grid-template-columns: repeat(2, 1fr); }
-    }
+    /* ── 移动端：左竖条候场池 + 右焦点在演卡 ── */
+    @media(max-width: 720px) {
+      body { background: #F2F2F7; padding: 44px 0 80px; }
+      .app-shell { padding: 0; }
 
-    /* ── 单个槽位 ── */
-    .deploy-slot {
-      position: relative;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      overflow: hidden;
-      transition: all 0.25s ease;
-      cursor: pointer;
-      user-select: none;
-    }
-    .deploy-slot:hover {
+      .trust-risk-badge { margin: 0 16px 12px; }
 
-      box-shadow: var(--shadow-sm);
-    }
+      .studio-topbar { padding: 4px 16px 10px; gap: 6px 12px; }
+      .studio-topbar h1 { font-size: 1.3rem; }
+      .studio-status { font-size: 0.74rem; gap: 10px; }
+      .studio-status strong { font-size: 0.95rem; }
 
-    /* ── 占用槽位 ── */
-    .deploy-slot.occupied {
-      background: var(--surface);
-      border-width: 3px;
-    }
-    .deploy-slot.occupied.border-green {
-      border-color: var(--accent);
-    }
-    .deploy-slot.occupied.border-green:hover {
-      border-color: #00d9a3;
-    }
-    .deploy-slot.occupied.border-yellow {
-      border-color: var(--warning);
-    }
-    .deploy-slot.occupied.border-yellow:hover {
-      border-color: #f5d042;
-    }
-    .deploy-slot.occupied.border-red {
-      border-color: var(--danger);
-    }
-    .deploy-slot.occupied.border-red:hover {
-      border-color: #f47882;
-    }
+      .studio-main { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 0 10px; align-items: stretch; }
 
-    /* ── 槽位顶部头像区域 ── */
-    .deploy-slot-top {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-      background: linear-gradient(135deg, #e8f5ef, #d4ece5);
-    }
-    .deploy-slot-top img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .deploy-slot.occupied:hover .deploy-slot-top img {
+      /* 左：候场池 */
+      .pool-panel {
+        border-radius: 16px;
+        padding: 12px 10px 14px;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        max-height: 58vh;
+      }
+      .pool-panel .panel-head { margin-bottom: 10px; }
+      .pool-panel .panel-head h2 { font-size: 0.82rem; flex-direction: column; align-items: flex-start; gap: 2px; }
+      .pool-panel .panel-head .count { font-size: 0.68rem; }
+      .pool-panel .panel-head .link-btn { font-size: 0.68rem; padding: 0; }
+      .pool-wrapper { flex: 1; min-height: 0; overflow: hidden; position: relative; }
+      .pool-list {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        overflow-y: auto;
+      }
+      .pool-item { padding: 8px 4px 7px; gap: 3px; }
+      .pool-av-wrap { width: 42px; height: 42px; }
+      .pool-av-wrap img { border-radius: 10px; }
+      .pool-out { font-size: 0.72rem; margin-top: 2px; }
+      .pool-name { font-size: 0.55rem; }
 
-    }
-    .deploy-slot-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 40%);
-      pointer-events: none;
-    }
-    /* 槽位内等级标签 */
-    .deploy-slot-level {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-size: 0.6rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 0.3px;
-      backdrop-filter: blur(4px);
-      pointer-events: none;
-      z-index: 2;
-    }
-    /* 体力百分比标签（头像右上） */
-    .deploy-slot-energy-tag {
-      position: absolute;
-      bottom: 6px;
-      right: 6px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.6rem;
-      font-weight: 700;
-      color: #fff;
-      backdrop-filter: blur(4px);
-      pointer-events: none;
-      z-index: 2;
-    }
-    .deploy-slot-energy-tag.high { background: rgba(0,179,136,0.75); }
-    .deploy-slot-energy-tag.medium { background: rgba(255,159,44,0.8); }
-    .deploy-slot-energy-tag.low { background: rgba(244,91,105,0.8); }
-    .deploy-slot-energy-tag.exhausted { background: rgba(94,111,131,0.8); }
+      /* 右：焦点在演卡 */
+      #deployArea { height: 420px; }
+      .deploy-panel {
+        border-radius: 16px;
+        padding: 14px 14px 16px;
+        display: flex;
+        flex-direction: column;
+      }
+      .deploy-panel .panel-head { margin-bottom: 10px; }
+      .deploy-panel .panel-head h2 { font-size: 0.84rem; }
+      .deploy-panel .panel-head .count { font-size: 0.7rem; }
+      .focus-stage { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; }
+      .focus-stage .focus-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255,255,255,0.9);
+        color: #3C3C43;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        z-index: 5;
+      }
+      .focus-stage .focus-arrow.left { left: -6px; }
+      .focus-stage .focus-arrow.right { right: -6px; }
+      .focus-stage .focus-arrow:disabled { opacity: 0.3; cursor: default; }
+      .focus-card { width: 100%; }
+      /* 复用 slot 样式作为焦点卡 */
+      .focus-card .slot { min-width: 0; }
+      .focus-card .slot-av-wrap { aspect-ratio: 1 / 1.05; }
+      .focus-card .slot-av-wrap img { width: 100%; height: 100%; object-fit: cover; }
+      .focus-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .focus-dots i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #c9d5e0;
+      }
+      .focus-dots i.on { background: var(--accent); }
 
-    /* ── 槽位底部信息区 ── */
-    .deploy-slot-body {
-      padding: 10px 12px 12px;
-    }
-    .deploy-slot-name {
-      font-weight: 700;
-      font-size: 0.85rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 6px;
-    }
-    /* 体力行（条 + 百分比） */
-    .deploy-slot-energy-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 6px;
-    }
-    .deploy-slot-energy-bar {
-      flex: 1;
-      height: 4px;
-      background: #eaf4ee;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .deploy-slot-energy-bar .fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.8s ease, background 0.4s ease;
-    }
-    .deploy-slot-energy-bar .fill.green { background: linear-gradient(90deg, #00b388, #00d9a3); }
-    .deploy-slot-energy-bar .fill.yellow { background: linear-gradient(90deg, #f5b042, #f5d042); }
-    .deploy-slot-energy-bar .fill.red { background: linear-gradient(90deg, #f45b69, #f47882); }
-    .deploy-slot-energy-bar .fill.gray { background: #c5d0db; }
-    .deploy-slot-energy-pct {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      white-space: nowrap;
-      min-width: 32px;
-      text-align: right;
-    }
+      .batch-actions { margin: 12px 12px 0; }
+      .batch-btn { flex: 1; justify-content: center; padding: 8px 4px; font-size: 0.74rem; }
 
-    /* 状态 + 产出行 */
-    .deploy-slot-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.7rem;
-    }
-    .deploy-slot-status {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-weight: 600;
-    }
-    .deploy-slot-status .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-    .deploy-slot-status .dot.mining { background: #22c55e; box-shadow: 0 0 4px rgba(34,197,94,0.5); }
-    .deploy-slot-status .dot.exhausted { background: var(--text-sub); }
-    .deploy-slot-output {
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .deploy-slot-output .muted {
-      color: var(--text-sub);
-      font-weight: 400;
-    }
-    /* ── 槽位底部操作按钮组 ── */
-    .deploy-slot-actions {
-      display: flex;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .deploy-slot-actions button {
-      flex: 1;
-      padding: 5px 0;
-      border-radius: 8px;
-      border: none;
-      font-size: 0.7rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: center;
-    }
-    .deploy-slot-charge-btn {
-      background: rgba(255,159,44,0.1);
-      color: var(--warning);
-      border: 1px solid rgba(255,159,44,0.2) !important;
-    }
-    .deploy-slot-charge-btn.yellow {
-      background: var(--warning);
-      color: #fff;
-      border-color: var(--warning) !important;
-    }
-    .deploy-slot-charge-btn.yellow:hover {
-      background: #f5c542;
-    }
-    .deploy-slot-charge-btn.soft,
-    .deploy-slot-rest-btn.soft {
-      opacity: 0.6;
-    }
-    .deploy-slot-charge-btn.soft:hover,
-    .deploy-slot-rest-btn.soft:hover {
-      opacity: 0.85;
-    }
-    .deploy-slot-rest-btn {
-      background: rgba(244,91,105,0.06);
-      color: var(--danger);
-      border: 1px solid rgba(244,91,105,0.2) !important;
-    }
-    .deploy-slot-rest-btn.red {
-      background: var(--danger);
-      color: #fff;
-      border-color: var(--danger) !important;
-    }
-    .deploy-slot-rest-btn.red:hover {
-      background: #f47882;
-    }
-    .deploy-slot-rest-btn.soft:hover {
-      opacity: 0.6;
-    }
+      .sub-panels { grid-template-columns: 1fr; gap: 10px; margin: 0; }
+      .todo-panel, .upgrade-panel { padding: 14px 14px 15px; height: 152px; overflow: hidden; }
 
-    /* ── 空槽位 ── */
-    .deploy-slot.empty {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 160px;
-      border: 2px dashed var(--border);
-      background: rgba(222,234,247,0.25);
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .deploy-slot.empty:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
-    .deploy-slot-empty-icon {
-      font-size: 1.8rem;
-      color: var(--text-sub);
-      margin-bottom: 6px;
-      transition: transform 0.3s ease;
-    }
-    .deploy-slot.empty:hover .deploy-slot-empty-icon {
-      transform: scale(1.2);
-      color: var(--accent);
-    }
-    .deploy-slot-empty-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-sub);
-    }
+      .studio-links { padding: 0 16px 20px; margin-top: 16px; gap: 16px; font-size: 0.75rem; }
 
-    /* ── 槽位操作菜单（点击展开） ── */
-    .deploy-slot-menu {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      z-index: 10;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
-    }
-    .deploy-slot.occupied:hover .deploy-slot-menu {
-      opacity: 1;
-      visibility: visible;
-    }
-    .deploy-slot-menu-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(4px);
-      color: #fff;
-      font-size: 0.75rem;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      transition: background 0.2s;
-    }
-    .deploy-slot-menu-btn:hover {
-      background: rgba(0,0,0,0.6);
-    }
-    /* 悬浮气泡菜单 */
-    .deploy-slot-tooltip {
-      position: absolute;
-      bottom: calc(100% + 6px);
-      right: 0;
-      background: rgba(26,35,47,0.96);
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
-      padding: 6px;
-      box-shadow: 0 8px 24px rgba(27,45,71,0.25);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
-      z-index: 20;
-      min-width: 120px;
-    }
-    .deploy-slot.occupied:hover .deploy-slot-tooltip {
-      opacity: 1;
-      visibility: visible;
-    }
-    .deploy-slot-tooltip-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 8px;
-      color: #e8edf4;
-      font-size: 0.78rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.15s;
-      white-space: nowrap;
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: left;
-    }
-    .deploy-slot-tooltip-item:hover {
-      background: rgba(255,255,255,0.08);
-    }
-    .deploy-slot-tooltip-item.danger {
-      color: #f45b69;
-    }
-    .deploy-slot-tooltip-item.danger:hover {
-      background: rgba(244,91,105,0.12);
-    }
-    .deploy-slot-tooltip::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      right: 10px;
-      width: 0;
-      height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 5px solid rgba(26,35,47,0.96);
-    }
+      .empty-state { margin: 0 16px; padding: 44px 20px; }
 
-    /* ── 派遣选人 Modal 定制 ── */
-    .slot-picker-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 320px;
-      overflow-y: auto;
-      margin: 12px 0 16px;
+      .picker-grid { grid-template-columns: repeat(3, 1fr); }
     }
-    .slot-picker-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .slot-picker-item:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
-    .slot-picker-item img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-    .slot-picker-item .spi-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .slot-picker-item .spi-name {
-      font-weight: 700;
-      font-size: 0.88rem;
-    }
-    .slot-picker-item .spi-detail {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-    .slot-picker-item .spi-energy {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-sub);
-      white-space: nowrap;
-    }
-    .slot-picker-empty {
-      text-align: center;
-      padding: 30px 0;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    /* ── 派遣面板内动画 ── */
-    @keyframes slot-pop-in {
-      0% { transform: scale(0.85); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .deploy-slot.just-dispatched {
-      animation: slot-pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-  
-/* ── Desktop Header ── */
-.desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
-.desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
-.desktop-header .dh-search:focus-within{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
-.desktop-header .dh-search svg{width:16px;height:16px;flex-shrink:0;color:rgba(0,0,0,0.35)}
-.desktop-header .dh-search input{flex:1;border:none;outline:none;background:none;font-size:13px;color:#13202e;font-family:inherit}
-.desktop-header .dh-search input::placeholder{color:rgba(0,0,0,0.35)}.dh-search-dropdown{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);padding:16px;z-index:200;max-height:360px;overflow-y:auto}.dh-search-dropdown.show{display:block}.dh-search-dropdown .sd-section{margin-bottom:14px}.dh-search-dropdown .sd-section:last-child{margin-bottom:0}.dh-search-dropdown .sd-section-title{font-size:12px;font-weight:600;color:#5e6f83;margin-bottom:8px}.dh-search-dropdown .sd-tags{display:flex;flex-wrap:wrap;gap:6px}.dh-search-dropdown .sd-tag{padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;color:#13202e;cursor:pointer;transition:all .15s;border:none;font-family:inherit}.dh-search-dropdown .sd-tag:hover{background:rgba(0,179,136,.1);color:#00b388}.dh-search-dropdown .sd-list{display:flex;flex-direction:column;gap:2px}.dh-search-dropdown .sd-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;color:#13202e;cursor:pointer;transition:background .1s}.dh-search-dropdown .sd-item:hover{background:rgba(0,0,0,.03)}.dh-search-dropdown .sd-item .sd-del{color:#5e6f83;font-size:11px;padding:2px 6px;border-radius:4px;cursor:pointer;border:none;background:none}.dh-search-dropdown .sd-item .sd-del:hover{color:#f45b69}.desktop-header .dh-search-btn{padding:3px 12px;height:auto;border-radius:6px;border:none;background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid transparent;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-right:-4px}.desktop-header .dh-search-btn:hover{background:#00b388;color:#fff;border-color:#00b388}
-.desktop-header .dh-icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;flex-shrink:0}
-.desktop-header .dh-icon-btn:hover{background:rgba(0,0,0,0.06);color:#13202e}
-.desktop-header .dh-icon-btn svg{width:20px;height:20px}
-.desktop-header .dh-notify-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff2d55;border:1.5px solid #fff}
-.desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
-.desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
-.desktop-header .dh-publish-btn svg{width:16px;height:16px}
-.desktop-header .auth-container{display:flex;align-items:center}
-.desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
-.desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
-@media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
-@media(max-width:768px){.desktop-header{display:none}}
-
-</style>
+  </style>
 </head>
 <body>
 <div class="desktop-header" id="desktopHeader">
@@ -1613,11 +1378,11 @@
     <input type="text" id="dhSearchInput" placeholder="搜索短剧、角色、用户..." autocomplete="off"><button class="dh-search-btn" id="dhSearchBtn">搜索</button>
     <div class="dh-search-dropdown" id="dhSearchDropdown">
       <div class="sd-section" id="sdHotSection">
-        <div class="sd-section-title">🔥 热门搜索</div>
+        <div class="sd-section-title">热门搜索</div>
         <div class="sd-tags" id="sdHotTags"></div>
       </div>
       <div class="sd-section" id="sdRecentSection" style="display:none">
-        <div class="sd-section-title">🕐 最近搜索</div>
+        <div class="sd-section-title">最近搜索</div>
         <div class="sd-list" id="sdRecentList"></div>
       </div>
     </div>
@@ -1634,102 +1399,148 @@
 
   <div class="app-shell">
 
-    <!-- ===== Page Header ===== -->
+    <!-- ===== 风险标签 ===== -->
     <div style="padding:0 0 8px 0;">
-      <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;">⚠️ 风险账户</span>
+      <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;"><span class="dot"></span> 风险账户</span>
     </div>
 
-    <!-- ===== 挖矿产出汇总（顶部通栏） ===== -->
-    <div class="mining-summary" style="margin-top:-12px;margin-bottom:12px;">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;" onclick="openWeeklyPoolModal()">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周奖池</div>
-          <div style="font-size:1.2rem;font-weight:700;color:var(--text);" id="msWeeklyPool">0</div>
-          <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;" onclick="openNominalOutputModal()">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周名义产出</div>
-          <div style="font-size:1.2rem;font-weight:700;color:var(--text);" id="msWeeklyOutput">0</div>
-          <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;" onclick="openActualOutputModal()">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:500;margin-bottom:3px;">本周预估产出</div>
-          <div style="font-size:1.2rem;font-weight:700;color:var(--accent);" id="msWeeklyTotal">0</div>
-          <div style="font-size:0.65rem;color:var(--text-sub);">STORY  ⓘ</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 2px;">
-        <span style="font-size:0.82rem;font-weight:600;color:var(--text-muted);cursor:pointer;" onclick="openRulesModal()">📖 挖矿规则</span>
-        <a href="rewards.html" style="font-size:0.75rem;color:var(--accent);text-decoration:none;font-weight:600;">每周结算记录 →</a>
+    <!-- ===== 顶部状态 ===== -->
+    <div class="studio-topbar">
+      <div class="studio-status">
+        <span>本周片酬 <strong id="statusWeekly">0.0</strong> STORY</span>
       </div>
     </div>
 
-    <!-- ===== 派遣面板（5 槽位编队） ===== -->
-    <div class="deployment-panel" id="deploymentPanel">
-      <div class="deploy-panel-header">
-        <div class="deploy-panel-title">
-          <span>派遣中的角色</span>
+    <!-- ===== 主区：在演 + 候场 ===== -->
+    <div class="studio-main">
+
+      <div class="main-col">
+
+      <!-- 演出中的角色 -->
+      <section class="deploy-panel">
+        <div class="panel-head">
+          <h2>演出中 <span class="status-dots" style="margin-left:6px;" id="statusDots"></span></h2>
         </div>
-        <div class="deploy-panel-stats">
-          
+        <div id="deployArea"><!-- 桌面：5 格一行；移动：焦点卡 + 箭头 + 圆点 --></div>
+        <div class="batch-actions">
+          <button class="batch-btn primary" id="batchPerformBtn" onclick="openBatchModal('perform')">一键演出</button>
+          <button class="batch-btn charge" id="batchChargeBtn" onclick="openBatchModal('charge')">一键补充</button>
+          <button class="batch-btn rest" id="batchRestBtn" onclick="openBatchModal('rest')">一键休息</button>
         </div>
+      </section>
+
+      <!-- ===== 常驻双面板：待办 + 升级管理入口 ===== -->
+      <div class="sub-panels">
+
+        <!-- 待办（常驻，只提示演出/补充） -->
+        <section class="todo-panel">
+          <div class="sub-panel-head">
+            <h3>待办</h3>
+            <span class="count" id="todoCount"></span>
+          </div>
+          <div class="todo-list" id="todoList"></div>
+        </section>
+
+        <!-- 升级管理（常驻入口） -->
+        <section class="upgrade-panel">
+          <div class="sub-panel-head">
+            <h3>✦ 升级</h3>
+          </div>
+          <div class="upgrade-summary" id="upgradeSummary"></div>
+        </section>
+
       </div>
-      <div class="deploy-slots" id="deploySlots">
-        <!-- 由 JS 动态渲染 5 个槽位 -->
-      </div>
+
+      </div><!-- /.main-col -->
+
+      <!-- 候场角色 -->
+      <section class="pool-panel">
+        <div class="panel-head">
+          <h2>候场</h2>
+          <span class="count" id="poolCount">0</span>
+        </div>
+        <div class="pool-wrapper">
+          <div class="pool-list" id="poolList"></div>
+        </div>
+        <div style="margin-top:10px;padding:0 4px;">
+          <button class="pool-open-all" onclick="openFullPicker()">查看全部</button>
+        </div>
+      </section>
+
     </div>
 
-    <!-- ===== Actor Grid Section ===== -->
-    <div class="section-header">
-      <h2>我的角色 <span class="count-badge" id="actorCount">(0)</span></h2>
-      <div style="width:100%;"></div>
-      <div class="sort-container" style="margin-top:-10px;">
-        <span class="sort-tag active" data-sort="level-desc">等级最高</span>
-        <span class="sort-tag" data-sort="power-desc">算力最高</span>
-  
-        <span class="sort-tag" data-sort="energy-desc">体力最高</span>
-      </div>
+    <!-- ===== 底部入口 ===== -->
+    <div class="studio-links">
+      <a onclick="openRulesModal()">演出规则</a>
+      <a onclick="openActualOutputModal()">片酬与奖池</a>
+      <a href="rewards.html">每周结算</a>
     </div>
 
-    <div class="actor-grid" id="actorGrid">
-      <!-- 由 JS 动态渲染 -->
-    </div>
-
+    <!-- ===== 空状态（无角色） ===== -->
     <div class="empty-state" id="emptyState" style="display:none;">
-      <div class="empty-icon">🎬</div>
       <h3>还没有签约角色</h3>
       <p>去 NFT 市场浏览角色形象，Mint 一个属于你自己的角色 NFT，开始经营经纪公司。</p>
-      <a class="btn-primary" href="actors.html" style="text-decoration:none;">🎭 签约角色</a>
+      <a class="btn-primary" href="actors.html" style="text-decoration:none;">签约角色</a>
     </div>
 
   </div>
 
-  <!-- ===== Slot Picker Modal (空槽位点击选人) ===== -->
-  <div class="modal-overlay" id="slotPickerModal">
-    <div class="modal-card">
-      <h2>选择派遣角色</h2>
-      <p class="modal-sub">选择一位空闲中的角色进行派遣</p>
-      <div class="slot-picker-list" id="slotPickerList">
-        <!-- 由 JS 渲染 -->
+  <!-- ===== 全屏选角色（查看全部 / 空槽位点击） ===== -->
+  <div class="modal-overlay" id="fullPickerModal">
+    <div class="modal-card wide">
+      <h2>候选角色</h2>
+      <div class="picker-chips">
+        <button class="picker-chip active" data-sort="power-desc">按片酬</button>
+        <button class="picker-chip" data-sort="level-desc">按等级</button>
+        <button class="picker-chip" data-sort="energy-desc">按体力</button>
       </div>
-      <button class="modal-btn cancel" onclick="closeSlotPicker()">取消</button>
+      <div class="picker-grid" id="fullPickerGrid"></div>
+      <button class="modal-btn cancel" onclick="closeFullPicker()">关闭</button>
     </div>
   </div>
 
-  <!-- ===== 派遣角色 Modal ===== -->
+  <!-- ===== 升级管理全屏弹窗 ===== -->
+  <div class="modal-overlay" id="upgradeModal">
+    <div class="modal-card upgrade-modal-card" style="max-width:88vw;width:min(95vw,1200px);">
+      <h2>升级管理</h2>
+      <p class="modal-sub" id="upgradeModalSub">可升级角色</p>
+      <div class="picker-chips">
+        <button class="picker-chip active" data-up-sort="upgrade">可升级优先</button>
+        <button class="picker-chip" data-up-sort="power-desc">按片酬</button>
+        <button class="picker-chip" data-up-sort="level-desc">按等级</button>
+        <button class="picker-chip" data-up-sort="gap">按缺口</button>
+      </div>
+      <div class="upgrade-list" id="upgradeList"></div>
+      <button class="modal-btn cancel" onclick="closeUpgradeModal()">关闭</button>
+    </div>
+  </div>
+
+  <!-- ===== 批量操作确认弹窗 ===== -->
+  <div class="modal-overlay" id="batchModal">
+    <div class="modal-card">
+      <h2 id="batchModalTitle">批量操作</h2>
+      <p class="modal-sub" id="batchModalUnit"></p>
+      <div style="background:var(--bg);border-radius:14px;padding:18px;margin-bottom:18px;text-align:center;">
+        <div style="font-size:1.4rem;font-weight:800;color:var(--text);" id="batchModalCount">0</div>
+      </div>
+      <button class="modal-btn confirm" id="batchModalConfirmBtn" onclick="confirmBatch()">确认</button>
+      <button class="modal-btn cancel" onclick="closeBatchModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- ===== 演出角色 Modal ===== -->
   <div class="modal-overlay" id="stakeModal">
     <div class="modal-card">
-      <h2>派遣角色</h2>
+      <h2>安排演出</h2>
       <div style="text-align:center;margin-bottom:4px;">
         <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="modalStakeActorName">—</div>
         <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="modalStakeActorLevel">—</div>
       </div>
-      <p class="modal-sub" style="font-size:0.88rem;color:var(--text-muted);margin-bottom:22px;border-top:1px solid var(--border);padding-top:16px;">该角色将自动进行质押挖矿，持续为你产出 STORY 收益。注意：每个整点消耗 1 点体力，体力耗尽则停止产出。</p>
-      <button class="modal-btn confirm" onclick="confirmStake()">确认派遣</button>
+      <p class="modal-sub" style="font-size:0.88rem;color:var(--text-muted);margin-bottom:20px;border-top:1px solid var(--border);padding-top:14px;">该角色演出时自动产生片酬收益。演出中每小时消耗 1 点体力，体力耗尽则停止产出。</p>
+      <button class="modal-btn confirm" onclick="confirmStake()">确认安排</button>
       <button class="modal-btn cancel" onclick="closeStakeModal()">取消</button>
     </div>
   </div>
-
 
   <!-- ===== Level Detail Modal (咖位升级) ===== -->
   <div class="modal-overlay" id="levelModal">
@@ -1737,41 +1548,35 @@
       <h2 id="modalLevelTitle">咖位详情</h2>
       <p class="modal-sub" id="modalLevelActor">—</p>
 
-      <!-- Current Level -->
       <div style="display:flex;align-items:center;gap:14px;background:var(--bg);border-radius:16px;padding:16px;margin-bottom:16px;">
         <span style="font-size:2rem;font-weight:800;" id="modalLevelCurrent">Lv1</span>
         <div>
           <div style="font-weight:700;font-size:1rem;" id="modalLevelName">群演</div>
-          <div style="font-size:0.82rem;color:var(--text-muted);">挖矿系数 ×<span id="modalLevelCoeff">1.0</span></div>
-          <div style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;" id="modalLevelEnergy">⚡ 体力 0/0</div>
+          <div style="font-size:0.82rem;color:var(--text-muted);">片酬系数 ×<span id="modalLevelCoeff">1.0</span></div>
+          <div style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;" id="modalLevelEnergy">体力 0/0</div>
         </div>
       </div>
 
-      <!-- Upgrade Comparison: Before → After -->
       <div id="modalLevelComparison" style="background:linear-gradient(135deg,rgba(0,179,136,0.06),rgba(0,179,136,0.03));border-radius:16px;padding:16px;margin-bottom:16px;">
         <div style="font-weight:700;font-size:0.9rem;margin-bottom:12px;text-align:center;">升级前后对比</div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <!-- Before -->
           <div style="flex:1;text-align:center;">
             <div style="font-size:1.2rem;font-weight:800;color:var(--text);" id="modalCompareBeforeLv">Lv1</div>
             <div style="font-size:0.8rem;font-weight:600;margin-top:2px;color:var(--text);" id="modalCompareBeforeName">群演</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">挖矿系数 ×<span id="modalCompareBeforeCoeff">1.0</span></div>
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">片酬系数 ×<span id="modalCompareBeforeCoeff">1.0</span></div>
           </div>
-          <!-- Arrow -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
             <div style="font-size:1.5rem;color:var(--accent);font-weight:700;line-height:1;">→</div>
             <div style="font-size:0.65rem;color:var(--accent);font-weight:600;background:var(--accent-soft);padding:2px 8px;border-radius:999px;white-space:nowrap;">升级</div>
           </div>
-          <!-- After -->
           <div style="flex:1;text-align:center;">
             <div style="font-size:1.2rem;font-weight:800;color:var(--accent);" id="modalCompareAfterLv">Lv2</div>
             <div style="font-size:0.8rem;font-weight:600;margin-top:2px;color:var(--accent);" id="modalCompareAfterName">配角</div>
-            <div style="font-size:0.75rem;color:var(--accent);margin-top:4px;">挖矿系数 ×<span id="modalCompareAfterCoeff">2.2</span></div>
+            <div style="font-size:0.75rem;color:var(--accent);margin-top:4px;">片酬系数 ×<span id="modalCompareAfterCoeff">2.2</span></div>
           </div>
         </div>
       </div>
 
-      <!-- Next Level Requirement -->
       <div id="modalLevelRequirement" style="background:rgba(255,159,44,0.06);border-radius:16px;padding:16px;margin-bottom:16px;border:1px dashed rgba(255,159,44,0.2);">
         <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;">下一级升级要求</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
@@ -1790,15 +1595,11 @@
         </div>
       </div>
 
-      <!-- 可选同IP同等级分身列表 -->
       <div class="consume-list" id="consumeList">
         <div class="consume-list-title">选择要消耗的同IP同等级角色 <span class="checked-count" id="consumeCheckedCount">0/2</span></div>
-        <div class="consume-grid" id="consumeGrid">
-          <!-- 由 JS 渲染 -->
-        </div>
+        <div class="consume-grid" id="consumeGrid"></div>
       </div>
 
-      <!-- Upgrade Button (hidden if max level) -->
       <button class="modal-btn confirm" id="modalLevelUpBtn" onclick="upgradeLevel()" style="display:none;">升级到下一级</button>
       <div id="modalLevelMaxMsg" style="text-align:center;padding:24px 12px;background:linear-gradient(135deg, rgba(245,176,66,0.12), rgba(245,208,66,0.08));border-radius:16px;margin-bottom:16px;display:none;">
         <div style="font-size:1.2rem;font-weight:800;color:var(--gold);">已达到顶级咖位</div>
@@ -1808,7 +1609,7 @@
     </div>
   </div>
 
-  <!-- ===== Charge Modal (付费片酬恢复) ===== -->
+  <!-- ===== Charge Modal (补充体力) ===== -->
   <div class="modal-overlay" id="chargeModal">
     <div class="modal-card">
       <h2>恢复体力</h2>
@@ -1831,8 +1632,8 @@
   <!-- ===== 实际产出公式说明弹窗 ===== -->
   <div class="modal-overlay" id="actualOutputModal">
     <div class="modal-card" style="max-width:440px;">
-      <h2>本周预估产出</h2>
-      <p class="modal-sub" style="margin-bottom:12px;">预估产出受周硬顶和单地址封顶约束，本周结束时产生实际收益</p>
+      <h2>本周预估片酬</h2>
+      <p class="modal-sub" style="margin-bottom:12px;">预估片酬受周硬顶和单地址封顶约束，本周结束时产生实际收益</p>
       <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
         <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -1868,7 +1669,7 @@
         <div style="font-size:0.85rem;font-weight:600;color:var(--text);">我的所有角色的周累计名义产出累加</div>
         <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">单卡公式见下方说明 ↓</div>
       </div>
-      <p class="modal-sub" style="margin-bottom:12px;">单卡名义产出 = 单卡小时权重 × R_base × 有效挖矿时长</p>
+      <p class="modal-sub" style="margin-bottom:12px;">单卡名义产出 = 单卡小时权重 × R_base × 有效演出时长</p>
       <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
         <div style="font-size:0.85rem;line-height:1.8;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -1877,15 +1678,15 @@
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
             <span>角色算力</span>
-            <span style="font-weight:700;color:var(--text);text-align:right;">= IP算力 × 挖矿系数 × CP系数 × Trust2</span>
+            <span style="font-weight:700;color:var(--text);text-align:right;">= IP算力 × 片酬系数 × CP系数 × Trust2</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
             <span>R_base</span>
             <span style="font-weight:700;color:var(--accent);">1 STORY / 单位权重 / 小时</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;">
-            <span>有效挖矿时长</span>
-            <span style="font-weight:700;color:var(--text);">质押中且体力 > 0 的累计时长</span>
+            <span>有效演出时长</span>
+            <span style="font-weight:700;color:var(--text);">演出中且体力 > 0 的累计时长</span>
           </div>
         </div>
       </div>
@@ -1897,7 +1698,7 @@
   <div class="modal-overlay" id="weeklyPoolModal">
     <div class="modal-card" style="max-width:440px;">
       <h2>本周奖池</h2>
-      <p class="modal-sub" style="margin-bottom:12px;">即 STORY 挖矿的每周硬性发放上限（周硬顶）</p>
+      <p class="modal-sub" style="margin-bottom:12px;">即 STORY 的每周硬性发放上限（周硬顶）</p>
       <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
         <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -1905,7 +1706,7 @@
             <span style="font-weight:700;color:var(--accent);" id="weeklyPoolTotal">2,115,385 STORY</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>├ 本周质押奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（75%）</span></span>
+            <span>├ 本周演出奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（75%）</span></span>
             <span style="font-weight:700;color:var(--accent);" id="weeklyPoolStaking">1,586,539 STORY</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -1931,18 +1732,16 @@
     <div class="modal-card" style="max-width:420px;padding:24px 20px 20px;">
       <h2 style="font-size:1.15rem;margin:0 0 4px;">角色算力详情</h2>
       <div id="powerModalActorName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
-      <div id="powerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;">
-        <!-- 由 JS 动态填充 -->
-      </div>
+      <div id="powerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;"></div>
       <button class="modal-btn cancel" onclick="closeActorPowerModal()" style="width:100%;">关闭</button>
     </div>
   </div>
 
-  <!-- ===== 召回确认弹窗 ===== -->
+  <!-- ===== 休息确认弹窗 ===== -->
   <div class="modal-overlay" id="recallConfirmModal">
     <div class="modal-card" style="text-align:center;">
-      <h2>确认召回</h2>
-      <p class="modal-sub" style="margin-bottom:8px;">角色休息期间暂停挖矿产出，体力会随时间恢复。</p>
+      <h2>确认休息</h2>
+      <p class="modal-sub" style="margin-bottom:8px;">角色休息期间暂停片酬产出，体力会随时间恢复。</p>
       <div style="text-align:center;margin-bottom:16px;">
         <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="recallModalName">—</div>
         <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="recallModalLevel">—</div>
@@ -1952,36 +1751,34 @@
     </div>
   </div>
 
-  <!-- ===== 挖矿规则说明弹窗 ===== -->
+  <!-- ===== 演出规则说明弹窗 ===== -->
   <div class="modal-overlay" id="rulesModal">
     <div class="modal-card" style="max-width:560px;padding:24px;">
-      <h2>派遣挖矿怎么玩</h2>
+      <h2>经营玩法</h2>
       <div class="rules-modal-scroll">
 
-        <!-- 第一步 -->
         <div class="rules-section">
-          <h3>派遣</h3>
-          <p>把空闲的角色<strong>「派遣」</strong>到下面的 5 个槽位里，他就开始自动挖矿、产出 STORY。</p>
+          <h3>安排演出</h3>
+          <p>把候场的角色<strong>「安排演出」</strong>到 5 个在演位里，他开始自动产生片酬（STORY）。</p>
           <ul>
-            <li>每人最多同时派遣 5 位角色</li>
-            <li>同一个角色 IP 也可以多张卡一起派遣</li>
-            <li>派遣后每小时消耗 1 点体力，体力 > 0 就一直产出，体力 = 0 就停工</li>
+            <li>最多同时 5 位角色在演</li>
+            <li>同一个角色 IP 也可以多张卡同时演出</li>
+            <li>演出中每小时消耗 1 点体力，体力 > 0 就一直产出，体力 = 0 就停工</li>
           </ul>
         </div>
 
-        <!-- 第二步 -->
         <div class="rules-section">
-          <h3>产出公式</h3>
-          <div class="rules-formula" style="text-align:center;font-size:0.92rem;">单卡小时产出 = 角色算力 × 1 STORY</div>
+          <h3>片酬公式</h3>
+          <div class="rules-formula" style="text-align:center;font-size:0.92rem;">单卡小时片酬 = 角色算力 × 1 STORY</div>
           <p style="margin-top:10px;">其中：</p>
           <table class="rules-table">
-            <tr><td style="width:90px;font-weight:600;">角色算力</td><td>= IP算力 × 挖矿系数 × CP系数 × Trust2</td></tr>
+            <tr><td style="width:90px;font-weight:600;">角色算力</td><td>= IP算力 × 片酬系数 × CP系数 × Trust2</td></tr>
             <tr><td style="font-weight:600;">IP 算力</td><td>= 价格系数 × 热度系数 × Trust1</td></tr>
           </table>
           <p style="margin-top:14px;font-weight:600;">各系数说明</p>
           <table class="rules-table">
             <tr><th>系数</th><th>决定因素</th><th>说明</th></tr>
-            <tr><td>挖矿系数</td><td>咖位</td><td>Lv1=1.0 · Lv2=2.2 · Lv3=5.0 · Lv4=11 · Lv5=24</td></tr>
+            <tr><td>片酬系数</td><td>咖位</td><td>Lv1=1.0 · Lv2=2.2 · Lv3=5.0 · Lv4=11 · Lv5=24</td></tr>
             <tr><td>价格系数</td><td>发行价 P0</td><td>P0≤100U 线性增长 · P0>100U 渐近上限 1.6</td></tr>
             <tr><td>热度系数</td><td>近期剧表现</td><td>完播、点赞、收藏、评论越多，热度越高</td></tr>
             <tr><td>CP 系数</td><td>—</td><td>暂未开放</td></tr>
@@ -1990,11 +1787,10 @@
           <div class="rules-example">
             <strong>示例</strong><br>
             林梦瑶 Lv3 主角 · P0=120U（价格系数 ≈1.5046）· 热度 3.5<br>
-            → 每小时产出 = 5.0 × 1.5046 × 3.5 × 1 = <strong>26.3 STORY</strong>
+            → 每小时片酬 = 5.0 × 1.5046 × 3.5 × 1 = <strong>26.3 STORY</strong>
           </div>
         </div>
 
-        <!-- 第三步 -->
         <div class="rules-section">
           <h3>结算分配</h3>
           <p>每周全平台有一个总奖池（周硬顶），初始约 2,115,385 STORY，之后逐周递减（每周 × 0.99572）。</p>
@@ -2013,14 +1809,13 @@
           </div>
         </div>
 
-        <!-- 第四步 -->
         <div class="rules-section">
           <h3>体力管理</h3>
           <table class="rules-table">
             <tr><th>状态</th><th>体力变化</th><th>产出</th></tr>
-            <tr><td>派遣中（挖矿）</td><td>每小时 −1</td><td>正常产出</td></tr>
+            <tr><td>演出中</td><td>每小时 −1</td><td>正常片酬</td></tr>
             <tr><td>体力耗尽</td><td>不再变化</td><td>产出为 0</td></tr>
-            <tr><td>召回休息</td><td>每小时 +1（自动恢复）</td><td>暂停产出</td></tr>
+            <tr><td>休息</td><td>每小时 +1（自动恢复）</td><td>暂停产出</td></tr>
             <tr><td>补充体力（付费）</td><td>瞬间回满 168</td><td>恢复产出</td></tr>
           </table>
           <p style="margin-top:10px;">体力只看"有没有"：168 点和 1 点体力的每小时产出一样多。</p>
@@ -2028,7 +1823,7 @@
           <ul>
             <li>只能一键加满，不能只买 10 点</li>
             <li>价格只看咖位，与剩余体力无关</li>
-            <li>越靠近 0 补充越划算——同样价格买到最多的挖矿时长</li>
+            <li>越靠近 0 补充越划算——同样价格买到最多的演出时长</li>
           </ul>
           <p style="margin-top:12px;font-weight:600;">补充价格</p>
           <table class="rules-table">
@@ -2041,10 +1836,9 @@
           </table>
         </div>
 
-        <!-- 第五步 -->
         <div class="rules-section">
           <h3>升级咖位</h3>
-          <p>3 张同角色同咖位的卡 + 合成费 + 该角色累计完播达标 = 升 1 级。升级后挖矿系数暴涨，每小时产出翻倍甚至翻几倍。</p>
+          <p>3 张同角色同咖位的卡 + 合成费 + 该角色累计完播达标 = 升 1 级。升级后片酬系数暴涨，每小时产出翻倍甚至翻几倍。</p>
           <p style="margin-top:12px;font-weight:600;">升级路径</p>
           <table class="rules-table">
             <tr><th>升级路径</th><th>累计完播门槛</th><th>合成费</th></tr>
@@ -2055,9 +1849,8 @@
           </table>
         </div>
 
-        <!-- 总结 -->
         <div class="rules-section" style="background:var(--bg);border-radius:12px;padding:16px;">
-          <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">派人 → 产出 → 盯体力 → 领钱。体力快没了就补充或召回休息，热度靠角色的剧表现提升，升级让产出起飞。</p>
+          <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">排期 → 演出 → 盯体力 → 领片酬。体力快没了就补充或安排休息，热度靠角色的剧表现提升，升级让片酬起飞。</p>
         </div>
 
       </div>
@@ -2067,14 +1860,13 @@
 
   <!-- Toast -->
   <div class="toast-notification" id="toastNotification">
-    <span class="toast-icon">💡</span>
     <span id="toastMessage"></span>
   </div>
 
   <script src="auth.js"></script>
   <script>
     // ============================================================
-    //  咖位配置 (同 v2.2 经济模型)
+    //  咖位配置
     // ============================================================
     const LEVEL_CONFIG = [
       null,
@@ -2086,43 +1878,30 @@
     ];
 
     // ============================================================
-    //  价格系数计算函数
-    //  P0: 发行IP时的初始价格（USDC）
+    //  价格系数
     // ============================================================
     function computePriceCoefficient(P0) {
       if (P0 == null || P0 <= 0) return 0;
       const x = P0 / 100;
-      if (P0 <= 100) {
-        return x;  // 线性：P0=0→0, P0=100→1
-      }
-      // P0 > 100：渐近线 1.6
+      if (P0 <= 100) return x;
       const powX = Math.pow(x, 1.3);
       return 1.6 * powX / (powX + 0.6);
     }
 
     // ============================================================
-    //  IP算力 = 价格系数 × 热度系数 × Trust1
-    //  角色算力 = IP算力 × 挖矿系数 × CP系数 × Trust2
+    //  IP算力 / 角色算力
     // ============================================================
     function computeIPPower(actor) {
       const priceCoeff = computePriceCoefficient(actor.initPrice || 0);
       const heat = actor.heat || 0;
-      const trust1 = 1.0;
-      return priceCoeff * heat * trust1;
+      return priceCoeff * heat * 1.0;
     }
 
     function computeActorPower(actor) {
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      const ipPower = computeIPPower(actor);
-      const miningCoeff = levelCfg.miningCoeff;
-      const cpCoeff = 1.0;
-      const trust2 = 1.0;
-      return ipPower * miningCoeff * cpCoeff * trust2;
+      return computeIPPower(actor) * levelCfg.miningCoeff * 1.0 * 1.0;
     }
 
-    // ============================================================
-    //  获取角色算力的各项分解参数（供弹窗展示）
-    // ============================================================
     function getActorPowerBreakdown(actor) {
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
       const priceCoeff = computePriceCoefficient(actor.initPrice || 0);
@@ -2131,6 +1910,7 @@
       const ipPower = priceCoeff * heat * trust1;
       const cpCoeff = 1.0;
       const trust2 = 1.0;
+      const actorPower = computeActorPower(actor);
       return {
         miningCoeff: levelCfg.miningCoeff,
         levelName: levelCfg.name,
@@ -2142,8 +1922,8 @@
         ipPower: ipPower,
         cpCoeff: cpCoeff,
         trust2: trust2,
-        actorPower: computeActorPower(actor),
-        hourlyOutput: computeActorPower(actor),
+        actorPower: actorPower,
+        hourlyOutput: actorPower,
       };
     }
 
@@ -2159,95 +1939,21 @@
       { playsRequired: 1000000, cost: 80  },
     ];
 
-    // ============================================================
-    //  派遣系统常量
-    // ============================================================
     const MAX_STAKING_SLOTS = 5;
 
     // ============================================================
-    //  模拟数据：用户持有的子级角色 NFT
+    //  模拟数据
     // ============================================================
     let MY_ACTORS = [
-      {
-        id: '#Su-001', name: '苏婉清',
-        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'suvanqing', ipCode: 'C001', level: 2,
-        energy: 150, energyMax: 168,
-        heat: 2.4, dailyStory: 18.5, cumulativeStory: 342.8, cumulativePlays: 50000,
-        isStaking: true, stakingDays: 5, status: 'active',
-        todayOutput: 3.8, outputRate: 0,
-        initPrice: 80,   // P0: 发行IP时设定的初始价格（USDC）
-      },
-      {
-        id: '#Su-002', name: '苏婉清',
-        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'suvanqing', ipCode: 'C001', level: 2,
-        energy: 120, energyMax: 168,
-        heat: 2.0, dailyStory: 15.0, cumulativeStory: 120.0, cumulativePlays: 30000,
-        isStaking: false, stakingDays: 0, status: 'idle',
-        todayOutput: 0, outputRate: 0,
-        initPrice: 80,
-      },
-      {
-        id: '#Su-003', name: '苏婉清',
-        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'suvanqing', ipCode: 'C001', level: 2,
-        energy: 80, energyMax: 168,
-        heat: 1.8, dailyStory: 12.0, cumulativeStory: 95.0, cumulativePlays: 20000,
-        isStaking: false, stakingDays: 0, status: 'idle',
-        todayOutput: 0, outputRate: 0,
-        initPrice: 80,
-      },
-      {
-        id: '#Li-001', name: '李云飞',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'liyunfei', ipCode: 'C002', level: 1,
-        energy: 30, energyMax: 168,
-        heat: 0.8, dailyStory: 0.8, cumulativeStory: 15.2, cumulativePlays: 8000,
-        isStaking: true, stakingDays: 2, status: 'active',
-        todayOutput: 0.1, outputRate: 0,
-        initPrice: 45,
-      },
-      {
-        id: '#Lin-001', name: '林梦瑶',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'linmengyao', ipCode: 'C003', level: 3,
-        energy: 140, energyMax: 168,
-        heat: 3.5, dailyStory: 87.5, cumulativeStory: 2150.0, cumulativePlays: 68000,
-        isStaking: true, stakingDays: 12, status: 'active',
-        todayOutput: 12.4, outputRate: 0,
-        initPrice: 120,
-      },
-      {
-        id: '#Zhao-001', name: '赵无极',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'zhaowuji', ipCode: 'C004', level: 5,
-        energy: 100, energyMax: 168,
-        heat: 5.2, dailyStory: 286.0, cumulativeStory: 8200.0, cumulativePlays: 350000,
-        isStaking: false, stakingDays: 0, status: 'idle',
-        todayOutput: 0, outputRate: 0,
-        initPrice: 200,
-      },
-      {
-        id: '#Shang-001', name: '上官婉儿',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'shangguan', ipCode: 'C005', level: 1,
-        energy: 65, energyMax: 168,
-        heat: 0.6, dailyStory: 0, cumulativeStory: 0, cumulativePlays: 200,
-        isStaking: false, stakingDays: 0, status: 'paused',
-        initPrice: 30,
-        todayOutput: 0, outputRate: 0,
-      },
-      {
-        id: '#Luna-001', name: 'Luna',
-        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&h=400&q=80',
-        parentIP: 'shangguan', ipCode: 'C005', level: 1,
-        energy: 50, energyMax: 168,
-        heat: 1.0, dailyStory: 12.5, cumulativeStory: 38.0, cumulativePlays: 5000,
-        isStaking: false, stakingDays: 0, status: 'paused',
-        todayOutput: 0, outputRate: 0,
-      },
-
+      { id: '#Su-001', name: '苏婉清', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'suvanqing', ipCode: 'C001', level: 2, energy: 150, energyMax: 168, heat: 2.1, dailyStory: 18.5, cumulativeStory: 342.8, cumulativePlays: 50000, isStaking: true, stakingDays: 5, status: 'active', todayOutput: 3.8, outputRate: 0, initPrice: 80 },
+      { id: '#Su-002', name: '苏婉清', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'suvanqing', ipCode: 'C001', level: 2, energy: 120, energyMax: 168, heat: 2.1, dailyStory: 15.0, cumulativeStory: 120.0, cumulativePlays: 50000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 80 },
+      { id: '#Su-003', name: '苏婉清', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'suvanqing', ipCode: 'C001', level: 2, energy: 80, energyMax: 168, heat: 2.1, dailyStory: 12.0, cumulativeStory: 95.0, cumulativePlays: 50000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 80 },
+      { id: '#Li-001', name: '李云飞', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'liyunfei', ipCode: 'C002', level: 1, energy: 30, energyMax: 168, heat: 0.8, dailyStory: 0.8, cumulativeStory: 15.2, cumulativePlays: 8000, isStaking: true, stakingDays: 2, status: 'active', todayOutput: 0.1, outputRate: 0, initPrice: 45 },
+      { id: '#Lin-001', name: '林梦瑶', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'linmengyao', ipCode: 'C003', level: 3, energy: 140, energyMax: 168, heat: 3.5, dailyStory: 87.5, cumulativeStory: 2150.0, cumulativePlays: 68000, isStaking: true, stakingDays: 12, status: 'active', todayOutput: 12.4, outputRate: 0, initPrice: 120 },
+      { id: '#Zhao-001', name: '赵无极', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'zhaowuji', ipCode: 'C004', level: 5, energy: 100, energyMax: 168, heat: 5.2, dailyStory: 286.0, cumulativeStory: 8200.0, cumulativePlays: 350000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 200 },
+      { id: '#Shang-001', name: '上官婉儿', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'shangguan', ipCode: 'C005', level: 1, energy: 65, energyMax: 168, heat: 0.8, dailyStory: 0, cumulativeStory: 0, cumulativePlays: 5000, isStaking: false, stakingDays: 0, status: 'paused', todayOutput: 0, outputRate: 0, initPrice: 30 },
+      { id: '#Luna-001', name: 'Luna', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'shangguan', ipCode: 'C005', level: 1, energy: 50, energyMax: 168, heat: 0.8, dailyStory: 12.5, cumulativeStory: 38.0, cumulativePlays: 5000, isStaking: false, stakingDays: 0, status: 'paused', todayOutput: 0, outputRate: 0, initPrice: 30 },
+      { id: '#Su-004', name: '苏婉清', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'suvanqing', ipCode: 'C001', level: 2, energy: 100, energyMax: 168, heat: 2.1, dailyStory: 11.0, cumulativeStory: 80.0, cumulativePlays: 50000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 80 },
     ];
 
     // ============================================================
@@ -2259,406 +1965,639 @@
     let selectedConsumeIds = [];
     let pendingChargeActorId = null;
     let pendingSlotPickerCallback = null;
+    let pendingRecallActorId = null;
+    let currentPickerSort = 'power-desc';
+    let currentFocusIndex = 0;
+
+    // 空槽位人物剪影（头 + 肩 + 底座，蓝灰色系在浅色舞台背景下更清晰）
+    const FIGURE_VISION_SVG =
+      '<svg viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<circle cx="60" cy="46" r="30" fill="#8fa3bb" fill-opacity="0.9"/>'
+      + '<path d="M14 148 C16 108 32 92 60 92 C88 92 104 108 106 148 Z" fill="#8fa3bb" fill-opacity="0.72"/>'
+      + '<path d="M16 150 C20 104 60 86 104 104 L88 120 L32 120 Z" fill="#8fa3bb" fill-opacity="0.38"/>'
+      + '<circle cx="60" cy="46" r="30" stroke="rgba(255,255,255,0.55)" stroke-width="2"/>'
+      + '<path d="M14 148 C16 108 32 92 60 92 C88 92 104 108 106 148 Z" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>'
+      + '</svg>';
 
     // ============================================================
-    //  Toast
+    //  Toast / 工具
     // ============================================================
-    function showToast(msg, icon) {
+    function showToast(msg) {
       const t = document.getElementById('toastNotification');
       document.getElementById('toastMessage').textContent = msg;
-      if (icon) t.querySelector('.toast-icon').textContent = icon;
       t.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ============================================================
-    //  格式化数字
-    // ============================================================
     function formatNumber(n) {
       if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
       if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
       return n.toLocaleString();
     }
 
-    // ============================================================
-    //  获取当前派遣中的角色（插槽数据）
-    // ============================================================
     function getDeployedActors() {
       return MY_ACTORS.filter(a => a.isStaking).slice(0, MAX_STAKING_SLOTS);
     }
 
-    // ============================================================
-    //  能量状态判断
-    // ============================================================
-    function getEnergyState(energy, max) {
-      const pct = max > 0 ? (energy / max) * 100 : 0;
-      if (pct >= 50) return { cls: 'high', tagCls: 'high', barCls: 'green', label: '全速' };
-      if (pct > 0) return { cls: 'medium', tagCls: 'medium', barCls: 'yellow', label: '衰减' };
-      return { cls: 'low', tagCls: 'exhausted', barCls: 'gray', label: '耗尽' };
+    function canUpgrade(actor) {
+      if (!actor || actor.level >= 5) return false;
+      const threshold = LEVEL_UP_THRESHOLDS[actor.level + 1];
+      if (!threshold) return false;
+      return (actor.cumulativePlays || 0) >= threshold.playsRequired;
     }
 
-    function getStatusInfo(status) {
-      switch(status) {
-        case 'active': return { label: '挖矿中', dot: 'mining' };
-        case 'exhausted': return { label: '已耗尽', dot: 'exhausted' };
-        default: return { label: '闲置', dot: 'idle' };
-      }
+    function energyBarCls(energy) {
+      return energy <= 0 ? 'red' : energy <= 8 ? 'yellow' : 'green';
     }
 
     // ============================================================
-    //  排序状态
+    //  渲染：顶部状态
     // ============================================================
-    let currentSort = 'level-desc';
-
-    function applySort(list) {
-      const s = currentSort;
-      const sorted = [...list];
-      switch (s) {
-        case 'level-desc':
-          sorted.sort((a, b) => (b.level || 0) - (a.level || 0));
-          break;
-        case 'heat-desc':
-          sorted.sort((a, b) => (b.heat || 0) - (a.heat || 0));
-          break;
-        case 'power-desc':
-          sorted.sort((a, b) => computeActorPower(b) - computeActorPower(a));
-          break;
-        case 'energy-desc':
-          sorted.sort((a, b) => (b.energy || 0) - (a.energy || 0));
-          break;
-        default:
-          break;
-      }
-      return sorted;
-    }
-
-    // ============================================================
-    //  轮播索引（移动端）
-    // ============================================================
-    let currentCarouselIndex = 0;
-
-    // ============================================================
-    //  渲染：派遣槽位
-    // ============================================================
-    function renderDeploySlots() {
-      var isMobile = window.innerWidth <= 640;
-      var container = document.getElementById('deploySlots');
+    function renderTopbar() {
       var deployed = getDeployedActors();
-      var count = document.getElementById('deployCount');
-      if (count) { count.textContent = `(${deployed.length}/${MAX_STAKING_SLOTS})`; }
+      var weeklyEl = document.getElementById('statusWeekly');
 
-      if (isMobile) {
-        // ── 移动端：触控滑动轮播 ──
-        if (currentCarouselIndex >= MAX_STAKING_SLOTS) currentCarouselIndex = 0;
-
-        var slidesHtml = '';
-        for (var i = 0; i < MAX_STAKING_SLOTS; i++) {
-          var actor = deployed[i];
-          if (actor) {
-            var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-            var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
-            var barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
-            slidesHtml += '<div class="deploy-carousel-slide" data-index="' + i + '">'
-              + '<div class="deploy-slot occupied border-' + barCls + '" style="border-radius:16px;box-shadow:none;background:transparent;">'
-              + '<div class="deploy-slot-top" style="aspect-ratio:16/9;">'
-              + '<img src="' + actor.avatar + '" alt="' + actor.name + '" />'
-              + '<div class="deploy-slot-overlay"></div>'
-              + '<span class="deploy-slot-level" style="background:' + levelCfg.color + '99;">Lv' + actor.level + '</span>'
-              + '</div>'
-              + '<div class="deploy-slot-body">'
-              + '<div class="deploy-slot-name">' + actor.name + ' <span style="font-weight:400;font-size:0.6rem;color:var(--text-sub);margin-left:4px;">' + actor.id + '</span></div>'
-              + '<div class="deploy-slot-energy-row">'
-              + '<div class="deploy-slot-energy-bar"><div class="fill ' + barCls + '" style="width:' + pct + '%;"></div></div>'
-              + '<span class="deploy-slot-energy-pct">⚡' + actor.energy + '/' + actor.energyMax + '</span>'
-              + '</div>'
-              + '<div class="deploy-slot-row" style="cursor:pointer;margin-bottom:4px;" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">'
-              + '<span style="font-size:0.65rem;color:var(--text-sub);font-weight:500;">角色算力</span>'
-              + '<span class="deploy-slot-output">' + computeActorPower(actor).toFixed(2) + '</span>'
-              + '</div>'
-              + '<div class="deploy-slot-row">'
-              + '<span style="font-size:0.65rem;color:var(--text-sub);font-weight:500;">本周名义产出</span>'
-              + '<span class="deploy-slot-output">' + (actor.cumulativeStory || 0).toFixed(1) + '<span class="muted"> STORY</span></span>'
-              + '</div>'
-              + '<div class="deploy-slot-actions">'
-              + (actor.energy < actor.energyMax ? '<button class="deploy-slot-charge-btn' + (actor.energy > 8 ? ' soft' : ' yellow') + '" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">⚡ 补充</button>' : '')
-              + '<button class="deploy-slot-rest-btn' + (actor.energy > 8 ? ' soft' : actor.energy <= 0 ? ' red' : '') + '" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">⏹ 休息</button>'
-              + '</div>'
-              + '</div>'
-              + '</div>'
-              + '</div>';
-          } else {
-            slidesHtml += '<div class="deploy-carousel-slide" data-index="' + i + '">'
-              + '<div class="deploy-carousel-slide-empty" onclick="openSlotPicker()" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;color:#8E8E93;font-size:0.92rem;cursor:pointer;border-radius:16px;border:2px dashed rgba(0,0,0,0.10);background:rgba(255,255,255,0.5);">'
-              + '<div style="font-size:2.5rem;color:#AEAEB2;margin-bottom:8px;">+</div>'
-              + '<div style="font-weight:600;font-size:0.85rem;color:#8E8E93;">派遣角色</div>'
-              + '<div style="font-size:0.7rem;color:#AEAEB2;margin-top:4px;">点击选择空闲角色</div>'
-              + '</div>'
-              + '</div>';
-          }
-        }
-
+      var dotsEl = document.getElementById('statusDots');
+      if (dotsEl) {
         var dotsHtml = '';
         for (var i = 0; i < MAX_STAKING_SLOTS; i++) {
-          var dotActor = deployed[i];
-          var activeClass = i === currentCarouselIndex ? ' active' : '';
-          if (dotActor) {
-            dotsHtml += '<div class="deploy-carousel-dot' + activeClass + '" data-carousel-dot="' + i + '"><img src="' + dotActor.avatar + '" alt="" /></div>';
-          } else {
-            dotsHtml += '<div class="deploy-carousel-dot empty-dot' + activeClass + '" data-carousel-dot="' + i + '">+</div>';
-          }
+          dotsHtml += '<i' + (i < deployed.length ? ' class="on"' : '') + '></i>';
         }
-
-        container.innerHTML = '<div class="deploy-carousel" id="deployCarousel">'
-          + '<div class="deploy-carousel-track" id="deployCarouselTrack">' + slidesHtml + '</div>'
-          + '</div>'
-          + '<div class="deploy-carousel-dots" id="deployCarouselDots">' + dotsHtml + '</div>';
-
-        // 触控滑动绑定
-        bindCarouselTouch();
-
-        return;
+        dotsEl.innerHTML = dotsHtml;
       }
 
-      // ── Web 端：原有 5 列网格逻辑 ──
-      const slotsHtml = [];
-      for (let i = 0; i < MAX_STAKING_SLOTS; i++) {
-        const actor = deployed[i];
-        if (actor) {
-          const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-          const energyState = getEnergyState(actor.energy, actor.energyMax);
-          const pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
-          const statusInfo = getStatusInfo(actor.status);
-
-          // 边框颜色 & 体力条颜色：体力 = 0 → red，体力 ≤ 8 → yellow，体力 > 8 → green
-          const borderCls = actor.energy <= 0 ? 'border-red' : actor.energy <= 8 ? 'border-yellow' : 'border-green';
-          const barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
-
-          slotsHtml.push(`
-            <div class="deploy-slot occupied ${borderCls}" data-actor-id="${actor.id}">
-              <div class="deploy-slot-top">
-                <img src="${actor.avatar}" alt="${actor.name}" />
-                <div class="deploy-slot-overlay"></div>
-                <span class="deploy-slot-level" style="background:${levelCfg.color}99;">Lv${actor.level}</span>
-              </div>
-              <div class="deploy-slot-body">
-                <div class="deploy-slot-name">${actor.name} <span style="font-weight:400;font-size:0.65rem;color:var(--text-sub);margin-left:4px;">${actor.id}</span></div>
-                <div class="deploy-slot-energy-row">
-                  <div class="deploy-slot-energy-bar">
-                    <div class="fill ${barCls}" style="width:${pct}%;"></div>
-                  </div>
-                  <span class="deploy-slot-energy-pct">⚡${actor.energy}/${actor.energyMax}</span>
-                </div>
-                <div class="deploy-slot-row" style="cursor:pointer;margin-bottom:4px;" onclick="event.stopPropagation();openActorPowerModal('${actor.id}')">
-                  <span style="font-size:0.7rem;color:var(--text-sub);font-weight:500;">角色算力</span>
-                  <span class="deploy-slot-output">${computeActorPower(actor).toFixed(2)}</span>
-                </div>
-                <div class="deploy-slot-row">
-                  <span style="font-size:0.7rem;color:var(--text-sub);font-weight:500;">本周名义产出</span>
-                  <span class="deploy-slot-output">${(actor.cumulativeStory || 0).toFixed(1)}<span class="muted"> STORY</span></span>
-                </div>
-                <div class="deploy-slot-actions">
-                  ${actor.energy < actor.energyMax ? `<button class="deploy-slot-charge-btn${actor.energy > 8 ? ' soft' : ' yellow'}" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充</button>` : ''}
-                  <button class="deploy-slot-rest-btn${actor.energy > 8 ? ' soft' : actor.energy <= 0 ? ' red' : ''}" onclick="event.stopPropagation();recallActor('${actor.id}')">⏹ 休息</button>
-                </div>
-              </div>
-              <!-- 悬浮操作菜单 -->
-              <div class="deploy-slot-menu">
-                <button class="deploy-slot-menu-btn" onclick="event.stopPropagation();">···</button>
-                <div class="deploy-slot-tooltip">
-                  <button class="deploy-slot-tooltip-item" onclick="event.stopPropagation();openChargeModal('${actor.id}')">⚡ 补充体力</button>
-                  <button class="deploy-slot-tooltip-item danger" onclick="event.stopPropagation();recallActor('${actor.id}')">⏹ 召回休息</button>
-                </div>
-              </div>
-            </div>
-          `);
-        } else {
-          // 空槽位
-          slotsHtml.push(`
-            <div class="deploy-slot empty" onclick="openSlotPicker()">
-              <div class="deploy-slot-empty-icon">+</div>
-              <div class="deploy-slot-empty-label">派遣角色</div>
-            </div>
-          `);
-        }
+      if (weeklyEl) {
+        var weekly = deployed.reduce(function(s, a) { return s + (a.cumulativeStory || 0); }, 0);
+        weeklyEl.textContent = weekly.toFixed(1);
       }
-
-      container.innerHTML = slotsHtml.join('');
     }
 
     // ============================================================
-    //  渲染：角色网格
+    //  渲染：待办（常驻面板，只提示演出/补充）
     // ============================================================
-    function renderActors() {
-      var isMobile = window.innerWidth <= 640;
-      var grid = document.getElementById('actorGrid');
-      var empty = document.getElementById('emptyState');
-      var count = document.getElementById('actorCount');
+    function renderTodo() {
+      var list = document.getElementById('todoList');
+      var countEl = document.getElementById('todoCount');
+      if (!list) return;
+      var items = [];
 
-      if (!MY_ACTORS || MY_ACTORS.length === 0) {
-        grid.innerHTML = '';
-        empty.style.display = 'block';
-        count.textContent = '(0)';
+      // 1. 有空位 → 提示演出
+      var deployed = getDeployedActors();
+      var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; });
+      if (deployed.length < MAX_STAKING_SLOTS && idle.length > 0) {
+        items.push({
+          cls: 'play',
+          msg: '还有 ' + (MAX_STAKING_SLOTS - deployed.length) + ' 个在演位空缺',
+          label: '去演出',
+          action: 'openFullPicker()'
+        });
+      }
+
+      // 2. 演出中体力很低 → 提示补充
+      var urgent = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy <= 8; })
+        .sort(function(a, b) { return a.energy - b.energy; });
+      if (urgent.length > 0) {
+        var u = urgent[0];
+        items.push({
+          cls: 'danger',
+          msg: u.name + ' 体力仅剩 ' + u.energy + '，即将停工',
+          label: '去补充',
+          action: 'openChargeModal(\'' + u.id + '\')'
+        });
+      }
+
+      if (countEl) countEl.textContent = items.length > 0 ? items.length + ' 项' : '';
+
+      if (items.length === 0) {
+        list.innerHTML = '<div class="todo-ok">演出正常 · 体力充足</div>';
         return;
       }
 
-      empty.style.display = 'none';
-      count.textContent = '(' + MY_ACTORS.length + ')';
-
-      var sortedActors = applySort(MY_ACTORS);
-
-      if (isMobile) {
-        // ── 移动端：行式卡片 ──
-        grid.innerHTML = sortedActors.map(function(actor) {
-          var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-          var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
-          var barCls = actor.energy <= 0 ? 'red' : actor.energy <= 8 ? 'yellow' : 'green';
-          var statusInfo = getStatusInfo(actor.status);
-          var canUpgrade = actor.level < 5 && (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || Infinity);
-
-          var upgradeBtn = '<button class="alr-btn upgrade' + (canUpgrade ? '' : ' disabled') + '" onclick="event.stopPropagation();openLevelModal(\'' + actor.id + '\')">升级</button>';
-          var chargeBtn = '<button class="alr-btn charge' + (actor.energy < actor.energyMax ? '' : ' disabled') + '" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">⚡补充</button>';
-          var actionBtn = actor.isStaking
-            ? '<button class="alr-btn unstake" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">休息</button>'
-            : '<button class="alr-btn stake" onclick="event.stopPropagation();openStakeModal(\'' + actor.id + '\')">派遣</button>';
-
-          return '<div class="actor-list-row" data-actor-id="' + actor.id + '" onclick="openActorPowerModal(\'' + actor.id + '\')">'
-            + '<div class="alr-top">'
-            + '<div class="alr-avatar-wrap">'
-            + '<img class="alr-avatar" src="' + actor.avatar + '" alt="' + actor.name + '" />'
-            + '</div>'
-            + '<div class="alr-info">'
-            + '<div class="alr-name-row">'
-            + '<span class="alr-name">' + actor.name + '</span>'
-            + '<span class="alr-id">' + actor.id + '</span>'
-            + '<span class="alr-level" style="background:' + levelCfg.color + '99;">Lv' + actor.level + '</span>'
-            + '</div>'
-            + '<div class="alr-energy-row">'
-            + '<div class="alr-energy-bar"><div class="alr-energy-fill ' + barCls + '" style="width:' + pct + '%;"></div></div>'
-            + '<span class="alr-energy-text">' + actor.energy + '/' + actor.energyMax + '</span>'
-            + '<span class="alr-status"><span class="dot ' + statusInfo.dot + '"></span>' + statusInfo.label + '</span>'
-            + '</div>'
-            + '<div class="alr-stats">'
-            + '<span>算力 <strong>' + computeActorPower(actor).toFixed(1) + '</strong></span>'
-            + '<span>本周产出 <strong>' + ((actor.cumulativeStory || 0).toFixed(1)) + '</strong></span>'
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '<div class="alr-actions">'
-            + upgradeBtn
-            + chargeBtn
-            + actionBtn
-            + '</div>'
-            + '</div>';
-        }).join('');
-        return;
-      }
-
-      // ── Web 端：原有卡片 ──
-      grid.innerHTML = sortedActors.map(actor => {
-        const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-        const energyState = getEnergyState(actor.energy, actor.energyMax);
-        const pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
-        const statusInfo = getStatusInfo(actor.status);
-
-        const canUpgrade = actor.level < 5 && (actor.cumulativePlays || 0) >= (LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || Infinity);
-        const profileLink = 'actor-profile.html?name=' + encodeURIComponent(actor.name);
-
-        return `
-        <div class="actor-card" data-actor-id="${actor.id}">
-            <div class="actor-card-hero">
-              <img src="${actor.avatar}" alt="${actor.name}" />
-              ${canUpgrade ? `<div class="upgrade-float-badge show" onclick="event.stopPropagation();openLevelModal('${actor.id}')">升级</div>` : ''}
-              <div class="actor-card-hero-overlay"></div>
-              <div style="position:absolute;top:8px;left:8px;z-index:5;display:flex;gap:6px;align-items:center;">
-                <div class="actor-hero-lv${canUpgrade ? ' can-upgrade' : ''}" style="background:${levelCfg.color}80;cursor:pointer;pointer-events:auto;" onclick="event.stopPropagation();openLevelModal('${actor.id}')" title="查看升级详情">
-                  Lv${actor.level}
-                </div>
-              </div>
-              <div style="position:absolute;bottom:8px;left:8px;z-index:5;display:flex;gap:4px;align-items:center;">
-                <span style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:0.3px;">${actor.id}</span>
-                <span style="background:rgba(0,179,136,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:6px;cursor:pointer;" onclick="event.stopPropagation();location.href='${profileLink}'">角色IP：${actor.ipCode}</span>
-              </div>
-              <div style="position:absolute;bottom:8px;right:8px;z-index:5;">
-                <div class="actor-hero-status">
-                  <span class="dot ${statusInfo.dot}"></span>
-                  ${statusInfo.label}
-                </div>
-              </div>
-          </div>
-
-          <div class="actor-card-name-row">
-            <span class="actor-name">${actor.name}</span>
-          </div>
-
-          <div class="actor-card-body">
-            <div class="energy-row">
-              <span class="energy-icon">⚡</span>
-              <div class="energy-bar-bg">
-                <div class="energy-bar-fill ${energyState.cls}" style="width:${pct}%;"></div>
-              </div>
-              <span class="energy-text">${actor.energy}/${actor.energyMax}</span>
-              <div class="energy-help-wrap">
-                <button class="energy-help-btn" onclick="event.stopPropagation();">?</button>
-                <div class="energy-help-tip">
-                  <b>⛽ 体力机制</b><br>
-                  派遣中的角色每小时消耗 1 点体力。体力耗尽后停止产出，休息时自动恢复。可用 USDC 即时补充体力。
-                </div>
-              </div>
-            </div>
-            <div class="mining-stats" style="grid-template-columns:1fr 1fr;">
-              <div class="ms-item" style="cursor:pointer;" onclick="event.stopPropagation();openActorPowerModal('${actor.id}')">
-                <div class="ms-info">
-                  <span class="ms-label">角色算力</span>
-                  <span class="ms-value">${computeActorPower(actor).toFixed(2)}</span>
-                </div>
-              </div>
-              <div class="ms-item">
-                <div class="ms-info">
-                  <span class="ms-label">本周名义产出</span>
-                  <span class="ms-value">${(actor.cumulativeStory || 0).toFixed(1)} STORY</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="actor-card-footer" onclick="event.stopPropagation();">
-            ${actor.energy < actor.energyMax ? `<button class="card-action-btn charge" onclick="event.stopPropagation();openChargeModal('${actor.id}')">补充</button>` : ''}
-            ${actor.isStaking
-              ? `<button class="card-action-btn unstake" onclick="unstakeActor('${actor.id}')">休息</button>`
-              : `<button class="card-action-btn stake" onclick="openStakeModal('${actor.id}')">派遣</button>`
-            }
-          </div>
-
-        </div>`;
+      list.innerHTML = items.map(function(a) {
+        return '<div class="todo-item ' + a.cls + '">'
+          + '<span class="todo-dot"></span>'
+          + '<span class="todo-msg">' + a.msg + '</span>'
+          + '<button class="todo-btn" onclick="' + a.action + '">' + a.label + '</button>'
+          + '</div>';
       }).join('');
     }
 
     // ============================================================
-    //  渲染：挖矿产出汇总
+    //  渲染：升级管理入口（中性摘要）
     // ============================================================
-    function renderMiningSummary() {
-      const deployed = getDeployedActors();
-      const weeklyNominal = deployed.reduce((sum, a) => sum + (a.cumulativeStory || 0), 0);
-      const weeklyActual = weeklyNominal;
-      const weeklyPool = 2115385; // 初始周硬顶 ≈ 2,115,385 STORY
+    function getUpgradableActors() {
+      return MY_ACTORS.filter(function(a) { return a.level < 5; });
+    }
 
-      document.getElementById('msWeeklyPool').textContent = weeklyPool.toLocaleString();
-      document.getElementById('msWeeklyOutput').textContent = weeklyNominal.toFixed(1);
-      document.getElementById('msWeeklyTotal').textContent = weeklyActual.toFixed(1);
+    function renderUpgradePanel() {
+      var wrap = document.getElementById('upgradeSummary');
+      if (!wrap) return;
+      var upgradable = getUpgradableActors();
+
+      var ready = upgradable.filter(canUpgrade).length;
+      if (upgradable.length === 0) {
+        wrap.innerHTML = '<div class="todo-ok">暂无角色可升级</div>';
+        return;
+      }
+
+      wrap.innerHTML =
+        '<div class="us-row"><span class="us-label">可升级角色</span><span class="us-value highlight">' + ready +  ' 位</span></div>'
+        + '<div class="us-row" style="margin-bottom:4px;"><span class="us-label">未满级角色</span><span class="us-value">' + upgradable.length + ' 位</span></div>'
+        + '<button class="us-cta" onclick="openUpgradeModal()">去升级</button>';
+    }
+
+    // ============================================================
+    //  升级管理全屏弹窗
+    // ============================================================
+    let currentUpgradeSort = 'upgrade';
+
+    function openUpgradeModal() {
+      document.getElementById('upgradeModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      renderUpgradeList();
+    }
+
+    function closeUpgradeModal() {
+      document.getElementById('upgradeModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function upgradeGap(actor) {
+      var sameLevel = MY_ACTORS.filter(function(x) { return x.parentIP === actor.parentIP && x.level === actor.level && x.id !== actor.id; }).length;
+      return Math.max(0, 2 - sameLevel);
+    }
+
+    function renderUpgradeList() {
+      var list = document.getElementById('upgradeList');
+      var sub = document.getElementById('upgradeModalSub');
+      if (!list) return;
+      var upgradable = getUpgradableActors();
+      var readyCount = upgradable.filter(canUpgrade).length;
+      if (sub) sub.textContent = readyCount + ' 位可升级 · 共 ' + upgradable.length + ' 位未满级';
+
+      if (upgradable.length === 0) {
+        list.innerHTML = '<div class="ur-empty">暂无角色可升级</div>';
+        return;
+      }
+
+      var s = currentUpgradeSort;
+      if (s === 'upgrade') {
+        upgradable.sort(function(a, b) {
+          var ga = upgradeGap(a), gb = upgradeGap(b);
+          if (ga !== gb) return ga - gb; // 缺口小的在前
+          return computeActorPower(b) - computeActorPower(a);
+        });
+      } else if (s === 'power-desc') {
+        upgradable.sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
+      } else if (s === 'level-desc') {
+        upgradable.sort(function(a, b) { return (b.level || 0) - (a.level || 0); });
+      } else if (s === 'gap') {
+        upgradable.sort(function(a, b) { return upgradeGap(a) - upgradeGap(b); });
+      }
+
+      list.innerHTML = upgradable.map(function(actor) {
+        var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+        var nextCfg = LEVEL_CONFIG[actor.level + 1] || LEVEL_CONFIG[actor.level];
+        var before = computeActorPower(actor);
+        var after = computeIPPower(actor) * nextCfg.miningCoeff * 1.0 * 1.0;
+        var sameLevel = MY_ACTORS.filter(function(x) { return x.parentIP === actor.parentIP && x.level === actor.level && x.id !== actor.id; }).length;
+        var have = Math.min(sameLevel, 2);
+        var cloneReady = have >= 2;
+
+        var playReq = LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || 1;
+        var playPct = Math.min(100, Math.round((actor.cumulativePlays || 0) / playReq * 100));
+        var playDone = (actor.cumulativePlays || 0) >= playReq;
+        var bothDone = cloneReady && playDone;
+        var cardCls = bothDone ? ' ready-card' : '';
+
+
+        return '<div class="upgrade-row' + cardCls + '" onclick="openLevelModal(\'' + actor.id + '\')">'
+          + '<div class="ur-avatar-wrap">'
+          + '<img src="' + actor.avatar + '" alt="" />'
+          + '<span class="ur-lv-badge" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
+          + '</div>'
+          + '<div class="ur-header">'
+          + '<div class="ur-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+          + '</div>'
+          + '<div class="ur-compare">'
+          + '<div class="ur-compare-lv-row">'
+          + '<span class="ur-lv-tag">Lv' + actor.level + '</span>'
+          + '<span class="ur-arrow-icon">→</span>'
+          + '<span class="ur-lv-tag next">Lv' + (actor.level + 1) + '</span>'
+          + '</div>'
+          + '<div class="ur-rate-row">'
+          + '<span class="ur-rate-label">片酬</span>'
+          + '<span class="ur-rate">' + before.toFixed(1) + ' → ' + after.toFixed(1) + '<span style="font-size:0.58rem;color:var(--text-sub);"> /h</span></span>'
+          + '</div>'
+          + '</div>'
+          + '<div class="ur-conditions">'
+          + '<div class="ur-cond">'
+          + '<div class="ur-cond-body">'
+          + '<span class="ur-cond-label">同IP同等级角色</span>'
+          + '<span class="ur-cond-status' + (cloneReady ? ' done' : ' pending') + '"' + (!cloneReady ? ' onclick="event.stopPropagation();openNeedRoleModal(\'' + actor.name + '\',\'' + actor.parentIP + '\')"' : '') + '>' + (cloneReady ? '✓' : '+') + '</span>'
+          + '</div>'
+          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + Math.round((have / 2) * 100) + '%;"></i><span class="ur-cond-bar-text">' + have + '/2</span></div>'
+          + '</div>'
+          + '<div class="ur-cond">'
+          + '<div class="ur-cond-body">'
+          + '<span class="ur-cond-label">参演短剧完播</span>'
+          + '<span class="ur-cond-status' + (playDone ? ' done' : ' pending') + '"' + (!playDone ? ' onclick="event.stopPropagation();openNeedPlayModal(\'' + actor.name + '\')"' : '') + '>' + (playDone ? '✓' : '+') + '</span>'
+          + '</div>'
+          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + playPct + '%;"></i><span class="ur-cond-bar-text">' + formatNumber(actor.cumulativePlays || 0) + '/' + formatNumber(playReq) + '</span></div>'
+          + '</div>'
+          + '</div>'
+          + '<button class="ur-btn ' + (bothDone ? 'ready' : 'not-ready') + '" onclick="event.stopPropagation();openLevelModal(\'' + actor.id + '\')">'
+          + (bothDone ? '✦ 立即升级' : '查看详情')
+          + '</button>'
+          + '</div>';
+      }).join('');
+    }
+
+    function initUpgradeChips() {
+      document.querySelectorAll('#upgradeModal .picker-chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          document.querySelectorAll('#upgradeModal .picker-chip').forEach(function(c) { c.classList.remove('active'); });
+          this.classList.add('active');
+          currentUpgradeSort = this.dataset.upSort;
+          renderUpgradeList();
+        });
+      });
+    }
+
+    // ============================================================
+    //  渲染：演出中的角色（桌面 5 格 / 移动焦点卡）
+    // ============================================================
+    function renderDeployPanel() {
+      var area = document.getElementById('deployArea');
+      if (!area) return;
+      var deployed = getDeployedActors();
+      var isMobile = window.innerWidth <= 720;
+
+      if (isMobile) {
+        renderMobileFocus(area, deployed);
+        return;
+      }
+
+      // 桌面：固定一行 5 格
+      var html = '<div class="deploy-grid">';
+      for (var i = 0; i < MAX_STAKING_SLOTS; i++) {
+        var actor = deployed[i];
+        if (actor) {
+          var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+          var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+          var barCls = energyBarCls(actor.energy);
+          html += '<div class="slot occupied">'
+            + '<div class="slot-av-wrap">'
+            + '<img src="' + actor.avatar + '" alt="" />'
+            + '<span class="slot-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
+            + '<span class="slot-dot' + (actor.energy > 0 ? ' on' : '') + '"></span>'
+            + '</div>'
+            + '<div class="slot-body">'
+            + '<div class="slot-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+            + '<div class="slot-energy">'
+            + '<div class="slot-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></div>'
+            + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
+            + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
+            + '</div>'
+            + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看算力详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
+            + '</div>'
+            + '<div class="slot-actions">'
+            + (actor.energy < actor.energyMax
+                ? '<button class="mini-btn charge" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">补充</button>'
+                : '<button class="mini-btn disabled" disabled>已满</button>')
+            + '<button class="mini-btn rest" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">休息</button>'
+            + '</div>'
+            + '</div>';
+        } else {
+          html += '<div class="slot empty" onclick="openFullPicker()">'
+            + '<div class="slot-empty-vision">'
+            + '<span class="ve-glow"></span>'
+            + FIGURE_VISION_SVG
+            + '<span class="ve-label">安排演出</span>'
+            + '</div>'
+            + '</div>';
+        }
+      }
+      html += '</div>';
+      area.innerHTML = html;
+    }
+
+    // 移动端：焦点卡 + 箭头 + 圆点
+    function renderMobileFocus(area, deployed) {
+      if (currentFocusIndex >= MAX_STAKING_SLOTS) currentFocusIndex = 0;
+      var actor = deployed[currentFocusIndex];
+      var levelCfg = actor ? (LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1]) : null;
+
+      var cardHtml = '';
+      if (actor) {
+        var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+        var barCls = energyBarCls(actor.energy);
+        cardHtml = '<div class="slot occupied">'
+          + '<div class="slot-av-wrap">'
+          + '<img src="' + actor.avatar + '" alt="" />'
+          + '<span class="slot-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
+          + '<span class="slot-dot' + (actor.energy > 0 ? ' on' : '') + '"></span>'
+          + '</div>'
+          + '<div class="slot-body">'
+          + '<div class="slot-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+          + '<div class="slot-energy">'
+          + '<div class="slot-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></div>'
+          + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
+          + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
+          + '</div>'
+          + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
+          + '</div>'
+          + '<div class="slot-actions">'
+          + (actor.energy < actor.energyMax
+              ? '<button class="mini-btn charge" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">补充</button>'
+              : '<button class="mini-btn disabled" disabled>已满</button>')
+          + '<button class="mini-btn rest" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">休息</button>'
+          + '</div>'
+          + '</div>';
+      } else {
+        cardHtml = '<div class="slot empty" onclick="openFullPicker()" style="min-height:200px;">'
+          + '<div class="slot-empty-vision">'
+          + '<span class="ve-glow"></span>'
+          + FIGURE_VISION_SVG
+          + '<span class="ve-label">安排演出</span>'
+          + '</div>'
+          + '</div>';
+      }
+
+      var dotsHtml = '';
+      for (var i = 0; i < MAX_STAKING_SLOTS; i++) {
+        dotsHtml += '<i' + (i === currentFocusIndex ? ' class="on"' : '') + '></i>';
+      }
+
+      area.innerHTML = '<div class="focus-stage">'
+        + '<button class="focus-arrow left" onclick="event.stopPropagation();switchFocus(-1)"' + (currentFocusIndex <= 0 ? ' disabled' : '') + '>‹</button>'
+        + '<div class="focus-card">' + cardHtml + '</div>'
+        + '<button class="focus-arrow right" onclick="event.stopPropagation();switchFocus(1)"' + (currentFocusIndex >= MAX_STAKING_SLOTS - 1 ? ' disabled' : '') + '>›</button>'
+        + '</div>'
+        + '<div class="focus-dots">' + dotsHtml + '</div>';
+    }
+
+    function switchFocus(dir) {
+      var next = currentFocusIndex + dir;
+      if (next < 0 || next >= MAX_STAKING_SLOTS) return;
+      currentFocusIndex = next;
+      renderDeployPanel();
+    }
+
+    // ============================================================
+    //  渲染：候场角色（窄竖排卡，整卡点击即演出/升级）
+    // ============================================================
+    function renderPool() {
+      var container = document.getElementById('poolList');
+      var countEl = document.getElementById('poolCount');
+      if (!container) return;
+      var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; })
+        .sort(function(a, b) {
+          var au = canUpgrade(a) ? 1 : 0, bu = canUpgrade(b) ? 1 : 0;
+          if (au !== bu) return bu - au;
+          return computeActorPower(b) - computeActorPower(a);
+        });
+      if (countEl) countEl.textContent = idle.length;
+
+      if (idle.length === 0) {
+        container.innerHTML = '<div class="pool-empty">全部角色都在演出</div>';
+        return;
+      }
+
+      container.innerHTML = idle.map(function(actor) {
+        var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+        var canUp = canUpgrade(actor);
+        var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+        var barCls = energyBarCls(actor.energy);
+        // 整卡点击：可升级→升级弹窗；否则→安排演出确认
+        var clickAction = canUp
+          ? 'openLevelModal(\'' + actor.id + '\')'
+          : 'openStakeModal(\'' + actor.id + '\')';
+
+        return '<div class="pool-item' + (canUp ? ' upgradable' : '') + '" onclick="' + clickAction + '" title="' + (canUp ? '可升级' : '点击安排演出') + '">'
+          + '<div class="pool-av-wrap">'
+          + '<img src="' + actor.avatar + '" alt="" />'
+          + '<span class="pool-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
+          + (canUp ? '<span class="pool-up-dot"></span>' : '')
+          + '</div>'
+          + '<div class="pool-out">' + computeActorPower(actor).toFixed(1) + '<span class="u"> /h</span></div>'
+          + '<span class="pool-energy"><span class="bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></span></span>'
+          + '<span class="pool-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</span>'
+          + '</div>';
+      }).join('');
+    }
+
+    // ============================================================
+    //  渲染：全屏选角色（排序 chips + 网格）
+    // ============================================================
+    function openFullPicker() {
+      document.getElementById('fullPickerModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      renderFullPicker();
+    }
+
+    function closeFullPicker() {
+      document.getElementById('fullPickerModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function getSortedIdle() {
+      var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; });
+      var s = currentPickerSort;
+      if (s === 'power-desc') {
+        idle.sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
+      } else if (s === 'level-desc') {
+        idle.sort(function(a, b) { return (b.level || 0) - (a.level || 0); });
+      } else if (s === 'energy-desc') {
+        idle.sort(function(a, b) { return (b.energy || 0) - (a.energy || 0); });
+      }
+      return idle;
+    }
+
+    function renderFullPicker() {
+      var grid = document.getElementById('fullPickerGrid');
+      var idle = getSortedIdle();
+
+      if (idle.length === 0) {
+        grid.innerHTML = '<div class="picker-empty">没有空闲的角色</div>';
+        return;
+      }
+
+      grid.innerHTML = idle.map(function(actor) {
+        var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+        var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
+        var barCls = energyBarCls(actor.energy);
+
+        return '<div class="picker-card">'
+          + '<div class="slot-av-wrap">'
+          + '<img src="' + actor.avatar + '" alt="" />'
+          + '<span class="slot-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
+          + '</div>'
+          + '<div class="slot-body">'
+          + '<div class="slot-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+          + '<div class="slot-energy">'
+          + '<div class="slot-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></div>'
+          + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
+          + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
+          + '</div>'
+          + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看算力详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
+          + '</div>'
+          + '<div class="slot-actions">'
+          + (actor.energy < actor.energyMax
+              ? '<button class="mini-btn charge" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">补充</button>'
+              : '<button class="mini-btn disabled" disabled>已满</button>')
+          + '<button class="mini-btn primary" onclick="event.stopPropagation();openStakeModal(\'' + actor.id + '\')">演出</button>'
+          + '</div>'
+          + '</div>';
+      }).join('');
+    }
+
+    // 选人 chips
+    function initPickerChips() {
+      document.querySelectorAll('#fullPickerModal .picker-chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          document.querySelectorAll('#fullPickerModal .picker-chip').forEach(function(c) { c.classList.remove('active'); });
+          this.classList.add('active');
+          currentPickerSort = this.dataset.sort;
+          renderFullPicker();
+        });
+      });
+    }
+
+    // ============================================================
+    //  批量操作：一键演出 / 一键补充 / 一键休息
+    // ============================================================
+    let pendingBatchType = null;
+
+    function getBatchCount(type) {
+      if (type === 'perform') {
+        var deployed = getDeployedActors();
+        var emptyCount = MAX_STAKING_SLOTS - deployed.length;
+        var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; });
+        return Math.min(emptyCount, idle.length);
+      }
+      if (type === 'charge') {
+        // 只补充演出中的角色
+        return MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; }).length;
+      }
+      if (type === 'rest') {
+        return getDeployedActors().length;
+      }
+      return 0;
+    }
+
+    function openBatchModal(type) {
+      var count = getBatchCount(type);
+      if (count <= 0) {
+        if (type === 'perform') showToast('没有可安排演出的角色或已在演位');
+        if (type === 'charge') showToast('演出中的角色体力已满');
+        if (type === 'rest') showToast('没有在演角色');
+        return;
+      }
+      pendingBatchType = type;
+      var title = type === 'perform' ? '一键演出' : type === 'charge' ? '一键补充' : '一键休息';
+      var unit = type === 'perform' ? '将按片酬从高到低安排到空在演位' : type === 'charge' ? '将恢复演出中角色的全部体力' : '将让所有在演角色休息';
+      document.getElementById('batchModalTitle').textContent = title;
+      document.getElementById('batchModalUnit').textContent = unit;
+      document.getElementById('batchModalCount').textContent = count + ' 个角色';
+      document.getElementById('batchModalConfirmBtn').textContent = '确认' + title;
+      document.getElementById('batchModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBatchModal() {
+      document.getElementById('batchModal').classList.remove('active');
+      document.body.style.overflow = '';
+      pendingBatchType = null;
+    }
+
+    function confirmBatch() {
+      var type = pendingBatchType;
+      if (!type) return;
+      if (type === 'perform') autoPerform();
+      if (type === 'charge') autoCharge();
+      if (type === 'rest') autoRest();
+      closeBatchModal();
+      renderAll();
+    }
+
+    // 一键演出：按片酬从高到低填满空在演位
+    function autoPerform() {
+      var deployed = getDeployedActors();
+      var emptyCount = MAX_STAKING_SLOTS - deployed.length;
+      if (emptyCount <= 0) { showToast('在演位已满'); return; }
+      var candidates = MY_ACTORS.filter(function(a) { return !a.isStaking; })
+        .sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
+      if (candidates.length === 0) { showToast('没有候场角色'); return; }
+      var count = Math.min(emptyCount, candidates.length);
+      candidates.slice(0, count).forEach(function(a) {
+        a.isStaking = true;
+        a.status = 'active';
+        a.stakingDays = 0;
+      });
+      showToast('已安排 ' + count + ' 位角色演出');
+    }
+
+    // 一键补充：只补充演出中的角色
+    function autoCharge() {
+      var targets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
+      if (targets.length === 0) { showToast('演出中的角色体力已满'); return; }
+      targets.forEach(function(a) {
+        a.energy = a.energyMax;
+        a.status = 'active';
+      });
+      showToast('已补充 ' + targets.length + ' 位角色的体力');
+    }
+
+    // 一键休息：所有在演角色休息
+    function autoRest() {
+      var targets = getDeployedActors();
+      if (targets.length === 0) { showToast('没有在演角色'); return; }
+      targets.forEach(function(a) {
+        a.isStaking = false;
+        a.status = 'idle';
+      });
+      showToast('已让 ' + targets.length + ' 位角色休息');
+    }
+
+    // 批量按钮状态（无可用项时置灰）
+    function renderBatch() {
+      var performBtn = document.getElementById('batchPerformBtn');
+      var chargeBtn = document.getElementById('batchChargeBtn');
+      var restBtn = document.getElementById('batchRestBtn');
+      if (performBtn) performBtn.disabled = getBatchCount('perform') <= 0;
+      if (chargeBtn) chargeBtn.disabled = getBatchCount('charge') <= 0;
+      if (restBtn) restBtn.disabled = getBatchCount('rest') <= 0;
     }
 
     // ============================================================
     //  全量渲染
     // ============================================================
     function renderAll() {
-      renderDeploySlots();
-      renderActors();
-      renderMiningSummary();
+      if (!MY_ACTORS || MY_ACTORS.length === 0) {
+        document.getElementById('emptyState').style.display = 'block';
+        document.getElementById('deployArea').innerHTML = '';
+        document.getElementById('poolList').innerHTML = '<div class="pool-empty">还没有角色</div>';
+        document.getElementById('todoList').innerHTML = '<div class="todo-ok">暂无角色</div>';
+        document.getElementById('upgradeSummary').innerHTML = '<div class="todo-ok">暂无角色可升级</div>';
+        return;
+      }
+      document.getElementById('emptyState').style.display = 'none';
+      renderTopbar();
+      renderDeployPanel();
+      renderPool();
+      renderBatch();
+      renderTodo();
+      renderUpgradePanel();
+      // 若全屏选人打开则同步刷新
+      if (document.getElementById('fullPickerModal').classList.contains('active')) renderFullPicker();
+      // 若升级管理打开则同步刷新
+      if (document.getElementById('upgradeModal').classList.contains('active')) renderUpgradeList();
     }
 
     // ============================================================
-    //  派遣角色 Modal
+    //  演出 Modal
     // ============================================================
     function openStakeModal(actorId) {
       pendingStakeActorId = actorId;
@@ -2667,7 +2606,7 @@
 
       const deployed = getDeployedActors();
       if (deployed.length >= MAX_STAKING_SLOTS) {
-        showToast('派遣上限已满（最多 5 个），请先召回一位', '⚠️');
+        showToast('在演位已满（最多 5 位），请先安排一位休息');
         return;
       }
 
@@ -2692,17 +2631,15 @@
         actor.isStaking = true;
         actor.status = 'active';
         actor.stakingDays = 0;
-        showToast('✅ ' + actor.name + ' 已派遣', '⛏️');
+        showToast(actor.name + ' 已安排演出');
       }
       closeStakeModal();
       renderAll();
     }
 
     // ============================================================
-    //  召回（休息）- 二次确认弹窗
+    //  休息确认
     // ============================================================
-    let pendingRecallActorId = null;
-
     function recallActor(actorId) {
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
@@ -2728,141 +2665,14 @@
       if (actor) {
         actor.isStaking = false;
         actor.status = 'idle';
-        showToast('⏹ ' + actor.name + ' 已召回休息', '⏹');
+        showToast(actor.name + ' 已休息');
       }
       closeRecallModal();
       renderAll();
     }
 
-    function switchCarouselSlot(index) {
-      currentCarouselIndex = index;
-      var track = document.getElementById('deployCarouselTrack');
-      var dots = document.querySelectorAll('.deploy-carousel-dot');
-      if (track) {
-        track.style.transform = 'translateX(-' + (index * 100) + '%)';
-      }
-      dots.forEach(function(d, i) { d.classList.toggle('active', i === index); });
-    }
-
-    function bindCarouselTouch() {
-      var carousel = document.getElementById('deployCarousel');
-      if (!carousel || carousel._touchBound) return;
-      carousel._touchBound = true;
-
-      var track = document.getElementById('deployCarouselTrack');
-      var startX = 0, currentX = 0, isDragging = false;
-      var carouselWidth = 0;
-
-      carousel.addEventListener('touchstart', function(e) {
-        if (e.target.closest('button')) return;
-        startX = e.touches[0].clientX;
-        carouselWidth = carousel.offsetWidth;
-        isDragging = true;
-        if (track) {
-          track.classList.add('dragging');
-          track.style.transform = 'translateX(-' + (currentCarouselIndex * 100) + '%)';
-        }
-      }, { passive: true });
-
-      carousel.addEventListener('touchmove', function(e) {
-        if (!isDragging) return;
-        var deltaX = e.touches[0].clientX - startX;
-        var offset = (-currentCarouselIndex * 100) + (deltaX / carouselWidth * 100);
-        if (track) {
-          track.style.transform = 'translateX(' + offset + '%)';
-        }
-      }, { passive: true });
-
-      carousel.addEventListener('touchend', function() {
-        if (!isDragging) return;
-        isDragging = false;
-        if (track) track.classList.remove('dragging');
-
-        var deltaX = currentX - startX || 0;
-        // Use last known delta from track transform
-        var finalDelta = 0;
-        if (track && track.style.transform) {
-          var match = track.style.transform.match(/translateX\(([-\d.]+)%\)/);
-          if (match) {
-            var currentOffset = parseFloat(match[1]);
-            finalDelta = currentOffset + currentCarouselIndex * 100;
-          }
-        }
-
-        if (finalDelta > 15 && currentCarouselIndex > 0) {
-          switchCarouselSlot(currentCarouselIndex - 1);
-        } else if (finalDelta < -15 && currentCarouselIndex < MAX_STAKING_SLOTS - 1) {
-          switchCarouselSlot(currentCarouselIndex + 1);
-        } else {
-          // Snap back
-          switchCarouselSlot(currentCarouselIndex);
-        }
-      });
-
-      // Click on dots
-      carousel.addEventListener('click', function(e) {
-        var dot = e.target.closest('[data-carousel-dot]');
-        if (dot) {
-          var idx = parseInt(dot.getAttribute('data-carousel-dot'));
-          switchCarouselSlot(idx);
-        }
-      });
-    }
-
-    function unstakeActor(actorId) {
-      const actor = MY_ACTORS.find(a => a.id === actorId);
-      if (!actor) return;
-      if (confirm('确定让 ' + actor.name + ' 休息？')) {
-        actor.isStaking = false;
-        actor.status = 'idle';
-        actor.stakingDays = 0;
-        showToast('⏹ ' + actor.name + ' 已休息', '⏹');
-        renderAll();
-      }
-    }
-
     // ============================================================
-    //  空槽位选人 Modal（Slot Picker）
-    // ============================================================
-    function openSlotPicker() {
-      const available = MY_ACTORS.filter(a => !a.isStaking);
-      const list = document.getElementById('slotPickerList');
-      const modal = document.getElementById('slotPickerModal');
-
-      if (available.length === 0) {
-        list.innerHTML = '<div class="slot-picker-empty">没有空闲的角色可供派遣</div>';
-      } else {
-        list.innerHTML = available.map(a => {
-          const levelCfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
-          return `
-            <div class="slot-picker-item" onclick="slotPickerSelect('${a.id}')">
-              <img src="${a.avatar}" alt="${a.name}" />
-              <div class="spi-info">
-                <div class="spi-name">${a.name}</div>
-                <div class="spi-detail">${a.id} · ${levelCfg.name} · Lv${a.level}</div>
-              </div>
-              <span class="spi-energy">⚡ ${a.energy}/${a.energyMax}</span>
-            </div>
-          `;
-        }).join('');
-      }
-
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeSlotPicker() {
-      document.getElementById('slotPickerModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    function slotPickerSelect(actorId) {
-      closeSlotPicker();
-      openStakeModal(actorId);
-    }
-
-    // ============================================================
-    //  Charge Modal (付费片酬恢复)
+    //  补充体力 Modal
     // ============================================================
     function openChargeModal(actorId) {
       pendingChargeActorId = actorId;
@@ -2872,7 +2682,7 @@
       const shortage = actor.energyMax - actor.energy;
       const cost = shortage * 0.5;
 
-      document.getElementById('modalChargeActor').textContent = actor.name + ' · ⚡' + actor.energy + '/' + actor.energyMax;
+      document.getElementById('modalChargeActor').textContent = actor.name + ' · 体力 ' + actor.energy + '/' + actor.energyMax;
       document.getElementById('modalChargeCurrent').textContent = actor.energy + ' / ' + actor.energyMax;
       document.getElementById('modalChargeCost').textContent = cost.toFixed(1) + ' USDC';
 
@@ -2893,18 +2703,15 @@
         const shortage = actor.energyMax - actor.energy;
         const cost = shortage * 0.5;
         actor.energy = actor.energyMax;
-        // 恢复体力后重置状态为活跃，确保继续扣减体力
-        if (actor.isStaking) {
-          actor.status = 'active';
-        }
-        showToast('⚡ ' + actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' USDC）', '⚡');
+        if (actor.isStaking) actor.status = 'active';
+        showToast(actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' USDC）');
       }
       closeChargeModal();
       renderAll();
     }
 
     // ============================================================
-    //  Level Modal (咖位升级详情)
+    //  升级 Modal
     // ============================================================
     function openLevelModal(actorId) {
       pendingLevelActorId = actorId;
@@ -2923,9 +2730,8 @@
       document.getElementById('modalLevelCurrent').textContent = 'Lv' + actor.level;
       document.getElementById('modalLevelName').textContent = currentCfg.name;
       document.getElementById('modalLevelCoeff').textContent = currentCfg.miningCoeff;
-      document.getElementById('modalLevelEnergy').textContent = '⚡ 体力 ' + actor.energy + '/' + actor.energyMax;
+      document.getElementById('modalLevelEnergy').textContent = '体力 ' + actor.energy + '/' + actor.energyMax;
 
-      // Update comparison: Before → After
       const comparisonEl = document.getElementById('modalLevelComparison');
       if (nextLevel && nextCfg) {
         comparisonEl.style.display = 'block';
@@ -2952,7 +2758,7 @@
             <span class="ci-id">${a.id}</span>
             <span class="ci-name">${a.name}</span>
             <span class="ci-lv">Lv${a.level}</span>
-            <span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto;white-space:nowrap;">⚡${a.energy}/${a.energyMax}</span>
+            <span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto;white-space:nowrap;">体力 ${a.energy}/${a.energyMax}</span>
           </div>
         `).join('');
       }
@@ -2960,7 +2766,6 @@
 
       if (nextLevel && threshold) {
         const plays = actor.cumulativePlays || 0;
-        const progress = Math.min(100, (plays / threshold.playsRequired) * 100);
         document.getElementById('modalLevelPlays').textContent = formatNumber(plays);
         document.getElementById('modalLevelPlaysReq').textContent = formatNumber(threshold.playsRequired);
         document.getElementById('modalLevelCost').textContent = threshold.cost + ' USDC';
@@ -2993,7 +2798,7 @@
       } else if (selectedConsumeIds.length < 2) {
         selectedConsumeIds.push(actorId);
       } else {
-        showToast('最多选择 2 个消耗分身', '⚠️');
+        showToast('最多选择 2 个消耗分身');
         return;
       }
       updateConsumeUI();
@@ -3021,6 +2826,7 @@
       const btn = document.getElementById('modalLevelUpBtn');
       if (meetsPlayReq && meetsConsumeReq) {
         btn.style.background = 'linear-gradient(135deg, #05DF72, #00BBA7)';
+        btn.style.color = '#fff';
         btn.disabled = false;
       } else {
         btn.style.background = 'rgba(0,0,0,0.08)';
@@ -3038,45 +2844,30 @@
     function upgradeLevel() {
       const actor = MY_ACTORS.find(a => a.id === pendingLevelActorId);
       if (!actor) return;
-
       const nextLevel = actor.level < 5 ? actor.level + 1 : null;
       if (!nextLevel) return;
-
       if (selectedConsumeIds.length !== 2) {
-        showToast('请选择 2 个同IP同等级分身进行消耗', '🎭');
+        showToast('请选择 2 个同IP同等级分身进行消耗');
         return;
       }
-
       selectedConsumeIds.forEach(id => {
         const idx = MY_ACTORS.findIndex(a => a.id === id);
         if (idx !== -1) MY_ACTORS.splice(idx, 1);
       });
-
       actor.level = nextLevel;
       actor.energyMax = LEVEL_CONFIG[nextLevel].energyMax;
       actor.energy = LEVEL_CONFIG[nextLevel].energyMax;
-
       closeLevelModal();
       renderAll();
-      showToast('🏆 ' + actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name + '！', '🎉');
+      showToast(actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name);
     }
 
     // ============================================================
-    //  挖矿规则弹窗
+    //  规则 / 奖池弹窗
     // ============================================================
-    function openRulesModal() {
-      document.getElementById('rulesModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
+    function openRulesModal() { document.getElementById('rulesModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeRulesModal() { document.getElementById('rulesModal').classList.remove('active'); document.body.style.overflow = ''; }
 
-    function closeRulesModal() {
-      document.getElementById('rulesModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    // ============================================================
-    //  本周奖池（周硬顶）弹窗
-    // ============================================================
     function openWeeklyPoolModal() {
       const weeklyPool = 2115385;
       document.getElementById('weeklyPoolTotal').textContent = weeklyPool.toLocaleString() + ' STORY';
@@ -3085,37 +2876,13 @@
       document.getElementById('weeklyPoolModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
+    function closeWeeklyPoolModal() { document.getElementById('weeklyPoolModal').classList.remove('active'); document.body.style.overflow = ''; }
 
-    function closeWeeklyPoolModal() {
-      document.getElementById('weeklyPoolModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
+    function openActualOutputModal() { document.getElementById('actualOutputModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeActualOutputModal() { document.getElementById('actualOutputModal').classList.remove('active'); document.body.style.overflow = ''; }
 
-    // ============================================================
-    //  实际产出公式弹窗
-    // ============================================================
-    function openActualOutputModal() {
-      document.getElementById('actualOutputModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeActualOutputModal() {
-      document.getElementById('actualOutputModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    // ============================================================
-    //  名义产出公式弹窗
-    // ============================================================
-    function openNominalOutputModal() {
-      document.getElementById('nominalOutputModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeNominalOutputModal() {
-      document.getElementById('nominalOutputModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
+    function openNominalOutputModal() { document.getElementById('nominalOutputModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeNominalOutputModal() { document.getElementById('nominalOutputModal').classList.remove('active'); document.body.style.overflow = ''; }
 
     // ============================================================
     //  算力详情弹窗
@@ -3125,10 +2892,9 @@
       if (!actor) return;
 
       const bd = getActorPowerBreakdown(actor);
-      document.getElementById('powerModalActorName').textContent = '角色算力 = IP算力 × 挖矿系数 × CP系数 × Trust2';
+      document.getElementById('powerModalActorName').textContent = '角色算力 = IP算力 × 片酬系数 × CP系数 × Trust2';
 
       document.getElementById('powerModalBreakdown').innerHTML =
-        // IP算力卡片（含子项展开）
         '<div style="background:var(--bg);border-radius:14px;padding:12px 14px;margin-bottom:8px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
             '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">IP 算力</span>' +
@@ -3150,12 +2916,10 @@
           '</div>' +
           '<div style="font-size:0.68rem;color:var(--text-muted);margin-top:6px;line-height:1.4;">IP算力 = 价格系数 × 热度系数 × Trust1</div>' +
         '</div>' +
-        // 挖矿系数
         '<div style="background:var(--bg);border-radius:12px;padding:10px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
-          '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">挖矿系数</span>' +
+          '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">片酬系数</span>' +
           '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + bd.miningCoeff.toFixed(1) + ' <span style="font-size:0.65rem;color:var(--text-sub);">(Lv' + bd.level + ' ' + bd.levelName + ')</span></span>' +
         '</div>' +
-        // CP系数 + Trust2 并列
         '<div style="display:flex;gap:8px;margin-bottom:8px;">' +
           '<div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 14px;text-align:center;">' +
             '<div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:2px;">CP 系数</div>' +
@@ -3166,10 +2930,9 @@
             '<div style="font-weight:700;font-size:0.88rem;color:var(--text);">× ' + bd.trust2.toFixed(1) + '</div>' +
           '</div>' +
         '</div>' +
-        // 汇总
         '<div style="background:var(--accent-soft);border-radius:12px;padding:12px 14px;text-align:center;">' +
           '<div style="font-size:1.3rem;font-weight:800;color:var(--accent);">' + bd.actorPower.toFixed(2) + '</div>' +
-          '<div style="font-size:0.72rem;color:var(--text-sub);margin-top:2px;">每小时产出 ' + bd.hourlyOutput.toFixed(2) + ' STORY</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-sub);margin-top:2px;">每小时片酬 ' + bd.hourlyOutput.toFixed(2) + ' STORY</div>' +
         '</div>';
 
       document.getElementById('actorPowerModal').classList.add('active');
@@ -3182,16 +2945,51 @@
     }
 
     // ============================================================
-    //  Trust 风险提示
+    //  获取更多角色弹窗
     // ============================================================
-    function openUserTrustTooltip() {
-      openStatTooltip('⚠️ 风险账户', '该账户信任系数异常，挖矿权重将受影响。');
+    function openNeedRoleModal(actorName, parentIP) {
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div class="modal-card" style="max-width:400px;text-align:center;padding:28px 24px 22px;">' +
+        '<h2 style="margin:0 0 8px;font-size:1.1rem;">需要更多角色</h2>' +
+        '<p class="modal-sub" style="margin:0 0 18px;font-size:0.9rem;line-height:1.7;color:var(--text-muted);">升级需要消耗 2 张同IP同等级角色。<br>去角色主页获取更多「' + actorName + '」</p>' +
+        '<button class="modal-btn confirm" onclick="window.location.href=\'actor-profile.html?name=' + encodeURIComponent(actorName) + '\'" style="margin-bottom:10px;">去角色主页</button>' +
+        '<button class="modal-btn cancel" onclick="this.closest(\'.modal-overlay\').remove()" style="width:100%;">关闭</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) this.remove();
+      });
     }
 
     // ============================================================
-    //  ⏰ 体力 Tick 模拟
+    //  参演短剧弹窗
+    // ============================================================
+    function openNeedPlayModal(actorName) {
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div class="modal-card" style="max-width:400px;text-align:center;padding:28px 24px 22px;">' +
+        '<h2 style="margin:0 0 8px;font-size:1.1rem;">需要更多完播</h2>' +
+        '<p class="modal-sub" style="margin:0 0 18px;font-size:0.9rem;line-height:1.7;color:var(--text-muted);">让角色参演短剧可以获得完播数据。<br>去创作页面为「' + actorName + '」安排参演</p>' +
+        '<button class="modal-btn confirm" onclick="window.location.href=\'narrator.html\'" style="margin-bottom:10px;">去参演短剧</button>' +
+        '<button class="modal-btn cancel" onclick="this.closest(\'.modal-overlay\').remove()" style="width:100%;">关闭</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) this.remove();
+      });
+    }
+
+    // ============================================================
+    //  Trust 风险提示
+    // ============================================================
+    function openUserTrustTooltip() {
+      openStatTooltip('风险账户', '该账户信任系数异常，片酬权重将受影响。');
+    }
+
     function openStatTooltip(title, desc) {
-      // 复用已有 modal 实现——创建临时 stat tooltip 覆盖层
       var overlay = document.createElement('div');
       overlay.className = 'modal-overlay active';
       overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
@@ -3205,49 +3003,27 @@
         if (e.target === this) this.remove();
       });
     }
-    // ============================================================
-    //  移动端布局重排：将挖矿汇总块移动到派遣面板下方
-    // ============================================================
-    function reorderMobileLayout() {
-      var appShell = document.querySelector('.app-shell');
-      var summary = document.querySelector('.mining-summary');
-      var deployPanel = document.getElementById('deploymentPanel');
-      if (!appShell || !summary || !deployPanel) return;
 
-      if (window.innerWidth <= 640) {
-        // 移动端：将 mining-summary 移到 deployment-panel 之后
-        deployPanel.parentNode.insertBefore(summary, deployPanel.nextSibling);
-      } else {
-        // 桌面端：将 mining-summary 恢复到 deployment-panel 之前
-        appShell.insertBefore(summary, deployPanel);
-      }
-    }
-
-    //  每 1 秒消耗/恢复 1 点体力
+    // ============================================================
+    //  体力 Tick 模拟（每秒 = 1 点体力）
     // ============================================================
     function energyTick() {
       MY_ACTORS.forEach(actor => {
         if (actor.isStaking && actor.status === 'active') {
-          // 派遣中：每秒消耗 1 点体力，消耗完之前全速产出
           actor.energy = Math.max(0, actor.energy - 1);
-
-          // 体力 > 0 时全速产出，体力耗尽后停止
           const hourlyOutput = actor.energy > 0 ? actor.dailyStory / 24 : 0;
           actor.todayOutput = (actor.todayOutput || 0) + hourlyOutput;
           actor.cumulativeStory = (actor.cumulativeStory || 0) + hourlyOutput;
-
           if (actor.energy <= 0) {
             actor.energy = 0;
             actor.status = 'exhausted';
           }
         } else if (!actor.isStaking && actor.status !== 'exhausted') {
-          // 休息中：每秒恢复 1 点体力
           if (actor.energy < actor.energyMax) {
             actor.energy = Math.min(actor.energyMax, actor.energy + 1);
           }
         }
       });
-
       renderAll();
     }
 
@@ -3255,36 +3031,15 @@
     //  页面初始化
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-      // 模拟用户 Trust 异常，显示风险提示标签
       var trustBadge = document.getElementById('trustRiskBadge');
       if (trustBadge) trustBadge.style.display = 'inline-flex';
-      
+
+      initPickerChips();
+      initUpgradeChips();
       renderAll();
 
-      // 启动体力模拟（每 1 秒 = 1 点体力）
       setInterval(energyTick, 1000);
 
-      // 移动端布局重排
-      reorderMobileLayout();
-      var resizeDebounce;
-      window.addEventListener('resize', function() {
-        clearTimeout(resizeDebounce);
-        resizeDebounce = setTimeout(reorderMobileLayout, 150);
-      });
-
-      // 排序标签点击事件
-      document.querySelectorAll('.sort-tag').forEach(tag => {
-        tag.addEventListener('click', function() {
-          const sort = this.dataset.sort;
-          if (!sort) return;
-          document.querySelectorAll('.sort-tag').forEach(t => t.classList.remove('active'));
-          this.classList.add('active');
-          currentSort = sort;
-          renderActors();
-        });
-      });
-
-      // 点击 Modal 外部关闭
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
           if (e.target === this) {
