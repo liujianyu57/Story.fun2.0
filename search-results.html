@@ -45,34 +45,30 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 .result-card .rc-ep{font-size:12px;color:var(--text-muted)}
 .result-card .rc-desc{font-size:12px;color:var(--text-muted);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* User card */
-.user-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--surface);margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+/* User card (左右布局, 桌面端2列) */
+.user-list{display:flex;flex-direction:column;gap:10px;padding:12px 16px}
+.user-list .user-card{max-width:100%}
+@media(min-width:769px){.user-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+.user-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--surface);cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.03)}
 .user-card:active{transform:scale(.98)}
 .user-card .uc-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e5e5ea;border:2px solid rgba(0,0,0,.06)}
-.user-card .uc-info{flex:1;min-width:0}
+.user-card .uc-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .user-card .uc-name{font-size:15px;font-weight:600;color:var(--text)}
-.user-card .uc-handle{font-size:13px;color:var(--text-muted);margin-top:1px}
+.user-card .uc-bio{font-size:12px;color:var(--text-muted);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-card .uc-stats{display:flex;gap:10px;font-size:11px;color:var(--text-muted)}
+.user-card .uc-stats strong{font-weight:600;color:var(--text)}
 .user-card .uc-follow-btn{padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:var(--accent);color:#fff;transition:all .2s;flex-shrink:0;font-family:inherit}
 .user-card .uc-follow-btn:active{opacity:.7}
+.user-card .uc-follow-btn.followed{background:rgba(0,0,0,.08);color:var(--text)}
 
 /* Drama grid (短剧卡片) */
 .drama-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 16px}
 @media(min-width:769px){.drama-gallery{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}}
 
-/* Actor grid (角色卡片) */
+/* Actor grid (角色卡片) - 使用 actor-card.js 组件 */
 .actor-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 16px}
+.actor-card-scope .ac-card{border:1px solid var(--border);background:#fff}
 @media(min-width:769px){.actor-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}}
-.a-card{background:var(--surface);border:none;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(27,45,71,.06);border:1px solid var(--border);cursor:pointer;transition:all .35s cubic-bezier(0.25,0.46,0.45,0.94)}
-.a-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(27,45,71,.1),0 2px 8px rgba(27,45,71,.04)}
-.a-card .a-banner{position:relative;height:220px;overflow:hidden;flex-shrink:0}
-.a-card .a-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.06) 100%);pointer-events:none}
-.a-card .a-banner img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(0.25,0.46,0.45,0.94)}
-.a-card:hover .a-banner img{transform:scale(1.04)}
-.a-card .a-body{padding:20px 20px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
-.a-card .a-name{font-size:1.25rem;font-weight:700;letter-spacing:-0.01em;line-height:1.25;color:var(--text)}
-.a-card .a-sub{font-size:0.85rem;color:var(--text-muted);line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.a-card .a-dramas{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
-.a-card .a-drama-tag{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:500;background:rgba(0,179,136,.08);color:var(--accent)}
 
 /* Video grid */
 .video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 16px}
@@ -107,12 +103,12 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 </head>
 <body>
 <div class="shell">
-  <a class="desktop-back" onclick="history.back()" title="返回">
+  <a class="desktop-back" href="javascript:void(0)" onclick="history.back()" title="返回">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
   </a>
   <div class="top-bar">
     <div class="search-row">
-      <button class="search-back" onclick="history.back()">
+      <button class="search-back" onclick="window.history.go(-1)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </button>
       <div class="search-field">
@@ -138,6 +134,7 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 </div>
 
 <script src="drama-card.js"></script>
+<script src="actor-card.js"></script>
 <script>
 var DATA = [
   {id:'001',title:'凤骨琉璃',cat:'古风',rt:4.6,ep:'全44集',totalEp:44,author:'JACK',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','李云飞'],cover:'image/fenggu_cover.jpg',video:'video/凤骨琉璃.mp4',likes:33300,cmts:890,desc:'一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。',certType:'official'},
@@ -190,7 +187,6 @@ function formatNum(n) {
 function getActorAvatar(actorName) {
   var db = window.ACTOR_AVATARS || {};
   if (db[actorName]) return db[actorName];
-  // Generate fallback colored initials
   return null;
 }
 
@@ -259,18 +255,32 @@ function searchVideos(q) {
   });
 }
 
+var USER_PROFILES = {
+  'JACK': { bio: '古风短剧创作者，专注于权谋与情感题材。', followers: '12.8万', likes: '56.3万', cover: 'image/fenggu_cover.jpg' },
+  'EVA': { bio: '热爱古风与喜剧，用镜头讲述有趣的故事。', followers: '8.4万', likes: '38.1万', cover: 'image/xiejia_cover.jpg' },
+  'LENS': { bio: '导演、编剧，喜剧赛道深耕者。', followers: '6.2万', likes: '22.5万', cover: 'image/chengxiangfu_cover.jpg' },
+  'NOVA': { bio: '科幻题材创作者，想象力天马行空。', followers: '9.7万', likes: '41.2万', cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80' },
+  'ROSE': { bio: '爱情短剧创作者，擅长细腻情感刻画。', followers: '15.1万', likes: '72.8万', cover: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80' },
+  'CYPHER': { bio: '科技 + 动作内容创作者。', followers: '7.3万', likes: '31.6万', cover: 'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=400&q=80' },
+  'SMILE': { bio: '用笑声治愈世界，喜剧赛道创作者。', followers: '11.5万', likes: '48.9万', cover: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=400&q=80' },
+  'DREAMER': { bio: '悬疑题材创作者，永远在追寻真相。', followers: '5.9万', likes: '19.2万', cover: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400&q=80' },
+  'BULL': { bio: '金融题材创作者，讲述商海沉浮。', followers: '10.2万', likes: '44.7万', cover: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80' },
+  'STELLAR': { bio: '星际科幻创作者，探索宇宙未知。', followers: '13.4万', likes: '61.5万', cover: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=400&q=80' }
+};
+
 function searchUsers(q) {
   var map = {};
   DATA.forEach(function(d){
+    var profile = USER_PROFILES[d.author] || {};
     if (!q) {
-      if (!map[d.author]) map[d.author] = { name: d.author, avatar: d.avatar, handle: '@' + d.author.toLowerCase(), count: 1 };
-      else map[d.author].count++;
+      if (!map[d.author]) map[d.author] = { name: d.author, avatar: d.avatar, bio: profile.bio || '', followers: profile.followers || '0', likes: profile.likes || '0', dramas: 1, cover: profile.cover || d.cover };
+      else { map[d.author].dramas++; map[d.author].likes = (parseInt(map[d.author].likes) + (parseInt(d.likes) || 0)).toLocaleString(); }
       return;
     }
     if (match(d.author, q) && !map[d.author]) {
-      map[d.author] = { name: d.author, avatar: d.avatar, handle: '@' + d.author.toLowerCase(), count: 1 };
+      map[d.author] = { name: d.author, avatar: d.avatar, bio: profile.bio || '', followers: profile.followers || '0', likes: profile.likes || '0', dramas: 1, cover: profile.cover || d.cover };
     } else if (match(d.author, q) && map[d.author]) {
-      map[d.author].count++;
+      map[d.author].dramas++;
     }
   });
   return Object.values(map);
@@ -292,7 +302,7 @@ function renderTab(tab) {
       html += '<div class="result-card" data-name="'+a.name+'" data-type="actor"><div class="rc-cover" style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,'+getActorInitialsBg(a.name)+');display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="rc-info"><div class="rc-title">'+a.name+'</div><div class="rc-desc">角色 · '+a.count+'部作品</div></div></div>';
     });
     userResults.forEach(function(u){
-      html += '<div class="user-card" data-name="'+u.name+'" data-type="user"><img class="uc-avatar" src="'+u.avatar+'" alt="'+u.name+'"><div class="uc-info"><div class="uc-name">'+u.name+'</div><div class="uc-handle">'+u.handle+'</div></div><button class="uc-follow-btn" onclick="event.stopPropagation();toggleFollow(this)">关注</button></div>';
+      html += '<div class="user-card" data-name="'+u.name+'" data-type="user"><img class="uc-avatar" src="'+u.avatar+'" alt="'+u.name+'"><div class="uc-info"><div class="uc-name">'+u.name+'</div><div class="uc-bio">'+u.bio+'</div><div class="uc-stats"><span><strong>'+u.followers+'</strong> 粉丝</span><span><strong>'+u.dramas+'</strong> 短剧</span><span><strong>'+u.likes+'</strong> 获赞</span></div></div><button class="uc-follow-btn" onclick="event.stopPropagation();toggleFollow(this)">关注</button></div>';
     });
     if (!dramaResults.length && !actorResults.length && !userResults.length) {
       emptyState.classList.add('show');
@@ -325,17 +335,22 @@ function renderTab(tab) {
     emptyState.classList.toggle('show', vs.length === 0);
     if (vs.length === 0) emptyText.textContent = '未找到相关视频';
   } else if (tab === 'actor') {
-    if (actorResults.length) {
-      html = '<div class="actor-gallery">' + actorResults.map(function(a){
-        var avatarUrl = getActorAvatar(a.name);
-        var imgHtml = '';
-        if (avatarUrl) {
-          imgHtml = '<img src="'+avatarUrl+'" alt="'+a.name+'"/>';
-        } else {
-          imgHtml = '<div style="width:100%;height:100%;background:linear-gradient(135deg,'+getActorInitialsBg(a.name)+');display:flex;align-items:center;justify-content:center;font-size:64px;color:#fff;font-weight:700">'+a.name.charAt(0)+'</div>';
-        }
-        return '<div class="a-card" onclick="location.href=\'actor-profile.html?name='+encodeURIComponent(a.name)+'\'"><div class="a-banner">'+imgHtml+'</div><div class="a-body"><div class="a-name">'+a.name+'</div><div class="a-sub">角色 · '+a.count+'部作品</div><div class="a-dramas">' + a.dramas.slice(0,3).map(function(dn){ return '<span class="a-drama-tag">'+dn+'</span>'; }).join('') + '</div></div></div>';
-      }).join('') + '</div>';
+    if (actorResults.length && typeof renderActorCard === 'function') {
+      html = '<div class="actor-card-scope"><div class="actor-gallery" id="actorSearchGallery">' + actorResults.map(function(a) {
+        return renderActorCard({
+          name: a.name,
+          description: '参演 ' + a.count + ' 部短剧：' + (a.dramas.slice(0, 3).join('、')) + (a.count > 3 ? ' 等' : ''),
+          issuanceType: 'community',
+          pricing: 'fixed',
+          views: '0',
+          heat: 0,
+          initPrice: 0,
+          price: '',
+          total: 0,
+          minted: 0,
+          creator: ''
+        });
+      }).join('') + '</div></div>';
     }
     if (!actorResults.length) {
       emptyState.classList.add('show');
@@ -344,9 +359,11 @@ function renderTab(tab) {
       emptyState.classList.remove('show');
     }
   } else if (tab === 'user') {
-    userResults.forEach(function(u){
-      html += '<div class="user-card" data-name="'+u.name+'" data-type="user"><img class="uc-avatar" src="'+u.avatar+'" alt="'+u.name+'"><div class="uc-info"><div class="uc-name">'+u.name+'</div><div class="uc-handle">'+u.handle+'</div></div><button class="uc-follow-btn" onclick="event.stopPropagation();toggleFollow(this)">关注</button></div>';
-    });
+    if (userResults.length) {
+      html = '<div class="user-list">' + userResults.map(function(u){
+        return '<div class="user-card" data-name="'+u.name+'" data-type="user"><img class="uc-avatar" src="'+u.avatar+'" alt="'+u.name+'"><div class="uc-info"><div class="uc-name">'+u.name+'</div><div class="uc-bio">'+u.bio+'</div><div class="uc-stats"><span><strong>'+u.followers+'</strong> 粉丝</span><span><strong>'+u.dramas+'</strong> 短剧</span><span><strong>'+u.likes+'</strong> 获赞</span></div></div><button class="uc-follow-btn" onclick="event.stopPropagation();toggleFollow(this)">关注</button></div>';
+      }).join('') + '</div>';
+    }
     if (!userResults.length) {
       emptyState.classList.add('show');
       emptyText.textContent = '未找到相关用户';
