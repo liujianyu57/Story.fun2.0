@@ -1069,11 +1069,6 @@
             <span class="ahs-label">可升至 Lv.1</span>
             <span class="ahs-value" id="heroTargetPower">—</span>
           </div>
-          <div class="ahs-divider"></div>
-          <div class="ahs-item">
-            <span class="ahs-label">完播</span>
-            <span class="ahs-value" id="heroViews">—</span>
-          </div>
         </div>
         <!-- 签约价格（匹配 actors.html 卡片风格） -->
         <div class="actor-price" id="actorPriceRow">
@@ -1730,7 +1725,6 @@
       } else {
         issuanceBadge.style.display = 'none';
       }
-      document.getElementById('heroViews').textContent = actor.views || '—';
 
       // ═══ 片酬计算 + 片酬升级（computePriceCoefficient 已提升为顶层全局函数） ═══
       var ipPowerVal = computePriceCoefficient(actor.initPrice || 0) * parseFloat(actor.heat) || 0;
@@ -1763,13 +1757,11 @@
 
       // 更新 stats 行
       var statItems = document.querySelectorAll('.actor-hero-stats .ahs-item');
-      if (statItems.length >= 3) {
+      if (statItems.length >= 2) {
         statItems[0].querySelector('.ahs-label').textContent = 'Lv.1 片酬';
-        statItems[0].querySelector('.ahs-value').textContent = ipPowerVal.toFixed(2);
+        statItems[0].querySelector('.ahs-value').innerHTML = ipPowerVal.toFixed(2) + ' <span style="font-size:0.55em;color:var(--text-muted);">STORY/h</span>';
         statItems[1].querySelector('.ahs-label').textContent = '可升至 Lv.' + maxLevel;
-        statItems[1].querySelector('.ahs-value').textContent = targetPower.toFixed(2);
-        statItems[2].querySelector('.ahs-label').textContent = '完播';
-        statItems[2].querySelector('.ahs-value').textContent = actor.views || '—';
+        statItems[1].querySelector('.ahs-value').innerHTML = targetPower.toFixed(2) + ' <span style="font-size:0.55em;color:var(--text-muted);">STORY/h</span>';
       }
 
       // ═══ Mint Modal 交互已在顶层统一绑定（bindMintModalEvents），此处不再重复定义 ═══
@@ -2268,6 +2260,7 @@
       if (viewsNum >= UPGRADE_TABLE[i].threshold) { maxLevel = UPGRADE_TABLE[i].level; break; }
     }
     document.getElementById('upgradeModalCurrent').textContent = '当前完播：' + viewsDisplay + '  →  可升至 Lv.' + maxLevel;
+    document.getElementById('upgradeModalCurrent').insertAdjacentHTML('afterend','<div style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.5;">完播数据为角色 IP 参演所有短剧的完播次数之和，反映其整体市场表现。</div>');
     document.getElementById('upgradeTable').innerHTML = UPGRADE_TABLE.map(function(r) {
       var isActive = r.level === maxLevel;
       var bg = isActive ? 'var(--accent-soft)' : 'transparent';

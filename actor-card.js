@@ -465,11 +465,11 @@
     var statsHTML = '<div class="ac-stats">' +
       '<span class="ac-stat-item" data-stat="ip-power">' +
         '<span class="ac-stat-label">Lv.1 片酬</span>' +
-        '<span class="ac-num">' + ipPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY</span></span>' +
+        '<span class="ac-num">' + ipPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY/h</span></span>' +
       '</span>' +
       '<span class="ac-stat-item" data-stat="target-power">' +
         '<span class="ac-stat-label">可升至 Lv.' + maxLevel + '</span>' +
-        '<span class="ac-num">' + targetPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY</span></span>' +
+        '<span class="ac-num">' + targetPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY/h</span></span>' +
       '</span>' +
     '</div>';
 

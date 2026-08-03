@@ -868,6 +868,7 @@
         if (viewsNum >= UPGRADE_TABLE[i].threshold) { maxLevel = UPGRADE_TABLE[i].level; break; }
       }
       upgradeModalCurrent.textContent = '当前完播：' + viewsStr + ' → 可升至 Lv.' + maxLevel;
+      upgradeModalCurrent.insertAdjacentHTML('afterend','<div style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.5;">完播数据为角色 IP 参演所有短剧的完播次数之和，反映其整体市场表现。</div>');
       upgradeTable.innerHTML = UPGRADE_TABLE.map(function(r) {
         var isActive = r.level === maxLevel;
         var bg = isActive ? 'var(--accent-soft)' : 'transparent';
