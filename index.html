@@ -962,7 +962,7 @@
       </button>
       <!-- 信息面板 -->
       <div class="featured-content">
-        <div class="featured-content-inner">
+        <div class="featured-content-inner" onclick="window.featGoToPlayer&&window.featGoToPlayer()" style="cursor:pointer">
           <div class="featured-cert-wrapper" id="featured-cert-wrapper"></div>
           <h2 id="featured-title">凤骨琉璃</h2>
           <div class="featured-meta" id="featured-meta">
@@ -1496,6 +1496,23 @@
       }
 
       // 卡片点击跳转已在渲染后统一绑定（桌面端/手机端共用完整参数链接）
+
+      // Banner 点击跳转播放器
+      window.featGoToPlayer = function() {
+        var d = featuredDramas[window.featCurrentIndex];
+        if (!d) return;
+        var avatars = (d.actors || []).map(function(n) { return ACTOR_AVATARS[n] || ''; }).join(',');
+        var actorNames = encodeURIComponent((d.actors || []).join(','));
+        var total = (d.episodes || '全24集').match(/\d+/);
+        total = total ? total[0] : '24';
+        location.href = 'drama-player.html?title=' + encodeURIComponent(d.title) +
+          '&total=' + total +
+          '&cover=' + encodeURIComponent(d.img) +
+          '&desc=' + encodeURIComponent(d.desc || '') +
+          '&video=' + encodeURIComponent(d.video || '') +
+          '&actors=' + encodeURIComponent(avatars) +
+          '&actorNames=' + actorNames;
+      };
 
     })();
   </script>
