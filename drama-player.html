@@ -473,6 +473,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
     <div class="dt-right">
       <button class="dt-btn" id="dtAutoPlayBtn" title="连播" onclick="toggleAutoPlayNext()"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2v12l10-6z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></svg>连播</button>
       <button class="dt-btn" id="dtCleanBtn" title="清屏播放" onclick="toggleCleanMode()"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>清屏</button>
+      <button class="dt-btn" id="dtEpBtn" title="选集" onclick="window.dtEpSelect&&window.dtEpSelect()"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9.5" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9.5" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>选集</button>
       <div class="dt-volume">
         <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="1.5,6 5,6 8.5,2.5 8.5,13.5 5,10 1.5,10"/><path d="M11,5.5a3,3,0,0,1,0,5"/><path d="M13,3.5a6,6,0,0,1,0,9"/></svg>
         <div class="dt-volume-panel"><span class="vol-num" id="dtVolNum">80</span><input type="range" id="dtVolume" min="0" max="100" value="80" oninput="setDesktopVolume(this.value);document.getElementById('dtVolNum').textContent=this.value"></div>
@@ -970,6 +971,7 @@ if(!isPlayerMode){
   function prevSlide(){if(idx<=0){showToast('— 已是第一集 —');return}animFlag=false;goTo(idx-1,true)}
   window.dtNext=nextSlide;window.dtPrev=prevSlide;
   window.dtEpBtn=openEpDrawer;window.dtCmtBtn=function(){openDrawer(idx)};
+  window.dtEpSelect=function(){openDrawer(idx);setTimeout(function(){var t=document.querySelector('#cmDrawer .cm-tab[data-cmtab="drama"]');if(t)t.click()},150)};
   window.dtCleanBtn=function(){cleanMode=!cleanMode;document.getElementById('playerApp').classList.toggle('clean-mode',cleanMode)};
   window.setDesktopVolume=function(val){var vs=document.querySelectorAll('#track .slide-img');vs.forEach(function(v){if(v.tagName==='VIDEO')v.volume=val/100})};
   function toggleAppFullscreen(){
