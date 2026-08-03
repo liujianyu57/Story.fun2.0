@@ -9,6 +9,8 @@
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+
+    /* ═══ Auth ═══ */
     .auth-container { display: flex; align-items: center; }
     .auth-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
     .auth-login-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
@@ -56,673 +58,105 @@
     .button, .button-secondary { border: none; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-size: 0.95rem; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
     .button { background: var(--accent); color: #fff; font-weight: 600; }
     .button-secondary { background: rgba(15, 22, 42, 0.05); color: var(--text); }
+
     /* ═══ Apple-Inspired Sign Modal ═══ */
-    .mint-modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(15,23,42,0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
+    .mint-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
     .mint-modal-overlay.active { display: flex; }
-    .mint-modal {
-      width: min(440px, 100%);
-      background: var(--surface);
-      border-radius: 28px;
-      box-shadow: 0 40px 80px rgba(15,23,42,0.18);
-      overflow: hidden;
-      transform: scale(0.92) translateY(12px);
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .mint-modal-overlay.active .mint-modal {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-    }
-    .mint-modal-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(0,0,0,0.04);
-      color: var(--text-muted);
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      transition: all 0.2s ease;
-      z-index: 2;
-    }
+    .mint-modal { width: min(440px, 100%); background: var(--surface); border-radius: 28px; box-shadow: 0 40px 80px rgba(15,23,42,0.18); overflow: hidden; transform: scale(0.92) translateY(12px); opacity: 0; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+    .mint-modal-overlay.active .mint-modal { transform: scale(1) translateY(0); opacity: 1; }
+    .mint-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); color: var(--text-muted); font-size: 1.2rem; cursor: pointer; display: grid; place-items: center; transition: all 0.2s ease; z-index: 2; }
     .mint-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
-    .mint-modal-hero {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      overflow: hidden;
-      background: #f0f5fa;
-    }
-    .mint-modal-hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .mint-modal-hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.08) 100%);
-    }
-    .mint-modal-badge {
-      position: absolute;
-      left: 16px;
-      bottom: 16px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(8px);
-      color: var(--text);
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
-    .mint-modal-body {
-      padding: 24px 28px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    /* ═══ Modal Layout — Clean Hierarchy ═══ */
-    .mint-modal-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .mint-modal-header h2 {
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      flex-shrink: 0;
-    }
-    .mint-modal-actor-name {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      text-align: right;
-    }
+    .mint-modal-hero { position: relative; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; background: #f0f5fa; }
+    .mint-modal-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mint-modal-hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.08) 100%); }
+    .mint-modal-badge { position: absolute; left: 16px; bottom: 16px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); color: var(--text); font-size: 0.78rem; font-weight: 600; }
+    .mint-modal-body { padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 20px; }
+    .mint-modal-header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+    .mint-modal-header h2 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-muted); flex-shrink: 0; }
+    .mint-modal-actor-name { font-size: 1.5rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; text-align: right; }
+    .mint-price-bar { background: var(--bg); border-radius: 16px; padding: 22px 20px 18px; }
+    .mpb-badge-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .mpb-pricing-tag { display: inline-flex; align-items: center; gap: 3px; padding: 2px 10px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.02em; background: rgba(0,179,136,0.10); color: var(--accent); white-space: nowrap; }
+    .mpb-pricing-tag .actor-price-help { width: 16px; height: 16px; font-size: 0.55rem; }
+    .mpb-pricing-tag.fixed { background: rgba(101,117,134,0.10); color: var(--text-muted); }
+    .mpb-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 24px; }
+    .mpb-price-value { font-size: 1.6rem; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; line-height: 1.2; }
+    .mpb-price-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+    .mpb-coeff-inline { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 500; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
+    .mpb-coeff-inline strong { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .mpb-coeff-inline .actor-price-help { width: 16px; height: 16px; font-size: 0.55rem; }
+    .mpb-progress { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .mpb-progress strong { color: var(--text); font-weight: 700; }
+    .mint-slippage-notice { text-align: center; font-size: 0.78rem; color: var(--text-muted); padding: 6px 0 2px; opacity: 0.85; }
+    .mint-modal-footer { display: flex; flex-direction: column; gap: 10px; }
+    .mint-modal-footer .mint-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease; }
+    .mint-modal-footer .mint-btn.primary { background: linear-gradient(135deg, #00b388, #00d4a3); color: #fff; }
+    .mint-modal-footer .mint-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,179,136,0.35); }
+    .mint-modal-footer .mint-btn.primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+    .mint-modal-footer .mint-btn.secondary { background: transparent; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; padding: 12px; }
+    .mint-modal-footer .mint-btn.secondary:hover { color: var(--text); background: rgba(0,0,0,0.03); }
 
-
-    /* ═══ Price Row — Apple Inspired ═══ */
-    .mint-price-bar {
-      background: var(--bg);
-      border-radius: 16px;
-      padding: 22px 20px 18px;
-    }
-    .mpb-badge-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .mpb-pricing-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding: 2px 10px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      background: rgba(0,179,136,0.10);
-      color: var(--accent);
-      white-space: nowrap;
-    }
-    .mpb-pricing-tag .actor-price-help {
-      width: 16px;
-      height: 16px;
-      font-size: 0.55rem;
-    }
-    .mpb-pricing-tag.fixed {
-      background: rgba(101,117,134,0.10);
-      color: var(--text-muted);
-    }
-    /* Big price */
-    .mpb-price-row {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-    .mpb-price-value {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-    }
-    .mpb-price-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-    /* Price coefficient inline */
-    .mpb-coeff-inline {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      white-space: nowrap;
-      margin-left: auto;
-    }
-    .mpb-coeff-inline strong {
-      font-weight: 700;
-      color: var(--accent);
-      font-variant-numeric: tabular-nums;
-    }
-    .mpb-coeff-inline .actor-price-help {
-      width: 16px;
-      height: 16px;
-      font-size: 0.55rem;
-    }
-
-    /* Progress text — compact "总发行 X · 剩余 Y" */
-    .mpb-progress {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-      margin-top: 6px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-    }
-    .mpb-progress strong {
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    /* Slippage setting — slider row */
-
-
-    .mint-slippage-row {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 2px 2px 0;
-    }
-    .mint-slippage-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .mint-slippage-label {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      font-weight: 500;
-    }
-    .mint-slippage-value {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: -0.01em;
-    }
-    .mint-slippage-track {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .mint-slippage-track .range-label {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      min-width: 24px;
-      user-select: none;
-    }
-    .mint-slippage-track .range-label:last-child {
-      text-align: right;
-    }
-    .mint-slippage-slider {
-      -webkit-appearance: none;
-      appearance: none;
-      flex: 1;
-      height: 4px;
-      border-radius: 2px;
-      background: var(--border);
-      outline: none;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .mint-slippage-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      box-shadow: 0 1px 6px rgba(0,179,136,0.3);
-      transition: transform 0.15s ease;
-      border: 2px solid #fff;
-    }
-    .mint-slippage-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.18);
-    }
-    .mint-slippage-slider::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      border: 2px solid #fff;
-      box-shadow: 0 1px 6px rgba(0,179,136,0.3);
-    }
-    .mint-slippage-hint {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-      opacity: 0.8;
-    }
-
-
-    .mint-slippage-notice {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      padding: 6px 0 2px;
-      opacity: 0.85;
-    }
-    .mint-modal-footer {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .mint-modal-footer .mint-btn {
-      width: 100%;
-      padding: 16px;
-      border-radius: 14px;
-      border: none;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .mint-modal-footer .mint-btn.primary {
-      background: linear-gradient(135deg, #00b388, #00d4a3);
-      color: #fff;
-    }
-    .mint-modal-footer .mint-btn.primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(0,179,136,0.35);
-    }
-    .mint-modal-footer .mint-btn.primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none !important;
-      box-shadow: none !important;
-    }
-    .mint-modal-footer .mint-btn.secondary {
-      background: transparent;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 12px;
-    }
-    .mint-modal-footer .mint-btn.secondary:hover {
-      color: var(--text);
-      background: rgba(0,0,0,0.03);
-    }
-    /* Success state — with stamp ceremony */
-    .mint-modal-success {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      padding: 48px 28px 32px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+    /* Success state */
+    .mint-modal-success { display: none; flex-direction: column; align-items: center; gap: 10px; padding: 48px 28px 32px; text-align: center; position: relative; overflow: hidden; }
     .mint-modal-success.show { display: flex; }
+    .stamp-icon-wrap { position: relative; width: 80px; height: 80px; margin-bottom: 6px; }
+    .stamp-seal { width: 80px; height: 80px; border-radius: 50%; background: #e53935; display: grid; place-items: center; color: #fff; font-size: 1.3rem; font-weight: 900; box-shadow: 0 4px 20px rgba(229,57,53,0.35); position: relative; transform: scale(0) rotate(-30deg); opacity: 0; transition: none; letter-spacing: 0.04em; border: 3px solid #c62828; }
+    .mint-modal-success.show .stamp-seal { animation: stamp-drop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 0.3s; }
+    .stamp-seal-inner { display: flex; flex-direction: column; align-items: center; gap: 0; line-height: 1; }
+    .stamp-seal-inner span:first-child { font-size: 1.6rem; }
+    .stamp-seal-inner span:last-child { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; margin-top: -2px; }
+    .stamp-ripple { position: absolute; inset: -12px; border-radius: 50%; border: 2px solid rgba(229,57,53,0.15); transform: scale(0); opacity: 0; }
+    .mint-modal-success.show .stamp-ripple { animation: ripple-out 0.6s ease-out forwards; animation-delay: 0.6s; }
+    .stamp-ripple:nth-child(2) { inset: -24px; border-width: 1.5px; }
+    .mint-modal-success.show .stamp-ripple:nth-child(2) { animation-delay: 0.7s; }
+    @keyframes stamp-drop { 0% { transform: scale(0) rotate(-30deg); opacity: 0; } 50% { transform: scale(1.25) rotate(6deg); opacity: 1; } 70% { transform: scale(0.92) rotate(-2deg); opacity: 1; } 85% { transform: scale(1.04) rotate(1deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+    @keyframes ripple-out { 0% { transform: scale(0.5); opacity: 0.6; } 100% { transform: scale(1.5); opacity: 0; } }
+    .mint-modal-success .success-content { display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; transform: translateY(12px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); width: 100%; }
+    .mint-modal-success.show .success-content { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
+    .mint-modal-success h2 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+    .mint-modal-success p { margin: 4px 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+    .mint-modal-success .success-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; width: 100%; }
+    .mint-modal-success .success-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease; }
+    .mint-modal-success .success-btn.primary { background: linear-gradient(135deg, #00b388, #00d4a3); color: #fff; }
+    .mint-modal-success .success-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,179,136,0.35); }
+    .mint-modal-success .success-btn.secondary { background: transparent; color: var(--text-muted); font-weight: 600; padding: 12px; }
+    .mint-modal-success .success-btn.secondary:hover { color: var(--text); background: rgba(0,0,0,0.03); }
 
-    /* ===== 印章动画 ===== */
-    .stamp-icon-wrap {
-      position: relative;
-      width: 80px;
-      height: 80px;
-      margin-bottom: 6px;
-    }
-    .stamp-seal {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #e53935;
-      display: grid;
-      place-items: center;
-      color: #fff;
-      font-size: 1.3rem;
-      font-weight: 900;
-      box-shadow: 0 4px 20px rgba(229,57,53,0.35);
-      position: relative;
-      transform: scale(0) rotate(-30deg);
-      opacity: 0;
-      transition: none;
-      letter-spacing: 0.04em;
-      border: 3px solid #c62828;
-    }
-    .mint-modal-success.show .stamp-seal {
-      animation: stamp-drop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      animation-delay: 0.3s;
-    }
-    .stamp-seal-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-      line-height: 1;
-    }
-    .stamp-seal-inner span:first-child {
-      font-size: 1.6rem;
-    }
-    .stamp-seal-inner span:last-child {
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      margin-top: -2px;
-    }
-    /* 盖章震动波纹 */
-    .stamp-ripple {
-      position: absolute;
-      inset: -12px;
-      border-radius: 50%;
-      border: 2px solid rgba(229,57,53,0.15);
-      transform: scale(0);
-      opacity: 0;
-    }
-    .mint-modal-success.show .stamp-ripple {
-      animation: ripple-out 0.6s ease-out forwards;
-      animation-delay: 0.6s;
-    }
-    .stamp-ripple:nth-child(2) {
-      inset: -24px;
-      border-width: 1.5px;
-    }
-    .mint-modal-success.show .stamp-ripple:nth-child(2) {
-      animation-delay: 0.7s;
-    }
+    .banner-1 { background: linear-gradient(135deg, #e0f7ff 0%, #ffffff 100%); }
+    .banner-2 { background: linear-gradient(135deg, #ffe4e7 0%, #fff9fb 100%); }
+    .banner-3 { background: linear-gradient(135deg, #edeaff 0%, #f9f8ff 100%); }
 
-    @keyframes stamp-drop {
-      0% { transform: scale(0) rotate(-30deg); opacity: 0; }
-      50% { transform: scale(1.25) rotate(6deg); opacity: 1; }
-      70% { transform: scale(0.92) rotate(-2deg); opacity: 1; }
-      85% { transform: scale(1.04) rotate(1deg); opacity: 1; }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-    @keyframes ripple-out {
-      0% { transform: scale(0.5); opacity: 0.6; }
-      100% { transform: scale(1.5); opacity: 0; }
-    }
+    /* ═══ Page Header ═══ */
+    .page-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; margin-bottom: 28px; }
+    .page-header-left { display: flex; flex-direction: column; gap: 4px; }
+    .page-header-left h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; line-height: 1.15; }
+    .page-header-left p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+    .page-header-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-decoration: none; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,179,136,0.3); }
 
-    /* 成功内容（文字+按钮）缓入 */
-    .mint-modal-success .success-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-      width: 100%;
-    }
-    .mint-modal-success.show .success-content {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.5s;
-    }
+    /* ═══ Search ═══ */
+    .search-wrapper { position: relative; margin-bottom: 24px; }
+    .search-input { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; }
+    .search-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.12); z-index: 50; overflow: hidden; display: none; }
+    .search-dropdown.show { display: block; }
+    .search-dropdown-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; transition: background 0.15s ease; text-decoration: none; color: var(--text); }
+    .search-dropdown-item:hover { background: var(--accent-soft); }
+    .search-dropdown-item img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .search-dropdown-item .sdi-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .search-dropdown-item .sdi-name { font-weight: 600; font-size: 0.9rem; }
+    .search-dropdown-item .sdi-sub { font-size: 0.78rem; color: var(--text-muted); }
+    .search-dropdown-item .sdi-collection { margin-left: auto; padding: 3px 10px; border-radius: 999px; background: rgba(0,179,136,.12); color: var(--accent); font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+    .search-dropdown-empty { padding: 20px 16px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
 
-    .mint-modal-success h2 {
-      margin: 0;
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-    .mint-modal-success p {
-      margin: 4px 0 0;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-    .mint-modal-success .success-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 14px;
-      width: 100%;
-    }
-    .mint-modal-success .success-btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .mint-modal-success .success-btn.primary {
-      background: linear-gradient(135deg, #00b388, #00d4a3);
-      color: #fff;
-    }
-    .mint-modal-success .success-btn.primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(0,179,136,0.35);
-    }
-    .mint-modal-success .success-btn.secondary {
-      background: transparent;
-      color: var(--text-muted);
-      font-weight: 600;
-      padding: 12px;
-    }
-    .mint-modal-success .success-btn.secondary:hover {
-      color: var(--text);
-      background: rgba(0,0,0,0.03);
-    }
-    .grid { display: grid; gap: 20px; }
-    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    /* ═══ Sort bar ═══ */
+    .sort-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .sort-tag { padding: 8px 16px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; font-size: 0.9rem; cursor: pointer; transition: all 0.25s ease; user-select: none; }
+    .sort-tag:hover { background: rgba(0,179,136,0.2); }
+    .sort-tag.active { background: var(--accent); color: white; }
 
-    /* ═══ Apple-Inspired Card Design ═══ */
-    .card {
-      background: var(--surface);
-      border: none;
-      border-radius: 24px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 2px 12px rgba(27,45,71,0.06);
-      cursor: pointer;
-      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(27,45,71,0.10), 0 2px 8px rgba(27,45,71,0.04);
-    }
-    .card-banner {
-      position: relative;
-      height: 220px;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-    .card-banner::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.06) 100%);
-      pointer-events: none;
-    }
-    .actor-avatar { width: 100%; height: 100%; position: absolute; inset: 0; }
-    .actor-avatar img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .card:hover .actor-avatar img { transform: scale(1.04); }
-    .card-body {
-      padding: 20px 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-    }
-    .card h3 {
-      margin: 0;
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-      color: var(--text);
-    }
-    .card p {
-      margin: 0;
-      color: var(--text-muted);
-      line-height: 1.5;
-      font-size: 0.85rem;
-      letter-spacing: 0.01em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .card-bottom { display: flex; flex-direction: column; gap: 10px; }
-    .card-bottom-price { display: none; }
-    .card-ip-code { display: none; }
-
-    /* Price pill — Apple style subtle tag */
-    .actor-price {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 2px 4px 0;
-      margin-top: 0;
-      background: none;
-      border-radius: 0;
-    }
-    .actor-action-area {
-      margin-top: 8px;
-    }
-    .actor-action-area .actor-mint-btn {
-      width: 100%;
-      padding: 13px 16px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, #00b388, #00d4a3);
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .actor-action-area .actor-mint-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(0,179,136,0.35);
-    }
-    .actor-action-area .actor-trade-btn {
-      width: 100%;
-      padding: 13px 16px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, #f59e0b, #f97316);
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .actor-action-area .actor-trade-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(245,158,11,0.35);
-    }
-    .actor-meta-foot {
-      text-align: center;
-      font-size: 0.68rem;
-      color: rgba(0,0,0,0.3);
-      padding: 4px 0 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .actor-progress {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0 2px;
-      margin-top: -2px;
-    }
-    .actor-progress-bar {
-      flex: 1;
-      height: 3px;
-      border-radius: 2px;
-      background: rgba(0,0,0,0.06);
-      overflow: hidden;
-    }
-    .actor-progress-fill {
-      height: 100%;
-      border-radius: 2px;
-      background: var(--accent);
-      transition: width 0.4s ease;
-    }
-    .actor-progress-text {
-      font-size: 0.68rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      white-space: nowrap;
-      min-width: 0;
-    }
-    .actor-price-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .actor-price-value {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: -0.01em;
-    }
-    .actor-price-help {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.04);
-      color: var(--text-muted);
-      font-size: 0.6rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: none;
-      padding: 0;
-      line-height: 1;
-    }
-    .actor-price-help:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    /* Tooltip styles */
+    /* ═══ Price Tooltip ═══ */
     .price-tooltip-overlay { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
-
     .price-tooltip-overlay.active { display: flex; }
     .price-tooltip-box { background: #fff; border-radius: 20px; max-width: 560px; width: 94%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
     .price-tooltip-box h3 { margin: 0 0 4px; font-size: 1.1rem; color: var(--text); }
@@ -739,305 +173,36 @@
     .price-curve-formula { font-size: 0.78rem; color: var(--text-muted); background: var(--bg); border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; line-height: 1.5; }
     .price-curve-formula code { font-family: inherit; font-weight: 600; color: var(--accent); }
 
-    /* Action button */
-    .card-actions { display: flex; gap: 8px; }
-    .card-actions .button-secondary,
-    .card-actions .actor-mint-btn {
-      flex: 1;
-      min-width: 0;
-      padding: 11px 14px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #00b388, #00d4a3);
-      color: #fff;
-      transition: all 0.25s ease;
-    }
-    .card-actions .button-secondary:hover,
-    .card-actions .actor-mint-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(0,179,136,0.35);
-    }
-    /* 已售罄 — 交易按钮组 */
-    .card-actions-soldout {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex: 1;
-      width: 100%;
-    }
-    .card-actions-soldout .floor-price-tag {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-      padding: 2px 14px 2px 0;
-      border-right: 1px solid var(--border);
-      flex-shrink: 0;
-      min-width: 0;
-    }
-    .card-actions-soldout .floor-price-tag .fpt-label {
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      line-height: 1.2;
-      letter-spacing: 0.02em;
-    }
-    .card-actions-soldout .floor-price-tag .fpt-value {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.3;
-    }
-    .card-actions-soldout .actor-trade-btn {
-      flex: 1;
-      min-width: 0;
-      padding: 11px 14px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, #f59e0b, #f97316);
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .card-actions-soldout .floor-price-tag {
-      flex: 0 0 auto;
-    }
-    .card-actions-soldout .actor-trade-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(245,158,11,0.35);
-    }
-    /* 已售罄 badge 标记 */
-    .badge-soldout {
-      background: rgba(244,67,54,.92);
-      color: #fff;
-    }
-    .mint-modal-hero .soldout-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .mint-modal-hero .soldout-overlay span {
-      padding: 8px 20px;
-      background: rgba(244,67,54,0.88);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 700;
-      border-radius: 999px;
-      backdrop-filter: blur(6px);
-      letter-spacing: 0.04em;
-    }
-
-
-    /* Stats — minimal Apple-inspired */
-    .actor-stats {
-      display: flex;
-      gap: 8px;
-      padding: 4px 0 0;
-    }
-    .actor-stat-item {
-      flex: 1;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1px;
-      padding: 10px 6px 8px;
-      border-radius: 12px;
-      background: var(--bg);
-      transition: all 0.25s ease;
-      position: relative;
-    }
-    .actor-stat-item:hover {
-      background: rgba(0,0,0,0.03);
-      transform: none;
-      box-shadow: none;
-    }
-    .actor-stat-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .actor-stat-item .num {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      transition: color 0.2s;
-    }
-    .actor-stat-item:hover .num { color: var(--accent); }
-
-    /* Stat tooltip */
+    /* ═══ Stat Tooltip ═══ */
     .stat-tooltip-overlay { position: fixed; inset: 0; z-index: 999; display: none; align-items: center; justify-content: center; background: rgba(15,23,42,0.25); }
     .stat-tooltip-overlay.active { display: flex; }
     .stat-tooltip-box { background: #fff; border-radius: 20px; max-width: 360px; width: 90%; padding: 28px 24px 22px; box-shadow: 0 20px 60px rgba(15,23,42,0.15); text-align: center; }
     .stat-tooltip-box h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--text); }
     .stat-tooltip-box p { margin: 0 0 18px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
     .stat-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; }
-    .banner-1 { background: linear-gradient(135deg, #e0f7ff 0%, #ffffff 100%); }
-    .banner-2 { background: linear-gradient(135deg, #ffe4e7 0%, #fff9fb 100%); }
-    .banner-3 { background: linear-gradient(135deg, #edeaff 0%, #f9f8ff 100%); }
-    .page-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; margin-bottom: 28px; }
-    .page-header-left { display: flex; flex-direction: column; gap: 4px; }
-    .page-header-left h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; line-height: 1.15; }
-    .page-header-left p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
-    .page-header-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    .btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-decoration: none; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,179,136,0.3); }
-    .search-container { margin-bottom: 24px; }
-    .search-input { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; }
 
-    /* Sort bar — match index.html filter-tag style */
-    .sort-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
-    .sort-tag { padding: 8px 16px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; font-size: 0.9rem; cursor: pointer; transition: all 0.25s ease; user-select: none; }
-    .sort-tag:hover { background: rgba(0,179,136,0.2); }
-    .sort-tag.active { background: var(--accent); color: white; }
+    /* ═══ Desktop Header ═══ */
+    .desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
+    .desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
+    .desktop-header .dh-search:focus-within{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
+    .desktop-header .dh-search svg{width:16px;height:16px;flex-shrink:0;color:rgba(0,0,0,0.35)}
+    .desktop-header .dh-search input{flex:1;border:none;outline:none;background:none;font-size:13px;color:#13202e;font-family:inherit}
+    .desktop-header .dh-search input::placeholder{color:rgba(0,0,0,0.35)}.dh-search-dropdown{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);padding:16px;z-index:200;max-height:360px;overflow-y:auto}.dh-search-dropdown.show{display:block}.dh-search-dropdown .sd-section{margin-bottom:14px}.dh-search-dropdown .sd-section:last-child{margin-bottom:0}.dh-search-dropdown .sd-section-title{font-size:12px;font-weight:600;color:#5e6f83;margin-bottom:8px}.dh-search-dropdown .sd-tags{display:flex;flex-wrap:wrap;gap:6px}.dh-search-dropdown .sd-tag{padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;color:#13202e;cursor:pointer;transition:all .15s;border:none;font-family:inherit}.dh-search-dropdown .sd-tag:hover{background:rgba(0,179,136,.1);color:#00b388}.dh-search-dropdown .sd-list{display:flex;flex-direction:column;gap:2px}.dh-search-dropdown .sd-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;color:#13202e;cursor:pointer;transition:background .1s}.dh-search-dropdown .sd-item:hover{background:rgba(0,0,0,.03)}.dh-search-dropdown .sd-item .sd-del{color:#5e6f83;font-size:11px;padding:2px 6px;border-radius:4px;cursor:pointer;border:none;background:none}.dh-search-dropdown .sd-item .sd-del:hover{color:#f45b69}.desktop-header .dh-search-btn{padding:3px 12px;height:auto;border-radius:6px;border:none;background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid transparent;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-right:-4px}.desktop-header .dh-search-btn:hover{background:#00b388;color:#fff;border-color:#00b388}
+    .desktop-header .dh-icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;flex-shrink:0}
+    .desktop-header .dh-icon-btn:hover{background:rgba(0,0,0,0.06);color:#13202e}
+    .desktop-header .dh-icon-btn svg{width:20px;height:20px}
+    .desktop-header .dh-notify-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff2d55;border:1.5px solid #fff}
+    .desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
+    .desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
+    .desktop-header .dh-publish-btn svg{width:16px;height:16px}
+    .desktop-header .auth-container{display:flex;align-items:center}
+    .desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+    .desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
+    @media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
+    @media(max-width:768px){.desktop-header{display:none}}
 
-    /* Banner badges — bottom row */
-    .banner-bottom-badges {
-      display: none;
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      pointer-events: none;
-      z-index: 2;
-    }
-    /* 发行标识 — 卡片左上角 */
-    .badge-issuance-corner {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      z-index: 3;
-      pointer-events: auto;
-    }
-    .badge {
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.92);
-      color: var(--text);
-      font-size: 0.75rem;
-      font-weight: 600;
-      backdrop-filter: blur(8px);
-      pointer-events: auto;
-      white-space: nowrap;
-    }
-    .badge-collection {
-      background: rgba(0,179,136,.92);
-      color: #fff;
-    }
-
-    /* Search dropdown */
-    .search-wrapper {
-      position: relative;
-      margin-bottom: 24px;
-    }
-    .search-input { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--border); font-size: 1rem; }
-    .search-dropdown {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: 0 12px 40px rgba(27,45,71,0.12);
-      z-index: 50;
-      overflow: hidden;
-      display: none;
-    }
-    .search-dropdown.show { display: block; }
-    .search-dropdown-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-      text-decoration: none;
-      color: var(--text);
-    }
-    .search-dropdown-item:hover { background: var(--accent-soft); }
-    .search-dropdown-item img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-    .search-dropdown-item .sdi-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      min-width: 0;
-    }
-    .search-dropdown-item .sdi-name {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    .search-dropdown-item .sdi-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-    .search-dropdown-item .sdi-collection {
-      margin-left: auto;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: rgba(0,179,136,.12);
-      color: var(--accent);
-      font-size: 0.72rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .search-dropdown-empty {
-      padding: 20px 16px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-    /* ═══ 发行标识标签（短剧标识） ═══ */
-    .badge-issuance {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      white-space: nowrap;
-      letter-spacing: 0.02em;
-    }
-    .badge-issuance.official {
-      background: #05DF72;
-      color: #fff;
-    }
-    .badge-issuance.partner {
-      background: #4A9EFF;
-      color: #fff;
-    }
-    .badge-issuance.certified {
-      background: #FF8C00;
-      color: #fff;
-    }
-    .badge-issuance.community {
-      background: linear-gradient(135deg, #94a3b8, #64748b);
-      color: #fff;
-    }
-    /* ═══ 平板：两列布局 (600px - 960px) ═══ */
+    /* ═══ 平板响应式 ═══ */
     @media (min-width: 600px) and (max-width: 960px) {
-      .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
       .app-shell { padding: 16px; }
       .page-header { display: none; }
       .page-header-left h1 { font-size: 1.5rem; }
@@ -1051,40 +216,6 @@
       .sort-container { gap: 6px; margin-bottom: 16px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .sort-container::-webkit-scrollbar { display: none; }
       .sort-tag { font-size: 0.8rem; padding: 6px 12px; white-space: nowrap; flex-shrink: 0; }
-
-      .card {
-        border-radius: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-        border: 0.5px solid rgba(0,0,0,0.05);
-      }
-      .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 12px 28px rgba(0,0,0,0.05); }
-      .card:active { transform: scale(0.985); transition: transform 0.15s ease; }
-      .card-banner { height: 165px; }
-      .card-body { padding: 14px 14px 12px; gap: 8px; }
-      .card h3 { font-size: 1.08rem; font-weight: 700; letter-spacing: -0.015em; }
-      .card p { font-size: 0.76rem; color: #8e8e93; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-      .actor-stats { gap: 4px; }
-      .actor-stat-item { padding: 6px 4px 5px; border-radius: 10px; background: rgba(0,0,0,0.015); }
-      .actor-stat-item:hover { background: rgba(0,0,0,0.04); }
-      .actor-stat-item:hover .num { color: var(--accent); }
-      .actor-stat-label { font-size: 0.6rem; color: #8e8e93; font-weight: 500; letter-spacing: 0.03em; }
-      .actor-stat-item .num { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.015em; }
-      .actor-price { padding: 6px 10px; border-radius: 10px; background: rgba(0,179,136,0.04); }
-      .actor-price-label { font-size: 0.7rem; color: #8e8e93; }
-      .actor-price-value { font-size: 0.95rem; font-weight: 700; }
-      .card-actions .button-secondary,
-      .card-actions .actor-mint-btn { padding: 10px 14px; font-size: 0.82rem; font-weight: 600; border-radius: 12px; background: linear-gradient(135deg, #00b388, #00c89a); box-shadow: 0 2px 6px rgba(0,179,136,0.16); transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-      .card-actions .button-secondary:active,
-      .card-actions .actor-mint-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(0,179,136,0.1); }
-      .card-actions-soldout { gap: 6px; }
-      .card-actions-soldout .floor-price-tag { padding: 2px 8px 2px 0; }
-      .card-actions-soldout .floor-price-tag .fpt-label { font-size: 0.62rem; color: #8e8e93; }
-      .card-actions-soldout .floor-price-tag .fpt-value { font-size: 0.88rem; }
-      .card-actions-soldout .actor-trade-btn { padding: 10px 14px; font-size: 0.82rem; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 2px 6px rgba(245,158,11,0.16); transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-      .card-actions-soldout .actor-trade-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(245,158,11,0.1); }
-      .banner-bottom-badges { left: 8px; right: 8px; bottom: 8px; }
-      .badge { font-size: 0.66rem; padding: 4px 8px; border-radius: 999px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-      .badge-issuance-corner { top: 10px; left: 10px; }
       .mint-modal-overlay { padding: 12px; align-items: flex-end; }
       .mint-modal { border-radius: 24px 24px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
       .mint-modal-overlay.active .mint-modal { transform: translateY(0); }
@@ -1105,9 +236,8 @@
       .auth-toast { top: 12px; max-width: 90%; font-size: 0.82rem; padding: 10px 18px; border-radius: 14px; }
     }
 
-    /* ═══ 手机：单列 + 全高侧边头像卡片 (< 600px) ═══ */
+    /* ═══ 手机响应式 ═══ */
     @media (max-width: 599px) {
-      .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .app-shell { padding: 12px 10px; padding-top: 24px; }
       .page-header { display: none; }
       .page-header-left h1 { font-size: 1.35rem; }
@@ -1121,36 +251,6 @@
       .sort-container { gap: 4px; margin-bottom: 10px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .sort-container::-webkit-scrollbar { display: none; }
       .sort-tag { font-size: 0.72rem; padding: 5px 10px; white-space: nowrap; flex-shrink: 0; }
-
-      /* ── 卡片：与桌面端同结构，仅缩小尺寸 ── */
-      .card {
-        border-radius: 16px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 3px 10px rgba(0,0,0,0.03);
-        border: 0.5px solid rgba(0,0,0,0.05);
-      }
-      .card:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.05); }
-      .card:active { transform: scale(0.985); transition: transform 0.15s ease; }
-      .card-banner { height: 140px; }
-      .card-body { padding: 12px 12px 10px; gap: 6px; }
-      .card h3 { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.015em; }
-      .card p { font-size: 0.7rem; color: #8e8e93; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-      .actor-stats { gap: 3px; }
-      .actor-stat-item { padding: 5px 3px 4px; border-radius: 8px; background: rgba(0,0,0,0.015); }
-      .actor-stat-item:hover { background: rgba(0,0,0,0.04); }
-      .actor-stat-item:hover .num { color: var(--accent); }
-      .actor-stat-label { font-size: 0.55rem; color: #8e8e93; font-weight: 500; letter-spacing: 0.03em; }
-      .actor-stat-item .num { font-size: 0.85rem; font-weight: 700; letter-spacing: -0.015em; }
-      .actor-price { padding: 5px 8px; border-radius: 10px; background: rgba(0,179,136,0.04); }
-      .actor-price-label { font-size: 0.65rem; color: #8e8e93; }
-      .actor-price-value { font-size: 0.88rem; font-weight: 700; }
-      .actor-action-area { margin-top: 6px; }
-      .actor-action-area .actor-mint-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius: 10px; }
-      .actor-action-area .actor-trade-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius: 10px; }
-      .actor-meta-foot { font-size: 0.62rem; }
-      .badge-issuance-corner { top: 8px; left: 8px; }
-      .badge { font-size: 0.6rem; padding: 3px 8px; border-radius: 999px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-
-      /* Modal */
       .mint-modal-overlay { padding: 0; align-items: flex-end; }
       .mint-modal { border-radius: 20px 20px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
       .mint-modal-overlay.active .mint-modal { transform: translateY(0); }
@@ -1175,59 +275,37 @@
       .auth-modal-body { padding: 6px 18px 22px; }
       .auth-toast { top: 12px; max-width: 90%; font-size: 0.8rem; padding: 10px 18px; border-radius: 14px; }
     }
-  
-/* ── Desktop Header ── */
-.desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
-.desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
-.desktop-header .dh-search:focus-within{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
-.desktop-header .dh-search svg{width:16px;height:16px;flex-shrink:0;color:rgba(0,0,0,0.35)}
-.desktop-header .dh-search input{flex:1;border:none;outline:none;background:none;font-size:13px;color:#13202e;font-family:inherit}
-.desktop-header .dh-search input::placeholder{color:rgba(0,0,0,0.35)}.dh-search-dropdown{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);padding:16px;z-index:200;max-height:360px;overflow-y:auto}.dh-search-dropdown.show{display:block}.dh-search-dropdown .sd-section{margin-bottom:14px}.dh-search-dropdown .sd-section:last-child{margin-bottom:0}.dh-search-dropdown .sd-section-title{font-size:12px;font-weight:600;color:#5e6f83;margin-bottom:8px}.dh-search-dropdown .sd-tags{display:flex;flex-wrap:wrap;gap:6px}.dh-search-dropdown .sd-tag{padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;color:#13202e;cursor:pointer;transition:all .15s;border:none;font-family:inherit}.dh-search-dropdown .sd-tag:hover{background:rgba(0,179,136,.1);color:#00b388}.dh-search-dropdown .sd-list{display:flex;flex-direction:column;gap:2px}.dh-search-dropdown .sd-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;color:#13202e;cursor:pointer;transition:background .1s}.dh-search-dropdown .sd-item:hover{background:rgba(0,0,0,.03)}.dh-search-dropdown .sd-item .sd-del{color:#5e6f83;font-size:11px;padding:2px 6px;border-radius:4px;cursor:pointer;border:none;background:none}.dh-search-dropdown .sd-item .sd-del:hover{color:#f45b69}.desktop-header .dh-search-btn{padding:3px 12px;height:auto;border-radius:6px;border:none;background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid transparent;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-right:-4px}.desktop-header .dh-search-btn:hover{background:#00b388;color:#fff;border-color:#00b388}
-.desktop-header .dh-icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;flex-shrink:0}
-.desktop-header .dh-icon-btn:hover{background:rgba(0,0,0,0.06);color:#13202e}
-.desktop-header .dh-icon-btn svg{width:20px;height:20px}
-.desktop-header .dh-notify-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff2d55;border:1.5px solid #fff}
-.desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
-.desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
-.desktop-header .dh-publish-btn svg{width:16px;height:16px}
-.desktop-header .auth-container{display:flex;align-items:center}
-.desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
-.desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
-@media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
-@media(max-width:768px){.desktop-header{display:none}}
-
-</style>
+  </style>
 </head>
 <body>
-<div class="desktop-header" id="desktopHeader">
-  <div class="dh-search" id="dhSearch">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="text" id="dhSearchInput" placeholder="搜索短剧、角色、用户..." autocomplete="off"><button class="dh-search-btn" id="dhSearchBtn">搜索</button>
-    <div class="dh-search-dropdown" id="dhSearchDropdown">
-      <div class="sd-section" id="sdHotSection">
-        <div class="sd-section-title">🔥 热门搜索</div>
-        <div class="sd-tags" id="sdHotTags"></div>
-      </div>
-      <div class="sd-section" id="sdRecentSection" style="display:none">
-        <div class="sd-section-title">🕐 最近搜索</div>
-        <div class="sd-list" id="sdRecentList"></div>
+  <!-- Desktop Header -->
+  <div class="desktop-header" id="desktopHeader">
+    <div class="dh-search" id="dhSearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="dhSearchInput" placeholder="搜索短剧、角色、用户..." autocomplete="off"><button class="dh-search-btn" id="dhSearchBtn">搜索</button>
+      <div class="dh-search-dropdown" id="dhSearchDropdown">
+        <div class="sd-section" id="sdHotSection">
+          <div class="sd-section-title">🔥 热门搜索</div>
+          <div class="sd-tags" id="sdHotTags"></div>
+        </div>
+        <div class="sd-section" id="sdRecentSection" style="display:none">
+          <div class="sd-section-title">🕐 最近搜索</div>
+          <div class="sd-list" id="sdRecentList"></div>
+        </div>
       </div>
     </div>
+    <button class="dh-icon-btn" onclick="location.href='notifications.html'" title="通知">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="dh-notify-dot"></span>
+    </button>
+    <button class="dh-publish-btn" onclick="location.href='publish.html'">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>发布
+    </button>
+    <div class="auth-container" id="authContainer"></div>
   </div>
-  <button class="dh-icon-btn" onclick="location.href='notifications.html'" title="通知">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-    <span class="dh-notify-dot"></span>
-  </button>
-  <button class="dh-publish-btn" onclick="location.href='publish.html'">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>发布
-  </button>
-  <div class="auth-container" id="authContainer"></div>
-</div>
 
   <div class="app-shell">
-
-
-
+    <!-- Sort -->
     <div class="sort-container" id="sortContainer">
       <span class="sort-tag active" data-sort="price-asc">价格最低</span>
       <span class="sort-tag" data-sort="price-desc">价格最高</span>
@@ -1235,260 +313,28 @@
       <span class="sort-tag" data-sort="target-desc">可升片酬最高</span>
     </div>
 
-    <div class="grid grid-4">
-      <!-- Luna (已售罄示例, 曲线价格) -->
-      <article class="card" data-actor="Luna" data-issuance-type="official" data-pricing="curve" data-actor-id="1" data-total="5000" data-minted="5000" data-available="0" data-holders="4900" data-price="10 USDC" data-creator="storyfun_labs" data-collection="C001" data-views="2.6万" data-heat="3.3" data-init-price="30">
-
-        <div class="card-banner banner-1">
-          <div class="actor-avatar">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="角色 Luna" />
-          </div>
-          <div class="badge-issuance-corner">
-            <span class="badge badge-issuance official">官方</span>
-          </div>
-          <div class="banner-bottom-badges">
-            <span class="badge">发行者 storyfun_labs</span>
-            <span class="badge badge-collection">角色 IP C001</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div>
-            <h3>Luna</h3>
-            <span class="card-ip-code">C001</span>
-            <p>未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。</p>
-          </div>
-          <div class="actor-stats">
-            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">Lv.1 片酬</span><span class="num" id="ipPower1">0.99</span></span>
-            <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">2.6万</span></span>
-          </div>
-          <div class="actor-price">
-            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 已售罄</span>
-            <span class="actor-price-value">10 USDC</span>
-          </div>
-          <div class="card-bottom">
-            <span class="card-bottom-price">10 USDC</span>
-            <div class="card-actions">
-              <button class="button-secondary actor-mint-btn" data-actor="Luna" data-total-supply="5000" data-minted="5000" data-available="0" data-price="10 USDC" data-creator="storyfun_labs">签约</button>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- 苏婉清（固定价格） -->
-      <article class="card" data-actor="苏婉清" data-issuance-type="official" data-pricing="fixed" data-actor-id="2" data-total="10000" data-minted="1000" data-available="9000" data-holders="820" data-price="10 USDC" data-creator="wanqing_studio" data-collection="C002" data-views="24.1万" data-heat="2.5" data-init-price="80">
-
-        <div class="card-banner banner-2">
-          <div class="actor-avatar">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80" alt="角色 苏婉清" />
-          </div>
-          <div class="badge-issuance-corner">
-            <span class="badge badge-issuance official">官方</span>
-          </div>
-          <div class="banner-bottom-badges">
-            <span class="badge">发行者 wanqing_studio</span>
-            <span class="badge badge-collection">角色 IP C002</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div>
-            <h3>苏婉清</h3>
-            <span class="card-ip-code">C002</span>
-            <p>温婉端庄，琴棋书画样样精通，举止间尽显大家闺秀风范。</p>
-          </div>
-          <div class="actor-stats">
-            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">Lv.1 片酬</span><span class="num" id="ipPower2">2.00</span></span>
-            <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
-          </div>
-          <div class="actor-price">
-            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
-            <span class="actor-price-value">10 USDC</span>
-          </div>
-          <div class="card-bottom">
-            <span class="card-bottom-price">10 USDC</span>
-            <div class="card-actions">
-              <button class="button-secondary actor-mint-btn" data-actor="苏婉清" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="wanqing_studio">签约</button>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- 李云飞（曲线价格） -->
-      <article class="card" data-actor="李云飞" data-issuance-type="partner" data-pricing="curve" data-actor-id="3" data-total="8000" data-minted="500" data-available="7500" data-holders="450" data-price="8 USDC" data-creator="feige_labs" data-collection="C003" data-views="24.7万" data-heat="4.8" data-init-price="45">
-
-        <div class="card-banner banner-3">
-          <div class="actor-avatar">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="角色 李云飞" />
-          </div>
-          <div class="badge-issuance-corner">
-            <span class="badge badge-issuance partner">合作</span>
-          </div>
-          <div class="banner-bottom-badges">
-            <span class="badge">发行者 feige_labs</span>
-            <span class="badge badge-collection">角色 IP C003</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div>
-            <h3>李云飞</h3>
-            <span class="card-ip-code">C003</span>
-            <p>身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。</p>
-          </div>
-          <div class="actor-stats">
-            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">Lv.1 片酬</span><span class="num" id="ipPower3">2.16</span></span>
-            <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.7万</span></span>
-          </div>
-          <div class="actor-price">
-            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 7,500 个</span>
-            <span class="actor-price-value">8 USDC</span>
-          </div>
-          <div class="card-bottom">
-            <span class="card-bottom-price">8 USDC</span>
-            <div class="card-actions">
-              <button class="button-secondary actor-mint-btn" data-actor="李云飞" data-total-supply="8000" data-minted="500" data-available="7500" data-price="8 USDC" data-creator="feige_labs">签约</button>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- 林梦瑶（曲线价格） -->
-      <article class="card" data-actor="林梦瑶" data-issuance-type="partner" data-pricing="curve" data-actor-id="4" data-total="10000" data-minted="1000" data-available="9000" data-holders="700" data-price="10 USDC" data-creator="mengyao_art" data-collection="C004" data-views="27.7万" data-heat="7.2" data-init-price="120">
-
-        <div class="card-banner" style="background:linear-gradient(135deg, #e6e0ff, #ffffff)">
-          <div class="actor-avatar">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" alt="角色 林梦瑶" />
-          </div>
-          <div class="badge-issuance-corner">
-            <span class="badge badge-issuance partner">合作</span>
-          </div>
-          <div class="banner-bottom-badges">
-            <span class="badge">发行者 mengyao_art</span>
-            <span class="badge badge-collection">角色 IP C004</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div>
-            <h3>林梦瑶</h3>
-            <span class="card-ip-code">C004</span>
-            <p>聪慧机敏，擅长推理分析，拥有敏锐的洞察力。</p>
-          </div>
-          <div class="actor-stats">
-            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">Lv.1 片酬</span><span class="num" id="ipPower4">9.13</span></span>
-            <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">27.7万</span></span>
-          </div>
-          <div class="actor-price">
-            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 9,000 个</span>
-            <span class="actor-price-value">10 USDC</span>
-          </div>
-          <div class="card-bottom">
-            <span class="card-bottom-price">10 USDC</span>
-            <div class="card-actions">
-              <button class="button-secondary actor-mint-btn" data-actor="林梦瑶" data-total-supply="10000" data-minted="1000" data-available="9000" data-price="10 USDC" data-creator="mengyao_art">签约</button>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- 赵无极（固定价格） -->
-      <article class="card" data-actor="赵无极" data-issuance-type="certified" data-pricing="fixed" data-actor-id="5" data-total="6000" data-minted="500" data-available="5500" data-holders="280" data-price="15 USDC" data-creator="wuji_art" data-collection="C005" data-views="5.5万" data-heat="3.2" data-init-price="200">
-
-        <div class="card-banner" style="background:linear-gradient(135deg, #ffe4e0, #fffaf8)">
-          <div class="actor-avatar">
-            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80" alt="角色 赵无极" />
-          </div>
-          <div class="badge-issuance-corner">
-            <span class="badge badge-issuance certified">认证</span>
-          </div>
-          <div class="banner-bottom-badges">
-            <span class="badge">发行者 wuji_art</span>
-            <span class="badge badge-collection">角色 IP C005</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div>
-            <h3>赵无极</h3>
-            <span class="card-ip-code">C005</span>
-            <p>深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。</p>
-          </div>
-          <div class="actor-stats">
-            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">Lv.1 片酬</span><span class="num" id="ipPower5">6.84</span></span>
-            <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">5.5万</span></span>
-          </div>
-          <div class="actor-price">
-            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 5,500 个</span>
-            <span class="actor-price-value">15 USDC</span>
-          </div>
-          <div class="card-bottom">
-            <span class="card-bottom-price">15 USDC</span>
-            <div class="card-actions">
-              <button class="button-secondary actor-mint-btn" data-actor="赵无极" data-total-supply="6000" data-minted="500" data-available="5500" data-price="15 USDC" data-creator="wuji_art">签约</button>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- 上官婉儿（固定价格） -->
-      <article class="card" data-actor="上官婉儿" data-issuance-type="community" data-pricing="fixed" data-actor-id="6" data-total="12000" data-minted="2000" data-available="10000" data-holders="1400" data-price="12 USDC" data-creator="palace_studio" data-collection="C006" data-views="24.1万" data-heat="4.9" data-init-price="30">
-
-        <div class="card-banner" style="background:linear-gradient(135deg, #f5e6ff, #fffaff)">
-          <div class="actor-avatar">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="角色 上官婉儿" />
-          </div>
-          <div class="badge-issuance-corner">
-            <span class="badge badge-issuance community">社区</span>
-          </div>
-          <div class="banner-bottom-badges">
-            <span class="badge">发行者 palace_studio</span>
-            <span class="badge badge-collection">角色 IP C006</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div>
-            <h3>上官婉儿</h3>
-            <span class="card-ip-code">C006</span>
-            <p>才情横溢，精通诗词歌赋，智慧与美貌并重。</p>
-          </div>
-          <div class="actor-stats">
-            <span class="actor-stat-item" data-stat="ip-power"><span class="actor-stat-label">Lv.1 片酬</span><span class="num" id="ipPower6">1.47</span></span>
-            <span class="actor-stat-item" data-stat="views"><span class="actor-stat-label">完播</span><span class="num">24.1万</span></span>
-          </div>
-          <div class="actor-price">
-            <span class="actor-price-label">签约价 <button class="actor-price-help">?</button> · 剩余 10,000 个</span>
-            <span class="actor-price-value">12 USDC</span>
-          </div>
-          <div class="card-bottom">
-            <span class="card-bottom-price">12 USDC</span>
-            <div class="card-actions">
-              <button class="button-secondary actor-mint-btn" data-actor="上官婉儿" data-total-supply="12000" data-minted="2000" data-available="10000" data-price="12 USDC" data-creator="palace_studio">签约</button>
-            </div>
-          </div>
-        </div>
-      </article>
+    <!-- Actor Cards Grid -->
+    <div class="actor-card-scope">
+      <div class="ac-grid ac-grid-4" id="actorGrid"></div>
     </div>
 
-    <!-- 签约价说明弹窗 -->
+    <!-- Price Tooltip Modal -->
     <div class="price-tooltip-overlay" id="priceTooltip">
       <div class="price-tooltip-box">
-
-        <!-- 曲线价格模式 -->
         <div id="priceTooltipCurve">
           <h3>曲线价格</h3>
           <p class="price-tip-sub">价格按联合曲线公式随已签约数自动上涨，早期签约更优惠</p>
           <p style="font-size:0.72rem; color:var(--text-muted); line-height:1.5; margin:-4px 0 8px; padding:6px 8px; background:rgba(244,67,54,0.06); border-radius:8px;">初始价格不代表平台估值，曲线上涨不代表二级价格上涨，平台不承诺收益。</p>
-
           <div class="price-curve-formula">
             公式：<code>价格 = 初始价格 × 5<sup>(已签约数 ÷ 发行总量)</sup></code>
           </div>
-
           <div class="price-curve-wrap">
             <canvas id="priceCurveCanvas" width="500" height="270"></canvas>
           </div>
-
           <div class="price-curve-legend">
             <span><span class="dot curve"></span> 价格曲线</span>
             <span><span class="dot current"></span> 当前位置</span>
           </div>
-
-          <!-- 价格详情：六字段统一样式，不刻意强化 -->
           <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin:8px 0 10px;">
             <div style="background:var(--bg); border-radius:8px; padding:7px 4px; text-align:center;">
               <div style="color:var(--text-muted); font-size:0.68rem;">初始价格</div>
@@ -1516,8 +362,6 @@
             </div>
           </div>
         </div>
-
-        <!-- 固定价格模式 -->
         <div id="priceTooltipFixed" style="display:none;">
           <h3>固定价格</h3>
           <p class="price-tip-sub" style="margin-bottom:16px;">该角色 IP 采用固定价格模式，每个角色都以统一价格签约，销量变化不影响价格。</p>
@@ -1527,25 +371,21 @@
             • 适合希望锁定成本的买家
           </div>
         </div>
-
         <button class="button-secondary" id="priceTooltipClose">知道了</button>
       </div>
     </div>
 
-
-    <!-- 片酬详情弹窗 -->
+    <!-- IP Power Modal -->
     <div class="stat-tooltip-overlay" id="ipPowerModal" style="z-index:10000;">
       <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;">
         <h3 id="ipPowerModalTitle" style="font-size:1.15rem;margin:0 0 4px;">片酬详情</h3>
         <div id="ipPowerModalName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
-        <div id="ipPowerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;">
-          <!-- 由 JS 动态填充 -->
-        </div>
+        <div id="ipPowerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;"></div>
         <button class="button-secondary" id="ipPowerModalClose" style="width:100%;">关闭</button>
       </div>
     </div>
 
-    <!-- 价格系数说明弹窗 -->
+    <!-- Price Coefficient Tooltip -->
     <div class="stat-tooltip-overlay" id="priceCoeffTooltip" style="z-index:10001;">
       <div class="stat-tooltip-box" style="text-align:left;padding:28px 24px 22px;">
         <h3 style="text-align:center;margin-bottom:18px;">价格系数</h3>
@@ -1563,7 +403,7 @@
       </div>
     </div>
 
-    <!-- 片酬升级说明弹窗 -->
+    <!-- Upgrade Tooltip -->
     <div class="stat-tooltip-overlay" id="upgradeTooltip" style="z-index:10002;">
       <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;text-align:left;">
         <h3 style="text-align:center;margin:0 0 4px;font-size:1.15rem;">片酬升级规则</h3>
@@ -1573,7 +413,7 @@
       </div>
     </div>
 
-    <!-- 完播/热度说明弹窗 -->
+    <!-- Stat Tooltip -->
     <div class="stat-tooltip-overlay" id="statTooltip">
       <div class="stat-tooltip-box">
         <h3 id="statTooltipTitle">完播</h3>
@@ -1582,22 +422,20 @@
       </div>
     </div>
 
+    <!-- Mint Modal -->
     <div class="mint-modal-overlay" id="mintModal" aria-hidden="true">
       <div class="mint-modal" role="dialog" aria-modal="true" aria-labelledby="mintModalTitle">
         <button class="mint-modal-close" type="button" id="mintModalClose" aria-label="关闭弹窗">✕</button>
-        <!-- Hero Image -->
         <div class="mint-modal-hero">
           <img id="mintModalImage" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="角色预览" />
           <div class="mint-modal-hero-overlay"></div>
-          <div class="mint-modal-badge" id="mintModalTag">记忆修复师</div>
+          <div class="mint-modal-badge" id="mintModalTag">角色 IP</div>
         </div>
-        <!-- Body -->
         <div class="mint-modal-body">
           <div class="mint-modal-header">
             <h2 id="mintModalTitle">确认签约</h2>
             <div class="mint-modal-actor-name" id="mintModalActorName">Luna</div>
           </div>
-          <!-- 价格摘要卡片 -->
           <div class="mint-price-bar" id="mintPriceBar">
             <div class="mpb-badge-row">
               <span class="mpb-pricing-tag" id="mpbPricingTag"><span id="mpbPricingLabel">曲线价格</span><button class="actor-price-help" id="mintPriceHelp" type="button">?</button></span>
@@ -1608,29 +446,19 @@
               <span class="mpb-price-label">签约价</span>
             </div>
             <div class="mpb-progress" id="mpbProgress">
-              <span class="mpb-progress-text">总发行 <strong id="mpbPctTotal">0</strong> &nbsp;·&nbsp; 剩余 <strong id="mpbRemain">0</strong></span>
+              <span class="mpb-progress-text">总发行 <strong id="mpbPctTotal">0</strong> · 剩余 <strong id="mpbRemain">0</strong></span>
             </div>
           </div>
-
           <input type="hidden" id="slippageSlider" value="10" />
-          <input type="hidden" id="slippageDisplay" value="1.0%" />
-
           <div class="mint-modal-footer">
             <div class="mint-slippage-notice" id="slippageNotice">已开启 1% 滑点保护，价格超出时将取消交易</div>
             <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
-
             <button class="mint-btn secondary" type="button" id="mintCancel">取消</button>
           </div>
         </div>
-        <!-- Success State (hidden by default) -->
         <div class="mint-modal-success" id="mintModalSuccess">
           <div class="stamp-icon-wrap">
-            <div class="stamp-seal">
-              <div class="stamp-seal-inner">
-                <span>✓</span>
-                <span>签约</span>
-              </div>
-            </div>
+            <div class="stamp-seal"><div class="stamp-seal-inner"><span>✓</span><span>签约</span></div></div>
             <div class="stamp-ripple"></div>
             <div class="stamp-ripple"></div>
           </div>
@@ -1647,825 +475,495 @@
     </div>
   </div>
 
-  <script src="auth.js"></script>
-  <script src="ai-chat.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var searchInput = document.getElementById('actorSearch'); if (!searchInput) { searchInput = document.createElement('div'); searchInput.addEventListener = function(){}; }
-      const cards = document.querySelectorAll('.card');
-      const mintModal = document.getElementById('mintModal');
-      const mintModalClose = document.getElementById('mintModalClose');
-      const mintCancel = document.getElementById('mintCancel');
-      const mintButtons = document.querySelectorAll('.actor-mint-btn');
-      const mintModalActorName = document.getElementById('mintModalActorName');
-
-      const mintModalImage = document.getElementById('mintModalImage');
-      const mintModalTag = document.getElementById('mintModalTag');
-      const mintEstimate = document.getElementById('mintEstimate');
-      const mintModalSuccess = document.getElementById('mintModalSuccess');
-      const mintModalBody = document.querySelector('.mint-modal-body');
-      const viewNftBtn = document.getElementById('viewNftBtn');
-      const continueBtn = document.getElementById('continueBtn');
-
-      // ═══ 精简后的定价字段引用 ═══
-      const mpbPricingTag = document.getElementById('mpbPricingTag');
-      const mpbRemain = document.getElementById('mpbRemain');
-      const mpbPctTotal = document.getElementById('mpbPctTotal');
-
-      // ═══ ? 弹窗内详情字段 ═══
-      const curveInitTooltip = document.getElementById('curveInitTooltip');
-      const curveCurrTooltip = document.getElementById('curveCurrTooltip');
-      const curveEndPriceTooltip = document.getElementById('curveEndPriceTooltip');
-      const curveTotalSupply = document.getElementById('curveTotalSupply');
-      const curveMintedSupply = document.getElementById('curveMintedSupply');
-      const curveRemainSupply = document.getElementById('curveRemainSupply');
-
-      document.querySelectorAll('.actor-trade-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const actorName = this.dataset.actor || 'Luna';
-          window.open(`https://market.story.fun/trade/${actorName.toLowerCase()}`, '_blank');
-        });
-      });
-
-      // ═══ Search dropdown ═══
-      var searchDropdown = document.getElementById('searchDropdown') || document.createElement('div');
-
-      function renderSearchDropdown(query) { if(!searchDropdown) return;
-        const q = query.toLowerCase().trim();
-        if (!q) {
-          if(searchDropdown) searchDropdown.classList.remove('show');
-          return;
-        }
-        const results = Array.from(cards).filter(card => {
-          const name = card.dataset.actor || card.querySelector('h3')?.textContent || '';
-          const collection = card.dataset.collection || '';
-          return name.toLowerCase().includes(q) || collection.toLowerCase().includes(q);
-        });
-        const limited = results.slice(0, 6);
-        if (limited.length === 0) {
-          if(searchDropdown) searchDropdown.innerHTML = '<div class="search-dropdown-empty">未找到匹配的角色</div>';
-          if(searchDropdown) searchDropdown.classList.add('show');
-          return;
-        }
-        if(searchDropdown) searchDropdown.innerHTML = limited.map(card => {
-          const name = card.dataset.actor || card.querySelector('h3')?.textContent || '';
-          const collection = card.dataset.collection || '';
-          const imgSrc = card.querySelector('.actor-avatar img')?.src || '';
-          const creator = card.dataset.creator || '';
-          return `<a class="search-dropdown-item" href="actor-profile.html?id=${card.dataset.actorId || ''}&name=${encodeURIComponent(name)}&avatar=${encodeURIComponent(imgSrc)}&price=${encodeURIComponent(card.dataset.price || '')}&minted=${encodeURIComponent(card.dataset.minted || '')}&available=${encodeURIComponent(card.dataset.available || '')}&description=${encodeURIComponent(card.querySelector('p')?.textContent || '')}">
-            <img src="${imgSrc}" alt="${name}" onerror="this.style.display='none'" />
-            <div class="sdi-info">
-              <span class="sdi-name">${name}</span>
-              <span class="sdi-sub">发行者 ${creator}</span>
-            </div>
-            <span class="sdi-collection">角色IP ${collection}</span>
-          </a>`;
-        }).join('');
-        if(searchDropdown) searchDropdown.classList.add('show');
-      }
-
-      // 移动端下输入为只读，不可真正输入；点击跳转 search.html
-      if(searchInput && typeof searchInput.addEventListener === 'function') searchInput.addEventListener('click', function() {
-        window.location.href = 'search.html';
-      });
-
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.search-wrapper')) {
-          if(searchDropdown) searchDropdown.classList.remove('show');
-        }
-      });
-
-      // ═══ Sort functionality ═══
-      let currentSort = 'price-asc';
-
-      function parseChineseNum(str) {
-        if (!str) return 0;
-        const s = str.replace(/,/g, '');
-        const match = s.match(/^([\d.]+)万$/);
-        if (match) return parseFloat(match[1]) * 10000;
-        return parseFloat(s) || 0;
-      }
-
-      function getSortVal(card, sortKey) {
-        switch (sortKey) {
-          case 'price-asc':
-          case 'price-desc':
-            return parseFloat((card.dataset.price || '0').replace(/[^0-9.]/g, '')) || 0;
-          case 'power-desc':
-            const ipw = computeIPPower(card);
-            return isNaN(ipw) ? 0 : ipw;
-          case 'target-desc': {
-            const pw = computeIPPower(card);
-            const viewsN = parseChineseNum(card.dataset.views);
-            const T = [
-              { t: 0, m: 1.0 }, { t: 10000, m: 2.0 }, { t: 50000, m: 3.5 },
-              { t: 200000, m: 5.5 }, { t: 500000, m: 8.0 },
-            ];
-            let mult = 1.0;
-            for (let i = T.length - 1; i >= 0; i--) {
-              if (viewsN >= T[i].t) { mult = T[i].m; break; }
-            }
-            return pw * mult;
-          }
-          case 'heat-desc':
-            return parseChineseNum(card.dataset.heat);
-          default:
-            return 0;
-        }
-      }
-
-      function applyCurrentSort() {
-        var searchTerm = (searchInput && searchInput.value) ? searchInput.value.toLowerCase().trim() : '';
-        const visible = Array.from(cards).filter(card => {
-          if (!searchTerm) return true;
-          const name = card.querySelector('h3').textContent.toLowerCase();
-          const desc = card.querySelector('p').textContent.toLowerCase();
-          return name.includes(searchTerm) || desc.includes(searchTerm);
-        });
-
-        const sorted = visible.sort((a, b) => {
-          const valA = getSortVal(a, currentSort);
-          const valB = getSortVal(b, currentSort);
-          const multi = (currentSort === 'price-asc') ? 1 : -1;
-          return (valA - valB) * multi;
-        });
-
-        cards.forEach(c => c.style.display = 'none');
-
-        const grid = document.querySelector('.grid');
-        sorted.forEach(card => {
-          card.style.display = 'flex';
-          grid.appendChild(card);
-        });
-      }
-
-      document.querySelectorAll('.sort-tag').forEach(tag => {
-        tag.addEventListener('click', function() {
-          document.querySelectorAll('.sort-tag').forEach(t => t.classList.remove('active'));
-          this.classList.add('active');
-          currentSort = this.dataset.sort;
-          applyCurrentSort();
-        });
-      });
-
-      applyCurrentSort();
-
-      // ═══ 已售罄 UI 处理 ═══
-      function initSoldoutUI() {
-        cards.forEach(card => {
-          const available = parseInt(card.dataset.available) || 0;
-          if (available <= 0) {
-            applySoldoutCard(card);
-          }
-        });
-      }
-
-      function applySoldoutCard(card) {
-        const priceValueEl = card.querySelector('.actor-price-value');
-        const actionsEl = card.querySelector('.card-actions');
-        if (!actionsEl) return;
-        const actorName = card.dataset.actor || card.querySelector('h3')?.textContent || '';
-        const priceStr = card.dataset.price || '10 USDC';
-
-        // 将价格替换为地板价
-        if (priceValueEl) {
-          priceValueEl.textContent = priceStr;
-        }
-
-        actionsEl.innerHTML = `
-          <div class="card-actions-soldout">
-            <button class="actor-trade-btn" data-actor="${actorName}">交易</button>
-          </div>
-        `;
-        const tradeBtn = actionsEl.querySelector('.actor-trade-btn');
-        if (tradeBtn) {
-          tradeBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const name = this.dataset.actor || 'Luna';
-            window.open(`https://market.story.fun/trade/${name.toLowerCase()}`, '_blank');
-          });
-        }
-      }
-
-      function closeMintModal() {
-        mintModal.classList.remove('active');
-        mintModal.setAttribute('aria-hidden', 'true');
-      }
-
-      initSoldoutUI();
-
-      // ═══ 渲染卡片进度条 ═══
-      function renderCardProgress() {
-        cards.forEach(card => {
-          const total = parseInt(card.dataset.total) || 0;
-          const minted = parseInt(card.dataset.minted) || 0;
-          const available = Math.max(total - minted, 0);
-          const pct = total > 0 ? Math.min(minted / total * 100, 100) : 0;
-          const isSoldout = available <= 0;
-          const priceVal = card.dataset.price || '';
-          const actorName = card.dataset.actor || '';
-
-          // 隐藏签约价/地板价标签行（价格已显示在大按钮中）
-          const priceRowEl = card.querySelector('.actor-price');
-          if (priceRowEl) priceRowEl.style.display = 'none';
-
-          // ═══ 算力升级体系 ═══
-          const viewsNum = parseChineseNum(card.dataset.views);
-          const UPGRADE_TABLE = [
-            { level: 1, threshold: 0, multiplier: 1.0 },
-            { level: 2, threshold: 10000, multiplier: 2.0 },
-            { level: 3, threshold: 50000, multiplier: 3.5 },
-            { level: 4, threshold: 200000, multiplier: 5.5 },
-            { level: 5, threshold: 500000, multiplier: 8.0 },
-          ];
-          let maxLevel = 1;
-          let maxMultiplier = 1.0;
-          for (let i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
-            if (viewsNum >= UPGRADE_TABLE[i].threshold) {
-              maxLevel = UPGRADE_TABLE[i].level;
-              maxMultiplier = UPGRADE_TABLE[i].multiplier;
-              break;
-            }
-          }
-          const currentPower = computeIPPower(card);
-          const targetPower = currentPower * maxMultiplier;
-
-          // 更新统计行
-          const statItems = card.querySelectorAll('.actor-stat-item');
-          if (statItems.length >= 2) {
-            const stat0 = statItems[0];
-            stat0.querySelector('.actor-stat-label').textContent = 'Lv.1 片酬';
-            stat0.querySelector('.num').innerHTML = currentPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY</span>';
-
-            const stat1 = statItems[1];
-            stat1.querySelector('.actor-stat-label').textContent = '可升至 Lv.' + maxLevel;
-            stat1.setAttribute('data-stat', 'target-power');
-            stat1.querySelector('.num').innerHTML = targetPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY</span>';
-            stat1.onclick = function(e) { e.stopPropagation(); openUpgradeTooltip(card); };
-          }
-
-          // 苹果风格大按钮区域
-          let actionArea = card.querySelector('.actor-action-area');
-          if (!actionArea) {
-            actionArea = document.createElement('div');
-            actionArea.className = 'actor-action-area';
-            const anchor = card.querySelector('.actor-stats') || card.querySelector('.actor-price');
-            if (anchor) {
-              anchor.insertAdjacentElement('afterend', actionArea);
-            }
-          }
-          if (isSoldout) {
-            actionArea.innerHTML = '<button class="actor-trade-btn" data-actor="' + actorName + '">' + (priceVal ? priceVal + ' · 交易' : '交易') + '</button>';
-          } else {
-            actionArea.innerHTML = '<button class="actor-mint-btn" data-actor="' + actorName + '" data-total-supply="' + total + '" data-minted="' + minted + '" data-available="' + available + '" data-price="' + priceVal + '">' + (priceVal || '签约') + ' 签约</button>';
-          }
-
-          // 隐藏旧按钮区域
-          const oldActions = card.querySelector('.card-bottom');
-          if (oldActions) oldActions.style.display = 'none';
-          const oldPriceValue = card.querySelector('.actor-price-value');
-          if (oldPriceValue) oldPriceValue.style.display = 'none';
-
-          // 底部脚注：发行者 + 角色 IP
-          let metaFoot = card.querySelector('.actor-meta-foot');
-          if (!metaFoot) {
-            metaFoot = document.createElement('div');
-            metaFoot.className = 'actor-meta-foot';
-            if (actionArea) actionArea.insertAdjacentElement('afterend', metaFoot);
-          }
-          const creator = card.dataset.creator || '';
-          const collection = card.dataset.collection || '';
-          const remainText = available > 0 ? '剩余 ' + available.toLocaleString() : (minted > 0 ? '已售罄' : '');
-          const metaParts = [];
-          if (remainText) metaParts.push(remainText);
-          if (creator) metaParts.push(creator);
-          if (collection) metaParts.push(collection);
-          metaFoot.textContent = metaParts.join(' · ');
-        });
-      }
-      renderCardProgress();
-
-      function openMintModal(data) {
-        mintModalActorName.textContent = data.name;
-        mintModalImage.src = data.image;
-        mintModalTag.textContent = data.tag + (data.collection ? ' · ' + data.collection : '');
-        mintEstimate.textContent = data.price;
-
-        mintModalSuccess.classList.remove('show');
-        mintModalBody.style.display = 'flex';
-        mintModal.classList.add('active');
-        mintModal.setAttribute('aria-hidden', 'false');
-
-        // ═══ 填充精简信息 ═══
-        const pricing = data.pricing || 'curve';
-        const total = data.total || 0;
-        const minted = data.minted || 0;
-
-        // 只更新标签span的文字，不动DOM结构—?按钮事件绑定不受影响
-        const mpbPricingLabel = document.getElementById('mpbPricingLabel');
-        if (pricing === 'curve') {
-          mpbPricingLabel.textContent = '曲线价格';
-          mpbPricingTag.classList.remove('fixed');
-        } else {
-          mpbPricingLabel.textContent = '固定价格';
-          mpbPricingTag.classList.add('fixed');
-        }
-
-        mpbRemain.textContent = (total - minted).toLocaleString();
-        mpbPctTotal.textContent = total.toLocaleString();
-
-        // 价格系数
-        var coeffRow = document.getElementById('mintCoeffRow');
-        var coeffVal = document.getElementById('mintCoeffValue');
-        var initPrice = data.initPrice ? parseFloat(data.initPrice) : 0;
-        if (coeffRow && coeffVal && initPrice > 0) {
-          coeffRow.style.display = '';
-          coeffVal.textContent = computePriceCoefficient(initPrice).toFixed(4);
-        } else if (coeffRow) {
-          coeffRow.style.display = 'none';
-        }
-
-        // 固定价格模式隐藏滑点保护提示
-        const slippageNotice = document.getElementById('slippageNotice');
-        if (slippageNotice) {
-          slippageNotice.style.display = (pricing === 'curve') ? '' : 'none';
-        }
-      }
-
-      mintButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-          event.stopPropagation();
-          const card = button.closest('.card');
-          const imageSrc = card.querySelector('.actor-avatar img')?.src || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
-          const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
-          const price = card.dataset.price || '10 USDC';
-          const available = card.dataset.available || '10';
-          const minted = card.dataset.minted || '0';
-          const total = card.dataset.total || '10000';
-          const collection = card.dataset.collection || '';
-          const pricing = card.dataset.pricing || 'curve';
-          openMintModal({
-            name: actorName,
-            collection: collection,
-            price: price,
-            amount: available,
-            minted: parseInt(minted),
-            total: parseInt(total),
-            pricing: pricing,
-            tag: '角色 IP',
-            image: imageSrc,
-            initPrice: card.dataset.initPrice || 0
-          });
-        });
-      });
-
-      cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-          if (e.target.closest('.actor-price-help')) return;
-          const actorName = card.dataset.actor || card.querySelector('h3').textContent.trim();
-          const actorId = card.dataset.actorId || '1';
-          const avatarSrc = card.querySelector('.actor-avatar img')?.src || '';
-          const description = card.querySelector('p')?.textContent || '';
-          const price = card.dataset.price || '10 USDC';
-          const minted = card.dataset.minted || '0';
-          const available = card.dataset.available || '0';
-          const params = new URLSearchParams({
-            id: actorId, name: actorName, avatar: avatarSrc,
-            description: description, price: price,
-            minted: minted, available: available
-          });
-          window.location.href = `actor-profile.html?${params.toString()}`;
-        });
-      });
-
-      mintModalClose.addEventListener('click', closeMintModal);
-      mintCancel.addEventListener('click', closeMintModal);
-      const mintConfirm = document.getElementById('mintConfirm');
-      mintModal.addEventListener('click', event => {
-        if (event.target === mintModal || event.target.classList.contains('mint-modal-overlay')) closeMintModal();
-      });
-      document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && mintModal.classList.contains('active')) closeMintModal();
-      });
-
-      function setButtonLoading(btn, loading) {
-        if (loading) {
-          btn.dataset.orig = btn.innerHTML;
-          btn.innerHTML = '处理中...';
-          btn.disabled = true;
-        } else {
-          if (btn.dataset.orig) btn.innerHTML = btn.dataset.orig;
-          btn.disabled = false;
-        }
-      }
-
-      function updateCardCounts(card) {
-        try {
-          const label = card.querySelector('.actor-price-label');
-          if (label) {
-            const match = label.textContent.match(/剩余\s*([\d,]+)/);
-            if (match) {
-              const oldAvail = parseInt(match[1].replace(/,/g, '')) || 0;
-              const avail = oldAvail - 1;
-              if (avail <= 0) {
-                card.dataset.available = '0';
-                applySoldoutCard(card);
-              } else {
-                label.textContent = label.textContent.replace(/剩余\s*[\d,]+/, '剩余 ' + avail.toLocaleString());
-              }
-            }
-          }
-        } catch (e) {}
-      }
-
-      function showSuccessInModal(card, data) {
-        const actorNameEl = document.getElementById('successActorName');
-        if (actorNameEl) actorNameEl.textContent = data.name || 'Luna';
-        mintModalBody.style.display = 'none';
-        mintModalSuccess.classList.add('show');
-      }
-
-      viewNftBtn.addEventListener('click', () => { window.location.href = 'studio.html'; });
-      continueBtn.addEventListener('click', () => { closeMintModal(); });
-
-      mintConfirm.addEventListener('click', () => {
-        setButtonLoading(mintConfirm, true);
-        setTimeout(() => {
-          const modalImg = mintModal.querySelector('#mintModalImage');
-          const imgSrc = modalImg?.src || '';
-          let targetCard = null;
-          document.querySelectorAll('.card').forEach(c => {
-            const aImg = c.querySelector('.actor-avatar img');
-            if (aImg && aImg.src === imgSrc) targetCard = c;
-          });
-          if (targetCard) updateCardCounts(targetCard);
-          const data = { name: mintModalActorName.textContent || 'Luna' };
-          showSuccessInModal(targetCard, data);
-          setButtonLoading(mintConfirm, false);
-        }, 1200);
-      });
-
-      // 完播/热度 tooltip 交互
-      const statTooltip = document.getElementById('statTooltip');
-      const statTooltipTitle = document.getElementById('statTooltipTitle');
-      const statTooltipDesc = document.getElementById('statTooltipDesc');
-      const statTooltipClose = document.getElementById('statTooltipClose');
-
-      document.querySelectorAll('.actor-stat-item').forEach(function(item) {
-        item.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const stat = this.dataset.stat;
-          if (stat === 'views') {
-            statTooltipTitle.textContent = '完播';
-            statTooltipDesc.textContent = '该角色 IP 参演的所有短剧的完播次数之和';
-            statTooltip.classList.add('active');
-          } else if (stat === 'heat') {
-            statTooltipTitle.textContent = '热度系数';
-            statTooltipDesc.textContent = '热度系数是角色 IP 的近30天热度乘子，用于决定该角色在派遣中的产出。';
-            statTooltip.classList.add('active');
-          }
-        });
-      });
-
-      function closeStatTooltip() {
-        statTooltip.classList.remove('active');
-      }
-      statTooltipClose.addEventListener('click', closeStatTooltip);
-      statTooltip.addEventListener('click', function(e) {
-        if (e.target === statTooltip) closeStatTooltip();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && statTooltip.classList.contains('active')) closeStatTooltip();
-      });
-
-      // 签约价 tooltip
-      const priceTooltip = document.getElementById('priceTooltip');
-      const priceTooltipClose = document.getElementById('priceTooltipClose');
-      const priceTooltipCurve = document.getElementById('priceTooltipCurve');
-      const priceTooltipFixed = document.getElementById('priceTooltipFixed');
-      const curveCanvas = document.getElementById('priceCurveCanvas');
-
-      const BASE = 5;
-
-      function drawBondingCurve(initialPrice, totalSupply, minted) {
-        const canvas = curveCanvas;
-        const ctx = canvas.getContext('2d');
-        const w = canvas.width;
-        const h = canvas.height;
-        const pad = { top: 16, right: 20, bottom: 42, left: 40 };
-        const plotW = w - pad.left - pad.right;
-        const plotH = h - pad.top - pad.bottom;
-
-        ctx.clearRect(0, 0, w, h);
-
-        const maxPrice = initialPrice * BASE;
-
-        ctx.strokeStyle = '#eef4ff';
-        ctx.lineWidth = 0.5;
-        for (let i = 0; i <= 5; i++) {
-          const y = pad.top + (plotH / 5) * i;
-          ctx.beginPath();
-          ctx.moveTo(pad.left, y);
-          ctx.lineTo(w - pad.right, y);
-          ctx.stroke();
-          const ratio = 1 - i / 5;
-          const priceVal = initialPrice * Math.pow(BASE, ratio);
-          ctx.fillStyle = '#aab7c9';
-          ctx.font = '9px sans-serif';
-          ctx.textAlign = 'right';
-          ctx.fillText(priceVal < 1 ? priceVal.toFixed(2) : Math.round(priceVal).toString(), pad.left - 4, y + 3);
-        }
-        ctx.fillStyle = '#aab7c9';
-        ctx.font = '9px sans-serif';
-        ctx.textAlign = 'center';
-        for (let i = 0; i <= 4; i++) {
-          const x = pad.left + (plotW / 4) * i;
-          const pct = i / 4;
-          ctx.fillText(Math.round(pct * totalSupply), x, h - 8);
-        }
-        ctx.fillStyle = '#8b9bb0';
-        ctx.font = '9px sans-serif';
-        ctx.fillText('已签约数', pad.left + plotW / 2, h - 20);
-
-        ctx.save();
-        ctx.translate(10, pad.top + plotH / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillStyle = '#8b9bb0';
-        ctx.font = '8px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('签约价 (USDC)', 0, 0);
-        ctx.restore();
-
-        ctx.beginPath();
-        ctx.strokeStyle = '#e65100';
-        ctx.lineWidth = 2.5;
-        for (let i = 0; i <= plotW; i++) {
-          const pct = i / plotW;
-          const price = initialPrice * Math.pow(BASE, pct);
-          const x = pad.left + i;
-          const yNorm = (price - initialPrice) / (maxPrice - initialPrice);
-          const y = pad.top + plotH - yNorm * plotH;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        const currentPct = totalSupply > 0 ? Math.min(minted / totalSupply, 1) : 0;
-        const curX = pad.left + currentPct * plotW;
-        const currentPrice = initialPrice * Math.pow(BASE, currentPct);
-        const curYNorm = (currentPrice - initialPrice) / (maxPrice - initialPrice);
-        const curY = pad.top + plotH - curYNorm * plotH;
-
-        ctx.beginPath();
-        ctx.arc(curX, curY, 5, 0, Math.PI * 2);
-        ctx.fillStyle = '#00b388';
-        ctx.fill();
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.setLineDash([3, 3]);
-        ctx.strokeStyle = 'rgba(0,179,136,0.4)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(pad.left, curY);
-        ctx.lineTo(curX, curY);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(curX, pad.top + plotH);
-        ctx.lineTo(curX, curY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // 更新两行六字段：初始价格 / 当前价格 / 尾价；总发行量 / 已签约 / 剩余
-        var endPrice = initialPrice * BASE;
-        curveInitTooltip.textContent = initialPrice.toFixed(2) + ' USDC';
-        curveCurrTooltip.textContent = currentPrice.toFixed(2) + ' USDC';
-        curveEndPriceTooltip.textContent = endPrice.toFixed(2) + ' USDC';
-        curveTotalSupply.textContent = totalSupply.toLocaleString();
-        curveMintedSupply.textContent = minted.toLocaleString();
-        curveRemainSupply.textContent = (totalSupply - minted).toLocaleString();
-      }
-
-      function openPriceTooltipForCard(cardElement) {
-        var pricing = cardElement.dataset.pricing || 'curve';
-        priceTooltipCurve.style.display = pricing === 'curve' ? '' : 'none';
-        priceTooltipFixed.style.display = pricing === 'fixed' ? '' : 'none';
-
-        if (pricing === 'curve') {
-          var total = parseInt(cardElement.dataset.total) || 10000;
-          var minted = parseInt(cardElement.dataset.minted) || 0;
-          var currentPrice = parseFloat((cardElement.dataset.price || '10').replace(/[^0-9.]/g, '')) || 10;
-          var ratio = total > 0 ? minted / total : 0;
-          var initialPrice = currentPrice / Math.pow(BASE, ratio);
-          drawBondingCurve(initialPrice, total, minted);
-        }
-      }
-
-      function openPriceTooltip(e) {
-        e.stopPropagation();
-        var card = e.target.closest('.card');
-        if (card) {
-          openPriceTooltipForCard(card);
-        }
-        priceTooltip.classList.add('active');
-      }
-
-      function closePriceTooltip() {
-        priceTooltip.classList.remove('active');
-      }
-
-      document.querySelector('.grid').addEventListener('click', function(e) {
-        var helpBtn = e.target.closest('.actor-price-help');
-        if (helpBtn) {
-          openPriceTooltip(e);
-        }
-      });
-
-      document.getElementById('mintPriceHelp').addEventListener('click', function(e) {
-        e.stopPropagation();
-        var actorName = mintModalActorName.textContent;
-        var targetCard = null;
-        document.querySelectorAll('.card').forEach(function(c) {
-          var name = c.dataset.actor || c.querySelector('h3') ? c.querySelector('h3').textContent : '';
-          if (name === actorName) targetCard = c;
-        });
-        if (targetCard) {
-          openPriceTooltipForCard(targetCard);
-        }
-        priceTooltip.classList.add('active');
-      });
-
-      priceTooltipClose.addEventListener('click', closePriceTooltip);
-      priceTooltip.addEventListener('click', function(e) {
-        if (e.target === this) closePriceTooltip();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && priceTooltip.classList.contains('active')) closePriceTooltip();
-      });
-
-      // ═══ 片酬 ═══
-      function computePriceCoefficient(P0) {
-        if (P0 == null || P0 <= 0) return 0;
-        var x = P0 / 100;
-        if (P0 <= 100) return x;
-        var powX = Math.pow(x, 1.3);
-        return 1.6 * powX / (powX + 0.6);
-      }
-
-      function computeIPPower(card) {
-        var initPrice = parseFloat(card.dataset.initPrice) || 0;
-        var heat = parseFloat(card.dataset.heat) || 0;
-        return computePriceCoefficient(initPrice) * heat;
-      }
-
-      // 点击 片酬 stat 时打开弹窗
-      document.querySelectorAll('.actor-stat-item[data-stat="ip-power"]').forEach(function(item) {
-        item.addEventListener('click', function(e) {
-          e.stopPropagation();
-          var card = this.closest('.card');
-          if (!card) return;
-          var name = card.dataset.actor || card.querySelector('h3').textContent;
-          var initPrice = parseFloat(card.dataset.initPrice) || 0;
-          var heat = parseFloat(card.dataset.heat) || 0;
-          var priceCoeff = computePriceCoefficient(initPrice);
-          var ipPower = priceCoeff * heat;
-
-          document.getElementById('ipPowerModalTitle').textContent = name + ' · 片酬';
-          document.getElementById('ipPowerModalName').textContent = '片酬 = 价格系数 × 热度系数 × Trust1';
-          document.getElementById('ipPowerModalBreakdown').innerHTML =
-            '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
-              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
-                '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">价格系数</span>' +
-                '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + priceCoeff.toFixed(4) + '</span>' +
-              '</div>' +
-              '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">根据发行 IP 时的初始价格 P0 计算。P0 ≤ 100 USDC 时线性增长，P0 > 100 USDC 时增速渐缓，上限 1.6</div>' +
-
-            '</div>' +
-            '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
-              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
-                '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">热度系数</span>' +
-                '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + heat.toFixed(1) + '</span>' +
-              '</div>' +
-              '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">角色 IP 近 30 天热度乘子，取决于短剧完播、点赞、收藏等互动表现</div>' +
-            '</div>' +
-            '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
-              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
-                '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">Trust1</span>' +
-                '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× 1.0</span>' +
-              '</div>' +
-              '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">平台风控系数，默认值为 1.0</div>' +
-            '</div>';
-          document.getElementById('ipPowerModal').classList.add('active');
-        });
-      });
-
-      // 价格系数说明 tooltip
-      var priceCoeffTooltip = document.getElementById('priceCoeffTooltip');
-      var mintCoeffHelp = document.getElementById('mintCoeffHelp');
-      if (mintCoeffHelp && priceCoeffTooltip) {
-        mintCoeffHelp.addEventListener('click', function(e) {
-          e.stopPropagation();
-          priceCoeffTooltip.classList.add('active');
-        });
-      }
-      var priceCoeffTooltipClose = document.querySelector('#priceCoeffTooltip .price-coeff-tooltip-close');
-      if (priceCoeffTooltipClose && priceCoeffTooltip) {
-        priceCoeffTooltipClose.addEventListener('click', function() {
-          priceCoeffTooltip.classList.remove('active');
-        });
-        priceCoeffTooltip.addEventListener('click', function(e) {
-          if (e.target === priceCoeffTooltip) priceCoeffTooltip.classList.remove('active');
-        });
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape' && priceCoeffTooltip.classList.contains('active')) priceCoeffTooltip.classList.remove('active');
-        });
-      }
-
-      // ═══ 片酬升级说明弹窗 ═══
-      var upgradeTooltip = document.getElementById('upgradeTooltip');
-      var upgradeModalClose = document.getElementById('upgradeModalClose');
-      var upgradeModalCurrent = document.getElementById('upgradeModalCurrent');
-      var upgradeTable = document.getElementById('upgradeTable');
-      var UPGRADE_TABLE = [
-        { level: 1, threshold: 0, multiplier: 1.0 },
-        { level: 2, threshold: 10000, multiplier: 2.0 },
-        { level: 3, threshold: 50000, multiplier: 3.5 },
-        { level: 4, threshold: 200000, multiplier: 5.5 },
-        { level: 5, threshold: 500000, multiplier: 8.0 },
-      ];
-
-      function formatThreshold(n) {
-        if (n === 0) return '0';
-        if (n >= 10000) return (n / 10000).toFixed(0).replace(/\.0$/, '') + '万';
-        return n.toLocaleString();
-      }
-
-      function openUpgradeTooltip(card) {
-        var viewsNum = parseChineseNum(card.dataset.views);
-        var viewsDisplay = card.dataset.views || '0';
-        var maxLevel = 1;
-        for (var i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
-          if (viewsNum >= UPGRADE_TABLE[i].threshold) {
-            maxLevel = UPGRADE_TABLE[i].level;
-            break;
-          }
-        }
-        upgradeModalCurrent.textContent = '当前完播：' + viewsDisplay + '  →  可升至 Lv.' + maxLevel;
-        upgradeTable.innerHTML = UPGRADE_TABLE.map(function(r) {
-          var isActive = r.level === maxLevel;
-          var bg = isActive ? 'var(--accent-soft)' : 'transparent';
-          return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:' + bg + ';margin-bottom:2px;">' +
-            '<span style="font-weight:600;font-size:0.85rem;color:var(--text);">' +
-              (isActive ? '✓ ' : '') + 'Lv.' + r.level +
-            '</span>' +
-            '<span style="font-size:0.78rem;color:var(--text-muted);">' + formatThreshold(r.threshold) + ' 完播</span>' +
-            '<span style="font-weight:600;font-size:0.85rem;color:var(--accent);">片酬 ×' + r.multiplier.toFixed(1) + '</span>' +
-          '</div>';
-        }).join('');
-        upgradeTooltip.classList.add('active');
-      }
-
-      function closeUpgradeTooltip() {
-        upgradeTooltip.classList.remove('active');
-      }
-
-      upgradeModalClose.addEventListener('click', closeUpgradeTooltip);
-      upgradeTooltip.addEventListener('click', function(e) {
-        if (e.target === upgradeTooltip) closeUpgradeTooltip();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && upgradeTooltip.classList.contains('active')) closeUpgradeTooltip();
-      });
-
-      var ipPowerModal = document.getElementById('ipPowerModal');
-      var ipPowerModalClose = document.getElementById('ipPowerModalClose');
-      function closeIPPowerModal() {
-        ipPowerModal.classList.remove('active');
-      }
-      ipPowerModalClose.addEventListener('click', closeIPPowerModal);
-      ipPowerModal.addEventListener('click', function(e) {
-        if (e.target === ipPowerModal) closeIPPowerModal();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && ipPowerModal.classList.contains('active')) closeIPPowerModal();
-      });
-
-    });
-  </script>
   <div id="bottom-nav-placeholder"></div>
+
+  <script src="auth.js"></script>
+  <script src="actor-card.js"></script>
   <script src="load-sidebar.js"></script>
-<script src="load-desktop-header.js"></script>
+  <script src="load-desktop-header.js"></script>
   <script src="load-bottom-nav.js"></script>
-<script src="auth.js"></script>
-<script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
-<script>
-function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
-function saveRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});list.unshift(q);if(list.length>8)list.pop();localStorage.setItem("dh_recent_searches",JSON.stringify(list))}
-function renderSearchDropdown(){var hotTags=["凤骨琉璃","打斗精彩片段","古风短剧","1011","AI短剧","苏婉清","星际拓荒者","时间管理局"];var hotEl=document.getElementById("sdHotTags");if(hotEl){hotEl.innerHTML=hotTags.map(function(t){return '<button class="sd-tag" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+t+'\';doSearch(\''+t+'\')">'+t+'</button>'}).join("")}var recent=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");var recentSection=document.getElementById("sdRecentSection");var recentList=document.getElementById("sdRecentList");if(recentSection&&recentList&&recent.length>0){recentSection.style.display="";recentList.innerHTML=recent.map(function(r){return '<div class="sd-item" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+r+'\';doSearch(\''+r+'\')"><span>'+r+'</span><button class="sd-del" onclick="event.stopPropagation();event.preventDefault();removeRecentSearch(\''+r+'\')">✕</button></div>'}).join("")}else if(recentSection){recentSection.style.display="none"}}
-function removeRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});localStorage.setItem("dh_recent_searches",JSON.stringify(list));renderSearchDropdown()}
-(function(){var inp=document.getElementById("dhSearchInput");var dropdown=document.getElementById("dhSearchDropdown");var searchBox=document.getElementById("dhSearch");var searchBtn=document.getElementById("dhSearchBtn");if(!inp||!dropdown||!searchBox)return;renderSearchDropdown();inp.addEventListener("focus",function(){renderSearchDropdown();dropdown.classList.add("show")});inp.addEventListener("input",function(){if(inp.value.trim()){dropdown.classList.remove("show")}else{renderSearchDropdown();dropdown.classList.add("show")}});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){var q=inp.value.trim();if(q)doSearch(q)}});searchBtn.addEventListener("click",function(e){e.stopPropagation();var q=inp.value.trim();if(q)doSearch(q)});document.addEventListener("click",function(e){if(!searchBox.contains(e.target)){dropdown.classList.remove("show")}})})();
-</script>
+  <script>
+    // ============================================================
+    //  Actor Data
+    // ============================================================
+    var ACTORS_DATA = [
+      {
+        id: '1', name: 'Luna', description: '未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。',
+        issuanceType: 'official', pricing: 'curve', collection: 'C001',
+        total: 5000, minted: 5000, holders: 4900,
+        price: '10 USDC', initPrice: 30, creator: 'storyfun_labs',
+        views: '2.6万', heat: 3.3, bannerClass: 'banner-1'
+      },
+      {
+        id: '2', name: '苏婉清', description: '温婉端庄，琴棋书画样样精通，举止间尽显大家闺秀风范。',
+        issuanceType: 'official', pricing: 'fixed', collection: 'C002',
+        total: 10000, minted: 1000, holders: 820,
+        price: '10 USDC', initPrice: 80, creator: 'wanqing_studio',
+        views: '24.1万', heat: 2.5, bannerClass: 'banner-2'
+      },
+      {
+        id: '3', name: '李云飞', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。',
+        issuanceType: 'partner', pricing: 'curve', collection: 'C003',
+        total: 8000, minted: 500, holders: 450,
+        price: '8 USDC', initPrice: 45, creator: 'feige_labs',
+        views: '24.7万', heat: 4.8, bannerClass: 'banner-3'
+      },
+      {
+        id: '4', name: '林梦瑶', description: '聪慧机敏，擅长推理分析，拥有敏锐的洞察力。',
+        issuanceType: 'partner', pricing: 'curve', collection: 'C004',
+        total: 10000, minted: 1000, holders: 700,
+        price: '10 USDC', initPrice: 120, creator: 'mengyao_art',
+        views: '27.7万', heat: 7.2, bannerClass: ''
+      },
+      {
+        id: '5', name: '赵无极', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。',
+        issuanceType: 'certified', pricing: 'fixed', collection: 'C005',
+        total: 6000, minted: 500, holders: 280,
+        price: '15 USDC', initPrice: 200, creator: 'wuji_art',
+        views: '5.5万', heat: 3.2, bannerClass: ''
+      },
+      {
+        id: '6', name: '上官婉儿', description: '才情横溢，精通诗词歌赋，智慧与美貌并重。',
+        issuanceType: 'community', pricing: 'fixed', collection: 'C006',
+        total: 12000, minted: 2000, holders: 1400,
+        price: '12 USDC', initPrice: 30, creator: 'palace_studio',
+        views: '24.1万', heat: 4.9, bannerClass: ''
+      }
+    ];
+
+    // ============================================================
+    //  Render Cards
+    // ============================================================
+    document.getElementById('actorGrid').innerHTML = ACTORS_DATA.map(function(d) {
+      // banner-4/5/6 custom backgrounds
+      if (!d.bannerClass && d.id === '4') d.bannerClass = 'background:linear-gradient(135deg, #e6e0ff, #ffffff);';
+      else if (!d.bannerClass && d.id === '5') d.bannerClass = 'background:linear-gradient(135deg, #ffe4e0, #fffaf8);';
+      else if (!d.bannerClass && d.id === '6') d.bannerClass = 'background:linear-gradient(135deg, #f5e6ff, #fffaff);';
+      return renderActorCard(d);
+    }).join('');
+
+    // ============================================================
+    //  Init Sorting (via actor-card.js API)
+    // ============================================================
+    initActorSorting({ sortContainerId: 'sortContainer', gridSelector: '#actorGrid', defaultSort: 'price-asc' });
+
+    // ============================================================
+    //  Wire Up Card Interactions
+    // ============================================================
+    var MintModal = document.getElementById('mintModal');
+    var MintModalClose = document.getElementById('mintModalClose');
+    var MintCancel = document.getElementById('mintCancel');
+    var MintConfirm = document.getElementById('mintConfirm');
+    var MintModalActorName = document.getElementById('mintModalActorName');
+    var MintModalImage = document.getElementById('mintModalImage');
+    var MintModalTag = document.getElementById('mintModalTag');
+    var MintEstimate = document.getElementById('mintEstimate');
+    var MintModalSuccess = document.getElementById('mintModalSuccess');
+    var MintModalBody = document.querySelector('.mint-modal-body');
+    var viewNftBtn = document.getElementById('viewNftBtn');
+    var continueBtn = document.getElementById('continueBtn');
+    var mpbPricingTag = document.getElementById('mpbPricingTag');
+    var mpbRemain = document.getElementById('mpbRemain');
+    var mpbPctTotal = document.getElementById('mpbPctTotal');
+    var mpbPricingLabel = document.getElementById('mpbPricingLabel');
+    var slippageNotice = document.getElementById('slippageNotice');
+
+    var curveInitTooltip = document.getElementById('curveInitTooltip');
+    var curveCurrTooltip = document.getElementById('curveCurrTooltip');
+    var curveEndPriceTooltip = document.getElementById('curveEndPriceTooltip');
+    var curveTotalSupply = document.getElementById('curveTotalSupply');
+    var curveMintedSupply = document.getElementById('curveMintedSupply');
+    var curveRemainSupply = document.getElementById('curveRemainSupply');
+    var curveCanvas = document.getElementById('priceCurveCanvas');
+    var BASE = 5;
+
+    function closeMintModal() {
+      MintModal.classList.remove('active');
+      MintModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function setButtonLoading(btn, loading) {
+      if (loading) { btn.dataset.orig = btn.innerHTML; btn.innerHTML = '处理中...'; btn.disabled = true; }
+      else { if (btn.dataset.orig) btn.innerHTML = btn.dataset.orig; btn.disabled = false; }
+    }
+
+    function drawBondingCurve(initialPrice, totalSupply, minted) {
+      var canvas = curveCanvas, ctx = canvas.getContext('2d');
+      var w = canvas.width, h = canvas.height;
+      var pad = { top: 16, right: 20, bottom: 42, left: 40 };
+      var plotW = w - pad.left - pad.right, plotH = h - pad.top - pad.bottom;
+      ctx.clearRect(0, 0, w, h);
+      var maxPrice = initialPrice * BASE;
+      ctx.strokeStyle = '#eef4ff'; ctx.lineWidth = 0.5;
+      for (var i = 0; i <= 5; i++) {
+        var y = pad.top + (plotH / 5) * i;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+        var ratio = 1 - i / 5;
+        var priceVal = initialPrice * Math.pow(BASE, ratio);
+        ctx.fillStyle = '#aab7c9'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
+        ctx.fillText(priceVal < 1 ? priceVal.toFixed(2) : Math.round(priceVal).toString(), pad.left - 4, y + 3);
+      }
+      ctx.fillStyle = '#aab7c9'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+      for (var j = 0; j <= 4; j++) {
+        var x = pad.left + (plotW / 4) * j;
+        ctx.fillText(Math.round((j / 4) * totalSupply), x, h - 8);
+      }
+      ctx.fillStyle = '#8b9bb0'; ctx.font = '9px sans-serif';
+      ctx.fillText('已签约数', pad.left + plotW / 2, h - 20);
+      ctx.save(); ctx.translate(10, pad.top + plotH / 2); ctx.rotate(-Math.PI / 2);
+      ctx.fillStyle = '#8b9bb0'; ctx.font = '8px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('签约价 (USDC)', 0, 0); ctx.restore();
+      ctx.beginPath(); ctx.strokeStyle = '#e65100'; ctx.lineWidth = 2.5;
+      for (var k = 0; k <= plotW; k++) {
+        var pct = k / plotW;
+        var price = initialPrice * Math.pow(BASE, pct);
+        var cx = pad.left + k;
+        var yNorm = (price - initialPrice) / (maxPrice - initialPrice);
+        var cy = pad.top + plotH - yNorm * plotH;
+        if (k === 0) ctx.moveTo(cx, cy); else ctx.lineTo(cx, cy);
+      }
+      ctx.stroke();
+      var currentPct = totalSupply > 0 ? Math.min(minted / totalSupply, 1) : 0;
+      var curX = pad.left + currentPct * plotW;
+      var currentPrice = initialPrice * Math.pow(BASE, currentPct);
+      var curYNorm = (currentPrice - initialPrice) / (maxPrice - initialPrice);
+      var curY = pad.top + plotH - curYNorm * plotH;
+      ctx.beginPath(); ctx.arc(curX, curY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#00b388'; ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(0,179,136,0.4)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad.left, curY); ctx.lineTo(curX, curY); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(curX, pad.top + plotH); ctx.lineTo(curX, curY); ctx.stroke();
+      ctx.setLineDash([]);
+      var endPrice = initialPrice * BASE;
+      curveInitTooltip.textContent = initialPrice.toFixed(2) + ' USDC';
+      curveCurrTooltip.textContent = currentPrice.toFixed(2) + ' USDC';
+      curveEndPriceTooltip.textContent = endPrice.toFixed(2) + ' USDC';
+      curveTotalSupply.textContent = totalSupply.toLocaleString();
+      curveMintedSupply.textContent = minted.toLocaleString();
+      curveRemainSupply.textContent = (totalSupply - minted).toLocaleString();
+    }
+
+    function openMintModal(data) {
+      MintModalActorName.textContent = data.name;
+      MintModalImage.src = data.image;
+      MintModalTag.textContent = data.tag + (data.collection ? ' · ' + data.collection : '');
+      MintEstimate.textContent = data.price;
+      MintModalSuccess.classList.remove('show');
+      MintModalBody.style.display = 'flex';
+      MintModal.classList.add('active');
+      MintModal.setAttribute('aria-hidden', 'false');
+
+      var pricing = data.pricing || 'curve';
+      var total = data.total || 0;
+      var minted = data.minted || 0;
+      if (pricing === 'curve') { mpbPricingLabel.textContent = '曲线价格'; mpbPricingTag.classList.remove('fixed'); }
+      else { mpbPricingLabel.textContent = '固定价格'; mpbPricingTag.classList.add('fixed'); }
+      mpbRemain.textContent = (total - minted).toLocaleString();
+      mpbPctTotal.textContent = total.toLocaleString();
+
+      var coeffRow = document.getElementById('mintCoeffRow');
+      var coeffVal = document.getElementById('mintCoeffValue');
+      var initPrice = data.initPrice ? parseFloat(data.initPrice) : 0;
+      if (coeffRow && coeffVal && initPrice > 0) {
+        coeffRow.style.display = '';
+        coeffVal.textContent = computePriceCoefficient(initPrice).toFixed(4);
+      } else if (coeffRow) { coeffRow.style.display = 'none'; }
+      if (slippageNotice) slippageNotice.style.display = (pricing === 'curve') ? '' : 'none';
+    }
+
+    function showSuccessInModal(data) {
+      document.getElementById('successActorName').textContent = data.name || 'Luna';
+      MintModalBody.style.display = 'none';
+      MintModalSuccess.classList.add('show');
+    }
+
+    function updateCardCounts(card) {
+      try {
+        var avail = (parseInt(card.dataset.available) || 0) - 1;
+        if (avail <= 0) {
+          card.dataset.available = '0';
+          card.dataset.minted = card.dataset.total;
+          // Re-render card as soldout
+          var data = findActorData(card.dataset.actor);
+          if (data) { data.available = 0; data.minted = parseInt(data.total); card.outerHTML = renderActorCard(data); }
+        } else {
+          card.dataset.available = avail;
+          card.dataset.minted = (parseInt(card.dataset.minted) || 0) + 1;
+          var actionArea = card.querySelector('.ac-action-area');
+          var metaFoot = card.querySelector('.ac-meta-foot');
+          if (actionArea) {
+            var btn = actionArea.querySelector('.ac-mint-btn');
+            if (btn) { btn.dataset.available = avail; btn.dataset.minted = card.dataset.minted; }
+          }
+          if (metaFoot) {
+            var parts = metaFoot.textContent.split(' · ');
+            if (parts.length > 0) { parts[0] = '剩余 ' + avail.toLocaleString(); metaFoot.textContent = parts.join(' · '); }
+          }
+        }
+      } catch (e) {}
+    }
+
+    function findActorData(name) {
+      for (var i = 0; i < ACTORS_DATA.length; i++) {
+        if (ACTORS_DATA[i].name === name) return ACTORS_DATA[i];
+      }
+      return null;
+    }
+
+    // ============================================================
+    //  Modal Close Handlers
+    // ============================================================
+    MintModalClose.addEventListener('click', closeMintModal);
+    MintCancel.addEventListener('click', closeMintModal);
+    MintModal.addEventListener('click', function(e) { if (e.target === MintModal || e.target.classList.contains('mint-modal-overlay')) closeMintModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && MintModal.classList.contains('active')) closeMintModal(); });
+
+    MintConfirm.addEventListener('click', function() {
+      setButtonLoading(MintConfirm, true);
+      setTimeout(function() {
+        var imgSrc = document.getElementById('mintModalImage').src;
+        var cards = document.querySelectorAll('#actorGrid .ac-card');
+        var targetCard = null;
+        cards.forEach(function(c) { var aImg = c.querySelector('.ac-avatar img'); if (aImg && aImg.src === imgSrc) targetCard = c; });
+        if (targetCard) updateCardCounts(targetCard);
+        showSuccessInModal({ name: MintModalActorName.textContent || 'Luna' });
+        setButtonLoading(MintConfirm, false);
+      }, 1200);
+    });
+
+    viewNftBtn.addEventListener('click', function() { window.location.href = 'studio.html'; });
+    continueBtn.addEventListener('click', function() { closeMintModal(); });
+
+    // ============================================================
+    //  Price Tooltip
+    // ============================================================
+    var priceTooltip = document.getElementById('priceTooltip');
+    var priceTooltipClose = document.getElementById('priceTooltipClose');
+    var priceTooltipCurve = document.getElementById('priceTooltipCurve');
+    var priceTooltipFixed = document.getElementById('priceTooltipFixed');
+
+    function openPriceTooltipForData(data) {
+      var pricing = data.pricing || 'curve';
+      priceTooltipCurve.style.display = pricing === 'curve' ? '' : 'none';
+      priceTooltipFixed.style.display = pricing === 'fixed' ? '' : 'none';
+      if (pricing === 'curve') {
+        var total = parseInt(data.total) || 10000;
+        var minted = parseInt(data.minted) || 0;
+        var currentPrice = parseFloat((data.price || '10').replace(/[^0-9.]/g, '')) || 10;
+        var ratio = total > 0 ? minted / total : 0;
+        var initialPrice = currentPrice / Math.pow(BASE, ratio);
+        drawBondingCurve(initialPrice, total, minted);
+      }
+    }
+
+    window._acOpenPriceTooltip = function(event, id, name, pricing, initPrice, total, minted) {
+      event.stopPropagation();
+      var data = findActorData(name) || { pricing: pricing, initPrice: initPrice, total: total, minted: minted, price: '10 USDC' };
+      openPriceTooltipForData(data);
+      priceTooltip.classList.add('active');
+    };
+
+    priceTooltipClose.addEventListener('click', function() { priceTooltip.classList.remove('active'); });
+    priceTooltip.addEventListener('click', function(e) { if (e.target === priceTooltip) priceTooltip.classList.remove('active'); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && priceTooltip.classList.contains('active')) priceTooltip.classList.remove('active'); });
+
+    // Mint modal price help button
+    document.getElementById('mintPriceHelp').addEventListener('click', function(e) {
+      e.stopPropagation();
+      var name = MintModalActorName.textContent;
+      var data = findActorData(name);
+      if (data) openPriceTooltipForData(data);
+      priceTooltip.classList.add('active');
+    });
+
+    // ============================================================
+    //  Stat Tooltip
+    // ============================================================
+    var statTooltip = document.getElementById('statTooltip');
+    var statTooltipTitle = document.getElementById('statTooltipTitle');
+    var statTooltipDesc = document.getElementById('statTooltipDesc');
+    var statTooltipClose = document.getElementById('statTooltipClose');
+
+    document.getElementById('actorGrid').addEventListener('click', function(e) {
+      var statItem = e.target.closest('.ac-stat-item');
+      if (statItem) {
+        e.stopPropagation();
+        var stat = statItem.dataset.stat;
+        if (stat === 'ip-power') {
+          var card = statItem.closest('.ac-card');
+          if (card) { openIPPowerModalForCard(card); }
+        } else if (stat === 'target-power') {
+          var card2 = statItem.closest('.ac-card');
+          if (card2) { openUpgradeModalForCard(card2); }
+        }
+      }
+    });
+
+    function closeStatTooltip() { statTooltip.classList.remove('active'); }
+    statTooltipClose.addEventListener('click', closeStatTooltip);
+    statTooltip.addEventListener('click', function(e) { if (e.target === statTooltip) closeStatTooltip(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && statTooltip.classList.contains('active')) closeStatTooltip(); });
+
+    // ============================================================
+    //  IP Power Modal
+    // ============================================================
+    var ipPowerModal = document.getElementById('ipPowerModal');
+    var ipPowerModalClose = document.getElementById('ipPowerModalClose');
+
+    function openIPPowerModalForCard(card) {
+      var name = card.dataset.actor || '';
+      var initPrice = parseFloat(card.dataset.initPrice) || 0;
+      var heat = parseFloat(card.dataset.heat) || 0;
+      var priceCoeff = computePriceCoefficient(initPrice);
+      var ipPower = priceCoeff * heat;
+      document.getElementById('ipPowerModalTitle').textContent = name + ' · 片酬';
+      document.getElementById('ipPowerModalName').textContent = '片酬 = 价格系数 × 热度系数 × Trust1';
+      document.getElementById('ipPowerModalBreakdown').innerHTML =
+        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">价格系数</span>' +
+            '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + priceCoeff.toFixed(4) + '</span>' +
+          '</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">根据发行 IP 时的初始价格 P0 计算。P0 ≤ 100 USDC 时线性增长，P0 > 100 USDC 时增速渐缓，上限 1.6</div>' +
+        '</div>' +
+        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">热度系数</span>' +
+            '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + heat.toFixed(1) + '</span>' +
+          '</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">角色 IP 近 30 天热度乘子，取决于短剧完播、点赞、收藏等互动表现</div>' +
+        '</div>' +
+        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">Trust1</span>' +
+            '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× 1.0</span>' +
+          '</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">平台风控系数，默认值为 1.0</div>' +
+        '</div>';
+      ipPowerModal.classList.add('active');
+    }
+
+    function closeIPPowerModal() { ipPowerModal.classList.remove('active'); }
+    ipPowerModalClose.addEventListener('click', closeIPPowerModal);
+    ipPowerModal.addEventListener('click', function(e) { if (e.target === ipPowerModal) closeIPPowerModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && ipPowerModal.classList.contains('active')) closeIPPowerModal(); });
+
+    // ============================================================
+    //  Upgrade Tooltip
+    // ============================================================
+    var upgradeTooltip = document.getElementById('upgradeTooltip');
+    var upgradeModalClose = document.getElementById('upgradeModalClose');
+    var upgradeModalCurrent = document.getElementById('upgradeModalCurrent');
+    var upgradeTable = document.getElementById('upgradeTable');
+
+    function openUpgradeModalForCard(card) {
+      var viewsStr = card.dataset.views || '0';
+      var viewsNum = parseChineseNum(viewsStr);
+      var maxLevel = 1;
+      for (var i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
+        if (viewsNum >= UPGRADE_TABLE[i].threshold) { maxLevel = UPGRADE_TABLE[i].level; break; }
+      }
+      upgradeModalCurrent.textContent = '当前完播：' + viewsStr + ' → 可升至 Lv.' + maxLevel;
+      upgradeTable.innerHTML = UPGRADE_TABLE.map(function(r) {
+        var isActive = r.level === maxLevel;
+        var bg = isActive ? 'var(--accent-soft)' : 'transparent';
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:' + bg + ';margin-bottom:2px;">' +
+          '<span style="font-weight:600;font-size:0.85rem;color:var(--text);">' + (isActive ? '✓ ' : '') + 'Lv.' + r.level + '</span>' +
+          '<span style="font-size:0.78rem;color:var(--text-muted);">' + formatThreshold(r.threshold) + ' 完播</span>' +
+          '<span style="font-weight:600;font-size:0.85rem;color:var(--accent);">片酬 ×' + r.multiplier.toFixed(1) + '</span>' +
+        '</div>';
+      }).join('');
+      upgradeTooltip.classList.add('active');
+    }
+
+    function closeUpgradeTooltip() { upgradeTooltip.classList.remove('active'); }
+    upgradeModalClose.addEventListener('click', closeUpgradeTooltip);
+    upgradeTooltip.addEventListener('click', function(e) { if (e.target === upgradeTooltip) closeUpgradeTooltip(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && upgradeTooltip.classList.contains('active')) closeUpgradeTooltip(); });
+
+    // ============================================================
+    //  Price Coefficient Tooltip
+    // ============================================================
+    var priceCoeffTooltip = document.getElementById('priceCoeffTooltip');
+    var mintCoeffHelp = document.getElementById('mintCoeffHelp');
+    if (mintCoeffHelp && priceCoeffTooltip) {
+      mintCoeffHelp.addEventListener('click', function(e) { e.stopPropagation(); priceCoeffTooltip.classList.add('active'); });
+    }
+    var priceCoeffTooltipClose = document.querySelector('#priceCoeffTooltip .price-coeff-tooltip-close');
+    if (priceCoeffTooltipClose && priceCoeffTooltip) {
+      priceCoeffTooltipClose.addEventListener('click', function() { priceCoeffTooltip.classList.remove('active'); });
+      priceCoeffTooltip.addEventListener('click', function(e) { if (e.target === priceCoeffTooltip) priceCoeffTooltip.classList.remove('active'); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && priceCoeffTooltip.classList.contains('active')) priceCoeffTooltip.classList.remove('active'); });
+    }
+
+    // ============================================================
+    //  Card Click → actor-profile.html
+    // ============================================================
+    document.getElementById('actorGrid').addEventListener('click', function(e) {
+      if (e.target.closest('.ac-price-help') || e.target.closest('.ac-mint-btn') || e.target.closest('.ac-trade-btn') || e.target.closest('.ac-stat-item')) return;
+      var card = e.target.closest('.ac-card');
+      if (!card) return;
+      var name = card.dataset.actor || '';
+      var id = card.dataset.id || '1';
+      var avatarSrc = card.querySelector('.ac-avatar img') ? card.querySelector('.ac-avatar img').src : '';
+      var desc = '';
+      for (var i = 0; i < ACTORS_DATA.length; i++) { if (ACTORS_DATA[i].name === name) { desc = ACTORS_DATA[i].description; break; } }
+      var params = new URLSearchParams({ id: id, name: name, avatar: avatarSrc, description: desc || '', price: card.dataset.price || '', minted: card.dataset.minted || '', available: card.dataset.available || '' });
+      window.location.href = 'actor-profile.html?' + params.toString();
+    });
+
+    // ============================================================
+    //  Mint Button Clicks
+    // ============================================================
+    document.getElementById('actorGrid').addEventListener('click', function(e) {
+      var mintBtn = e.target.closest('.ac-mint-btn');
+      if (mintBtn) {
+        e.stopPropagation();
+        var card = mintBtn.closest('.ac-card');
+        var name = card.dataset.actor || '';
+        var avatarEl = card.querySelector('.ac-avatar img');
+        var avatarSrc = avatarEl ? avatarEl.src : 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
+        openMintModal({
+          name: name,
+          collection: card.dataset.collection || '',
+          price: card.dataset.price || '10 USDC',
+          amount: card.dataset.available || '10',
+          minted: parseInt(card.dataset.minted) || 0,
+          total: parseInt(card.dataset.total) || 10000,
+          pricing: card.dataset.pricing || 'curve',
+          tag: '角色 IP',
+          image: avatarSrc,
+          initPrice: parseFloat(card.dataset.initPrice) || 0
+        });
+      }
+    });
+
+    // ============================================================
+    //  Trade Button Clicks
+    // ============================================================
+    document.getElementById('actorGrid').addEventListener('click', function(e) {
+      var tradeBtn = e.target.closest('.ac-trade-btn');
+      if (tradeBtn) {
+        e.stopPropagation();
+        var name = tradeBtn.dataset.actor || 'Luna';
+        window.open('https://market.story.fun/trade/' + name.toLowerCase(), '_blank');
+      }
+    });
+
+    // ============================================================
+    //  Init Auth
+    // ============================================================
+    setTimeout(function() { if (typeof initAuth === 'function') initAuth(); }, 100);
+  </script>
+
+  <!-- Desktop Header Search -->
+  <script>
+    function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
+    function saveRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});list.unshift(q);if(list.length>8)list.pop();localStorage.setItem("dh_recent_searches",JSON.stringify(list))}
+    function renderSearchDropdown(){var hotTags=["凤骨琉璃","打斗精彩片段","古风短剧","1011","AI短剧","苏婉清","星际拓荒者","时间管理局"];var hotEl=document.getElementById("sdHotTags");if(hotEl){hotEl.innerHTML=hotTags.map(function(t){return '<button class="sd-tag" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+t+'\';doSearch(\''+t+'\')">'+t+'</button>'}).join("")}var recent=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");var recentSection=document.getElementById("sdRecentSection");var recentList=document.getElementById("sdRecentList");if(recentSection&&recentList&&recent.length>0){recentSection.style.display="";recentList.innerHTML=recent.map(function(r){return '<div class="sd-item" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+r+'\';doSearch(\''+r+'\')"><span>'+r+'</span><button class="sd-del" onclick="event.stopPropagation();event.preventDefault();removeRecentSearch(\''+r+'\')">✕</button></div>'}).join("")}else if(recentSection){recentSection.style.display="none"}}
+    function removeRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});localStorage.setItem("dh_recent_searches",JSON.stringify(list));renderSearchDropdown()}
+    (function(){var inp=document.getElementById("dhSearchInput");var dropdown=document.getElementById("dhSearchDropdown");var searchBox=document.getElementById("dhSearch");var searchBtn=document.getElementById("dhSearchBtn");if(!inp||!dropdown||!searchBox)return;renderSearchDropdown();inp.addEventListener("focus",function(){renderSearchDropdown();dropdown.classList.add("show")});inp.addEventListener("input",function(){if(inp.value.trim()){dropdown.classList.remove("show")}else{renderSearchDropdown();dropdown.classList.add("show")}});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){var q=inp.value.trim();if(q)doSearch(q)}});searchBtn.addEventListener("click",function(e){e.stopPropagation();var q=inp.value.trim();if(q)doSearch(q)});document.addEventListener("click",function(e){if(!searchBox.contains(e.target)){dropdown.classList.remove("show")}})})();
+  </script>
 </body>
 </html>
