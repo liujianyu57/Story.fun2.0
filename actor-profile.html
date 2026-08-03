@@ -1061,11 +1061,11 @@
         <p class="actor-desc" id="actorDesc">—</p>
         <div class="actor-hero-stats">
           <div class="ahs-item" onclick="openIPPowerModal()" style="cursor:pointer;">
-            <span class="ahs-label">Lv.1 算力</span>
+            <span class="ahs-label">Lv.1 片酬</span>
             <span class="ahs-value" id="heroIPPower">—</span>
           </div>
           <div class="ahs-divider"></div>
-          <div class="ahs-item" id="upgradeStat">
+          <div class="ahs-item" id="upgradeStat" onclick="event.stopPropagation();openUpgradeTooltip()">
             <span class="ahs-label">可升至 Lv.1</span>
             <span class="ahs-value" id="heroTargetPower">—</span>
           </div>
@@ -1319,10 +1319,10 @@
     </div>
   </div>
 
-  <!-- ═══ IP算力详情弹窗 ═══ -->
+  <!-- ═══ 片酬详情弹窗 ═══ -->
   <div class="stat-tooltip-overlay" id="ipPowerModal" style="z-index:10000;">
     <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;">
-      <h3 id="ipPowerModalTitle" style="font-size:1.15rem;margin:0 0 4px;">IP算力详情</h3>
+      <h3 id="ipPowerModalTitle" style="font-size:1.15rem;margin:0 0 4px;">片酬详情</h3>
       <div id="ipPowerModalName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
       <div id="ipPowerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;">
         <!-- 由 JS 动态填充 -->
@@ -1497,7 +1497,7 @@
       var powX = Math.pow(x, 1.3);
       return 1.6 * powX / (powX + 0.6);
     }
-    // 全局 IP 算力显示（renderDramas 等顶层函数使用）
+    // 全局 IP 片酬显示（renderDramas 等顶层函数使用）
     function computeIPPowerDisplay(data) {
       var pc = computePriceCoefficient(data.initPrice || 0);
       var h = parseFloat(data.heat) || 0;
@@ -1732,10 +1732,10 @@
       }
       document.getElementById('heroViews').textContent = actor.views || '—';
 
-      // ═══ IP算力计算 + 算力升级（computePriceCoefficient 已提升为顶层全局函数） ═══
+      // ═══ 片酬计算 + 片酬升级（computePriceCoefficient 已提升为顶层全局函数） ═══
       var ipPowerVal = computePriceCoefficient(actor.initPrice || 0) * parseFloat(actor.heat) || 0;
 
-      // 算力升级体系
+      // 片酬升级体系
       var UPGRADE_TABLE = [
         { level: 1, threshold: 0, multiplier: 1.0 },
         { level: 2, threshold: 10000, multiplier: 2.0 },
@@ -1764,7 +1764,7 @@
       // 更新 stats 行
       var statItems = document.querySelectorAll('.actor-hero-stats .ahs-item');
       if (statItems.length >= 3) {
-        statItems[0].querySelector('.ahs-label').textContent = 'Lv.1 算力';
+        statItems[0].querySelector('.ahs-label').textContent = 'Lv.1 片酬';
         statItems[0].querySelector('.ahs-value').textContent = ipPowerVal.toFixed(2);
         statItems[1].querySelector('.ahs-label').textContent = '可升至 Lv.' + maxLevel;
         statItems[1].querySelector('.ahs-value').textContent = targetPower.toFixed(2);
@@ -1820,12 +1820,12 @@
         }
       }
 
-      // ═══ IP算力弹窗 ═══
+      // ═══ 片酬弹窗 ═══
       window.openIPPowerModal = function() {
         var priceCoeff = computePriceCoefficient(actor.initPrice || 0);
         var heat = parseFloat(actor.heat) || 0;
-        document.getElementById('ipPowerModalTitle').textContent = actor.name + ' · IP算力';
-        document.getElementById('ipPowerModalName').textContent = 'IP算力 = 价格系数 × 热度系数 × Trust1';
+        document.getElementById('ipPowerModalTitle').textContent = actor.name + ' · 片酬';
+        document.getElementById('ipPowerModalName').textContent = '片酬 = 价格系数 × 热度系数 × Trust1';
         document.getElementById('ipPowerModalBreakdown').innerHTML =
           '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
             '<div style="display:flex;justify-content:space-between;align-items:center;">' +
@@ -2225,8 +2225,66 @@
       }
     }
   </script>
+<!-- ═══ 片酬升级说明弹窗 ═══ -->
+<div class="stat-tooltip-overlay" id="upgradeTooltip" style="z-index:10002;">
+  <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;text-align:left;">
+    <h3 style="text-align:center;margin:0 0 4px;font-size:1.15rem;">片酬升级规则</h3>
+    <div id="upgradeModalCurrent" style="text-align:center;margin:0 0 16px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
+    <div id="upgradeTable" style="display:flex;flex-direction:column;gap:0;margin-bottom:16px;"></div>
+    <button class="button-secondary" id="upgradeModalClose" style="width:100%;">知道了</button>
+  </div>
+</div>
 <script src="load-sidebar.js"></script>
 <script src="load-desktop-header.js"></script>
+<script>
+(function(){
+  var UPGRADE_TABLE = [
+    { level: 1, threshold: 0, multiplier: 1.0 },
+    { level: 2, threshold: 10000, multiplier: 2.0 },
+    { level: 3, threshold: 50000, multiplier: 3.5 },
+    { level: 4, threshold: 200000, multiplier: 5.5 },
+    { level: 5, threshold: 500000, multiplier: 8.0 }
+  ];
+  function parseChineseNum(str) {
+    if (!str) return 0;
+    var s = str.replace(/,/g, '');
+    var match = s.match(/^([\d.]+)万$/);
+    if (match) return parseFloat(match[1]) * 10000;
+    return parseFloat(s) || 0;
+  }
+  function formatThreshold(n) {
+    if (n === 0) return '0';
+    if (n >= 10000) return (n / 10000).toFixed(0).replace(/\.0$/, '') + '万';
+    return n.toLocaleString();
+  }
+  window.openUpgradeTooltip = function() {
+    var actorName = new URLSearchParams(window.location.search).get('name') || '苏婉清';
+    var actor = ACTORS_DATA[actorName];
+    if (!actor) return;
+    var viewsNum = parseChineseNum(actor.views || '0');
+    var viewsDisplay = actor.views || '0';
+    var maxLevel = 1;
+    for (var i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
+      if (viewsNum >= UPGRADE_TABLE[i].threshold) { maxLevel = UPGRADE_TABLE[i].level; break; }
+    }
+    document.getElementById('upgradeModalCurrent').textContent = '当前完播：' + viewsDisplay + '  →  可升至 Lv.' + maxLevel;
+    document.getElementById('upgradeTable').innerHTML = UPGRADE_TABLE.map(function(r) {
+      var isActive = r.level === maxLevel;
+      var bg = isActive ? 'var(--accent-soft)' : 'transparent';
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:' + bg + ';margin-bottom:2px;">' +
+        '<span style="font-weight:600;font-size:0.85rem;color:var(--text);">' + (isActive ? '✓ ' : '') + 'Lv.' + r.level + '</span>' +
+        '<span style="font-size:0.78rem;color:var(--text-muted);">' + formatThreshold(r.threshold) + ' 完播</span>' +
+        '<span style="font-weight:600;font-size:0.85rem;color:var(--accent);">片酬 ×' + r.multiplier.toFixed(1) + '</span>' +
+      '</div>';
+    }).join('');
+    document.getElementById('upgradeTooltip').classList.add('active');
+  };
+  var upgradeModal = document.getElementById('upgradeTooltip');
+  document.getElementById('upgradeModalClose').addEventListener('click', function() { upgradeModal.classList.remove('active'); });
+  upgradeModal.addEventListener('click', function(e) { if (e.target === upgradeModal) upgradeModal.classList.remove('active'); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && upgradeModal.classList.contains('active')) upgradeModal.classList.remove('active'); });
+})();
+</script>
 </body>
 </html>
 

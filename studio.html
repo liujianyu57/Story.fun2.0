@@ -2087,6 +2087,10 @@
       { id: '#Zhao-001', name: '赵无极', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'zhaowuji', ipCode: 'C004', level: 5, energy: 100, energyMax: 168, heat: 5.2, dailyStory: 286.0, cumulativeStory: 8200.0, cumulativePlays: 350000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 200 },
       { id: '#Shang-001', name: '上官婉儿', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'shangguan', ipCode: 'C005', level: 1, energy: 65, energyMax: 168, heat: 0.8, dailyStory: 0, cumulativeStory: 0, cumulativePlays: 5000, isStaking: false, stakingDays: 0, status: 'paused', todayOutput: 0, outputRate: 0, initPrice: 30 },
       { id: '#Luna-001', name: 'Luna', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'shangguan', ipCode: 'C005', level: 1, energy: 50, energyMax: 168, heat: 0.8, dailyStory: 12.5, cumulativeStory: 38.0, cumulativePlays: 5000, isStaking: false, stakingDays: 0, status: 'paused', todayOutput: 0, outputRate: 0, initPrice: 30 },
+      { id: '#Wu-001', name: '吴铮', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'wuzheng', ipCode: 'C006', level: 2, energy: 100, energyMax: 168, heat: 1.5, dailyStory: 8.0, cumulativeStory: 64.0, cumulativePlays: 8000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 60 },
+      { id: '#Wu-002', name: '吴铮', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'wuzheng', ipCode: 'C006', level: 2, energy: 140, energyMax: 168, heat: 1.5, dailyStory: 6.5, cumulativeStory: 52.0, cumulativePlays: 8000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 60 },
+      { id: '#Wu-003', name: '吴铮', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'wuzheng', ipCode: 'C006', level: 2, energy: 80, energyMax: 168, heat: 1.5, dailyStory: 5.0, cumulativeStory: 38.0, cumulativePlays: 8000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 60 },
+      { id: '#Chen-001', name: '陈小雨', avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&h=400&q=80', parentIP: 'chenxiaoyu', ipCode: 'C007', level: 1, energy: 160, energyMax: 168, heat: 1.2, dailyStory: 4.2, cumulativeStory: 31.5, cumulativePlays: 15000, isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0, initPrice: 25 },
     ];
 
     // ============================================================
@@ -2317,7 +2321,7 @@
           + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + Math.round((have / 2) * 100) + '%;"></i><span class="ur-cond-bar-text">' + have + '/2</span></div>'
           + '</div>'
           + '</div>'
-          + '<button class="ur-btn ' + (bothDone ? 'ready' : 'not-ready') + '" onclick="event.stopPropagation();' + (bothDone ? 'openLevelModal(\'' + actor.id + '\')' : (!playDone ? 'openNeedPlayModal(\'' + actor.name + '\')' : 'openNeedRoleModal(\'' + actor.name + '\',\'' + actor.parentIP + '\')')) + '">'
+          + '<button class="ur-btn ' + (bothDone ? 'ready' : 'not-ready') + '" onclick="event.stopPropagation();' + (bothDone ? 'openLevelModal(\'' + actor.id + '\')' : 'openUpgradeBlockedModal(\'' + actor.id + '\')') + '">'
           + '✦ 立即升级'
           + '</button>'
           + '</div>';
@@ -2347,13 +2351,13 @@
           var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
           var barCls = energyBarCls(actor.energy);
           html += '<div class="slot occupied">'
-            + '<div class="slot-av-wrap">'
+            + '<div class="slot-av-wrap" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;">'
             + '<img src="' + actor.avatar + '" alt="" />'
             + '<span class="slot-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
             + '<span class="slot-dot' + (actor.energy > 0 ? ' on' : '') + '"></span>'
             + '</div>'
             + '<div class="slot-body">'
-            + '<div class="slot-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+            + '<div class="slot-name" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
             + '<div class="slot-energy">'
             + '<div class="slot-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></div>'
             + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
@@ -2393,12 +2397,12 @@
         var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
         var barCls = energyBarCls(actor.energy);
         cardHtml = '<div class="slot occupied">'
-          + '<div class="slot-av-wrap">'
+          + '<div class="slot-av-wrap" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;">'
           + '<img src="' + actor.avatar + '" alt="" />'
           + '<span class="slot-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
           + '</div>'
           + '<div class="slot-body">'
-          + '<div class="slot-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+          + '<div class="slot-name" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
           + '<div class="slot-energy">'
           + '<div class="slot-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></div>'
           + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
@@ -2515,13 +2519,13 @@
         var barCls = energyBarCls(actor.energy);
 
         return '<div class="pool-item" onclick="openStakeModal(\'' + actor.id + '\')" title="点击安排演出">'
-          + '<div class="pool-av-wrap">'
+          + '<div class="pool-av-wrap" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页">'
           + '<img src="' + actor.avatar + '" alt="" />'
           + '<span class="pool-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
           + '</div>'
           + '<div class="pool-out">' + computeActorPower(actor).toFixed(1) + '<span class="u"> /h</span></div>'
           + '<span class="pool-energy"><span class="bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></span></span>'
-          + '<span class="pool-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</span>'
+          + '<span class="pool-name" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</span>'
           + '</div>';
       }).join('');
     }
@@ -2561,12 +2565,12 @@
         var barCls = energyBarCls(actor.energy);
 
         return '<div class="picker-card">'
-          + '<div class="slot-av-wrap">'
+          + '<div class="slot-av-wrap" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页">'
           + '<img src="' + actor.avatar + '" alt="" />'
           + '<span class="slot-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
           + '</div>'
           + '<div class="slot-body">'
-          + '<div class="slot-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+          + '<div class="slot-name" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
           + '<div class="slot-energy">'
           + '<div class="slot-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></div>'
           + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
@@ -3057,6 +3061,74 @@
     function closeActorPowerModal() {
       document.getElementById('actorPowerModal').classList.remove('active');
       document.body.style.overflow = '';
+    }
+
+    // ============================================================
+    //  升级条件不满足弹窗（列出所有未满足条件）
+    // ============================================================
+    function openUpgradeBlockedModal(actorId) {
+      var actor = MY_ACTORS.find(function(a) { return a.id === actorId; });
+      if (!actor) return;
+      var nextLevel = actor.level + 1;
+      var threshold = LEVEL_UP_THRESHOLDS[nextLevel];
+      if (!threshold) return;
+      var playReq = threshold.playsRequired || 0;
+      var currentPlays = actor.cumulativePlays || 0;
+      var playDone = currentPlays >= playReq;
+      var sameLevel = MY_ACTORS.filter(function(x) { return x.parentIP === actor.parentIP && x.level === actor.level && x.id !== actor.id; }).length;
+      var have = Math.min(sameLevel, 2);
+      var cloneDone = have >= 2;
+      var actorNum = actor.id.match(/\d+/);
+      var actorNumStr = actorNum ? ' #' + parseInt(actorNum[0], 10) : '';
+      var title = '升级 ' + actor.name + actorNumStr;
+
+      var bodyHtml = '';
+      if (!playDone) {
+        var gap = formatNumber(playReq - currentPlays);
+        bodyHtml += '<div style="text-align:left;margin-bottom:16px;">' +
+          '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + gap + ' 完播</div>' +
+          '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">观看该角色参演的短剧，或为它创作新剧，都可提升完播</div>' +
+          '<button class="modal-btn confirm" onclick="window.location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="margin-bottom:6px;">看参演短剧</button>' +
+          '<button class="modal-btn confirm" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin-bottom:0;" onclick="window.location.href=\'narrator.html\'">创作新短剧</button>' +
+          '</div>';
+      }
+      if (!cloneDone) {
+        var need = 2 - have;
+        bodyHtml += '<div style="text-align:left;margin-top:' + (!playDone ? '12px' : '0') + ';">' +
+          '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + need + ' 张同IP同等级角色</div>' +
+          '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">去角色主页签约更多「' + actor.name + '」</div>' +
+          '<button class="modal-btn confirm" onclick="window.location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'">去获取角色</button>' +
+          '</div>';
+      }
+
+      if (!playDone && !cloneDone) {
+        bodyHtml = '<div style="text-align:left;">' +
+          '<div style="margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);">' +
+            '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + formatNumber(playReq - currentPlays) + ' 完播</div>' +
+            '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">观看该角色参演的短剧，或为它创作新剧，都可提升完播</div>' +
+            '<button class="modal-btn confirm" onclick="window.location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="margin-bottom:6px;">去角色主页 · 看参演短剧</button>' +
+            '<button class="modal-btn confirm" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin-bottom:0;" onclick="window.location.href=\'narrator.html\'">去创作短剧</button>' +
+          '</div>' +
+          '<div>' +
+            '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + (2 - have) + ' 张同IP同等级角色</div>' +
+            '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">去角色主页签约更多「' + actor.name + '」</div>' +
+            '<button class="modal-btn confirm" onclick="window.location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'">去获取角色</button>' +
+          '</div>' +
+        '</div>';
+      }
+
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div class="modal-card" style="max-width:440px;text-align:center;padding:28px 24px 22px;">' +
+        '<h2 style="margin:0 0 14px;font-size:1.1rem;">' + title + '</h2>' +
+        bodyHtml +
+        '<button class="modal-btn cancel" onclick="this.closest(\'.modal-overlay\').remove()" style="width:100%;margin-top:14px;">关闭</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) this.remove();
+      });
     }
 
     // ============================================================
