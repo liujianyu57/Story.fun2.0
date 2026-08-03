@@ -45,15 +45,6 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 .result-card .rc-ep{font-size:12px;color:var(--text-muted)}
 .result-card .rc-desc{font-size:12px;color:var(--text-muted);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* Actor card */
-.actor-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--surface);margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.03)}
-.actor-card:active{transform:scale(.98)}
-.actor-card .ac-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e5e5ea;border:2px solid rgba(0,0,0,.06)}
-.actor-card .ac-info{flex:1;min-width:0}
-.actor-card .ac-name{font-size:15px;font-weight:600;color:var(--text)}
-.actor-card .ac-sub{font-size:13px;color:var(--text-muted);margin-top:2px}
-.actor-card .ac-arrow{color:var(--text-muted);font-size:18px}
-
 /* User card */
 .user-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--surface);margin-bottom:10px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.03)}
 .user-card:active{transform:scale(.98)}
@@ -63,6 +54,41 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 .user-card .uc-handle{font-size:13px;color:var(--text-muted);margin-top:1px}
 .user-card .uc-follow-btn{padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:var(--accent);color:#fff;transition:all .2s;flex-shrink:0;font-family:inherit}
 .user-card .uc-follow-btn:active{opacity:.7}
+
+/* Drama grid (短剧卡片) */
+.drama-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 16px}
+@media(min-width:769px){.drama-gallery{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}}
+
+/* Actor grid (角色卡片) */
+.actor-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 16px}
+@media(min-width:769px){.actor-gallery{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}}
+.a-card{background:var(--surface);border:none;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(27,45,71,.06);border:1px solid var(--border);cursor:pointer;transition:all .35s cubic-bezier(0.25,0.46,0.45,0.94)}
+.a-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(27,45,71,.1),0 2px 8px rgba(27,45,71,.04)}
+.a-card .a-banner{position:relative;height:220px;overflow:hidden;flex-shrink:0}
+.a-card .a-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.06) 100%);pointer-events:none}
+.a-card .a-banner img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(0.25,0.46,0.45,0.94)}
+.a-card:hover .a-banner img{transform:scale(1.04)}
+.a-card .a-body{padding:20px 20px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.a-card .a-name{font-size:1.25rem;font-weight:700;letter-spacing:-0.01em;line-height:1.25;color:var(--text)}
+.a-card .a-sub{font-size:0.85rem;color:var(--text-muted);line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-card .a-dramas{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.a-card .a-drama-tag{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:500;background:rgba(0,179,136,.08);color:var(--accent)}
+
+/* Video grid */
+.video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 16px}
+@media(min-width:769px){.video-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}}
+.video-card{border-radius:18px;overflow:hidden;background:var(--surface);cursor:pointer;box-shadow:0 2px 12px rgba(27,45,71,.06);border:1px solid var(--border);transition:all .3s}
+.video-card:hover{transform:translateY(-5px);box-shadow:0 4px 20px rgba(27,45,71,.1)}
+.video-card .vc-cover-wrap{position:relative;overflow:hidden}
+.video-card .vc-cover{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
+.video-card .vc-likes{position:absolute;bottom:8px;left:8px;display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:500;z-index:1}
+.video-card .vc-likes svg{width:12px;height:12px;fill:#fff}
+.video-card .vc-duration{position:absolute;bottom:8px;right:8px;padding:3px 7px;border-radius:4px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:500;z-index:1}
+.video-card .vc-body{padding:10px 12px 12px}
+.video-card .vc-desc{font-size:12px;color:var(--text-muted);line-height:1.4;min-height:33.6px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:6px}
+.video-card .vc-meta-row{display:flex;align-items:center;justify-content:space-between}
+.video-card .vc-author{font-size:12px;color:var(--text-muted)}
+.video-card .vc-published{font-size:11px;color:var(--text-muted)}
 
 /* Empty state */
 .empty-state{padding:60px 20px;text-align:center;color:var(--text-muted);font-size:15px;display:none}
@@ -75,11 +101,15 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 .bnav a.active{color:var(--accent)}
 .bnav svg{width:28px;height:28px;display:block;flex-shrink:0}
 .bnav span{font-weight:400;font-size:10px;line-height:12px;letter-spacing:.008em;text-align:center}
-@media(min-width:769px){.bnav{max-width:480px;left:50%;transform:translateX(-50%)}}
+.desktop-back{display:none}
+@media(min-width:769px){.bnav{display:none}body{background:#fff;padding-bottom:0}.shell{max-width:none;width:100%;padding-top:80px;background:#fff;position:relative;overflow-x:hidden}.top-bar{display:none}.tab-bar{max-width:1440px;margin:0 auto;top:0}.desktop-back{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.06);color:var(--text-muted);cursor:pointer;position:fixed;top:8px;left:24px;z-index:152;transition:all .2s}.desktop-back:hover{background:rgba(0,0,0,.12);color:var(--text)}.desktop-back svg{width:20px;height:20px}.results{max-width:1440px;margin:0 auto;padding:12px 16px}.result-card,.user-card{max-width:1440px;margin-left:auto;margin-right:auto;width:100%}.drama-gallery{max-width:1440px;margin:0 auto;padding:12px 16px}.actor-gallery{max-width:1440px;margin:0 auto;padding:12px 16px}.video-grid{max-width:1440px;margin:0 auto;padding:12px 16px}.empty-state{max-width:1440px;margin:0 auto}}
 </style>
 </head>
 <body>
 <div class="shell">
+  <a class="desktop-back" onclick="history.back()" title="返回">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </a>
   <div class="top-bar">
     <div class="search-row">
       <button class="search-back" onclick="history.back()">
@@ -95,6 +125,7 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 
   <div class="tab-bar" id="tabBar">
     <button class="tab-item active" data-tab="drama">短剧</button>
+    <button class="tab-item" data-tab="video">视频</button>
     <button class="tab-item" data-tab="actor">角色</button>
     <button class="tab-item" data-tab="user">用户</button>
   </div>
@@ -106,18 +137,25 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
   </div>
 </div>
 
+<script src="drama-card.js"></script>
 <script>
 var DATA = [
-  {id:'001',title:'凤骨琉璃',cat:'古风',rt:4.6,ep:'全44集',totalEp:44,author:'JACK',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','李云飞'],cover:'image/fenggu_cover.jpg',video:'video/凤骨琉璃.mp4',likes:33300,cmts:890,desc:'一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。'},
-  {id:'002',title:'我卸甲后天下大乱了',cat:'古风',rt:4.4,ep:'全12集',totalEp:12,author:'EVA',avatar:'https://images.unsplash.com/photo-1457449940276-e8deed18bfff?auto=format&fit=crop&w=200&q=80',actors:['赵无极','林梦瑶'],cover:'image/xiejia_cover.jpg',video:'video/我卸甲后天下大乱了.mp4',likes:28600,cmts:567,desc:'卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。'},
-  {id:'003',title:'丞相府今日开饭',cat:'喜剧',rt:4.5,ep:'全24集',totalEp:24,author:'LENS',avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','上官婉儿'],cover:'image/chengxiangfu_cover.jpg',video:'video/丞相府今日开饭.mp4',likes:19800,cmts:423,desc:'丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。'},
-  {id:'004',title:'时间管理局',cat:'科幻',rt:4.8,ep:'全16集',totalEp:16,author:'NOVA',avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',likes:32100,cmts:891,desc:'穿梭时空，修复那些被篡改的历史关键节点'},
-  {id:'005',title:'迷途恋人',cat:'爱情',rt:3.9,ep:'全20集',totalEp:20,author:'ROSE',avatar:'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',actors:['郑一','冯二'],cover:'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80',likes:56000,cmts:1203,desc:'失忆后重遇初恋，命运却开了一个残酷的玩笑'},
-  {id:'006',title:'代码风暴',cat:'动作',rt:4.2,ep:'第7集 / 共30集',totalEp:30,author:'CYPHER',avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',actors:['陈三','刘四'],cover:'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80',likes:27800,cmts:654,desc:'天才程序员被诬陷入狱，出狱后展开惊天复仇计划'},
-  {id:'007',title:'笑面人生',cat:'喜剧',rt:4.5,ep:'全36集',totalEp:36,author:'SMILE',avatar:'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80',actors:['杨五','朱六'],cover:'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80',likes:42000,cmts:987,desc:'平凡小人物用笑声治愈身边每一个受伤的灵魂'},
-  {id:'008',title:'第七层梦境',cat:'悬疑',rt:4.3,ep:'第2集 / 共18集',totalEp:18,author:'DREAMER',avatar:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',actors:['黄七','曹八'],cover:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',likes:31500,cmts:756,desc:'进入他人梦境，却发现再也分不清真假虚实'},
-  {id:'009',title:'金融暗战',cat:'金融',rt:4.0,ep:'全44集',totalEp:44,author:'BULL',avatar:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',likes:22000,cmts:534,desc:'华尔街之狼 vs 国内资本大鳄，谁是最后赢家'},
-  {id:'010',title:'星际拓荒者',cat:'科幻',rt:4.7,ep:'全26集',totalEp:26,author:'STELLAR',avatar:'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=200&q=80',actors:['何九','吕十'],cover:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80',likes:48900,cmts:1123,desc:'人类最后的希望，踏上前所未有的星际征程'}
+  {id:'001',title:'凤骨琉璃',cat:'古风',rt:4.6,ep:'全44集',totalEp:44,author:'JACK',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','李云飞'],cover:'image/fenggu_cover.jpg',video:'video/凤骨琉璃.mp4',likes:33300,cmts:890,desc:'一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。',certType:'official'},
+  {id:'002',title:'我卸甲后天下大乱了',cat:'古风',rt:4.4,ep:'全12集',totalEp:12,author:'EVA',avatar:'https://images.unsplash.com/photo-1457449940276-e8deed18bfff?auto=format&fit=crop&w=200&q=80',actors:['赵无极','林梦瑶'],cover:'image/xiejia_cover.jpg',video:'video/我卸甲后天下大乱了.mp4',likes:28600,cmts:567,desc:'卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。',certType:'community'},
+  {id:'003',title:'丞相府今日开饭',cat:'喜剧',rt:4.5,ep:'全24集',totalEp:24,author:'LENS',avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',actors:['苏婉清','上官婉儿'],cover:'image/chengxiangfu_cover.jpg',video:'video/丞相府今日开饭.mp4',likes:19800,cmts:423,desc:'丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。',certType:'partner'},
+  {id:'004',title:'时间管理局',cat:'科幻',rt:4.8,ep:'全16集',totalEp:16,author:'NOVA',avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',likes:32100,cmts:891,desc:'穿梭时空，修复那些被篡改的历史关键节点',certType:'creator'},
+  {id:'005',title:'迷途恋人',cat:'爱情',rt:3.9,ep:'全20集',totalEp:20,author:'ROSE',avatar:'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',actors:['郑一','冯二'],cover:'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80',likes:56000,cmts:1203,desc:'失忆后重遇初恋，命运却开了一个残酷的玩笑',certType:'community'},
+  {id:'006',title:'代码风暴',cat:'动作',rt:4.2,ep:'第7集 / 共30集',totalEp:30,author:'CYPHER',avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',actors:['陈三','刘四'],cover:'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80',likes:27800,cmts:654,desc:'天才程序员被诬陷入狱，出狱后展开惊天复仇计划',certType:'creator'},
+  {id:'007',title:'笑面人生',cat:'喜剧',rt:4.5,ep:'全36集',totalEp:36,author:'SMILE',avatar:'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80',actors:['杨五','朱六'],cover:'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80',likes:42000,cmts:987,desc:'平凡小人物用笑声治愈身边每一个受伤的灵魂',certType:'community'},
+  {id:'008',title:'第七层梦境',cat:'悬疑',rt:4.3,ep:'第2集 / 共18集',totalEp:18,author:'DREAMER',avatar:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',actors:['黄七','曹八'],cover:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',likes:31500,cmts:756,desc:'进入他人梦境，却发现再也分不清真假虚实',certType:'official'},
+  {id:'009',title:'金融暗战',cat:'金融',rt:4.0,ep:'全44集',totalEp:44,author:'BULL',avatar:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',actors:['周九','吴十'],cover:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',likes:22000,cmts:534,desc:'华尔街之狼 vs 国内资本大鳄，谁是最后赢家',certType:'partner'},
+  {id:'010',title:'星际拓荒者',cat:'科幻',rt:4.7,ep:'全26集',totalEp:26,author:'STELLAR',avatar:'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=200&q=80',actors:['何九','吕十'],cover:'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=800&q=80',likes:48900,cmts:1123,desc:'人类最后的希望，踏上前所未有的星际征程',certType:'community'},
+  {id:'v001',type:'video',title:'打斗精彩片段',author:'EVA',avatar:'https://images.unsplash.com/photo-1457449940276-e8deed18bfff?auto=format&fit=crop&w=200&q=80',cover:'image/chengxiangfu_cover.jpg',video:'video/打斗视频.mp4',likes:'3.2万',duration:'02:15',desc:'精彩打斗场面合集，拳拳到肉的视觉盛宴',published:'2天前'},
+  {id:'v002',type:'video',title:'凤骨琉璃 EP01',author:'JACK',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',cover:'image/fenggu_cover.jpg',video:'video/凤骨琉璃.mp4',likes:'5.1万',duration:'08:45',desc:'凤骨琉璃第一集，苏婉清初入宫廷，命运从此改变',published:'1周前'},
+  {id:'v003',type:'video',title:'长安如梦 EP01',author:'ROSE',avatar:'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',cover:'image/cover-candle.png',video:'video/打斗视频.mp4',likes:'4.3万',duration:'10:20',desc:'长安如梦开篇，繁华盛世下的暗流涌动',published:'3天前'},
+  {id:'v004',type:'video',title:'零夜序章',author:'CYPHER',avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',cover:'image/cover-zero-night.png',video:'video/丞相府今日开饭.mp4',likes:'3.8万',duration:'06:30',desc:'零夜序章，黑暗中的第一缕曙光',published:'5天前'},
+  {id:'v005',type:'video',title:'金字塔探险',author:'NOVA',avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',cover:'image/cover-pyramid.png',video:'video/凤骨琉璃.mp4',likes:'4.7万',duration:'12:05',desc:'金字塔深处的秘密，探险队揭开千年谜团',published:'1周前'},
+  {id:'v006',type:'video',title:'全押时刻',author:'BULL',avatar:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80',cover:'image/cover-allin.png',video:'video/我卸甲后天下大乱了.mp4',likes:'5.5万',duration:'09:18',desc:'全押时刻，赌上一切的终极对决',published:'4天前'}
 ];
 
 var searchInput = document.getElementById('searchInput');
@@ -135,16 +173,59 @@ if (query) searchClear.classList.add('show');
 
 /* Match helper */
 function match(str, q) {
-  if (!q) return true; /* empty query returns all */
+  if (!q) return true;
   str = str.toLowerCase();
   q = q.toLowerCase();
   return str.indexOf(q) !== -1;
 }
 
+/* Format number to short string */
+function formatNum(n) {
+  if (typeof n === 'string') return n;
+  if (n >= 10000) return (n / 10000).toFixed(1) + '万';
+  return String(n);
+}
+
+/* Get actor avatar from drama-card.js database */
+function getActorAvatar(actorName) {
+  var db = window.ACTOR_AVATARS || {};
+  if (db[actorName]) return db[actorName];
+  // Generate fallback colored initials
+  return null;
+}
+
+function getActorInitialsBg(name) {
+  var colors = ['#e0f7ff,#cfe0fc','#ffe4e7,#fff9fb','#edeaff,#f9f8ff','#e6fffa,#d1fae5','#fef3c7,#fde68a','#fce7f3,#fbcfe8'];
+  var idx = 0;
+  for (var i = 0; i < name.length; i++) idx += name.charCodeAt(i);
+  return colors[idx % colors.length];
+}
+
+/* Convert drama data to card format for drama-card.js */
+function toCardData(d) {
+  return {
+    title: d.title,
+    cover: d.cover,
+    category: d.cat,
+    sort: 'recommended',
+    certType: d.certType || 'community',
+    actors: d.actors || [],
+    views: formatNum(d.likes),
+    heat: formatNum(d.cmts),
+    rating: String(d.rt),
+    badge: d.cat,
+    episodes: d.ep,
+    creator: d.author,
+    creatorAvatar: d.avatar,
+    link: 'drama-player.html?id=' + d.id + '&title=' + encodeURIComponent(d.title) + '&total=' + d.totalEp + '&cat=' + encodeURIComponent(d.cat) + '&author=' + encodeURIComponent(d.author) + '&avatar=' + encodeURIComponent(d.avatar) + '&cover=' + encodeURIComponent(d.cover) + '&desc=' + encodeURIComponent(d.desc) + '&video=' + encodeURIComponent(d.video || '')
+  };
+}
+
 /* Search functions */
 function searchDramas(q) {
-  if (!q) return DATA;
-  return DATA.filter(function(d){
+  var dramas = DATA.filter(function(d){ return d.type !== 'video'; });
+  if (!q) return dramas;
+  return dramas.filter(function(d){
     return match(d.title, q) || match(d.cat, q) || (d.desc && match(d.desc, q));
   });
 }
@@ -152,6 +233,7 @@ function searchDramas(q) {
 function searchActors(q) {
   var map = {};
   DATA.forEach(function(d){
+    if (!d.actors) return;
     d.actors.forEach(function(a){
       if (!q) {
         if (!map[a]) map[a] = { name: a, count: 1, dramas: [d.title] };
@@ -167,6 +249,14 @@ function searchActors(q) {
     });
   });
   return Object.values(map);
+}
+
+function searchVideos(q) {
+  var videos = DATA.filter(function(d){ return d.type === 'video'; });
+  if (!q) return videos;
+  return videos.filter(function(d){
+    return match(d.title, q) || match(d.author, q) || (d.desc && match(d.desc, q));
+  });
 }
 
 function searchUsers(q) {
@@ -195,15 +285,12 @@ function renderTab(tab) {
   var userResults = searchUsers(query);
 
   if (tab === 'all') {
-    // Drama cards
     dramaResults.forEach(function(d){
       html += '<div class="result-card" data-id="'+d.id+'" data-type="drama"><img class="rc-cover" src="'+d.cover+'" alt="'+d.title+'"><div class="rc-info"><div class="rc-title">'+d.title+'</div><div class="rc-meta"><span class="rc-tag">'+d.cat+'</span><span class="rc-rating"><span class="star">★</span> '+d.rt+'</span><span class="rc-ep">'+d.ep+'</span></div><div class="rc-desc">'+d.desc+'</div></div></div>';
     });
-    // Actor rows
     actorResults.forEach(function(a){
-      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">角色 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
+      html += '<div class="result-card" data-name="'+a.name+'" data-type="actor"><div class="rc-cover" style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,'+getActorInitialsBg(a.name)+');display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="rc-info"><div class="rc-title">'+a.name+'</div><div class="rc-desc">角色 · '+a.count+'部作品</div></div></div>';
     });
-    // User rows
     userResults.forEach(function(u){
       html += '<div class="user-card" data-name="'+u.name+'" data-type="user"><img class="uc-avatar" src="'+u.avatar+'" alt="'+u.name+'"><div class="uc-info"><div class="uc-name">'+u.name+'</div><div class="uc-handle">'+u.handle+'</div></div><button class="uc-follow-btn" onclick="event.stopPropagation();toggleFollow(this)">关注</button></div>';
     });
@@ -214,19 +301,42 @@ function renderTab(tab) {
       emptyState.classList.remove('show');
     }
   } else if (tab === 'drama') {
-    dramaResults.forEach(function(d){
-      html += '<div class="result-card" data-id="'+d.id+'" data-type="drama"><img class="rc-cover" src="'+d.cover+'" alt="'+d.title+'"><div class="rc-info"><div class="rc-title">'+d.title+'</div><div class="rc-meta"><span class="rc-tag">'+d.cat+'</span><span class="rc-rating"><span class="star">★</span> '+d.rt+'</span><span class="rc-ep">'+d.ep+'</span></div><div class="rc-desc">'+d.desc+'</div></div></div>';
-    });
+    if (typeof renderDramaCardList === 'function') {
+      var cardData = dramaResults.map(toCardData);
+      html = '<div class="drama-gallery">' + renderDramaCardList(cardData) + '</div>';
+    } else {
+      dramaResults.forEach(function(d){
+        html += '<div class="result-card" data-id="'+d.id+'" data-type="drama"><img class="rc-cover" src="'+d.cover+'" alt="'+d.title+'"><div class="rc-info"><div class="rc-title">'+d.title+'</div><div class="rc-meta"><span class="rc-tag">'+d.cat+'</span><span class="rc-rating"><span class="star">★</span> '+d.rt+'</span><span class="rc-ep">'+d.ep+'</span></div><div class="rc-desc">'+d.desc+'</div></div></div>';
+      });
+    }
     if (!dramaResults.length) {
       emptyState.classList.add('show');
       emptyText.textContent = '未找到相关短剧';
     } else {
       emptyState.classList.remove('show');
     }
+  } else if (tab === 'video') {
+    var vs = searchVideos(query);
+    if (vs.length) {
+      html = '<div class="video-grid">' + vs.map(function(d){
+        return '<div class="video-card" onclick="location.href=\'recommend.html\'"><div class="vc-cover-wrap"><img class="vc-cover" src="'+d.cover+'" alt=""><span class="vc-likes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'+d.likes+'</span><span class="vc-duration">'+d.duration+'</span></div><div class="vc-body"><div class="vc-desc">'+d.desc+'</div><div class="vc-meta-row"><span class="vc-author">@'+d.author+'</span><span class="vc-published">'+d.published+'</span></div></div></div>';
+      }).join('') + '</div>';
+    }
+    emptyState.classList.toggle('show', vs.length === 0);
+    if (vs.length === 0) emptyText.textContent = '未找到相关视频';
   } else if (tab === 'actor') {
-    actorResults.forEach(function(a){
-      html += '<div class="actor-card" data-name="'+a.name+'" data-type="actor"><div class="ac-avatar" style="background:linear-gradient(135deg,#e8f0fe,#cfe0fc);display:flex;align-items:center;justify-content:center;font-size:20px;color:#007aff;font-weight:600">'+a.name.charAt(0)+'</div><div class="ac-info"><div class="ac-name">'+a.name+'</div><div class="ac-sub">角色 · '+a.count+'部作品</div></div><div class="ac-arrow">›</div></div>';
-    });
+    if (actorResults.length) {
+      html = '<div class="actor-gallery">' + actorResults.map(function(a){
+        var avatarUrl = getActorAvatar(a.name);
+        var imgHtml = '';
+        if (avatarUrl) {
+          imgHtml = '<img src="'+avatarUrl+'" alt="'+a.name+'"/>';
+        } else {
+          imgHtml = '<div style="width:100%;height:100%;background:linear-gradient(135deg,'+getActorInitialsBg(a.name)+');display:flex;align-items:center;justify-content:center;font-size:64px;color:#fff;font-weight:700">'+a.name.charAt(0)+'</div>';
+        }
+        return '<div class="a-card" onclick="location.href=\'actor-profile.html?name='+encodeURIComponent(a.name)+'\'"><div class="a-banner">'+imgHtml+'</div><div class="a-body"><div class="a-name">'+a.name+'</div><div class="a-sub">角色 · '+a.count+'部作品</div><div class="a-dramas">' + a.dramas.slice(0,3).map(function(dn){ return '<span class="a-drama-tag">'+dn+'</span>'; }).join('') + '</div></div></div>';
+      }).join('') + '</div>';
+    }
     if (!actorResults.length) {
       emptyState.classList.add('show');
       emptyText.textContent = '未找到相关角色';
@@ -257,7 +367,7 @@ function bindResultClicks() {
       location.href = 'drama-player.html?id='+d.id+'&title='+encodeURIComponent(d.title)+'&total='+d.totalEp+'&cat='+encodeURIComponent(d.cat)+'&author='+encodeURIComponent(d.author)+'&avatar='+encodeURIComponent(d.avatar)+'&cover='+encodeURIComponent(d.cover)+'&desc='+encodeURIComponent(d.desc)+'&video='+encodeURIComponent(d.video||'');
     });
   });
-  resultsEl.querySelectorAll('.actor-card, .user-card').forEach(function(card){
+  resultsEl.querySelectorAll('.user-card').forEach(function(card){
     card.addEventListener('click', function(){
       showToast('👤 '+this.dataset.name+' 的主页开发中');
     });
@@ -317,6 +427,6 @@ searchInput.addEventListener('keydown', function(e){
 /* Init */
 renderTab('drama');
 </script>
-<script src="load-sidebar.js"></script>
+<script src="load-desktop-header.js"></script>
 </body>
 </html>

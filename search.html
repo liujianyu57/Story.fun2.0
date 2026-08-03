@@ -51,7 +51,7 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 .bnav a.active{color:var(--accent)}
 .bnav svg{width:28px;height:28px;display:block;flex-shrink:0}
 .bnav span{font-weight:400;font-size:10px;line-height:12px;letter-spacing:.008em;text-align:center}
-@media(min-width:769px){.bnav{max-width:480px;left:50%;transform:translateX(-50%)}}
+@media(min-width:769px){.bnav{display:none}body{padding-bottom:0}.shell{margin:0 auto;padding:24px;max-width:720px;margin-left:180px;padding-top:80px}}
 </style>
 </head>
 <body>
@@ -186,5 +186,6 @@ clearRecent.addEventListener('click', function(){
 renderRecent();
 </script>
 <script src="load-sidebar.js"></script>
+<script src="load-desktop-header.js"></script>
 </body>
 </html>
