@@ -688,6 +688,72 @@ body[data-cm-theme="dark"] {
   color: #34d399;
 }
 
+/* ---- 子评论 ---- */
+.cm-sub-list {
+  margin-top: 6px;
+  padding-left: 44px;
+}
+.cm-sub-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  background: rgba(0,0,0,.03);
+}
+.cm-sub-item .cm-sub-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: contain;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(0,0,0,.08);
+}
+.cm-sub-item .cm-content { flex: 1; min-width: 0; }
+.cm-sub-item .cm-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+.cm-sub-item .cm-meta .cm-name { font-size: 12px; font-weight: 600; color: var(--cm-item-name); }
+.cm-sub-item .cm-meta .cm-time { font-size: 10px; color: var(--cm-item-time); }
+.cm-sub-item .cm-text { font-size: 13px; line-height: 1.5; color: var(--cm-item-text); word-break: break-word; }
+.cm-sub-item .cm-actions { margin-top: 4px; display: flex; gap: 8px; }
+.cm-sub-item .cm-actions button {
+  background: none; border: none; color: var(--cm-text-muted); font-size: 10px; cursor: pointer;
+  padding: 2px 6px; border-radius: 999px; transition: all .2s; display: inline-flex; align-items: center; gap: 2px; background: rgba(0,0,0,.03);
+}
+.cm-sub-item .cm-actions button:active { background: rgba(0,179,136,.2); color: #34d399; }
+
+/* 桌面端子评论暗色 */
+@media(min-width:769px) {
+  .cm-sub-item { background: rgba(255,255,255,.04); }
+  .cm-sub-item .cm-meta .cm-name { color: rgba(255,255,255,.9); }
+  .cm-sub-item .cm-meta .cm-time { color: rgba(255,255,255,.45); }
+  .cm-sub-item .cm-text { color: rgba(255,255,255,.75); }
+}
+
+/* ---- 回复输入框 ---- */
+.cm-reply-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 0 0;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+.cm-reply-box .cm-reply-input {
+  flex: 1; min-width: 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--cm-input-border);
+  background: var(--cm-input-bg);
+  color: var(--cm-input-color);
+  font-size: 13px;
+  outline: none;
+}
+.cm-reply-box .cm-reply-input::placeholder { color: var(--cm-input-placeholder, rgba(0,0,0,.35)); }
+.cm-reply-box .cm-reply-send {
+  border: none; border-radius: 999px; padding: 6px 16px;
+  background: linear-gradient(135deg,#00b388,#00c9a0); color: #fff;
+  font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0;
+}
+
 /* ---- 评论面板 ---- */
 .comment-panel { padding: 12px 16px 0; }
 .comment-panel .comment-header {

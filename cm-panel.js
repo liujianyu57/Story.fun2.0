@@ -64,12 +64,21 @@ var CMPanel = (function() {
     if (_commentsCache[id]) return;
     var idNum = parseInt(String(id).replace(/\D/g,'')) || String(id).length;
     _commentsCache[id] = Array.from({length:5}, function(_, i) {
+      var cid = Date.now() + i;
+      var replies = [];
+      if (i < 2) {
+        replies = [
+          { id: cid * 10 + 1, name: _defaultNames[(i + 3) % _defaultNames.length], text: '说得好！同感 👍', time: ((i+1)*2) + '分钟前', likes: 2 + i },
+          { id: cid * 10 + 2, name: _defaultNames[(i + 5) % _defaultNames.length], text: '确实，这一集太精彩了', time: (i+1) + '分钟前', likes: 1 }
+        ];
+      }
       return {
-        id: Date.now() + i,
+        id: cid,
         name: _defaultNames[(i + idNum) % _defaultNames.length],
         text: _defaultTexts[(i + idNum) % _defaultTexts.length],
         time: ((i+1)*3) + '分钟前',
-        likes: 5 + i * 3
+        likes: 5 + i * 3,
+        replies: replies
       };
     });
   }
@@ -88,10 +97,61 @@ var CMPanel = (function() {
     var listEl = document.getElementById('drawerCommentList');
     var countEl = document.getElementById('drawerCommentCount');
     if (!listEl || !countEl) return;
-    listEl.innerHTML = comments.map(function(c) {
-      return '<div class="cm-item"><img class="cm-avatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=' + encodeURIComponent(c.name) + '" alt="' + c.name + '"><div class="cm-content"><div class="cm-meta"><span class="cm-name">' + c.name + '</span><span class="cm-time">' + c.time + '</span></div><div class="cm-text">' + c.text + '</div><div class="cm-actions"><button>👍 ' + c.likes + '</button><button>💬 回复</button></div></div></div>';
+    var totalCount = comments.length;
+    listEl.innerHTML = comments.map(function(c, ci) {
+      var replies = c.replies || [];
+      totalCount += replies.length;
+      var replyHTML = '';
+      if (replies.length > 0) {
+        replyHTML = '<div class="cm-sub-list">' +
+          replies.map(function(r) {
+            return '<div class="cm-sub-item"><img class="cm-avatar cm-sub-avatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=' + encodeURIComponent(r.name) + '" alt="' + r.name + '"><div class="cm-content"><div class="cm-meta"><span class="cm-name">' + r.name + '</span><span class="cm-time">' + r.time + '</span></div><div class="cm-text">' + r.text + '</div><div class="cm-actions"><button>👍 ' + r.likes + '</button></div></div></div>';
+          }).join('') +
+          '</div>';
+      }
+      return '<div class="cm-item"><img class="cm-avatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=' + encodeURIComponent(c.name) + '" alt="' + c.name + '"><div class="cm-content"><div class="cm-meta"><span class="cm-name">' + c.name + '</span><span class="cm-time">' + c.time + '</span></div><div class="cm-text">' + c.text + '</div><div class="cm-actions"><button>👍 ' + c.likes + '</button><button class="cm-reply-btn" data-cid="' + c.id + '">💬 回复</button></div>' + replyHTML + '<div class="cm-reply-box" id="cmReplyBox_' + c.id + '" style="display:none"><input class="cm-reply-input" id="cmReplyInput_' + c.id + '" placeholder="回复 ' + c.name + '..." maxlength="200" /><button class="cm-reply-send" data-cid="' + c.id + '">发送</button></div></div></div>';
     }).join('');
-    countEl.textContent = comments.length;
+    countEl.textContent = totalCount;
+    // 绑定回复按钮
+    setTimeout(function() {
+      listEl.querySelectorAll('.cm-reply-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var cid = this.dataset.cid;
+          var box = document.getElementById('cmReplyBox_' + cid);
+          if (box) {
+            var isVisible = box.style.display !== 'none';
+            box.style.display = isVisible ? 'none' : 'flex';
+            if (!isVisible) document.getElementById('cmReplyInput_' + cid).focus();
+          }
+        });
+      });
+      listEl.querySelectorAll('.cm-reply-send').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var cid = this.dataset.cid;
+          var input = document.getElementById('cmReplyInput_' + cid);
+          if (!input) return;
+          var text = input.value.trim();
+          if (!text) { _toast('请输入回复内容'); return; }
+          if (text.length > 200) { _toast('回复不能超过200字'); return; }
+          var reply = { id: Date.now(), name: '我', text: text, time: '刚刚', likes: 0 };
+          var commentsData = _commentsCache[id] || [];
+          var parent = null;
+          for (var i = 0; i < commentsData.length; i++) {
+            if (commentsData[i].id == cid) { parent = commentsData[i]; break; }
+          }
+          if (parent) {
+            if (!parent.replies) parent.replies = [];
+            parent.replies.push(reply);
+          }
+          input.value = '';
+          document.getElementById('cmReplyBox_' + cid).style.display = 'none';
+          _renderComments(id);
+          _toast('✅ 回复已发送');
+        });
+      });
+    }, 100);
   }
 
   function _postComment() {
