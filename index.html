@@ -1168,7 +1168,7 @@
         var power = ACTOR_POWER[name] || '—';
         var item = document.createElement('div');
         item.className = 'featured-cast-item';
-        item.setAttribute('onclick', 'event.stopPropagation(); location.href="actor-profile.html?name=' + encodeURIComponent(name) + '"');
+        item.setAttribute('onclick', 'event.stopPropagation(); var u="actor-profile.html?name=' + encodeURIComponent(name) + '"; if(window!==window.parent){parent.location.href=u}else{location.href=u}');
         item.innerHTML = '<div class="featured-cast-avatar-wrap"><div class="featured-cast-avatar"><img src="' + avatarUrl + '" alt="' + name + '" loading="lazy" /></div><div class="featured-cast-mining-dot"></div></div><span class="featured-cast-name">' + name + '</span><span class="featured-cast-power" style="color:#3affb1!important;text-shadow:0 0 12px rgba(58,255,177,0.4)">' + power + '</span><span class="featured-cast-unit">STORY/h</span>';
         list.appendChild(item);
       });
@@ -1505,13 +1505,15 @@
         var actorNames = encodeURIComponent((d.actors || []).join(','));
         var total = (d.episodes || '全24集').match(/\d+/);
         total = total ? total[0] : '24';
-        location.href = 'drama-player.html?title=' + encodeURIComponent(d.title) +
+        var url = 'drama-player.html?title=' + encodeURIComponent(d.title) +
           '&total=' + total +
           '&cover=' + encodeURIComponent(d.img) +
           '&desc=' + encodeURIComponent(d.desc || '') +
           '&video=' + encodeURIComponent(d.video || '') +
           '&actors=' + encodeURIComponent(avatars) +
           '&actorNames=' + actorNames;
+        if (window !== window.parent) { parent.location.href = url; }
+        else { location.href = url; }
       };
 
     })();
