@@ -85,6 +85,9 @@
     .mpb-coeff-inline { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 500; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
     .mpb-coeff-inline strong { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
     .mpb-coeff-inline .actor-price-help { width: 16px; height: 16px; font-size: 0.55rem; }
+    /* Mint modal ? 按钮基础圆形样式 */
+    .actor-price-help { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.04); color: var(--text-muted); font-size: 0.6rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; border: none; padding: 0; line-height: 1; }
+    .actor-price-help:hover { background: var(--accent); color: #fff; }
     .mpb-progress { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--border); }
     .mpb-progress strong { color: var(--text); font-weight: 700; }
     .mint-slippage-notice { text-align: center; font-size: 0.78rem; color: var(--text-muted); padding: 6px 0 2px; opacity: 0.85; }
@@ -433,7 +436,7 @@
         </div>
         <div class="mint-modal-body">
           <div class="mint-modal-header">
-            <h2 id="mintModalTitle">确认签约</h2>
+            <h2 id="mintModalTitle">确认签约 · Lv.1 群演</h2>
             <div class="mint-modal-actor-name" id="mintModalActorName">Luna</div>
           </div>
           <div class="mint-price-bar" id="mintPriceBar">
