@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>Story.fun</title>
+<link rel="stylesheet" href="cm-panel.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -550,6 +551,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
   </div>
 </div>
 
+<script src="cm-panel.js"></script>
 <script>
 (function(){
 'use strict';
@@ -852,46 +854,8 @@ if(!isPlayerMode){
     showToast('✅ 评论已发布');
   }
 
-  function openDrawer(epIdx){
-    var ep=episodes[epIdx];if(!ep)return;
-    var hasDrama=true;
-      var hasActors=true;
-      cmTitle.innerHTML='<div class="cm-tabs"><button class="cm-tab" data-cmtab="cmt">评论</button>'+(hasDrama?'<button class="cm-tab active" data-cmtab="drama">短剧</button>':'')+(hasActors?'<button class="cm-tab" data-cmtab="role">角色</button>':'')+'</div>';
-      var detailHTML='';
-      if(hasDrama){
-        var views='3.3w';var heat='1.2w';
-        var epGrid='';for(var ei=1;ei<=total&&ei<=60;ei++){var epDurMin=20+Math.floor(Math.random()*16);var epDurSec=Math.floor(Math.random()*60);var epDurStr=String(epDurMin).padStart(2,'0')+':'+String(epDurSec).padStart(2,'0');epGrid+='<div class="cm-ep-item'+(ei===epIdx+1?' active':'')+'" data-ep="'+ei+'"><div class="cm-ep-cover-wrap"><img class="cm-ep-cover" src="'+dramaCover+'" alt=""><span class="cm-ep-dur">'+epDurStr+'</span></div><div class="cm-ep-info"><div class="cm-ep-title">第'+ei+'集</div><div class="cm-ep-desc">'+dramaDesc+'</div><div class="cm-ep-likes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>1.2w</div></div></div>';}
-        detailHTML='<div class="cm-detail-panel" id="cmDetailPanel"><div class="cm-detail-header"><img class="cm-detail-cover" src="'+dramaCover+'" alt="'+dramaTitle+'"><div class="cm-detail-info"><div class="cm-detail-title">'+dramaTitle+'</div><div class="cm-detail-meta"><span class="cm-detail-rating"><span class="star">☆</span> 4.5</span><span class="cm-detail-tag">全'+total+'集</span></div></div></div><div class="cm-detail-stats"><div class="cm-stat"><span class="cm-stat-num">'+views+'</span><span class="cm-stat-label">完播</span></div><div class="cm-stat"><span class="cm-stat-num">'+heat+'</span><span class="cm-stat-label">热度</span></div></div><div class="cm-detail-desc">'+dramaDesc+'</div><div class="cm-detail-rating-stars"><span class="cr-label">我要评分</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-score">未评</span></div><div class="cm-detail-ep-grid">'+epGrid+'</div></div>';
-      }
-      var roleHTML='';
-      if(hasActors){
-        roleHTML='<div class="cm-role-panel" id="cmRolePanel"><div class="cm-role-more-entry" onclick="location.href=\'actors.html\'"><div class="cmr-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="cmr-text"><div class="cmr-title">签约更多角色 IP</div></div><div class="cmr-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
-        var rNames=actorNames.length>0?actorNames:['苏婉清','李云飞','林梦瑶','赵老四','王五爷'];
-        var rAvatars=actorAvatars.length>0?actorAvatars:['https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80','',''];
-        for(var ai=0;ai<rNames.length;ai++){
-          var aname=rNames[ai],aav=rAvatars[ai]||'';
-          var rPower={'苏婉清':'8,562','李云飞':'6,230','林梦瑶':'5,891'};
-          if(aav){roleHTML+='<div class="cm-role-card bound"><img class="cm-role-avatar" src="'+aav+'" alt="'+aname+'"><div class="cm-role-info"><div class="cm-role-name">'+aname+'<span class="cm-role-role"> 饰 '+aname+'</span></div><div class="cm-role-ip"><span class="cm-role-ip-tag">IP算力 '+(rPower[aname]||'—')+'</span></div></div><button class="cm-sign-btn">签约</button></div>'}
-          else{roleHTML+='<div class="cm-role-card"><div class="cm-role-avatar unbound"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(aname) + '" width="44" height="44" style="border-radius:50%"></div><div class="cm-role-info"><div class="cm-role-name">'+aname+'</div><div class="cm-role-status">未绑定 IP</div></div></div>'}
-        }
-        roleHTML+='</div>';
-      }
-      cmBody.innerHTML='<div class="comment-panel" id="commentPanel"><div class="comment-header"><span class="comment-title">用户评论</span><span class="comment-count">(<span id="drawerCommentCount"></span>)</span></div><div id="drawerCommentList"></div></div>'+detailHTML+roleHTML;
-      document.getElementById('cmDrawer').querySelector('.cm-panel').insertAdjacentHTML('beforeend','<div class="cm-footer" id="cmFooter"><div class="comment-input-wrap"><input id="drawerCommentInput" placeholder="写下你的评论..." maxlength="200" /><button class="send-btn" id="drawerSendBtn">发送</button></div></div>');
-      renderDrawerComments(epIdx);
-      setTimeout(function(){var panel=document.getElementById('cmDetailPanel');if(panel&&!panel._epBound){panel._epBound=true;panel.addEventListener('click',function(e){var item=e.target.closest('.cm-ep-item');if(item){var epNum=parseInt(item.getAttribute('data-ep'));if(epNum>=1&&epNum<=total){goTo(epNum-1,true);var old=panel.querySelector('.cm-ep-item.active');if(old)old.classList.remove('active');item.classList.add('active')}}})}},0);
-      setTimeout(function(){document.getElementById('cmDetailPanel').addEventListener('click',function(e){var item=e.target.closest('.cm-ep-item');if(item){var epNum=parseInt(item.getAttribute('data-ep'));if(epNum>=1&&epNum<=total){goTo(epNum-1,true);var old=panel.querySelector('.cm-ep-item.active');if(old)old.classList.remove('active');item.classList.add('active')}}})},0);
-      document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(t){t.addEventListener('click',function(e){e.stopPropagation();var tab=this.dataset.cmtab;document.querySelectorAll('#cmDrawer .cm-tab').forEach(function(b){b.classList.toggle('active',b===t)});var showCmt=tab==='cmt';var cp=document.getElementById('commentPanel');var ft=document.getElementById('cmFooter');if(cp)cp.style.display=showCmt?'':'none';if(ft)ft.style.display=showCmt?'':'none';var dp=document.getElementById('cmDetailPanel');if(dp)dp.classList.toggle('show',tab=='drama');var rp=document.getElementById('cmRolePanel');if(rp)rp.style.display=tab=='role'?'block':'none'})});
-      var initTab=document.querySelector('#cmDrawer .cm-tab.active');if(initTab&&initTab.dataset.cmtab!=='cmt'){var cp=document.getElementById('commentPanel');var ft=document.getElementById('cmFooter');if(cp)cp.style.display='none';if(ft)ft.style.display='none';var dp=document.getElementById('cmDetailPanel');if(dp)dp.classList.add('show')}
-      var sendBtn=document.getElementById('drawerSendBtn');if(sendBtn){sendBtn.addEventListener('click',function(e){e.stopPropagation();postDrawerComment(epIdx)})}
-      var inp=document.getElementById('drawerCommentInput');if(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();postDrawerComment(epIdx)}})}
-    cmDrawer.classList.add('open');
-    document.getElementById('playerApp').classList.add('sqz');
-    document.getElementById('playerProgress').classList.add('sqz');
-    document.getElementById('desktopToolbar').classList.add('sqz');
-  }
-
-  function closeDrawer(){cmDrawer.classList.remove('open');document.getElementById('playerApp').classList.remove('sqz');document.getElementById('playerProgress').classList.remove('sqz');document.getElementById('desktopToolbar').classList.remove('sqz');var ft=document.getElementById('cmFooter');if(ft)ft.remove()}
+  function openDrawer(epIdx){ CMPanel.open(epIdx); }
+  function closeDrawer(){ CMPanel.close(); }
   function gotoDetail(){location.href='drama-detail.html?title='+encodeURIComponent(dramaTitle)}
 
   function updateMeta(){epBadge.textContent=episodes[idx].label}
@@ -920,6 +884,56 @@ if(!isPlayerMode){
       });
     }
   },500);
+
+  // 初始化 CMPanel 组件
+  CMPanel.init({
+    drawerId: 'cmDrawer',
+    theme: 'dark',
+    hasDrama: true,
+    hasActors: true,
+    defaultTab: 'drama',
+    squashTargets: ['playerApp', 'playerProgress', 'desktopToolbar'],
+    getData: function(epIdx) {
+      return { id: epIdx, title: dramaTitle, totalEp: total, cover: dramaCover, desc: dramaDesc, actors: actorNames, avatars: actorAvatars };
+    },
+    buildDetailHTML: function(d) {
+      var views = '3.3w', heat = '1.2w';
+      var epGrid = '';
+      for (var ei = 1; ei <= total && ei <= 60; ei++) {
+        var epDurMin = 20 + Math.floor(Math.random() * 16);
+        var epDurSec = Math.floor(Math.random() * 60);
+        var epDurStr = String(epDurMin).padStart(2, '0') + ':' + String(epDurSec).padStart(2, '0');
+        epGrid += '<div class="cm-ep-item' + (ei === d.id + 1 ? ' active' : '') + '" data-ep="' + ei + '"><div class="cm-ep-cover-wrap"><img class="cm-ep-cover" src="' + dramaCover + '" alt=""><span class="cm-ep-dur">' + epDurStr + '</span></div><div class="cm-ep-info"><div class="cm-ep-title">第' + ei + '集</div><div class="cm-ep-desc">' + dramaDesc + '</div><div class="cm-ep-likes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>1.2w</div></div></div>';
+      }
+      return '<div class="cm-detail-panel" id="cmDetailPanel"><div class="cm-detail-header"><img class="cm-detail-cover" src="' + dramaCover + '" alt="' + d.title + '"><div class="cm-detail-info"><div class="cm-detail-title">' + d.title + '</div><div class="cm-detail-meta"><span class="cm-detail-rating"><span class="star">☆</span> 4.5</span><span class="cm-detail-tag">全' + total + '集</span></div></div></div><div class="cm-detail-stats"><div class="cm-stat"><span class="cm-stat-num">' + views + '</span><span class="cm-stat-label">完播</span></div><div class="cm-stat"><span class="cm-stat-num">' + heat + '</span><span class="cm-stat-label">热度</span></div></div><div class="cm-detail-desc">' + dramaDesc + '</div><div class="cm-detail-rating-stars"><span class="cr-label">我要评分</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-star">★</span><span class="cr-score">未评</span></div><div class="cm-detail-ep-grid">' + epGrid + '</div></div>';
+    },
+    buildRoleHTML: function(d) {
+      var html = '<div class="cm-role-panel" id="cmRolePanel"><div class="cm-role-more-entry" onclick="location.href=\'actors.html\'"><div class="cmr-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="cmr-text"><div class="cmr-title">签约更多角色 IP</div></div><div class="cmr-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+      var rNames = (d.actors && d.actors.length > 0) ? d.actors : ['苏婉清', '李云飞', '林梦瑶', '赵老四', '王五爷'];
+      var rAvatars = (d.avatars && d.avatars.length > 0) ? d.avatars : [];
+      var rPower = {'苏婉清': '8,562', '李云飞': '6,230', '林梦瑶': '5,891'};
+      for (var ai = 0; ai < rNames.length; ai++) {
+        var aname = rNames[ai], aav = rAvatars[ai] || '';
+        if (aav) {
+          html += '<div class="cm-role-card bound"><img class="cm-role-avatar" src="' + aav + '" alt="' + aname + '"><div class="cm-role-info"><div class="cm-role-name">' + aname + '<span class="cm-role-role"> 饰 ' + aname + '</span></div><div class="cm-role-ip"><span class="cm-role-ip-tag">IP算力 ' + (rPower[aname] || '—') + '</span></div></div><button class="cm-sign-btn">签约</button></div>';
+        } else {
+          html += '<div class="cm-role-card"><div class="cm-role-avatar unbound"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(aname) + '" width="44" height="44" style="border-radius:50%"></div><div class="cm-role-info"><div class="cm-role-name">' + aname + '</div><div class="cm-role-status">未绑定 IP</div></div></div>';
+        }
+      }
+      return html + '</div>';
+    },
+    getComments: function(epIdx) {
+      ensureEpComments(epIdx);
+      return commentsMap.get(epIdx) || [];
+    },
+    addComment: function(epIdx, comment) {
+      ensureEpComments(epIdx);
+      commentsMap.get(epIdx).unshift(comment);
+    },
+    epClickHandler: function(epNum) {
+      if (epNum >= 1 && epNum <= total) goTo(epNum - 1, true);
+    }
+  });
 
   function render(){
     var h='';
