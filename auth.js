@@ -26,8 +26,8 @@ const PRIVY_MOCK_USER = {
   // 模拟的币种余额
   balances: {
     story: 10123,
-    usdc: { Solana: 100.23, Ethereum: 0, BSC: 100.23, Arbitrum: 0 },
-    usdt: { Solana: 500.00, Ethereum: 500.00, BSC: 0, Arbitrum: 0 }
+    usdc: { Solana: 200, Ethereum: 0, BSC: 100.23, Arbitrum: 0 },
+    usdt: { Solana: 300, Ethereum: 500.00, BSC: 0, Arbitrum: 0 }
   }
 };
 
@@ -58,7 +58,35 @@ function clearUserFromStorage() {
 }
 
 const storedUser = loadUserFromStorage();
-let currentUser = storedUser ? { ...PRIVY_MOCK_USER, ...storedUser, balances: { ...PRIVY_MOCK_USER.balances, ...(storedUser.balances || {}) } } : { ...PRIVY_MOCK_USER, isLoggedIn: false };
+let currentUser = storedUser ? (function(){
+    var u = { ...PRIVY_MOCK_USER, ...storedUser };
+    // 深层合并 balances：保留 PRIVY_MOCK_USER 的结构，用 storedUser 的值覆盖
+    if (storedUser.balances) {
+        u.balances = u.balances || {};
+        var keys = Object.keys(PRIVY_MOCK_USER.balances);
+        for (var i = 0; i < keys.length; i++) {
+            var k = keys[i];
+            var mockVal = PRIVY_MOCK_USER.balances[k];
+            var storedVal = storedUser.balances[k];
+            if (typeof mockVal === 'object' && mockVal !== null && !Array.isArray(mockVal)) {
+                // mock 是对象，stored 是数字 → 用 mock 对象（忽略旧格式）
+                if (typeof storedVal === 'number') {
+                    u.balances[k] = { ...mockVal };
+                } else if (typeof storedVal === 'object' && storedVal !== null) {
+                    u.balances[k] = { ...mockVal, ...storedVal };
+                } else {
+                    u.balances[k] = { ...mockVal };
+                }
+            } else {
+                // mock 是数字或其他
+                u.balances[k] = storedVal !== undefined ? storedVal : mockVal;
+            }
+        }
+    } else {
+        u.balances = { ...PRIVY_MOCK_USER.balances };
+    }
+    return u;
+})() : { ...PRIVY_MOCK_USER, isLoggedIn: false };
 
 // ============================================================
 //  DOM 就绪后初始化
@@ -192,7 +220,7 @@ function injectAuthStyles() {
   .dw-coin-item:hover{border-color:#00b388;background:rgba(0,179,136,.06)}
   .dw-coin-item:active{transform:scale(.98)}
   .dw-selectable-row.selected{border-color:#00b388!important;background:rgba(0,179,136,.08)!important}
-  .dw-coin-item.zero-balance{display:none}
+  .dw-coin-item.zero-balance{display:none!important}
   .dw-coin-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
   .dw-coin-icon.story{background:linear-gradient(135deg,#00c2a8,#00b3ff)}
   .dw-coin-icon.usdc{background:linear-gradient(135deg,#0bb07b,#10a37a)}
@@ -344,7 +372,8 @@ function renderAuthUI(container) {
     var walletAddr = currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF';
   var shortWallet = walletAddr.slice(0,6) + '...' + walletAddr.slice(-4);
   var subLabel = isEmail ? '邮箱用户' : '钱包用户';
-    const usdcDisplay = typeof currentUser.balances?.usdc === 'number' ? `${currentUser.balances.usdc.toFixed(2)}` : '-';
+    var getUsdcTotal = function() { var b = currentUser.balances; if (!b) return 0; var u = b.usdc; if (typeof u === 'number') return u; if (typeof u === 'object') { var t = 0; for (var k in u) { if (typeof u[k] === 'number') t += u[k]; } return t; } return 0; };
+    const usdcDisplay = getUsdcTotal().toFixed(2);
     container.innerHTML = `
       <div class="auth-user-menu">
         <div class="dh-usdc-badge" onclick="toggleDropdown(event)">
@@ -662,7 +691,8 @@ function openWithdrawModal() {
   const existing = document.getElementById('withdrawModal');
   if (existing) existing.remove();
 
-  const balance = currentUser.balances?.usdc || 0;
+  var getTotalUsdc = function(){var b=currentUser.balances;if(!b)return 0;var u=b.usdc;if(typeof u==='number')return u;if(typeof u==='object'){var t=0;for(var k in u){if(typeof u[k]==='number')t+=u[k];}return t;}return 0;};
+  const balance = getTotalUsdc();
   const balanceFormatted = balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   const modal = document.createElement('div');
@@ -989,7 +1019,7 @@ function setQuickAmount(value) {
   const input = document.getElementById('withdrawAmount');
   if (!input) return;
   if (value === 'max') {
-    input.value = currentUser.balances?.usdc || 0;
+    input.value = (function(){var b=currentUser.balances;if(!b)return 0;var u=b.usdc;if(typeof u==='number')return u;if(typeof u==='object'){var t=0;for(var k in u){if(typeof u[k]==='number')t+=u[k];}return t;}return 0;})();
   } else {
     input.value = value;
   }
@@ -1011,13 +1041,18 @@ function handleWithdraw() {
     showToast('⚠️ 最小提现金额为 10 USDC');
     return;
   }
-  if (amount > (currentUser.balances?.usdc || 0)) {
+  if (amount > (function(){var b=currentUser.balances;if(!b)return 0;var u=b.usdc;if(typeof u==='number')return u;if(typeof u==='object'){var t=0;for(var k in u){if(typeof u[k]==='number')t+=u[k];}return t;}return 0;})()) {
     showToast('⚠️ 余额不足');
     return;
   }
 
   // 模拟提现成功
-  currentUser.balances.usdc -= amount;
+  var ut = (function(){var b=currentUser.balances;if(!b)return 0;var u=b.usdc;if(typeof u==='number')return u;if(typeof u==='object'){var t=0;for(var k in u){if(typeof u[k]==='number')t+=u[k];}return t;}return 0;})();
+  if (currentUser.balances.usdc && typeof currentUser.balances.usdc === 'object') {
+    currentUser.balances.usdc.Solana = Math.max(0, (currentUser.balances.usdc.Solana || 0) - amount);
+  } else {
+    currentUser.balances.usdc = Math.max(0, ut - amount);
+  }
   closeWithdrawModal();
 
   // 刷新余额显示
@@ -1098,11 +1133,11 @@ function openDepositWalletStep1() {
   modal.id = 'depositWalletModal';
   modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
     + '<div class="deposit-header"><span class="deposit-step-title">充值</span><button class="deposit-close" onclick="closeDepositWalletModal()">✕</button></div>'
-    + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left">Story.fun 余额：' + (typeof currentUser.balances?.usdc === 'number' ? currentUser.balances.usdc.toFixed(2) : '0.00') + ' USDC</div>'
+    + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left">Story.fun 余额：' + (function(){var b=currentUser.balances;if(!b)return'0.00';var u=b.usdc;if(typeof u==='number')return u.toFixed(2);if(typeof u==='object'){var t=0;for(var k in u){if(typeof u[k]==='number')t+=u[k];}return t.toFixed(2);}return'0.00';})() + ' USDC</div>'
     + '<div class="deposit-body" style="gap:24px"><div class="dw-method-list">'
     + '<div class="dw-method-item" onclick="openDepositWalletStep2()">'
     + '<div class="dw-method-icon wallet-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 9h20"/><circle cx="17" cy="14" r="2.5"/></svg></div>'
-    + '<div class="dw-method-info"><div class="dw-method-name">钱包 (...' + (currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF').slice(-4) + ')</div><div class="dw-method-desc"><strong>$' + ((typeof currentUser.balances?.usdc === 'number' ? currentUser.balances.usdc * 4 : 0) + (typeof currentUser.balances?.usdt === 'number' ? currentUser.balances.usdt * 4 : 0)).toFixed(2) + '</strong></div></div>'
+    + '<div class="dw-method-info"><div class="dw-method-name">钱包 (...' + (currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF').slice(-4) + ')</div><div class="dw-method-desc"><strong>$' + (function(){var b=currentUser.balances;var t=0;if(b){var coins=['usdc','usdt'];for(var ci=0;ci<coins.length;ci++){var c=b[coins[ci]];if(typeof c==='number')t+=c;else if(typeof c==='object'){for(var k in c){if(typeof c[k]==='number')t+=c[k];}}}}return t.toFixed(2);})() + '</strong></div></div>'
     + '<svg class="dw-coin-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>'
     + '</div>'
     + '<div class="dw-method-item" onclick="dwChooseTransfer()">'
@@ -1141,30 +1176,31 @@ function openDepositWalletStep2() {
     { id: 'Arbitrum', label: 'Arbitrum', bg: '#28A0F0', letter: 'A' }
   ];
   var coins = ['USDC','USDT'];
-  var usdcBal = typeof currentUser.balances?.usdc === 'number' ? currentUser.balances.usdc.toFixed(2) : '0.00';
-  var usdtBal = typeof currentUser.balances?.usdt === 'number' ? currentUser.balances.usdt.toFixed(2) : '0.00';
+  var getCoinBal = function(coinKey, chainId){var d=currentUser.balances&&currentUser.balances[coinKey];if(!d)return 0;if(typeof d==='number')return d;if(typeof d==='object'){return typeof d[chainId]==='number'?d[chainId]:0;}return 0;};
+  var getTotalForDisplay = function(coinKey){var d=currentUser.balances&&currentUser.balances[coinKey];if(!d)return'0.00';if(typeof d==='number')return d.toFixed(2);if(typeof d==='object'){var t=0;for(var k in d){if(typeof d[k]==='number')t+=d[k];}return t.toFixed(2);}return'0.00';};
 
   var html = '';
   for (var ci = 0; ci < coins.length; ci++) {
     var coin = coins[ci];
-    var bal = coin === 'USDC' ? usdcBal : usdtBal;
+    var coinKey = coin.toLowerCase();
     var iconClass = coin === 'USDC' ? 'usdc' : 'usdt';
     for (var ci2 = 0; ci2 < chains.length; ci2++) {
       var ch = chains[ci2];
-      var balNum = parseFloat(bal);
+      var balNum = getCoinBal(coinKey, ch.id);
+      var balDisplay = balNum.toFixed(2);
       var dimClass = balNum <= 0 ? ' zero-balance' : '';
       html += '<div class="dw-coin-item dw-selectable-row' + dimClass + '" data-coin="' + coin + '" data-chain="' + ch.id + '">'
         + '<div class="dw-coin-icon-wrap"><div class="dw-coin-icon ' + iconClass + '"></div>'
         + '<div class="dw-chain-badge" style="background:' + ch.bg + '">' + ch.letter + '</div></div>'
         + '<div class="dw-coin-info"><div class="dw-coin-name">' + coin + '</div><div class="dw-coin-chain">' + ch.label + '</div></div>'
-        + '<div class="dw-coin-balance"><div class="dw-coin-balance-amount">' + bal + '</div><div class="dw-coin-balance-label">余额</div></div>'
+        + '<div class="dw-coin-balance"><div class="dw-coin-balance-amount">' + balDisplay + '</div><div class="dw-coin-balance-label">余额</div></div>'
         + '</div>';
     }
   }
 
   modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
     + '<div class="deposit-header"><button class="deposit-back-btn" onclick="openDepositWalletStep1()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-step-title">充值</span><button class="deposit-close" onclick="closeDepositWalletModal()">✕</button></div>'
-    + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left;flex-shrink:0">Story.fun 余额：' + usdcBal + ' USDC</div>'
+    + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left;flex-shrink:0">Story.fun 余额：' + getTotalForDisplay('usdc') + ' USDC</div>'
     + '<div class="deposit-body" style="flex:1;min-height:0;overflow:hidden;gap:8px"><div class="dw-coin-list">' + html + '</div></div>'
     + '<button class="dw-sign-btn" id="dwCoinContinueBtn" onclick="dwCoinContinue()" disabled style="flex-shrink:0">继续</button>'
     + '</div></div>';
@@ -1197,23 +1233,11 @@ function openDepositWalletStep3() {
   var modal = document.getElementById('depositWalletModal');
   if (!modal) return;
   var coin = dwSelectedCoin;
-  var bal, balance, iconClass;
-  if (coin === 'USDT') {
-    var balNum = currentUser.balances?.usdt || 0;
-    bal = balNum.toFixed(2);
-    balance = balNum;
-    iconClass = 'usdt';
-  } else if (coin === 'USDC') {
-    var balNum = currentUser.balances?.usdc || 0;
-    bal = balNum.toFixed(2);
-    balance = balNum;
-    iconClass = 'usdc';
-  } else {
-    var balNum = currentUser.balances?.story || 0;
-    bal = balNum.toFixed(4);
-    balance = balNum;
-    iconClass = 'story';
-  }
+  var iconClass = coin === 'USDT' ? 'usdt' : 'usdc';
+  var grab = function(ck, cid){var d=currentUser.balances&&currentUser.balances[ck];if(!d)return 0;if(typeof d==='number')return d;if(typeof d==='object'){return typeof d[cid]==='number'?d[cid]:0;}return 0;};
+  var balNum = grab(coin.toLowerCase(), dwSelectedChain);
+  var bal = balNum.toFixed(2);
+  var balance = balNum;
   modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
     + '<div class="deposit-header"><button class="deposit-back-btn" onclick="openDepositWalletStep2()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-step-title">充值</span><button class="deposit-close" onclick="closeDepositWalletModal()">✕</button></div>'
     + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left;flex-shrink:0">Story.fun 余额：' + bal + ' USDC</div>'
