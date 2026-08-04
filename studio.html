@@ -1509,6 +1509,70 @@
         padding: 16px 12px 20px;
         border-radius: 0;
       }
+
+      /* ── 移动端待办弹窗适配（底部滑出） ── */
+      #mobileTodoModal.modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+        background: rgba(15,23,42,0.5);
+      }
+      #mobileTodoModal .modal-card {
+        max-width: 100%;
+        width: 100%;
+        padding: 20px 16px 28px;
+        border-radius: 20px 20px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      #mobileTodoModal.active .modal-card {
+        transform: translateY(0);
+      }
+      #mobileTodoModal .modal-card h2 {
+        font-size: 1.05rem;
+        margin-bottom: 14px;
+      }
+      .mob-todo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .mob-todo-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-size: 0.82rem;
+      }
+      .mob-todo-item .todo-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+      .mob-todo-item .todo-msg { flex: 1; min-width: 0; line-height: 1.4; }
+      .mob-todo-item .todo-btn {
+        flex-shrink: 0;
+        padding: 7px 18px;
+        border-radius: 999px;
+        border: none;
+        font-size: 0.76rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        white-space: nowrap;
+      }
+      .mob-todo-item.play { background: rgba(0,179,136,0.07); }
+      .mob-todo-item.play .todo-dot { background: var(--accent); }
+      .mob-todo-item.play .todo-btn { background: var(--accent); color: #fff; }
+      .mob-todo-item.danger { background: rgba(244,91,105,0.06); }
+      .mob-todo-item.danger .todo-dot { background: var(--danger); }
+      .mob-todo-item.danger .todo-btn { background: var(--danger); color: #fff; }
+      .mob-todo-ok {
+        padding: 16px 14px;
+        text-align: center;
+        border-radius: 12px;
+        background: var(--bg);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+      }
     }
   </style>
 </head>
@@ -1548,7 +1612,7 @@
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
       <div class="mobile-actions" id="mobileActions">
-        <button class="mob-act-btn mob-todo" onclick="openFullPicker()">待办 · <strong id="mobileTodoBadge">0</strong></button>
+        <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()">待办 · <strong id="mobileTodoBadge">0</strong></button>
         <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()">✦升级 · <strong id="mobileUpgradeBadge">0</strong></button>
       </div>
       <div class="mob-more-wrap" id="mobMoreWrap">
@@ -1882,6 +1946,16 @@
       </div>
       <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);">确认休息</button>
       <button class="modal-btn cancel" onclick="closeRecallModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- ===== 移动端待办弹窗 ===== -->
+  <div class="modal-overlay" id="mobileTodoModal">
+    <div class="modal-card" style="position:relative;">
+      <h2>📋 待办</h2>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeMobileTodoModal()">✕</button>
+      <div class="mob-todo-list" id="mobTodoList"></div>
+      <button class="modal-btn cancel" onclick="closeMobileTodoModal()" style="width:100%;">关闭</button>
     </div>
   </div>
 
@@ -2449,6 +2523,62 @@
     // ============================================================
     //  渲染：移动端底部候场横栏 + 右上角按钮
     // ============================================================
+    // ============================================================
+    //  移动端待办弹窗
+    // ============================================================
+    function openMobileTodoModal() {
+      var modal = document.getElementById('mobileTodoModal');
+      if (!modal) return;
+      var list = document.getElementById('mobTodoList');
+      if (!list) return;
+      var items = [];
+
+      var deployed = getDeployedActors();
+      var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; });
+      if (deployed.length < MAX_STAKING_SLOTS && idle.length > 0) {
+        items.push({
+          cls: 'play',
+          msg: '还有 ' + (MAX_STAKING_SLOTS - deployed.length) + ' 个在演位空缺',
+          label: '去演出',
+          action: 'closeMobileTodoModal();openFullPicker()'
+        });
+      }
+
+      var urgent = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy <= 8; })
+        .sort(function(a, b) { return a.energy - b.energy; });
+      if (urgent.length > 0) {
+        var u = urgent[0];
+        items.push({
+          cls: 'danger',
+          msg: u.name + ' 体力仅剩 ' + u.energy + '，即将停工',
+          label: '去补充',
+          action: 'closeMobileTodoModal();openChargeModal(\'' + u.id + '\')'
+        });
+      }
+
+      if (items.length === 0) {
+        list.innerHTML = '<div class="mob-todo-ok">演出正常 · 体力充足</div>';
+      } else {
+        list.innerHTML = items.map(function(a) {
+          return '<div class="mob-todo-item ' + a.cls + '">'
+            + '<span class="todo-dot"></span>'
+            + '<span class="todo-msg">' + a.msg + '</span>'
+            + '<button class="todo-btn" onclick="' + a.action + '">' + a.label + '</button>'
+            + '</div>';
+        }).join('');
+      }
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileTodoModal() {
+      var modal = document.getElementById('mobileTodoModal');
+      if (!modal) return;
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
     function renderMobilePool() {
       var scroll = document.getElementById('mobilePoolScroll');
       if (!scroll) return;
