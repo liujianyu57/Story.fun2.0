@@ -708,8 +708,8 @@ function openWithdrawModal() {
             <div class="withdraw-field-label">提现网络</div>
             <button class="withdraw-select-field">
               <div class="withdraw-select-left">
-                <div class="withdraw-crypto-icon withdraw-crypto-eth">Ξ</div>
-                <span class="withdraw-select-label">Ethereum</span>
+                <div class="withdraw-crypto-icon" style="background:linear-gradient(135deg,#9945FF,#14F195);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">S</div>
+                <span class="withdraw-select-label">Solana</span>
               </div>
               <span class="withdraw-select-chevron">▾</span>
             </button>
