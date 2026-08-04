@@ -980,6 +980,7 @@
   <script src="load-sidebar.js"></script>
 <script src="load-desktop-header.js"></script>
 <script src="auth.js"></script>
+<script>if(window.innerWidth<=768&&typeof currentUser!=="undefined"&&currentUser&&!currentUser.isLoggedIn)location.href="mobile-login.html?redirect=publish.html";</script>
 
 <script>
 /**

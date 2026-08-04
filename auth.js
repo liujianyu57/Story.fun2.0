@@ -141,8 +141,8 @@ function injectAuthStyles() {
   .auth-token-sub{color:#7d8a94;font-size:13px}
   .auth-balance-amount{font-weight:700;color:#0b1720}
 
-  .auth-balance-actions{display:flex;gap:16px;padding:12px 0}
-  .btn{padding:12px 20px;border-radius:28px;font-weight:700;cursor:pointer;border:0}
+   .auth-balance-actions{display:flex;gap:16px;padding:12px 0}
+   .btn{padding:12px 20px;border-radius:28px;font-weight:700;cursor:pointer;border:0;flex:1}
   .btn-primary{background:linear-gradient(90deg,#00c2a8,#00b3ff);color:#fff}
   .btn-outline{background:transparent;border:2px solid #10b39a;color:#0b1720}
 
@@ -226,7 +226,22 @@ function injectAuthStyles() {
   .auth-copy-btn:hover{color:var(--accent,#00b388);background:rgba(0,0,0,.04)}
   .auth-copy-btn svg{width:14px;height:14px}
 
-  /* ===== USDC + Avatar 连通胶囊 (桌面端顶栏) ===== */
+   /* ===== Logout Confirm Modal ===== */
+   .logout-confirm-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:all .3s ease}
+   .logout-confirm-overlay.active{opacity:1;visibility:visible}
+   .logout-confirm-card{background:#fff;border-radius:20px;width:100%;max-width:320px;padding:24px;text-align:center;box-shadow:0 20px 60px rgba(27,45,71,0.2);transform:scale(.95) translateY(10px);transition:transform .3s ease}
+   .logout-confirm-overlay.active .logout-confirm-card{transform:scale(1) translateY(0)}
+   .logout-confirm-icon{font-size:40px;margin-bottom:12px}
+   .logout-confirm-title{font-size:17px;font-weight:700;color:#13202e;margin-bottom:6px}
+   .logout-confirm-desc{font-size:14px;color:#5e6f83;margin-bottom:24px}
+   .logout-confirm-actions{display:flex;gap:12px}
+   .logout-confirm-actions button{flex:1;padding:12px;border-radius:14px;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+   .logout-confirm-actions .btn-cancel{background:rgba(0,0,0,.06);color:#13202e}
+   .logout-confirm-actions .btn-cancel:active{background:rgba(0,0,0,.12)}
+   .logout-confirm-actions .btn-confirm{background:#f45b69;color:#fff}
+   .logout-confirm-actions .btn-confirm:active{background:#d94355}
+
+   /* ===== USDC + Avatar 连通胶囊 (桌面端顶栏) ===== */
   .dh-usdc-badge{display:inline-flex;align-items:center;padding:0;border-radius:999px;background:rgba(0,0,0,.04);cursor:pointer;flex-shrink:0;transition:all .15s;height:36px}
   .dh-usdc-badge:hover{background:rgba(0,0,0,.08)}
   .dh-usdc-amount{padding:0 4px 0 14px;font-size:12px;font-weight:600;color:#13202e;white-space:nowrap;line-height:36px}
@@ -311,14 +326,17 @@ function renderAuthUI(container) {
             </div>
           </div>
 
-          ${isEmail ? `
-            <div class="auth-balance-actions">
-              <button class="btn btn-primary" onclick="openDepositModal()">充值</button>
-              <button class="btn btn-outline" onclick="openWithdrawModal()">提现</button>
-            </div>
-          ` : ''}
+          <button class="btn btn-primary" style="width:100%;margin-bottom:10px">交易 STORY</button>
+          <div class="auth-balance-actions">
+            <button class="btn btn-primary" onclick="openDepositModal()">充值</button>
+            <button class="btn btn-outline" onclick="openWithdrawModal()">提现</button>
+          </div>
 
           <div class="auth-dropdown-divider"></div>
+             <a class="auth-dropdown-item" href="narrator.html">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            创作管理
+          </a>
              <a class="auth-dropdown-item" href="referral.html">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             邀请
@@ -460,17 +478,57 @@ function mockLogin(method) {
 // ============================================================
 //  退出登录
 // ============================================================
-function handleLogout() {
-  showConfirmModal('退出登录', '确定要退出登录吗？', function(){
-    currentUser.isLoggedIn = false;
-    currentUser.authMethod = null;
-    clearUserFromStorage();
-    closeDropdown();
-    var containers = document.querySelectorAll(".auth-container");
-    containers.forEach(function(container){ renderAuthUI(container); });
-    showToast('\u{1F44B} 已退出登录', '\u{1F44B}');
-    document.dispatchEvent(new CustomEvent('auth-ready'));
+function showLogoutConfirm() {
+  var existing = document.getElementById('logoutConfirmOverlay');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.className = 'logout-confirm-overlay';
+  overlay.id = 'logoutConfirmOverlay';
+  overlay.innerHTML = '<div class="logout-confirm-card">'
+    + '<div class="logout-confirm-icon">🚪</div>'
+    + '<div class="logout-confirm-title">退出登录</div>'
+    + '<div class="logout-confirm-desc">确定要退出登录吗？</div>'
+    + '<div class="logout-confirm-actions">'
+    + '<button class="btn-cancel" id="logoutCancelBtn">取消</button>'
+    + '<button class="btn-confirm" id="logoutConfirmBtn">确定</button>'
+    + '</div></div>';
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(function() { overlay.classList.add('active'); });
+
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeLogoutConfirm();
   });
+  document.getElementById('logoutCancelBtn').addEventListener('click', closeLogoutConfirm);
+  document.getElementById('logoutConfirmBtn').addEventListener('click', function() {
+    closeLogoutConfirm();
+    doLogout();
+  });
+}
+
+function closeLogoutConfirm() {
+  var overlay = document.getElementById('logoutConfirmOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    setTimeout(function() { overlay.remove(); document.body.style.overflow = ''; }, 300);
+  }
+}
+
+function doLogout() {
+  currentUser.isLoggedIn = false;
+  currentUser.authMethod = null;
+  clearUserFromStorage();
+  closeDropdown();
+  var containers = document.querySelectorAll(".auth-container");
+  containers.forEach(function(container){ renderAuthUI(container); });
+  showToast('\u{1F44B} 已退出登录', '\u{1F44B}');
+  document.dispatchEvent(new CustomEvent('auth-ready'));
+}
+
+function handleLogout() {
+  closeDropdown();
+  showLogoutConfirm();
 }
 
 // ============================================================
