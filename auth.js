@@ -11,7 +11,7 @@ const PRIVY_MOCK_USER = {
   bio: '在Web3的世界里探索短剧的无限可能。创作者、收藏家、梦想家。',
   email: 'crypto@story.fun',
   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
-  wallet: '0x7A2b...3fD8',
+  wallet: '0x7A2b3fD81234567890abcdef1234567890abCDEF',
   isLoggedIn: false,
   // 登录方式：'email' | 'wallet' | null
   authMethod: null,
@@ -26,7 +26,8 @@ const PRIVY_MOCK_USER = {
   // 模拟的币种余额
   balances: {
     story: 10123,
-    usdc: 100.23
+    usdc: { Solana: 100.23, Ethereum: 0, BSC: 100.23, Arbitrum: 0 },
+    usdt: { Solana: 500.00, Ethereum: 500.00, BSC: 0, Arbitrum: 0 }
   }
 };
 
@@ -57,7 +58,7 @@ function clearUserFromStorage() {
 }
 
 const storedUser = loadUserFromStorage();
-let currentUser = storedUser ? { ...PRIVY_MOCK_USER, ...storedUser } : { ...PRIVY_MOCK_USER, isLoggedIn: false };
+let currentUser = storedUser ? { ...PRIVY_MOCK_USER, ...storedUser, balances: { ...PRIVY_MOCK_USER.balances, ...(storedUser.balances || {}) } } : { ...PRIVY_MOCK_USER, isLoggedIn: false };
 
 // ============================================================
 //  DOM 就绪后初始化
@@ -153,7 +154,7 @@ function injectAuthStyles() {
 
   /* Deposit Modal Styles */
   .deposit-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px)}
-  .deposit-card{width:100%;max-width:500px;background:#fff;border-radius:16px;padding:24px;box-shadow:0 40px 80px rgba(27,45,71,0.2);display:flex;flex-direction:column;gap:32px}
+  .deposit-card{width:100%;max-width:500px;max-height:560px;background:#fff;border-radius:16px;padding:24px;box-shadow:0 40px 80px rgba(27,45,71,0.2);display:flex;flex-direction:column;gap:20px;overflow:hidden}
   .deposit-header{display:flex;justify-content:space-between;align-items:center}
   .deposit-title{font-weight:700;font-size:18px;color:#1C2024}
   .deposit-close{width:24px;height:24px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;font-size:18px;border-radius:50%;transition:background 0.2s;padding:0}
@@ -181,6 +182,79 @@ function injectAuthStyles() {
   .deposit-warning-text{display:flex;flex-direction:column;gap:6px}
   .deposit-warning-text p{margin:0;font-size:12px;line-height:16px;color:#60646C}
 
+  /* Wallet Deposit Flow Styles */
+  .deposit-back-btn{width:28px;height:28px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;border-radius:8px;transition:all .15s;padding:0;flex-shrink:0}
+  .deposit-back-btn:hover{background:rgba(0,0,0,.05);color:#1C2024}
+  .deposit-back-btn svg{width:18px;height:18px}
+  .deposit-step-title{font-weight:700;font-size:18px;color:#1C2024;flex:1}
+  .dw-coin-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1;min-height:0}
+  .dw-coin-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#F7F8F9;cursor:pointer;transition:all .15s;border:2px solid transparent;flex-shrink:0}
+  .dw-coin-item:hover{border-color:#00b388;background:rgba(0,179,136,.06)}
+  .dw-coin-item:active{transform:scale(.98)}
+  .dw-selectable-row.selected{border-color:#00b388!important;background:rgba(0,179,136,.08)!important}
+  .dw-coin-item.zero-balance{display:none}
+  .dw-coin-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+  .dw-coin-icon.story{background:linear-gradient(135deg,#00c2a8,#00b3ff)}
+  .dw-coin-icon.usdc{background:linear-gradient(135deg,#0bb07b,#10a37a)}
+  .dw-coin-icon.usdt{background:linear-gradient(135deg,#26A17B,#26A17B)}
+  .dw-coin-icon-wrap{position:relative;display:inline-flex;flex-shrink:0}
+  .dw-chain-badge{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:700;line-height:1;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  .dw-coin-info{flex:1;min-width:0}
+  .dw-coin-name{font-weight:700;font-size:15px;color:#1C2024}
+  .dw-coin-chain{font-size:12px;color:#8B8D98;display:flex;align-items:center;gap:4px}
+  .dw-coin-chain svg{flex-shrink:0}
+  .dw-coin-balance{text-align:right}
+  .dw-coin-balance-amount{font-weight:700;font-size:16px;color:#1C2024}
+  .dw-coin-balance-label{font-size:11px;color:#8B8D98}
+  .dw-coin-chevron{color:#C7C7CC;flex-shrink:0}
+  .dw-selected-coin{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#F0F0F3;border-radius:12px;margin-bottom:16px}
+  .dw-amount-input-wrap{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:20px 0 16px;border-bottom:2px solid #EEF2F4;transition:border-color .2s}
+  .dw-amount-input-wrap:focus-within{border-bottom-color:#00b388}
+  .dw-amount-input-wrap input{width:auto;min-width:0;max-width:200px;background:transparent;border:none;outline:none;font-size:36px;font-weight:700;color:#1C2024;font-family:inherit;text-align:left;-moz-appearance:textfield}
+  .dw-amount-input-wrap input::-webkit-outer-spin-button,
+  .dw-amount-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .dw-amount-input-wrap input::placeholder{color:#8B8D98;font-weight:400}
+  .dw-amount-suffix{font-weight:700;font-size:20px;color:#1C2024;white-space:nowrap}
+  .dw-quick-btns{display:flex;gap:8px;justify-content:center;padding-top:12px}
+  .dw-quick-btn{padding:8px 16px;border-radius:999px;border:1px solid #EEF2F4;background:#F7F8F9;font-size:13px;font-weight:600;color:#5E6F83;cursor:pointer;transition:all .15s;font-family:inherit}
+  .dw-quick-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,.06)}
+  .dw-quick-btn:active{transform:scale(.96)}
+  .dw-conversion-hint{font-size:12px;color:#8B8D98;line-height:16px;margin-top:8px;display:flex;align-items:center;gap:4px}
+  .dw-swap-row{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px;background:#F7F8F9;border-radius:14px;width:100%}
+  .dw-swap-side{display:flex;align-items:center;gap:10px;min-width:0}
+  .dw-swap-icon-wrap{position:relative;width:40px;height:40px;flex-shrink:0}
+  .dw-swap-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center}
+  .dw-swap-icon.usdc{background:linear-gradient(135deg,#0bb07b,#10a37a)}
+  .dw-swap-icon.usdt{background:linear-gradient(135deg,#26A17B,#26A17B)}
+  .dw-swap-chain{position:absolute;bottom:-4px;right:-4px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:700;line-height:1;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  .dw-swap-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .dw-swap-text-label{font-size:12px;color:#8B8D98;line-height:1}
+  .dw-swap-text-coin{font-weight:700;font-size:15px;color:#1C2024;line-height:1}
+  .dw-swap-arrow{font-size:20px;color:#C7C7CC;flex-shrink:0}
+  .dw-summary{display:flex;flex-direction:column;gap:16px}
+  .dw-summary-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0}
+  .dw-summary-label{font-size:14px;color:#60646C}
+  .dw-summary-value{font-weight:700;font-size:16px;color:#1C2024}
+  .dw-divider{height:1px;background:#EEF2F4;margin:8px 0}
+  .dw-method-list{display:flex;flex-direction:column;gap:10px}
+  .dw-method-item{display:flex;align-items:center;gap:14px;padding:20px;border-radius:16px;background:#F7F8F9;cursor:pointer;transition:all .15s;border:2px solid transparent}
+  .dw-method-item:hover{border-color:#00b388;background:rgba(0,179,136,.06)}
+  .dw-method-item:active{transform:scale(.98)}
+  .dw-chain-icons{display:flex;align-items:center;gap:6px}
+  .dw-chain-icons img,.dw-chain-icons svg{width:18px;height:18px;border-radius:50%;object-fit:cover;flex-shrink:0}
+  .dw-method-icon{width:48px;height:48px;display:grid;place-items:center;flex-shrink:0;border-radius:14px}
+  .dw-method-icon.wallet-icon{background:linear-gradient(135deg,rgba(153,69,255,.15),rgba(20,241,149,.15))}
+  .dw-method-icon.wallet-icon svg{color:#9945FF}
+  .dw-method-icon.transfer-icon{background:linear-gradient(135deg,rgba(0,179,136,.12),rgba(0,179,136,.05))}
+  .dw-method-icon.transfer-icon svg{color:#00b388}
+  .dw-method-info{flex:1;min-width:0}
+  .dw-method-name{font-weight:700;font-size:16px;color:#1C2024}
+  .dw-method-desc{font-size:12px;color:#8B8D98;margin-top:2px}
+  .dw-sign-btn{display:flex;justify-content:center;align-items:center;padding:14px 16px;background:linear-gradient(90deg,#00c2a8,#00b3ff);border:none;border-radius:14px;color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:all .2s;width:100%}
+  .dw-sign-btn:hover{opacity:.9}
+  .dw-sign-btn:active{transform:scale(.98)}
+  .dw-sign-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  
   /* Withdraw Modal Styles */
   .withdraw-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px)}
   .withdraw-card{width:100%;max-width:500px;background:#fff;border-radius:16px;padding:24px;box-shadow:0 40px 80px rgba(27,45,71,0.2);display:flex;flex-direction:column;gap:32px}
@@ -198,6 +272,9 @@ function injectAuthStyles() {
   .withdraw-input-field input{flex:1;background:transparent;border:none;outline:none;font-size:16px;color:#1C2024;font-family:inherit;min-width:0}
   .withdraw-scan-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#60646C;flex-shrink:0;transition:all 0.2s;padding:0}
   .withdraw-scan-btn:hover{color:#00BBA7;background:rgba(0,187,167,0.1)}
+  .withdraw-connect-btn{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;border:1px solid rgba(153,69,255,.3);background:linear-gradient(135deg,rgba(153,69,255,.08),rgba(20,241,149,.08));cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#9945FF;font-family:inherit;transition:all .15s;flex-shrink:0}
+  .withdraw-connect-btn:hover{background:linear-gradient(135deg,rgba(153,69,255,.16),rgba(20,241,149,.16));border-color:rgba(153,69,255,.5)}
+  .withdraw-connect-btn svg{width:14px;height:14px;flex-shrink:0}
   @media (min-width: 769px) { .withdraw-scan-btn { display: none; } }
   /* H5 扫码弹窗 */
   .qr-scanner-overlay{position:fixed;inset:0;z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);padding:24px}
@@ -598,15 +675,20 @@ function openWithdrawModal() {
           <button class="withdraw-close" onclick="closeWithdrawModal()">✕</button>
         </div>
         <div class="withdraw-body">
-          <div class="withdraw-balance-banner">
-            <span class="withdraw-balance-label">可提现余额</span>
-            <span class="withdraw-balance-amount">$${balanceFormatted}</span>
-          </div>
-
           <div class="withdraw-field-group">
             <div class="withdraw-field-label">提现地址</div>
             <div class="withdraw-input-field">
               <input type="text" id="withdrawAddress" placeholder="输入接收USDC的钱包地址" />
+              ${currentUser.authMethod === 'wallet' ? `
+              <button class="withdraw-connect-btn" onclick="fillWalletAddress()" type="button" title="使用已连接钱包地址">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="3"/>
+                  <path d="M2 9h20"/>
+                  <circle cx="17" cy="14" r="2.5"/>
+                </svg>
+                已连接
+              </button>
+              ` : ''}
               <button class="withdraw-scan-btn" onclick="openQrScanner()" type="button" title="扫码识别地址">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
@@ -639,12 +721,7 @@ function openWithdrawModal() {
               <input type="number" id="withdrawAmount" placeholder="输入提现金额" min="0" step="0.01" />
               <span class="withdraw-input-suffix">USDC</span>
             </div>
-            <div class="withdraw-quick-amounts">
-              <button class="withdraw-quick-btn" onclick="setQuickAmount(10)">10</button>
-              <button class="withdraw-quick-btn" onclick="setQuickAmount(50)">50</button>
-              <button class="withdraw-quick-btn" onclick="setQuickAmount(100)">100</button>
-              <button class="withdraw-quick-btn" onclick="setQuickAmount('max')">全部</button>
-            </div>
+            <span style="font-size:12px;color:#8B8D98;padding-top:4px">可提现 $${balanceFormatted}</span>
           </div>
 
           <div class="withdraw-field-group">
@@ -900,6 +977,14 @@ function handleQrResult(data) {
 }
 
 
+function fillWalletAddress() {
+  var input = document.getElementById('withdrawAddress');
+  if (input) {
+    input.value = '0x7A2b3fD81234567890abcdef1234567890abCDEF';
+    showToast('✅ 已填入钱包地址');
+  }
+}
+
 function setQuickAmount(value) {
   const input = document.getElementById('withdrawAmount');
   if (!input) return;
@@ -947,102 +1032,282 @@ function handleWithdraw() {
 // ============================================================
 //  充值弹窗（Deposit Modal）
 // ============================================================
-function openDepositModal() {
+// 桌面端钱包充值批次
+var dwSelectedCoin = null;
+var dwSelectedAmount = 0;
 
-  // 移除已存在的弹窗
+function openDepositModal() {
+  closeDropdown();
+  if (currentUser.authMethod === 'wallet') {
+    openDepositWalletStep1();
+  } else {
+    openDepositTransferModal();
+  }
+}
+
+// ===== 邮箱用户：转账地址弹窗（原有逻辑） =====
+function openDepositTransferModal(fromWallet) {
   const existing = document.getElementById('depositModal');
   if (existing) existing.remove();
 
+  var headerHTML = fromWallet
+    ? '<div class="deposit-header"><button class="deposit-back-btn" onclick="dwBackToWalletStep1()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-title">充值</span><button class="deposit-close" onclick="closeDepositModal()">✕</button></div>'
+    : '<div class="deposit-header"><span class="deposit-title">充值</span><button class="deposit-close" onclick="closeDepositModal()">✕</button></div>';
+
   const modal = document.createElement('div');
   modal.id = 'depositModal';
-  modal.innerHTML = `
-    <div class="deposit-overlay">
-      <div class="deposit-card">
-        <div class="deposit-header">
-          <span class="deposit-title">充值</span>
-          <button class="deposit-close" onclick="closeDepositModal()">✕</button>
-        </div>
-        <div class="deposit-body">
-          <div class="deposit-info-banner">
-            <span class="deposit-info-text">请从交易所或其他钱包向下方地址转账 USDC，确认到账后余额会自动更新。</span>
-          </div>
-          <div class="deposit-field-group">
-            <div class="deposit-field-label">充值币种</div>
-            <button class="deposit-select-field">
-              <div class="deposit-select-left">
-                <div class="deposit-crypto-icon deposit-crypto-usdc">$</div>
-                <span class="deposit-select-label">USDC</span>
-              </div>
-              <span class="deposit-select-chevron">▾</span>
-            </button>
-          </div>
-          <div class="deposit-field-group">
-            <div class="deposit-field-label">充值网络</div>
-            <button class="deposit-select-field">
-              <div class="deposit-select-left">
-                <div class="deposit-crypto-icon deposit-crypto-eth">Ξ</div>
-                <span class="deposit-select-label">Ethereum</span>
-              </div>
-              <span class="deposit-select-chevron">▾</span>
-            </button>
-            <span class="deposit-network-helper">Assets can only be transferred within the same network.</span>
-          </div>
-          <div class="deposit-field-group">
-            <div class="deposit-field-label">充值地址</div>
-            <div class="deposit-address-field">
-              <span class="deposit-address-text">0xcc345ff2905f5672227e848eac4e0124123fa7e4</span>
-              <button class="deposit-copy-btn" onclick="depositCopyAddress()">📋</button>
-            </div>
-          </div>
-          <div class="deposit-qr-container">
-            <img class="deposit-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=0xcc345ff2905f5672227e848eac4e0124123fa7e4" alt="充值地址二维码" onerror="this.style.display='none'" />
-          </div>
-          <div class="deposit-warning-text">
-            <p>• 仅支持 USDC 充值，其他代币将无法找回</p>
-            <p>• 请确认转账网络，网络错误可能导致资产丢失</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
+  modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card" style="max-height:none;padding:20px">'
+    + headerHTML
+    + '<div class="deposit-body" style="gap:18px">'
+    + '<div class="deposit-field-group"><div class="deposit-field-label">币种</div>'
+    + '<button class="deposit-select-field"><div class="deposit-select-left"><div class="deposit-crypto-icon deposit-crypto-usdc">$</div><span class="deposit-select-label">USDC</span></div><span class="deposit-select-chevron">▾</span></button></div>'
+    + '<div class="deposit-field-group"><div class="deposit-field-label">网络</div>'
+    + '<button class="deposit-select-field"><div class="deposit-select-left"><div class="deposit-crypto-icon deposit-crypto-eth">Ξ</div><span class="deposit-select-label">Ethereum</span></div><span class="deposit-select-chevron">▾</span></button>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:center"><img class="deposit-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=0xcc345ff2905f5672227e848eac4e0124123fa7e4" alt="充值地址二维码" onerror="this.style.display=\'none\'" style="width:120px;height:120px;border-radius:8px;object-fit:cover;background:#f0f4f8" /></div>'
+    + '<div class="deposit-field-group"><div class="deposit-field-label">充值地址</div>'
+    + '<div class="deposit-address-field" style="padding:12px"><span class="deposit-address-text">0xcc345ff2905f5672227e848eac4e0124123fa7e4</span><button class="deposit-copy-btn" onclick="depositCopyAddress()">📋</button></div></div>'
+    + '<div class="dw-swap-row" style="margin-top:4px">'
+    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:#627EEA">E</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin">USDC</span></div></div>'
+    + '<span class="dw-swap-arrow">→</span>'
+    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin">USDC</span></div></div>'
+    + '</div>'
+    + '<div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动在你的 Story.fun 账户中兑换成USDC</div>'
+    + '</div></div></div>';
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
-
-  // 点击遮罩层关闭
-  modal.querySelector('.deposit-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeDepositModal();
-  });
+  modal.querySelector('.deposit-overlay').addEventListener('click', function(e) { if (e.target === this) closeDepositModal(); });
 }
 
 function closeDepositModal() {
-  const modal = document.getElementById('depositModal');
-  if (modal) {
-    modal.remove();
-    document.body.style.overflow = '';
-  }
+  var modal = document.getElementById('depositModal');
+  if (modal) { modal.remove(); document.body.style.overflow = ''; }
 }
 
 function depositCopyAddress() {
-  const address = '0xcc345ff2905f5672227e848eac4e0124123fa7e4';
-  navigator.clipboard.writeText(address).catch(function() {
-    const ta = document.createElement('textarea');
-    ta.value = address;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-  });
-  const btn = document.querySelector('.deposit-copy-btn');
-  if (btn) {
-    btn.textContent = '✓';
-    btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = '📋';
-      btn.classList.remove('copied');
-    }, 2000);
+  navigator.clipboard.writeText('0xcc345ff2905f5672227e848eac4e0124123fa7e4').then(function(){ showToast('✅ 地址已复制到剪贴板'); });
+}
+
+// ===== 钱包用户：4步充值向导 =====
+// Step 1: 充值
+function openDepositWalletStep1() {
+  var existing = document.getElementById('depositWalletModal');
+  if (existing) existing.remove();
+
+  var modal = document.createElement('div');
+  modal.id = 'depositWalletModal';
+  modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
+    + '<div class="deposit-header"><span class="deposit-step-title">充值</span><button class="deposit-close" onclick="closeDepositWalletModal()">✕</button></div>'
+    + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left">Story.fun 余额：' + (typeof currentUser.balances?.usdc === 'number' ? currentUser.balances.usdc.toFixed(2) : '0.00') + ' USDC</div>'
+    + '<div class="deposit-body" style="gap:24px"><div class="dw-method-list">'
+    + '<div class="dw-method-item" onclick="openDepositWalletStep2()">'
+    + '<div class="dw-method-icon wallet-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 9h20"/><circle cx="17" cy="14" r="2.5"/></svg></div>'
+    + '<div class="dw-method-info"><div class="dw-method-name">钱包 (...' + (currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF').slice(-4) + ')</div><div class="dw-method-desc"><strong>$' + ((typeof currentUser.balances?.usdc === 'number' ? currentUser.balances.usdc * 4 : 0) + (typeof currentUser.balances?.usdt === 'number' ? currentUser.balances.usdt * 4 : 0)).toFixed(2) + '</strong></div></div>'
+    + '<svg class="dw-coin-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>'
+    + '</div>'
+    + '<div class="dw-method-item" onclick="dwChooseTransfer()">'
+    + '<div class="dw-method-icon transfer-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16l-4-4 4-4"/><path d="M3 12h13a4 4 0 0 1 4 4"/><path d="M17 8l4 4-4 4"/><path d="M21 12H8a4 4 0 0 0-4-4"/></svg></div>'
+    + '<div class="dw-method-info"><div class="dw-method-name">转账加密货币</div><div class="dw-method-desc">从交易所或其他钱包转账</div></div>'
+    + '<div class="dw-chain-icons" style="align-self:center"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#627EEA,#8C7AE6);font-size:8px;color:#fff;font-weight:700">S</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#E8E8ED;font-size:7px;color:#3C3C43;font-weight:700">E</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#F0B90B;font-size:8px;color:#fff;font-weight:700">B</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#28A0F0;font-size:7px;color:#fff;font-weight:700">A</span></div>'
+    + '<svg class="dw-coin-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>'
+    + '</div>'
+    + '</div></div></div></div>';
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  modal.querySelector('.deposit-overlay').addEventListener('click', function(e) { if (e.target === this) closeDepositWalletModal(); });
+}
+
+function dwChooseTransfer() {
+  closeDepositWalletModal();
+  openDepositTransferModal(true);
+}
+
+function dwBackToWalletStep1() {
+  closeDepositModal();
+  openDepositWalletStep1();
+}
+
+// Step 2: 选择币种和链
+var dwSelectedChain = 'Solana';
+
+function openDepositWalletStep2() {
+  var modal = document.getElementById('depositWalletModal');
+  if (!modal) return;
+
+  var chains = [
+    { id: 'Solana',   label: 'Solana',   bg: 'linear-gradient(135deg,#9945FF,#14F195)', letter: 'S' },
+    { id: 'Ethereum', label: 'Ethereum', bg: '#627EEA', letter: 'E' },
+    { id: 'BSC',      label: 'BSC',      bg: '#F0B90B', letter: 'B' },
+    { id: 'Arbitrum', label: 'Arbitrum', bg: '#28A0F0', letter: 'A' }
+  ];
+  var coins = ['USDC','USDT'];
+  var usdcBal = typeof currentUser.balances?.usdc === 'number' ? currentUser.balances.usdc.toFixed(2) : '0.00';
+  var usdtBal = typeof currentUser.balances?.usdt === 'number' ? currentUser.balances.usdt.toFixed(2) : '0.00';
+
+  var html = '';
+  for (var ci = 0; ci < coins.length; ci++) {
+    var coin = coins[ci];
+    var bal = coin === 'USDC' ? usdcBal : usdtBal;
+    var iconClass = coin === 'USDC' ? 'usdc' : 'usdt';
+    for (var ci2 = 0; ci2 < chains.length; ci2++) {
+      var ch = chains[ci2];
+      var balNum = parseFloat(bal);
+      var dimClass = balNum <= 0 ? ' zero-balance' : '';
+      html += '<div class="dw-coin-item dw-selectable-row' + dimClass + '" data-coin="' + coin + '" data-chain="' + ch.id + '">'
+        + '<div class="dw-coin-icon-wrap"><div class="dw-coin-icon ' + iconClass + '"></div>'
+        + '<div class="dw-chain-badge" style="background:' + ch.bg + '">' + ch.letter + '</div></div>'
+        + '<div class="dw-coin-info"><div class="dw-coin-name">' + coin + '</div><div class="dw-coin-chain">' + ch.label + '</div></div>'
+        + '<div class="dw-coin-balance"><div class="dw-coin-balance-amount">' + bal + '</div><div class="dw-coin-balance-label">余额</div></div>'
+        + '</div>';
+    }
   }
-  showToast('✅ 地址已复制到剪贴板');
+
+  modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
+    + '<div class="deposit-header"><button class="deposit-back-btn" onclick="openDepositWalletStep1()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-step-title">充值</span><button class="deposit-close" onclick="closeDepositWalletModal()">✕</button></div>'
+    + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left;flex-shrink:0">Story.fun 余额：' + usdcBal + ' USDC</div>'
+    + '<div class="deposit-body" style="flex:1;min-height:0;overflow:hidden;gap:8px"><div class="dw-coin-list">' + html + '</div></div>'
+    + '<button class="dw-sign-btn" id="dwCoinContinueBtn" onclick="dwCoinContinue()" disabled style="flex-shrink:0">继续</button>'
+    + '</div></div>';
+
+  dwSelectedCoin = null;
+  dwSelectedChain = null;
+
+  modal.querySelector('.dw-coin-list').addEventListener('click', function(e) {
+    var row = e.target.closest('.dw-selectable-row');
+    if (!row) return;
+    var prev = modal.querySelector('.dw-selectable-row.selected');
+    if (prev) prev.classList.remove('selected');
+    row.classList.add('selected');
+    dwSelectedCoin = row.dataset.coin;
+    dwSelectedChain = row.dataset.chain;
+    document.getElementById('dwCoinContinueBtn').disabled = false;
+  });
+
+  modal.querySelector('.deposit-overlay').addEventListener('click', function(e) { if (e.target === this) closeDepositWalletModal(); });
+}
+
+function dwCoinContinue() {
+  if (!dwSelectedCoin || !dwSelectedChain) return;
+  dwSelectedAmount = 0;
+  openDepositWalletStep3();
+}
+
+// Step 3: 输入金额
+function openDepositWalletStep3() {
+  var modal = document.getElementById('depositWalletModal');
+  if (!modal) return;
+  var coin = dwSelectedCoin;
+  var bal, balance, iconClass;
+  if (coin === 'USDT') {
+    var balNum = currentUser.balances?.usdt || 0;
+    bal = balNum.toFixed(2);
+    balance = balNum;
+    iconClass = 'usdt';
+  } else if (coin === 'USDC') {
+    var balNum = currentUser.balances?.usdc || 0;
+    bal = balNum.toFixed(2);
+    balance = balNum;
+    iconClass = 'usdc';
+  } else {
+    var balNum = currentUser.balances?.story || 0;
+    bal = balNum.toFixed(4);
+    balance = balNum;
+    iconClass = 'story';
+  }
+  modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
+    + '<div class="deposit-header"><button class="deposit-back-btn" onclick="openDepositWalletStep2()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-step-title">充值</span><button class="deposit-close" onclick="closeDepositWalletModal()">✕</button></div>'
+    + '<div style="padding:0 0 4px 4px;font-size:13px;color:#8B8D98;text-align:left;flex-shrink:0">Story.fun 余额：' + bal + ' USDC</div>'
+    + '<div class="deposit-body" style="gap:16px;flex:1;align-items:center">'
+    + '<div class="dw-amount-input-wrap"><input type="number" id="dwAmountInput" placeholder="0" min="0" max="' + balance + '" step="any" oninput="dwOnAmountInput()" /><span class="dw-amount-suffix">' + coin + '</span></div>'
+    + '<div class="dw-quick-btns"><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'25\',' + balance + ')">25%</button><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'50\',' + balance + ')">50%</button><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'75\',' + balance + ')">75%</button><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'max\',' + balance + ')">最大</button></div>'
+    + '<div class="dw-swap-row">'
+    + '<div class="dw-swap-side">'
+    + '<div class="dw-swap-icon-wrap"><div class="dw-swap-icon ' + iconClass + '"></div><div class="dw-swap-chain" style="background:' + (function(){var c=dwSelectedChain,bg;if(c==="Solana")bg="linear-gradient(135deg,#9945FF,#14F195)";else if(c==="Ethereum")bg="#627EEA";else if(c==="BSC")bg="#F0B90B";else bg="#28A0F0";return bg;})() + '">' + dwSelectedChain.charAt(0) + '</div></div>'
+    + '<div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin">' + coin + '</span></div>'
+    + '</div>'
+    + '<span class="dw-swap-arrow">→</span>'
+    + '<div class="dw-swap-side">'
+    + '<div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div>'
+    + '<div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin" id="dwReceiveAmount">' + Math.ceil(balance / 2) + ' USDC</span></div>'
+    + '</div></div>'
+    + '<button class="dw-sign-btn" id="dwContinueBtn" onclick="dwSignAndDeposit()" disabled>确认充值</button>'
+    + '</div></div></div>';
+  modal.querySelector('.deposit-overlay').addEventListener('click', function(e) { if (e.target === this) closeDepositWalletModal(); });
+  setTimeout(function() {
+    var inp = document.getElementById('dwAmountInput');
+    if (inp) {
+      var defaultVal = Math.ceil(balance / 2);
+      inp.value = defaultVal;
+      dwSelectedAmount = defaultVal;
+      var btn = document.getElementById('dwContinueBtn');
+      if (btn) btn.disabled = false;
+      inp.focus();
+    }
+  }, 100);
+}
+
+function dwOnAmountInput() {
+  var val = parseFloat(document.getElementById('dwAmountInput').value) || 0;
+  dwSelectedAmount = val;
+  var btn = document.getElementById('dwContinueBtn');
+  if (btn) btn.disabled = val <= 0;
+  var receiveEl = document.getElementById('dwReceiveAmount');
+  if (receiveEl) receiveEl.textContent = val + ' USDC';
+}
+
+function dwSetQuickAmount(type, maxBalance) {
+  var inp = document.getElementById('dwAmountInput');
+  if (!inp) return;
+  if (type === 'max') {
+    inp.value = maxBalance;
+  } else {
+    var pct = parseInt(type) / 100;
+    inp.value = (maxBalance * pct).toFixed(2);
+  }
+  dwSelectedAmount = parseFloat(inp.value) || 0;
+  var btn = document.getElementById('dwContinueBtn');
+  if (btn) btn.disabled = false;
+  var receiveEl = document.getElementById('dwReceiveAmount');
+  if (receiveEl) receiveEl.textContent = dwSelectedAmount + ' USDC';
+}
+
+function dwContinue() {
+  if (dwSelectedAmount <= 0) return;
+  openDepositWalletStep4();
+}
+
+// Step 4: 签名确认
+function openDepositWalletStep4() {
+  var modal = document.getElementById('depositWalletModal');
+  if (!modal) return;
+  var coin = dwSelectedCoin;
+  var amount = dwSelectedAmount;
+  modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
+    + '<div class="deposit-header"><button class="deposit-back-btn" onclick="openDepositWalletStep3()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-step-title">确认充值</span><button class="deposit-close" onclick="closeDepositWalletModal()">✕</button></div>'
+    + '<div class="deposit-body" style="gap:16px"><div class="dw-summary">'
+    + '<div class="dw-summary-row"><span class="dw-summary-label">币种</span><span class="dw-summary-value">' + coin + '</span></div>'
+    + '<div class="dw-summary-row"><span class="dw-summary-label">充值金额</span><span class="dw-summary-value">' + amount + ' ' + coin + '</span></div>'
+    + '<div class="dw-divider"></div>'
+    + '<div class="dw-summary-row"><span class="dw-summary-label">网络</span><span class="dw-summary-value">Solana</span></div>'
+    + '</div>'
+    + '<div style="text-align:center;color:#8B8D98;font-size:13px;padding:8px 0">将在钱包中确认此交易</div>'
+    + '<button class="dw-sign-btn" id="dwSignBtn" onclick="dwSignAndDeposit()">确认签名</button>'
+    + '</div></div></div>';
+  modal.querySelector('.deposit-overlay').addEventListener('click', function(e) { if (e.target === this) closeDepositWalletModal(); });
+}
+
+function dwSignAndDeposit() {
+  var btn = document.getElementById('dwContinueBtn') || document.getElementById('dwSignBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '签名中...'; }
+  setTimeout(function() {
+    closeDepositWalletModal();
+    showToast('✅ 签名完成，正在充值 ' + dwSelectedAmount + ' ' + dwSelectedCoin + '...');
+  }, 1500);
+}
+
+function closeDepositWalletModal() {
+  var modal = document.getElementById('depositWalletModal');
+  if (modal) { modal.remove(); document.body.style.overflow = ''; }
 }
 
 // ============================================================
