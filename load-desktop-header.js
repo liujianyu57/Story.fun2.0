@@ -57,8 +57,53 @@
             '.desktop-header .dh-usdc-badge .dh-avatar-wrap{margin:0}',
             '.desktop-header .dh-usdc-badge .dh-avatar{width:30px;height:30px;border:none}',
             '.desktop-header .auth-login-btn{margin-left:auto}',
-'@media(min-width:769px){.desktop-header{left:160px;right:0}body{padding-top:56px}}',
-'@media(max-width:768px){.desktop-header{display:none}}'
+            '@media(min-width:769px){.desktop-header{left:160px;right:0}body{padding-top:56px}}',
+            '@media(max-width:768px){.desktop-header{display:none}}',
+            '/* ── Notify Dropdown (matches notifications.html cards) ── */',
+            '@media(min-width:769px){',
+            '.dh-notify-wrap{position:relative;flex-shrink:0}',
+            '.dh-notify-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:460px;max-height:540px;background:#f8f9fb;border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s ease;z-index:300;overflow:hidden;display:flex;flex-direction:column}',
+            '.dh-notify-wrap:hover .dh-notify-dropdown{opacity:1;visibility:visible;transform:translateY(0)}',
+'.dh-notify-dropdown .dn-header{display:flex;align-items:center;justify-content:center;padding:12px 16px 8px;flex-shrink:0;gap:24px}',
+'.dh-notify-dropdown .dn-tab{padding:6px 0 4px;border:none;background:none;font-size:13px;font-weight:500;color:#8896a8;cursor:pointer;position:relative;transition:color .2s}',
+'.dh-notify-dropdown .dn-tab.active{color:#1a1a2e;font-weight:600}',
+'.dh-notify-dropdown .dn-tab.active::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:16px;height:2.5px;border-radius:2px;background:#00b388}',
+            '.dh-notify-dropdown .dn-scroll{flex:1;overflow-y:auto;padding:4px 8px 8px}',
+'.dh-notify-dropdown .notify-item[data-category="social"]{display:none}',
+            '.dh-notify-dropdown .dn-scroll::-webkit-scrollbar{width:0}',
+            '/* mirror notifications.html card styles */',
+            '.dh-notify-dropdown .notify-item{display:flex;flex-direction:column;gap:0;padding:12px 14px 8px;position:relative;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.03);margin-bottom:8px;transition:box-shadow .15s;cursor:pointer}',
+            '.dh-notify-dropdown .notify-item:active{box-shadow:0 2px 8px rgba(0,0,0,.06)}',
+            '.dh-notify-dropdown .notify-item[data-category="revenue"]{padding:12px 16px 10px}',
+            '.dh-notify-dropdown .revenue-row{display:flex;align-items:flex-start;gap:12px}',
+            '.dh-notify-dropdown .social-row{display:flex;align-items:center;gap:12px;}',
+            '.dh-notify-dropdown .notify-icon{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px}',
+            '.dh-notify-dropdown .notify-icon.avatar{overflow:hidden;background:#f0f2f5}',
+            '.dh-notify-dropdown .notify-icon.avatar img{width:100%;height:100%;object-fit:cover}',
+            '.dh-notify-dropdown .notify-icon.revenue{background:rgba(0,179,136,.08)}',
+            '.dh-notify-dropdown .notify-content{flex:1;min-width:0}',
+            '.dh-notify-dropdown .revenue-title{display:inline-block;font-size:9px;font-weight:600;color:#00b388;background:rgba(0,179,136,.08);padding:2px 7px;border-radius:5px;margin-bottom:5px}',
+            '.dh-notify-dropdown .notify-desc{font-size:13px;color:#1a1a2e;line-height:1.45;font-weight:400}',
+            '.dh-notify-dropdown .notify-desc strong{font-weight:700}',
+            '.dh-notify-dropdown .revenue-amount{font-size:13px;font-weight:700;margin-top:3px}',
+            '.dh-notify-dropdown .rcv-usdc{color:#00b388}',
+            '.dh-notify-dropdown .rcv-story{color:#05DF72}',
+            '.dh-notify-dropdown .notify-meta{font-size:10px;color:#8896a8;margin-top:5px}',
+            '.dh-notify-dropdown .notify-time{font-size:10px;color:#8896a8;opacity:.7;margin-top:2px}',
+            '.dh-notify-dropdown .notify-thumb{width:36px;height:36px;border-radius:7px;flex-shrink:0;overflow:hidden;background:#f0f2f5}',
+            '.dh-notify-dropdown .notify-thumb img{width:100%;height:100%;object-fit:cover}',
+            '.dh-notify-dropdown .notify-item.unread::before{content:\'\';position:absolute;left:7px;top:18px;width:5px;height:5px;border-radius:50%;background:#00b388}',
+            '.dh-notify-dropdown .rev-act-btn{flex-shrink:0;padding:5px 12px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;align-self:center}',
+            '.dh-notify-dropdown .follow-btn{flex-shrink:0;padding:4px 10px;border-radius:999px;border:1px solid #00b388;background:transparent;color:#00b388;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}',
+            '.dh-notify-dropdown .follow-btn.mutual{background:rgba(0,179,136,.08);border-color:transparent}',
+            '.dh-notify-dropdown .sact-btn{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:999px;border:1px solid #eef0f4;background:transparent;color:#5e6f83;font-size:11px;font-weight:500;cursor:pointer}',
+            '.dh-notify-dropdown .social-actions{display:flex;gap:6px;margin-top:8px}',
+            '.dh-notify-dropdown .notify-footer{display:flex;justify-content:flex-end;margin-top:6px}',
+            '.dh-notify-dropdown .notify-more{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:none;background:transparent;color:#8896a8;font-size:13px;cursor:pointer;letter-spacing:1px}',
+            '.dh-notify-dropdown .delete-dropdown{position:absolute;top:100%;right:0;margin-top:3px;background:#fff;border:1px solid #eef0f4;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.08);padding:3px 0;min-width:64px;z-index:5;display:none;text-align:center}',
+            '.dh-notify-dropdown .delete-dropdown.show{display:block}',
+            '.dh-notify-dropdown .delete-btn{display:block;width:100%;padding:6px 12px;border:none;background:transparent;color:#f45b69;font-size:11px;font-weight:500;cursor:pointer}',
+            '}'
         ].join('');
         document.head.appendChild(style);
     }
@@ -81,10 +126,37 @@
                         '</div>' +
                     '</div>' +
                 '</div>' +
-                '<button class="dh-icon-btn" title="通知">' +
-                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>' +
-                    '<span class="dh-notify-dot"></span>' +
-                '</button>' +
+                '<div class="dh-notify-wrap">' +
+                    '<button class="dh-icon-btn" title="通知">' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>' +
+                        '<span class="dh-notify-dot"></span>' +
+                    '</button>' +
+                    '<div class="dh-notify-dropdown" id="dhNotifyDropdown">' +
+                        '<div class="dn-header"><button class="dn-tab active" onclick="dhSwitchTab(event,\'revenue\')">收益</button><button class="dn-tab" onclick="dhSwitchTab(event,\'social\')">互动</button></div>' +
+                        '<div class="dn-scroll">' +
+                            '<!-- IP 被签约 -->' +
+                            '<div class="notify-item unread" data-category="revenue"><div class="revenue-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="revenue-title">签约角色 IP</div><div class="notify-desc">@Jack 签约了角色 IP <strong>苏婉清</strong></div><div class="revenue-amount">你获得分成 <span class="rcv-usdc">126.80 USDC</span></div><div class="notify-meta">12分钟前</div></div><button class="rev-act-btn" onclick="location.href=\'rewards.html\'">领取</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 体力不足 -->' +
+                            '<div class="notify-item unread" data-category="revenue"><div class="revenue-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="revenue-title">角色管理</div><div class="notify-desc"><strong>赵无极</strong> 体力不足，尽快补充体力或休息</div><div class="revenue-amount">当前体力 <span style="color:#f59e0b">8</span></div><div class="notify-meta">28分钟前</div></div><button class="rev-act-btn" onclick="location.href=\'studio.html\'">去补充</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 演出收益到账 -->' +
+                            '<div class="notify-item" data-category="revenue"><div class="revenue-row"><div class="notify-icon revenue">🎬</div><div class="notify-content"><div class="revenue-title">演出收益</div><div class="notify-desc">2026/6/15 ～ 2026/6/21 演出结束</div><div class="revenue-amount">你获得收益 <span class="rcv-story">415.70 STORY</span></div><div class="notify-meta">2小时前</div></div><button class="rev-act-btn" onclick="location.href=\'rewards.html\'">领取</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 点赞视频 -->' +
+                            '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>李云飞</strong></div><div class="notify-desc" style="font-weight:400">赞了你的视频</div><div class="notify-time">18分钟前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 点赞短剧 -->' +
+                            '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>苏婉清</strong></div><div class="notify-desc" style="font-weight:400">赞了你的短剧 《凤骨琉璃》</div><div class="notify-time">42分钟前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1512070679279-8988d32161be?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 收藏视频 -->' +
+                            '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>林梦瑶</strong></div><div class="notify-desc" style="font-weight:400">收藏了你的视频</div><div class="notify-time">1小时前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 收藏短剧 -->' +
+                            '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>苏婉清</strong></div><div class="notify-desc" style="font-weight:400">收藏了你的短剧 《凤骨琉璃》</div><div class="notify-time">42分钟前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1512070679279-8988d32161be?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 收到评论 -->' +
+                            '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>赵无极</strong></div><div class="notify-desc" style="font-weight:400">评论了你：剧情太精彩了，期待下一集！</div><div class="notify-time">1小时前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="social-actions"><button class="sact-btn">回复评论</button><button class="sact-btn">♡ 赞</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 互相关注 -->' +
+                            '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>苏婉清</strong></div><div class="notify-desc" style="font-weight:400">关注了你</div><div class="notify-time">5小时前</div></div><button class="follow-btn mutual">互关</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                            '<!-- 有人关注我 -->' +
+                            '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>林梦瑶</strong></div><div class="notify-desc" style="font-weight:400">关注了你</div><div class="notify-time">3小时前</div></div><button class="follow-btn" >关注</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
                 '<div class="dh-publish-wrap">' +
                     '<button class="dh-publish-btn">' +
                         '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>发布' +
@@ -221,39 +293,62 @@
         }
     });
 
-    // 增强已有 header：给发布按钮添加下拉菜单
+    // 增强已有 header：给发布按钮和通知按钮添加下拉菜单
     function enhanceExistingHeader() {
         var header = document.getElementById('desktopHeader');
         if (!header) return false;
 
-        var btn = header.querySelector('.dh-publish-btn');
-        if (!btn) return false;
+        // --- Publish button wrap ---
+        var pubBtn = header.querySelector('.dh-publish-btn');
+        if (pubBtn && !(pubBtn.parentNode && pubBtn.parentNode.classList.contains('dh-publish-wrap'))) {
+            var wrap = document.createElement('div');
+            wrap.className = 'dh-publish-wrap';
 
-        // 如果已被包裹，跳过
-        if (btn.parentNode && btn.parentNode.classList.contains('dh-publish-wrap')) return true;
+            var dropdown = document.createElement('div');
+            dropdown.className = 'dh-publish-dropdown';
+            dropdown.innerHTML =
+                '<a class="dh-publish-item" href="publish.html">' +
+                    '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="3"/><path d="M2 6h12M6 14V6"/></svg>发布短剧' +
+                '</a>' +
+                '<a class="dh-publish-item" href="publish-video.html">' +
+                    '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="2"/><polygon points="7,5.5 7,10.5 11.5,8" fill="currentColor"/></svg>发布视频' +
+                '</a>' +
+                '<a class="dh-publish-item" href="create-actor.html">' +
+                    '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2"/><path d="M2 14v-1.3a2.7 2.7 0 0 1 2.7-2.7h2.6a2.7 2.7 0 0 1 2.7 2.7V14"/></svg>发行角色IP' +
+                '</a>';
 
-        // 创建包裹容器
-        var wrap = document.createElement('div');
-        wrap.className = 'dh-publish-wrap';
+            pubBtn.parentNode.insertBefore(wrap, pubBtn);
+            wrap.appendChild(pubBtn);
+            wrap.appendChild(dropdown);
+        }
 
-        // 创建下拉菜单
-        var dropdown = document.createElement('div');
-        dropdown.className = 'dh-publish-dropdown';
-        dropdown.innerHTML =
-            '<a class="dh-publish-item" href="publish.html">' +
-                '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="3"/><path d="M2 6h12M6 14V6"/></svg>发布短剧' +
-            '</a>' +
-            '<a class="dh-publish-item" href="publish-video.html">' +
-                '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="2"/><polygon points="7,5.5 7,10.5 11.5,8" fill="currentColor"/></svg>发布视频' +
-            '</a>' +
-            '<a class="dh-publish-item" href="create-actor.html">' +
-                '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2"/><path d="M2 14v-1.3a2.7 2.7 0 0 1 2.7-2.7h2.6a2.7 2.7 0 0 1 2.7 2.7V14"/></svg>发行角色IP' +
-            '</a>';
+        // --- Notify button wrap ---
+        var notifyBtn = header.querySelector('.dh-icon-btn[title="通知"]');
+        if (notifyBtn && !(notifyBtn.parentNode && notifyBtn.parentNode.classList.contains('dh-notify-wrap'))) {
+            var nWrap = document.createElement('div');
+            nWrap.className = 'dh-notify-wrap';
 
-        // 用 wrap 替换 btn
-        btn.parentNode.insertBefore(wrap, btn);
-        wrap.appendChild(btn);
-        wrap.appendChild(dropdown);
+            var nDropdown = document.createElement('div');
+            nDropdown.className = 'dh-notify-dropdown';
+            nDropdown.innerHTML =
+                '<div class="dn-header"><button class="dn-tab active" onclick="dhSwitchTab(event,\'revenue\')">收益</button><button class="dn-tab" onclick="dhSwitchTab(event,\'social\')">互动</button></div>' +
+                '<div class="dn-scroll">' +
+                    '<div class="notify-item unread" data-category="revenue"><div class="revenue-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="revenue-title">签约角色 IP</div><div class="notify-desc">@Jack 签约了角色 IP <strong>苏婉清</strong></div><div class="revenue-amount">你获得分成 <span class="rcv-usdc">126.80 USDC</span></div><div class="notify-meta">12分钟前</div></div><button class="rev-act-btn" onclick="location.href=\'rewards.html\'">领取</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="revenue"><div class="revenue-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="revenue-title">角色管理</div><div class="notify-desc"><strong>赵无极</strong> 体力不足，尽快补充体力或休息</div><div class="revenue-amount">当前体力 <span style="color:#f59e0b">8</span></div><div class="notify-meta">28分钟前</div></div><button class="rev-act-btn" onclick="location.href=\'studio.html\'">去补充</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item" data-category="revenue"><div class="revenue-row"><div class="notify-icon revenue">🎬</div><div class="notify-content"><div class="revenue-title">演出收益</div><div class="notify-desc">2026/6/15 ～ 2026/6/21 演出结束</div><div class="revenue-amount">你获得收益 <span class="rcv-story">415.70 STORY</span></div><div class="notify-meta">2小时前</div></div><button class="rev-act-btn" onclick="location.href=\'rewards.html\'">领取</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>李云飞</strong></div><div class="notify-desc" style="font-weight:400">赞了你的视频</div><div class="notify-time">18分钟前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>苏婉清</strong></div><div class="notify-desc" style="font-weight:400">赞了你的短剧 《凤骨琉璃》</div><div class="notify-time">42分钟前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1512070679279-8988d32161be?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>林梦瑶</strong></div><div class="notify-desc" style="font-weight:400">收藏了你的视频</div><div class="notify-time">1小时前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>苏婉清</strong></div><div class="notify-desc" style="font-weight:400">收藏了你的短剧 《凤骨琉璃》</div><div class="notify-time">42分钟前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1512070679279-8988d32161be?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>赵无极</strong></div><div class="notify-desc" style="font-weight:400">评论了你：剧情太精彩了，期待下一集！</div><div class="notify-time">1小时前</div></div><div class="notify-thumb"><img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" alt=""></div></div><div class="social-actions"><button class="sact-btn">回复评论</button><button class="sact-btn">♡ 赞</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>苏婉清</strong></div><div class="notify-desc" style="font-weight:400">关注了你</div><div class="notify-time">5小时前</div></div><button class="follow-btn mutual">互关</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                    '<div class="notify-item unread" data-category="social"><div class="social-row"><div class="notify-icon avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt=""></div><div class="notify-content"><div class="notify-desc"><strong>林梦瑶</strong></div><div class="notify-desc" style="font-weight:400">关注了你</div><div class="notify-time">3小时前</div></div><button class="follow-btn">关注</button></div><div class="notify-footer"><button class="notify-more" onclick="dhToggleDelete(event,this)">···</button><div class="delete-dropdown"><button class="delete-btn" onclick="dhDeleteNotify(event,this)">删除</button></div></div></div>' +
+                '</div>';
+
+            notifyBtn.parentNode.insertBefore(nWrap, notifyBtn);
+            nWrap.appendChild(notifyBtn);
+            nWrap.appendChild(nDropdown);
+        }
 
         return true;
     }
@@ -267,6 +362,38 @@
         script.onerror = callback;
         document.head.appendChild(script);
     }
+
+    // Tab switch in notify dropdown
+    window.dhSwitchTab = function(e, cat) {
+        e.stopPropagation();
+        var btn = e.target;
+        var dd = btn.closest('.dh-notify-dropdown');
+        if (!dd) return;
+        // Toggle active
+        dd.querySelectorAll('.dn-tab').forEach(function(t){t.classList.remove('active')});
+        btn.classList.add('active');
+        dd.querySelectorAll('.notify-item').forEach(function(item){
+            item.style.display = item.getAttribute('data-category') === cat ? 'flex' : 'none';
+        });
+    };
+
+    // Delete helpers for notify dropdown
+    window.dhToggleDelete = function(e, btn) {
+        e.stopPropagation();
+        var dd = btn.parentElement.querySelector('.delete-dropdown');
+        if (!dd) return;
+        // Close all other dropdowns in the notify panel
+        var panel = btn.closest('.dh-notify-dropdown');
+        if (panel) {
+            panel.querySelectorAll('.delete-dropdown.show').forEach(function(d) { d.classList.remove('show'); });
+        }
+        dd.classList.toggle('show');
+    };
+    window.dhDeleteNotify = function(e, btn) {
+        e.stopPropagation();
+        var item = btn.closest('.notify-item');
+        if (item) item.remove();
+    };
 
     // 主流程
     function init() {
