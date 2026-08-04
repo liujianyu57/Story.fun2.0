@@ -27,7 +27,7 @@ const PRIVY_MOCK_USER = {
   balances: {
     story: 10123,
     usdc: { Solana: 200, Ethereum: 0, BSC: 100.23, Arbitrum: 0 },
-    usdt: { Solana: 300, Ethereum: 500.00, BSC: 0, Arbitrum: 0 }
+    usdt: { Solana: 300, Ethereum: 0.5, BSC: 0, Arbitrum: 0 }
   }
 };
 
@@ -47,7 +47,9 @@ function loadUserFromStorage() {
 
 function saveUserToStorage(user) {
   try {
-    localStorage.setItem('storyfun_user', JSON.stringify(user));
+    var copy = JSON.parse(JSON.stringify(user));
+    delete copy.balances;
+    localStorage.setItem('storyfun_user', JSON.stringify(copy));
   } catch (e) {}
 }
 
@@ -58,35 +60,7 @@ function clearUserFromStorage() {
 }
 
 const storedUser = loadUserFromStorage();
-let currentUser = storedUser ? (function(){
-    var u = { ...PRIVY_MOCK_USER, ...storedUser };
-    // 深层合并 balances：保留 PRIVY_MOCK_USER 的结构，用 storedUser 的值覆盖
-    if (storedUser.balances) {
-        u.balances = u.balances || {};
-        var keys = Object.keys(PRIVY_MOCK_USER.balances);
-        for (var i = 0; i < keys.length; i++) {
-            var k = keys[i];
-            var mockVal = PRIVY_MOCK_USER.balances[k];
-            var storedVal = storedUser.balances[k];
-            if (typeof mockVal === 'object' && mockVal !== null && !Array.isArray(mockVal)) {
-                // mock 是对象，stored 是数字 → 用 mock 对象（忽略旧格式）
-                if (typeof storedVal === 'number') {
-                    u.balances[k] = { ...mockVal };
-                } else if (typeof storedVal === 'object' && storedVal !== null) {
-                    u.balances[k] = { ...mockVal, ...storedVal };
-                } else {
-                    u.balances[k] = { ...mockVal };
-                }
-            } else {
-                // mock 是数字或其他
-                u.balances[k] = storedVal !== undefined ? storedVal : mockVal;
-            }
-        }
-    } else {
-        u.balances = { ...PRIVY_MOCK_USER.balances };
-    }
-    return u;
-})() : { ...PRIVY_MOCK_USER, isLoggedIn: false };
+let currentUser = storedUser ? { ...PRIVY_MOCK_USER, ...storedUser, balances: { ...PRIVY_MOCK_USER.balances } } : { ...PRIVY_MOCK_USER, isLoggedIn: false };
 
 // ============================================================
 //  DOM 就绪后初始化
@@ -221,6 +195,8 @@ function injectAuthStyles() {
   .dw-coin-item:active{transform:scale(.98)}
   .dw-selectable-row.selected{border-color:#00b388!important;background:rgba(0,179,136,.08)!important}
   .dw-coin-item.zero-balance{display:none!important}
+  .dw-coin-item.low-balance{opacity:0.35;pointer-events:none}
+  .dw-low-hint{color:#f45b69;font-size:11px;margin-right:4px}
   .dw-coin-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
   .dw-coin-icon.story{background:linear-gradient(135deg,#00c2a8,#00b3ff)}
   .dw-coin-icon.usdc{background:linear-gradient(135deg,#0bb07b,#10a37a)}
@@ -1108,6 +1084,7 @@ function openDepositTransferModal(fromWallet) {
     + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin">USDC</span></div></div>'
     + '</div>'
     + '<div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动在你的 Story.fun 账户中兑换成USDC</div>'
+    + '<div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充币金额 5 USDC或USDT</div>'
     + '</div></div></div>';
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
@@ -1179,7 +1156,8 @@ function openDepositWalletStep2() {
   var getCoinBal = function(coinKey, chainId){var d=currentUser.balances&&currentUser.balances[coinKey];if(!d)return 0;if(typeof d==='number')return d;if(typeof d==='object'){return typeof d[chainId]==='number'?d[chainId]:0;}return 0;};
   var getTotalForDisplay = function(coinKey){var d=currentUser.balances&&currentUser.balances[coinKey];if(!d)return'0.00';if(typeof d==='number')return d.toFixed(2);if(typeof d==='object'){var t=0;for(var k in d){if(typeof d[k]==='number')t+=d[k];}return t.toFixed(2);}return'0.00';};
 
-  var html = '';
+  // Collect all items and sort by balance descending
+  var items = [];
   for (var ci = 0; ci < coins.length; ci++) {
     var coin = coins[ci];
     var coinKey = coin.toLowerCase();
@@ -1188,14 +1166,37 @@ function openDepositWalletStep2() {
       var ch = chains[ci2];
       var balNum = getCoinBal(coinKey, ch.id);
       var balDisplay = balNum.toFixed(2);
-      var dimClass = balNum <= 0 ? ' zero-balance' : '';
-      html += '<div class="dw-coin-item dw-selectable-row' + dimClass + '" data-coin="' + coin + '" data-chain="' + ch.id + '">'
-        + '<div class="dw-coin-icon-wrap"><div class="dw-coin-icon ' + iconClass + '"></div>'
-        + '<div class="dw-chain-badge" style="background:' + ch.bg + '">' + ch.letter + '</div></div>'
-        + '<div class="dw-coin-info"><div class="dw-coin-name">' + coin + '</div><div class="dw-coin-chain">' + ch.label + '</div></div>'
-        + '<div class="dw-coin-balance"><div class="dw-coin-balance-amount">' + balDisplay + '</div><div class="dw-coin-balance-label">余额</div></div>'
-        + '</div>';
+      var dimClass = '';
+      var lowHint = '';
+      if (balNum <= 0) {
+        dimClass = ' zero-balance';
+      } else if (balNum < 5) {
+        dimClass = ' low-balance';
+        lowHint = '<span class="dw-low-hint">最小 5 ' + coin + '</span>';
+      }
+      items.push({
+        coin: coin,
+        coinKey: coinKey,
+        chain: ch,
+        balNum: balNum,
+        balDisplay: balDisplay,
+        dimClass: dimClass,
+        lowHint: lowHint,
+        iconClass: iconClass
+      });
     }
+  }
+  items.sort(function(a, b) { return b.balNum - a.balNum; });
+
+  var html = '';
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    html += '<div class="dw-coin-item dw-selectable-row' + it.dimClass + '" data-coin="' + it.coin + '" data-chain="' + it.chain.id + '">'
+      + '<div class="dw-coin-icon-wrap"><div class="dw-coin-icon ' + it.iconClass + '"></div>'
+      + '<div class="dw-chain-badge" style="background:' + it.chain.bg + '">' + it.chain.letter + '</div></div>'
+      + '<div class="dw-coin-info"><div class="dw-coin-name">' + it.coin + '</div><div class="dw-coin-chain">' + it.chain.label + '</div></div>'
+      + '<div class="dw-coin-balance"><div class="dw-coin-balance-amount">' + it.balDisplay + '</div><div class="dw-coin-balance-label">' + it.lowHint + '</div></div>'
+      + '</div>';
   }
 
   modal.innerHTML = '<div class="deposit-overlay"><div class="deposit-card">'
