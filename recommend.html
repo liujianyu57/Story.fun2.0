@@ -50,7 +50,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .sd-notify-item{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:12px;transition:background .15s;cursor:pointer}
 .sd-notify-item:hover,.sd-notify-item:active{background:rgba(0,0,0,.03)}
 .sd-notify-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0}
-.sd-notify-text{font-size:13px;color:rgba(0,0,0,.7);line-height:1.4;flex:1}
+.sd-notify-text{font-size:13px;color:rgba(0,0,0,.7);line-height:1.4;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sd-notify-time{font-size:10px;color:rgba(0,0,0,.35);margin-top:2px}
 .sd-history-list{padding:0 16px;flex:1;overflow-y:auto}
 .sd-history-item{display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:12px;transition:background .15s;cursor:pointer}
@@ -424,11 +424,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
     <div class="sd-nickname">清风明月</div>
     <div class="sd-uid"></div>
   </div>
-  <div class="sd-section-label" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">通知消息<span style="font-size:16px;color:rgba(0,0,0,.25);margin-right:4px">›</span></div>
+  <div class="sd-section-label" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="location.href='notifications.html'">通知消息<span style="font-size:16px;color:rgba(0,0,0,.25);margin-right:4px">›</span></div>
   <div class="sd-notify-list">
-    <div class="sd-notify-item"><span class="sd-notify-dot"></span><div><div class="sd-notify-text">你的短剧《凤骨琉璃》收到128条新评论</div><div class="sd-notify-time">32分钟前</div></div></div>
-    <div class="sd-notify-item"><span class="sd-notify-dot"></span><div><div class="sd-notify-text">角色苏婉清发布了新作品《捧月将军》</div><div class="sd-notify-time">2小时前</div></div></div>
-    <div class="sd-notify-item"><span class="sd-notify-dot"></span><div><div class="sd-notify-text">你的收藏《凤骨琉璃》更新了第44集</div><div class="sd-notify-time">昨天</div></div></div>
+    <div class="sd-notify-item" onclick="location.href='notifications.html'"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" style="width:36px;height:36px;border-radius:50%;flex-shrink:0;object-fit:cover;" alt=""><div><div class="sd-notify-text">@Jack 签约了你的角色IP <strong>苏婉清</strong></div><div class="sd-notify-time">12分钟前</div></div></div>
+    <div class="sd-notify-item" onclick="location.href='notifications.html'"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" style="width:36px;height:36px;border-radius:50%;flex-shrink:0;object-fit:cover;" alt=""><div><div class="sd-notify-text"><strong>李云飞</strong> 赞了你的视频</div><div class="sd-notify-time">18分钟前</div></div></div>
+    <div class="sd-notify-item" onclick="location.href='notifications.html'"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" style="width:36px;height:36px;border-radius:50%;flex-shrink:0;object-fit:cover;" alt=""><div><div class="sd-notify-text"><strong>苏婉清</strong> 收藏了你的短剧 《凤骨琉璃》</div><div class="sd-notify-time">42分钟前</div></div></div>
   </div>
   <div class="sd-section-label" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">观看历史<span style="font-size:16px;color:rgba(0,0,0,.25);margin-right:4px">›</span></div>
   <div class="sd-history-list">
