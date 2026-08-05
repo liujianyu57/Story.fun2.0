@@ -667,6 +667,8 @@ function openProfileCenter() {
 // ============================================================
 //  提现弹窗（Withdraw Modal）
 // ============================================================
+var withdrawSelectedCoin = 'USDC'; // 提现当前选中的币种
+
 function openWithdrawModal() {
   // 关闭下拉菜单
   closeDropdown();
@@ -675,9 +677,23 @@ function openWithdrawModal() {
   const existing = document.getElementById('withdrawModal');
   if (existing) existing.remove();
 
-  var getTotalUsdc = function(){var b=currentUser.balances;if(!b)return 0;var u=b.usdc;if(typeof u==='number')return u;if(typeof u==='object'){var t=0;for(var k in u){if(typeof u[k]==='number')t+=u[k];}return t;}return 0;};
-  const balance = getTotalUsdc();
-  const balanceFormatted = balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  withdrawSelectedCoin = 'USDC';
+
+  var getCoinBal = function(coinKey){var b=currentUser.balances;if(!b)return 0;var d=b[coinKey];if(typeof d==='number')return d;if(typeof d==='object'){var t=0;for(var k in d){if(typeof d[k]==='number')t+=d[k];}return t;}return 0;};
+  var getBalanceForCoin = function(coin){
+    if(coin==='USDC')return getCoinBal('usdc');
+    if(coin==='STORY')return currentUser.balances&&typeof currentUser.balances.story==='number'?currentUser.balances.story:0;
+    return 0;
+  };
+  var getBalanceFormatted = function(coin){
+    var bal=getBalanceForCoin(coin);
+    if(coin==='USDC')return bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    return bal.toLocaleString();
+  };
+  var getMinAmount = function(coin){return coin==='USDC'?10:1;};
+
+  const balance = getBalanceForCoin('USDC');
+  const balanceFormatted = getBalanceFormatted('USDC');
 
   const modal = document.createElement('div');
   modal.id = 'withdrawModal';
@@ -691,13 +707,17 @@ function openWithdrawModal() {
         <div class="withdraw-body">
           <div class="withdraw-field-group">
             <div class="withdraw-field-label">币种</div>
-            <button class="withdraw-select-field">
-              <div class="withdraw-select-left">
-                <div class="withdraw-crypto-icon" style="background:linear-gradient(135deg,#2775CA,#3b82f6);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">$</div>
-                <span class="withdraw-select-label">USDC</span>
+            <div class="deposit-coin-select-wrapper">
+              <button class="deposit-select-field" id="withdrawCoinBtn" onclick="event.stopPropagation();toggleWithdrawCoinDropdown()" style="width:100%">
+                <div class="deposit-select-left"><div class="deposit-crypto-icon" id="withdrawCoinIcon" style="background:#2775CA;color:#fff">$</div>
+                <span class="deposit-select-label" id="withdrawCoinLabel">USDC</span></div>
+                <span class="deposit-select-chevron">▾</span>
+              </button>
+              <div class="deposit-coin-dropdown" id="withdrawCoinDropdown" style="display:none">
+                <div class="deposit-coin-dropdown-item" data-coin="USDC" onclick="event.stopPropagation();selectWithdrawCoin('USDC')"><div class="dcd-icon" style="background:#2775CA">$</div><span class="dcd-name">USDC</span></div>
+                <div class="deposit-coin-dropdown-item" data-coin="STORY" onclick="event.stopPropagation();selectWithdrawCoin('STORY')"><div class="dcd-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff)">S</div><span class="dcd-name">STORY</span></div>
               </div>
-              <span class="withdraw-select-chevron">▾</span>
-            </button>
+            </div>
           </div>
           <div class="withdraw-field-group">
             <div class="withdraw-field-label">提现地址</div>
@@ -743,16 +763,16 @@ function openWithdrawModal() {
             <div class="withdraw-field-label">提现金额</div>
             <div class="withdraw-input-field">
               <input type="number" id="withdrawAmount" placeholder="输入提现金额" min="0" step="0.01" />
-              <span class="withdraw-input-suffix">USDC</span>
+              <span class="withdraw-input-suffix" id="withdrawAmountSuffix">USDC</span>
             </div>
-            <span style="font-size:12px;color:#8B8D98;padding-top:4px">可提现 $${balanceFormatted}</span>
+            <span style="font-size:12px;color:#8B8D98;padding-top:4px" id="withdrawAvailableHint">可提现 $${balanceFormatted}</span>
           </div>
 
           <div class="withdraw-field-group">
             <button class="withdraw-submit-btn" onclick="handleWithdraw()">确认提现</button>
           </div>
 
-          <div class="withdraw-warning-text">
+          <div class="withdraw-warning-text" id="withdrawWarningText">
             <p>• 最小提现金额：10 USDC</p>
             <p>• 请仔细核对提现地址和网络，转账后无法撤回</p>
           </div>
@@ -768,6 +788,60 @@ function openWithdrawModal() {
   modal.querySelector('.withdraw-overlay').addEventListener('click', function(e) {
     if (e.target === this) closeWithdrawModal();
   });
+  // 点击其他区域关闭币种下拉
+  document.addEventListener('click', closeWithdrawCoinDropdown);
+}
+
+function toggleWithdrawCoinDropdown() {
+  var dd = document.getElementById('withdrawCoinDropdown');
+  if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+
+function closeWithdrawCoinDropdown(e) {
+  var dd = document.getElementById('withdrawCoinDropdown');
+  if (!dd) return;
+  var wrapper = dd.closest('.deposit-coin-select-wrapper');
+  if (e && wrapper && wrapper.contains(e.target)) return;
+  dd.style.display = 'none';
+}
+
+function selectWithdrawCoin(coin) {
+  withdrawSelectedCoin = coin;
+  var iconEl = document.getElementById('withdrawCoinIcon');
+  var labelEl = document.getElementById('withdrawCoinLabel');
+  var suffixEl = document.getElementById('withdrawAmountSuffix');
+  var hintEl = document.getElementById('withdrawAvailableHint');
+  var warningEl = document.getElementById('withdrawWarningText');
+  var addrInput = document.getElementById('withdrawAddress');
+
+  var getCoinBal = function(coinKey){var b=currentUser.balances;if(!b)return 0;var d=b[coinKey];if(typeof d==='number')return d;if(typeof d==='object'){var t=0;for(var k in d){if(typeof d[k]==='number')t+=d[k];}return t;}return 0;};
+  var getBalanceForCoin = function(c){
+    if(c==='USDC')return getCoinBal('usdc');
+    if(c==='STORY')return currentUser.balances&&typeof currentUser.balances.story==='number'?currentUser.balances.story:0;
+    return 0;
+  };
+  var getBalanceFormatted = function(c){
+    var bal=getBalanceForCoin(c);
+    if(c==='USDC')return bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    return bal.toLocaleString();
+  };
+
+  if (coin === 'STORY') {
+    if (iconEl) { iconEl.style.cssText = 'background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff'; iconEl.textContent = 'S'; }
+    if (labelEl) labelEl.textContent = 'STORY';
+    if (suffixEl) suffixEl.textContent = 'STORY';
+    if (hintEl) hintEl.textContent = '可提现 ' + getBalanceFormatted('STORY') + ' STORY';
+    if (warningEl) warningEl.innerHTML = '<p>• 最小提现金额：1 STORY</p><p>• 请仔细核对提现地址和网络，转账后无法撤回</p>';
+    if (addrInput) addrInput.placeholder = '输入接收STORY的钱包地址';
+  } else {
+    if (iconEl) { iconEl.style.cssText = 'background:#2775CA;color:#fff'; iconEl.textContent = '$'; }
+    if (labelEl) labelEl.textContent = 'USDC';
+    if (suffixEl) suffixEl.textContent = 'USDC';
+    if (hintEl) hintEl.textContent = '可提现 $' + getBalanceFormatted('USDC');
+    if (warningEl) warningEl.innerHTML = '<p>• 最小提现金额：10 USDC</p><p>• 请仔细核对提现地址和网络，转账后无法撤回</p>';
+    if (addrInput) addrInput.placeholder = '输入接收USDC的钱包地址';
+  }
+  closeWithdrawCoinDropdown();
 }
 
 function closeWithdrawModal() {
