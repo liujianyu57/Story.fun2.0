@@ -1861,52 +1861,46 @@
   <div class="modal-overlay" id="actualOutputModal">
     <div class="modal-card" style="max-width:440px;">
       <h2>片酬与奖池</h2>
-      <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
-        <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>本周总奖池</span>
-            <span style="font-weight:700;color:var(--accent);" id="actualOutputPoolTotal">2,115,385 STORY</span>
+      <!-- 总奖池 -->
+      <div style="background:var(--accent-soft);border:1px solid rgba(0,179,136,0.15);border-radius:16px;padding:18px 14px;margin-bottom:14px;text-align:center;">
+        <div style="font-size:0.72rem;color:var(--text-sub);margin-bottom:4px;font-weight:600;">本周总奖池</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--accent);line-height:1;" id="actualOutputPoolTotal">2,115,385</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">STORY</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:6px;">周衰减系数 ×0.99572</div>
+      </div>
+      <!-- 奖池分配双卡 -->
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 12px;text-align:center;">
+          <div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:2px;">演出奖池（75%）</div>
+          <div style="font-weight:700;font-size:0.95rem;color:var(--accent);" id="actualOutputPoolStaking">1,586,539</div>
+        </div>
+        <div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 12px;text-align:center;">
+          <div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:2px;">邀请奖池（25%）</div>
+          <div style="font-weight:700;font-size:0.95rem;color:var(--accent);" id="actualOutputPoolReferral">528,846</div>
+        </div>
+      </div>
+      <!-- 分配规则 -->
+      <div style="background:var(--bg);border-radius:14px;padding:14px 16px;margin-bottom:14px;">
+        <div style="font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:10px;">分配规则</div>
+        <div style="font-size:0.82rem;line-height:1.8;color:var(--text-muted);">
+          <div style="margin-bottom:8px;">
+            <span style="font-weight:600;color:var(--text);">全网名义产出 ≤ 当周硬顶：</span><br>
+            <span style="padding-left:8px;">用户实得 = 用户名义产出</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>├ 本周演出奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（75%）</span></span>
-            <span style="font-weight:700;color:var(--accent);" id="actualOutputPoolStaking">1,586,539 STORY</span>
+          <div style="margin-bottom:8px;">
+            <span style="font-weight:600;color:var(--text);">全网名义产出 > 当周硬顶：</span><br>
+            <span style="padding-left:8px;">用户实得 = 用户名义产出 ×（当周硬顶 ÷ 全网名义产出）</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>└ 本周邀请奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（25%）</span></span>
-            <span style="font-weight:700;color:var(--accent);" id="actualOutputPoolReferral">528,846 STORY</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>周衰减系数</span>
-            <span style="font-weight:700;color:var(--text);">× 0.99572</span>
-          </div>
-          <div style="padding:8px 0 4px;">
-            <div style="font-weight:600;color:var(--text);margin-bottom:4px;">每周实际发放 = min(全网名义产出, 当周硬顶)</div>
-            <div style="font-size:0.78rem;color:var(--text-sub);">未发出的剩余额度不发放、不回流、不补分</div>
+          <div>
+            <span style="font-weight:600;color:var(--text);">单地址周封顶：</span><br>
+            <span style="padding-left:8px;color:#ef4444;">单个地址每周最多领取当周硬顶的 5%</span>
           </div>
         </div>
       </div>
-      <div style="background:rgba(255,159,44,0.06);border:1px solid rgba(255,159,44,0.15);border-radius:14px;padding:16px;margin-bottom:16px;">
-        <div style="font-weight:700;font-size:0.88rem;margin-bottom:8px;">分配规则</div>
-        <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span style="flex:1;">若全网名义产出 ≤ 当周硬顶：</span>
-          </div>
-          <div style="padding:2px 0 8px 16px;border-bottom:1px solid var(--border);">
-            <span style="font-weight:700;color:var(--text);">用户实得 = 用户名义产出</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0 4px;border-bottom:1px solid var(--border);">
-            <span style="flex:1;">若全网名义产出 > 当周硬顶：</span>
-          </div>
-          <div style="padding:2px 0 8px 16px;border-bottom:1px solid var(--border);">
-            <span style="font-weight:700;color:var(--text);">用户实得 = 用户名义产出 × 当周硬顶 / 全网名义产出</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0 4px;">
-            <span style="flex:1;">单地址周封顶</span>
-          </div>
-          <div style="padding:2px 0 4px 16px;">
-            <span style="font-weight:700;color:var(--danger);">单个地址每周最多领取当周硬顶的 5%</span>
-          </div>
-        </div>
+      <!-- 公式 -->
+      <div style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">
+        每周实际发放 = min(全网名义产出, 当周硬顶)<br>
+        未发出的剩余额度不发放、不回流、不补分
       </div>
       <button class="modal-btn cancel" onclick="closeActualOutputModal()">关闭</button>
     </div>
@@ -2437,7 +2431,7 @@
           + '<span class="ur-lv-badge" style="background:' + levelCfg.color + ';" onclick="event.stopPropagation();">Lv' + actor.level + '</span>'
           + '</div>'
           + '<div class="ur-header">'
-          + '<div class="ur-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
+          + '<div class="ur-name" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
           + '</div>'
           + '<div class="ur-compare">'
           + '<div class="ur-compare-lv-row">'
@@ -2445,7 +2439,7 @@
           + '<span class="ur-arrow-icon">→</span>'
           + '<span class="ur-lv-tag next">Lv' + (actor.level + 1) + '</span>'
           + '</div>'
-          + '<div class="ur-rate-row">'
+          + '<div class="ur-rate-row" onclick="event.stopPropagation();">'
           + '<span class="ur-rate-label">片酬</span>'
           + '<span class="ur-rate">' + before.toFixed(1) + ' → ' + after.toFixed(1) + '<span style="font-size:0.58rem;color:var(--text-sub);"> STORY/h</span></span>'
           + '</div>'
@@ -2454,14 +2448,14 @@
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
           + '<span class="ur-cond-label">参演短剧完播</span>'
-          + '<span class="ur-cond-status' + (playDone ? ' done' : ' pending') + '"' + (!playDone ? ' onclick="event.stopPropagation();openNeedPlayModal(\'' + actor.name + '\')"' : '') + '>' + (playDone ? '✓' : '+') + '</span>'
+          + '<span class="ur-cond-status' + (playDone ? ' done' : ' pending') + '"' + (!playDone ? ' onclick="event.stopPropagation();openUpgradeBlockedModal(\'' + actor.id + '\')"' : '') + '>' + (playDone ? '✓' : '+') + '</span>'
           + '</div>'
           + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + playPct + '%;"></i><span class="ur-cond-bar-text">' + (actor.cumulativePlays || 0).toLocaleString() + '/' + playReq.toLocaleString() + '</span></div>'
           + '</div>'
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
           + '<span class="ur-cond-label">同IP同等级角色</span>'
-          + '<span class="ur-cond-status' + (cloneReady ? ' done' : ' pending') + '"' + (!cloneReady ? ' onclick="event.stopPropagation();openNeedRoleModal(\'' + actor.name + '\',\'' + actor.parentIP + '\')"' : '') + '>' + (cloneReady ? '✓' : '+') + '</span>'
+          + '<span class="ur-cond-status' + (cloneReady ? ' done' : ' pending') + '"' + (!cloneReady ? ' onclick="event.stopPropagation();openUpgradeBlockedModal(\'' + actor.id + '\')"' : '') + '>' + (cloneReady ? '✓' : '+') + '</span>'
           + '</div>'
           + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + Math.round((have / 2) * 100) + '%;"></i><span class="ur-cond-bar-text">' + have + '/2</span></div>'
           + '</div>'
