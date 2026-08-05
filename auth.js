@@ -179,6 +179,14 @@ function injectAuthStyles() {
   .deposit-copy-btn{width:24px;height:24px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;font-size:16px;border-radius:4px;padding:0;transition:color 0.2s}
   .deposit-copy-btn:hover{color:#00b388}
   .deposit-copy-btn.copied{color:#00b388}
+  .deposit-coin-dropdown{position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);border:1px solid rgba(0,0,0,.06);overflow:hidden;z-index:10}
+  .deposit-coin-dropdown-item{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .15s}
+  .deposit-coin-dropdown-item:hover{background:rgba(0,179,136,.06)}
+  .deposit-coin-dropdown-item:active{background:rgba(0,179,136,.12)}
+  .deposit-coin-dropdown-item .dcd-icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0;color:#fff}
+  .deposit-coin-dropdown-item .dcd-name{font-weight:600;font-size:15px;color:#1C2024}
+  .deposit-coin-select-wrapper{position:relative;width:100%}
+  .deposit-coin-select-wrapper .deposit-select-field{width:100%}
   .deposit-qr-container{display:flex;gap:10px}
   .deposit-qr-image{width:160px;height:160px;border-radius:8px;object-fit:cover;background:#f0f4f8}
   .deposit-warning-text{display:flex;flex-direction:column;gap:6px}
@@ -1066,10 +1074,13 @@ function openDepositModal() {
   }
 }
 
-// ===== 邮箱用户：转账地址弹窗（原有逻辑） =====
+// ===== 邮箱用户：转账地址弹窗（支持币种切换） =====
+var depositSelectedCoin = 'USDC'; // 当前选中的充值币种
+
 function openDepositTransferModal(fromWallet) {
   const existing = document.getElementById('depositModal');
   if (existing) existing.remove();
+  depositSelectedCoin = 'USDC';
 
   var headerHTML = fromWallet
     ? '<div class="deposit-header"><button class="deposit-back-btn" onclick="dwBackToWalletStep1()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-title">充值</span><button class="deposit-close" onclick="closeDepositModal()">✕</button></div>'
@@ -1081,24 +1092,84 @@ function openDepositTransferModal(fromWallet) {
     + headerHTML
     + '<div class="deposit-body" style="gap:18px">'
     + '<div class="deposit-field-group"><div class="deposit-field-label">币种</div>'
-    + '<button class="deposit-select-field"><div class="deposit-select-left"><div class="deposit-crypto-icon deposit-crypto-usdc">$</div><span class="deposit-select-label">USDC</span></div><span class="deposit-select-chevron">▾</span></button></div>'
+    + '<div class="deposit-coin-select-wrapper">'
+    + '<button class="deposit-select-field" id="depositCoinBtn" onclick="event.stopPropagation();toggleDepositCoinDropdown()">'
+    + '<div class="deposit-select-left"><div class="deposit-crypto-icon" id="depositCoinIcon" style="background:#2775CA;color:#fff">$</div>'
+    + '<span class="deposit-select-label" id="depositCoinLabel">USDC</span></div>'
+    + '<span class="deposit-select-chevron">▾</span></button>'
+    + '<div class="deposit-coin-dropdown" id="depositCoinDropdown" style="display:none">'
+    + '<div class="deposit-coin-dropdown-item" data-coin="USDC" onclick="event.stopPropagation();selectDepositCoin(\'USDC\')"><div class="dcd-icon" style="background:#2775CA">$</div><span class="dcd-name">USDC</span></div>'
+    + '<div class="deposit-coin-dropdown-item" data-coin="USDT" onclick="event.stopPropagation();selectDepositCoin(\'USDT\')"><div class="dcd-icon" style="background:#26A17B">$</div><span class="dcd-name">USDT</span></div>'
+    + '<div class="deposit-coin-dropdown-item" data-coin="STORY" onclick="event.stopPropagation();selectDepositCoin(\'STORY\')"><div class="dcd-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff)">S</div><span class="dcd-name">STORY</span></div>'
+    + '</div></div></div>'
     + '<div class="deposit-field-group"><div class="deposit-field-label">网络</div>'
     + '<button class="deposit-select-field"><div class="deposit-select-left"><div class="deposit-crypto-icon deposit-crypto-eth">Ξ</div><span class="deposit-select-label">Ethereum</span></div><span class="deposit-select-chevron">▾</span></button>'
     + '</div>'
     + '<div style="display:flex;justify-content:center"><img class="deposit-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=0xcc345ff2905f5672227e848eac4e0124123fa7e4" alt="充值地址二维码" onerror="this.style.display=\'none\'" style="width:120px;height:120px;border-radius:8px;object-fit:cover;background:#f0f4f8" /></div>'
     + '<div class="deposit-field-group"><div class="deposit-field-label">充值地址</div>'
     + '<div class="deposit-address-field" style="padding:12px"><span class="deposit-address-text">0xcc345ff2905f5672227e848eac4e0124123fa7e4</span><button class="deposit-copy-btn" onclick="depositCopyAddress()">📋</button></div></div>'
-    + '<div class="dw-swap-row" style="margin-top:4px">'
-    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:#627EEA">E</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin">USDC</span></div></div>'
+    + '<div class="dw-swap-row" id="depositSwapRow" style="margin-top:4px">'
+    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:#627EEA">E</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin" id="depositSwapSendCoin">USDC</span></div></div>'
     + '<span class="dw-swap-arrow">→</span>'
-    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin">USDC</span></div></div>'
+    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin" id="depositSwapReceiveCoin">USDC</span></div></div>'
     + '</div>'
-    + '<div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动在你的 Story.fun 账户中兑换成USDC</div>'
-    + '<div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充币金额 5 USDC或USDT</div>'
+    + '<div id="depositSwapHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动在你的 Story.fun 账户中兑换成USDC</div>'
+    + '<div id="depositMinHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充币金额 5 USDC或USDT</div>'
     + '</div></div></div>';
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
   modal.querySelector('.deposit-overlay').addEventListener('click', function(e) { if (e.target === this) closeDepositModal(); });
+  // 点击其他区域关闭币种下拉
+  document.addEventListener('click', closeDepositCoinDropdown);
+}
+
+function toggleDepositCoinDropdown() {
+  var dd = document.getElementById('depositCoinDropdown');
+  if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+
+function closeDepositCoinDropdown(e) {
+  var dd = document.getElementById('depositCoinDropdown');
+  if (!dd) return;
+  var wrapper = dd.closest('.deposit-coin-select-wrapper');
+  if (e && wrapper && wrapper.contains(e.target)) return;
+  dd.style.display = 'none';
+}
+
+function selectDepositCoin(coin) {
+  depositSelectedCoin = coin;
+  var iconEl = document.getElementById('depositCoinIcon');
+  var labelEl = document.getElementById('depositCoinLabel');
+  var swapRow = document.getElementById('depositSwapRow');
+  var swapHint = document.getElementById('depositSwapHint');
+  var minHint = document.getElementById('depositMinHint');
+  var sendCoin = document.getElementById('depositSwapSendCoin');
+  var receiveCoin = document.getElementById('depositSwapReceiveCoin');
+
+  if (coin === 'STORY') {
+    if (iconEl) { iconEl.style.cssText = 'background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff'; iconEl.textContent = 'S'; }
+    if (labelEl) labelEl.textContent = 'STORY';
+    if (swapRow) swapRow.style.display = 'none';
+    if (swapHint) swapHint.style.display = 'none';
+    if (minHint) minHint.style.display = 'none';
+  } else if (coin === 'USDT') {
+    if (iconEl) { iconEl.style.cssText = 'background:#26A17B;color:#fff'; iconEl.textContent = '$'; }
+    if (labelEl) labelEl.textContent = 'USDT';
+    if (swapRow) swapRow.style.display = 'flex';
+    if (swapHint) swapHint.style.display = '';
+    if (minHint) minHint.style.display = '';
+    if (sendCoin) sendCoin.textContent = 'USDT';
+    if (receiveCoin) receiveCoin.textContent = 'USDC';
+  } else {
+    if (iconEl) { iconEl.style.cssText = 'background:#2775CA;color:#fff'; iconEl.textContent = '$'; }
+    if (labelEl) labelEl.textContent = 'USDC';
+    if (swapRow) swapRow.style.display = 'flex';
+    if (swapHint) swapHint.style.display = '';
+    if (minHint) minHint.style.display = '';
+    if (sendCoin) sendCoin.textContent = 'USDC';
+    if (receiveCoin) receiveCoin.textContent = 'USDC';
+  }
+  closeDepositCoinDropdown();
 }
 
 function closeDepositModal() {
