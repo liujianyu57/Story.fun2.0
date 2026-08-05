@@ -2815,9 +2815,23 @@
       pendingBatchType = type;
       var title = type === 'perform' ? '一键演出' : type === 'charge' ? '一键补充' : '一键休息';
       var unit = type === 'perform' ? '将按片酬从高到低安排到空在演位' : type === 'charge' ? '将恢复演出中角色的全部体力' : '将让所有在演角色休息';
+
+      // 计算一键补充的总花费
+      var batchCost = 0;
+      if (type === 'charge') {
+        var chargeTargets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
+        chargeTargets.forEach(function(a) {
+          var cfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
+          batchCost += cfg.costCoeff * 10;
+        });
+      }
+
       document.getElementById('batchModalTitle').textContent = title;
       document.getElementById('batchModalUnit').textContent = unit;
       document.getElementById('batchModalCount').textContent = count + ' 个角色';
+      if (type === 'charge') {
+        document.getElementById('batchModalCount').textContent = count + ' 个角色 · 总花费 ' + batchCost.toFixed(1) + ' USDC';
+      }
       document.getElementById('batchModalConfirmBtn').textContent = '确认' + title;
       document.getElementById('batchModal').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -2860,11 +2874,14 @@
     function autoCharge() {
       var targets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
       if (targets.length === 0) { showToast('演出中的角色体力已满'); return; }
+      var totalCost = 0;
       targets.forEach(function(a) {
+        var cfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
+        totalCost += cfg.costCoeff * 10;
         a.energy = a.energyMax;
         a.status = 'active';
       });
-      showToast('已补充 ' + targets.length + ' 位角色的体力');
+      showToast('已补充 ' + targets.length + ' 位角色的体力（共花费 ' + totalCost.toFixed(1) + ' USDC）');
     }
 
     // 一键休息：所有在演角色休息
@@ -2998,8 +3015,8 @@
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
 
-      const shortage = actor.energyMax - actor.energy;
-      const cost = shortage * 0.5;
+      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+      const cost = levelCfg.costCoeff * 10;
 
       document.getElementById('modalChargeActor').textContent = actor.name + ' · 体力 ' + actor.energy + '/' + actor.energyMax;
       document.getElementById('modalChargeCurrent').textContent = actor.energy + ' / ' + actor.energyMax;
@@ -3019,8 +3036,8 @@
       if (!pendingChargeActorId) return;
       const actor = MY_ACTORS.find(a => a.id === pendingChargeActorId);
       if (actor) {
-        const shortage = actor.energyMax - actor.energy;
-        const cost = shortage * 0.5;
+        const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+        const cost = levelCfg.costCoeff * 10;
         actor.energy = actor.energyMax;
         if (actor.isStaking) actor.status = 'active';
         showToast(actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' USDC）');
