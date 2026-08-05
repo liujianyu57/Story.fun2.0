@@ -682,6 +682,16 @@ function openWithdrawModal() {
         </div>
         <div class="withdraw-body">
           <div class="withdraw-field-group">
+            <div class="withdraw-field-label">币种</div>
+            <button class="withdraw-select-field">
+              <div class="withdraw-select-left">
+                <div class="withdraw-crypto-icon" style="background:linear-gradient(135deg,#2775CA,#3b82f6);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">$</div>
+                <span class="withdraw-select-label">USDC</span>
+              </div>
+              <span class="withdraw-select-chevron">▾</span>
+            </button>
+          </div>
+          <div class="withdraw-field-group">
             <div class="withdraw-field-label">提现地址</div>
             <div class="withdraw-input-field">
               <input type="text" id="withdrawAddress" placeholder="输入接收USDC的钱包地址" />

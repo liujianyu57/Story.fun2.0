@@ -693,27 +693,20 @@
 
   <!-- ===== MOBILE ASSETS BALANCE ===== -->
   <div class="mobile-assets">
-    <div class="ma-item" onclick="openPointsHistory()" style="cursor:pointer;">
+    <div class="ma-item" onclick="openIAPModal()" style="cursor:pointer;">
       <div class="ma-icon" style="display:flex;align-items:center;justify-content:center;font-size:22px;">💎</div>
       <div class="ma-info">
         <span class="ma-name">点数</span>
         <span class="ma-balance" id="mobileBalancePoints">500</span>
       </div>
     </div>
-    <div class="ma-item">
+    <div class="ma-item" onclick="openStorySheet()" style="cursor:pointer;">
       <div class="ma-icon ma-story"></div>
       <div class="ma-info">
         <span class="ma-name">STORY</span>
         <span class="ma-balance" id="mobileBalanceStory">10,123</span>
       </div>
     </div>
-  </div>
-  <!-- ===== MOBILE ASSETS ACTIONS ===== -->
-  <div class="mobile-asset-actions">
-    <button class="maa-btn maa-primary" onclick="openIAPModal()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-      获取点数
-    </button>
   </div>
 
   <!-- ===== MOBILE TABS ===== -->
@@ -831,7 +824,10 @@
   <div class="sheet-overlay" id="iapPointsSheet" onclick="closeIAPModal()"></div>
   <div class="sheet-panel" id="iapPointsPanel">
     <div class="sheet-handle"></div>
-    <div class="sheet-title">购买点数</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <span style="font-size:1.1rem;font-weight:700;">购买点数</span>
+      <span onclick="event.stopPropagation();closeIAPModal();openPointsHistory();" style="font-size:0.82rem;color:var(--text-muted);cursor:pointer;font-weight:500;">记录</span>
+    </div>
     <p style="font-size:0.82rem;color:var(--text-sub);text-align:center;margin:-8px 0 4px;">点数用于签约角色等 App 内服务</p>
     <p style="font-size:13px;color:var(--text);text-align:center;margin-bottom:14px;font-weight:600;">💎 余额：<span id="sheetPointsBalance">500</span></p>
     <div style="display:flex;flex-direction:column;gap:10px;">
@@ -862,6 +858,32 @@
     </div>
   </div>
 
+  <!-- ===== STORY Sheet ===== -->
+  <div class="sheet-overlay" id="storySheet" onclick="closeStorySheet()"></div>
+  <div class="sheet-panel" id="storyPanel">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">STORY</div>
+    <div style="text-align:center;margin-bottom:4px;">
+      <span style="font-size:36px;font-weight:800;color:var(--text);" id="storySheetBalance">10,123</span>
+      <span style="font-size:14px;color:var(--text-sub);display:block;margin-top:2px;">STORY</span>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-sub);text-align:center;margin-bottom:18px;">产自经纪人页</p>
+    <button class="iap-pkg-btn" onclick="closeStorySheet();openStoryDepositSheet();" style="justify-content:center;gap:8px;margin-bottom:10px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+      <span style="font-size:15px;font-weight:600;">充值</span>
+    </button>
+    <button class="iap-pkg-btn" onclick="closeStorySheet();openWithdrawStorySheet();" style="justify-content:center;gap:8px;border-color:var(--border);color:var(--text-muted);background:var(--bg);">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+      <span style="font-size:15px;font-weight:600;">提现</span>
+    </button>
+  </div>
+
+  <!-- ===== STORY Deposit Modal ===== -->
+  <div id="storyDepositModal"></div>
+
+  <!-- ===== Withdraw STORY Modal ===== -->
+  <div id="withdrawStoryModal"></div>
+
   <!-- ===== Points History Bottom Sheet ===== -->
   <div class="sheet-overlay" id="pointsHistorySheet" onclick="closePointsHistory()"></div>
   <div class="sheet-panel" id="pointsHistoryPanel">
@@ -876,9 +898,9 @@
     <span id="toastMessage"></span>
   </div>
 
-  <script src="auth.js"></script>
-  <script src="load-sidebar.js"></script>
-<script src="load-desktop-header.js"></script>
+  <script src="../auth.js"></script>
+  <script src="../load-sidebar.js"></script>
+<script src="../load-desktop-header.js"></script>
   <script>
     let toastTimer = null;
     let pendingAvatarDataUrl = null;
@@ -1197,6 +1219,195 @@
       document.body.style.overflow = '';
     }
 
+    /* ── Story Deposit Modal (100% replica of auth.js deposit) ── */
+    function openStoryDepositSheet() {
+      var existing = document.getElementById('storyDepositModal');
+      if (existing) existing.innerHTML = '';
+      var modal = document.getElementById('storyDepositModal');
+      modal.innerHTML = '' +
+        '<div class="deposit-overlay" id="storyDepositOverlay">' +
+        '  <div class="deposit-card" style="max-height:none;padding:20px">' +
+        '    <div class="deposit-header">' +
+        '      <span class="deposit-title">充值</span>' +
+        '      <button class="deposit-close" id="sdClose">✕</button>' +
+        '    </div>' +
+        '    <div class="deposit-body" style="gap:18px">' +
+        '      <div class="deposit-field-group">' +
+        '        <div class="deposit-field-label">币种</div>' +
+        '        <button class="deposit-select-field">' +
+        '          <div class="deposit-select-left">' +
+        '            <div class="deposit-crypto-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff">S</div>' +
+        '            <span class="deposit-select-label">STORY</span>' +
+        '          </div>' +
+        '          <span class="deposit-select-chevron">▾</span>' +
+        '        </button>' +
+        '      </div>' +
+        '      <div class="deposit-field-group">' +
+        '        <div class="deposit-field-label">网络</div>' +
+        '        <button class="deposit-select-field">' +
+        '          <div class="deposit-select-left">' +
+        '            <div class="deposit-crypto-icon" style="background:linear-gradient(135deg,#9945FF,#14F195);color:#fff">S</div>' +
+        '            <span class="deposit-select-label">Solana</span>' +
+        '          </div>' +
+        '          <span class="deposit-select-chevron">▾</span>' +
+        '        </button>' +
+        '      </div>' +
+        '      <div style="display:flex;justify-content:center">' +
+        '        <img class="deposit-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=SoLanaStoryDeposit12345" alt="充值地址二维码" onerror="this.style.display=\'none\'" style="width:120px;height:120px;border-radius:8px;object-fit:cover;background:#f0f4f8" />' +
+        '      </div>' +
+        '      <div class="deposit-field-group">' +
+        '        <div class="deposit-field-label">充值地址</div>' +
+        '        <div class="deposit-address-field" style="padding:12px">' +
+        '          <span class="deposit-address-text">SoLanaStoryDeposit12345Addr67890</span>' +
+        '          <button class="deposit-copy-btn" onclick="navigator.clipboard.writeText(\'SoLanaStoryDeposit12345Addr67890\'); showToast(\'✅ 地址已复制到剪贴板\');">📋</button>' +
+        '        </div>' +
+        '      </div>' +
+        '      <div class="dw-swap-row" style="margin-top:4px">' +
+        '        <div class="dw-swap-side">' +
+        '          <div class="dw-swap-icon-wrap">' +
+        '            <div class="dw-swap-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff)"></div>' +
+        '            <div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div>' +
+        '          </div>' +
+        '          <div class="dw-swap-text">' +
+        '            <span class="dw-swap-text-label">发送</span>' +
+        '            <span class="dw-swap-text-coin">STORY</span>' +
+        '          </div>' +
+        '        </div>' +
+        '        <span class="dw-swap-arrow">→</span>' +
+        '        <div class="dw-swap-side">' +
+        '          <div class="dw-swap-icon-wrap">' +
+        '            <div class="dw-swap-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff)"></div>' +
+        '            <div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div>' +
+        '          </div>' +
+        '          <div class="dw-swap-text">' +
+        '            <span class="dw-swap-text-label">接收</span>' +
+        '            <span class="dw-swap-text-coin">STORY</span>' +
+        '          </div>' +
+        '        </div>' +
+        '      </div>' +
+        '      <div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动充值到你的 Story.fun 账户</div>' +
+        '      <div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充值金额 50 STORY</div>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
+      document.body.style.overflow = 'hidden';
+      document.getElementById('sdClose').addEventListener('click', closeStoryDepositSheet);
+      document.getElementById('storyDepositOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeStoryDepositSheet();
+      });
+    }
+
+    function closeStoryDepositSheet() {
+      var m = document.getElementById('storyDepositModal');
+      if (m) m.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    /* ── Story Sheet ── */
+    function openStorySheet() {
+      var bal = (typeof currentUser !== 'undefined' && currentUser.balances && currentUser.balances.story) ? currentUser.balances.story : 10123;
+      document.getElementById('storySheetBalance').textContent = bal.toLocaleString();
+      document.getElementById('storySheet').classList.add('active');
+      document.getElementById('storyPanel').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStorySheet() {
+      document.getElementById('storySheet').classList.remove('active');
+      document.getElementById('storyPanel').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── Withdraw STORY Modal ── */
+    function openWithdrawStorySheet() {
+      var bal = (typeof currentUser !== 'undefined' && currentUser.balances && currentUser.balances.story) ? currentUser.balances.story : 10123;
+      var balStr = bal.toLocaleString('en-US');
+      var modal = document.getElementById('withdrawStoryModal');
+      modal.innerHTML = '' +
+        '<div class="withdraw-overlay" id="withdrawStoryOverlay">' +
+        '  <div class="withdraw-card">' +
+        '    <div class="withdraw-header">' +
+        '      <span class="withdraw-title">提现 STORY</span>' +
+        '      <button class="withdraw-close" id="wsClose">✕</button>' +
+        '    </div>' +
+        '    <div class="withdraw-body">' +
+        '      <div class="withdraw-field-group">' +
+        '        <div class="withdraw-field-label">币种</div>' +
+        '        <button class="withdraw-select-field" id="wsCoinSelect">' +
+        '          <div class="withdraw-select-left">' +
+        '            <div class="withdraw-crypto-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px">S</div>' +
+        '            <span class="withdraw-select-label">STORY</span>' +
+        '          </div>' +
+        '          <span class="withdraw-select-chevron">▾</span>' +
+        '        </button>' +
+        '      </div>' +
+        '      <div class="withdraw-field-group">' +
+        '        <div class="withdraw-field-label">提现地址</div>' +
+        '        <div class="withdraw-input-field">' +
+        '          <input type="text" id="withdrawStoryAddress" placeholder="输入接收 STORY 的钱包地址" />' +
+        '          <button class="withdraw-scan-btn" id="wsScan" type="button">' +
+        '            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M12 10v4"/><path d="M10 12h4"/></svg>' +
+        '          </button>' +
+        '        </div>' +
+        '        <span class="withdraw-input-hint">请确认地址正确，转账后无法撤回</span>' +
+        '      </div>' +
+        '      <div class="withdraw-field-group">' +
+        '        <div class="withdraw-field-label">提现网络</div>' +
+        '        <button class="withdraw-select-field">' +
+        '          <div class="withdraw-select-left">' +
+        '            <div class="withdraw-crypto-icon" style="background:linear-gradient(135deg,#9945FF,#14F195);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px">S</div>' +
+        '            <span class="withdraw-select-label">Solana</span>' +
+        '          </div>' +
+        '          <span class="withdraw-select-chevron">▾</span>' +
+        '        </button>' +
+        '      </div>' +
+        '      <div class="withdraw-field-group">' +
+        '        <div class="withdraw-field-label">提现金额</div>' +
+        '        <div class="withdraw-input-field">' +
+        '          <input type="number" id="withdrawStoryAmount" placeholder="输入提现金额" min="1" step="1" />' +
+        '          <span class="withdraw-input-suffix">STORY</span>' +
+        '        </div>' +
+        '        <span style="font-size:12px;color:#8B8D98;padding-top:4px">可提现 ' + balStr + ' STORY</span>' +
+        '      </div>' +
+        '      <div class="withdraw-field-group">' +
+        '        <button class="withdraw-submit-btn" id="wsSubmit">确认提现</button>' +
+        '      </div>' +
+        '      <div class="withdraw-warning-text">' +
+        '        <p>· 最小提现金额：1 STORY</p>' +
+        '        <p>· 请仔细核对提现地址和网络，转账后无法撤回</p>' +
+        '      </div>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
+      document.body.style.overflow = 'hidden';
+
+      document.getElementById('wsClose').addEventListener('click', closeWithdrawStoryModal);
+      document.getElementById('wsSubmit').addEventListener('click', confirmWithdrawStory);
+      document.getElementById('withdrawStoryOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeWithdrawStoryModal();
+      });
+      var scan = document.getElementById('wsScan');
+      if (scan) scan.addEventListener('click', function() { showToast('⏳ 扫码功能开发中'); });
+    }
+
+    function closeWithdrawStoryModal() {
+      var m = document.getElementById('withdrawStoryModal');
+      if (m) m.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    function confirmWithdrawStory() {
+      var amount = parseInt(document.getElementById('withdrawStoryAmount').value);
+      var address = document.getElementById('withdrawStoryAddress').value.trim();
+      if (!amount || amount <= 0) { showToast('⚠️ 请输入有效的提现数量'); return; }
+      if (!address) { showToast('⚠️ 请输入接收地址'); return; }
+      if (amount < 1) { showToast('⚠️ 最小提现金额：1 STORY'); return; }
+      var bal = (typeof currentUser !== 'undefined' && currentUser.balances && currentUser.balances.story) ? currentUser.balances.story : 10123;
+      if (amount > bal) { showToast('⚠️ 余额不足'); return; }
+      closeWithdrawStoryModal();
+      showToast('✅ 提现 ' + amount + ' STORY 申请已提交（演示模式）', '💰');
+    }
+
     /* ── Drawer Events ── */
     document.addEventListener('DOMContentLoaded', function() {
       const menuBtn = document.getElementById('profileMenuBtn');
@@ -1295,8 +1506,8 @@
     }
   </script>
   <div id="bottom-nav-placeholder"></div>
-  <script src="load-bottom-nav.js"></script>
-<script src="auth.js"></script>
+  <script src="../load-bottom-nav.js"></script>
+<script src="../auth.js"></script>
 <script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
 <script>
 function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
