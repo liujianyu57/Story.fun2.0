@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Story.fun | 个人中心</title>
+  <style>
+    :root {
+      --bg: #f5faff;
+      --surface: #ffffff;
+      --accent: #00b388;
+      --accent-soft: rgba(0, 179, 136, 0.10);
+      --accent-glow: rgba(0, 179, 136, 0.20);
+      --text: #13202e;
+      --text-muted: #6e859e;
+      --text-sub: #8b8d98;
+      --border: #deeaf7;
+      --border-light: #e8f0fa;
+      --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.04);
+      --shadow-md: 0 4px 12px rgba(27, 45, 71, 0.06);
+      --radius: 16px;
+      font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
+    .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+
+    .gradient-text { background: linear-gradient(135deg, #05DF72, #00BBA7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-bg { background: linear-gradient(135deg, #05DF72, #00BBA7); }
+
+    /* ===== Desktop Main Content ===== */
+    .main-content { padding: 24px 24px 80px; display: flex; flex-direction: column; gap: 24px; }
+
+    /* ===== Desktop User Info Card ===== */
+    .user-info-card { background: var(--surface); border-radius: var(--radius); padding: 24px 28px; box-shadow: var(--shadow-sm); }
+    .user-info-inner { display: flex; align-items: center; gap: 20px; }
+
+    .avatar-wrap { flex-shrink: 0; }
+    .avatar-gradient { width: 88px; height: 88px; border-radius: 99px; padding: 2.5px; background: linear-gradient(135deg, #05DF72, #00BBA7); }
+    .avatar-bg { width: 100%; height: 100%; border-radius: 99px; overflow: hidden; background: var(--bg); display: flex; align-items: center; justify-content: center; }
+    .avatar-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .avatar-bg .avatar-letter { font-size: 26px; font-weight: 700; }
+
+    .user-info-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+    .user-info-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .user-info-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .user-name { font-size: 20px; font-weight: 700; color: var(--text); }
+    .user-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    .btn-edit-icon { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; padding: 0; }
+    .btn-edit-icon:active { transform: scale(0.93); }
+    .avatar-edit-icon { position: absolute; bottom: -2px; right: -2px; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.10); }
+    .btn-edit-icon svg { width: 16px; height: 16px; stroke: var(--text-muted); }
+
+    .user-stats { display: flex; gap: 24px; margin-top: 4px; }
+    .user-stat-item { display: flex; flex-direction: column; gap: 2px; }
+    .user-stat-item .stat-num { font-size: 18px; font-weight: 700; color: var(--text); }
+    .user-stat-item .stat-label { font-size: 12px; color: var(--text-sub); }
+
+    /* ===== Tabs (Desktop) ===== */
+    .tab-bar { display: flex; align-items: center; gap: 0; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 3px; width: fit-content; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-item { padding: 8px 20px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.25s; background: none; border: none; border-radius: 8px; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
+    .tab-item.active { background: var(--surface); color: var(--accent); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+    /* ===== Drama Grid (Desktop) ===== */
+    .works-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; margin-bottom: 34px; }
+
+    .work-card { border-radius: 20px; min-height: 450px; display: flex; flex-direction: column; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid var(--border); transition: all 0.3s ease; cursor: pointer; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+    .work-card:hover { transform: translateY(-5px); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .work-card:active { transform: scale(0.98); }
+    .tab-item:active { opacity: 0.7; }
+    .work-card .card-thumb { width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--border); display: block; }
+    .work-card .card-body { padding: 20px 22px 18px; flex-grow: 1; }
+    .work-card .card-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .work-card .badge, .work-card .episode { display: inline-flex; align-items: center; border-radius: 999px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; }
+    .work-card .badge { background: var(--accent-soft); color: var(--accent); }
+    .work-card .episode { background: var(--border-light); color: var(--text-muted); }
+    .work-card h3 { margin: 0 0 12px; font-size: 1.4rem; line-height: 1.25; color: var(--text); }
+    .work-card p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+    .work-card .card-actors { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .work-card .card-actors-label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; white-space: nowrap; }
+    .work-card .card-actors-list { display: flex; gap: 8px; flex-wrap: wrap; }
+    .work-card .card-actor-item { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: transform 0.2s ease; }
+    .work-card .card-actor-item:hover { transform: translateY(-2px); }
+    .work-card .card-actor-avatar { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border); flex-shrink: 0; transition: border-color 0.2s ease; }
+    .work-card .card-actor-item:hover .card-actor-avatar { border-color: var(--accent); }
+    .work-card .card-actor-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .work-card .card-actor-name { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+    .work-card .card-foot { padding: 16px 22px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .work-card .info-row { display: flex; flex-wrap: wrap; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
+    .work-card .card-rating { display: inline-flex; align-items: center; gap: 3px; color: #ffc107; font-weight: 600; }
+    .work-card .card-rating .star-icon { font-size: 0.82rem; }
+
+    .empty-state { text-align: center; padding: 64px 24px; color: var(--text-sub); }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state p { font-size: 15px; }
+
+    /* ===== Edit Profile Modal ===== */
+    .modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card { background: var(--surface); border-radius: 28px; width: 100%; max-width: 440px; box-shadow: 0 40px 80px rgba(27,45,71,0.2); overflow: hidden; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease; padding: 28px; }
+    .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+    .modal-card h2 { margin: 0 0 8px; font-size: 1.25rem; text-align: center; }
+    .modal-card .modal-sub { color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 20px; }
+    .modal-card .modal-btn {
+      width: 100%; padding: 14px; border-radius: 999px; border: none;
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+    }
+    .modal-card .modal-btn.confirm { background: linear-gradient(135deg, #05DF72, #00BBA7); color: #fff; margin-bottom: 10px; }
+    .modal-card .modal-btn.cancel { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+    .modal-card .modal-btn.cancel:hover { background: rgba(0,0,0,0.03); }
+    .modal-card .modal-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
+
+    .edit-field-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .edit-field-group label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .edit-field-group input,
+    .edit-field-group textarea {
+      padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
+      font-size: 16px; font-family: inherit; color: var(--text);
+      background: var(--bg); transition: border-color 0.2s; outline: none;
+    }
+    .edit-field-group input:focus,
+    .edit-field-group textarea:focus { border-color: var(--accent); background: var(--surface); }
+    .edit-field-group textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    .edit-field-group .char-count { font-size: 0.7rem; color: var(--text-sub); text-align: right; margin-top: 2px; }
+
+    .edit-avatar-preview { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin: 0 auto 16px; border: 3px solid var(--border); }
+    .edit-avatar-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ===== IAP Points Package Buttons ===== */
+    .iap-pkg-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--border);
+      background: var(--surface); cursor: pointer; transition: all 0.2s;
+      font-family: inherit; text-align: left; width: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .iap-pkg-btn:active { transform: scale(0.98); background: var(--bg); }
+    .iap-pkg-left { display: flex; align-items: center; gap: 2px; }
+    .iap-pkg-points { font-size: 16px; font-weight: 700; color: var(--text); }
+    .iap-pkg-right { display: flex; align-items: center; }
+    .iap-pkg-price { font-size: 18px; font-weight: 700; color: var(--accent); }
+
+    /* Bottom Sheet Overlay */
+    .sheet-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .sheet-overlay.active { opacity: 1; visibility: visible; }
+    .sheet-panel { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10000; background: var(--surface); border-radius: 24px 24px 0 0; padding: 8px 16px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); max-height: 80vh; overflow-y: auto; }
+    .sheet-panel.open { transform: translateY(0); }
+    .sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border); margin: 8px auto 16px; }
+    .sheet-title { font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 16px; color: var(--text); }
+
+    /* Points History */
+    .ph-item { display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border-light); }
+    .ph-item:last-child { border-bottom: none; }
+    .ph-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .ph-action { font-size: 14px; font-weight: 600; color: var(--text); }
+    .ph-meta { font-size: 12px; color: var(--text-sub); display: flex; gap: 8px; }
+    .ph-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+    .ph-amount { font-size: 16px; font-weight: 700; }
+    .ph-amount.plus { color: var(--accent); }
+    .ph-amount.minus { color: #f45b69; }
+    .ph-price { font-size: 11px; color: var(--text-sub); }
+
+    /* ===== Desktop Drawer ===== */
+    .profile-menu-btn {
+      position: fixed;
+      top: calc(16px + env(safe-area-inset-top));
+      right: 16px;
+      z-index: 5000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+
+    /* Desktop larger screens: ensure mobile elements hidden (BEFORE media query) */
+    .mobile-top-bar { display: none; }
+    .mobile-profile-section { display: none; }
+    .mobile-stats { display: none; }
+    .mobile-tabs { display: none; }
+    .mobile-drama-grid { display: none; }
+    .mobile-assets { display: none; }
+    .mobile-asset-actions { display: none; }
+    .mobile-empty { display: none; }
+
+    @media (max-width: 1120px) { .works-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+    /* ================================================================== */
+    /*  MOBILE STYLES (max-width: 760px)                                  */
+    /*  Douyin-style "我" page layout                                      */
+    /* ================================================================== */
+    @media (max-width: 760px) {
+      /* Show profile menu button on mobile, hide desktop-only elements */
+      .user-info-card { display: none; }
+      .profile-menu-btn { display: flex !important; }
+      .profile-drawer-overlay, .profile-drawer { z-index: 6000; }
+
+      body { background: #fff; }
+      .app-shell { padding: 0; }
+      .main-content { padding: 0 0 calc(80px + env(safe-area-inset-bottom)); gap: 0; }
+
+        /* ── Mobile Top Bar ── */
+      .mobile-top-bar {
+        display: block;
+        padding-top: calc(40px + env(safe-area-inset-top));
+        background: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      /* ── Profile Section ── */
+      .mobile-profile-section { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+
+      .mobile-profile-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .mobile-profile-row .avatar-gradient {
+        width: 78px;
+        height: 78px;
+        padding: 2px;
+        flex-shrink: 0;
+      }
+      .mobile-profile-row .avatar-bg .avatar-letter { font-size: 22px; }
+
+      .mobile-profile-info { flex: 1; min-width: 0; padding-top: 4px; }
+      .mobile-profile-info .mp-name { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.3; }
+      .mobile-profile-info .mp-id { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+      .mobile-profile-info .mp-bio { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+      /* ── Mobile Wallet Address ── */
+      .mp-wallet {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        padding: 6px 10px;
+        background: var(--bg);
+        border-radius: 8px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        width: fit-content;
+      }
+      .mp-wallet .mp-wallet-address {
+        font-size: 12px;
+        font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
+        color: var(--text-muted);
+      }
+      .mp-wallet svg { color: var(--text-muted); flex-shrink: 0; }
+
+      /* ── Edit Icon on Avatar ── */
+      .avatar-edit-icon {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 28px;
+        height: 28px;
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        z-index: 2;
+      }
+      .avatar-edit-icon svg { width: 12px; height: 12px; }
+
+      /* ── Stats Row ── */
+      .mobile-stats {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        padding: 12px 0;
+      }
+      .mobile-stats .ms-item {
+        flex: 1;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        border-right: 1px solid var(--border-light);
+      }
+      .mobile-stats .ms-item:last-child { border-right: none; }
+      .mobile-stats .ms-item .ms-num { font-size: 18px; font-weight: 700; color: var(--text); }
+      .mobile-stats .ms-item .ms-label { font-size: 12px; color: var(--text-sub); }
+
+      /* ── Mobile Assets Balance ── */
+      .mobile-assets {
+        display: flex;
+        gap: 10px;
+        padding: 12px 16px 8px;
+        margin: 0;
+      }
+      .mobile-assets .ma-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+      .mobile-assets .ma-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        flex-shrink: 0;
+      }
+      .mobile-assets .ma-icon.ma-story {
+        background: linear-gradient(135deg, #00c2a8, #00b3ff);
+      }
+      .mobile-assets .ma-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 0;
+      }
+      .mobile-assets .ma-info .ma-name {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-sub);
+        letter-spacing: 0.03em;
+      }
+      .mobile-assets .ma-info .ma-balance {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* ── Mobile Asset Actions ── */
+      .mobile-asset-actions {
+        display: flex;
+        gap: 8px;
+        padding: 0 16px 12px;
+        border-bottom: 8px solid var(--bg);
+      }
+      .mobile-asset-actions .maa-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 0;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        background: var(--bg);
+        color: var(--text);
+        font-family: inherit;
+        transition: all 0.2s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mobile-asset-actions .maa-btn:active { opacity: 0.7; }
+      .mobile-asset-actions .maa-btn svg { flex-shrink: 0; }
+      .mobile-asset-actions .maa-btn.maa-primary {
+        background: linear-gradient(135deg, #05DF72, #00BBA7);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 187, 167, 0.25);
+      }
+      .mobile-asset-actions .maa-btn.maa-primary:active { opacity: 0.85; }
+      .mobile-asset-actions .maa-btn.maa-secondary {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+      }
+      .mobile-asset-actions .maa-btn.maa-secondary:active { background: var(--bg); }
+
+
+      /* ── Mobile Segmented Tabs ── */
+      .mobile-tabs {
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: calc(40px + env(safe-area-inset-top));
+        z-index: 99;
+        background: #fff;
+        border-bottom: 0.5px solid var(--border-light);
+      }
+      .mobile-tabs .mtab-item {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+        position: relative;
+        -webkit-tap-highlight-color: transparent;
+        transition: color 0.2s;
+      }
+      .mobile-tabs .mtab-item.active { color: var(--accent); font-weight: 600; }
+      .mobile-tabs .mtab-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--accent);
+      }
+      .mobile-tabs .mtab-item:active { opacity: 0.6; }
+
+      /* ── Mobile Double-column Drama Grid ── */
+      .mobile-drama-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 12px 16px 0;
+      }
+      .mobile-drama-grid .mdc {
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.15s ease;
+      }
+      .mobile-drama-grid .mdc:active { transform: scale(0.97); }
+      .mobile-drama-grid .mdc-thumb {
+        width: 100%;
+        aspect-ratio: 3/4;
+        object-fit: cover;
+        display: block;
+        border-bottom: 0.5px solid var(--border);
+      }
+      .mobile-drama-grid .mdc-body { padding: 8px 10px 10px; }
+      .mobile-drama-grid .mdc-body .mdc-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 4px;
+      }
+      .mobile-drama-grid .mdc-body .mdc-meta {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .mobile-drama-grid .mdc-body .mdc-meta .mdc-badge {
+        padding: 1px 6px;
+        border-radius: 4px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 600;
+      }
+      .mobile-drama-grid .mdc-body .mdc-meta .mdc-rating { color: #ffc107; font-weight: 600; }
+      .mobile-drama-grid .mdc-body .mdc-meta .mdc-ep { color: var(--text-sub); }
+
+      /* ── Mobile Empty State ── */
+      .mobile-empty {
+        padding: 60px 24px;
+        text-align: center;
+        color: var(--text-sub);
+      }
+      .mobile-empty .me-icon { font-size: 40px; margin-bottom: 12px; }
+      .mobile-empty p { font-size: 14px; }
+
+      /* ── Hide desktop elements on mobile ── */
+      .works-grid { display: none !important; }
+      .tab-bar { display: none !important; }
+      .empty-state { display: none !important; }
+
+      /* ── Edit modal mobile ── */
+      .modal-card { max-width: 92vw; padding: 20px; }
+      .edit-avatar-preview { width: 64px; height: 64px; }
+    }
+
+    /* ================================================================== */
+    /*  Desktop Drawer (unchanged)                                         */
+    /* ================================================================== */
+    .profile-menu-btn svg { width: 20px; height: 20px; stroke: #1C2024; }
+    .profile-drawer-overlay {
+      position: fixed; inset: 0; z-index: 6000;
+      background: rgba(15, 23, 42, 0.35);
+      opacity: 0; visibility: hidden; transition: all 0.3s ease; pointer-events: none;
+    }
+    .profile-drawer-overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .profile-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 280px; max-width: 86vw; z-index: 6001;
+      background: #fff;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.10);
+      transform: translateX(100%);
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    .profile-drawer.open { transform: translateX(0); }
+    .profile-drawer-nav { display: flex; flex-direction: column; padding: 8px 12px; flex: 1; }
+    .profile-drawer-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px; border-radius: 12px;
+      font-size: 16px; font-weight: 500; color: var(--text);
+      cursor: pointer; transition: background 0.15s ease;
+      text-decoration: none; border: none; background: none;
+      width: 100%; text-align: left; font-family: inherit;
+    }
+    .profile-drawer-item:active,
+    .profile-drawer-item:hover { background: rgba(0,0,0,0.03); }
+    .profile-drawer-item.logout-item { color: #f45b69; margin-top: auto; }
+    .profile-drawer-item.logout-item:active { background: rgba(244,91,105,0.08); }
+  /* ── Desktop Header ── */
+.desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
+.desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
+.desktop-header .dh-search:focus-within{border-color:#00b388;box-shadow:0 0 0 3px rgba(0,179,136,.12)}
+.desktop-header .dh-search svg{width:16px;height:16px;flex-shrink:0;color:rgba(0,0,0,0.35)}
+.desktop-header .dh-search input{flex:1;border:none;outline:none;background:none;font-size:13px;color:#13202e;font-family:inherit}
+.desktop-header .dh-search input::placeholder{color:rgba(0,0,0,0.35)}.dh-search-dropdown{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.06);padding:16px;z-index:200;max-height:360px;overflow-y:auto}.dh-search-dropdown.show{display:block}.dh-search-dropdown .sd-section{margin-bottom:14px}.dh-search-dropdown .sd-section:last-child{margin-bottom:0}.dh-search-dropdown .sd-section-title{font-size:12px;font-weight:600;color:#5e6f83;margin-bottom:8px}.dh-search-dropdown .sd-tags{display:flex;flex-wrap:wrap;gap:6px}.dh-search-dropdown .sd-tag{padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.04);font-size:12px;color:#13202e;cursor:pointer;transition:all .15s;border:none;font-family:inherit}.dh-search-dropdown .sd-tag:hover{background:rgba(0,179,136,.1);color:#00b388}.dh-search-dropdown .sd-list{display:flex;flex-direction:column;gap:2px}.dh-search-dropdown .sd-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;color:#13202e;cursor:pointer;transition:background .1s}.dh-search-dropdown .sd-item:hover{background:rgba(0,0,0,.03)}.dh-search-dropdown .sd-item .sd-del{color:#5e6f83;font-size:11px;padding:2px 6px;border-radius:4px;cursor:pointer;border:none;background:none}.dh-search-dropdown .sd-item .sd-del:hover{color:#f45b69}.desktop-header .dh-search-btn{padding:3px 12px;height:auto;border-radius:6px;border:none;background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid transparent;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-right:-4px}.desktop-header .dh-search-btn:hover{background:#00b388;color:#fff;border-color:#00b388}
+.desktop-header .dh-icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;flex-shrink:0}
+.desktop-header .dh-icon-btn:hover{background:rgba(0,0,0,0.06);color:#13202e}
+.desktop-header .dh-icon-btn svg{width:20px;height:20px}
+.desktop-header .dh-notify-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff2d55;border:1.5px solid #fff}
+.desktop-header .dh-publish-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 16px;border-radius:999px;border:none;background:#00b388;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
+.desktop-header .dh-publish-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,179,136,.3)}
+.desktop-header .dh-publish-btn svg{width:16px;height:16px}
+.desktop-header .auth-container{display:flex;align-items:center}
+.desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+.desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
+@media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
+@media(max-width:768px){.desktop-header{display:none}}
+
+</style>
+</head>
+<body>
+<div class="desktop-header" id="desktopHeader">
+  <div class="dh-search" id="dhSearch">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="dhSearchInput" placeholder="搜索短剧、角色、用户..." autocomplete="off"><button class="dh-search-btn" id="dhSearchBtn">搜索</button>
+    <div class="dh-search-dropdown" id="dhSearchDropdown">
+      <div class="sd-section" id="sdHotSection">
+        <div class="sd-section-title">🔥 热门搜索</div>
+        <div class="sd-tags" id="sdHotTags"></div>
+      </div>
+      <div class="sd-section" id="sdRecentSection" style="display:none">
+        <div class="sd-section-title">🕐 最近搜索</div>
+        <div class="sd-list" id="sdRecentList"></div>
+      </div>
+    </div>
+  </div>
+  <button class="dh-icon-btn" onclick="location.href='notifications.html'" title="通知">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span class="dh-notify-dot"></span>
+  </button>
+  <button class="dh-publish-btn" onclick="location.href='publish.html'">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>发布
+  </button>
+  <div class="auth-container" id="authContainer"></div>
+</div>
+
+
+  <!-- ===== Header Placeholder (Desktop) ===== -->
+
+  <!-- ===== Right-Side Profile Menu Button (Mobile + Desktop Drawer trigger) ===== -->
+  <button class="profile-menu-btn" id="profileMenuBtn" aria-label="菜单">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="5" r="1.5" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="19" r="1.5" fill="currentColor" stroke="none"/>
+    </svg>
+  </button>
+
+  <!-- ===== Right-Side Drawer Overlay ===== -->
+  <div class="profile-drawer-overlay" id="profileDrawerOverlay"></div>
+
+  <!-- ===== Right-Side Drawer ===== -->
+  <nav class="profile-drawer" id="profileDrawer">
+    <div class="profile-drawer-nav" style="padding-top: 24px;">
+      <button class="profile-drawer-item" onclick="handleDrawerNav('narrator.html')">
+        <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        创作管理
+      </button>
+      <button class="profile-drawer-item" onclick="handleDrawerNav('referral.html')">
+        <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+        </svg>
+        邀请
+      </button>
+      <button class="profile-drawer-item" onclick="handleDrawerNav('rewards.html')">
+        <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        收益
+      </button>
+      <button class="profile-drawer-item" onclick="handleDrawerNav('transactions')">
+        <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        交易记录
+      </button>
+      <button class="profile-drawer-item" onclick="handleDrawerNav('whitepaper.html')">
+        <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        白皮书
+      </button>
+      <button class="profile-drawer-item" onclick="handleDrawerNav('settings')">
+        <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        设置
+      </button>
+      <button class="profile-drawer-item logout-item" onclick="handleDrawerLogout()">
+        <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        退出登录
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== MOBILE TOP SPACER (keep safe area) ===== -->
+  <div class="mobile-top-bar"></div>
+
+  <!-- ===== MOBILE PROFILE SECTION ===== -->
+  <div class="mobile-profile-section">
+    <div class="mobile-profile-row">
+      <div class="avatar-wrap" style="position:relative;flex-shrink:0;">
+        <div class="avatar-gradient">
+          <div class="avatar-bg" id="mobileAvatarContainer">
+            <span class="avatar-letter gradient-text" id="mobileAvatarLetter">叙</span>
+          </div>
+        </div>
+        <button class="btn-edit-icon avatar-edit-icon" onclick="openEditProfileModal()" aria-label="编辑资料">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+            <path d="m15 5 4 4"/>
+          </svg>
+        </button>
+      </div>
+      <div class="mobile-profile-info">
+        <div class="mp-name" id="mobileProfileName">加密小白</div>
+        <div class="mp-id" id="mobileProfileId">Story ID: 10086</div>
+        <div class="mp-bio" id="mobileProfileBio">在Web3的世界里探索短剧的无限可能。创作者、收藏家、梦想家。</div>
+        <div class="mp-wallet" id="mobileWallet" onclick="copyWallet()">
+          <svg class="mp-wallet-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="12" fill="url(#solGrad)"/>
+            <defs><linearGradient id="solGrad" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#9945FF"/><stop offset="100%" stop-color="#14F195"/></linearGradient></defs>
+            <text x="12" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Arial">S</text>
+          </svg>
+          <span class="mp-wallet-address" id="mobileWalletAddress">DR2x···XyZ9</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Stats -->
+    <div class="mobile-stats">
+      <div class="ms-item" onclick="location.href='social.html?tab=following'"><span class="ms-num">12</span><span class="ms-label">关注</span></div>
+      <div class="ms-item" onclick="location.href='social.html?tab=followers'"><span class="ms-num">88</span><span class="ms-label">粉丝</span></div>
+      <div class="ms-item" onclick="location.href='social.html?tab=mutual'"><span class="ms-num">6</span><span class="ms-label">互关</span></div>
+      <div class="ms-item"><span class="ms-num">999</span><span class="ms-label">获赞</span></div>
+    </div>
+  </div>
+
+  <!-- ===== MOBILE ASSETS BALANCE ===== -->
+  <div class="mobile-assets">
+    <div class="ma-item" onclick="openPointsHistory()" style="cursor:pointer;">
+      <div class="ma-icon" style="display:flex;align-items:center;justify-content:center;font-size:22px;">💎</div>
+      <div class="ma-info">
+        <span class="ma-name">点数</span>
+        <span class="ma-balance" id="mobileBalancePoints">500</span>
+      </div>
+    </div>
+    <div class="ma-item">
+      <div class="ma-icon ma-story"></div>
+      <div class="ma-info">
+        <span class="ma-name">STORY</span>
+        <span class="ma-balance" id="mobileBalanceStory">10,123</span>
+      </div>
+    </div>
+  </div>
+  <!-- ===== MOBILE ASSETS ACTIONS ===== -->
+  <div class="mobile-asset-actions">
+    <button class="maa-btn maa-primary" onclick="openIAPModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+      获取点数
+    </button>
+  </div>
+
+  <!-- ===== MOBILE TABS ===== -->
+  <div class="mobile-tabs">
+    <button class="mtab-item active" data-mtab="published" onclick="switchMobileTab('published')">作品</button>
+    <button class="mtab-item" data-mtab="liked" onclick="switchMobileTab('liked')">赞</button>
+    <button class="mtab-item" data-mtab="favorited" onclick="switchMobileTab('favorited')">收藏</button>
+  </div>
+
+  <!-- ===== MOBILE DRAMA GRID (dynamic) ===== -->
+  <div id="mobileTabPublished" class="mobile-drama-grid"></div>
+  <div id="mobileTabLiked" class="mobile-empty" style="display:none;">
+    <div class="me-icon">❤️</div>
+    <p>暂无赞过的短剧</p>
+  </div>
+  <div id="mobileTabFavorited" class="mobile-empty" style="display:none;">
+    <div class="me-icon">⭐</div>
+    <p>暂无收藏的短剧</p>
+  </div>
+
+  <!-- ===== DESKTOP CONTENT (unchanged) ===== -->
+  <div class="app-shell">
+    <div class="main-content">
+
+      <!-- Desktop User Info Card -->
+      <div class="user-info-card">
+        <div class="user-info-inner">
+          <div class="avatar-wrap" style="position:relative;">
+            <div class="avatar-gradient">
+              <div class="avatar-bg" id="avatarContainer">
+                <span class="avatar-letter gradient-text" id="avatarLetter">叙</span>
+              </div>
+            </div>
+            <button class="btn-edit-icon avatar-edit-icon" onclick="openEditProfileModal()" aria-label="编辑资料">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                <path d="m15 5 4 4"/>
+              </svg>
+            </button>
+          </div>
+          <div class="user-info-body">
+            <div class="user-info-top">
+              <div class="user-info-texts">
+                <div class="user-name" id="profileName">加密小白</div>
+                <div class="user-bio" id="profileBio">在Web3的世界里探索短剧的无限可能。创作者、收藏家、梦想家。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="user-stats">
+          <div class="user-stat-item" onclick="location.href='social.html?tab=following'" style="cursor:pointer"><span class="stat-num">12</span><span class="stat-label">关注</span></div>
+          <div class="user-stat-item" onclick="location.href='social.html?tab=followers'" style="cursor:pointer"><span class="stat-num">88</span><span class="stat-label">粉丝</span></div>
+          <div class="user-stat-item" onclick="location.href='social.html?tab=mutual'" style="cursor:pointer"><span class="stat-num">6</span><span class="stat-label">互关</span></div>
+          <div class="user-stat-item"><span class="stat-num">999</span><span class="stat-label">获赞</span></div>
+        </div>
+      </div>
+
+      <!-- Desktop Tabs -->
+      <div>
+        <div class="tab-bar">
+          <button class="tab-item active" data-tab="published" onclick="switchTab('published')">作品</button>
+          <button class="tab-item" data-tab="liked" onclick="switchTab('liked')">点赞</button>
+          <button class="tab-item" data-tab="favorited" onclick="switchTab('favorited')">收藏</button>
+        </div>
+      </div>
+
+      <!-- Desktop Works Grid (dynamic) -->
+      <div id="tabPublished" class="works-grid"></div>
+
+      <!-- Desktop Empty States -->
+      <div id="tabLiked" class="empty-state" style="display:none;">
+        <div class="empty-icon">❤️</div>
+        <p>暂无点赞的短剧</p>
+      </div>
+      <div id="tabFavorited" class="empty-state" style="display:none;">
+        <div class="empty-icon">⭐</div>
+        <p>暂无收藏的短剧</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Edit Profile Modal ===== -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-card">
+      <h2>编辑资料</h2>
+      <p class="modal-sub">修改你的头像、用户名和简介</p>
+
+      <div class="edit-avatar-preview" id="editAvatarPreview">
+        <img src="" alt="头像预览" />
+      </div>
+
+      <div class="edit-field-group">
+        <label>头像</label>
+        <input type="file" id="editAvatarFile" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)" />
+        <button type="button" class="modal-btn cancel" onclick="document.getElementById('editAvatarFile').click()" style="margin-bottom:0;">📷 选择本地图片</button>
+      </div>
+
+      <div class="edit-field-group">
+        <label>用户名</label>
+        <input type="text" id="editNameInput" placeholder="输入用户名" maxlength="20" />
+      </div>
+
+      <div class="edit-field-group">
+        <label>简介</label>
+        <textarea id="editBioInput" placeholder="介绍一下自己" maxlength="120"></textarea>
+        <span class="char-count"><span id="bioCharCount">0</span>/120</span>
+      </div>
+
+      <button class="modal-btn confirm" onclick="saveProfile()">保存</button>
+      <button class="modal-btn cancel" onclick="closeEditProfileModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- ===== IAP Points Bottom Sheet ===== -->
+  <div class="sheet-overlay" id="iapPointsSheet" onclick="closeIAPModal()"></div>
+  <div class="sheet-panel" id="iapPointsPanel">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">购买点数</div>
+    <p style="font-size:0.82rem;color:var(--text-sub);text-align:center;margin:-8px 0 4px;">点数用于签约角色等 App 内服务</p>
+    <p style="font-size:13px;color:var(--text);text-align:center;margin-bottom:14px;font-weight:600;">💎 余额：<span id="sheetPointsBalance">500</span></p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button class="iap-pkg-btn" onclick="purchasePoints(6)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">6 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$7.80</span></div>
+      </button>
+      <button class="iap-pkg-btn" onclick="purchasePoints(18)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">18 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$23.40</span></div>
+      </button>
+      <button class="iap-pkg-btn" onclick="purchasePoints(60)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">60 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$78.00</span></div>
+      </button>
+      <button class="iap-pkg-btn" onclick="purchasePoints(120)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">120 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$156.00</span></div>
+      </button>
+      <button class="iap-pkg-btn" onclick="purchasePoints(300)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">300 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$390.00</span></div>
+      </button>
+      <button class="iap-pkg-btn" onclick="purchasePoints(600)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">600 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$780.00</span></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Points History Bottom Sheet ===== -->
+  <div class="sheet-overlay" id="pointsHistorySheet" onclick="closePointsHistory()"></div>
+  <div class="sheet-panel" id="pointsHistoryPanel">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">💎 点数明细</div>
+    <div id="pointsHistoryList"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-notification" id="toastNotification" style="position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 99999; background: rgba(26, 35, 47, 0.95); backdrop-filter: blur(8px); color: #fff; padding: 16px 24px; border-radius: 16px; font-size: 0.92rem; line-height: 1.6; box-shadow: 0 12px 40px rgba(27, 45, 71, 0.25); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 420px; text-align: center; font-weight: 500;">
+    <span class="toast-icon">💡</span>
+    <span id="toastMessage"></span>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="load-sidebar.js"></script>
+<script src="load-desktop-header.js"></script>
+  <script>
+    let toastTimer = null;
+    let pendingAvatarDataUrl = null;
+
+    function showToast(msg, icon) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      if (icon) t.querySelector('.toast-icon').textContent = icon;
+      t.classList.add('show');
+      t.style.transform = 'translateX(-50%) translateY(0)';
+      t.style.opacity = '1';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.style.transform = 'translateX(-50%) translateY(-100px)';
+        t.style.opacity = '0';
+        setTimeout(() => t.classList.remove('show'), 400);
+      }, 3000);
+    }
+
+    /* ── Desktop Tab Switching ── */
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-item').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tab);
+      });
+      document.getElementById('tabPublished').style.display = tab === 'published' ? 'grid' : 'none';
+      document.getElementById('tabLiked').style.display = tab === 'liked' ? 'block' : 'none';
+      document.getElementById('tabFavorited').style.display = tab === 'favorited' ? 'block' : 'none';
+    }
+
+    /* ── Mobile Tab Switching ── */
+    function switchMobileTab(tab) {
+      // Update mobile tab buttons
+      document.querySelectorAll('.mtab-item').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mtab === tab);
+      });
+      // Update func grid style hint: just toggle visibility
+      document.getElementById('mobileTabPublished').style.display = tab === 'published' ? 'grid' : 'none';
+      document.getElementById('mobileTabLiked').style.display = tab === 'liked' ? 'block' : 'none';
+      document.getElementById('mobileTabFavorited').style.display = tab === 'favorited' ? 'block' : 'none';
+    }
+
+    /* ── Load Profile ── */
+    function loadProfile() {
+      if (typeof currentUser === 'undefined') {
+        setTimeout(loadProfile, 100);
+        return;
+      }
+      const name = currentUser.name || '未登录用户';
+      const bio = currentUser.bio || '';
+      const avatar = currentUser.avatar || '';
+
+      // Desktop
+      const nameEl = document.getElementById('profileName');
+      if (nameEl) nameEl.textContent = name;
+      const bioEl = document.getElementById('profileBio');
+      if (bioEl) bioEl.textContent = bio;
+      updateAvatarDisplay(avatar, name, 'avatarContainer', 'avatarLetter');
+
+      // Mobile balances
+      const balStory = document.getElementById('mobileBalanceStory');
+      if (balStory && currentUser.balances?.story !== undefined) {
+        balStory.textContent = currentUser.balances.story.toLocaleString();
+      }
+      const balPoints = document.getElementById('mobileBalancePoints');
+      if (balPoints && currentUser.points !== undefined) {
+        balPoints.textContent = currentUser.points.toLocaleString();
+      }
+
+      // Mobile
+      const mNameEl = document.getElementById('mobileProfileName');
+      if (mNameEl) mNameEl.textContent = name;
+      const mBioEl = document.getElementById('mobileProfileBio');
+      if (mBioEl) mBioEl.textContent = bio;
+      updateAvatarDisplay(avatar, name, 'mobileAvatarContainer', 'mobileAvatarLetter');
+    }
+
+    function updateAvatarDisplay(avatarUrl, name, containerId, letterId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      if (avatarUrl) {
+        container.innerHTML = '<img src="' + avatarUrl + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" />' +
+          '<span class="avatar-letter gradient-text" style="display:none;">' + (name ? name.charAt(0) : '?') + '</span>';
+      } else {
+        container.innerHTML = '<span class="avatar-letter gradient-text">' + (name ? name.charAt(0) : '?') + '</span>';
+      }
+    }
+
+    /* ── Edit Profile Modal ── */
+    function openEditProfileModal() {
+      const avatar = (typeof currentUser !== 'undefined' && currentUser.avatar) || '';
+      const name = (typeof currentUser !== 'undefined' && currentUser.name) || '';
+      const bio = (typeof currentUser !== 'undefined' && currentUser.bio) || '';
+      pendingAvatarDataUrl = null;
+      updateEditAvatarPreview(avatar, name);
+      const fileInput = document.getElementById('editAvatarFile');
+      if (fileInput) fileInput.value = '';
+      document.getElementById('editNameInput').value = name;
+      document.getElementById('editBioInput').value = bio;
+      updateBioCharCount();
+      document.getElementById('editProfileModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateEditAvatarPreview(src, name) {
+      const container = document.getElementById('editAvatarPreview');
+      if (!container) return;
+      if (src) {
+        container.innerHTML = '<img src="' + src + '" alt="头像预览" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" />' +
+          '<span class="avatar-letter gradient-text" style="display:none;">' + (name ? name.charAt(0) : '?') + '</span>';
+      } else {
+        container.innerHTML = '<div style="width:80px;height:80px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:var(--text-sub);">' + (name ? name.charAt(0) : '?') + '</div>';
+      }
+    }
+
+    function handleAvatarFileSelect(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) { showToast('⚠️ 请选择图片文件'); return; }
+      if (file.size > 5 * 1024 * 1024) { showToast('⚠️ 图片大小不能超过 5MB'); return; }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        pendingAvatarDataUrl = e.target.result;
+        const name = document.getElementById('editNameInput').value || '?';
+        updateEditAvatarPreview(pendingAvatarDataUrl, name);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateBioCharCount() {
+      const input = document.getElementById('editBioInput');
+      const counter = document.getElementById('bioCharCount');
+      if (input && counter) counter.textContent = input.value.length;
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('editProfileModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function saveProfile() {
+      if (typeof currentUser === 'undefined') {
+        showToast('⚠️ 请先登录', '🔑');
+        return;
+      }
+      const newAvatar = pendingAvatarDataUrl || currentUser.avatar || '';
+      const newName = document.getElementById('editNameInput').value.trim();
+      const newBio = document.getElementById('editBioInput').value.trim();
+      if (!newName) { showToast('⚠️ 用户名不能为空'); return; }
+      currentUser.avatar = newAvatar;
+      currentUser.name = newName;
+      currentUser.bio = newBio;
+      if (typeof saveUserToStorage === 'function') saveUserToStorage(currentUser);
+
+      // Desktop
+      const nameEl = document.getElementById('profileName');
+      if (nameEl) nameEl.textContent = newName;
+      const bioEl = document.getElementById('profileBio');
+      if (bioEl) bioEl.textContent = newBio;
+      updateAvatarDisplay(newAvatar, newName, 'avatarContainer', 'avatarLetter');
+
+      // Mobile balances
+      const balStory = document.getElementById('mobileBalanceStory');
+      if (balStory && currentUser.balances?.story !== undefined) {
+        balStory.textContent = currentUser.balances.story.toLocaleString();
+      }
+      const balPoints = document.getElementById('mobileBalancePoints');
+      if (balPoints && currentUser.points !== undefined) {
+        balPoints.textContent = currentUser.points.toLocaleString();
+      }
+
+      // Mobile
+      const mNameEl = document.getElementById('mobileProfileName');
+      if (mNameEl) mNameEl.textContent = newName;
+      const mBioEl = document.getElementById('mobileProfileBio');
+      if (mBioEl) mBioEl.textContent = newBio;
+      updateAvatarDisplay(newAvatar, newName, 'mobileAvatarContainer', 'mobileAvatarLetter');
+
+      const containers = document.querySelectorAll('.auth-container');
+      containers.forEach(container => {
+        if (typeof renderAuthUI === 'function') renderAuthUI(container);
+      });
+      closeEditProfileModal();
+      showToast('✅ 资料已保存', '💾');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const bioInput = document.getElementById('editBioInput');
+      if (bioInput) bioInput.addEventListener('input', updateBioCharCount);
+      loadProfile();
+    });
+    document.addEventListener('header-loaded', loadProfile);
+
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('active')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    /* ── Copy Wallet Address ── */
+    function copyWallet() {
+      const fullAddress = 'DR2xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXyZ9';
+      navigator.clipboard.writeText(fullAddress).then(() => {
+        showToast('✅ 地址已复制');
+      }).catch(() => {
+        showToast('⚠️ 复制失败，请重试');
+      });
+    }
+
+    /* ── Drawer Open / Close ── */
+    function openProfileDrawer() {
+      document.getElementById('profileDrawer').classList.add('open');
+      document.getElementById('profileDrawerOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfileDrawer() {
+      document.getElementById('profileDrawer').classList.remove('open');
+      document.getElementById('profileDrawerOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── Drawer Navigation ── */
+    function handleDrawerNav(target) {
+      closeProfileDrawer();
+      if (target === 'transactions') { showToast('🕘 交易记录功能开发中', '📋'); return; }
+      if (target === 'settings') { showToast('🕘 设置功能开发中', '⚙️'); return; }
+      window.location.href = target;
+    }
+
+    /* ── Drawer Logout ── */
+    function handleDrawerLogout() {
+      closeProfileDrawer();
+      setTimeout(function() {
+        if (typeof handleLogout === 'function') {
+          handleLogout();
+        } else {
+          if (typeof currentUser !== 'undefined') {
+            currentUser.isLoggedIn = false;
+            currentUser.authMethod = null;
+          }
+          if (typeof clearUserFromStorage === 'function') {
+            clearUserFromStorage();
+          } else {
+            localStorage.removeItem('storyfun_user');
+          }
+          showToast('👋 已退出登录', '👋');
+          setTimeout(function() {
+            window.location.href = 'index.html';
+          }, 500);
+        }
+      }, 350);
+    }
+
+    /* ── IAP Points Purchase Modal ── */
+    function openIAPModal() {
+      var bal = (typeof currentUser !== 'undefined' && currentUser.points) ? currentUser.points : 500;
+      document.getElementById('sheetPointsBalance').textContent = bal.toLocaleString();
+      document.getElementById('iapPointsSheet').classList.add('active');
+      document.getElementById('iapPointsPanel').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeIAPModal() {
+      document.getElementById('iapPointsSheet').classList.remove('active');
+      document.getElementById('iapPointsPanel').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* IAP price table: points * 1.3 dollars */
+    function purchasePoints(points) {
+      var price = (points * 1.3).toFixed(2);
+      showToast('🛒 IAP 购买 ' + points + ' 点数 ($' + price + ') 将在正式版对接 Apple Pay', '💰');
+      closeIAPModal();
+    }
+
+    /* ── Points History ── */
+    var POINTS_HISTORY = [
+      { action: '购买', points: 60, price: '$78.00', time: '08-05 17:30', type: 'plus' },
+      { action: '签约角色', points: -10, price: '', time: '08-04 14:20', type: 'minus' },
+      { action: '升级角色', points: -5, price: '', time: '08-04 10:15', type: 'minus' },
+      { action: '购买', points: 6, price: '$7.80', time: '08-03 09:15', type: 'plus' },
+      { action: '补充体力', points: -2, price: '', time: '08-02 21:00', type: 'minus' },
+      { action: '发行角色IP', points: -50, price: '', time: '08-01 16:30', type: 'minus' },
+      { action: '铸造短剧NFT', points: -100, price: '', time: '07-30 11:20', type: 'minus' },
+      { action: '购买', points: 120, price: '$156.00', time: '07-28 08:45', type: 'plus' },
+    ];
+
+    function renderPointsHistory() {
+      var html = '';
+      POINTS_HISTORY.forEach(function(item) {
+        var sign = item.type === 'plus' ? '+' : '';
+        html += '<div class="ph-item">' +
+          '<div class="ph-left">' +
+            '<span class="ph-action">' + item.action + '</span>' +
+            '<span class="ph-meta">' + item.time + (item.price ? ' <span style="color:var(--text-sub)">' + item.price + '</span>' : '') + '</span>' +
+          '</div>' +
+          '<div class="ph-right">' +
+            '<span class="ph-amount ' + item.type + '">' + sign + item.points + ' 点数</span>' +
+          '</div>' +
+        '</div>';
+      });
+      document.getElementById('pointsHistoryList').innerHTML = html;
+    }
+
+    function openPointsHistory() {
+      renderPointsHistory();
+      document.getElementById('pointsHistorySheet').classList.add('active');
+      document.getElementById('pointsHistoryPanel').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePointsHistory() {
+      document.getElementById('pointsHistorySheet').classList.remove('active');
+      document.getElementById('pointsHistoryPanel').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── Drawer Events ── */
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuBtn = document.getElementById('profileMenuBtn');
+      if (menuBtn) menuBtn.addEventListener('click', openProfileDrawer);
+      const overlay = document.getElementById('profileDrawerOverlay');
+      if (overlay) overlay.addEventListener('click', closeProfileDrawer);
+      renderWorks();
+    });
+
+    // ============================================================
+    //  我的作品数据（短剧 + 视频混合）
+    // ============================================================
+    const MY_WORKS = [
+      { type: 'drama', title: '凤骨琉璃', cat: '古风', rt: 4.8, ep: '全44集', author: 'JACK', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', cover: 'image/fenggu_cover.jpg', actors: ['苏婉清','李云飞','林梦瑶','上官婉儿'], link: 'drama-detail.html' },
+      { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集，每一帧都燃爆了！', cover: 'image/chengxiangfu_cover.jpg', link: '#' },
+      { type: 'drama', title: '我卸甲后天下大乱了', cat: '古风', rt: 4.6, ep: '全12集', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg', actors: ['李云飞','赵无极','林梦瑶'], link: 'drama-detail.html' },
+      { type: 'drama', title: '丞相府今日开饭', cat: '喜剧', rt: 4.7, ep: '全24集', author: 'LENS', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', cover: 'image/chengxiangfu_cover.jpg', actors: ['苏婉清','上官婉儿','Luna'], link: 'drama-detail.html' },
+      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密，揭开千年谜团。', cover: 'image/cover-pyramid.png', link: '#' },
+    ];
+
+    const SIMULATED_ACTORS = {
+      '苏婉清': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+      '李云飞': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+      '林梦瑶': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+      '上官婉儿': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      '赵无极': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      'Luna': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+    };
+
+    function renderWorks() {
+      renderDesktopWorks();
+      renderMobileWorks();
+    }
+
+    function renderDesktopWorks() {
+      const grid = document.getElementById('tabPublished');
+      if (!grid) return;
+      grid.innerHTML = MY_WORKS.map(w => {
+        if (w.type === 'video') {
+          return `<article class="work-card" onclick="location.href='${w.link}'">
+            <img class="card-thumb" src="${w.cover}" alt="${w.title}" style="aspect-ratio:16/9;height:auto;" />
+            <div class="card-body">
+              <h3>${w.title}</h3>
+              <div class="card-meta"><span class="badge" style="background:rgba(0,179,136,0.1);color:var(--accent)">视频</span><span class="episode">@${w.author}</span></div>
+              <p>${w.desc}</p>
+            </div>
+          </article>`;
+        } else {
+          const actorsHtml = (w.actors || []).map(a => {
+            const av = SIMULATED_ACTORS[a] || '';
+            return `<div class="card-actor-item" onclick="event.stopPropagation(); location.href='actor-profile.html?name=${encodeURIComponent(a)}'"><div class="card-actor-avatar"><img src="${av}" alt="${a}" loading="lazy" /></div><span class="card-actor-name">${a}</span></div>`;
+          }).join('');
+          return `<article class="work-card" onclick="location.href='${w.link}'">
+            <img class="card-thumb" src="${w.cover}" alt="${w.title}" />
+            <div class="card-body">
+              <h3>${w.title}</h3>
+              <div class="card-meta"><span class="badge">${w.cat}</span><span class="episode">${w.ep}</span></div>
+              <p>${w.desc}</p>
+              <div class="card-actors"><div class="card-actors-list">${actorsHtml}</div></div>
+            </div>
+            <div class="card-foot"><div class="info-row"><span>${w.author}</span><span class="card-rating"><span class="star-icon">★</span> ${w.rt}</span></div></div>
+          </article>`;
+        }
+      }).join('');
+    }
+
+    function renderMobileWorks() {
+      const grid = document.getElementById('mobileTabPublished');
+      if (!grid) return;
+      grid.innerHTML = MY_WORKS.map(w => {
+        if (w.type === 'video') {
+          return `<div class="mdc" onclick="location.href='${w.link}'">
+            <img class="mdc-thumb" src="${w.cover}" alt="${w.title}" loading="lazy" />
+            <div class="mdc-body">
+              <div class="mdc-title">${w.title}</div>
+              <div class="mdc-meta">
+                <span class="mdc-badge">视频</span>
+                <span class="mdc-ep">@${w.author}</span>
+              </div>
+            </div>
+          </div>`;
+        } else {
+          return `<div class="mdc" onclick="location.href='${w.link}'">
+            <img class="mdc-thumb" src="${w.cover}" alt="${w.title}" loading="lazy" />
+            <div class="mdc-body">
+              <div class="mdc-title">${w.title}</div>
+              <div class="mdc-meta">
+                <span class="mdc-badge">${w.cat}</span>
+                <span class="mdc-rating">★ ${w.rt}</span>
+                <span class="mdc-ep">${w.ep.replace('全','')}集</span>
+              </div>
+            </div>
+          </div>`;
+        }
+      }).join('');
+    }
+  </script>
+  <div id="bottom-nav-placeholder"></div>
+  <script src="load-bottom-nav.js"></script>
+<script src="auth.js"></script>
+<script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
+<script>
+function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
+function saveRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});list.unshift(q);if(list.length>8)list.pop();localStorage.setItem("dh_recent_searches",JSON.stringify(list))}
+function renderSearchDropdown(){var hotTags=["凤骨琉璃","打斗精彩片段","古风短剧","1011","AI短剧","苏婉清","星际拓荒者","时间管理局"];var hotEl=document.getElementById("sdHotTags");if(hotEl){hotEl.innerHTML=hotTags.map(function(t){return '<button class="sd-tag" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+t+'\';doSearch(\''+t+'\')">'+t+'</button>'}).join("")}var recent=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");var recentSection=document.getElementById("sdRecentSection");var recentList=document.getElementById("sdRecentList");if(recentSection&&recentList&&recent.length>0){recentSection.style.display="";recentList.innerHTML=recent.map(function(r){return '<div class="sd-item" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+r+'\';doSearch(\''+r+'\')"><span>'+r+'</span><button class="sd-del" onclick="event.stopPropagation();event.preventDefault();removeRecentSearch(\''+r+'\')">✕</button></div>'}).join("")}else if(recentSection){recentSection.style.display="none"}}
+function removeRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});localStorage.setItem("dh_recent_searches",JSON.stringify(list));renderSearchDropdown()}
+(function(){var inp=document.getElementById("dhSearchInput");var dropdown=document.getElementById("dhSearchDropdown");var searchBox=document.getElementById("dhSearch");var searchBtn=document.getElementById("dhSearchBtn");if(!inp||!dropdown||!searchBox)return;renderSearchDropdown();inp.addEventListener("focus",function(){renderSearchDropdown();dropdown.classList.add("show")});inp.addEventListener("input",function(){if(inp.value.trim()){dropdown.classList.remove("show")}else{renderSearchDropdown();dropdown.classList.add("show")}});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){var q=inp.value.trim();if(q)doSearch(q)}});searchBtn.addEventListener("click",function(e){e.stopPropagation();var q=inp.value.trim();if(q)doSearch(q)});document.addEventListener("click",function(e){if(!searchBox.contains(e.target)){dropdown.classList.remove("show")}})})();
+</script>
+</body>
+</html>
