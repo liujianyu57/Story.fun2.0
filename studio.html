@@ -1240,6 +1240,59 @@
       margin-top: 4px;
     }
 
+    /* ===== 折叠式 Q&A ===== */
+    .qa-item {
+      margin-bottom: 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.02);
+      overflow: hidden;
+    }
+    .qa-question {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    .qa-question:hover { background: rgba(0,0,0,0.04); }
+    .qa-question .qa-arrow {
+      display: inline-block;
+      width: 16px;
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+    .qa-item.open .qa-question .qa-arrow { transform: rotate(90deg); }
+    .qa-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .qa-item.open .qa-answer { max-height: 2000px; }
+    .qa-answer-inner {
+      padding: 0 14px 12px;
+      font-size: 0.84rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+    .qa-answer-inner .rules-table { font-size: 0.82rem; }
+    .qa-answer-inner .rules-table th,
+    .qa-answer-inner .rules-table td { padding: 6px 10px; }
+    .qa-answer-inner .rules-example { font-size: 0.82rem; }
+    .qa-section-title {
+      border-top: 2px solid var(--border);
+      padding-top: 16px;
+      margin-bottom: 14px;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
     /* ── Desktop Header ── */
     .desktop-header{position:fixed;top:0;left:0;right:0;justify-content:flex-end;z-index:151;height:56px;padding:0 20px;display:none;align-items:center;gap:12px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.06)}
     .desktop-header .dh-search{position:absolute;left:50%;transform:translateX(-50%);width:520px;min-width:0;display:flex;align-items:center;gap:8px;padding:4px 14px;border-radius:999px;background:rgba(0,0,0,0.04);border:1px solid transparent;transition:all .2s}
@@ -1925,10 +1978,10 @@
     </div>
   </div>
 
-  <!-- ===== 算力详情弹窗 ===== -->
+  <!-- ===== 片酬详情弹窗 ===== -->
   <div class="modal-overlay" id="actorPowerModal">
     <div class="modal-card" style="max-width:420px;padding:24px 20px 20px;">
-      <h2 style="font-size:1.15rem;margin:0 0 4px;">角色算力详情</h2>
+      <h2 style="font-size:1.15rem;margin:0 0 4px;">角色片酬详情</h2>
       <div id="powerModalActorName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
       <div id="powerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;"></div>
       <button class="modal-btn cancel" onclick="closeActorPowerModal()" style="width:100%;">关闭</button>
@@ -1965,100 +2018,117 @@
       <h2>经营玩法</h2>
       <div class="rules-modal-scroll">
 
-        <div class="rules-section">
-          <h3>安排演出</h3>
-          <p>把候场的角色<strong>「安排演出」</strong>到 5 个在演位里，他开始自动产生片酬（STORY）。</p>
-          <ul>
-            <li>最多同时 5 位角色在演</li>
-            <li>同一个角色 IP 也可以多张卡同时演出</li>
-            <li>演出中每小时消耗 1 点体力，体力 > 0 就一直产出，体力 = 0 就停工</li>
-          </ul>
+        <div class="rules-section" style="background:var(--bg);border-radius:12px;padding:14px 16px;">
+          <p style="margin:0;font-size:0.85rem;line-height:1.8;">核心循环：签约角色 → 安排演出 → 自动赚 STORY → 升级咖位 → 赚更多。每周一 00:00 (UTC) 结算，前往收益页领取。体力空了就休息或补充，别让角色停工。</p>
         </div>
 
-        <div class="rules-section">
-          <h3>片酬公式</h3>
-          <div class="rules-formula" style="text-align:center;font-size:0.92rem;">单卡小时片酬 = 角色算力 × 1 STORY</div>
-          <p style="margin-top:10px;">其中：</p>
-          <table class="rules-table">
-            <tr><td style="width:90px;font-weight:600;">角色算力</td><td>= IP算力 × 片酬系数 × CP系数 × Trust2</td></tr>
-            <tr><td style="font-weight:600;">IP 算力</td><td>= 价格系数 × 热度系数 × Trust1</td></tr>
-          </table>
-          <p style="margin-top:14px;font-weight:600;">各系数说明</p>
-          <table class="rules-table">
-            <tr><th>系数</th><th>决定因素</th><th>说明</th></tr>
-            <tr><td>片酬系数</td><td>咖位</td><td>Lv1=1.0 · Lv2=2.2 · Lv3=5.0 · Lv4=11 · Lv5=24</td></tr>
-            <tr><td>价格系数</td><td>发行价 P0</td><td>P0≤100U 线性增长 · P0>100U 渐近上限 1.6</td></tr>
-            <tr><td>热度系数</td><td>近期剧表现</td><td>完播、点赞、收藏、评论越多，热度越高</td></tr>
-            <tr><td>CP 系数</td><td>—</td><td>暂未开放</td></tr>
-            <tr><td>Trust</td><td>平台风控</td><td>默认 1.0</td></tr>
-          </table>
-          <div class="rules-example">
-            <strong>示例</strong><br>
-            林梦瑶 Lv3 主角 · P0=120U（价格系数 ≈1.5046）· 热度 3.5<br>
-            → 每小时片酬 = 5.0 × 1.5046 × 3.5 × 1 = <strong>26.3 STORY</strong>
+        <!-- 怎么玩 -->
+        <div class="rules-section" style="border-top:2px solid var(--border);padding-top:16px;margin-top:4px;">
+          <h3 style="font-size:1.05rem;margin-bottom:14px;">怎么玩</h3>
+
+          <div class="qa-item">
+            <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>怎么让角色开始赚钱？</div>
+            <div class="qa-answer"><div class="qa-answer-inner">安排候场角色演出，每小时自动产生 STORY。最多同时 5 位，同 IP 可以多张卡一起演。演出中每小时消耗 1 点体力，体力 > 0 就一直产出。</div></div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>体力怎么管理？没了怎么办？</div>
+            <div class="qa-answer"><div class="qa-answer-inner">
+            <table class="rules-table">
+              <tr><th>状态</th><th>体力变化</th><th>产出</th></tr>
+              <tr><td>演出中</td><td>每小时 −1</td><td>正常片酬</td></tr>
+              <tr><td>体力耗尽</td><td>不再变化</td><td>产出为 0</td></tr>
+              <tr><td>休息</td><td>每小时 +1（自动恢复）</td><td>暂停产出</td></tr>
+              <tr><td>补充体力（付费）</td><td>瞬间回满 168</td><td>恢复产出</td></tr>
+            </table>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:4px 0 8px;">体力只看"有没有"：168 点和 1 点体力的每小时产出一样多。只能一键加满，价格只看咖位，越靠近 0 补充越划算。</p>
+            <table class="rules-table">
+              <tr><th>咖位</th><th>一键加满</th></tr>
+              <tr><td>Lv1 群演</td><td>10 USDC</td></tr>
+              <tr><td>Lv2 配角</td><td>20 USDC</td></tr>
+              <tr><td>Lv3 主角</td><td>50 USDC</td></tr>
+              <tr><td>Lv4 巨星</td><td>130 USDC</td></tr>
+              <tr><td>Lv5 顶流</td><td>320 USDC</td></tr>
+            </table>
+            </div></div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>可以批量操作吗？</div>
+            <div class="qa-answer"><div class="qa-answer-inner">可以。页面底部提供一键演出、一键补充、一键休息，对在演位上的所有角色批量执行。</div></div>
           </div>
         </div>
 
-        <div class="rules-section">
-          <h3>结算分配</h3>
-          <p>每周全平台有一个总奖池（周硬顶），初始约 2,115,385 STORY，之后逐周递减（每周 × 0.99572）。</p>
-          <table class="rules-table">
-            <tr><th>条件</th><th>分配规则</th></tr>
-            <tr><td>全网名义产出 ≤ 当周硬顶</td><td>每人照单全收，剩余部分不发、不补</td></tr>
-            <tr><td>全网名义产出 > 当周硬顶</td><td>等比缩放：你实得 = 你的名义产出 × 奖池 ÷ 全网产出</td></tr>
-            <tr><td>单地址超过奖池 5%</td><td>超出部分不发，不回流，不补分</td></tr>
-          </table>
-          <div class="rules-example">
-            <strong>示例</strong><br>
-            假设本周奖池 100,000 STORY：<br>
-            情况 A：全平台只有你产出 134 → 你拿 134，剩下不发放<br>
-            情况 B：全网产出 250,000 → 等比缩放到 40%<br>
-            情况 C：缩放后某人应得 6,000，但上限 5,000 → 只发 5,000
+        <!-- 能赚多少 -->
+        <div class="rules-section" style="border-top:2px solid var(--border);padding-top:16px;margin-top:4px;">
+          <h3 style="font-size:1.05rem;margin-bottom:14px;">能赚多少</h3>
+
+          <div class="qa-item">
+            <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>片酬怎么算？</div>
+            <div class="qa-answer"><div class="qa-answer-inner">
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 6px;">咖位越高、角色越贵、短剧越火，每小时片酬就越高。</p>
+            <div class="rules-formula" style="text-align:center;font-size:0.88rem;">单卡小时片酬 = 角色算力 × 1 STORY</div>
+            <table class="rules-table" style="margin-top:6px;">
+              <tr><td style="width:80px;font-weight:600;">角色算力</td><td>= IP算力 × 片酬系数 × CP系数 × Trust2</td></tr>
+              <tr><td style="font-weight:600;">IP 片酬</td><td>= 价格系数 × 热度系数</td></tr>
+            </table>
+            <p style="font-weight:600;font-size:0.82rem;margin:10px 0 4px;">系数说明</p>
+            <table class="rules-table">
+              <tr><th>系数</th><th>决定因素</th><th>说明</th></tr>
+              <tr><td>片酬系数</td><td>咖位</td><td>Lv1=1.0 · Lv2=2.2 · Lv3=5.0 · Lv4=11 · Lv5=24</td></tr>
+              <tr><td>价格系数</td><td>发行价 P0</td><td>P0≤100U 线性增长 · P0>100U 渐近上限 1.6</td></tr>
+              <tr><td>热度系数</td><td>近期剧表现</td><td>完播、点赞、收藏、评论越多，热度越高</td></tr>
+              <tr><td>CP 系数</td><td>—</td><td>暂未开放，默认 1.0</td></tr>
+              <tr><td>Trust2</td><td>平台Trust2</td><td>默认 1.0</td></tr>
+            </table>
+            <div class="rules-example" style="margin-top:8px;">
+              <strong>示例</strong><br>
+              林梦瑶 Lv3 主角 · P0=120U（价格系数 ≈1.5046）· 热度 3.5<br>
+              → 每小时片酬 = 5.0 × 1.5046 × 3.5 × 1 = <strong>26.3 STORY</strong><br>
+              <span style="font-size:0.78rem;color:var(--text-muted);">如果只是 Lv1 群演，每小时仅 ≈5.3 STORY——升到 Lv3 涨了 <strong>5 倍</strong></span>
+            </div>
+            </div></div>
+          </div>
+
+          <div class="qa-item">
+            <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>什么时候结算？钱怎么到账？</div>
+            <div class="qa-answer"><div class="qa-answer-inner">
+            <p style="font-size:0.84rem;line-height:1.7;margin:0 0 8px;color:var(--text-muted);">每 7 天为一个结算周期。<strong style="color:var(--text);">每周一 00:00 (UTC) 截止统计</strong>，系统在 24 小时内结算完毕，前往收益页领取。全平台有一个总奖池（周硬顶），初始约 211 万 STORY，逐周递减（× 0.99572）。</p>
+            <table class="rules-table">
+              <tr><th>条件</th><th>分配规则</th></tr>
+              <tr><td>全网名义产出 ≤ 当周硬顶</td><td>实发 = 名义产出，剩余额度作废</td></tr>
+              <tr><td>全网名义产出 > 当周硬顶</td><td>等比缩放：你实得 = 你的名义产出 × (奖池 ÷ 全网产出)</td></tr>
+              <tr><td>单地址超过奖池 5%</td><td>超出部分不发，不回流，不补分</td></tr>
+            </table>
+            <div class="rules-example" style="margin-top:8px;">
+              <strong>示例</strong><br>
+              假设本周奖池 100,000 STORY：<br>
+              情况 A：全平台只有你产出 134 → 你拿 134，剩下不发放<br>
+              情况 B：全网产出 250,000 → 100,000 ÷ 250,000 = 40%，你的名义产出打四折<br>
+              情况 C：缩放后某人应得 6,000，但上限 5,000 → 只发 5,000
+            </div>
+            </div></div>
           </div>
         </div>
 
-        <div class="rules-section">
-          <h3>体力管理</h3>
-          <table class="rules-table">
-            <tr><th>状态</th><th>体力变化</th><th>产出</th></tr>
-            <tr><td>演出中</td><td>每小时 −1</td><td>正常片酬</td></tr>
-            <tr><td>体力耗尽</td><td>不再变化</td><td>产出为 0</td></tr>
-            <tr><td>休息</td><td>每小时 +1（自动恢复）</td><td>暂停产出</td></tr>
-            <tr><td>补充体力（付费）</td><td>瞬间回满 168</td><td>恢复产出</td></tr>
-          </table>
-          <p style="margin-top:10px;">体力只看"有没有"：168 点和 1 点体力的每小时产出一样多。</p>
-          <p style="margin-top:12px;font-weight:600;">补充体力须知</p>
-          <ul>
-            <li>只能一键加满，不能只买 10 点</li>
-            <li>价格只看咖位，与剩余体力无关</li>
-            <li>越靠近 0 补充越划算——同样价格买到最多的演出时长</li>
-          </ul>
-          <p style="margin-top:12px;font-weight:600;">补充价格</p>
-          <table class="rules-table">
-            <tr><th>咖位</th><th>一键加满</th></tr>
-            <tr><td>Lv1 群演</td><td>10 USDC</td></tr>
-            <tr><td>Lv2 配角</td><td>20 USDC</td></tr>
-            <tr><td>Lv3 主角</td><td>50 USDC</td></tr>
-            <tr><td>Lv4 巨星</td><td>130 USDC</td></tr>
-            <tr><td>Lv5 顶流</td><td>320 USDC</td></tr>
-          </table>
-        </div>
+        <!-- 怎么变强 -->
+        <div class="rules-section" style="border-top:2px solid var(--border);padding-top:16px;margin-top:4px;">
+          <h3 style="font-size:1.05rem;margin-bottom:14px;">怎么变强</h3>
 
-        <div class="rules-section">
-          <h3>升级咖位</h3>
-          <p>3 张同角色同咖位的卡 + 合成费 + 该角色累计完播达标 = 升 1 级。升级后片酬系数暴涨，每小时产出翻倍甚至翻几倍。</p>
-          <p style="margin-top:12px;font-weight:600;">升级路径</p>
-          <table class="rules-table">
-            <tr><th>升级路径</th><th>累计完播门槛</th><th>合成费</th></tr>
-            <tr><td>Lv1 → Lv2</td><td>≥ 10,000</td><td>10 USDC</td></tr>
-            <tr><td>Lv2 → Lv3</td><td>≥ 50,000</td><td>20 USDC</td></tr>
-            <tr><td>Lv3 → Lv4</td><td>≥ 200,000</td><td>40 USDC</td></tr>
-            <tr><td>Lv4 → Lv5</td><td>≥ 1,000,000</td><td>80 USDC</td></tr>
-          </table>
-        </div>
+          <div class="qa-item">
+            <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>怎么升级角色？</div>
+            <div class="qa-answer"><div class="qa-answer-inner">
+            <p style="font-size:0.84rem;line-height:1.7;margin:0 0 8px;color:var(--text-muted);">升级 = <strong style="color:var(--text);">消耗 2 张</strong>同角色同等级分身 + 支付合成费 + 累计完播达标（含目标卡共需 3 张）。升级后片酬系数暴涨，每小时产出翻倍甚至翻几倍。</p>
+            <table class="rules-table">
+              <tr><th>升级路径</th><th>累计完播门槛</th><th>合成费</th><th>片酬系数</th></tr>
+              <tr><td>Lv1 → Lv2</td><td>≥ 10,000</td><td>10 USDC</td><td>1.0 → 2.2 <span style="font-size:0.72rem;color:var(--accent);">×2.2</span></td></tr>
+              <tr><td>Lv2 → Lv3</td><td>≥ 50,000</td><td>20 USDC</td><td>2.2 → 5.0 <span style="font-size:0.72rem;color:var(--accent);">×2.3</span></td></tr>
+              <tr><td>Lv3 → Lv4</td><td>≥ 200,000</td><td>40 USDC</td><td>5.0 → 11 <span style="font-size:0.72rem;color:var(--accent);">×2.2</span></td></tr>
+              <tr><td>Lv4 → Lv5</td><td>≥ 1,000,000</td><td>80 USDC</td><td>11 → 24 <span style="font-size:0.72rem;color:var(--accent);">×2.2</span></td></tr>
+            </table>
+            </div></div>
+          </div>
 
-        <div class="rules-section" style="background:var(--bg);border-radius:12px;padding:16px;">
-          <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);">排期 → 演出 → 盯体力 → 领片酬。体力快没了就补充或安排休息，热度靠角色的剧表现提升，升级让片酬起飞。</p>
         </div>
 
       </div>
@@ -2363,8 +2433,8 @@
 
         return '<div class="upgrade-row' + cardCls + '" onclick="openLevelModal(\'' + actor.id + '\')">'
           + '<div class="ur-avatar-wrap">'
-          + '<img src="' + actor.avatar + '" alt="" />'
-          + '<span class="ur-lv-badge" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
+          + '<img src="' + actor.avatar + '" alt="" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页" />'
+          + '<span class="ur-lv-badge" style="background:' + levelCfg.color + ';" onclick="event.stopPropagation();">Lv' + actor.level + '</span>'
           + '</div>'
           + '<div class="ur-header">'
           + '<div class="ur-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
@@ -2377,7 +2447,7 @@
           + '</div>'
           + '<div class="ur-rate-row">'
           + '<span class="ur-rate-label">片酬</span>'
-          + '<span class="ur-rate">' + before.toFixed(1) + ' → ' + after.toFixed(1) + '<span style="font-size:0.58rem;color:var(--text-sub);"> /h</span></span>'
+          + '<span class="ur-rate">' + before.toFixed(1) + ' → ' + after.toFixed(1) + '<span style="font-size:0.58rem;color:var(--text-sub);"> STORY/h</span></span>'
           + '</div>'
           + '</div>'
           + '<div class="ur-conditions">'
@@ -2386,7 +2456,7 @@
           + '<span class="ur-cond-label">参演短剧完播</span>'
           + '<span class="ur-cond-status' + (playDone ? ' done' : ' pending') + '"' + (!playDone ? ' onclick="event.stopPropagation();openNeedPlayModal(\'' + actor.name + '\')"' : '') + '>' + (playDone ? '✓' : '+') + '</span>'
           + '</div>'
-          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + playPct + '%;"></i><span class="ur-cond-bar-text">' + formatNumber(actor.cumulativePlays || 0) + '/' + formatNumber(playReq) + '</span></div>'
+          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + playPct + '%;"></i><span class="ur-cond-bar-text">' + (actor.cumulativePlays || 0).toLocaleString() + '/' + playReq.toLocaleString() + '</span></div>'
           + '</div>'
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
@@ -2438,7 +2508,7 @@
             + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
             + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
             + '</div>'
-            + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看算力详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
+            + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
             + '</div>'
             + '<div class="slot-actions">'
             + (actor.energy < actor.energyMax
@@ -2707,13 +2777,13 @@
           + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
           + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
           + '</div>'
-          + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看算力详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
-          + '</div>'
-          + '<div class="slot-actions">'
-          + (actor.energy < actor.energyMax
-              ? '<button class="mini-btn charge" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">补充</button>'
-              : '<button class="mini-btn disabled" disabled>已满</button>')
-          + '<button class="mini-btn primary" onclick="event.stopPropagation();openStakeModal(\'' + actor.id + '\')">演出</button>'
++ '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
+            + '</div>'
+            + '<div class="slot-actions">'
+            + (actor.energy < actor.energyMax
+                ? '<button class="mini-btn charge" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">补充</button>'
+                : '<button class="mini-btn disabled" disabled>已满</button>')
+            + '<button class="mini-btn primary" onclick="event.stopPropagation();openStakeModal(\'' + actor.id + '\')">演出</button>'
           + '</div>'
           + '</div>';
       }).join('');
@@ -3135,54 +3205,43 @@
     function closeNominalOutputModal() { document.getElementById('nominalOutputModal').classList.remove('active'); document.body.style.overflow = ''; }
 
     // ============================================================
-    //  算力详情弹窗
+    //  片酬详情弹窗
     // ============================================================
     function openActorPowerModal(actorId) {
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
 
       const bd = getActorPowerBreakdown(actor);
-      document.getElementById('powerModalActorName').textContent = '角色算力 = IP算力 × 片酬系数 × CP系数 × Trust2';
+      document.getElementById('powerModalActorName').textContent = bd.levelName + ' Lv.' + bd.level + ' · ' + actor.name;
 
       document.getElementById('powerModalBreakdown').innerHTML =
-        '<div style="background:var(--bg);border-radius:14px;padding:12px 14px;margin-bottom:8px;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
-            '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">IP 算力</span>' +
-            '<span style="font-weight:800;font-size:0.92rem;color:var(--accent);">' + bd.ipPower.toFixed(2) + '</span>' +
-          '</div>' +
-          '<div style="padding-left:10px;border-left:2px solid var(--accent-soft);">' +
-            '<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:0.75rem;">' +
-              '<span style="color:var(--text-muted);">├ 价格系数</span>' +
-              '<span style="font-weight:600;color:var(--text);">× ' + bd.priceCoeff.toFixed(4) + '</span>' +
-            '</div>' +
-            '<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:0.75rem;">' +
-              '<span style="color:var(--text-muted);">├ 热度系数</span>' +
-              '<span style="font-weight:600;color:var(--text);">× ' + bd.heat.toFixed(1) + '</span>' +
-            '</div>' +
-            '<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:0.75rem;">' +
-              '<span style="color:var(--text-muted);">└ Trust1</span>' +
-              '<span style="font-weight:600;color:var(--text);">× ' + bd.trust1.toFixed(1) + '</span>' +
-            '</div>' +
-          '</div>' +
-          '<div style="font-size:0.68rem;color:var(--text-muted);margin-top:6px;line-height:1.4;">IP算力 = 价格系数 × 热度系数 × Trust1</div>' +
+        // ---- 最终结果 ----
+        '<div style="background:var(--accent-soft);border:1px solid rgba(0,179,136,0.15);border-radius:14px;padding:16px 14px;margin-bottom:16px;text-align:center;">' +
+          '<div style="font-size:0.72rem;color:var(--text-sub);margin-bottom:4px;font-weight:600;">每小时片酬</div>' +
+          '<div style="font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1;">' + bd.actorPower.toFixed(2) + '</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">STORY / 小时</div>' +
         '</div>' +
-        '<div style="background:var(--bg);border-radius:12px;padding:10px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
-          '<span style="font-weight:600;font-size:0.84rem;color:var(--text);">片酬系数</span>' +
-          '<span style="font-weight:700;font-size:0.92rem;color:var(--accent);">× ' + bd.miningCoeff.toFixed(1) + ' <span style="font-size:0.65rem;color:var(--text-sub);">(Lv' + bd.level + ' ' + bd.levelName + ')</span></span>' +
+        // ---- 公式提示 ----
+        '<div style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-bottom:14px;letter-spacing:0.02em;">角色片酬 = IP片酬 × 片酬系数 × CP系数 × Trust2</div>' +
+        // ---- 因子 1: IP 片酬 ----
+        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
+          '<span style="font-weight:700;font-size:0.88rem;color:var(--text);">IP 片酬</span>' +
+          '<span style="font-weight:800;font-size:1rem;color:var(--accent);">' + bd.ipPower.toFixed(2) + '</span>' +
         '</div>' +
-        '<div style="display:flex;gap:8px;margin-bottom:8px;">' +
-          '<div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 14px;text-align:center;">' +
-            '<div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:2px;">CP 系数</div>' +
-            '<div style="font-weight:700;font-size:0.88rem;color:var(--text);">× ' + bd.cpCoeff.toFixed(1) + '</div>' +
-          '</div>' +
-          '<div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 14px;text-align:center;">' +
-            '<div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:2px;">Trust2</div>' +
-            '<div style="font-weight:700;font-size:0.88rem;color:var(--text);">× ' + bd.trust2.toFixed(1) + '</div>' +
-          '</div>' +
+        // ---- 因子 2: 片酬系数 ----
+        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
+          '<span style="font-weight:700;font-size:0.88rem;color:var(--text);">片酬系数</span>' +
+          '<span style="font-weight:800;font-size:1rem;color:var(--accent);">×' + bd.miningCoeff.toFixed(1) + '</span>' +
         '</div>' +
-        '<div style="background:var(--accent-soft);border-radius:12px;padding:12px 14px;text-align:center;">' +
-          '<div style="font-size:1.3rem;font-weight:800;color:var(--accent);">' + bd.actorPower.toFixed(2) + '</div>' +
-          '<div style="font-size:0.72rem;color:var(--text-sub);margin-top:2px;">每小时片酬 ' + bd.hourlyOutput.toFixed(2) + ' STORY</div>' +
+        // ---- 因子 3: CP 系数 ----
+        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
+          '<span style="font-weight:700;font-size:0.88rem;color:var(--text);">CP 系数</span>' +
+          '<span style="font-weight:800;font-size:1rem;color:var(--accent);">×' + bd.cpCoeff.toFixed(1) + '</span>' +
+        '</div>' +
+        // ---- 因子 4: Trust2 ----
+        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
+          '<span style="font-weight:700;font-size:0.88rem;color:var(--text);">Trust2</span>' +
+          '<span style="font-weight:800;font-size:1rem;color:var(--accent);">×' + bd.trust2.toFixed(1) + '</span>' +
         '</div>';
 
       document.getElementById('actorPowerModal').classList.add('active');
