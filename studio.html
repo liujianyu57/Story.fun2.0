@@ -2720,13 +2720,13 @@
         var barCls = energyBarCls(actor.energy);
 
         return '<div class="pool-item" onclick="openStakeModal(\'' + actor.id + '\')" title="点击安排演出">'
-          + '<div class="pool-av-wrap" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页">'
+          + '<div class="pool-av-wrap">'
           + '<img src="' + actor.avatar + '" alt="" />'
           + '<span class="pool-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
           + '</div>'
           + '<div class="pool-out">' + computeActorPower(actor).toFixed(1) + '<span class="u"> /h</span></div>'
           + '<span class="pool-energy"><span class="bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></span></span>'
-          + '<span class="pool-name" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" title="查看角色主页">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</span>'
+          + '<span class="pool-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</span>'
           + '</div>';
       }).join('');
     }
