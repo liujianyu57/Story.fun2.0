@@ -1106,35 +1106,13 @@
     var container = document.getElementById('dreamosContent');
     if (!container) return;
 
-    // Check if user is logged in
-    if (!currentUser || !currentUser.isLoggedIn) {
-      renderEmptyState(container, '未登录');
-      return;
-    }
-
-    var heldNames = currentUser.actorNfts || [];
-    // Deduplicate while preserving order
-    var uniqueNames = [];
-    var seen = {};
-    for (var i = 0; i < heldNames.length; i++) {
-      var n = heldNames[i];
-      if (!seen[n]) {
-        seen[n] = true;
-        uniqueNames.push(n);
-      }
-    }
-
-    // Filter to only those with data in ACTOR_IP_DB
-    var available = uniqueNames.filter(function(name) {
-      return ACTOR_IP_DB[name] != null;
-    });
-
-    if (available.length === 0) {
+    var allNames = Object.keys(ACTOR_IP_DB);
+    if (allNames.length === 0) {
       renderEmptyState(container, 'no_materials');
       return;
     }
 
-    renderActorGrid(container, available);
+    renderActorGrid(container, allNames);
   }
 
   function renderEmptyState(container, type) {
@@ -1149,7 +1127,7 @@
         '<div class="dreamos-empty">' +
         '  <div class="empty-icon">🎭</div>' +
         '  <p>您还没有在 DreamOS 中创建角色素材。请先前往 DreamOS 创建角色，再回来进行 NFT 发行。</p>' +
-        '  <a class="dreamos-btn" href="DreamOS/dreamos-user-actors.html" target="_blank">前往 DreamOS 创建 →</a>' +
+        '  <button class="dreamos-btn" onclick="showToast(\'跳转到DreamOS\')">前往 DreamOS 创建 →</button>' +
         '</div>';
     }
   }
@@ -1347,22 +1325,16 @@
         dtfSwitch.classList.add('active');
         dtfLabel.textContent = '有素材';
         dtfLabel.className = 'dtf-label has';
-        // Force logged-in state and show materials
-        if (currentUser) {
-          currentUser._savedActorNfts = currentUser._savedActorNfts || (currentUser.actorNfts ? currentUser.actorNfts.slice() : []);
-          currentUser.actorNfts = currentUser._savedActorNfts.slice();
-        }
+        loadActorMaterials();
       } else {
         dtfSwitch.classList.remove('active');
         dtfLabel.textContent = '无素材';
         dtfLabel.className = 'dtf-label none';
-        // Force empty materials
-        if (currentUser) {
-          currentUser._savedActorNfts = currentUser._savedActorNfts || (currentUser.actorNfts ? currentUser.actorNfts.slice() : []);
-          currentUser.actorNfts = [];
+        var container = document.getElementById('dreamosContent');
+        if (container) {
+          renderEmptyState(container, 'no_materials');
         }
       }
-      initDreamOSSection();
     }
 
     // Click on the fixed toggle wrapper
