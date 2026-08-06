@@ -582,7 +582,7 @@ var ACTOR_INFO = {
 
 
 const total=DATA.length;
-let idx=0,animFlag=false,wh=0,paused=false;
+let idx=0,animFlag=false,wh=0,paused=false;Object.defineProperty(window,"playerPaused",{get:function(){return paused},set:function(v){paused=v}});
 const track=document.getElementById('track'),toast=document.getElementById('toast'),loading=document.getElementById('loading'),watchBar=document.getElementById('watchBar'),cmDrawer=document.getElementById('cmDrawer'),cmBody=document.getElementById('cmBody'),cmTitle=document.getElementById('cmTitle');
 const playerProg=document.getElementById('playerProgress'),ppFill=document.getElementById('ppFill'),ppThumb=document.getElementById('ppThumb');
 const ppTooltip=document.getElementById('ppTooltip'),ppTipImg=document.getElementById('ppTipImg'),ppTipTime=document.getElementById('ppTipTime');

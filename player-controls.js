@@ -14,6 +14,12 @@
     if (!curV) return;
     var wasPaused = curV.paused;
     var btn = document.getElementById('dtPlayPauseBtn');
+
+    // Sync paused state with main script's progress interval
+    if (typeof window.playerPaused !== 'undefined') {
+      window.playerPaused = !wasPaused;
+    }
+
     if (wasPaused) {
       curV.play().catch(function(){});
       if (btn) btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 2h3v12H3zM10 2h3v12h-3z" fill="currentColor"/></svg>';
@@ -22,7 +28,7 @@
       if (btn) btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M4 3v10l9-5z" fill="currentColor"/></svg>';
     }
     var dm = document.getElementById('dm_'+idx);
-    if (dm) dm.querySelectorAll('.dm-item').forEach(function(el){ el.style.animationPlayState = wasPaused ? 'running' : 'paused'; });
+    if (dm) dm.querySelectorAll('.dm-item').forEach(function(el){ el.style.animationPlayState = !wasPaused ? 'paused' : 'running'; });
   };
 
   function fmtTimeText(progress){
