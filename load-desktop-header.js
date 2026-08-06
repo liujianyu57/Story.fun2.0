@@ -116,10 +116,6 @@
                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>' +
                     '<input type="text" id="dhSearchInput" placeholder="搜索短剧、角色、用户..." autocomplete="off"><button class="dh-search-btn" id="dhSearchBtn">搜索</button>' +
                     '<div class="dh-search-dropdown" id="dhSearchDropdown">' +
-                        '<div class="sd-section" id="sdHotSection">' +
-                            '<div class="sd-section-title">🔥 热门搜索</div>' +
-                            '<div class="sd-tags" id="sdHotTags"></div>' +
-                        '</div>' +
                         '<div class="sd-section" id="sdRecentSection" style="display:none">' +
                             '<div class="sd-section-title">🕐 最近搜索</div>' +
                             '<div class="sd-list" id="sdRecentList"></div>' +
@@ -249,13 +245,6 @@
     }
 
     function renderSearchDropdown() {
-        var hotTags = ['凤骨琉璃', '打斗精彩片段', '古风短剧', '1011', 'AI短剧', '苏婉清', '星际拓荒者', '时间管理局'];
-        var hotEl = document.getElementById('sdHotTags');
-        if (hotEl) {
-            hotEl.innerHTML = hotTags.map(function(t) {
-                return '<button class="sd-tag">' + t + '</button>';
-            }).join('');
-        }
         var recent = JSON.parse(localStorage.getItem('dh_recent_searches') || '[]');
         var recentSection = document.getElementById('sdRecentSection');
         var recentList = document.getElementById('sdRecentList');
@@ -271,10 +260,6 @@
 
     // 绑定搜索下拉的点击事件（通过事件委托）
     document.addEventListener('click', function(e) {
-        var sdTag = e.target.closest('.sd-tag');
-        if (sdTag) {
-            doSearch(sdTag.textContent);
-        }
         var sdItem = e.target.closest('.sd-item');
         if (sdItem && !e.target.closest('.sd-del')) {
             var span = sdItem.querySelector('span');

@@ -26,14 +26,9 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
 .search-submit-btn{flex-shrink:0;padding:9px 18px;border-radius:12px;border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
 .search-submit-btn:active{opacity:.8;transform:scale(.96)}
 
-/* Hot Section */
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .section-title{font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.01em}
 .section-sub{font-size:13px;color:var(--accent);cursor:pointer;font-weight:500}
-.hot-grid{display:flex;flex-wrap:wrap;gap:8px}
-.hot-tag{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;background:var(--surface);color:var(--text);border:1px solid var(--border)}
-.hot-tag:active{background:rgba(0,179,136,.06);border-color:var(--accent);color:var(--accent)}
-.hot-tag.hot{background:linear-gradient(135deg,rgba(255,149,0,.1),rgba(255,45,85,.1));border-color:transparent;color:#e04e00}
 
 /* Recent Searches */
 .recent-list{margin-top:28px}
@@ -68,11 +63,6 @@ body{padding-bottom:50px;padding-bottom:calc(50px + env(safe-area-inset-bottom,0
     <button class="search-submit-btn" id="searchSubmit">搜索</button>
   </div>
 
-  <div class="section-header">
-    <span class="section-title">热门搜索</span>
-  </div>
-  <div class="hot-grid" id="hotGrid"></div>
-
   <div class="recent-list" id="recentSection">
     <div class="section-header" style="margin-top:0">
       <span class="section-title">最近搜索</span>
@@ -99,27 +89,8 @@ const DATA = [
 
 var searchInput = document.getElementById('searchInput');
 var searchClear = document.getElementById('searchClear');
-var hotGrid = document.getElementById('hotGrid');
 var recentList = document.getElementById('recentList');
 var clearRecent = document.getElementById('clearRecent');
-
-/* Hot tags: first 5 dramas + category keywords */
-var hotDramas = DATA.slice(0,5).map(function(d){ return d.title; });
-var hotCats = ['古风','科幻','喜剧','爱情','悬疑','动作','金融'];
-var hotTags = hotDramas.concat(hotCats);
-hotGrid.innerHTML = hotTags.map(function(t,i){
-  var cls = i < 5 ? 'hot-tag hot' : 'hot-tag';
-  return '<span class="'+cls+'" data-q="'+t+'">'+t+'</span>';
-}).join('');
-
-/* Hot tag click */
-hotGrid.querySelectorAll('.hot-tag').forEach(function(el){
-  el.addEventListener('click', function(){
-    var q = this.dataset.q;
-    addRecent(q);
-    location.href = 'search-results.html?q=' + encodeURIComponent(q);
-  });
-});
 
 /* Submit button */
 document.getElementById('searchSubmit').addEventListener('click', function(){
