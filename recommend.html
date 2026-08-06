@@ -231,12 +231,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 /* ── Top Tab Bar ── */
 .top-tab-bar{position:fixed;top:0;left:0;right:0;z-index:220;display:flex;align-items:center;justify-content:center;gap:24px;height:46px;padding-top:calc(24px + env(safe-area-inset-top,0px));background:rgba(255,255,255,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.33px solid rgba(0,0,0,.08)}
 .top-tab-item{font-size:.92rem;font-weight:500;color:rgba(0,0,0,.45);border:none;background:none;cursor:pointer;padding:4px 0;transition:color .15s;position:relative}
-.top-tab-item.active{color:var(--accent);font-weight:600}
+.top-tab-item.active{color:#1a1a2e;font-weight:600}
 .top-tab-item.active::after{content:"";position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:2px;background:var(--accent)}
 .top-tab-bar.nav-dark{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:transparent}
-.drama-iframe{position:absolute;top:calc(46px + env(safe-area-inset-top,0px));left:0;right:0;bottom:0;width:100%;height:auto;height:calc(100% - 46px - env(safe-area-inset-top,0px));border:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.top-tab-bar.nav-dark .top-tab-item{color:rgba(255,255,255,.85)}
-.drama-iframe{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;border:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.drama-iframe{position:absolute;top:calc(70px + env(safe-area-inset-top,0px));left:0;right:0;bottom:0;width:100%;height:auto;height:calc(100% - 70px - env(safe-area-inset-top,0px));border:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.top-tab-bar.nav-dark .top-tab-item{color:rgba(255,255,255,.55)}
+.top-tab-bar.nav-dark .top-tab-item.active{color:#fff;font-weight:600}
 /* ── Drama Grid ── */
 .drama-grid-page{position:fixed;inset:0;z-index:210;background:#F2F2F7;display:none;flex-direction:column;padding-top:0;padding-bottom:0;overflow-y:auto}
 .drama-grid-page.show{display:flex}
@@ -526,12 +526,19 @@ function switchTab(tab,ev){
   const searchBtn=document.getElementById('searchBtn');
   const menuBtn=document.getElementById('menuBtn');
     if(tab==='drama'){
+    tabBar.classList.remove('nav-dark');
     tabBar.style.background = 'transparent';
+    var menuSVG = menuBtn.querySelector('svg');
+    var searchSVG = searchBtn.querySelector('svg');
+    menuBtn.style.color = '#1a1a2e';
+    if(menuSVG) { menuSVG.style.stroke = '#1a1a2e'; menuSVG.style.filter = 'none'; }
+    searchBtn.style.color = '#1a1a2e';
+    if(searchSVG) { searchSVG.style.stroke = '#1a1a2e'; searchSVG.style.filter = 'none'; }
     tabBar.style.backdropFilter = 'none';
     tabBar.style.webkitBackdropFilter = 'none';
     tabBar.style.borderBottomColor = 'transparent';
     dramaPg.classList.add('show');
-    var dIframe = document.getElementById("dramaIframe"); if (dIframe && !dIframe.src) { dIframe.src = dIframe.getAttribute("data-src"); }
+    var dIframe = document.getElementById("dramaIframe"); if (dIframe && (!dIframe.src || dIframe.getAttribute('src') === '')) { dIframe.src = dIframe.getAttribute("data-src"); }
     app.style.display='none';
     bnav.style.display='none';
     var bnp = document.getElementById('bottom-nav-placeholder');
@@ -542,7 +549,17 @@ function switchTab(tab,ev){
     if(playerProg)playerProg.style.display='none';
     paused=false;
   } else {
+    tabBar.style.background = '';
+    tabBar.style.backdropFilter = '';
+    tabBar.style.webkitBackdropFilter = '';
+    tabBar.style.borderBottomColor = '';
     tabBar.classList.add('nav-dark');
+    var menuSVG2 = menuBtn.querySelector('svg');
+    var searchSVG2 = searchBtn.querySelector('svg');
+    menuBtn.style.color = '';
+    if(menuSVG2) { menuSVG2.style.stroke = ''; menuSVG2.style.filter = ''; }
+    searchBtn.style.color = '';
+    if(searchSVG2) { searchSVG2.style.stroke = ''; searchSVG2.style.filter = ''; }
     dramaPg.classList.remove('show');
     app.style.display='';
     bnav.style.display='';
