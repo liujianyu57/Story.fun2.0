@@ -36,7 +36,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .search-btn:active{transform:scale(.88)}
 .side-overlay{position:fixed;inset:0;z-index:298;background:transparent;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .side-overlay.open{opacity:1;visibility:visible}
-.side-drawer{position:fixed;top:0;left:0;bottom:0;z-index:299;width:300px;max-width:82vw;background:rgba(255,255,255,.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);transform:translateX(-100%);transition:transform .35s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:4px 0 40px rgba(0,0,0,.12);border-right:.5px solid rgba(0,0,0,.06)}
+.side-drawer{position:fixed;top:0;left:0;bottom:0;z-index:299;width:300px;max-width:82vw;background:#fff;transform:translateX(-100%);transition:transform .25s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:4px 0 40px rgba(0,0,0,.12);border-right:.5px solid rgba(0,0,0,.06);will-change:transform;contain:layout style}
 .side-drawer.open{transform:translateX(0)}
 .sd-header{display:flex;align-items:center;justify-content:flex-end;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
 .sd-close{width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.06);border:none;color:#666;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
@@ -407,7 +407,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 <body>
 <div class="top-tab-bar nav-dark" id="topTabBar"><button class="top-tab-item" onclick="switchTab('drama',event)">短剧</button><button class="top-tab-item active" onclick="switchTab('rec',event)">推荐</button></div>
 
-<div class="drama-grid-page" id="dramaGridPage"><iframe src="index.html?embed=1" class="drama-iframe" id="dramaIframe" frameborder="0" scrolling="yes"></iframe></div>
+<div class="drama-grid-page" id="dramaGridPage"><iframe data-src="index.html?embed=1" src="" class="drama-iframe" id="dramaIframe" frameborder="0" scrolling="yes"></iframe></div>
 
 <button class="menu-btn" id="menuBtn" aria-label="Menu">
   <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -515,6 +515,7 @@ function switchTab(tab,ev){
     tabBar.style.webkitBackdropFilter = 'none';
     tabBar.style.borderBottomColor = 'transparent';
     dramaPg.classList.add('show');
+    var dIframe = document.getElementById("dramaIframe"); if (dIframe && !dIframe.src) { dIframe.src = dIframe.getAttribute("data-src"); }
     app.style.display='none';
     bnav.style.display='none';
     var bnp = document.getElementById('bottom-nav-placeholder');
@@ -852,7 +853,9 @@ CMPanel.init({
   }
 });
 
-render();
+requestAnimationFrame(function(){
+  render();
+});
 initDanmaku(0);
 setTimeout(function(){
   var miningPanel=document.getElementById('ipMiningPanel');
@@ -871,11 +874,12 @@ setTimeout(function(){
 },500);
 </script>
 <div id="bottom-nav-placeholder"></div>
-<script src="auth.js"></script>
-<script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
-<script src="load-bottom-nav.js"></script>
-<script src="load-sidebar.js"></script>
-<script src="load-desktop-header.js"></script>
-<script src="screen-fullscreen.js"></script>
+<script src="auth.js" defer></script>
+<script defer>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
+<script src="load-bottom-nav.js" defer></script>
+<script src="load-sidebar.js" defer></script>
+<script src="load-desktop-header.js" defer></script>
+<script src="screen-fullscreen.js" defer></script>
+<script src="recommend-perf.js" defer></script>
 </body>
 </html>
