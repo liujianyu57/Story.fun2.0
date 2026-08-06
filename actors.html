@@ -278,6 +278,190 @@
       .auth-modal-body { padding: 6px 18px 22px; }
       .auth-toast { top: 12px; max-width: 90%; font-size: 0.8rem; padding: 10px 18px; border-radius: 14px; }
     }
+
+    /* ═══ IP Guide Button ═══ */
+    .ip-guide-btn {
+      margin-left: auto;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      padding: 0;
+      line-height: 1;
+      font-family: inherit;
+      position: relative;
+    }
+    .ip-guide-btn::after {
+      content: '角色 IP 是什么？';
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      white-space: nowrap;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      box-shadow: 0 4px 12px rgba(27,45,71,0.08);
+    }
+    .ip-guide-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .ip-guide-btn:hover::after { opacity: 1; }
+
+    /* ═══ IP Guide Modal ═══ */
+    .ip-guide-box {
+      background: #fff;
+      border-radius: 24px;
+      max-width: 560px;
+      width: 94%;
+      padding: 28px 24px 24px;
+      box-shadow: 0 20px 60px rgba(15,23,42,0.15);
+      text-align: center;
+    }
+    .ip-guide-box h3 {
+      margin: 0 0 4px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .ip-guide-box .ip-guide-sub {
+      margin: 0 0 22px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    .ip-guide-page { display: none; }
+    .ip-guide-page.active { display: block; }
+    /* ── Page 1: Select ── */
+    .ipg1-cards {
+      display: flex;
+      gap: 14px;
+    }
+    .ipg1-card {
+      flex: 1;
+      min-width: 0;
+      border-radius: 16px;
+      padding: 28px 20px 24px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .ipg1-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); }
+    .ipg1-card:nth-child(1) { background: linear-gradient(135deg, rgba(0,179,136,0.05), rgba(0,179,136,0.01)); border-color: rgba(0,179,136,0.2); }
+    .ipg1-card:nth-child(1):hover { border-color: var(--accent); }
+    .ipg1-card:nth-child(2) { background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(99,102,241,0.01)); border-color: rgba(99,102,241,0.2); }
+    .ipg1-card:nth-child(2):hover { border-color: #6366f1; }
+    .ipg1-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+    .ipg1-card:nth-child(1) .ipg1-icon { background: rgba(0,179,136,0.12); color: var(--accent); }
+    .ipg1-card:nth-child(2) .ipg1-icon { background: rgba(99,102,241,0.12); color: #6366f1; }
+    .ipg1-role {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .ipg1-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .ipg1-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.04);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+    }
+    .ipg1-card:nth-child(1):hover .ipg1-arrow { background: var(--accent-soft); color: var(--accent); }
+    .ipg1-card:nth-child(2):hover .ipg1-arrow { background: rgba(99,102,241,0.12); color: #6366f1; }
+    /* ── Page 2: Detail ── */
+    .ipg2-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 8px;
+      padding: 0;
+      line-height: 1;
+      font-family: inherit;
+    }
+    .ipg2-back:hover { background: rgba(0,0,0,0.05); color: var(--text); }
+    .ipg2-header {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .ipg2-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .ipg2-sections { text-align: left; margin-bottom: 18px; }
+    .ipg2-sec { margin-bottom: 14px; }
+    .ipg2-sec:last-child { margin-bottom: 0; }
+    .ipg2-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .ipg2-label svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .ipg2-list { list-style: none; margin: 0; padding: 0; }
+    .ipg2-list li {
+      font-size: 0.76rem;
+      line-height: 1.6;
+      color: var(--text);
+      padding-left: 13px;
+      position: relative;
+      margin-bottom: 2px;
+    }
+    .ipg2-list li:last-child { margin-bottom: 0; }
+    .ipg2-list li::before { content: '•'; position: absolute; left: 0; color: var(--text-muted); font-weight: 700; }
+    @media (max-width: 599px) {
+      .ip-guide-box { padding: 22px 16px 20px; border-radius: 20px; }
+      .ipg1-cards { flex-direction: column; gap: 10px; }
+      .ipg1-card { padding: 20px 16px 18px; }
+      .ipg1-icon { width: 40px; height: 40px; border-radius: 12px; margin-bottom: 10px; }
+      .ip-guide-box h3 { font-size: 1.05rem; }
+    }
   </style>
 </head>
 <body>
@@ -308,6 +492,11 @@
   </div>
 
   <div class="app-shell">
+    <!-- Page Title -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <h1 style="margin:0;font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;color:var(--text);">角色 IP 市场</h1>
+      <button class="ip-guide-btn" id="ipGuideBtn" title="角色 IP 是什么？" style="margin-left:0;">?</button>
+    </div>
     <!-- Sort -->
     <div class="sort-container" id="sortContainer">
       <span class="sort-tag active" data-sort="price-asc">价格最低</span>
@@ -411,6 +600,7 @@
       <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;text-align:left;">
         <h3 style="text-align:center;margin:0 0 4px;font-size:1.15rem;">片酬升级规则</h3>
         <div id="upgradeModalCurrent" style="text-align:center;margin:0 0 16px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
+        <div id="upgradeModalDesc" style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:-12px;margin-bottom:12px;line-height:1.5;">完播数据为角色 IP 参演所有短剧的完播次数之和，反映其整体市场表现。</div>
         <div id="upgradeTable" style="display:flex;flex-direction:column;gap:0;margin-bottom:16px;"></div>
         <button class="button-secondary" id="upgradeModalClose" style="width:100%;">知道了</button>
       </div>
@@ -473,6 +663,73 @@
               <button class="success-btn secondary" id="continueBtn">继续浏览</button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IP Guide Modal -->
+    <div class="stat-tooltip-overlay" id="ipGuideModal" style="z-index:10003;">
+      <div class="ip-guide-box">
+        <!-- Page 1: Select -->
+        <div class="ip-guide-page active" id="ipgPage1">
+          <h3>角色 IP 是什么？</h3>
+          <p class="ip-guide-sub">两种参与方式，选择适合你的角色</p>
+          <div class="ipg1-cards">
+            <div class="ipg1-card" onclick="ipgGoDetail('player')">
+              <div class="ipg1-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="8"/><line x1="19.5" y1="5.5" x2="19.5" y2="10.5"/></svg></div>
+              <div class="ipg1-role">普通玩家</div>
+              <div class="ipg1-desc">签约演员，坐享片酬</div>
+              <span class="ipg1-arrow">→</span>
+            </div>
+            <div class="ipg1-card" onclick="ipgGoDetail('creator')">
+              <div class="ipg1-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8" cy="8" r="2"/><path d="M18 7l-6 4v8"/></svg></div>
+              <div class="ipg1-role">短剧创作者</div>
+              <div class="ipg1-desc">创作短剧，经营角色 IP</div>
+              <span class="ipg1-arrow">→</span>
+            </div>
+          </div>
+        </div>
+        <!-- Page 2: Player Detail -->
+        <div class="ip-guide-page" id="ipgPagePlayer">
+          <button class="ipg2-back" onclick="ipgGoBack()">←</button>
+          <div class="ipg2-header">🎮 普通玩家</div>
+          <div class="ipg2-subtitle">签约演员，坐享片酬</div>
+          <div class="ipg2-sections">
+            <div class="ipg2-sec">
+              <div class="ipg2-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 适合</div>
+              <ul class="ipg2-list"><li>不想创作，想低门槛参与赚 STORY 的玩家。</li></ul>
+            </div>
+            <div class="ipg2-sec">
+              <div class="ipg2-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><line x1="8" y1="8" x2="10" y2="8"/><line x1="8" y1="12" x2="10" y2="12"/><line x1="8" y1="16" x2="10" y2="16"/></svg> 怎么做</div>
+              <ul class="ipg2-list"><li>签约片酬高的演员。</li><li>在经纪人页面安排演出。</li></ul>
+            </div>
+            <div class="ipg2-sec">
+              <div class="ipg2-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 能赚什么</div>
+              <ul class="ipg2-list"><li>在经纪人页面安排演出，赚取 STORY 片酬。</li><li>角色 IP 的潜在价值，可用于交易市场转售。</li></ul>
+            </div>
+          </div>
+          <button class="button-secondary" id="ipGuideClose" style="padding: 9px 28px; font-size: 0.88rem;">知道了</button>
+        </div>
+        <!-- Page 2: Creator Detail -->
+        <div class="ip-guide-page" id="ipgPageCreator">
+          <button class="ipg2-back" onclick="ipgGoBack()">←</button>
+          <div class="ipg2-header">🎬 短剧创作者</div>
+          <div class="ipg2-subtitle">创作短剧，经营角色 IP</div>
+          <div class="ipg2-sections">
+            <div class="ipg2-sec">
+              <div class="ipg2-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 适合</div>
+              <ul class="ipg2-list"><li>有创作能力，想靠作品和角色 IP 赚钱的人</li></ul>
+            </div>
+            <div class="ipg2-sec">
+              <div class="ipg2-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><line x1="8" y1="8" x2="10" y2="8"/><line x1="8" y1="12" x2="10" y2="12"/><line x1="8" y1="16" x2="10" y2="16"/></svg> 怎么做</div>
+              <ul class="ipg2-list"><li>发行角色 IP，角色被签约可获得分成。</li><li>发布短剧到 Story.fun，绑定角色 IP 关联数据。</li><li>持续产出爆款短剧，提升完播和热度，提升 IP 的片酬。</li><li>推荐使用 DreamOS 一键创作 AI 短剧。</li></ul>
+            </div>
+            <div class="ipg2-sec">
+              <div class="ipg2-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 能赚什么</div>
+              <ul class="ipg2-list"><li>角色签约的 40% 分成。</li><li>签约自己的角色后，同样可以在经纪人页面赚取 STORY。</li><li>角色 IP 的潜在价值，可用于交易市场转售。</li></ul>
+            </div>
+          </div>
+          <button class="button-secondary" id="ipGuideClose2" style="padding: 9px 28px; font-size: 0.88rem;">知道了</button>
         </div>
       </div>
     </div>
@@ -868,7 +1125,6 @@
         if (viewsNum >= UPGRADE_TABLE[i].threshold) { maxLevel = UPGRADE_TABLE[i].level; break; }
       }
       upgradeModalCurrent.textContent = '当前完播：' + viewsStr + ' → 可升至 Lv.' + maxLevel;
-      upgradeModalCurrent.insertAdjacentHTML('afterend','<div style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.5;">完播数据为角色 IP 参演所有短剧的完播次数之和，反映其整体市场表现。</div>');
       upgradeTable.innerHTML = UPGRADE_TABLE.map(function(r) {
         var isActive = r.level === maxLevel;
         var bg = isActive ? 'var(--accent-soft)' : 'transparent';
@@ -954,6 +1210,34 @@
         window.open('https://market.story.fun/trade/' + name.toLowerCase(), '_blank');
       }
     });
+
+    // ============================================================
+    //  IP Guide Modal
+    // ============================================================
+    var ipGuideModal = document.getElementById('ipGuideModal');
+    var ipGuideBtn = document.getElementById('ipGuideBtn');
+    ipGuideBtn.addEventListener('click', function() {
+      ipGuideModal.classList.add('active');
+      ipgGoBack();
+    });
+    ipGuideModal.addEventListener('click', function(e) { if (e.target === ipGuideModal) ipGuideModal.classList.remove('active'); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && ipGuideModal.classList.contains('active')) ipGuideModal.classList.remove('active'); });
+
+    function ipgGoDetail(type) {
+      var pages = document.querySelectorAll('#ipGuideModal .ip-guide-page');
+      for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
+      document.getElementById(type === 'player' ? 'ipgPagePlayer' : 'ipgPageCreator').classList.add('active');
+    }
+
+    function ipgGoBack() {
+      var pages = document.querySelectorAll('#ipGuideModal .ip-guide-page');
+      for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
+      document.getElementById('ipgPage1').classList.add('active');
+    }
+
+    function ipgCloseModal() { ipGuideModal.classList.remove('active'); }
+    document.getElementById('ipGuideClose').addEventListener('click', ipgCloseModal);
+    document.getElementById('ipGuideClose2').addEventListener('click', ipgCloseModal);
 
     // ============================================================
     //  Init Auth
