@@ -406,7 +406,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 .app-fullscreen .info{bottom:calc(56px + 44px + 12px + env(safe-area-inset-bottom,0px))!important}
 .app-fullscreen .actions{bottom:calc(68px + 44px + 54px + env(safe-area-inset-bottom,0px))!important}
 .dt-time-text{font-size:11px;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums;white-space:nowrap;margin:0 4px}
-@media(min-width:769px){.app-fullscreen #playerProgress{left:0!important;right:0!important;bottom:48px!important}.app-fullscreen #desktopToolbar{left:0!important;right:0!important;bottom:0!important}.app-fullscreen #app{left:0!important;right:0!important}.app-fullscreen .desktop-header{display:none!important}}</style>
+@media(min-width:769px){.app-fullscreen #playerProgress{left:0!important;right:0!important;bottom:48px!important}.app-fullscreen #desktopToolbar{left:0!important;right:0!important;bottom:0!important}.app-fullscreen #app{left:0!important;right:0!important}.app-fullscreen .desktop-header{display:none!important}}
+/* ── Clean Mode Exit Button (Mobile Only) ── */
+.clean-exit-btn{position:fixed;right:16px;bottom:calc(20px + 50px + env(safe-area-inset-bottom,0px));z-index:500;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:.5px solid rgba(255,255,255,.2);color:#fff;display:none;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s}
+.clean-exit-btn:active{transform:scale(.88)}
+body.clean-mode .clean-exit-btn{display:flex}
+@media(min-width:769px){body.clean-mode .clean-exit-btn{display:none!important}}
+</style>
 </head>
 <body>
 <div class="top-tab-bar nav-dark" id="topTabBar"><button class="top-tab-item" onclick="switchTab('drama',event)">短剧</button><button class="top-tab-item active" onclick="switchTab('rec',event)">推荐</button></div>
@@ -480,6 +486,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
     </button>
   </div>
 </div>
+
+<button class="clean-exit-btn" id="cleanExitBtn" onclick="toggleCleanMode()">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
 
 <div class="dt-page-nav" id="dtPageNav">
   <button class="dt-page-nav-btn" title="上一个">
@@ -768,7 +780,7 @@ function removeRecentSearch(q) {
 })();
 function toggleDesktopDanmaku(){window.desktopDanmakuOn=!window.desktopDanmakuOn;var btn=document.getElementById('dtDanmakuBtn');if(window.desktopDanmakuOn){btn.classList.add('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display=''});showToast('弹幕已开启')}else{btn.classList.remove('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display='none'});showToast('弹幕已关闭')}}
 function sendDesktopDanmaku(){var input=document.getElementById('dtDanmakuInput');if(!input)return;var text=input.value.trim();if(!text){showToast('请输入弹幕内容');return}if(text.length>30){showToast('弹幕不能超过30字');return}var layer=document.getElementById('dm_'+idx);if(!layer){showToast('弹幕发送失败');return}var usedTops=[];layer.querySelectorAll('.dm-item').forEach(function(el){usedTops.push(parseInt(el.style.top)||0)});var topPos=4;var candidates=[4,52,100,76,28];for(var ci=0;ci<candidates.length;ci++){if(usedTops.indexOf(candidates[ci])===-1){topPos=candidates[ci];break}}var el=document.createElement('div');el.className='dm-item';el.textContent=text;el.style.top=topPos+'px';el.style.animationDuration=(7+Math.random()*5)+'s';el.style.animationPlayState=paused?'paused':'running';layer.appendChild(el);input.value='';showToast('弹幕已发送 🎉')}
-function toggleCleanMode(){cleanMode=!cleanMode;var btn=document.getElementById('dtCleanBtn');var infoEls=document.querySelectorAll('.slide .info');var actionEls=document.querySelectorAll('.slide .actions');var maskEls=document.querySelectorAll('.slide-mask');if(cleanMode){btn.classList.add('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display='none'});infoEls.forEach(function(el){el.style.display='none'});actionEls.forEach(function(el){el.style.display='none'});maskEls.forEach(function(el){el.style.opacity='0'});showToast('清屏模式');var ipPanel=document.getElementById('ipMiningPanel');if(ipPanel)ipPanel.style.display='none'}else{btn.classList.remove('dt-active');if(window.desktopDanmakuOn){document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display=''})}infoEls.forEach(function(el){el.style.display=''});actionEls.forEach(function(el){el.style.display=''});maskEls.forEach(function(el){el.style.opacity=''});var ipPanel=document.getElementById('ipMiningPanel');if(ipPanel){var cur=DATA[idx];if(cur&&cur.type==='drama'&&cur.actors&&cur.actors.length)ipPanel.style.display='flex'}}}
+function toggleCleanMode(){cleanMode=!cleanMode;document.body.classList.toggle('clean-mode',cleanMode);var btn=document.getElementById('dtCleanBtn');var infoEls=document.querySelectorAll('.slide .info');var actionEls=document.querySelectorAll('.slide .actions');var maskEls=document.querySelectorAll('.slide-mask');if(cleanMode){btn.classList.add('dt-active');document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display='none'});infoEls.forEach(function(el){el.style.display='none'});actionEls.forEach(function(el){el.style.display='none'});maskEls.forEach(function(el){el.style.opacity='0'});showToast('清屏模式');var ipPanel=document.getElementById('ipMiningPanel');if(ipPanel)ipPanel.style.display='none'}else{btn.classList.remove('dt-active');if(window.desktopDanmakuOn){document.querySelectorAll('.dm-layer').forEach(function(l){l.style.display=''})}infoEls.forEach(function(el){el.style.display=''});actionEls.forEach(function(el){el.style.display=''});maskEls.forEach(function(el){el.style.opacity=''});var ipPanel=document.getElementById('ipMiningPanel');if(ipPanel){var cur=DATA[idx];if(cur&&cur.type==='drama'&&cur.actors&&cur.actors.length)ipPanel.style.display='flex'}}}
 function toggleAutoPlayNext(){window.autoPlayNext=!window.autoPlayNext;var btn=document.getElementById('dtAutoPlayBtn');if(window.autoPlayNext){btn.classList.add('dt-active');showToast('连播已开启')}else{btn.classList.remove('dt-active');showToast('连播已关闭')}}
 function showDesktopEpList(){var d=DATA[idx];if(!d||d.type==='video'){showToast('当前为短视频，无选集');return}location.href='drama-player.html?id='+d.id+'&title='+encodeURIComponent(d.title)+'&total='+d.totalEp+'&cat='+encodeURIComponent(d.cat)+'&author='+encodeURIComponent(d.author)+'&avatar='+encodeURIComponent(d.avatar)+'&cover='+encodeURIComponent(d.cover)+'&desc='+encodeURIComponent(d.desc)+'&video='+encodeURIComponent(d.video||'')}
 function setDesktopVolume(val){var vs=document.querySelectorAll('.slide-video');vs.forEach(function(v){v.volume=val/100})}
