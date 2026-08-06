@@ -1411,9 +1411,9 @@
       });
 
       function updateNoResults() {
-        const cards = document.querySelectorAll('.card');
+        const wrappers = document.querySelectorAll('.card-wrapper');
         let c = 0;
-        cards.forEach(card => { if (card.style.display !== 'none') c++; });
+        wrappers.forEach(w => { if (w.style.display !== 'none') c++; });
         const el = document.getElementById('noResults');
         if (el) el.style.display = c === 0 ? 'block' : 'none';
       }
@@ -1421,12 +1421,44 @@
       var currentCategory = 'all';
       var currentSort = 'hot';
 
-      function applyFilters() {
-        document.querySelectorAll('.card').forEach(card => {
-          var matchCat = currentCategory === 'all' || card.getAttribute('data-category') === currentCategory;
-          var matchSort = card.getAttribute('data-sort') === currentSort;
-          card.style.display = matchCat && matchSort ? 'flex' : 'none';
+      function sortCards(sortType) {
+        var gallery = document.getElementById('dramaGallery');
+        if (!gallery) return;
+        var wrappers = Array.from(gallery.querySelectorAll('.card-wrapper'));
+        if (wrappers.length === 0) return;
+        wrappers.sort(function(a, b) {
+          var titleA = (a.querySelector('.card-caption h3') || {}).textContent || '';
+          var titleB = (b.querySelector('.card-caption h3') || {}).textContent || '';
+          var dataA = GALLERY_DRAMAS.find(function(d) { return d.title === titleA; });
+          var dataB = GALLERY_DRAMAS.find(function(d) { return d.title === titleB; });
+          if (sortType === 'newest') {
+            var idxA = GALLERY_DRAMAS.indexOf(dataA);
+            var idxB = GALLERY_DRAMAS.indexOf(dataB);
+            return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+          }
+          var valA = 0, valB = 0;
+          if (sortType === 'hot') {
+            valA = parseFloat((dataA && dataA.heat || '0').replace(/[^0-9.]/g, '')) || 0;
+            valB = parseFloat((dataB && dataB.heat || '0').replace(/[^0-9.]/g, '')) || 0;
+          } else if (sortType === 'completion') {
+            valA = parseFloat((dataA && dataA.views || '0').replace(/[^0-9.]/g, '')) || 0;
+            valB = parseFloat((dataB && dataB.views || '0').replace(/[^0-9.]/g, '')) || 0;
+          } else if (sortType === 'favorites') {
+            valA = parseFloat(dataA && dataA.rating || '0') || 0;
+            valB = parseFloat(dataB && dataB.rating || '0') || 0;
+          }
+          return valB - valA;
         });
+        wrappers.forEach(function(w) { gallery.appendChild(w); });
+      }
+
+      function applyFilters() {
+        document.querySelectorAll('.card-wrapper').forEach(wrapper => {
+          var card = wrapper.querySelector('.card');
+          var matchCat = currentCategory === 'all' || (card && card.getAttribute('data-category') === currentCategory);
+          wrapper.style.display = matchCat ? 'flex' : 'none';
+        });
+        sortCards(currentSort);
         updateNoResults();
       }
 
@@ -1451,7 +1483,7 @@
             sortContainer.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
             this.classList.add('active');
             currentSort = this.getAttribute('data-filter');
-            applyFilters();
+            sortCards(currentSort);
           });
         });
       }
