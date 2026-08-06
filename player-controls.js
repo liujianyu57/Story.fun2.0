@@ -10,12 +10,11 @@
 
   window.togglePlayPause = function(){
     var idx = getCurrentIdx();
-    var curV = document.querySelector('#track .slide:nth-child('+(idx+1)+') .slide-video');
+    var curV = document.querySelector('#track .slide:nth-child('+(idx+1)+') .slide-video, #track .slide:nth-child('+(idx+1)+') .slide-img');
     if (!curV) return;
     var wasPaused = curV.paused;
     var btn = document.getElementById('dtPlayPauseBtn');
 
-    // Sync paused state with main script's progress interval
     if (typeof window.playerPaused !== 'undefined') {
       window.playerPaused = !wasPaused;
     }
