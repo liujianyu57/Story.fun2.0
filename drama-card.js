@@ -484,7 +484,6 @@
     var creatorHTML = '';
     if (creator || creatorAvatar) {
       creatorHTML = '<div class="caption-right"><div class="caption-creator">' +
-        (creatorAvatar ? '<img class="caption-creator-avatar" src="' + creatorAvatar + '" alt="' + creator + '" />' : '') +
         (creator ? '@' + creator : '') +
       '</div></div>';
     }
