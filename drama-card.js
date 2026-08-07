@@ -153,31 +153,41 @@
 .card-stats .cs-rating { color: #fff; }
 .card-stats .cs-rating svg { stroke: #fff; opacity: 1; }
 
-/* ═══ 参演角色 IP 头像（挖矿面板风格） ═══ */
+/* ═══ 参演角色 IP 头像 + 片酬 ═══ */
 .card-actors {
   position: absolute;
   bottom: 34px;
   left: 10px;
   z-index: 2;
   display: flex;
-  align-items: center;
-  gap: 0;
-  padding: 0;
-  background: none;
-  border-top: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   margin: 0;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.card-actors-avatars {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 .card-actor-item {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0;
-  cursor: pointer;
-  transition: transform 0.2s ease;
   pointer-events: auto;
+  flex-shrink: 0;
 }
-.card-actor-item:hover { transform: translateY(-2px); }
+.card-actor-item:not(:first-child) {
+  margin-left: -12px;
+}
 .card-actor-avatar-wrap { position: relative; width: 36px; height: 36px; flex-shrink: 0; }
 .card-actor-avatar {
   width: 36px;
@@ -186,60 +196,133 @@
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.5);
   flex-shrink: 0;
-  transition: border-color 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-.card-actor-item:hover .card-actor-avatar { border-color: var(--accent); }
 .card-actor-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.card-actor-mining-dot {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #34d399;
-  border: 2px solid rgba(0, 0, 0, 0.7);
-  animation: cardMiningPulse 2s ease-in-out infinite;
-}
-@keyframes cardMiningPulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 5px rgba(52, 211, 153, 0.5); }
-  50% { opacity: 0.3; box-shadow: 0 0 1px rgba(52, 211, 153, 0.15); }
-}
-.card-actor-tooltip {
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-radius: 8px;
-  padding: 5px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.card-actors-salary {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #3affb1;
   white-space: nowrap;
-  opacity: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  line-height: 1;
 }
-.card-actor-item:hover .card-actor-tooltip { opacity: 1; }
-.card-actor-tooltip .ct-power { font-size: 0.75rem; font-weight: 700; color: #3affb1; line-height: 1.2; }
-.card-actor-tooltip .ct-unit { font-size: 0.6rem; font-weight: 500; color: rgba(255, 255, 255, 0.4); letter-spacing: 0.04em; line-height: 1.2; }
-.card-actors-list {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 10px;
-  padding: 4px 8px;
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
+.card-actors-salary .cs-story-icon {
+  display: inline-flex;
+  align-items: center;
+}
+.card-actors-salary .cs-story-icon svg {
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
 }
 .card-actor-name { display: none; }
 .card-foot { display: none; }
+
+/* ═══ 角色 IP 弹窗 ═══ */
+.actors-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: amFadeIn 0.2s ease;
+}
+@keyframes amFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.actors-modal-panel {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: amSlideUp 0.25s ease;
+}
+@keyframes amSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.actors-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.actors-modal-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.actors-modal-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  color: #666;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.actors-modal-close:hover { background: rgba(0, 0, 0, 0.12); color: #333; }
+.actors-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.actors-modal-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.03);
+  text-decoration: none;
+}
+.actors-modal-item-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+.actors-modal-item-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.actors-modal-item-info { flex: 1; min-width: 0; }
+.actors-modal-item-name { font-size: 0.85rem; font-weight: 600; color: #1a1a2e; line-height: 1.2; }
+.actors-modal-item-power { font-size: 0.72rem; color: #10b981; line-height: 1.2; margin-top: 1px; }
+.actors-modal-item-arrow {
+  font-size: 1.2rem;
+  color: #ccc;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+/* ═══ 移动端弹窗 ═══ */
+@media (max-width: 760px) {
+  .actors-modal-panel { padding: 16px 18px; }
+  .actors-modal-item { padding: 6px 10px; gap: 10px; }
+  .actors-modal-item-avatar { width: 34px; height: 34px; }
+  .actors-modal-item-name { font-size: 0.8rem; }
+  .actors-modal-item-arrow { font-size: 1.1rem; }
+}
 
 /* ═══ 移动端适配 ═══ */
 @media (max-width: 760px) {
@@ -255,20 +338,13 @@
   .card-body p { display: none; color: var(--text-muted); }
   .card-meta { display: none; }
   .card-thumb { aspect-ratio: 2/3; }
-  .card-actors { bottom: 30px; left: 8px; padding: 0; border-top: none; }
+  .card-actors { bottom: 30px; left: 8px; padding: 4px 8px; border-top: none; }
   .card-actor-name { display: none; color: var(--text-muted); }
   .card-actor-avatar { width: 26px; height: 26px; border-width: 1.5px; border-color: rgba(255, 255, 255, 0.6); }
   .card-actor-avatar-wrap { width: 26px; height: 26px; }
-  .card-actors-list {
-    gap: 3px;
-    padding: 3px 6px;
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 0.5px solid rgba(255, 255, 255, 0.12);
-  }
+  .card-actor-item:not(:first-child) { margin-left: -10px; }
   .card-actor-item { gap: 0; }
+  .card-actors-salary { font-size: 0.68rem; }
   .card-caption .caption-left .badge { display: none; }
   .episode { background: rgba(0, 0, 0, 0.04); color: var(--text-muted); }
   .badge { background: var(--accent-soft); color: var(--accent); }
@@ -323,7 +399,8 @@
   var ICONS = {
     views: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>',
     heat: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>',
-    rating: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg>'
+    rating: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg>',
+    story: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="7" y="10.5" text-anchor="middle" font-size="9" font-weight="800" fill="currentColor" font-family="system-ui, sans-serif">S</text></svg>'
   };
 
   // ============================================================
@@ -347,15 +424,10 @@
    */
   function renderActorItem(name) {
     var avatarUrl = ACTOR_AVATARS[name] || DEFAULT_AVATAR;
-    var power = ACTOR_POWER[name] || '—';
-    var href = 'actor-profile.html?name=' + encodeURIComponent(name);
-    return '<div class="card-actor-item" onclick="event.stopPropagation(); location.href=\'' + href + '\'">' +
+    return '<div class="card-actor-item">' +
       '<div class="card-actor-avatar-wrap">' +
         '<div class="card-actor-avatar"><img src="' + avatarUrl + '" alt="' + escapeHTML(name) + '" loading="lazy" /></div>' +
-        '<div class="card-actor-mining-dot"></div>' +
       '</div>' +
-      '<div class="card-actor-tooltip"><span class="ct-power">' + power + '</span><span class="ct-unit">STORY/h</span></div>' +
-      '<span class="card-actor-name">' + escapeHTML(name) + '</span>' +
     '</div>';
   }
 
@@ -386,7 +458,14 @@
     var actorsHTML = '';
     if (actors.length > 0) {
       var actorItems = actors.map(renderActorItem).join('');
-      actorsHTML = '<div class="card-actors"><div class="card-actors-list">' + actorItems + '</div></div>';
+      var totalPower = 0;
+      actors.forEach(function(name) {
+        var p = ACTOR_POWER[name];
+        if (p) totalPower += parseInt(p.replace(/,/g, ''), 10);
+      });
+      var totalPowerStr = totalPower.toLocaleString('en-US');
+      var actorsDataAttr = escapeHTML(JSON.stringify(actors));
+      actorsHTML = '<div class="card-actors" data-actors=\'' + actorsDataAttr + '\'><span class="card-actors-salary">' + totalPowerStr + ' <span class="cs-story-icon">' + ICONS.story + '</span>/h</span><div class="card-actors-avatars">' + actorItems + '</div></div>';
     }
 
     var statsHTML = '';
@@ -437,6 +516,58 @@
     items = Array.isArray(items) ? items : [];
     return items.map(renderDramaCard).join('');
   }
+
+  // ============================================================
+  //  角色 IP 弹窗
+  // ============================================================
+  function openActorsModal(actorNames) {
+    // Remove any existing modal
+    var existing = document.getElementById('actors-modal-overlay');
+    if (existing) existing.remove();
+
+    var itemsHTML = actorNames.map(function(name) {
+      var avatarUrl = ACTOR_AVATARS[name] || DEFAULT_AVATAR;
+      var power = ACTOR_POWER[name] || '—';
+      var href = 'actor-profile.html?name=' + encodeURIComponent(name);
+      return '<a class="actors-modal-item" href="' + href + '" target="_self">' +
+        '<div class="actors-modal-item-avatar"><img src="' + avatarUrl + '" alt="' + escapeHTML(name) + '" /></div>' +
+        '<div class="actors-modal-item-info">' +
+          '<div class="actors-modal-item-name">' + escapeHTML(name) + '</div>' +
+          '<div class="actors-modal-item-power">片酬 ' + power + ' STORY/h</div>' +
+        '</div>' +
+        '<span class="actors-modal-item-arrow">\u203A</span>' +
+      '</a>';
+    }).join('');
+
+    var overlay = document.createElement('div');
+    overlay.id = 'actors-modal-overlay';
+    overlay.className = 'actors-modal-overlay';
+    overlay.innerHTML = '<div class="actors-modal-panel">' +
+      '<div class="actors-modal-header"><h3>参演角色 IP</h3><button class="actors-modal-close" onclick="document.getElementById(\'actors-modal-overlay\').remove()">&times;</button></div>' +
+      '<div class="actors-modal-list">' + itemsHTML + '</div>' +
+    '</div>';
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) overlay.remove();
+    });
+
+    document.body.appendChild(overlay);
+  }
+
+  // 事件委托（捕获阶段）：点击 card-actors 打开弹窗，并阻止冒泡到卡片链接
+  document.addEventListener('click', function(e) {
+    var actorsEl = e.target.closest('.card-actors');
+    if (!actorsEl) return;
+    e.stopPropagation();
+    var actorsData = actorsEl.getAttribute('data-actors');
+    if (!actorsData) return;
+    try {
+      var actorNames = JSON.parse(actorsData);
+      if (Array.isArray(actorNames) && actorNames.length > 0) {
+        openActorsModal(actorNames);
+      }
+    } catch (err) {}
+  }, true);
 
   // ============================================================
   //  暴露全局 API（供各页面直接调用）
