@@ -672,7 +672,13 @@ document.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key===
 
 var menuBtn=document.getElementById("menuBtn");var sideDrawer=document.getElementById("sideDrawer");var sideOverlay=document.getElementById("sideOverlay");var sdClose=document.getElementById("sdClose");
 searchBtn.addEventListener("click", function(e) { e.stopPropagation(); location.href = "search.html"; });
-function openSide(){sideDrawer.classList.add("open");sideOverlay.classList.add("open")}
+function openSide(){
+  if (typeof currentUser !== 'undefined' && currentUser && !currentUser.isLoggedIn) {
+    location.href = 'mobile-login.html?redirect=' + encodeURIComponent(location.pathname);
+    return;
+  }
+  sideDrawer.classList.add("open");sideOverlay.classList.add("open");
+}
 function closeSide(){sideDrawer.classList.remove("open");sideOverlay.classList.remove("open")}
 menuBtn.addEventListener("click",function(e){e.stopPropagation();openSide()});
 sdClose.addEventListener("click",closeSide);
