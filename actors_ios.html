@@ -201,7 +201,7 @@
     .desktop-header .auth-container{display:flex;align-items:center}
     .desktop-header .auth-login-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#13202e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
     .desktop-header .auth-login-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,0.08)}
-    @media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}#debugSwitchBtn{display:none}}
+    @media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}}
     @media(max-width:768px){.desktop-header{display:none}}
 
     /* ═══ 平板响应式 ═══ */
@@ -462,6 +462,29 @@
       .ipg1-icon { width: 40px; height: 40px; border-radius: 12px; margin-bottom: 10px; }
       .ip-guide-box h3 { font-size: 1.05rem; }
     }
+
+    /* ═══ IAP Bottom Sheet Styles ═══ */
+    .sheet-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .sheet-overlay.active { opacity: 1; visibility: visible; }
+    .sheet-panel { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10000; background: #fff; border-radius: 24px 24px 0 0; padding: 8px 16px calc(24px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); max-height: 80vh; overflow-y: auto; }
+    .sheet-panel.open { transform: translateY(0); }
+    .sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border); margin: 8px auto 16px; }
+    .sheet-title { font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 16px; color: var(--text); }
+    .iap-pkg-btn { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--border); background: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; -webkit-tap-highlight-color: transparent; }
+    .iap-pkg-btn:active { transform: scale(0.98); background: var(--bg); }
+    .iap-pkg-left { display: flex; align-items: center; gap: 2px; }
+    .iap-pkg-points { font-size: 16px; font-weight: 700; color: var(--text); }
+    .iap-pkg-right { display: flex; align-items: center; }
+    .iap-pkg-price { font-size: 18px; font-weight: 700; color: var(--accent); }
+    .ph-item { display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
+    .ph-item:last-child { border-bottom: none; }
+    .ph-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .ph-action { font-size: 14px; font-weight: 600; color: var(--text); }
+    .ph-meta { font-size: 12px; color: #8b8d98; display: flex; gap: 8px; }
+    .ph-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+    .ph-amount { font-size: 16px; font-weight: 700; }
+    .ph-amount.plus { color: var(--accent); }
+    .ph-amount.minus { color: #f45b69; }
   </style>
 </head>
 <body>
@@ -908,7 +931,7 @@
       MintModalActorName.textContent = data.name;
       MintModalImage.src = data.image;
       MintModalTag.textContent = data.tag + (data.collection ? ' · ' + data.collection : '');
-      MintEstimate.textContent = data.price;
+      MintEstimate.textContent = (data.price || '').replace(/USDC/g, '💎');
       MintModalSuccess.classList.remove('show');
       MintModalBody.style.display = 'flex';
       MintModal.classList.add('active');
@@ -1243,6 +1266,34 @@
     //  Init Auth
     // ============================================================
     setTimeout(function() { if (typeof initAuth === 'function') initAuth(); }, 100);
+
+    // ============================================================
+    //  iOS 适配：将 USDC 替换为 💎 点数图标
+    // ============================================================
+    (function replaceUsdcWithPoints() {
+      var POINTS_ICON = '💎';
+      function walkTextNodes(root) {
+        if (!root) return;
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var node;
+        while (node = walker.nextNode()) {
+          if (node.nodeValue.indexOf('USDC') !== -1) {
+            node.nodeValue = node.nodeValue.replace(/USDC/g, POINTS_ICON);
+          }
+        }
+      }
+      // 页面加载后替换
+      setTimeout(function() {
+        walkTextNodes(document.getElementById('actorGrid'));
+        walkTextNodes(document.getElementById('mintModal'));
+        walkTextNodes(document.getElementById('priceTooltip'));
+        walkTextNodes(document.getElementById('priceCoeffTooltip'));
+        walkTextNodes(document.getElementById('ipPowerModal'));
+        // 也处理曲线弹窗中的标签
+        var curveCanvas = document.getElementById('priceCurveCanvas');
+        if (curveCanvas) walkTextNodes(curveCanvas.parentElement);
+      }, 200);
+    })();
   </script>
 
   <!-- Desktop Header Search -->
@@ -1253,6 +1304,46 @@
     function removeRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});localStorage.setItem("dh_recent_searches",JSON.stringify(list));renderSearchDropdown()}
     (function(){var inp=document.getElementById("dhSearchInput");var dropdown=document.getElementById("dhSearchDropdown");var searchBox=document.getElementById("dhSearch");var searchBtn=document.getElementById("dhSearchBtn");if(!inp||!dropdown||!searchBox)return;renderSearchDropdown();inp.addEventListener("focus",function(){renderSearchDropdown();dropdown.classList.add("show")});inp.addEventListener("input",function(){if(inp.value.trim()){dropdown.classList.remove("show")}else{renderSearchDropdown();dropdown.classList.add("show")}});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){var q=inp.value.trim();if(q)doSearch(q)}});searchBtn.addEventListener("click",function(e){e.stopPropagation();var q=inp.value.trim();if(q)doSearch(q)});document.addEventListener("click",function(e){if(!searchBox.contains(e.target)){dropdown.classList.remove("show")}})})();
   </script>
-<button id="debugSwitchBtn" onclick="location.href='actors_ios.html'" style="position:fixed;bottom:100px;right:16px;z-index:9999;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-size:0.8rem;cursor:pointer;font-family:inherit;">切换到iOS</button>
+<button onclick="location.href='actors.html'" style="position:fixed;bottom:100px;right:16px;z-index:9999;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-size:0.8rem;cursor:pointer;font-family:inherit;">切换到常规</button>
+<button id="iapDebugBtn" style="position:fixed;bottom:140px;right:16px;z-index:9999;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-size:0.8rem;cursor:pointer;font-family:inherit;">点数不足</button>
+
+<!-- IAP Points Bottom Sheet -->
+<div class="sheet-overlay" id="iapPointsSheet" onclick="closeIAPModal()"></div>
+<div class="sheet-panel" id="iapPointsPanel">
+  <div class="sheet-handle"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+    <span style="font-size:1.1rem;font-weight:700;">购买点数</span>
+    <span onclick="event.stopPropagation();closeIAPModal();openPointsHistory();" style="font-size:0.82rem;color:var(--text-muted);cursor:pointer;font-weight:500;">记录</span>
+  </div>
+  <p style="font-size:0.82rem;color:var(--text-sub);text-align:center;margin:-8px 0 4px;">点数用于签约角色等 App 内服务</p>
+  <p style="font-size:13px;color:var(--text);text-align:center;margin-bottom:14px;font-weight:600;">💎 余额：<span id="sheetPointsBalance">300</span></p>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <button class="iap-pkg-btn" onclick="purchasePoints(6)"><div class="iap-pkg-left"><span class="iap-pkg-points">6 点数</span></div><div class="iap-pkg-right"><span class="iap-pkg-price">$7.80</span></div></button>
+    <button class="iap-pkg-btn" onclick="purchasePoints(18)"><div class="iap-pkg-left"><span class="iap-pkg-points">18 点数</span></div><div class="iap-pkg-right"><span class="iap-pkg-price">$23.40</span></div></button>
+    <button class="iap-pkg-btn" onclick="purchasePoints(60)"><div class="iap-pkg-left"><span class="iap-pkg-points">60 点数</span></div><div class="iap-pkg-right"><span class="iap-pkg-price">$78.00</span></div></button>
+    <button class="iap-pkg-btn" onclick="purchasePoints(120)"><div class="iap-pkg-left"><span class="iap-pkg-points">120 点数</span></div><div class="iap-pkg-right"><span class="iap-pkg-price">$156.00</span></div></button>
+    <button class="iap-pkg-btn" onclick="purchasePoints(300)"><div class="iap-pkg-left"><span class="iap-pkg-points">300 点数</span></div><div class="iap-pkg-right"><span class="iap-pkg-price">$390.00</span></div></button>
+    <button class="iap-pkg-btn" onclick="purchasePoints(600)"><div class="iap-pkg-left"><span class="iap-pkg-points">600 点数</span></div><div class="iap-pkg-right"><span class="iap-pkg-price">$780.00</span></div></button>
+  </div>
+</div>
+
+<!-- Points History Bottom Sheet -->
+<div class="sheet-overlay" id="pointsHistorySheet" onclick="closePointsHistory()"></div>
+<div class="sheet-panel" id="pointsHistoryPanel"><div class="sheet-handle"></div><div class="sheet-title">💎 点数明细</div><div id="pointsHistoryList"></div></div>
+
+<script>
+(function(){
+  var getUsdc = function(){ if(typeof currentUser==='undefined')return 300; var b=currentUser.balances; if(!b)return 300; var u=b.usdc; if(typeof u==='number')return u; if(typeof u==='object'){var t=0;for(var k in u){if(typeof u[k]==='number')t+=u[k];}return t;}return 300;};
+  function openIAPModal(){document.getElementById('sheetPointsBalance').textContent=getUsdc().toLocaleString();document.getElementById('iapPointsSheet').classList.add('active');document.getElementById('iapPointsPanel').classList.add('open');document.body.style.overflow='hidden';}
+  function closeIAPModal(){document.getElementById('iapPointsSheet').classList.remove('active');document.getElementById('iapPointsPanel').classList.remove('open');document.body.style.overflow='';}
+  function purchasePoints(p){var price=(p*1.3).toFixed(2);showToast('🛒 IAP 购买 '+p+' 点数 ($'+price+') 将在正式版对接 Apple Pay','💰');closeIAPModal();}
+  var POINTS_HISTORY=[{action:'购买',points:60,price:'$78.00',time:'08-05 17:30',type:'plus'},{action:'签约角色',points:-10,price:'',time:'08-04 14:20',type:'minus'},{action:'购买',points:6,price:'$7.80',time:'08-03 09:15',type:'plus'}];
+  function renderPointsHistory(){var h='';POINTS_HISTORY.forEach(function(i){var s=i.type==='plus'?'+':'';h+='<div class="ph-item"><div class="ph-left"><span class="ph-action">'+i.action+'</span><span class="ph-meta">'+i.time+(i.price?' <span style="color:var(--text-sub)">'+i.price+'</span>':'')+'</span></div><div class="ph-right"><span class="ph-amount '+i.type+'">'+s+i.points+' 点数</span></div></div>';});document.getElementById('pointsHistoryList').innerHTML=h;}
+  function openPointsHistory(){renderPointsHistory();document.getElementById('pointsHistorySheet').classList.add('active');document.getElementById('pointsHistoryPanel').classList.add('open');document.body.style.overflow='hidden';}
+  function closePointsHistory(){document.getElementById('pointsHistorySheet').classList.remove('active');document.getElementById('pointsHistoryPanel').classList.remove('open');document.body.style.overflow='';}
+  window.openIAPModal=openIAPModal;window.closeIAPModal=closeIAPModal;window.purchasePoints=purchasePoints;window.openPointsHistory=openPointsHistory;window.closePointsHistory=closePointsHistory;
+  var btn = document.getElementById('iapDebugBtn'); if (btn) btn.addEventListener('click', openIAPModal);
+})();
+</script>
 </body>
 </html>

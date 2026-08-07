@@ -629,7 +629,7 @@
         </svg>
         设置
       </button>
-      <button class="profile-drawer-item" onclick="closeProfileDrawer();location.href='../profile-center.html'">
+      <button class="profile-drawer-item" onclick="closeProfileDrawer();location.href='profile-center.html'">
         <svg class="drawer-icon-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
         </svg>
@@ -893,9 +893,9 @@
     <span id="toastMessage"></span>
   </div>
 
-  <script src="../auth.js"></script>
-  <script src="../load-sidebar.js"></script>
-<script src="../load-desktop-header.js"></script>
+  <script src="auth.js"></script>
+  <script src="load-sidebar.js"></script>
+<script src="load-desktop-header.js"></script>
   <script>
     let toastTimer = null;
     let pendingAvatarDataUrl = null;
@@ -959,17 +959,9 @@
       if (balStory && currentUser.balances?.story !== undefined) {
         balStory.textContent = currentUser.balances.story.toLocaleString();
       }
+      var getUsdc = function() { var b = currentUser.balances; if (!b) return 0; var u = b.usdc; if (typeof u === 'number') return u; if (typeof u === 'object') { var t = 0; for (var k in u) { if (typeof u[k] === 'number') t += u[k]; } return t; } return 0; };
       const balPoints = document.getElementById('mobileBalancePoints');
-      if (balPoints && currentUser.points !== undefined) {
-        balPoints.textContent = currentUser.points.toLocaleString();
-      }
-
-      // Mobile
-      const mNameEl = document.getElementById('mobileProfileName');
-      if (mNameEl) mNameEl.textContent = name;
-      const mBioEl = document.getElementById('mobileProfileBio');
-      if (mBioEl) mBioEl.textContent = bio;
-      updateAvatarDisplay(avatar, name, 'mobileAvatarContainer', 'mobileAvatarLetter');
+      if (balPoints) balPoints.textContent = getUsdc().toLocaleString();
     }
 
     function updateAvatarDisplay(avatarUrl, name, containerId, letterId) {
@@ -1061,10 +1053,9 @@
       if (balStory && currentUser.balances?.story !== undefined) {
         balStory.textContent = currentUser.balances.story.toLocaleString();
       }
+      var getUsdc = function() { var b = currentUser.balances; if (!b) return 0; var u = b.usdc; if (typeof u === 'number') return u; if (typeof u === 'object') { var t = 0; for (var k in u) { if (typeof u[k] === 'number') t += u[k]; } return t; } return 0; };
       const balPoints = document.getElementById('mobileBalancePoints');
-      if (balPoints && currentUser.points !== undefined) {
-        balPoints.textContent = currentUser.points.toLocaleString();
-      }
+      if (balPoints) balPoints.textContent = getUsdc().toLocaleString();
 
       // Mobile
       const mNameEl = document.getElementById('mobileProfileName');
@@ -1152,7 +1143,7 @@
 
     /* ── IAP Points Purchase Modal ── */
     function openIAPModal() {
-      var bal = (typeof currentUser !== 'undefined' && currentUser.points) ? currentUser.points : 500;
+      var bal = (typeof currentUser !== 'undefined' && currentUser.balances) ? (function() { var b = currentUser.balances; if (!b) return 500; var u = b.usdc; if (typeof u === 'number') return u; if (typeof u === 'object') { var t = 0; for (var k in u) { if (typeof u[k] === 'number') t += u[k]; } return t; } return 500; })() : 500;
       document.getElementById('sheetPointsBalance').textContent = bal.toLocaleString();
       document.getElementById('iapPointsSheet').classList.add('active');
       document.getElementById('iapPointsPanel').classList.add('open');
@@ -1474,8 +1465,8 @@
     }
   </script>
   <div id="bottom-nav-placeholder"></div>
-  <script src="../load-bottom-nav.js"></script>
-<script src="../auth.js"></script>
+  <script src="load-bottom-nav.js"></script>
+<script src="auth.js"></script>
 <script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
 <script>
 function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
