@@ -14,6 +14,7 @@
       --text-muted: #5e6f83;
       --text-sub: #8b8d98;
       --border: #deeaf7;
+      --border-light: #e8f0fa;
       --shadow-sm: 0 2px 8px rgba(27, 45, 71, 0.04);
       --radius: 16px;
       font-family: "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -23,46 +24,91 @@
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
 
     /* 页面标题 */
-    .page-title { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 24px; text-align: center; }
+    .page-title { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+    .page-title-text { flex: 1; text-align: center; }
+    .clear-icon-btn {
+      width: 34px; height: 34px; border-radius: 50%; border: none;
+      background: rgba(0,0,0,.05); color: var(--text-muted);
+      font-size: 16px; cursor: pointer; transition: all .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .clear-icon-btn:hover { background: rgba(244,91,105,.1); color: #f45b69; }
 
-    /* 历史列表 — 桌面三列卡片 */
-    .history-list {
+    /* ===== Confirm Modal ===== */
+    .confirm-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .confirm-overlay.active { opacity: 1; visibility: visible; }
+    .confirm-modal { background: #fff; border-radius: 20px; padding: 28px 32px; width: 90%; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,.15); text-align: center; }
+    .confirm-modal .confirm-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .confirm-modal .confirm-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; line-height: 1.5; }
+    .confirm-modal .confirm-btns { display: flex; gap: 10px; }
+    .confirm-modal .confirm-btns button { flex: 1; padding: 10px 0; border-radius: 10px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; font-family: inherit; }
+    .confirm-modal .confirm-cancel { background: rgba(0,0,0,.05); color: var(--text); }
+    .confirm-modal .confirm-cancel:hover { background: rgba(0,0,0,.1); }
+    .confirm-modal .confirm-ok { background: linear-gradient(135deg, #f45b69, #ff7b6b); color: #fff; }
+    .confirm-modal .confirm-ok:hover { opacity: .9; }
+
+    /* 子页签 */
+    .sub-tabs { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 3px; width: fit-content; margin-bottom: 16px; }
+    .sub-tab { padding: 8px 20px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.25s; background: none; border: none; border-radius: 8px; flex-shrink: 0; }
+    .sub-tab.active { background: var(--surface); color: var(--accent); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+    /* 短剧卡片网格 (3列竖版) */
+    .drama-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 12px;
+      margin-bottom: 34px;
     }
-
-    .history-item {
-      display: flex;
-      flex-direction: column;
+    .drama-card {
+      border-radius: 12px;
+      overflow: hidden;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
       cursor: pointer;
-      transition: all 0.2s ease;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      border: 1px solid var(--border);
+      transition: all .2s;
       text-decoration: none;
       color: inherit;
-      -webkit-tap-highlight-color: transparent;
+    }
+    .drama-card:active { transform: scale(0.97); }
+    .drama-cover { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+    .drama-body { padding: 8px 10px 10px; text-align: center; }
+    .drama-title { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+    .drama-progress { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+    /* 视频卡片网格 (3列) */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .video-card {
+      border-radius: 12px;
       overflow: hidden;
+      background: var(--surface);
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      border: 1px solid var(--border);
+      transition: all .2s;
     }
-    .history-item:hover { box-shadow: 0 4px 16px rgba(27,45,71,0.08); transform: translateY(-2px); }
-    .history-item:active { transform: scale(0.985); }
-
-    .history-cover {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      display: block;
-      background: var(--border);
+    .video-card:active { transform: scale(0.97); }
+    .video-cover-wrap { position: relative; overflow: hidden; }
+    .video-cover { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+    .vc-episode-label {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 1;
+      padding: 6px 8px; font-size: 10px; font-weight: 600;
+      color: #fff; line-height: 1.3;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.35) 70%, transparent 100%);
+      pointer-events: none;
     }
-
-    .history-info { padding: 12px 14px 10px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
-    .history-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .history-meta { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .history-meta .h-progress { color: var(--accent); font-weight: 600; }
-    .history-meta .h-time { color: var(--text-sub); }
-
-    .history-arrow { display: none; }
+    .video-likes {
+      position: absolute; bottom: 6px; left: 6px;
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 3px 8px; border-radius: 999px;
+      background: rgba(0,0,0,.55); color: #fff;
+      font-size: 11px; font-weight: 500; z-index: 1;
+    }
+    .video-likes svg { width: 12px; height: 12px; fill: #fff; }
 
     /* 空状态 */
     .empty-state { text-align: center; padding: 80px 24px; color: var(--text-sub); }
@@ -72,40 +118,20 @@
     /* 清空按钮 */
     .history-actions { display: flex; justify-content: flex-end; margin-bottom: 16px; }
     .clear-btn {
-      padding: 8px 18px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
+      padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-muted); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
     }
     .clear-btn:hover { border-color: #f45b69; color: #f45b69; background: rgba(244,91,105,0.04); }
 
     /* 移动端返回箭头 */
     .mobile-back-btn {
-      display: none;
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 900;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-      border: none;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      color: var(--text);
+      display: none; position: fixed; top: 12px; left: 12px; z-index: 900;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); border: none; cursor: pointer;
+      align-items: center; justify-content: center; color: var(--text);
       transition: background 0.2s ease, transform 0.2s ease;
-      -webkit-tap-highlight-color: transparent;
     }
     .mobile-back-btn:hover { background: rgba(255, 255, 255, 1); }
     .mobile-back-btn:active { transform: scale(0.92); }
@@ -113,20 +139,20 @@
     @media (max-width: 680px) {
       .app-shell { padding: 8px 12px; }
       .page-title { font-size: 1.25rem; margin-bottom: 16px; padding-top: 12px; }
-      .history-list { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      .history-item { flex-direction: column; border-radius: 12px; }
-      .history-cover { aspect-ratio: 3/4; border-radius: 0; }
-      .history-info { padding: 6px 8px 8px; gap: 2px; }
-      .history-title { font-size: 12px; }
-      .history-meta { font-size: 10px; gap: 4px; }
+      .sub-tabs { margin: 0 auto 12px; }
+      .drama-grid { gap: 8px; }
+      .drama-card { border-radius: 10px; }
+      .drama-body { padding: 6px 6px 8px; }
+      .drama-title { font-size: 11px; }
+      .drama-progress { font-size: 10px; }
+      .video-grid { gap: 8px; }
+      .video-likes { padding: 2px 6px; font-size: 10px; }
+      .video-likes svg { width: 10px; height: 10px; }
       .mobile-back-btn { display: flex; }
-      .header { display: none !important; }
-      body { padding-bottom: 0 !important; }
     }
   </style>
 </head>
 <body>
-  <!-- 移动端返回箭头 -->
   <button class="mobile-back-btn" onclick="history.back()" aria-label="返回">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="15 18 9 12 15 6" />
@@ -134,117 +160,155 @@
   </button>
 
   <div class="app-shell">
-    <h1 class="page-title">观看历史</h1>
+    <h1 class="page-title"><span class="page-title-text">观看历史</span><button class="clear-icon-btn" onclick="openConfirmModal()" title="清空历史">🗑</button></h1>
 
-    <div class="history-actions">
-      <button class="clear-btn" onclick="clearHistory()">清空历史</button>
+    <div class="sub-tabs" id="subTabs">
+      <button class="sub-tab active" data-sub="drama" onclick="switchSubTab('drama')">短剧</button>
+      <button class="sub-tab" data-sub="videos" onclick="switchSubTab('videos')">视频</button>
     </div>
 
-    <div class="history-list" id="historyList"></div>
+    <div class="drama-grid" id="dramaGrid"></div>
+    <div class="video-grid" id="videoGrid" style="display:none;"></div>
   </div>
 
-  <script src="load-sidebar.js"></script>
+  <!-- Confirm Modal -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-modal">
+      <div class="confirm-title">清空观看历史</div>
+      <div class="confirm-desc">确定要清空所有观看历史吗？此操作无法撤销。</div>
+      <div class="confirm-btns">
+        <button class="confirm-cancel" onclick="closeConfirmModal()">取消</button>
+        <button class="confirm-ok" id="confirmOkBtn">确定</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ============================================================
-    //  模拟观看历史数据
-    // ============================================================
-    const HISTORY_DATA = [
-      {
-        id: 1,
-        type: 'drama',
-        title: '凤骨琉璃',
-        cover: 'image/fenggu_cover.jpg',
-        progress: '3/44集',
-        time: '32分钟前',
-        link: 'drama-detail.html',
-      },
-      {
-        id: 2,
-        type: 'drama',
-        title: '我卸甲后天下大乱了',
-        cover: 'image/xiejia_cover.jpg',
-        progress: '7/12集',
-        time: '2小时前',
-        link: 'drama-detail.html',
-      },
-      {
-        id: 3,
-        type: 'drama',
-        title: '丞相府今日开饭',
-        cover: 'image/chengxiangfu_cover.jpg',
-        progress: '12/24集',
-        time: '昨天',
-        link: 'drama-detail.html',
-      },
-      {
-        id: 4,
-        type: 'video',
-        title: '打斗精彩片段',
-        cover: 'image/chengxiangfu_cover.jpg',
-        progress: '已看完',
-        time: '昨天 22:30',
-        link: '#',
-      },
-      {
-        id: 5,
-        type: 'drama',
-        title: '时间管理局',
-        cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80',
-        progress: '5/16集',
-        time: '3天前',
-        link: 'drama-detail.html',
-      },
-      {
-        id: 6,
-        type: 'drama',
-        title: '金融暗战',
-        cover: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80',
-        progress: '22/44集',
-        time: '一周前',
-        link: 'drama-detail.html',
-      },
-      {
-        id: 7,
-        type: 'video',
-        title: '金字塔探险',
-        cover: 'image/cover-pyramid.png',
-        progress: '看完 45%',
-        time: '2周前',
-        link: '#',
-      },
+    var WATCH_HISTORY = [
+      { type: 'drama', title: '凤骨琉璃', progress: '3/44集', total: 44, desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', cover: 'image/fenggu_cover.jpg' },
+      { type: 'drama', title: '我卸甲后天下大乱了', progress: '7/12集', total: 12, desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg' },
+      { type: 'drama', title: '丞相府今日开饭', progress: '12/24集', total: 24, desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', cover: 'image/chengxiangfu_cover.jpg' },
+      { type: 'video', title: '打斗精彩片段', likes: '1.5万', cover: 'image/chengxiangfu_cover.jpg' },
+      { type: 'drama', title: '时间管理局', progress: '5/16集', total: 16, desc: '穿梭时空的精英特工，守护历史不被篡改。科幻悬疑大作。', cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80' },
+      { type: 'drama', title: '金融暗战', progress: '22/44集', total: 44, desc: '华尔街风云变幻，一场没有硝烟的金融暗战悄然上演。', cover: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80' },
+      { type: 'video', title: '金字塔探险', likes: '2.0万', cover: 'image/cover-pyramid.png' },
     ];
 
-    function renderHistory() {
-      const list = document.getElementById('historyList');
-      if (HISTORY_DATA.length === 0) {
-        list.innerHTML = '<div class="empty-state"><div class="empty-icon">🕐</div><p>暂无观看历史</p></div>';
+    function buildDramaURL(d) {
+      return 'drama-player.html?title=' + encodeURIComponent(d.title) +
+        '&total=' + d.total +
+        '&cover=' + encodeURIComponent(d.cover) +
+        '&desc=' + encodeURIComponent(d.desc || '');
+    }
+
+    function renderDramaGrid() {
+      var grid = document.getElementById('dramaGrid');
+      var dramas = WATCH_HISTORY.filter(function(w) { return w.type === 'drama'; });
+      if (dramas.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🕐</div><p>暂无短剧观看记录</p></div>';
         return;
       }
-      list.innerHTML = HISTORY_DATA.map(item => `
-        <a class="history-item" href="${item.link}" ${item.link === '#' ? 'onclick="return false"' : ''}>
-          <img class="history-cover" src="${item.cover}" alt="${item.title}" loading="lazy" onerror="this.style.background='#eef1f5'" />
-          <div class="history-info">
-            <div class="history-title">${item.title}</div>
-            <div class="history-meta">
-              <span class="h-progress">${item.progress}</span>
-              <span class="h-time">${item.time}</span>
-            </div>
-          </div>
-          <span class="history-arrow">›</span>
-        </a>
-      `).join('');
+      grid.innerHTML = dramas.map(function(d) {
+        var url = buildDramaURL(d);
+        return '<div class="drama-card" onclick="location.href=\'' + url + '\'">' +
+          '<img class="drama-cover" src="' + d.cover + '" alt="' + d.title + '" loading="lazy" onerror="this.style.background=\'#eef1f5\'">' +
+          '<div class="drama-body">' +
+            '<div class="drama-title">' + d.title + '</div>' +
+            '<div class="drama-progress">' + d.progress + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
     }
 
-    function clearHistory() {
-      if (confirm('确定要清空所有观看历史吗？')) {
-        HISTORY_DATA.length = 0;
-        renderHistory();
+    function renderVideoGrid() {
+      var grid = document.getElementById('videoGrid');
+      var videos = WATCH_HISTORY.filter(function(w) { return w.type === 'video'; });
+      // Also include drama episodes as individual cards
+      var items = [];
+      WATCH_HISTORY.forEach(function(w) {
+        if (w.type === 'drama') {
+          var epCount = parseInt((w.progress.match(/\d+\//) || ['3/'])[0].replace('/','')) || 3;
+          for (var i = 1; i <= Math.min(epCount, 2); i++) {
+            items.push({
+              id: 'ep_' + w.title + '_' + i,
+              type: 'episode',
+              title: w.title + ' EP' + (i < 10 ? '0' + i : i),
+              cover: w.cover,
+              likes: (Math.floor((i * 1.2 + 0.5) * 10000) / 10000).toFixed(1) + '万',
+              dramaTitle: w.title,
+              total: w.total,
+              desc: w.desc
+            });
+          }
+        } else {
+          items.push({
+            id: 'v_' + w.title,
+            type: 'video',
+            title: w.title,
+            cover: w.cover,
+            likes: w.likes || '1.2万'
+          });
+        }
+      });
+      if (items.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🎬</div><p>暂无视频观看记录</p></div>';
+        return;
       }
+      grid.innerHTML = items.map(function(it) {
+        var url;
+        if (it.type === 'episode') {
+          url = 'drama-player.html?title=' + encodeURIComponent(it.dramaTitle) +
+            '&total=' + it.total +
+            '&cover=' + encodeURIComponent(it.cover) +
+            '&desc=' + encodeURIComponent(it.desc || '');
+        } else {
+          url = '#';
+        }
+        var isEpisode = it.type === 'episode';
+        return '<div class="video-card" onclick="' + (url !== '#' ? 'location.href=\'' + url + '\'' : 'return false') + '">' +
+          '<div class="video-cover-wrap">' +
+            (isEpisode ? '<div class="vc-episode-label">' + it.title + '</div>' : '') +
+            '<img class="video-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" onerror="this.style.background=\'#eef1f5\'">' +
+            '<span class="video-likes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' + it.likes + '</span>' +
+          '</div>' +
+        '</div>';
+      }).join('');
     }
 
-    // 初始化
+    function switchSubTab(sub) {
+      document.querySelectorAll('#subTabs .sub-tab').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.sub === sub);
+      });
+      document.getElementById('dramaGrid').style.display = sub === 'drama' ? 'grid' : 'none';
+      document.getElementById('videoGrid').style.display = sub === 'videos' ? 'grid' : 'none';
+      if (sub === 'videos') renderVideoGrid();
+    }
+
+    function openConfirmModal() {
+      var overlay = document.getElementById('confirmOverlay');
+      overlay.classList.add('active');
+      var okBtn = document.getElementById('confirmOkBtn');
+      okBtn.onclick = function() {
+        closeConfirmModal();
+        WATCH_HISTORY.length = 0;
+        renderDramaGrid();
+        renderVideoGrid();
+        switchSubTab('drama');
+      };
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmOverlay').classList.remove('active');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-      renderHistory();
+      renderDramaGrid();
+    });
+
+    document.addEventListener('click', function(e) {
+      if (e.target.id === 'confirmOverlay' && e.target.classList.contains('active')) {
+        closeConfirmModal();
+      }
     });
   </script>
 </body>

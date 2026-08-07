@@ -114,6 +114,28 @@
     #watchHistoryDrama.works-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
     @media (max-width: 1120px) { #watchHistoryDrama.works-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
 
+    /* ===== Watch History Actions ===== */
+    .watch-history-actions { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+    .clear-btn {
+      padding: 6px 16px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-muted); font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .clear-btn:hover { border-color: #f45b69; color: #f45b69; background: rgba(244,91,105,0.04); }
+
+    /* ===== Confirm Modal ===== */
+    .confirm-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .confirm-overlay.active { opacity: 1; visibility: visible; }
+    .confirm-modal { background: #fff; border-radius: 20px; padding: 28px 32px; width: 90%; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,.15); text-align: center; }
+    .confirm-modal .confirm-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .confirm-modal .confirm-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; line-height: 1.5; }
+    .confirm-modal .confirm-btns { display: flex; gap: 10px; }
+    .confirm-modal .confirm-btns button { flex: 1; padding: 10px 0; border-radius: 10px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; font-family: inherit; }
+    .confirm-modal .confirm-cancel { background: rgba(0,0,0,.05); color: var(--text); }
+    .confirm-modal .confirm-cancel:hover { background: rgba(0,0,0,.1); }
+    .confirm-modal .confirm-ok { background: linear-gradient(135deg, #f45b69, #ff7b6b); color: #fff; }
+    .confirm-modal .confirm-ok:hover { opacity: .9; }
+
     /* ===== Video Works Grid (Desktop) ===== */
     .video-works-grid {
       display: grid;
@@ -943,6 +965,11 @@
         <button class="tab-item" data-whsubtab="videos" onclick="switchWatchHistorySubTab('videos')">视频</button>
       </div>
 
+      <!-- Desktop Watch History Actions -->
+      <div class="watch-history-actions" id="watchHistoryActions" style="display:none;">
+        <button class="clear-btn" onclick="clearWatchHistory()">清空历史</button>
+      </div>
+
       <!-- Desktop Watch History: Drama Grid -->
       <div id="watchHistoryDrama" class="works-grid" style="display:none;"></div>
 
@@ -1038,6 +1065,7 @@
       document.getElementById('watchHistorySubTabBar').classList.toggle('visible', tab === 'watchHistory');
       document.getElementById('watchHistoryDrama').style.display = tab === 'watchHistory' ? 'grid' : 'none';
       document.getElementById('watchHistoryVideos').style.display = 'none';
+      document.getElementById('watchHistoryActions').style.display = tab === 'watchHistory' ? 'flex' : 'none';
 
       // Other tabs
       document.getElementById('tabLiked').style.display = tab === 'liked' ? 'block' : 'none';
@@ -1234,6 +1262,9 @@
       if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('active')) {
         e.target.classList.remove('active');
         document.body.style.overflow = '';
+      }
+      if (e.target.id === 'confirmOverlay' && e.target.classList.contains('active')) {
+        closeConfirmModal();
       }
     });
 
@@ -1594,7 +1625,42 @@
       renderWatchHistoryDrama();
       renderWatchHistoryVideos();
     }
+
+    /* ── Confirm Modal Helpers ── */
+    function openConfirmModal(onConfirm) {
+      var overlay = document.getElementById('confirmOverlay');
+      overlay.classList.add('active');
+      var okBtn = document.getElementById('confirmOkBtn');
+      okBtn.onclick = function() {
+        closeConfirmModal();
+        onConfirm();
+      };
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmOverlay').classList.remove('active');
+    }
+
+    /* ── Clear Watch History ── */
+    function clearWatchHistory() {
+      openConfirmModal(function() {
+        WATCH_HISTORY.length = 0;
+        renderWatchHistory();
+      });
+    }
   </script>
+  <!-- Confirm Modal -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-modal">
+      <div class="confirm-title">清空观看历史</div>
+      <div class="confirm-desc">确定要清空所有观看历史吗？此操作无法撤销。</div>
+      <div class="confirm-btns">
+        <button class="confirm-cancel" onclick="closeConfirmModal()">取消</button>
+        <button class="confirm-ok" id="confirmOkBtn">确定</button>
+      </div>
+    </div>
+  </div>
+
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
 <script src="auth.js"></script>
