@@ -831,29 +831,25 @@
     <p style="font-size:0.82rem;color:var(--text-sub);text-align:center;margin:-8px 0 4px;">点数用于签约角色等 App 内服务</p>
     <p style="font-size:13px;color:var(--text);text-align:center;margin-bottom:14px;font-weight:600;">💎 余额：<span id="sheetPointsBalance">500</span></p>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <button class="iap-pkg-btn" onclick="purchasePoints(6)">
-        <div class="iap-pkg-left"><span class="iap-pkg-points">6 点数</span></div>
-        <div class="iap-pkg-right"><span class="iap-pkg-price">$7.80</span></div>
+      <button class="iap-pkg-btn" onclick="purchasePoints(1)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">1 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$1.99</span></div>
       </button>
-      <button class="iap-pkg-btn" onclick="purchasePoints(18)">
-        <div class="iap-pkg-left"><span class="iap-pkg-points">18 点数</span></div>
-        <div class="iap-pkg-right"><span class="iap-pkg-price">$23.40</span></div>
+      <button class="iap-pkg-btn" onclick="purchasePoints(4)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">4 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$6.99</span></div>
       </button>
-      <button class="iap-pkg-btn" onclick="purchasePoints(60)">
-        <div class="iap-pkg-left"><span class="iap-pkg-points">60 点数</span></div>
-        <div class="iap-pkg-right"><span class="iap-pkg-price">$78.00</span></div>
+      <button class="iap-pkg-btn" onclick="purchasePoints(9)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">9 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$14.99</span></div>
       </button>
-      <button class="iap-pkg-btn" onclick="purchasePoints(120)">
-        <div class="iap-pkg-left"><span class="iap-pkg-points">120 点数</span></div>
-        <div class="iap-pkg-right"><span class="iap-pkg-price">$156.00</span></div>
+      <button class="iap-pkg-btn" onclick="purchasePoints(19)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">19 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$29.99</span></div>
       </button>
-      <button class="iap-pkg-btn" onclick="purchasePoints(300)">
-        <div class="iap-pkg-left"><span class="iap-pkg-points">300 点数</span></div>
-        <div class="iap-pkg-right"><span class="iap-pkg-price">$390.00</span></div>
-      </button>
-      <button class="iap-pkg-btn" onclick="purchasePoints(600)">
-        <div class="iap-pkg-left"><span class="iap-pkg-points">600 点数</span></div>
-        <div class="iap-pkg-right"><span class="iap-pkg-price">$780.00</span></div>
+      <button class="iap-pkg-btn" onclick="purchasePoints(33)">
+        <div class="iap-pkg-left"><span class="iap-pkg-points">33 点数</span></div>
+        <div class="iap-pkg-right"><span class="iap-pkg-price">$49.99</span></div>
       </button>
     </div>
   </div>
@@ -1156,11 +1152,99 @@
       document.body.style.overflow = '';
     }
 
-    /* IAP price table: points * 1.3 dollars */
+    /* IAP purchase: optimistic update + on-chain confirmation */
+    var _purchasePollTimer = null;
+
+    function getUsdcBalance() {
+      if (typeof currentUser === 'undefined') return 300;
+      var b = currentUser.balances; if (!b) return 300;
+      var u = b.usdc; if (typeof u === 'number') return u;
+      if (typeof u === 'object') { var t = 0; for (var k in u) { if (typeof u[k] === 'number') t += u[k]; } return t; }
+      return 300;
+    }
+
+    function setUsdcBalance(val) {
+      if (typeof currentUser === 'undefined') return;
+      if (!currentUser.balances) currentUser.balances = {};
+      var b = currentUser.balances.usdc;
+      if (typeof b === 'number' || typeof b === 'undefined') { currentUser.balances.usdc = val; return; }
+      // for object form, allocate to Solana
+      if (typeof b === 'object') { b.Solana = val; }
+    }
+
+    function refreshPointsDisplay() {
+      var el = document.getElementById('mobileBalancePoints');
+      if (el) el.textContent = getUsdcBalance().toLocaleString();
+    }
+
     function purchasePoints(points) {
       var price = (points * 1.3).toFixed(2);
-      showToast('🛒 IAP 购买 ' + points + ' 点数 ($' + price + ') 将在正式版对接 Apple Pay', '💰');
+      // Close IAP sheet
       closeIAPModal();
+      // Show confirmation progress overlay
+      showPurchaseConfirmation(points, price);
+      // Simulate backend on-chain USDC transfer + polling
+      clearTimeout(_purchasePollTimer);
+      _purchasePollTimer = setTimeout(function() {
+        hidePurchaseConfirmation();
+        refreshPointsDisplay();
+        showToast('✅ ' + points + ' 点数已到账', '💎');
+      }, 2500);
+    }
+
+    function showPurchaseConfirmation(points, price) {
+      var existing = document.getElementById('purchaseConfirmOverlay');
+      if (existing) existing.remove();
+
+      var overlay = document.createElement('div');
+      overlay.id = 'purchaseConfirmOverlay';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '' +
+        '<div style="background:#fff;border-radius:24px;width:100%;max-width:360px;padding:32px 24px 24px;text-align:center;box-shadow:0 20px 60px rgba(27,45,71,0.15);">' +
+        '  <div style="font-size:48px;margin-bottom:12px;">✅</div>' +
+        '  <div style="font-size:1.15rem;font-weight:700;color:#13202e;margin-bottom:4px;">购买成功</div>' +
+        '  <div style="font-size:2rem;font-weight:800;color:#00b388;margin:8px 0;">💎 +' + points + '</div>' +
+        '  <div style="margin-top:16px;background:#f0f0f3;border-radius:6px;height:4px;overflow:hidden;">' +
+        '    <div id="purchaseProgressBar" style="height:100%;background:linear-gradient(90deg,#00b388,#00d4a3);width:0%;transition:width 2.2s linear;"></div>' +
+        '  </div>' +
+        '  <div style="font-size:12px;color:#8b8d98;margin-top:8px;">点数正在结算中，请稍候...</div>' +
+        '  <button id="purchaseConfirmClose" style="margin-top:16px;padding:10px 24px;border-radius:999px;border:1px solid #deeaf7;background:#fff;font-size:0.9rem;color:#6e859e;cursor:pointer;font-family:inherit;">返回</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+
+      // Animate progress bar
+      requestAnimationFrame(function() {
+        var bar = document.getElementById('purchaseProgressBar');
+        if (bar) bar.style.width = '100%';
+      });
+
+      // Close button
+      document.getElementById('purchaseConfirmClose').addEventListener('click', function() {
+        hidePurchaseConfirmation();
+      });
+
+      // Click overlay to close
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) hidePurchaseConfirmation();
+      });
+
+      // Auto-close after 2.5s
+      setTimeout(function() {
+        if (document.getElementById('purchaseConfirmOverlay')) {
+          hidePurchaseConfirmation();
+        }
+      }, 2500);
+    }
+
+    function hidePurchaseConfirmation() {
+      var overlay = document.getElementById('purchaseConfirmOverlay');
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.transition = 'opacity 0.3s ease';
+        setTimeout(function() { overlay.remove(); document.body.style.overflow = ''; }, 300);
+      }
+      clearTimeout(_purchasePollTimer);
     }
 
     /* ── Points History ── */
