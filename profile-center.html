@@ -105,6 +105,15 @@
     #subTabDrama.works-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
     @media (max-width: 1120px) { #subTabDrama.works-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
 
+    /* ===== Watch History Sub Tabs (Desktop) ===== */
+    #watchHistorySubTabBar { display: none; margin-top: -8px; background: none; padding: 0; gap: 4px; }
+    #watchHistorySubTabBar.visible { display: flex; }
+    #watchHistorySubTabBar .tab-item { padding: 5px 14px; font-size: 12px; border-radius: 6px; font-weight: 400; color: var(--text-sub); background: none; border: 1px solid var(--border-light); }
+    #watchHistorySubTabBar .tab-item.active { background: var(--border-light); color: var(--text-muted); font-weight: 500; box-shadow: none; }
+
+    #watchHistoryDrama.works-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+    @media (max-width: 1120px) { #watchHistoryDrama.works-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
+
     /* ===== Video Works Grid (Desktop) ===== */
     .video-works-grid {
       display: grid;
@@ -912,6 +921,7 @@
           <button class="tab-item active" data-tab="published" onclick="switchTab('published')">作品</button>
           <button class="tab-item" data-tab="liked" onclick="switchTab('liked')">点赞</button>
           <button class="tab-item" data-tab="favorited" onclick="switchTab('favorited')">收藏</button>
+          <button class="tab-item" data-tab="watchHistory" onclick="switchTab('watchHistory')">观看历史</button>
         </div>
       </div>
 
@@ -926,6 +936,18 @@
 
       <!-- Desktop Sub Tab: Video Works Grid -->
       <div id="subTabWorks" class="video-works-grid" style="display:none;"></div>
+
+      <!-- Desktop Watch History Sub Tabs -->
+      <div id="watchHistorySubTabBar" class="tab-bar">
+        <button class="tab-item active" data-whsubtab="drama" onclick="switchWatchHistorySubTab('drama')">短剧</button>
+        <button class="tab-item" data-whsubtab="videos" onclick="switchWatchHistorySubTab('videos')">视频</button>
+      </div>
+
+      <!-- Desktop Watch History: Drama Grid -->
+      <div id="watchHistoryDrama" class="works-grid" style="display:none;"></div>
+
+      <!-- Desktop Watch History: Videos Grid -->
+      <div id="watchHistoryVideos" class="video-works-grid" style="display:none;"></div>
 
       <!-- Desktop Empty States -->
       <div id="tabLiked" class="empty-state" style="display:none;">
@@ -1006,12 +1028,23 @@
       document.querySelectorAll('#mainTabBar > .tab-item').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tab);
       });
+
+      // Works tab
       document.getElementById('subTabBar').classList.toggle('visible', tab === 'published');
       document.getElementById('subTabDrama').style.display = tab === 'published' ? 'grid' : 'none';
       document.getElementById('subTabWorks').style.display = 'none';
+
+      // Watch history tab
+      document.getElementById('watchHistorySubTabBar').classList.toggle('visible', tab === 'watchHistory');
+      document.getElementById('watchHistoryDrama').style.display = tab === 'watchHistory' ? 'grid' : 'none';
+      document.getElementById('watchHistoryVideos').style.display = 'none';
+
+      // Other tabs
       document.getElementById('tabLiked').style.display = tab === 'liked' ? 'block' : 'none';
       document.getElementById('tabFavorited').style.display = tab === 'favorited' ? 'block' : 'none';
+
       if (tab === 'published') switchSubTab('drama');
+      if (tab === 'watchHistory') { switchWatchHistorySubTab('drama'); renderWatchHistory(); }
     }
 
     /* ── Mobile Tab Switching ── */
@@ -1463,6 +1496,103 @@
       var n = (idx * 1.2 + 0.5) * 10000;
       if (n >= 10000) return (n / 10000).toFixed(1) + '万';
       return String(Math.floor(n));
+    }
+
+    // ============================================================
+    //  观看历史数据
+    // ============================================================
+    const WATCH_HISTORY = [
+      { type: 'drama', title: '凤骨琉璃', cat: '古风', rt: 4.8, ep: '全44集', progress: '3/44集', time: '32分钟前', author: 'JACK', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', cover: 'image/fenggu_cover.jpg', actors: ['苏婉清','李云飞','林梦瑶','上官婉儿'], link: 'drama-detail.html' },
+      { type: 'drama', title: '我卸甲后天下大乱了', cat: '古风', rt: 4.6, ep: '全12集', progress: '7/12集', time: '2小时前', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg', actors: ['李云飞','赵无极','林梦瑶'], link: 'drama-detail.html' },
+      { type: 'drama', title: '丞相府今日开饭', cat: '喜剧', rt: 4.7, ep: '全24集', progress: '12/24集', time: '昨天', author: 'LENS', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', cover: 'image/chengxiangfu_cover.jpg', actors: ['苏婉清','上官婉儿','Luna'], link: 'drama-detail.html' },
+      { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集，每一帧都燃爆了！', cover: 'image/chengxiangfu_cover.jpg', progress: '已看完', time: '昨天 22:30', link: '#' },
+      { type: 'drama', title: '时间管理局', cat: '科幻', rt: 4.5, ep: '全16集', progress: '5/16集', time: '3天前', author: 'NOVA', desc: '穿梭时空的精英特工，守护历史不被篡改。科幻悬疑大作。', cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80', actors: ['李云飞'], link: 'drama-detail.html' },
+      { type: 'drama', title: '金融暗战', cat: '现代', rt: 4.3, ep: '全44集', progress: '22/44集', time: '一周前', author: 'JACK', desc: '华尔街风云变幻，一场没有硝烟的金融暗战悄然上演。', cover: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80', actors: ['赵无极'], link: 'drama-detail.html' },
+      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密，揭开千年谜团。', cover: 'image/cover-pyramid.png', progress: '看完 45%', time: '2周前', link: '#' },
+    ];
+
+    /* ── Desktop Watch History Sub Tab Switching ── */
+    function switchWatchHistorySubTab(sub) {
+      document.querySelectorAll('#watchHistorySubTabBar .tab-item').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.whsubtab === sub);
+      });
+      document.getElementById('watchHistoryDrama').style.display = sub === 'drama' ? 'grid' : 'none';
+      document.getElementById('watchHistoryVideos').style.display = sub === 'videos' ? 'grid' : 'none';
+    }
+
+    /* ── Render Watch History: 短剧 (drama-card.js) ── */
+    function renderWatchHistoryDrama() {
+      var grid = document.getElementById('watchHistoryDrama');
+      if (!grid) return;
+      var dramas = WATCH_HISTORY.filter(function(w) { return w.type === 'drama'; });
+      if (typeof renderDramaCardList === 'function') {
+        var cardData = dramas.map(function(d, idx) {
+          return {
+            title: d.title,
+            cover: d.cover,
+            certType: 'community',
+            actors: d.actors || [],
+            episodes: d.progress,
+            link: d.link
+          };
+        });
+        grid.innerHTML = renderDramaCardList(cardData);
+      } else {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🕐</div><p>暂无观看历史</p></div>';
+      }
+    }
+
+    /* ── Render Watch History: 视频 (episodes + videos) ── */
+    function renderWatchHistoryVideos() {
+      var grid = document.getElementById('watchHistoryVideos');
+      if (!grid) return;
+      var items = [];
+      var idxCounter = 0;
+      WATCH_HISTORY.forEach(function(w) {
+        if (w.type === 'drama') {
+          var epCount = parseInt((w.progress.match(/\d+\//) || ['3/'])[0].replace('/','')) || 3;
+          for (var i = 1; i <= Math.min(epCount, 3); i++) {
+            idxCounter++;
+            items.push({
+              type: 'episode',
+              title: w.title + ' EP' + (i < 10 ? '0' + i : i),
+              desc: w.desc || w.title,
+              cover: w.cover,
+              link: w.link,
+              likes: formatLikes(idxCounter, 10)
+            });
+          }
+        } else {
+          idxCounter++;
+          items.push({
+            type: 'video',
+            title: w.title,
+            desc: w.desc,
+            cover: w.cover,
+            link: w.link,
+            likes: formatLikes(idxCounter, 10)
+          });
+        }
+      });
+      grid.innerHTML = items.map(function(it) {
+        var isEpisode = it.type === 'episode';
+        return '<div class="video-card" onclick="location.href=\'' + it.link + '\'">' +
+          '<div class="vc-cover-wrap">' +
+            (isEpisode ? '<div class="vc-episode-label">' + it.title + '</div>' : '') +
+            '<img class="vc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
+            '<span class="vc-likes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' + it.likes + '</span>' +
+          '</div>' +
+          '<div class="vc-body">' +
+            '<div class="vc-desc">' + it.desc + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    /* ── Render all watch history ── */
+    function renderWatchHistory() {
+      renderWatchHistoryDrama();
+      renderWatchHistoryVideos();
     }
   </script>
   <div id="bottom-nav-placeholder"></div>
