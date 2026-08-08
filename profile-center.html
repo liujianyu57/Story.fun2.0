@@ -814,7 +814,6 @@
       </div>
       <div class="mobile-profile-info">
         <div class="mp-name" id="mobileProfileName">加密小白</div>
-        <div class="mp-id" id="mobileProfileId">Story ID: 10086</div>
         <div class="mp-bio" id="mobileProfileBio">在Web3的世界里探索短剧的无限可能。创作者、收藏家、梦想家。</div>
         <div class="mp-wallet" id="mobileWallet" onclick="copyWallet()">
           <svg class="mp-wallet-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -859,11 +858,11 @@
   </div>
   <!-- ===== MOBILE ASSETS ACTIONS ===== -->
   <div class="mobile-asset-actions">
-    <button class="maa-btn maa-primary" onclick="openDepositModal()">
+    <button class="maa-btn maa-primary" id="mobileDepositBtn" onclick="openDepositModal()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
       充值
     </button>
-    <button class="maa-btn" onclick="openWithdrawModal()">
+    <button class="maa-btn" id="mobileWithdrawBtn" onclick="openWithdrawModal()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
       提现
     </button>
@@ -1015,6 +1014,12 @@
         <span class="char-count"><span id="bioCharCount">0</span>/120</span>
       </div>
 
+      <div class="edit-field-group" id="editEmailGroup" style="display:none">
+        <label>登录邮箱</label>
+        <input type="email" id="editEmailInput" readonly disabled
+               style="background:#f0f2f5;color:var(--text-muted);cursor:not-allowed" />
+      </div>
+
       <button class="modal-btn confirm" onclick="saveProfile()">保存</button>
       <button class="modal-btn cancel" onclick="closeEditProfileModal()">取消</button>
     </div>
@@ -1139,6 +1144,17 @@
       const mBioEl = document.getElementById('mobileProfileBio');
       if (mBioEl) mBioEl.textContent = bio;
       updateAvatarDisplay(avatar, name, 'mobileAvatarContainer', 'mobileAvatarLetter');
+
+      // 钱包登录用户隐藏充值/提现按钮
+      var mobileDepositBtn = document.getElementById('mobileDepositBtn');
+      var mobileWithdrawBtn = document.getElementById('mobileWithdrawBtn');
+      if (currentUser.authMethod === 'wallet') {
+        if (mobileDepositBtn) mobileDepositBtn.style.display = 'none';
+        if (mobileWithdrawBtn) mobileWithdrawBtn.style.display = 'none';
+      } else {
+        if (mobileDepositBtn) mobileDepositBtn.style.display = '';
+        if (mobileWithdrawBtn) mobileWithdrawBtn.style.display = '';
+      }
     }
 
     function updateAvatarDisplay(avatarUrl, name, containerId, letterId) {
@@ -1168,6 +1184,21 @@
       document.getElementById('editNameInput').value = name;
       document.getElementById('editBioInput').value = bio;
       updateBioCharCount();
+
+      // 如果是邮箱登录，显示只读邮箱字段
+      var emailGroup = document.getElementById('editEmailGroup');
+      var emailInput = document.getElementById('editEmailInput');
+      var emailLabel = emailGroup ? emailGroup.querySelector('label') : null;
+      if (emailGroup && emailInput) {
+        if (currentUser.authMethod === 'email' && currentUser.email) {
+          emailGroup.style.display = 'flex';
+          if (emailLabel) emailLabel.textContent = '登录邮箱';
+          emailInput.value = currentUser.email;
+        } else {
+          emailGroup.style.display = 'none';
+        }
+      }
+
       document.getElementById('editProfileModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }

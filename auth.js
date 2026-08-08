@@ -355,7 +355,7 @@ function renderAuthUI(container) {
     var displayName = currentUser.name || (isEmail ? currentUser.email : 'User');
     var walletAddr = currentUser.wallet || '0x7A2b3fD81234567890abcdef1234567890abCDEF';
   var shortWallet = walletAddr.slice(0,6) + '...' + walletAddr.slice(-4);
-  var subLabel = isEmail ? '邮箱用户' : '钱包用户';
+  var subLabel = '';
     var getUsdcTotal = function() { var b = currentUser.balances; if (!b) return 0; var u = b.usdc; if (typeof u === 'number') return u; if (typeof u === 'object') { var t = 0; for (var k in u) { if (typeof u[k] === 'number') t += u[k]; } return t; } return 0; };
     const usdcDisplay = getUsdcTotal().toFixed(2);
     container.innerHTML = `
@@ -416,8 +416,8 @@ function renderAuthUI(container) {
             </div>
           </div>
 
-          <button class="btn btn-primary" style="width:100%;margin-bottom:10px">交易 STORY</button>
-          <div class="auth-balance-actions">
+           <button class="btn btn-primary" style="width:100%;margin-bottom:10px">交易 STORY</button>
+          <div class="auth-balance-actions" style="${isEmail ? '' : 'display:none'}">
             <button class="btn btn-primary" onclick="openDepositModal()">充值</button>
             <button class="btn btn-outline" onclick="openWithdrawModal()">提现</button>
           </div>
@@ -1221,6 +1221,7 @@ function openDepositTransferModal(fromWallet) {
     + '</div>'
     + '<div id="depositSwapHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动在你的 Story.fun 账户中兑换成USDC</div>'
     + '<div id="depositMinHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充币金额 5 USDC</div>'
+    + '<div style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.4;margin-top:6px">请确认转账网络，网络错误可能导致资产丢失</div>'
     + '</div></div></div>';
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
