@@ -2279,7 +2279,11 @@
       if (!actor || actor.level >= 5) return false;
       const threshold = LEVEL_UP_THRESHOLDS[actor.level + 1];
       if (!threshold) return false;
-      return (actor.cumulativePlays || 0) >= threshold.playsRequired;
+      if ((actor.cumulativePlays || 0) < threshold.playsRequired) return false;
+      const sameLevelCount = MY_ACTORS.filter(function(x) {
+        return x.parentIP === actor.parentIP && x.level === actor.level && x.id !== actor.id;
+      }).length;
+      return sameLevelCount >= 2;
     }
 
     function energyBarCls(energy) {
