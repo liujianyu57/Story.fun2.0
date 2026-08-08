@@ -1150,11 +1150,37 @@ function openDepositModal() {
 
 // ===== 邮箱用户：转账地址弹窗（支持币种切换） =====
 var depositSelectedCoin = 'USDC'; // 当前选中的充值币种
+var depositSelectedNetwork = 'Ethereum'; // 当前选中的网络
+
+// 网络配置
+var DEPOSIT_NETWORKS = [
+  { id: 'Solana',   bold: 'SOL',   sub: 'Solana',                  bg: 'linear-gradient(135deg,#9945FF,#14F195)', letter: 'S' },
+  { id: 'Ethereum', bold: 'ETH',   sub: 'Ethereum (ERC20)',          bg: '#627EEA', letter: 'E' },
+  { id: 'BSC',      bold: 'BSC',   sub: 'BNB Smart Chain (BEP20)',   bg: '#F0B90B', letter: 'B' },
+  { id: 'Arbitrum', bold: 'ARBITRUM', sub: 'Arbitrum One',           bg: '#28A0F0', letter: 'A' }
+];
+// STORY 可选网络（仅 Solana）
+var DEPOSIT_STORY_NETWORKS = [
+  { id: 'Solana', bold: 'SOL', sub: 'Solana', bg: 'linear-gradient(135deg,#9945FF,#14F195)', letter: 'S' }
+];
+
+function renderDepositNetworkDropdown(networks) {
+  var html = '';
+  for (var i = 0; i < networks.length; i++) {
+    var n = networks[i];
+    html += '<div class="deposit-coin-dropdown-item" data-network="' + n.id + '" onclick="event.stopPropagation();selectDepositNetwork(\'' + n.id + '\')">'
+      + '<div class="dcd-icon" style="background:' + n.bg + ';color:#fff">' + n.letter + '</div>'
+      + '<div><div class="dcd-name">' + n.bold + '</div><div class="dw-coin-chain">' + n.sub + '</div></div>'
+      + '</div>';
+  }
+  return html;
+}
 
 function openDepositTransferModal(fromWallet) {
   const existing = document.getElementById('depositModal');
   if (existing) existing.remove();
   depositSelectedCoin = 'USDC';
+  depositSelectedNetwork = 'Ethereum';
 
   var headerHTML = fromWallet
     ? '<div class="deposit-header"><button class="deposit-back-btn" onclick="dwBackToWalletStep1()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><span class="deposit-title">充值</span><button class="deposit-close" onclick="closeDepositModal()">✕</button></div>'
@@ -1177,24 +1203,31 @@ function openDepositTransferModal(fromWallet) {
     + '<div class="deposit-coin-dropdown-item" data-coin="STORY" onclick="event.stopPropagation();selectDepositCoin(\'STORY\')"><div class="dcd-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff)">S</div><span class="dcd-name">STORY</span></div>'
     + '</div></div></div>'
     + '<div class="deposit-field-group"><div class="deposit-field-label">网络</div>'
-    + '<button class="deposit-select-field"><div class="deposit-select-left"><div class="deposit-crypto-icon deposit-crypto-eth">Ξ</div><span class="deposit-select-label">Ethereum</span></div><span class="deposit-select-chevron">▾</span></button>'
-    + '</div>'
+    + '<div class="deposit-coin-select-wrapper">'
+    + '<button class="deposit-select-field" id="depositNetworkBtn" onclick="event.stopPropagation();toggleDepositNetworkDropdown()">'
+    + '<div class="deposit-select-left"><div class="deposit-crypto-icon" id="depositNetworkIcon" style="background:#627EEA;color:#fff">E</div>'
+    + '<span class="deposit-select-label" id="depositNetworkLabel">ETH</span><span class="dw-coin-chain" id="depositNetworkSub" style="padding-left:4px">Ethereum (ERC20)</span></div>'
+    + '<span class="deposit-select-chevron">▾</span></button>'
+    + '<div class="deposit-coin-dropdown" id="depositNetworkDropdown" style="display:none">'
+    + renderDepositNetworkDropdown(DEPOSIT_NETWORKS)
+    + '</div></div></div>'
     + '<div style="display:flex;justify-content:center"><img class="deposit-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=0xcc345ff2905f5672227e848eac4e0124123fa7e4" alt="充值地址二维码" onerror="this.style.display=\'none\'" style="width:120px;height:120px;border-radius:8px;object-fit:cover;background:#f0f4f8" /></div>'
     + '<div class="deposit-field-group"><div class="deposit-field-label">充值地址</div>'
     + '<div class="deposit-address-field" style="padding:12px"><span class="deposit-address-text">0xcc345ff2905f5672227e848eac4e0124123fa7e4</span><button class="deposit-copy-btn" onclick="depositCopyAddress()">📋</button></div></div>'
     + '<div class="dw-swap-row" id="depositSwapRow" style="margin-top:4px">'
-    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:#627EEA">E</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin" id="depositSwapSendCoin">USDC</span></div></div>'
+    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc" id="depositSwapSendIcon"></div><div class="dw-swap-chain" id="depositSwapSendChain" style="background:#627EEA">E</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin" id="depositSwapSendCoin">USDC</span></div></div>'
     + '<span class="dw-swap-arrow">→</span>'
     + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin" id="depositSwapReceiveCoin">USDC</span></div></div>'
     + '</div>'
     + '<div id="depositSwapHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动在你的 Story.fun 账户中兑换成USDC</div>'
-    + '<div id="depositMinHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充币金额 5 USDC或USDT</div>'
+    + '<div id="depositMinHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充币金额 5 USDC</div>'
     + '</div></div></div>';
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
   modal.querySelector('.deposit-overlay').addEventListener('click', function(e) { if (e.target === this) closeDepositModal(); });
-  // 点击其他区域关闭币种下拉
+  // 点击其他区域关闭下拉
   document.addEventListener('click', closeDepositCoinDropdown);
+  document.addEventListener('click', closeDepositNetworkDropdown);
 }
 
 function toggleDepositCoinDropdown() {
@@ -1214,36 +1247,144 @@ function selectDepositCoin(coin) {
   depositSelectedCoin = coin;
   var iconEl = document.getElementById('depositCoinIcon');
   var labelEl = document.getElementById('depositCoinLabel');
+
+  if (coin === 'STORY') {
+    if (iconEl) { iconEl.style.cssText = 'background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff'; iconEl.textContent = 'S'; }
+    if (labelEl) labelEl.textContent = 'STORY';
+    // STORY 仅支持 Solana，自动切换网络
+    selectDepositNetwork('Solana');
+    // 更新网络下拉为仅 Solana
+    var netDD = document.getElementById('depositNetworkDropdown');
+    if (netDD) netDD.innerHTML = renderDepositNetworkDropdown(DEPOSIT_STORY_NETWORKS);
+  } else if (coin === 'USDT') {
+    if (iconEl) { iconEl.style.cssText = 'background:#26A17B;color:#fff'; iconEl.textContent = '$'; }
+    if (labelEl) labelEl.textContent = 'USDT';
+    // 恢复全部网络可选，保持当前选中网络
+    var netDD = document.getElementById('depositNetworkDropdown');
+    if (netDD) netDD.innerHTML = renderDepositNetworkDropdown(DEPOSIT_NETWORKS);
+    updateDepositSwapVisibility();
+  } else {
+    if (iconEl) { iconEl.style.cssText = 'background:#2775CA;color:#fff'; iconEl.textContent = '$'; }
+    if (labelEl) labelEl.textContent = 'USDC';
+    // 恢复全部网络可选，保持当前选中网络
+    var netDD = document.getElementById('depositNetworkDropdown');
+    if (netDD) netDD.innerHTML = renderDepositNetworkDropdown(DEPOSIT_NETWORKS);
+    updateDepositSwapVisibility();
+  }
+  closeDepositCoinDropdown();
+}
+
+function toggleDepositNetworkDropdown() {
+  var dd = document.getElementById('depositNetworkDropdown');
+  if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+
+function closeDepositNetworkDropdown(e) {
+  var dd = document.getElementById('depositNetworkDropdown');
+  if (!dd) return;
+  var wrapper = dd.closest('.deposit-coin-select-wrapper');
+  if (e && wrapper && wrapper.contains(e.target)) return;
+  dd.style.display = 'none';
+}
+
+function selectDepositNetwork(networkId) {
+  depositSelectedNetwork = networkId;
+  var iconEl = document.getElementById('depositNetworkIcon');
+  var labelEl = document.getElementById('depositNetworkLabel');
+  var subEl = document.getElementById('depositNetworkSub');
+
+  var found = null;
+  for (var i = 0; i < DEPOSIT_NETWORKS.length; i++) {
+    if (DEPOSIT_NETWORKS[i].id === networkId) { found = DEPOSIT_NETWORKS[i]; break; }
+  }
+  if (!found) {
+    for (var i = 0; i < DEPOSIT_STORY_NETWORKS.length; i++) {
+      if (DEPOSIT_STORY_NETWORKS[i].id === networkId) { found = DEPOSIT_STORY_NETWORKS[i]; break; }
+    }
+  }
+  if (!found) return;
+
+  if (iconEl) { iconEl.style.cssText = 'background:' + found.bg + ';color:#fff'; iconEl.textContent = found.letter; }
+  if (labelEl) labelEl.textContent = found.bold;
+  if (subEl) subEl.textContent = found.sub;
+
+  closeDepositNetworkDropdown();
+  updateDepositSwapVisibility();
+}
+
+// 根据币种+网络控制 dw-swap-row / 提示文字 显隐
+function updateDepositSwapVisibility() {
+  var coin = depositSelectedCoin;
+  var network = depositSelectedNetwork;
   var swapRow = document.getElementById('depositSwapRow');
   var swapHint = document.getElementById('depositSwapHint');
   var minHint = document.getElementById('depositMinHint');
   var sendCoin = document.getElementById('depositSwapSendCoin');
   var receiveCoin = document.getElementById('depositSwapReceiveCoin');
 
-  if (coin === 'STORY') {
-    if (iconEl) { iconEl.style.cssText = 'background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff'; iconEl.textContent = 'S'; }
-    if (labelEl) labelEl.textContent = 'STORY';
-    if (swapRow) swapRow.style.display = 'none';
-    if (swapHint) swapHint.style.display = 'none';
-    if (minHint) minHint.style.display = 'none';
-  } else if (coin === 'USDT') {
-    if (iconEl) { iconEl.style.cssText = 'background:#26A17B;color:#fff'; iconEl.textContent = '$'; }
-    if (labelEl) labelEl.textContent = 'USDT';
-    if (swapRow) swapRow.style.display = 'flex';
-    if (swapHint) swapHint.style.display = '';
-    if (minHint) minHint.style.display = '';
+  var showSwapRow = false;
+  var showSwapHint = false;
+  var showMinHint = false;
+  var minHintText = '';
+
+  if (coin === 'USDT') {
+    showSwapRow = true;
+    showSwapHint = true;
+    showMinHint = true;
+    minHintText = '最小充币金额 5 USDT';
     if (sendCoin) sendCoin.textContent = 'USDT';
     if (receiveCoin) receiveCoin.textContent = 'USDC';
-  } else {
-    if (iconEl) { iconEl.style.cssText = 'background:#2775CA;color:#fff'; iconEl.textContent = '$'; }
-    if (labelEl) labelEl.textContent = 'USDC';
-    if (swapRow) swapRow.style.display = 'flex';
-    if (swapHint) swapHint.style.display = '';
-    if (minHint) minHint.style.display = '';
-    if (sendCoin) sendCoin.textContent = 'USDC';
-    if (receiveCoin) receiveCoin.textContent = 'USDC';
+    updateDepositSwapSendSide('usdt', network);
+  } else if (coin === 'USDC') {
+    if (network === 'Solana') {
+      showSwapRow = false;
+      showSwapHint = false;
+      showMinHint = false;
+    } else {
+      showSwapRow = true;
+      showSwapHint = false;
+      showMinHint = true;
+      minHintText = '最小充币金额 5 USDC';
+      if (sendCoin) sendCoin.textContent = 'USDC';
+      if (receiveCoin) receiveCoin.textContent = 'USDC';
+      updateDepositSwapSendSide('usdc', network);
+    }
+  } else if (coin === 'STORY') {
+    showSwapRow = false;
+    showSwapHint = false;
+    showMinHint = false;
   }
-  closeDepositCoinDropdown();
+
+  if (swapRow) swapRow.style.display = showSwapRow ? 'flex' : 'none';
+  if (swapHint) swapHint.style.display = showSwapHint ? '' : 'none';
+  if (minHint) {
+    minHint.style.display = showMinHint ? '' : 'none';
+    if (showMinHint && minHintText) minHint.textContent = minHintText;
+  }
+}
+
+// 更新 swap-row 左侧（发送方）图标和链徽章，右侧固定为 Solana USDC
+function updateDepositSwapSendSide(iconClass, networkId) {
+  var sendIcon = document.getElementById('depositSwapSendIcon');
+  var sendChain = document.getElementById('depositSwapSendChain');
+  // 更新左侧图标
+  if (sendIcon) sendIcon.className = 'dw-swap-icon ' + iconClass;
+  // 更新左侧链徽章
+  if (sendChain) {
+    var found = null;
+    for (var i = 0; i < DEPOSIT_NETWORKS.length; i++) {
+      if (DEPOSIT_NETWORKS[i].id === networkId) { found = DEPOSIT_NETWORKS[i]; break; }
+    }
+    if (!found) {
+      for (var i2 = 0; i2 < DEPOSIT_STORY_NETWORKS.length; i2++) {
+        if (DEPOSIT_STORY_NETWORKS[i2].id === networkId) { found = DEPOSIT_STORY_NETWORKS[i2]; break; }
+      }
+    }
+    if (found) {
+      sendChain.style.background = found.bg;
+      sendChain.textContent = found.letter;
+    }
+  }
 }
 
 function closeDepositModal() {
