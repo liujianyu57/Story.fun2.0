@@ -927,8 +927,7 @@
         <!-- 角色发行总量（两种模式共享） -->
         <div class="form-group" style="margin-bottom: 20px;">
           <label>角色发行总量</label>
-          <input type="number" value="1000" min="100" max="5000" step="100" id="nftSupply" />
-          <span class="hint-text">发行总量范围 100 - 5,000。</span>
+          <input type="number" placeholder="100 - 5000" min="100" max="5000" step="100" id="nftSupply" />
         </div>
 
         <!-- 定价模式切换 -->
@@ -941,7 +940,7 @@
         <div class="pricing-mode-field visible" id="pricingFixedField">
           <div class="form-group">
             <label>固定价格（USDC）</label>
-            <input type="number" placeholder="请输入每个角色的固定价格" step="0.1" min="0" id="nftPriceFixed" oninput="updatePriceCoefficient('fixed')" />
+            <input type="number" placeholder="10 - 1000" step="0.1" min="0" id="nftPriceFixed" oninput="updatePriceCoefficient('fixed')" />
             <span class="hint-text">每个角色都以固定不变的价格购买，不会随销量变化。</span>
           </div>
         </div>
@@ -950,7 +949,7 @@
         <div class="pricing-mode-field" id="pricingCurveField">
           <div class="form-group">
             <label>初始价格（USDC）</label>
-            <input type="number" placeholder="请输入联合曲线初始价" step="0.1" min="0" id="nftPriceCurve" oninput="updatePriceCoefficient('curve')" />
+            <input type="number" placeholder="10 - 1000" step="0.1" min="0" id="nftPriceCurve" oninput="updatePriceCoefficient('curve')" />
             <span class="hint-text">初始价格为联合曲线起始价，每签约一个角色，价格按公式 <code>P = P₀ × 5^(已签约数/发行总量)</code> 自动上涨，早期签约更优惠。</span>
           </div>
         </div>
