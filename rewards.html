@@ -153,6 +153,42 @@
 
     .toast-notification { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px); z-index: 9999; background: rgba(26,35,47,0.95); backdrop-filter: blur(8px); color: #fff; padding: 14px 24px; border-radius: 14px; font-size: 0.88rem; box-shadow: 0 12px 40px rgba(27,45,71,0.25); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease; opacity: 0; pointer-events: none; max-width: 400px; text-align: center; font-weight: 500; }
     .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .metric-label-row { display: flex; align-items: center; gap: 6px; }
+    .metric-help {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-tertiary); font-size: 0.6rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; line-height: 1;
+    }
+    .metric-help:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+    .help-modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      background: rgba(15,23,42,0.4); backdrop-filter: blur(4px);
+      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+    }
+    .help-modal-overlay.active { opacity: 1; visibility: visible; }
+    .help-modal-card {
+      background: var(--surface); border-radius: 20px;
+      width: 100%; max-width: 360px;
+      box-shadow: 0 20px 60px rgba(27,45,71,0.15); overflow: hidden;
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s ease;
+      padding: 28px 24px 22px; text-align: center;
+    }
+    .help-modal-overlay.active .help-modal-card { transform: scale(1) translateY(0); }
+    .help-modal-card h3 { margin: 0 0 10px; font-size: 1rem; font-weight: 700; color: var(--text); }
+    .help-modal-card p { margin: 0 0 18px; font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); }
+    .help-modal-card button {
+      padding: 8px 24px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-secondary); font-size: 0.85rem;
+      font-weight: 500; cursor: pointer; transition: all 0.15s;
+    }
+    .help-modal-card button:hover { border-color: var(--accent); color: var(--accent); }
   </style>
 </head>
 <body>
@@ -167,11 +203,11 @@
       <div class="metrics-group-header">累计收益</div>
       <div class="metrics-group-grid cols-2">
         <div class="metric-card">
-          <div class="metric-label">累计 STORY</div>
+          <div class="metric-label-row"><span class="metric-label">累计 STORY</span><span class="metric-help" onclick="openHelp('累计 STORY','历史所有周期累计获得的 STORY 总量（含已领取和未领取）。')">?</span></div>
           <div class="metric-value green" id="mCumulativeStory">12,500</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">累计 USDC</div>
+          <div class="metric-label-row"><span class="metric-label">累计 USDC</span><span class="metric-help" onclick="openHelp('累计 USDC','历史所有角色签约分成、二级版税的累计 USDC 收入。')">?</span></div>
           <div class="metric-value green" id="mCumulativeUsdc">3,580.00</div>
         </div>
       </div>
@@ -181,14 +217,14 @@
       <div class="metrics-group-header">待处理收益</div>
       <div class="metrics-group-grid cols-3">
         <div class="metric-card">
-          <div class="metric-label">结算中 STORY</div>
+          <div class="metric-label-row"><span class="metric-label">结算中 STORY</span><span class="metric-help" onclick="openHelp('结算中 STORY','上个周期结算中的 STORY 收益，预计24小时之内结算成功。')">?</span></div>
           <div class="metric-value gold" id="mPendingStory">1,980</div>
           <div class="metric-sub">结算中，到账后可领取</div>
         </div>
         <div class="metric-card">
           <div class="metric-card-actions">
             <div class="metric-value-wrap">
-              <div class="metric-label">可领取 STORY</div>
+              <div class="metric-label-row"><span class="metric-label">可领取 STORY</span><span class="metric-help" onclick="openHelp('可领取 STORY','已结算的 STORY，可领取至个人钱包。')">?</span></div>
               <div class="metric-value gold" id="mClaimableStory">2,350</div>
             </div>
             <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn">领取</button>
@@ -197,7 +233,7 @@
         <div class="metric-card">
           <div class="metric-card-actions">
             <div class="metric-value-wrap">
-              <div class="metric-label">可领取 USDC</div>
+              <div class="metric-label-row"><span class="metric-label">可领取 USDC</span><span class="metric-help" onclick="openHelp('可领取 USDC','已结算的 USDC，可领取至个人钱包。')">?</span></div>
               <div class="metric-value gold" id="mClaimableUsdc">895.50</div>
             </div>
             <button class="btn-sm" onclick="claimUsdc()" id="claimUsdcBtn">领取</button>
@@ -269,6 +305,15 @@
 
     </div>
 
+  </div>
+
+  <!-- 帮助说明弹窗 -->
+  <div class="help-modal-overlay" id="helpModal">
+    <div class="help-modal-card">
+      <h3 id="helpModalTitle">—</h3>
+      <p id="helpModalDesc">—</p>
+      <button onclick="closeHelp()">知道了</button>
+    </div>
   </div>
 
   <div class="toast-notification" id="toastNotification">
@@ -485,8 +530,23 @@
       });
     }
 
+    // ===== 帮助弹窗 =====
+    function openHelp(title, desc) {
+      document.getElementById('helpModalTitle').textContent = title;
+      document.getElementById('helpModalDesc').textContent = desc;
+      document.getElementById('helpModal').classList.add('active');
+    }
+
+    function closeHelp() {
+      document.getElementById('helpModal').classList.remove('active');
+    }
+
     // ===== 初始化 =====
     document.addEventListener('DOMContentLoaded', function() {
+      // 点击弹窗背景关闭
+      document.getElementById('helpModal').addEventListener('click', function(e) {
+        if (e.target === this) closeHelp();
+      });
       renderMetrics();
       renderStoryFlow();
       renderUsdcFlow();
