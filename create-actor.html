@@ -1002,6 +1002,20 @@
     <button onclick="togglePriceCoeffTooltip()" style="margin-top:6px;padding:6px 16px;border-radius:999px;border:1px solid var(--border-dark);background:var(--surface);cursor:pointer;font-size:0.8rem;color:var(--text-muted);">关闭</button>
   </div>
 
+  <!-- 发行成功引导弹窗 -->
+  <div class="success-modal-overlay" id="successModalOverlay">
+    <div class="success-modal">
+      <button class="auth-modal-close" onclick="closeSuccessModal()" style="position:absolute;top:16px;right:16px;">&times;</button>
+      <div class="success-modal-icon">🎉</div>
+      <h2>发行成功！</h2>
+      <p>角色 IP <span id="successActorId">#0001</span> ·「<span class="success-actor-name" id="successActorName">—</span>」已成功发行。<br>发行者也需要签约才能获得该角色哦～</p>
+      <div class="success-buttons">
+        <button class="success-btn-primary" id="successGoSignBtn">🎭 去签约</button>
+        <button class="success-btn-outline" onclick="closeSuccessModal()">稍后再说</button>
+      </div>
+    </div>
+  </div>
+
   <script src="load-sidebar.js"></script>
 <script src="load-desktop-header.js"></script>
   <script src="auth.js"></script>
@@ -1472,10 +1486,60 @@
       localStorage.setItem('storyfun_created_actors', JSON.stringify(createdActors));
     } catch(e) {}
 
-    // Show success toast and go back
-    showToast('✅ 发行成功！');
-    setTimeout(function() { history.back(); }, 800);
+    // Show success modal with guidance
+    showSuccessModal(actorData);
   }
+
+  // ── Success Modal ──
+
+  function showSuccessModal(actorData) {
+    var overlay = document.getElementById('successModalOverlay');
+    var nameEl = document.getElementById('successActorName');
+    var idEl = document.getElementById('successActorId');
+    var goSignBtn = document.getElementById('successGoSignBtn');
+
+    // Generate IP number based on existing created actors count
+    var ipNum = 1;
+    try {
+      var createdActors = JSON.parse(localStorage.getItem('storyfun_created_actors')) || {};
+      ipNum = Object.keys(createdActors).length;
+    } catch(e) {}
+    if (idEl) {
+      idEl.textContent = '#0000'.slice(0, -String(ipNum).length) + ipNum;
+    }
+
+    // Fill actor name
+    if (nameEl) {
+      nameEl.textContent = actorData.name;
+    }
+
+    // Bind "去签约" button — navigate to actor-profile page
+    if (goSignBtn) {
+      var goSignHandler = function() {
+        closeSuccessModal();
+        location.href = 'actor-profile.html?name=' + encodeURIComponent(actorData.name);
+      };
+      goSignBtn.onclick = goSignHandler;
+    }
+
+    // Show overlay
+    overlay.classList.add('active');
+  }
+
+  function closeSuccessModal() {
+    var overlay = document.getElementById('successModalOverlay');
+    overlay.classList.remove('active');
+  }
+
+  // Click overlay background to close
+  document.addEventListener('click', function(e) {
+    var overlay = document.getElementById('successModalOverlay');
+    if (overlay && overlay.classList.contains('active')) {
+      if (e.target === overlay) {
+        closeSuccessModal();
+      }
+    }
+  });
 
   // ── Toast ──
   var _toastTimer;
