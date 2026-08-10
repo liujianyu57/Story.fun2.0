@@ -161,7 +161,7 @@
     .upload-item .thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
     .upload-item .thumb .file-type-badge { position: absolute; bottom: 2px; right: 2px; font-size: 0.6rem; background: rgba(0,0,0,0.6); color: #fff; padding: 1px 5px; border-radius: 4px; line-height: 1.4; }
     .upload-item .info { flex: 1; min-width: 0; }
-    .upload-item .info .name { font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .upload-item .info .name { font-size: 0.95rem; font-weight: 600; display: flex; flex-direction: column; align-items: stretch; gap: 0; }
     .upload-item .info .meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .upload-item .info .progress-bar { width: 100%; height: 4px; background: var(--border); border-radius: 999px; margin-top: 8px; overflow: hidden; }
     .upload-item .info .progress-bar .progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.3s ease; width: 0%; }
@@ -176,7 +176,8 @@
 
     /* Episode Title Editor Inline */
     .upload-item .title-edit { display: flex; align-items: center; gap: 6px; }
-    .upload-item .title-edit input { padding: 4px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; font-family: inherit; outline: none; width: 160px; transition: border-color 0.2s; background: var(--surface); }
+    .upload-item .title-edit input { padding: 4px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; font-family: inherit; outline: none; width: 220px; transition: border-color 0.2s; background: var(--surface); }
+    .upload-item .title-edit input:placeholder-shown { border-style: dashed; border-color: rgba(0,0,0,0.2); }
     .upload-item .title-edit input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
 
     /* Batch toolbar */
@@ -583,19 +584,24 @@
       .batch-upload-hint { gap: 16px; }
       .batch-upload-hint span { font-size: 0.72rem; color: #AEAEB2; }
       .upload-item {
-        padding: 12px 14px;
-        gap: 12px;
+        padding: 10px 12px;
+        gap: 10px;
         border-radius: 14px;
         border: none;
         background: #fff;
         box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         transition: box-shadow 0.2s;
+        align-items: flex-start;
+        flex-wrap: wrap;
       }
       .upload-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      .upload-item .episode-num { width: 22px; font-size: 0.85rem; line-height: 44px; }
       .upload-item .thumb { width: 44px; height: 44px; border-radius: 12px; }
-      .upload-item .info .name { font-size: 0.88rem; font-weight: 600; }
-      .upload-item .info .meta { font-size: 0.74rem; gap: 10px; }
-      .upload-item .title-edit input { font-size: 0.85rem; width: 120px; border-radius: 10px; }
+      .upload-item .info { flex: 1; min-width: 0; }
+      .upload-item .info .name { font-size: 0.82rem; font-weight: 600; display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+      .upload-item .info .meta { font-size: 0.7rem; gap: 6px; margin-top: 2px; flex-wrap: wrap; }
+      .upload-item .title-edit input { font-size: 0.85rem; width: 100%; border-radius: 10px; margin-top: 6px; }
+      .upload-item .item-actions { margin-left: auto; gap: 4px; flex-shrink: 0; align-self: flex-start; }
 
       /* ── 角色卡片：Apple 风格 ── */
       .char-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 20px; }
@@ -841,6 +847,7 @@
           <div class="upload-queue-header">
             <h4>已添加的视频 <span class="queue-count" id="queueCount">(0 个文件)</span></h4>
           </div>
+          <div style="font-size:0.78rem;color:var(--text-muted);padding-bottom:8px;border-bottom:1px solid var(--border);">💡 填写分集描述有助于更精准的流量推荐</div>
           <div id="queueItems"></div>
           <div id="queueEmpty" class="upload-queue-empty">暂无视频文件，请点击上方区域添加</div>
         </div>
@@ -1472,8 +1479,6 @@ const batchUpload = {
     }));
 
     newItems.forEach((item, i) => { item.order = this.files.length + i + 1; });
-    // Auto-fill title with filename
-    newItems.forEach(item => { if (!item.title) item.title = item.name; });
     this.files = this.files.concat(newItems);
 
     // Generate thumbnails asynchronously
@@ -1744,7 +1749,7 @@ const batchUpload = {
       </div>
       <div class="info">
         <div class="name">
-          <span class="title-edit"><input type="text" value="${this.escapeHtml(item.title || item.name)}" placeholder="可选的标题" onclick="event.stopPropagation()" onchange="batchUpload.setTitle(${item.id}, this.value)" /></span>
+          <span style="font-size:0.78rem;color:var(--text-muted);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px;">${this.escapeHtml(item.originalName)}</span>
         </div>
         <div class="meta">
           <span class="file-size">${this.formatSize(item.size)}</span>
@@ -1754,6 +1759,7 @@ const batchUpload = {
         </div>
 
         ${progressHTML}
+        <span class="title-edit"><input type="text" value="${this.escapeHtml(item.title || '')}" placeholder="分集描述" onclick="event.stopPropagation()" onchange="batchUpload.setTitle(${item.id}, this.value)" /></span>
       </div>
 
       <div class="item-actions" onclick="event.stopPropagation()">
