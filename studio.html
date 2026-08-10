@@ -1337,13 +1337,14 @@
       .sub-panels { display: none; }
 
       /* 移动端右上角按钮 */
-      .mobile-actions { display: flex; gap: 6px; flex-shrink: 0; }
+      .mobile-actions { display: flex; gap: 10px; flex-shrink: 0; padding: 0 12px; }
       .mob-act-btn {
-        display: inline-flex; align-items: center; gap: 4px;
-        padding: 5px 12px; border-radius: 999px;
+        flex: 1;
+        display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+        padding: 10px 0; border-radius: 12px;
         border: 1px solid var(--border); background: var(--surface);
-        font-size: 0.7rem; font-weight: 600; color: var(--text);
-        cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        font-size: 0.82rem; font-weight: 600; color: var(--text);
+        cursor: pointer; transition: all 0.15s;
         font-family: inherit;
       }
       .mob-act-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -1501,6 +1502,15 @@
 
       .batch-actions { margin: 14px 12px 0; }
       .batch-btn { flex: 1; justify-content: center; padding: 8px 4px; font-size: 0.74rem; }
+      .batch-btn.charge, .batch-btn.rest { display: none; }
+
+      /* 弹窗桌面/移动显隐 */
+      .charge-desk-btns { display: none !important; }
+      .charge-mob-btn { display: block !important; }
+      .charge-batch-area { display: block !important; }
+      .recall-desk-btns { display: none !important; }
+      .recall-mob-btn { display: block !important; }
+      .recall-batch-area { display: block !important; }
 
       .studio-links { display: none; }
 
@@ -1664,10 +1674,6 @@
         <span>本周片酬 <strong id="statusWeekly">0.0</strong> STORY</span>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
-      <div class="mobile-actions" id="mobileActions">
-        <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()">待办 · <strong id="mobileTodoBadge">0</strong></button>
-        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()">✦升级 · <strong id="mobileUpgradeBadge">0</strong></button>
-      </div>
       <div class="mob-more-wrap" id="mobMoreWrap">
         <button class="mob-more-btn" onclick="toggleMobMore(event)">···</button>
         <div class="mob-more-menu" id="mobMoreMenu">
@@ -1695,6 +1701,11 @@
           <button class="batch-btn rest" id="batchRestBtn" onclick="openBatchModal('rest')">一键休息</button>
         </div>
       </section>
+
+      <div class="mobile-actions" id="mobileActions">
+        <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()">待办 · <strong id="mobileTodoBadge">0</strong></button>
+        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()">✦升级 · <strong id="mobileUpgradeBadge">0</strong></button>
+      </div>
 
       <!-- ===== 常驻双面板：待办 + 升级管理入口 ===== -->
       <div class="sub-panels">
@@ -1838,21 +1849,42 @@
 
   <!-- ===== Charge Modal (补充体力) ===== -->
   <div class="modal-overlay" id="chargeModal">
-    <div class="modal-card">
-      <h2>恢复体力</h2>
-      <p class="modal-sub" id="modalChargeActor">为角色补充体力</p>
-      <div style="background:rgba(255,159,44,0.08);border-radius:14px;padding:18px;margin-bottom:18px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span style="font-size:0.85rem;color:var(--text-muted);">当前体力</span>
-          <span style="font-weight:700;" id="modalChargeCurrent">0 / 0</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:0.85rem;color:var(--text-muted);">恢复费用</span>
-          <span style="font-weight:700;color:var(--warning);" id="modalChargeCost">— USDC</span>
-        </div>
+    <div class="modal-card" style="position:relative;">
+      <h2 id="chargeModalTitle">补充体力</h2>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeChargeModal()">✕</button>
+
+      <!-- L1: 角色 -->
+      <div id="modalChargeActor" style="text-align:center;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:12px;">—</div>
+
+      <!-- L2: 数据 -->
+      <div style="background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:14px;text-align:center;">
+        <span id="modalChargeCurrent" style="font-weight:700;color:var(--text);">0/168 → 168</span>
+        <span style="color:var(--text-sub);margin:0 6px;">·</span>
+        <span style="color:var(--warning);font-weight:700;">花费 <span id="modalChargeCost">—</span> USDC</span>
       </div>
-      <button class="modal-btn confirm" onclick="confirmCharge()">恢复全部体力</button>
-      <button class="modal-btn cancel" onclick="closeChargeModal()">取消</button>
+
+      <!-- L3: 桌面按钮行 -->
+      <div class="charge-desk-btns" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <button class="modal-btn confirm" onclick="confirmCharge()" id="chargeDeskBtn" style="flex:1;margin-bottom:0;">补充</button>
+        <button class="modal-btn cancel" onclick="closeChargeModal()" style="flex:1;">取消</button>
+      </div>
+
+      <!-- L3: 移动端按钮行 -->
+      <div class="charge-mob-btn" style="display:none;">
+        <button class="modal-btn confirm" onclick="confirmCharge()" style="margin-bottom:0;">该角色</button>
+      </div>
+
+      <!-- 分隔 + 批量操作区域 -->
+      <div class="charge-batch-area" style="display:none;">
+        <div style="height:1px;background:var(--border);margin:14px 0;"></div>
+        <div style="text-align:center;font-size:0.72rem;color:var(--text-sub);margin-bottom:6px;font-weight:600;">补充全部演出中角色</div>
+        <div class="charge-batch-info" style="background:var(--bg);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center;">
+          <span style="font-size:0.85rem;font-weight:700;color:var(--text);" id="chargeBatchCount">3 位</span>
+          <span style="color:var(--text-sub);margin:0 4px;">·</span>
+          <span style="font-size:0.85rem;font-weight:700;color:var(--warning);" id="chargeBatchCost">80 USDC</span>
+        </div>
+        <button class="modal-btn cancel" style="width:100%;" onclick="confirmChargeAll()">全部补充</button>
+      </div>
     </div>
   </div>
 
@@ -1983,15 +2015,34 @@
 
   <!-- ===== 休息确认弹窗 ===== -->
   <div class="modal-overlay" id="recallConfirmModal">
-    <div class="modal-card" style="text-align:center;">
+    <div class="modal-card" style="position:relative;">
       <h2>确认休息</h2>
-      <p class="modal-sub" style="margin-bottom:8px;">角色休息期间暂停片酬产出，体力会随时间恢复。</p>
-      <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:1.5rem;font-weight:800;color:var(--text);" id="recallModalName">—</div>
-        <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;" id="recallModalLevel">—</div>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeRecallModal()">✕</button>
+
+      <!-- L1: 角色 -->
+      <div id="recallModalName" style="text-align:center;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px;">—</div>
+      <div id="recallModalLevel" style="text-align:center;font-size:0.85rem;color:var(--text-muted);margin-bottom:14px;">—</div>
+
+      <!-- L3: 桌面按钮行 -->
+      <div class="recall-desk-btns" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <button class="modal-btn confirm" onclick="confirmRecall()" id="recallDeskBtn" style="background:rgba(244,91,105,0.9);flex:1;margin-bottom:0;">休息</button>
+        <button class="modal-btn cancel" onclick="closeRecallModal()" style="flex:1;">取消</button>
       </div>
-      <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);">确认休息</button>
-      <button class="modal-btn cancel" onclick="closeRecallModal()">取消</button>
+
+      <!-- L3: 移动端按钮行 -->
+      <div class="recall-mob-btn" style="display:none;">
+        <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);margin-bottom:0;">该角色</button>
+      </div>
+
+      <!-- 分隔 + 批量操作区域 -->
+      <div class="recall-batch-area" style="display:none;">
+        <div style="height:1px;background:var(--border);margin:14px 0;"></div>
+        <div style="text-align:center;font-size:0.72rem;color:var(--text-sub);margin-bottom:6px;font-weight:600;">全部休息</div>
+        <div class="recall-batch-info" style="background:var(--bg);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center;">
+          <span style="font-size:0.85rem;font-weight:700;color:var(--text);" id="recallBatchCount">3 位</span>
+        </div>
+        <button class="modal-btn cancel" style="width:100%;" onclick="confirmRecallAll()">全部休息</button>
+      </div>
     </div>
   </div>
 
@@ -2986,8 +3037,16 @@
       pendingRecallActorId = actorId;
 
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      document.getElementById('recallModalName').textContent = actor.name;
-      document.getElementById('recallModalLevel').textContent = levelCfg.name + ' · Lv' + actor.level + ' · ' + actor.id;
+      document.getElementById('recallModalName').textContent = actor.name + ' · Lv' + actor.level;
+      document.getElementById('recallModalLevel').textContent = levelCfg.name;
+
+      // 批量入口
+      var allDeployed = getDeployedActors();
+      var allCount = allDeployed.length;
+      var batchCountEl = document.getElementById('recallBatchCount');
+      if (allCount > 1) {
+        if (batchCountEl) batchCountEl.textContent = allCount + ' 位';
+      }
 
       document.getElementById('recallConfirmModal').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -2997,6 +3056,12 @@
       document.getElementById('recallConfirmModal').classList.remove('active');
       document.body.style.overflow = '';
       pendingRecallActorId = null;
+    }
+
+    function confirmRecallAll() {
+      closeRecallModal();
+      autoRest();
+      renderAll();
     }
 
     function confirmRecall() {
@@ -3022,12 +3087,33 @@
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
       const cost = levelCfg.costCoeff * 10;
 
-      document.getElementById('modalChargeActor').textContent = actor.name + ' · 体力 ' + actor.energy + '/' + actor.energyMax;
-      document.getElementById('modalChargeCurrent').textContent = actor.energy + ' / ' + actor.energyMax;
-      document.getElementById('modalChargeCost').textContent = cost.toFixed(1) + ' USDC';
+      document.getElementById('modalChargeActor').textContent = actor.name + ' · Lv' + actor.level;
+      document.getElementById('modalChargeCurrent').textContent = actor.energy + '/' + actor.energyMax + ' → ' + actor.energyMax;
+      document.getElementById('modalChargeCost').textContent = cost.toFixed(1);
+
+      // 移动端批量入口
+      var allTargets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
+      var allCount = allTargets.length;
+      var allCost = 0;
+      allTargets.forEach(function(a) {
+        var cfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
+        allCost += cfg.costCoeff * 10;
+      });
+      var batchCountEl = document.getElementById('chargeBatchCount');
+      var batchCostEl = document.getElementById('chargeBatchCost');
+      if (allCount > 1) {
+        if (batchCountEl) batchCountEl.textContent = allCount + ' 位';
+        if (batchCostEl) batchCostEl.textContent = allCost.toFixed(1) + ' USDC';
+      }
 
       document.getElementById('chargeModal').classList.add('active');
       document.body.style.overflow = 'hidden';
+    }
+
+    function confirmChargeAll() {
+      closeChargeModal();
+      autoCharge();
+      renderAll();
     }
 
     function closeChargeModal() {
@@ -3044,7 +3130,7 @@
         const cost = levelCfg.costCoeff * 10;
         actor.energy = actor.energyMax;
         if (actor.isStaking) actor.status = 'active';
-        showToast(actor.name + ' 已恢复满体力（花费 ' + cost.toFixed(1) + ' USDC）');
+        showToast(actor.name + ' 已补充（花费 ' + cost.toFixed(1) + ' USDC）');
       }
       closeChargeModal();
       renderAll();
