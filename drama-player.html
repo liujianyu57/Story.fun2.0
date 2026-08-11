@@ -559,7 +559,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 (function(){
 'use strict';
 
-const isPlayerMode = !!(new URLSearchParams(location.search).get('title'));
+const isPlayerMode = !!(new URLSearchParams(location.search).get('title')) || (new URLSearchParams(location.search).get('mode') === 'works');
 
 function showToast(msg){
   const toast=document.getElementById('toast');
@@ -753,9 +753,23 @@ if(!isPlayerMode){
   var dramaVideo=params.get('video')||'';
   var actorAvatars=params.get('actors')?params.get('actors').split(','):[];
   var actorNames=params.get('actorNames')?params.get('actorNames').split(','):[];
-  var total=Math.min(dramaTotal,60);
-  var episodes=[];
-  for(var i=0;i<total;i++)episodes.push({idx:i,label:'第'+(i+1)+'集',cover:dramaCover,desc:''});
+      var total=Math.min(dramaTotal,60);
+      var episodes=[];
+      for(var i=0;i<total;i++)episodes.push({idx:i,label:'第'+(i+1)+'集',cover:dramaCover,desc:''});
+
+      // Works 模式
+      var isWorksMode = params.get('mode') === 'works';
+      var worksData = [];
+      var worksTotal = 0;
+      if (isWorksMode) {
+        try {
+          worksData = JSON.parse(decodeURIComponent(params.get('works') || '[]'));
+          worksTotal = worksData.length;
+        } catch(e) {
+          worksData = [];
+          worksTotal = 0;
+        }
+      }
 
   document.getElementById('playerApp').classList.add('active');
   document.getElementById('feedApp').classList.add('hidden');
@@ -939,22 +953,74 @@ if(!isPlayerMode){
     }
   });
 
+  // Store initial start index for works mode
+  var worksStartIdx = isWorksMode ? parseInt(params.get('index')) || 0 : 0;
+
   function render(){
     var h='';
-    var showCount=Math.min(actorAvatars.length,5);
-    var actorHtml='';
-    for(var j=0;j<showCount;j++){
-      var n=actorNames[j]||'';
-      actorHtml+='<img class="pi-avatar" src="'+actorAvatars[j]+'" alt="'+n+'" onclick="event.stopPropagation();location.href=\'actor-profile.html?name='+encodeURIComponent(n)+'\'">';
+    if (isWorksMode && worksTotal > 0) {
+      // Works 模式: 渲染混合列表
+      for (var i = 0; i < worksTotal; i++) {
+        var w = worksData[i];
+        var wTitle = w.title || '';
+        var wDesc = w.desc || '';
+        var wCover = w.cover || '';
+        var wAuthor = w.author || '';
+        var wType = w.type || 'video';
+        var wDuration = w.duration || '';
+        var isEp = wType === 'episode';
+        var badgeText = isEp ? wTitle : (wAuthor ? '@' + wAuthor : '');
+        h += '<div class="slide" style="top:' + (i * 100) + 'vh">' +
+          '<img class="slide-img" src="' + wCover + '" alt="' + wTitle + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" onerror="this.style.display=\'none\'"/>' +
+          '<div class="slide-mask"></div>' +
+          '<div class="player-play-btn" id="pb_' + i + '"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>' +
+          '<div class="player-info">' +
+            '<div class="pi-title" onclick="event.stopPropagation();">' + badgeText + ' <span class="pi-arrow">›</span></div>' +
+            '<div class="pi-desc" id="infoDesc_' + i + '"><span class="desc-text">' + wDesc + '</span><span class="desc-expand" data-idx="' + i + '">展开</span></div>' +
+          '</div>' +
+          '<div class="player-actions">' +
+            '<button class="act-creator"><img class="ac-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt=""><span class="ac-follow" onclick="event.stopPropagation();toggleFollow(this)">+</span></button>' +
+            '<button class="player-act-btn" data-act="fav" data-idx="' + i + '"><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><span class="player-act-label">1.0w</span></button>' +
+            '<button class="player-act-btn" data-act="cmt" data-idx="' + i + '"><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><span class="player-act-label">890</span></button>' +
+            '<button class="player-act-btn" data-act="like" data-idx="' + i + '"><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="player-act-label">3.3w</span></button>' +
+            '<button class="player-act-btn" data-act="share" data-idx="' + i + '"><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div><span class="player-act-label">分享</span></button>' +
+          '</div>' +
+        '</div>';
+      }
+      total = worksTotal;
+      episodes = worksData.map(function(w, i) {
+        return { idx: i, label: w.title || ('第' + (i + 1) + '项'), cover: w.cover || '', desc: w.desc || '' };
+      });
+      // Hide episode selector button in works mode
+      if (bbEpBtn) bbEpBtn.style.display = 'none';
+      // Update bottom bar total
+      bbEpTotal.textContent = worksTotal;
+      // Override updateMeta for works mode
+      var _updateMeta = updateMeta;
+      updateMeta = function() {
+        var w = worksData[idx] || worksData[0];
+        if (w) epBadge.textContent = w.title || '';
+      };
+    } else {
+      // 原有 drama 模式
+      var showCount=Math.min(actorAvatars.length,5);
+      var actorHtml='';
+      for(var j=0;j<showCount;j++){
+        var n=actorNames[j]||'';
+        actorHtml+='<img class="pi-avatar" src="'+actorAvatars[j]+'" alt="'+n+'" onclick="event.stopPropagation();location.href=\'actor-profile.html?name='+encodeURIComponent(n)+'\'">';
+      }
+      if(actorAvatars.length>5)actorHtml+='<span class="pi-overflow">+'+(actorAvatars.length-5)+'</span>';
+      var actorRow=actorAvatars.length?'<div class="pi-actors">'+actorHtml+'</div>':'';
+      for(var i=0;i<total;i++){
+        var ep=episodes[i];
+        var mediaHTML = dramaVideo ? '<video class="slide-img" src="'+dramaVideo+'" muted loop playsinline poster="'+ep.cover+'"'+(i===0?' autoplay':'')+' onerror="this.style.display=\'none\'"></video>' : '<img class="slide-img" src="'+ep.cover+'" alt="'+ep.label+'" loading="'+(i===0?'eager':'lazy')+'" onerror="this.style.display=\'none\'"/>';
+        h+='<div class="slide" style="top:'+(i*100)+'vh">'+mediaHTML+'<div class="slide-mask"></div><div class="player-play-btn" id="pb_'+i+'"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="player-info"><div class="pi-title" onclick="event.stopPropagation();">'+dramaTitle+' <span class="pi-arrow">›</span></div>'+actorRow+'<div class="pi-desc" id="infoDesc_'+i+'"><span class="desc-text">'+dramaDesc+'</span><span class="desc-expand" data-idx="'+i+'">展开</span></div></div><div class="player-actions"><button class="act-creator"><img class="ac-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt=""><span class="ac-follow" onclick="event.stopPropagation();toggleFollow(this)">+</span></button><button class="player-act-btn" data-act="fav" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><span class="player-act-label">1.0w</span></button><button class="player-act-btn" data-act="cmt" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><span class="player-act-label">890</span></button><button class="player-act-btn" data-act="like" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="player-act-label">3.3w</span></button><button class="player-act-btn" data-act="share" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div><span class="player-act-label">分享</span></button></button></div></div>';
+      }
     }
-    if(actorAvatars.length>5)actorHtml+='<span class="pi-overflow">+'+(actorAvatars.length-5)+'</span>';
-    var actorRow=actorAvatars.length?'<div class="pi-actors">'+actorHtml+'</div>':'';
-    for(var i=0;i<total;i++){
-      var ep=episodes[i];
-      var mediaHTML = dramaVideo ? '<video class="slide-img" src="'+dramaVideo+'" muted loop playsinline poster="'+ep.cover+'"'+(i===0?' autoplay':'')+' onerror="this.style.display=\'none\'"></video>' : '<img class="slide-img" src="'+ep.cover+'" alt="'+ep.label+'" loading="'+(i===0?'eager':'lazy')+'" onerror="this.style.display=\'none\'"/>';
-      h+='<div class="slide" style="top:'+(i*100)+'vh">'+mediaHTML+'<div class="slide-mask"></div><div class="player-play-btn" id="pb_'+i+'"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="player-info"><div class="pi-title" onclick="event.stopPropagation();">'+dramaTitle+' <span class="pi-arrow">›</span></div>'+actorRow+'<div class="pi-desc" id="infoDesc_'+i+'"><span class="desc-text">'+dramaDesc+'</span><span class="desc-expand" data-idx="'+i+'">展开</span></div></div><div class="player-actions"><button class="act-creator"><img class="ac-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt=""><span class="ac-follow" onclick="event.stopPropagation();toggleFollow(this)">+</span></button><button class="player-act-btn" data-act="fav" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><span class="player-act-label">1.0w</span></button><button class="player-act-btn" data-act="cmt" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><span class="player-act-label">890</span></button><button class="player-act-btn" data-act="like" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="player-act-label">3.3w</span></button><button class="player-act-btn" data-act="share" data-idx='+i+'><div class="player-act-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div><span class="player-act-label">分享</span></button></button></div></div>';
-    }
-    track.innerHTML=h;track.style.height=(total*100)+'vh';wh=window.innerHeight;goTo(0,false);bindEvents();
+    track.innerHTML=h;track.style.height=(total*100)+'vh';wh=window.innerHeight;
+    var startIdx = isWorksMode ? Math.min(worksStartIdx, total - 1) : 0;
+    goTo(startIdx, false);
+    bindEvents();
   }
 
   function goTo(i,animate){
@@ -1067,7 +1133,7 @@ if(!isPlayerMode){
 
   updateMeta();render();
   document.getElementById('loading').classList.add('hide');
-  if (window.innerWidth >= 769) {
+  if (window.innerWidth >= 769 && !isWorksMode) {
     openDrawer(0);
   }
 }

@@ -1409,7 +1409,7 @@
             badge: d.cat,
             episodes: d.ep,
             creator: d.author,
-            link: d.link
+            link: buildDramaPlayerLink(d)
           };
         });
         grid.innerHTML = renderDramaCardList(cardData);
@@ -1433,7 +1433,6 @@
               author: w.author,
               desc: w.desc,
               cover: w.cover,
-              link: w.link,
               duration: formatDuration(i),
               likes: formatLikes(i, epCount)
             });
@@ -1445,15 +1444,14 @@
             author: w.author,
             desc: w.desc,
             cover: w.cover,
-            link: w.link,
             duration: formatDuration(1),
             likes: formatLikes(2, 5)
           });
         }
       });
-      grid.innerHTML = items.map(function(it) {
+      grid.innerHTML = items.map(function(it, idx) {
         var isEpisode = it.type === 'episode';
-        return '<div class="video-card" onclick="location.href=\'' + it.link + '\'">' +
+        return '<div class="video-card" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
           '<div class="vc-cover-wrap">' +
             (isEpisode ? '<div class="vc-episode-label">' + it.title + '</div>' : '') +
             '<img class="vc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
@@ -1487,7 +1485,7 @@
             badge: d.cat,
             episodes: d.ep,
             creator: d.author,
-            link: d.link
+            link: buildDramaPlayerLink(d)
           };
         });
         grid.innerHTML = renderDramaCardList(cardData);
@@ -1511,7 +1509,6 @@
               author: w.author,
               desc: w.desc,
               cover: w.cover,
-              link: w.link,
               duration: formatDuration(i),
               likes: formatLikes(i, epCount)
             });
@@ -1523,15 +1520,14 @@
             author: w.author,
             desc: w.desc,
             cover: w.cover,
-            link: w.link,
             duration: formatDuration(1),
             likes: formatLikes(2, 5)
           });
         }
       });
-      grid.innerHTML = items.map(function(it) {
+      grid.innerHTML = items.map(function(it, idx) {
         var isEpisode = it.type === 'episode';
-        return '<div class="mvc" onclick="location.href=\'' + it.link + '\'">' +
+        return '<div class="mvc" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
           '<div class="mvc-cover-wrap">' +
             (isEpisode ? '<div class="mvc-episode-label">' + it.title + '</div>' : '') +
             '<img class="mvc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
@@ -1558,6 +1554,38 @@
       var n = (idx * 1.2 + 0.5) * 10000;
       if (n >= 10000) return (n / 10000).toFixed(1) + '万';
       return String(Math.floor(n));
+    }
+
+    /* ── Build drama-player.html link for a drama (episodes within one drama) ── */
+    function buildDramaPlayerLink(d) {
+      var epCount = parseInt((d.ep.match(/\d+/) || ['24'])[0]) || 24;
+      var actorNames = d.actors && d.actors.length ? d.actors.join(',') : '';
+      var actorUrls = d.actors ? d.actors.map(function(n) {
+        return window.ACTOR_AVATARS ? (window.ACTOR_AVATARS[n] || '') : '';
+      }).join(',') : '';
+      return 'drama-player.html?title=' + encodeURIComponent(d.title) +
+        '&total=' + epCount +
+        '&cover=' + encodeURIComponent(d.cover || '') +
+        '&desc=' + encodeURIComponent(d.desc || '') +
+        '&actorNames=' + encodeURIComponent(actorNames) +
+        '&actors=' + encodeURIComponent(actorUrls);
+    }
+
+    /* ── Build drama-player.html link for works mode (mixed list) ── */
+    function buildWorksModeLink(worksList, clickedIndex) {
+      var items = worksList.map(function(it) {
+        return {
+          type: it.type,
+          title: it.title,
+          author: it.author || '',
+          desc: it.desc || '',
+          cover: it.cover || '',
+          duration: it.duration || '',
+          likes: it.likes || ''
+        };
+      });
+      return 'drama-player.html?mode=works&index=' + clickedIndex +
+        '&works=' + encodeURIComponent(JSON.stringify(items));
     }
 
     // ============================================================
