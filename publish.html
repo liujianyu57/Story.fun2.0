@@ -749,7 +749,7 @@
       <span style="color:#deeaf7;font-size:1.2rem;">›</span>
       <div class="step-item">
         <span class="step-circle">3</span>
-        <span class="step-label">角色管理</span>
+        <span class="step-label">人物管理</span>
       </div>
     </div>
 
@@ -861,7 +861,7 @@
 
       <div class="form-panel-footer">
         <button class="button-ghost" onclick="goToStep(1)">← 上一步</button>
-        <button class="button" onclick="goToStep(3)">下一步：角色管理 →</button>
+        <button class="button" onclick="goToStep(3)">下一步：人物管理 →</button>
       </div>
     </div>
 
@@ -869,15 +869,15 @@
     <!-- Step 3: 角色管理 - Figma Card Grid Style -->
     <div class="form-panel" id="step3" style="display:none;">
       <div class="form-panel-header">
-        <h3>角色管理</h3>
-        <p>为短剧创建角色，设定角色名称、头像与性格简介。</p>
+        <h3>人物管理</h3>
+        <p>为短剧创建剧中人物，设定角色名称、头像与介绍。</p>
       </div>
       <div class="form-panel-body">
         <!-- Character Manager Header -->
         <div class="char-panel-header">
-          <h3>添加主要角色</h3>
+          <h3>添加主要人物</h3>
           <button class="char-add-btn" onclick="charManager.openAddModal()">
-            <span class="plus-icon">+</span> 添加角色
+            <span class="plus-icon">+</span> 添加人物
           </button>
         </div>
 
@@ -885,7 +885,7 @@
         <div style="font-size:0.85rem;color:var(--text-muted);padding:0 0 16px;display:flex;flex-direction:column;gap:6px;">
           <div style="display:flex;align-items:center;gap:6px;">
             <span>💡</span>
-            <span>每位创作者最多可添加 <strong style="color:var(--accent);">5</strong> 个角色，并可从中选择最多 <strong style="color:var(--accent);">5</strong> 个角色绑定角色 IP，必须持有角色才能使用该 IP。</span>
+            <span>每部短剧可添加 <strong style="color:var(--accent);">5</strong> 个人物，人物可绑定角色 IP，必须持有角色才能使用该 IP。</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px;padding-left:22px;">
             <span>⏳</span>
@@ -1015,7 +1015,7 @@ function submitForReview() {
  */
 function goToStep(num) {
   const steps = ['step1','step2','step3'];
-  const stepTitles = ['基本信息', '剧集管理', '角色管理'];
+  const stepTitles = ['基本信息', '剧集管理', '人物管理'];
 
   // Show/hide panels
   const stepItems = document.querySelectorAll('.step-item');
@@ -1287,7 +1287,7 @@ function goToStep(num) {
         return `<div class="char-card add-card js-add-char">
           <div class="add-card-content">
             <div class="add-icon">+</div>
-            <p><strong>添加角色</strong></p>
+            <p><strong>添加人物</strong></p>
           </div>
         </div>`;
       },
