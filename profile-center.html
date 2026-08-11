@@ -102,7 +102,7 @@
     #subTabBar.visible { display: flex; }
     #subTabBar .tab-item { padding: 5px 14px; font-size: 12px; border-radius: 6px; font-weight: 400; color: var(--text-sub); background: none; border: 1px solid var(--border-light); }
     #subTabBar .tab-item.active { background: var(--border-light); color: var(--text-muted); font-weight: 500; box-shadow: none; }
-    #subTabDrama.works-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+    #subTabDrama.works-grid, #tabFavoritedDrama.works-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
     @media (max-width: 1120px) { #subTabDrama.works-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
 
     /* ===== Watch History Sub Tabs (Desktop) ===== */
@@ -890,14 +890,15 @@
 
   <!-- ===== MOBILE SUB TAB: Video Works Grid ===== -->
   <div id="mobileSubTabWorks" class="mobile-video-grid" style="display:none;"></div>
-  <div id="mobileTabLiked" class="mobile-empty" style="display:none;">
-    <div class="me-icon">❤️</div>
-    <p>暂无赞过的短剧</p>
+  <div id="mobileTabLikedGrid" class="mobile-video-grid" style="display:none;"></div>
+
+  <!-- Mobile Favorited Sub Tabs -->
+  <div class="mobile-sub-tabs" id="mobileFavoritedSubTabs" style="display:none;">
+    <button class="msubtab-item active" data-mfavsubtab="drama" onclick="switchMobileFavoritedSubTab('drama')">短剧</button>
+    <button class="msubtab-item" data-mfavsubtab="videos" onclick="switchMobileFavoritedSubTab('videos')">视频</button>
   </div>
-  <div id="mobileTabFavorited" class="mobile-empty" style="display:none;">
-    <div class="me-icon">⭐</div>
-    <p>暂无收藏的短剧</p>
-  </div>
+  <div id="mobileTabFavoritedDrama" class="mobile-drama-grid" style="display:none;"></div>
+  <div id="mobileTabFavoritedVideos" class="mobile-video-grid" style="display:none;"></div>
 
   <!-- ===== DESKTOP CONTENT (unchanged) ===== -->
   <div class="app-shell">
@@ -975,15 +976,16 @@
       <!-- Desktop Watch History: Videos Grid -->
       <div id="watchHistoryVideos" class="video-works-grid" style="display:none;"></div>
 
-      <!-- Desktop Empty States -->
-      <div id="tabLiked" class="empty-state" style="display:none;">
-        <div class="empty-icon">❤️</div>
-        <p>暂无点赞的短剧</p>
+      <!-- Desktop Liked Grid -->
+      <div id="tabLikedGrid" class="video-works-grid" style="display:none;"></div>
+
+      <!-- Desktop Favorited Sub Tabs -->
+      <div id="favoritedSubTabBar" class="tab-bar" style="display:none;">
+        <button class="tab-item active" data-favsubtab="drama" onclick="switchFavoritedSubTab('drama')">短剧</button>
+        <button class="tab-item" data-favsubtab="videos" onclick="switchFavoritedSubTab('videos')">视频</button>
       </div>
-      <div id="tabFavorited" class="empty-state" style="display:none;">
-        <div class="empty-icon">⭐</div>
-        <p>暂无收藏的短剧</p>
-      </div>
+      <div id="tabFavoritedDrama" class="works-grid" style="display:none;"></div>
+      <div id="tabFavoritedVideos" class="video-works-grid" style="display:none;"></div>
     </div>
   </div>
 
@@ -1072,11 +1074,22 @@
       document.getElementById('watchHistoryVideos').style.display = 'none';
       document.getElementById('watchHistoryActions').style.display = tab === 'watchHistory' ? 'flex' : 'none';
 
-      // Other tabs
-      document.getElementById('tabLiked').style.display = tab === 'liked' ? 'block' : 'none';
-      document.getElementById('tabFavorited').style.display = tab === 'favorited' ? 'block' : 'none';
+      // Liked tab
+      document.getElementById('tabLikedGrid').style.display = tab === 'liked' ? 'grid' : 'none';
+      // Favorited tab
+      document.getElementById('favoritedSubTabBar').style.display = tab === 'favorited' ? 'flex' : 'none';
+      document.getElementById('tabFavoritedDrama').style.display = 'none';
+      document.getElementById('tabFavoritedVideos').style.display = 'none';
+
+      // Hide old empty-state containers (may not exist)
+      var oldLiked = document.getElementById('tabLiked');
+      if (oldLiked) oldLiked.style.display = 'none';
+      var oldFav = document.getElementById('tabFavorited');
+      if (oldFav) oldFav.style.display = 'none';
 
       if (tab === 'published') switchSubTab('drama');
+      if (tab === 'liked') renderLikedGrid();
+      if (tab === 'favorited') { switchFavoritedSubTab('drama'); renderFavoritedDrama(); renderFavoritedVideos(); }
       if (tab === 'watchHistory') { switchWatchHistorySubTab('drama'); renderWatchHistory(); }
     }
 
@@ -1085,12 +1098,20 @@
       document.querySelectorAll('.mtab-item').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.mtab === tab);
       });
+      // Published
       document.getElementById('mobileSubTabs').classList.toggle('visible', tab === 'published');
       document.getElementById('mobileSubTabDrama').style.display = tab === 'published' ? 'grid' : 'none';
       document.getElementById('mobileSubTabWorks').style.display = 'none';
-      document.getElementById('mobileTabLiked').style.display = tab === 'liked' ? 'block' : 'none';
-      document.getElementById('mobileTabFavorited').style.display = tab === 'favorited' ? 'block' : 'none';
+      // Liked
+      document.getElementById('mobileTabLikedGrid').style.display = tab === 'liked' ? 'grid' : 'none';
+      // Favorited
+      document.getElementById('mobileFavoritedSubTabs').style.display = tab === 'favorited' ? 'flex' : 'none';
+      document.getElementById('mobileTabFavoritedDrama').style.display = 'none';
+      document.getElementById('mobileTabFavoritedVideos').style.display = 'none';
+
       if (tab === 'published') switchMobileSubTab('drama');
+      if (tab === 'liked') renderMobileLikedGrid();
+      if (tab === 'favorited') { switchMobileFavoritedSubTab('drama'); renderMobileFavoritedDrama(); renderMobileFavoritedVideos(); }
     }
 
     /* ── Desktop Sub Tab Switching ── */
@@ -1592,13 +1613,37 @@
     //  观看历史数据
     // ============================================================
     const WATCH_HISTORY = [
-      { type: 'drama', title: '凤骨琉璃', cat: '古风', rt: 4.8, ep: '全44集', progress: '3/44集', time: '32分钟前', author: 'JACK', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', cover: 'image/fenggu_cover.jpg', actors: ['苏婉清','李云飞','林梦瑶','上官婉儿'], link: 'drama-detail.html' },
-      { type: 'drama', title: '我卸甲后天下大乱了', cat: '古风', rt: 4.6, ep: '全12集', progress: '7/12集', time: '2小时前', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg', actors: ['李云飞','赵无极','林梦瑶'], link: 'drama-detail.html' },
-      { type: 'drama', title: '丞相府今日开饭', cat: '喜剧', rt: 4.7, ep: '全24集', progress: '12/24集', time: '昨天', author: 'LENS', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', cover: 'image/chengxiangfu_cover.jpg', actors: ['苏婉清','上官婉儿','Luna'], link: 'drama-detail.html' },
-      { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集，每一帧都燃爆了！', cover: 'image/chengxiangfu_cover.jpg', progress: '已看完', time: '昨天 22:30', link: '#' },
-      { type: 'drama', title: '时间管理局', cat: '科幻', rt: 4.5, ep: '全16集', progress: '5/16集', time: '3天前', author: 'NOVA', desc: '穿梭时空的精英特工，守护历史不被篡改。科幻悬疑大作。', cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80', actors: ['李云飞'], link: 'drama-detail.html' },
-      { type: 'drama', title: '金融暗战', cat: '现代', rt: 4.3, ep: '全44集', progress: '22/44集', time: '一周前', author: 'JACK', desc: '华尔街风云变幻，一场没有硝烟的金融暗战悄然上演。', cover: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80', actors: ['赵无极'], link: 'drama-detail.html' },
-      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密，揭开千年谜团。', cover: 'image/cover-pyramid.png', progress: '看完 45%', time: '2周前', link: '#' },
+      { type: 'drama', title: '凤骨琉璃', cat: '古风', rt: 4.8, ep: '全44集', progress: '3/44集', time: '32分钟前', author: 'JACK', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', cover: 'image/fenggu_cover.jpg', actors: ['苏婉清','李云飞','林梦瑶','上官婉儿'] },
+      { type: 'drama', title: '我卸甲后天下大乱了', cat: '古风', rt: 4.6, ep: '全12集', progress: '7/12集', time: '2小时前', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg', actors: ['李云飞','赵无极','林梦瑶'] },
+      { type: 'drama', title: '丞相府今日开饭', cat: '喜剧', rt: 4.7, ep: '全24集', progress: '12/24集', time: '昨天', author: 'LENS', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', cover: 'image/chengxiangfu_cover.jpg', actors: ['苏婉清','上官婉儿','Luna'] },
+      { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集，每一帧都燃爆了！', cover: 'image/chengxiangfu_cover.jpg', progress: '已看完', time: '昨天 22:30' },
+      { type: 'drama', title: '时间管理局', cat: '科幻', rt: 4.5, ep: '全16集', progress: '5/16集', time: '3天前', author: 'NOVA', desc: '穿梭时空的精英特工，守护历史不被篡改。科幻悬疑大作。', cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80', actors: ['李云飞'] },
+      { type: 'drama', title: '金融暗战', cat: '现代', rt: 4.3, ep: '全44集', progress: '22/44集', time: '一周前', author: 'JACK', desc: '华尔街风云变幻，一场没有硝烟的金融暗战悄然上演。', cover: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80', actors: ['赵无极'] },
+      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密，揭开千年谜团。', cover: 'image/cover-pyramid.png', progress: '看完 45%', time: '2周前' },
+    ];
+
+    // ============================================================
+    //  点赞数据（作品维度：短剧分集 + 短视频混合）
+    // ============================================================
+    var LIKED_WORKS_DATA = [
+      { type: 'episode', title: '凤骨琉璃 EP01', author: 'JACK', desc: '一曲凤骨琉璃，半世浮华若梦。', cover: 'image/fenggu_cover.jpg', duration: '10:47', likes: '1.7万' },
+      { type: 'episode', title: '我卸甲后天下大乱了 EP07', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。', cover: 'image/xiejia_cover.jpg', duration: '06:21', likes: '4.1万' },
+      { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集，每一帧都燃爆了！', cover: 'image/chengxiangfu_cover.jpg', duration: '03:04', likes: '2.9万' },
+      { type: 'episode', title: '丞相府今日开饭 EP12', author: 'LENS', desc: '丞相府的厨房里藏着天下大势。', cover: 'image/chengxiangfu_cover.jpg', duration: '09:38', likes: '5.3万' },
+    ];
+
+    // ============================================================
+    //  收藏数据
+    // ============================================================
+    var FAVORITED_DRAMAS = [
+      { type: 'drama', title: '凤骨琉璃', cat: '古风', rt: 4.8, ep: '全44集', author: 'JACK', desc: '一曲凤骨琉璃，半世浮华若梦。权谋与红颜交织的古风传奇。', cover: 'image/fenggu_cover.jpg', actors: ['苏婉清','李云飞','林梦瑶','上官婉儿'] },
+      { type: 'drama', title: '我卸甲后天下大乱了', cat: '古风', rt: 4.6, ep: '全12集', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg', actors: ['李云飞','赵无极','林梦瑶'] },
+      { type: 'drama', title: '隔世追凶', cat: '悬疑', rt: 4.5, ep: '全18集', author: 'NOVA', desc: '跨越三十年的连环悬案。', cover: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=400&q=80', actors: ['林梦瑶','赵无极','李云飞'] },
+    ];
+
+    var FAVORITED_VIDEOS = [
+      { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集。', cover: 'image/chengxiangfu_cover.jpg', duration: '03:04', likes: '2.9万' },
+      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密。', cover: 'image/cover-pyramid.png', duration: '10:47', likes: '1.7万' },
     ];
 
     /* ── Desktop Watch History Sub Tab Switching ── */
@@ -1623,7 +1668,7 @@
             certType: 'community',
             actors: d.actors || [],
             episodes: d.progress,
-            link: d.link
+            link: buildDramaPlayerLink(d)
           };
         });
         grid.innerHTML = renderDramaCardList(cardData);
@@ -1648,7 +1693,7 @@
               title: w.title + ' EP' + (i < 10 ? '0' + i : i),
               desc: w.desc || w.title,
               cover: w.cover,
-              link: w.link,
+              duration: formatDuration(i),
               likes: formatLikes(idxCounter, 10)
             });
           }
@@ -1659,14 +1704,14 @@
             title: w.title,
             desc: w.desc,
             cover: w.cover,
-            link: w.link,
+            duration: formatDuration(1),
             likes: formatLikes(idxCounter, 10)
           });
         }
       });
-      grid.innerHTML = items.map(function(it) {
+      grid.innerHTML = items.map(function(it, idx) {
         var isEpisode = it.type === 'episode';
-        return '<div class="video-card" onclick="location.href=\'' + it.link + '\'">' +
+        return '<div class="video-card" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
           '<div class="vc-cover-wrap">' +
             (isEpisode ? '<div class="vc-episode-label">' + it.title + '</div>' : '') +
             '<img class="vc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
@@ -1683,6 +1728,158 @@
     function renderWatchHistory() {
       renderWatchHistoryDrama();
       renderWatchHistoryVideos();
+    }
+
+    /* ── Favorited Sub Tab Switching ── */
+    function switchFavoritedSubTab(sub) {
+      document.querySelectorAll('#favoritedSubTabBar .tab-item').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.favsubtab === sub);
+      });
+      document.getElementById('tabFavoritedDrama').style.display = sub === 'drama' ? 'grid' : 'none';
+      document.getElementById('tabFavoritedVideos').style.display = sub === 'videos' ? 'grid' : 'none';
+    }
+
+    /* ── Render Liked Grid (mixed works) ── */
+    function renderLikedGrid() {
+      var grid = document.getElementById('tabLikedGrid');
+      if (!grid) return;
+      var items = LIKED_WORKS_DATA.slice();
+      grid.innerHTML = items.map(function(it, idx) {
+        var isEp = it.type === 'episode';
+        return '<div class="video-card" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
+          '<div class="vc-cover-wrap">' +
+            (isEp ? '<div class="vc-episode-label">' + it.title + '</div>' : '') +
+            '<img class="vc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
+            '<span class="vc-likes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' + it.likes + '</span>' +
+            '<span class="vc-duration">' + (it.duration || '') + '</span>' +
+          '</div>' +
+          '<div class="vc-body">' +
+            '<div class="vc-desc">' + (it.desc || '') + '</div>' +
+            '<div class="vc-meta-row"><span class="vc-author">@' + (it.author || '') + '</span></div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    /* ── Render Favorited Drama Grid ── */
+    function renderFavoritedDrama() {
+      var grid = document.getElementById('tabFavoritedDrama');
+      if (!grid) return;
+      if (typeof renderDramaCardList === 'function') {
+        var cardData = FAVORITED_DRAMAS.map(function(d, idx) {
+          return {
+            title: d.title,
+            cover: d.cover,
+            category: d.cat,
+            certType: 'community',
+            actors: d.actors || [],
+            views: formatLikes(idx + 1, 3) + '完播',
+            heat: formatLikes((idx + 1) * 5, 3) + '热度',
+            rating: String(d.rt),
+            badge: d.cat,
+            episodes: d.ep,
+            creator: d.author,
+            link: buildDramaPlayerLink(d)
+          };
+        });
+        grid.innerHTML = renderDramaCardList(cardData);
+      }
+    }
+
+    /* ── Render Favorited Videos Grid ── */
+    function renderFavoritedVideos() {
+      var grid = document.getElementById('tabFavoritedVideos');
+      if (!grid) return;
+      var items = FAVORITED_VIDEOS.slice();
+      grid.innerHTML = items.map(function(it, idx) {
+        return '<div class="video-card" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
+          '<div class="vc-cover-wrap">' +
+            '<img class="vc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
+            '<span class="vc-likes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' + it.likes + '</span>' +
+            '<span class="vc-duration">' + (it.duration || '') + '</span>' +
+          '</div>' +
+          '<div class="vc-body">' +
+            '<div class="vc-desc">' + (it.desc || '') + '</div>' +
+            '<div class="vc-meta-row"><span class="vc-author">@' + (it.author || '') + '</span></div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    /* ── Mobile Favorited Sub Tab Switching ── */
+    function switchMobileFavoritedSubTab(sub) {
+      document.querySelectorAll('#mobileFavoritedSubTabs .msubtab-item').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.mfavsubtab === sub);
+      });
+      document.getElementById('mobileTabFavoritedDrama').style.display = sub === 'drama' ? 'grid' : 'none';
+      document.getElementById('mobileTabFavoritedVideos').style.display = sub === 'videos' ? 'grid' : 'none';
+    }
+
+    /* ── Render Mobile Liked Grid ── */
+    function renderMobileLikedGrid() {
+      var grid = document.getElementById('mobileTabLikedGrid');
+      if (!grid) return;
+      var items = LIKED_WORKS_DATA.slice();
+      grid.innerHTML = items.map(function(it, idx) {
+        var isEp = it.type === 'episode';
+        return '<div class="mvc" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
+          '<div class="mvc-cover-wrap">' +
+            (isEp ? '<div class="mvc-episode-label">' + it.title + '</div>' : '') +
+            '<img class="mvc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
+            '<span class="mvc-likes"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' + it.likes + '</span>' +
+            '<span class="mvc-duration">' + (it.duration || '') + '</span>' +
+          '</div>' +
+          '<div class="mvc-body">' +
+            '<div class="mvc-desc">' + (it.desc || '') + '</div>' +
+            '<div class="mvc-author">@' + (it.author || '') + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    /* ── Render Mobile Favorited Drama ── */
+    function renderMobileFavoritedDrama() {
+      var grid = document.getElementById('mobileTabFavoritedDrama');
+      if (!grid) return;
+      if (typeof renderDramaCardList === 'function') {
+        var cardData = FAVORITED_DRAMAS.map(function(d, idx) {
+          return {
+            title: d.title,
+            cover: d.cover,
+            category: d.cat,
+            certType: 'community',
+            actors: d.actors || [],
+            views: formatLikes(idx + 1, 3) + '完播',
+            heat: formatLikes((idx + 1) * 5, 3) + '热度',
+            rating: String(d.rt),
+            badge: d.cat,
+            episodes: d.ep,
+            creator: d.author,
+            link: buildDramaPlayerLink(d)
+          };
+        });
+        grid.innerHTML = renderDramaCardList(cardData);
+      }
+    }
+
+    /* ── Render Mobile Favorited Videos ── */
+    function renderMobileFavoritedVideos() {
+      var grid = document.getElementById('mobileTabFavoritedVideos');
+      if (!grid) return;
+      var items = FAVORITED_VIDEOS.slice();
+      grid.innerHTML = items.map(function(it, idx) {
+        return '<div class="mvc" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
+          '<div class="mvc-cover-wrap">' +
+            '<img class="mvc-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" />' +
+            '<span class="mvc-likes"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' + it.likes + '</span>' +
+            '<span class="mvc-duration">' + (it.duration || '') + '</span>' +
+          '</div>' +
+          '<div class="mvc-body">' +
+            '<div class="mvc-desc">' + (it.desc || '') + '</div>' +
+            '<div class="mvc-author">@' + (it.author || '') + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
     }
 
     /* ── Confirm Modal Helpers ── */

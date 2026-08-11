@@ -220,31 +220,44 @@
       }).join('');
     }
 
+    function buildWorksModeLink(worksList, clickedIndex) {
+      var items = worksList.map(function(it) {
+        return {
+          type: it.type,
+          title: it.title,
+          author: it.author || '',
+          desc: it.desc || '',
+          cover: it.cover || '',
+          duration: it.duration || '',
+          likes: it.likes || ''
+        };
+      });
+      return 'drama-player.html?mode=works&index=' + clickedIndex +
+        '&works=' + encodeURIComponent(JSON.stringify(items));
+    }
+
     function renderVideoGrid() {
       var grid = document.getElementById('videoGrid');
-      var videos = WATCH_HISTORY.filter(function(w) { return w.type === 'video'; });
-      // Also include drama episodes as individual cards
       var items = [];
       WATCH_HISTORY.forEach(function(w) {
         if (w.type === 'drama') {
           var epCount = parseInt((w.progress.match(/\d+\//) || ['3/'])[0].replace('/','')) || 3;
           for (var i = 1; i <= Math.min(epCount, 2); i++) {
             items.push({
-              id: 'ep_' + w.title + '_' + i,
               type: 'episode',
               title: w.title + ' EP' + (i < 10 ? '0' + i : i),
+              author: '',
+              desc: w.desc || '',
               cover: w.cover,
-              likes: (Math.floor((i * 1.2 + 0.5) * 10000) / 10000).toFixed(1) + '万',
-              dramaTitle: w.title,
-              total: w.total,
-              desc: w.desc
+              likes: (Math.floor((i * 1.2 + 0.5) * 10000) / 10000).toFixed(1) + '万'
             });
           }
         } else {
           items.push({
-            id: 'v_' + w.title,
             type: 'video',
             title: w.title,
+            author: '',
+            desc: w.desc || '',
             cover: w.cover,
             likes: w.likes || '1.2万'
           });
@@ -254,18 +267,9 @@
         grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🎬</div><p>暂无视频观看记录</p></div>';
         return;
       }
-      grid.innerHTML = items.map(function(it) {
-        var url;
-        if (it.type === 'episode') {
-          url = 'drama-player.html?title=' + encodeURIComponent(it.dramaTitle) +
-            '&total=' + it.total +
-            '&cover=' + encodeURIComponent(it.cover) +
-            '&desc=' + encodeURIComponent(it.desc || '');
-        } else {
-          url = '#';
-        }
+      grid.innerHTML = items.map(function(it, idx) {
         var isEpisode = it.type === 'episode';
-        return '<div class="video-card" onclick="' + (url !== '#' ? 'location.href=\'' + url + '\'' : 'return false') + '">' +
+        return '<div class="video-card" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'">' +
           '<div class="video-cover-wrap">' +
             (isEpisode ? '<div class="vc-episode-label">' + it.title + '</div>' : '') +
             '<img class="video-cover" src="' + it.cover + '" alt="' + it.title + '" loading="lazy" onerror="this.style.background=\'#eef1f5\'">' +
