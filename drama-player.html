@@ -1035,8 +1035,8 @@ if(!isPlayerMode){
     if(!playInterval)startPlayProgress();
   }
 
-  function nextSlide(){if(idx>=total-1){showToast('— 已经是最后一集啦 —');return}animFlag=false;goTo(idx+1,true)}
-  function prevSlide(){if(idx<=0){showToast('— 已是第一集 —');return}animFlag=false;goTo(idx-1,true)}
+  function nextSlide(){if(idx>=total-1){showToast(isWorksMode?'— 已经是最后一个 —':'— 已经是最后一集啦 —');return}animFlag=false;goTo(idx+1,true)}
+  function prevSlide(){if(idx<=0){showToast(isWorksMode?'— 已经是第一个 —':'— 已是第一集 —');return}animFlag=false;goTo(idx-1,true)}
   window.dtNext=nextSlide;window.dtPrev=prevSlide;
   window.dtEpBtn=openEpDrawer;window.dtCmtBtn=function(){openDrawer(idx)};
   window.dtEpSelect=function(){openDrawer(idx);setTimeout(function(){var t=document.querySelector('#cmDrawer .cm-tab[data-cmtab="drama"]');if(t)t.click()},150)};

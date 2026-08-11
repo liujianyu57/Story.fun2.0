@@ -248,12 +248,28 @@ function searchActors(q) {
 }
 
 function searchVideos(q) {
-  var videos = DATA.filter(function(d){ return d.type === 'video'; });
-  if (!q) return videos;
-  return videos.filter(function(d){
-    return match(d.title, q) || match(d.author, q) || (d.desc && match(d.desc, q));
-  });
-}
+      var videos = DATA.filter(function(d){ return d.type === 'video'; });
+      if (!q) return videos;
+      return videos.filter(function(d){
+        return match(d.title, q) || match(d.author, q) || (d.desc && match(d.desc, q));
+      });
+    }
+
+    function buildWorksModeLink(worksList, clickedIndex) {
+      var items = worksList.map(function(it) {
+        return {
+          type: it.type || 'video',
+          title: it.title || '',
+          author: it.author || '',
+          desc: it.desc || '',
+          cover: it.cover || '',
+          duration: it.duration || '',
+          likes: it.likes || ''
+        };
+      });
+      return 'drama-player.html?mode=works&index=' + clickedIndex +
+        '&works=' + encodeURIComponent(JSON.stringify(items));
+    }
 
 var USER_PROFILES = {
   'JACK': { bio: '古风短剧创作者，专注于权谋与情感题材。', followers: '12.8万', likes: '56.3万', cover: 'image/fenggu_cover.jpg' },
@@ -328,8 +344,19 @@ function renderTab(tab) {
   } else if (tab === 'video') {
     var vs = searchVideos(query);
     if (vs.length) {
-      html = '<div class="video-grid">' + vs.map(function(d){
-        return '<div class="video-card" onclick="location.href=\'recommend.html\'"><div class="vc-cover-wrap"><img class="vc-cover" src="'+d.cover+'" alt=""><span class="vc-likes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'+d.likes+'</span><span class="vc-duration">'+d.duration+'</span></div><div class="vc-body"><div class="vc-desc">'+d.desc+'</div><div class="vc-meta-row"><span class="vc-author">@'+d.author+'</span><span class="vc-published">'+d.published+'</span></div></div></div>';
+      var items = vs.map(function(d) {
+        return {
+          type: 'video',
+          title: d.title,
+          author: d.author || '',
+          desc: d.desc || '',
+          cover: d.cover || '',
+          duration: d.duration || '',
+          likes: d.likes || ''
+        };
+      });
+      html = '<div class="video-grid">' + vs.map(function(d, idx) {
+        return '<div class="video-card" onclick="location.href=\'' + buildWorksModeLink(items, idx) + '\'"><div class="vc-cover-wrap"><img class="vc-cover" src="'+d.cover+'" alt=""><span class="vc-likes"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'+d.likes+'</span><span class="vc-duration">'+d.duration+'</span></div><div class="vc-body"><div class="vc-desc">'+d.desc+'</div><div class="vc-meta-row"><span class="vc-author">@'+d.author+'</span><span class="vc-published">'+d.published+'</span></div></div></div>';
       }).join('') + '</div>';
     }
     emptyState.classList.toggle('show', vs.length === 0);
