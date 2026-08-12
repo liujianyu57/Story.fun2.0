@@ -571,7 +571,8 @@
     <div class="stat-tooltip-overlay" id="ipPowerModal" style="z-index:10000;">
       <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;">
         <h3 id="ipPowerModalTitle" style="font-size:1.15rem;margin:0 0 4px;">片酬详情</h3>
-        <div id="ipPowerModalName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
+        <div id="ipPowerModalHint" style="margin:4px 0 18px;">—</div>
+        <div id="ipPowerModalName" style="display:none;text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
         <div id="ipPowerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;"></div>
         <button class="button-secondary" id="ipPowerModalClose" style="width:100%;">关闭</button>
       </div>
@@ -599,8 +600,8 @@
     <div class="stat-tooltip-overlay" id="upgradeTooltip" style="z-index:10002;">
       <div class="stat-tooltip-box" style="max-width:420px;padding:24px 20px 20px;text-align:left;">
         <h3 style="text-align:center;margin:0 0 4px;font-size:1.15rem;">片酬升级规则</h3>
-        <div id="upgradeModalCurrent" style="text-align:center;margin:0 0 16px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
-        <div id="upgradeModalDesc" style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:-12px;margin-bottom:12px;line-height:1.5;">完播数据为角色 IP 参演所有短剧的完播次数之和，反映其整体市场表现。</div>
+        <div id="upgradeModalCurrent" style="margin:0 0 16px;">—</div>
+        <div id="upgradeModalDesc" style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:-12px;margin-bottom:12px;line-height:1.5;">完播数据为角色 IP 参演所有短剧的完播次数之和。</div>
         <div id="upgradeTable" style="display:flex;flex-direction:column;gap:0;margin-bottom:16px;"></div>
         <button class="button-secondary" id="upgradeModalClose" style="width:100%;">知道了</button>
       </div>
@@ -1078,7 +1079,12 @@
       var priceCoeff = computePriceCoefficient(initPrice);
       var ipPower = priceCoeff * heat;
       document.getElementById('ipPowerModalTitle').textContent = name + ' · 片酬';
-      document.getElementById('ipPowerModalName').textContent = '片酬 = 价格系数 × 热度系数 × Trust1';
+      document.getElementById('ipPowerModalHint').innerHTML =
+        '<div style="background:var(--accent-soft);border-radius:14px;padding:16px 12px 12px;text-align:center;line-height:1.7;">' +
+          '<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">签约即可获得 Lv.1 角色</div>' +
+          '<div style="font-size:0.85rem;color:var(--text);font-weight:500;margin-bottom:6px;">Lv.1 片酬 = 价格系数 × 热度系数 × Trust1</div>' +
+          '<div style="font-size:1.6rem;font-weight:800;color:var(--accent);letter-spacing:-0.02em;">= ' + ipPower.toFixed(2) + '</div>' +
+        '</div>';
       document.getElementById('ipPowerModalBreakdown').innerHTML =
         '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;">' +
@@ -1124,12 +1130,17 @@
       for (var i = UPGRADE_TABLE.length - 1; i >= 0; i--) {
         if (viewsNum >= UPGRADE_TABLE[i].threshold) { maxLevel = UPGRADE_TABLE[i].level; break; }
       }
-      upgradeModalCurrent.textContent = '当前完播：' + viewsStr + ' → 可升至 Lv.' + maxLevel;
+      upgradeModalCurrent.innerHTML =
+        '<div style="background:var(--accent-soft);border-radius:14px;padding:16px 12px 12px;text-align:center;line-height:1.7;">' +
+          '<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;">该IP的完播数据可支持角色升级至</div>' +
+          '<div style="font-size:1.6rem;font-weight:800;color:var(--accent);letter-spacing:-0.02em;margin-bottom:4px;">Lv.' + maxLevel + '</div>' +
+          '<div style="font-size:0.78rem;color:var(--text-muted);">获得更高片酬</div>' +
+        '</div>';
       upgradeTable.innerHTML = UPGRADE_TABLE.map(function(r) {
         var isActive = r.level === maxLevel;
         var bg = isActive ? 'var(--accent-soft)' : 'transparent';
         return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:' + bg + ';margin-bottom:2px;">' +
-          '<span style="font-weight:600;font-size:0.85rem;color:var(--text);">' + (isActive ? '✓ ' : '') + 'Lv.' + r.level + '</span>' +
+          '<span style="font-weight:600;font-size:0.85rem;color:var(--text);">Lv.' + r.level + '</span>' +
           '<span style="font-size:0.78rem;color:var(--text-muted);">' + formatThreshold(r.threshold) + ' 完播</span>' +
           '<span style="font-weight:600;font-size:0.85rem;color:var(--accent);">片酬 ×' + r.multiplier.toFixed(1) + '</span>' +
         '</div>';
