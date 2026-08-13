@@ -43,21 +43,24 @@
       letter-spacing: -0.015em;
     }
 
-    /* ===== Metrics ===== */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    @media (max-width: 640px) { .metrics-grid { grid-template-columns: 1fr; } }
-    .metric-card {
+    /* ===== Grouped List（苹果简约风） ===== */
+    .group {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      box-shadow: var(--shadow-sm);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
     }
+    .group-label {
+      padding: 0 20px 6px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+    }
+    .vertical-divider { width: 1px; background: var(--border); flex-shrink: 0; }
+
+    /* ===== 概览：指标（单组 + 竖线分隔） ===== */
+    .metric-cell { padding: 18px 20px; }
     .metric-label {
       font-size: 0.8rem;
       font-weight: 500;
@@ -66,40 +69,16 @@
       letter-spacing: 0.01em;
     }
     .metric-value {
-      font-size: 1.65rem;
+      font-size: 1.6rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.15;
     }
     .metric-value.blue  { color: #3b82f6; }
     .metric-value.green { color: var(--story-green); }
-    .metric-value.gold  { color: var(--gold); }
-    .metric-sub {
-      font-size: 0.78rem;
-      color: var(--text-tertiary);
-      margin-top: 4px;
-    }
+    .metric-value .unit { font-size: 0.72rem; font-weight: 500; color: var(--text-tertiary); }
 
-    /* ===== Records Link + Prize Pool ===== */
-    .records-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 20px;
-      margin-bottom: 20px;
-      background: var(--accent-soft);
-      border: 1px solid rgba(0,179,136,0.18);
-      border-radius: var(--radius-sm);
-      color: var(--accent);
-      font-size: 0.88rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-    .records-link:hover {
-      background: rgba(0,179,136,0.15);
-      border-color: var(--accent);
-    }
+    /* ===== 邀请记录（并入白底分组一行） ===== */
     .pool-wrapper {
       display: flex;
       flex-direction: column;
@@ -123,31 +102,27 @@
       font-weight: 600;
       color: var(--text-tertiary);
     }
-    .pool-divider {
-      width: 1px;
-      height: 36px;
-      background: rgba(0,179,136,0.18);
-      flex-shrink: 0;
-    }
     .records-cta {
       display: flex;
       align-items: center;
       gap: 8px;
       cursor: pointer;
       flex-shrink: 0;
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: opacity 0.2s ease;
     }
     .records-cta:hover {
       opacity: 0.75;
     }
 
-    /* ===== Invite Link Card ===== */
+    /* ===== 邀请链接（白底分组） ===== */
     .invite-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 24px;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
     }
     .invite-card h2 {
       margin: 0 0 4px;
@@ -167,7 +142,6 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 4px 4px 4px 16px;
-      margin-bottom: 14px;
     }
     .invite-link-row .link-text {
       flex: 1;
@@ -197,20 +171,18 @@
     .invite-link-row .copy-btn:hover { opacity: 0.85; }
     .invite-link-row .copy-btn:active { transform: scale(0.97); }
 
-    /* ===== Section ===== */
+    /* ===== Section（白底分组） ===== */
     .section-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow-sm);
+      border-radius: 16px;
+      overflow: hidden;
       margin-bottom: 20px;
     }
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      padding: 20px 20px 0;
     }
     .section-header h3 {
       margin: 0;
@@ -218,73 +190,44 @@
       font-weight: 600;
     }
 
-    /* ===== Rules ===== */
-    .rules-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    @media (max-width: 720px) { .rules-grid { grid-template-columns: 1fr; } }
-    .rule-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 18px 20px;
-    }
-    .rule-card .rule-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--text-tertiary);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .rule-card .rule-title {
-      font-weight: 600;
-      font-size: 0.92rem;
-      margin-bottom: 6px;
-    }
-    .rule-card .rule-desc {
-      font-size: 0.83rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
+    /* ===== 返佣比例 ===== */
     .level-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-top: 8px;
     }
     .level-row {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-light);
     }
+    .level-row:last-child { border-bottom: none; }
     .level-row .level-badge {
-      width: 52px;
       flex-shrink: 0;
-      padding: 3px 0;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-align: center;
-      letter-spacing: 0.02em;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
     }
-    .level-row .level-badge.lv1 { background: rgba(59,130,246,0.10); color: #3b82f6; }
-    .level-row .level-badge.lv2 { background: rgba(0,179,136,0.10); color: var(--accent); }
-    .level-row .level-badge.lv3 { background: rgba(245,176,66,0.12); color: #d4942a; }
-    .level-row .level-badge.lv4 { background: rgba(244,91,105,0.10); color: #d4505e; }
-    .level-row .level-badge.lv5 { background: rgba(139,92,246,0.10); color: #7c3aed; }
+    .level-row .level-badge.lv1 { color: #3b82f6; }
+    .level-row .level-badge.lv2 { color: var(--accent); }
+    .level-row .level-badge.lv3 { color: #d4942a; }
+    .level-row .level-badge.lv4 { color: #d4505e; }
+    .level-row .level-badge.lv5 { color: #7c3aed; }
     .level-row .level-pct {
       font-size: 0.95rem;
       font-weight: 700;
       color: var(--text);
-      min-width: 48px;
+      min-width: 44px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
     }
     .level-row .level-desc {
+      flex: 1;
+      min-width: 0;
       font-size: 0.8rem;
       color: var(--text-secondary);
+      text-align: left;
     }
 
     /* ===== Invited Users Modal ===== */
@@ -476,6 +419,46 @@
     }
     .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+    /* ===== 邀请规则 Q&A ===== */
+    .qa-item {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .qa-item:last-child { border-bottom: none; }
+    .qa-question {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .qa-question:hover { background: rgba(0,0,0,0.03); }
+    .qa-question .qa-arrow {
+      display: inline-block;
+      width: 16px;
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+    .qa-item.open .qa-question .qa-arrow { transform: rotate(90deg); }
+    .qa-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .qa-item.open .qa-answer { max-height: 600px; }
+    .qa-answer-inner {
+      padding: 0 20px 14px;
+      font-size: 0.84rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
   </style>
 </head>
 <body>
@@ -486,25 +469,25 @@
       <h1>邀请</h1>
     </div>
 
-    <!-- ===== Metrics ===== -->
-    <div class="metrics-grid">
-      <div class="metric-card" style="cursor: pointer;" onclick="openInviteesModal()">
+    <!-- ===== 概览指标（白底分组 + 竖线） ===== -->
+    <div class="group" style="display: flex;">
+      <div class="metric-cell" style="flex: 1; cursor: pointer;" onclick="openInviteesModal()">
         <div class="metric-label" style="display: flex; align-items: center; gap: 6px;">累计邀请人数 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b8d98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
         <div class="metric-value blue" id="mInviteCount">6</div>
       </div>
-      <div class="metric-card">
-        <div class="metric-label">累计邀请收益 STORY</div>
+      <div class="vertical-divider"></div>
+      <div class="metric-cell" style="flex: 1;">
+        <div class="metric-label">累计邀请收益 <span style="opacity:.7">STORY</span></div>
         <div class="metric-value green" id="mTotalCommission">12,500</div>
       </div>
     </div>
 
-    <!-- ===== Prize Pool + Records Link ===== -->
-    <div class="records-link">
+    <!-- ===== 本周邀请奖池 + 收益记录（白底分组一行） ===== -->
+    <div class="group" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;">
       <div class="pool-wrapper">
         <div class="pool-label">本周邀请奖池</div>
         <div class="pool-value" id="weeklyPool">12,500 <span class="pool-unit">STORY</span></div>
       </div>
-      <div class="pool-divider"></div>
       <div class="records-cta" onclick="goToRewards()">
         <span>查看邀请收益记录</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -524,64 +507,69 @@
       </div>
     </div>
 
-    <!-- ===== Rules ===== -->
+    <!-- ===== 返佣比例（常驻直排） ===== -->
+    <div class="section-card">
+      <div class="section-header">
+        <h3>返佣比例</h3>
+      </div>
+      <div class="level-list">
+        <div class="level-row">
+          <span class="level-badge lv1">Lv 1</span>
+          <span class="level-desc">你直接邀请的好友</span>
+          <span class="level-pct">10%</span>
+        </div>
+        <div class="level-row">
+          <span class="level-badge lv2">Lv 2</span>
+          <span class="level-desc">好友的好友</span>
+          <span class="level-pct">5%</span>
+        </div>
+        <div class="level-row">
+          <span class="level-badge lv3">Lv 3</span>
+          <span class="level-desc">三层间接</span>
+          <span class="level-pct">3%</span>
+        </div>
+        <div class="level-row">
+          <span class="level-badge lv4">Lv 4</span>
+          <span class="level-desc">四层间接</span>
+          <span class="level-pct">2%</span>
+        </div>
+        <div class="level-row">
+          <span class="level-badge lv5">Lv 5</span>
+          <span class="level-desc">五层间接</span>
+          <span class="level-pct">1%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 邀请规则 Q&A ===== -->
     <div class="section-card">
       <div class="section-header">
         <h3>邀请规则</h3>
       </div>
-      <div class="rules-grid">
-        <div class="rule-card">
-          <div class="rule-label">奖励来源</div>
-          <div class="rule-title">独立邀请子池</div>
-          <div class="rule-desc">
-            邀请奖励来自 NFT 挖矿池中独立的邀请子池（占总挖矿池 25%），不从被邀请人收益中扣除。邀请子池有独立周硬顶，触顶后按份额等比缩减。
-          </div>
-        </div>
-        <div class="rule-card">
-          <div class="rule-label">计算基数</div>
-          <div class="rule-title">按实得 STORY</div>
-          <div class="rule-desc">
-            奖励按被邀请人本期实际到手的 STORY 计算，不按名义产出计算。被邀请人自己挖到的 STORY 不受影响，邀请奖励是额外发放。
-          </div>
-        </div>
-        <div class="rule-card">
-          <div class="rule-label">层级结构</div>
-          <div class="rule-title">5 级递减</div>
-          <div class="level-list">
-            <div class="level-row">
-              <span class="level-badge lv1">Lv 1</span>
-              <span class="level-pct">10%</span>
-              <span class="level-desc">一级直接邀请</span>
-            </div>
-            <div class="level-row">
-              <span class="level-badge lv2">Lv 2</span>
-              <span class="level-pct">5%</span>
-              <span class="level-desc">二级间接邀请</span>
-            </div>
-            <div class="level-row">
-              <span class="level-badge lv3">Lv 3</span>
-              <span class="level-pct">3%</span>
-              <span class="level-desc">三级间接邀请</span>
-            </div>
-            <div class="level-row">
-              <span class="level-badge lv4">Lv 4</span>
-              <span class="level-pct">2%</span>
-              <span class="level-desc">四级间接邀请</span>
-            </div>
-            <div class="level-row">
-              <span class="level-badge lv5">Lv 5</span>
-              <span class="level-pct">1%</span>
-              <span class="level-desc">五级间接邀请</span>
-            </div>
-          </div>
-        </div>
-        <div class="rule-card">
-          <div class="rule-label">有效条件</div>
-          <div class="rule-title">有效下线才能产生奖励</div>
-          <div class="rule-desc">
-            被邀请人实际挖到过 STORY，或发生过 USDC 付费，才计为有效下线。空号注册不产生奖励。邀请关系一经建立不可更改。
-          </div>
-        </div>
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>邀请奖励来自哪里？</div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          邀请奖励来自挖矿池中独立的<b>邀请子池</b>（占总挖矿池 25%），不从被邀请人收益中扣除。邀请子池有独立周硬顶，触顶后按份额等比缩减。
+        </div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>邀请奖励怎么计算？</div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          你获得的返佣 = 有效好友的<b>实际产出 STORY</b> × <b>返佣比例</b><br><br>
+          例如：你的好友本周实得 1000 STORY，你获得 1000 × 10% = <b>100 STORY</b>。
+        </div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>邀请奖励什么时候结算？</div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          邀请奖励与经纪人页面的片酬在同一周期统一结算：<b>每周一 00:00 (UTC) 截止统计</b>，结算后可前往收益页领取。
+        </div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>有效邀请用户怎么定义？</div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          被邀请人在经纪人页面<b>实际获得过 STORY</b>，或进行过<b>付费</b>，才计为有效下线。邀请关系一经建立不可更改。
+        </div></div>
       </div>
     </div>
 
