@@ -1678,8 +1678,8 @@
         <button class="mob-more-btn" onclick="toggleMobMore(event)">···</button>
         <div class="mob-more-menu" id="mobMoreMenu">
           <a onclick="toggleMobMore();openRulesModal()">规则</a>
-          <a onclick="toggleMobMore();openActualOutputModal()">片酬与奖池</a>
-          <a href="rewards.html">每周结算记录</a>
+          <a onclick="toggleMobMore();openActualOutputModal()">奖池</a>
+          <a href="rewards.html">结算记录</a>
         </div>
       </div>
     </div>
@@ -1741,7 +1741,7 @@
           <div class="pool-list" id="poolList"></div>
         </div>
         <div style="margin-top:10px;padding:0 4px;">
-          <button class="pool-open-all" onclick="openFullPicker()">查看全部</button>
+          <button class="pool-open-all" onclick="openFullPicker()">全部</button>
         </div>
       </section>
 
@@ -1756,8 +1756,8 @@
 
     <div class="studio-links">
       <a onclick="openRulesModal()">规则</a>
-      <a onclick="openActualOutputModal()">片酬与奖池</a>
-      <a href="rewards.html">每周结算记录</a>
+      <a onclick="openActualOutputModal()">奖池</a>
+      <a href="rewards.html">结算记录</a>
     </div>
 
     <!-- ===== 空状态（无角色） ===== -->
@@ -1890,13 +1890,13 @@
 
   <!-- ===== 片酬与奖池说明弹窗 ===== -->
   <div class="modal-overlay" id="actualOutputModal">
-    <div class="modal-card" style="max-width:440px;">
-      <h2>片酬与奖池</h2>
+    <div class="modal-card" style="max-width:440px;position:relative;">
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeActualOutputModal()">✕</button>
+      <h2>奖池</h2>
       <!-- 总奖池 -->
       <div style="background:var(--accent-soft);border:1px solid rgba(0,179,136,0.15);border-radius:16px;padding:18px 14px;margin-bottom:14px;text-align:center;">
         <div style="font-size:0.72rem;color:var(--text-sub);margin-bottom:4px;font-weight:600;">本周总奖池</div>
-        <div style="font-size:2rem;font-weight:800;color:var(--accent);line-height:1;" id="actualOutputPoolTotal">2,115,385</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">STORY</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--accent);line-height:1;" id="actualOutputPoolTotal">2,115,385 STORY</div>
         <div style="font-size:0.7rem;color:var(--text-muted);margin-top:6px;">周衰减系数 ×0.99572</div>
       </div>
       <!-- 奖池分配双卡 -->
@@ -1924,16 +1924,10 @@
           </div>
           <div>
             <span style="font-weight:600;color:var(--text);">单地址周封顶：</span><br>
-            <span style="padding-left:8px;color:#ef4444;">单个地址每周最多领取当周硬顶的 5%</span>
+            <span style="padding-left:8px;">单个地址每周最多领取当周硬顶的 5%</span>
           </div>
         </div>
       </div>
-      <!-- 公式 -->
-      <div style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">
-        每周实际发放 = min(全网名义产出, 当周硬顶)<br>
-        未发出的剩余额度不发放、不回流、不补分
-      </div>
-      <button class="modal-btn cancel" onclick="closeActualOutputModal()">关闭</button>
     </div>
   </div>
 
@@ -2005,11 +1999,11 @@
 
   <!-- ===== 片酬详情弹窗 ===== -->
   <div class="modal-overlay" id="actorPowerModal">
-    <div class="modal-card" style="max-width:420px;padding:24px 20px 20px;">
-      <h2 style="font-size:1.15rem;margin:0 0 4px;">角色片酬详情</h2>
-      <div id="powerModalActorName" style="text-align:center;margin:0 0 18px;color:var(--accent);font-size:0.82rem;font-weight:600;background:var(--accent-soft);border-radius:8px;padding:6px 12px;">—</div>
+    <div class="modal-card" style="max-width:420px;padding:24px 20px 20px;position:relative;">
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeActorPowerModal()">✕</button>
+      <h2 style="font-size:1.15rem;margin:0 0 4px;">角色片酬</h2>
+      <div id="powerModalActorName" style="text-align:center;margin:0 0 8px;color:var(--text-muted);font-size:0.78rem;">—</div>
       <div id="powerModalBreakdown" style="display:flex;flex-direction:column;gap:0;margin-bottom:18px;text-align:left;"></div>
-      <button class="modal-btn cancel" onclick="closeActorPowerModal()" style="width:100%;">关闭</button>
     </div>
   </div>
 
@@ -2058,19 +2052,20 @@
 
   <!-- ===== 演出规则说明弹窗 ===== -->
   <div class="modal-overlay" id="rulesModal">
-    <div class="modal-card" style="max-width:560px;padding:24px;">
+    <div class="modal-card" style="max-width:560px;padding:24px;position:relative;">
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeRulesModal()">✕</button>
       <h2>经营玩法</h2>
       <div class="rules-modal-scroll">
 
         <div class="rules-section" style="background:var(--bg);border-radius:12px;padding:14px 16px;">
-          <p style="margin:0;font-size:0.85rem;line-height:1.8;">签约角色、安排演出，就能自动获得 STORY；给角色升级咖位，单小时片酬成倍涨。每周一 00:00 (UTC) 结算，前往收益页领取。体力耗尽前及时补充，产出不间断。</p>
+          <p style="margin:0;font-size:0.85rem;line-height:1.8;">签约角色、安排演出，每小时获得 STORY。<br>升级角色，成倍提升每小时片酬。<br>体力耗尽时及时补充，产出不间断。<br>每周一 00:00 (UTC) 开始结算本期收益，前往收益页领取。</p>
         </div>
 
         <!-- 怎么玩 -->
         <div class="rules-section">
           <div class="qa-item">
             <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>怎么让角色开始赚钱？</div>
-            <div class="qa-answer"><div class="qa-answer-inner">安排候场角色演出，每小时自动产生 STORY。最多同时 5 位，同 IP 可以多张卡一起演。演出中每小时消耗 1 点体力，体力 > 0 就一直产出。</div></div>
+            <div class="qa-answer"><div class="qa-answer-inner">安排候场角色演出，每小时消耗1点体力并根据片酬产出 STORY。<br>产出的STORY在每期结束时统一结算，结算后可前往收益页面领取。</div></div>
           </div>
 
           <div class="qa-item">
@@ -2082,8 +2077,6 @@
               <div>• <strong>休息</strong>：每小时自动恢复 1 点体力，但暂停片酬</div>
               <div>• <strong>补充体力（付费）</strong>：瞬间回满 168，立即恢复产出</div>
             </div>
-            <p style="font-size:0.82rem;color:var(--text-muted);margin:4px 0 8px;">体力只看"有没有"：168 点和 1 点体力的每小时产出一样多。只能一键加满，价格只看咖位，越靠近 0 补充越划算。</p>
-            <div style="background:rgba(0,0,0,0.03);border-radius:8px;padding:8px 12px;font-size:0.82rem;color:var(--text-muted);line-height:1.7;">一键加满费用：Lv1 群演 10 · Lv2 配角 20 · Lv3 主角 50 · Lv4 巨星 130 · Lv5 顶流 320（USDC）</div>
             </div></div>
           </div>
 
@@ -2095,22 +2088,20 @@
             <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>片酬怎么算？</div>
             <div class="qa-answer"><div class="qa-answer-inner">
             <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 6px;">咖位越高、角色越贵、短剧越火，每小时片酬就越高。</p>
-            <div class="rules-formula" style="text-align:center;font-size:0.88rem;">单卡小时片酬 = 角色算力 × 1 STORY</div>
             <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
-              <div>• <strong>角色算力</strong> = IP算力 × 片酬系数 × CP系数</div>
-              <div>• <strong>IP 片酬</strong> = 价格系数 × 热度系数</div>
+              <div>• <strong>角色片酬</strong> = Lv.1 角色片酬 × 片酬系数</div>
+              <div>• <strong>Lv.1 角色片酬</strong> = 价格系数 × 热度系数</div>
             </div>
             <p style="font-weight:600;font-size:0.82rem;margin:10px 0 4px;">系数说明</p>
             <div style="display:flex;flex-direction:column;gap:6px;">
-              <div>• <strong>片酬系数</strong>（咖位）：Lv1=1 · Lv2=3 · Lv3=9 · Lv4=27 · Lv5=81</div>
+              <div>• <strong>片酬系数</strong>：Lv1=1 · Lv2=3 · Lv3=9 · Lv4=27 · Lv5=81</div>
               <div>• <strong>价格系数</strong>（发行价 P0）：
                 <div style="background:rgba(0,0,0,0.03);border-radius:8px;padding:8px 12px;font-size:0.82rem;color:var(--text-muted);line-height:1.7;margin-top:4px;">
                   P0 ≤ 100U → 系数 = P0 ÷ 100（线性增长）<br>
                   P0 > 100U → 系数 = 1.6 × (P0/100)<sup>1.3</sup> / [(P0/100)<sup>1.3</sup> + 0.6]（渐近上限 1.6）
                 </div>
               </div>
-              <div>• <strong>热度系数</strong>（近期剧表现）：完播、点赞、收藏、评论越多，热度越高</div>
-              <div>• <strong>CP 系数</strong>：暂未开放，默认 1</div>
+              <div>• <strong>热度系数</strong>：角色IP参演短剧的完播、点赞、收藏、评分越多，热度越高</div>
             </div>
             </div></div>
           </div>
@@ -2140,12 +2131,12 @@
           <div class="qa-item">
             <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>怎么升级角色？</div>
             <div class="qa-answer"><div class="qa-answer-inner">
-            <p style="font-size:0.84rem;line-height:1.7;margin:0 0 8px;color:var(--text-muted);">升级 = <strong style="color:var(--text);">消耗 2 张</strong>同角色同等级分身 + 支付合成费 + 累计完播达标（含目标卡共需 3 张）。升级后片酬系数暴涨，每小时产出翻倍甚至翻几倍。</p>
+            <p style="font-size:0.84rem;line-height:1.7;margin:0 0 8px;color:var(--text-muted);">升级条件：消耗 2 张同IP同等级分身 + IP参演短剧累计完播数达标</p>
             <div style="display:flex;flex-direction:column;gap:6px;">
-              <div>• <strong>Lv1→Lv2</strong>：≥1万完播 · 10 USDC · 片酬 1→3（×3）</div>
-              <div>• <strong>Lv2→Lv3</strong>：≥5万完播 · 20 USDC · 片酬 3→9（×3）</div>
-              <div>• <strong>Lv3→Lv4</strong>：≥20万完播 · 40 USDC · 片酬 9→27（×3）</div>
-              <div>• <strong>Lv4→Lv5</strong>：≥100万完播 · 80 USDC · 片酬 27→81（×3）</div>
+              <div>• <strong>Lv1→Lv2</strong>：≥1万完播 · 片酬 1→3</div>
+              <div>• <strong>Lv2→Lv3</strong>：≥5万完播 · 片酬 3→9</div>
+              <div>• <strong>Lv3→Lv4</strong>：≥20万完播 · 片酬 9→27</div>
+              <div>• <strong>Lv4→Lv5</strong>：≥100万完播 · 片酬 27→81</div>
             </div>
             </div></div>
           </div>
@@ -2153,7 +2144,6 @@
         </div>
 
       </div>
-      <button class="modal-btn cancel" onclick="closeRulesModal()" style="margin-top:16px;">关闭</button>
     </div>
   </div>
 
@@ -3289,31 +3279,37 @@
       if (!actor) return;
 
       const bd = getActorPowerBreakdown(actor);
-      document.getElementById('powerModalActorName').textContent = bd.levelName + ' Lv.' + bd.level + ' · ' + actor.name;
+      var actorNum = actor.id.match(/\d+/);
+      document.getElementById('powerModalActorName').textContent = bd.levelName + ' Lv.' + bd.level + ' · ' + actor.name + (actorNum ? ' #' + parseInt(actorNum[0], 10) : '');
 
       document.getElementById('powerModalBreakdown').innerHTML =
-        // ---- 最终结果 ----
-        '<div style="background:var(--accent-soft);border:1px solid rgba(0,179,136,0.15);border-radius:14px;padding:16px 14px;margin-bottom:16px;text-align:center;">' +
-          '<div style="font-size:0.72rem;color:var(--text-sub);margin-bottom:4px;font-weight:600;">每小时片酬</div>' +
-          '<div style="font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1;">' + bd.actorPower.toFixed(2) + '</div>' +
-          '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">STORY / 小时</div>' +
+        // ---- 结论（最强）----
+        '<div style="text-align:center;margin-bottom:22px;">' +
+          '<div style="font-size:2.2rem;font-weight:800;color:var(--accent);line-height:1;">' + bd.actorPower.toFixed(2) + '</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">STORY / 小时</div>' +
         '</div>' +
-        // ---- 公式提示 ----
-        '<div style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin-bottom:14px;letter-spacing:0.02em;">角色片酬 = IP片酬 × 片酬系数 × CP系数</div>' +
-        // ---- 因子 1: IP 片酬 ----
-        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
-          '<span style="font-weight:700;font-size:0.88rem;color:var(--text);">IP 片酬</span>' +
-          '<span style="font-weight:800;font-size:1rem;color:var(--accent);">' + bd.ipPower.toFixed(2) + '</span>' +
+        // ---- 公式（中等）：抽象 + 代入真实数值 ----
+        '<div style="text-align:center;margin-bottom:22px;line-height:1.9;">' +
+          '<div style="font-family:\'SF Mono\', Menlo, monospace;font-size:0.82rem;color:var(--text-muted);">Lv.' + bd.level + '片酬 = Lv.1片酬 × 片酬系数</div>' +
         '</div>' +
-        // ---- 因子 2: 片酬系数 ----
-        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
-          '<span style="font-weight:700;font-size:0.88rem;color:var(--text);">片酬系数</span>' +
-          '<span style="font-weight:800;font-size:1rem;color:var(--accent);">×' + bd.miningCoeff.toFixed(1) + '</span>' +
-        '</div>' +
-        // ---- 因子 3: CP 系数 ----
-        '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
-          '<span style="font-weight:700;font-size:0.88rem;color:var(--text);">CP 系数</span>' +
-          '<span style="font-weight:800;font-size:1rem;color:var(--accent);">×' + bd.cpCoeff.toFixed(1) + '</span>' +
+        // ---- 明细（最弱）：靠缩进分层，无框无线 ----
+        '<div style="line-height:2;">' +
+          '<div style="display:flex;justify-content:space-between;font-size:0.82rem;">' +
+            '<span style="color:var(--text-muted);">Lv.1片酬</span>' +
+            '<span style="font-weight:700;color:var(--text);">' + bd.ipPower.toFixed(2) + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;font-size:0.78rem;padding-left:16px;">' +
+            '<span style="color:var(--text-sub);">价格系数</span>' +
+            '<span style="color:var(--text-sub);">× ' + bd.priceCoeff.toFixed(4) + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;font-size:0.78rem;padding-left:16px;">' +
+            '<span style="color:var(--text-sub);">热度系数</span>' +
+            '<span style="color:var(--text-sub);">× ' + bd.heat.toFixed(1) + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-top:8px;">' +
+            '<span style="color:var(--text-muted);">片酬系数<span style="font-size:0.72rem;color:var(--text-sub);">（Lv.' + bd.level + ' ' + bd.levelName + '）</span></span>' +
+            '<span style="font-weight:700;color:var(--text);">× ' + bd.miningCoeff + '</span>' +
+          '</div>' +
         '</div>';
 
       document.getElementById('actorPowerModal').classList.add('active');

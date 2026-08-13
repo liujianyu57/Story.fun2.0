@@ -131,6 +131,22 @@
 .ac-badge-issuance.partner { background: #4A9EFF; color: #fff; }\
 .ac-badge-issuance.certified { background: #FF8C00; color: #fff; }\
 .ac-badge-issuance.community { background: linear-gradient(135deg, #94a3b8, #64748b); color: #fff; }\
+.ac-collection-tag {\
+  position: absolute;\
+  left: 12px;\
+  bottom: 12px;\
+  z-index: 3;\
+  padding: 3px 10px;\
+  border-radius: 999px;\
+  font-size: 0.62rem;\
+  font-weight: 700;\
+  letter-spacing: 0.02em;\
+  color: #fff;\
+  background: rgba(15, 23, 42, 0.55);\
+  backdrop-filter: blur(4px);\
+  border: 1px solid rgba(255,255,255,0.35);\
+  pointer-events: none;\
+}\
 \
 /* ═══ 统计行 ═══ */\
 .ac-stats {\
@@ -292,6 +308,7 @@
   .ac-trade-btn { padding: 10px 14px; font-size: 0.82rem; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 2px 6px rgba(245,158,11,0.16); }\
   .ac-trade-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(245,158,11,0.1); }\
   .ac-badge-corner { top: 10px; left: 10px; }\
+  .ac-collection-tag { left: 10px; bottom: 10px; font-size: 0.58rem; padding: 2px 8px; }\
 }\
 \
 /* ═══ 手机：< 600px ═══ */\
@@ -314,6 +331,7 @@
   .ac-trade-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius: 10px; }\
   .ac-meta-foot { font-size: 0.62rem; }\
   .ac-badge-corner { top: 8px; left: 8px; }\
+  .ac-collection-tag { left: 8px; bottom: 8px; font-size: 0.55rem; padding: 2px 8px; }\
 }\
 ';
     var style = document.createElement('style');
@@ -468,7 +486,7 @@
         '<span class="ac-num">' + ipPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY/h</span></span>' +
       '</span>' +
       '<span class="ac-stat-item" data-stat="target-power">' +
-        '<span class="ac-stat-label">可升至 Lv.' + maxLevel + '</span>' +
+        '<span class="ac-stat-label">最高</span>' +
         '<span class="ac-num">' + targetPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY/h</span></span>' +
       '</span>' +
     '</div>';
@@ -497,8 +515,7 @@
     var metaParts = [];
     var remainText = isSoldout ? '已售罄' : '剩余 ' + available.toLocaleString();
     metaParts.push(remainText);
-    if (creator) metaParts.push(creator);
-    if (collection) metaParts.push(collection);
+    if (creator) metaParts.push('@' + creator);
     var metaFoot = '<div class="ac-meta-foot">' + metaParts.join(' · ') + '</div>';
 
     return '<article class="ac-card" data-actor="' + escapeHTML(name) + '" data-id="' + id + '" data-issuance-type="' + issuanceType + '" data-pricing="' + pricing + '" data-total="' + total + '" data-minted="' + minted + '" data-available="' + available + '" data-price="' + escapeHTML(price) + '" data-init-price="' + initPrice + '" data-creator="' + escapeHTML(creator) + '" data-collection="' + escapeHTML(collection) + '" data-views="' + escapeHTML(views) + '" data-heat="' + heat + '" data-avatar="' + escapeHTML(avatar) + '">' +
@@ -507,6 +524,7 @@
           '<img src="' + avatar + '" alt="角色 ' + escapeHTML(name) + '" loading="lazy" />' +
         '</div>' +
         '<div class="ac-badge-corner">' + renderBadge(issuanceType) + '</div>' +
+        (collection ? '<div class="ac-collection-tag">' + escapeHTML(collection) + '</div>' : '') +
       '</div>' +
       '<div class="ac-card-body">' +
         '<div>' +
@@ -557,7 +575,7 @@
     options = options || {};
     var containerId = options.sortContainerId || 'sortContainer';
     var gridSelector = options.gridSelector || '.ac-grid, .grid';
-    var defaultSort = options.defaultSort || 'price-asc';
+    var defaultSort = options.defaultSort || 'power-desc';
 
     var sortContainer = document.getElementById(containerId);
     if (!sortContainer) return;
@@ -566,11 +584,11 @@
     if (!grid) return;
 
     var currentSort = defaultSort;
+    var priceDir = 'desc';
 
     function getSortVal(card, sortKey) {
       switch (sortKey) {
-        case 'price-asc':
-        case 'price-desc':
+        case 'price':
           return parseFloat((card.dataset.price || '0').replace(/[^0-9.]/g, '')) || 0;
         case 'power-desc':
           var pw = computeIPPower(parseFloat(card.dataset.initPrice) || 0, parseFloat(card.dataset.heat) || 0);
@@ -597,7 +615,7 @@
       var sorted = cards.sort(function (a, b) {
         var valA = getSortVal(a, currentSort);
         var valB = getSortVal(b, currentSort);
-        var multi = (currentSort === 'price-asc') ? 1 : -1;
+        var multi = (currentSort === 'price' && priceDir === 'asc') ? 1 : -1;
         return (valA - valB) * multi;
       });
       sorted.forEach(function (card) {
@@ -605,14 +623,49 @@
       });
     }
 
+    function setActive(tag) {
+      sortContainer.querySelectorAll('[data-sort]').forEach(function (t) { t.classList.remove('active'); });
+      tag.classList.add('active');
+    }
+
+    function updatePriceArrow(tag) {
+      if (!tag || tag.dataset.sort !== 'price') return;
+      var up = tag.querySelector('.s-arrow.up');
+      var down = tag.querySelector('.s-arrow.down');
+      if (up && down) {
+        up.classList.toggle('active', priceDir === 'asc');
+        down.classList.toggle('active', priceDir === 'desc');
+      }
+    }
+
     sortContainer.querySelectorAll('[data-sort]').forEach(function (tag) {
       tag.addEventListener('click', function () {
-        sortContainer.querySelectorAll('[data-sort]').forEach(function (t) { t.classList.remove('active'); });
-        this.classList.add('active');
-        currentSort = this.dataset.sort;
+        var key = this.dataset.sort;
+        if (key === 'price') {
+          if (currentSort === 'price') {
+            priceDir = priceDir === 'asc' ? 'desc' : 'asc';
+          } else {
+            priceDir = 'desc';
+          }
+          currentSort = 'price';
+        } else {
+          currentSort = key;
+        }
+        // 价格标签的箭头高亮随 priceDir 更新
+        updatePriceArrow(sortContainer.querySelector('[data-sort="price"]'));
+        setActive(this);
         applySort();
       });
     });
+
+    // 初始化价格箭头状态（默认降序）
+    updatePriceArrow(sortContainer.querySelector('[data-sort="price"]'));
+
+    // 若 defaultSort 对应的标签未带 active，则补上
+    var defaultTag = sortContainer.querySelector('[data-sort="' + currentSort + '"]');
+    if (defaultTag && !defaultTag.classList.contains('active')) {
+      setActive(defaultTag);
+    }
 
     // 初始排序
     applySort();
