@@ -747,6 +747,14 @@ if(!isPlayerMode){
 } else {
   var params=new URLSearchParams(location.search);
   var dramaTitle=params.get('title')||'未命名短剧';
+  var ROLE_INFO = {
+    'Luna': { avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', ipPower: '5,230' },
+    '苏婉清': { avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', ipPower: '8,562' },
+    '李云飞': { avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', ipPower: '6,230' },
+    '林梦瑶': { avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', ipPower: '5,891' },
+    '赵无极': { avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', ipPower: '7,105' },
+    '上官婉儿': { avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', ipPower: '4,720' }
+  };
   var dramaTotal=parseInt(params.get('total'))||24;
   var dramaCover=params.get('cover')||'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80';
   var dramaDesc=params.get('desc')||'';
@@ -927,14 +935,24 @@ if(!isPlayerMode){
     },
     buildRoleHTML: function(d) {
       var html = '<div class="cm-role-panel" id="cmRolePanel"><div class="cm-role-more-entry" onclick="location.href=\'actors.html\'"><div class="cmr-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="cmr-text"><div class="cmr-title">签约更多角色 IP</div></div><div class="cmr-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
-      var rNames = (d.actors && d.actors.length > 0) ? d.actors : ['苏婉清', '李云飞', '林梦瑶', '赵老四', '王五爷'];
-      var rAvatars = (d.avatars && d.avatars.length > 0) ? d.avatars : [];
-      var rPower = {'苏婉清': '8,562', '李云飞': '6,230', '林梦瑶': '5,891'};
-      for (var ai = 0; ai < rNames.length; ai++) {
-        var aname = rNames[ai], aav = rAvatars[ai] || '';
-        if (aav) {
-          html += '<div class="cm-role-card bound"><img class="cm-role-avatar" src="' + aav + '" alt="' + aname + '"><div class="cm-role-info"><div class="cm-role-name">' + aname + '</div><div class="cm-role-ip"><span class="cm-role-ip-tag">IP算力 ' + (rPower[aname] || '—') + '</span></div></div><button class="cm-sign-btn">签约</button></div>';
+      // 优先按短剧标题从内置数据查绑定角色 IP，其次兜底 URL 参数
+      var rNames = [];
+      for (var di = 0; di < dramas.length; di++) {
+        if (dramas[di].title === dramaTitle && dramas[di].actors && dramas[di].actors.length) {
+          rNames = dramas[di].actors.slice();
+          break;
         }
+      }
+      if (!rNames.length && d.actors && d.actors.length) rNames = d.actors.slice();
+      var rendered = 0;
+      for (var ai = 0; ai < rNames.length && rendered < 5; ai++) {
+        var aname = rNames[ai], ainfo = ROLE_INFO[aname];
+        if (!ainfo) continue;
+        rendered++;
+        html += '<div class="cm-role-card bound"><img class="cm-role-avatar" src="' + ainfo.avatar + '" alt="' + aname + '"><div class="cm-role-info"><div class="cm-role-name">' + aname + '</div><div class="cm-role-ip"><span class="cm-role-ip-tag">片酬 ' + ainfo.ipPower + ' STORY/h</span></div></div><button class="cm-sign-btn">签约</button></div>';
+      }
+      if (rendered === 0) {
+        html += '<div class="cm-role-card"><div class="cm-role-avatar unbound" style="display:grid;place-items:center;font-size:1.2rem;">🎭</div><div class="cm-role-info"><div class="cm-role-name">暂未绑定角色 IP</div><div class="cm-role-status">该短剧尚未绑定角色 IP</div></div></div>';
       }
       return html + '</div>';
     },

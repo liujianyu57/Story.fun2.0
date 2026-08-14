@@ -219,9 +219,11 @@ var CMPanel = (function() {
     var cmTitle = document.getElementById('cmTitle');
     if (!drawer || !cmBody || !cmTitle) return;
 
-    var hasDrama = _config.hasDrama !== false;
-    var hasActors = _config.hasActors !== false;
-    var defaultTab = _config.defaultTab || 'cmt';
+    // 短视频：隐藏「短剧」「角色」页签，仅保留评论
+    var isVideo = data.type === 'video';
+    var hasDrama = !isVideo && _config.hasDrama !== false;
+    var hasActors = !isVideo && _config.hasActors !== false;
+    var defaultTab = isVideo ? 'cmt' : (_config.defaultTab || 'cmt');
 
     // 构建 tabs
     cmTitle.innerHTML = '<div class="cm-tabs">' +
