@@ -874,7 +874,7 @@ if(!isPlayerMode){
 
   function openDrawer(epIdx){ CMPanel.open(epIdx); }
   function closeDrawer(){ CMPanel.close(); }
-  function gotoDetail(){location.href='drama-detail.html?title='+encodeURIComponent(dramaTitle)}
+  function gotoDetail(){ history.back(); }
 
   function updateMeta(){epBadge.textContent=episodes[idx].label}
 
@@ -933,9 +933,7 @@ if(!isPlayerMode){
       for (var ai = 0; ai < rNames.length; ai++) {
         var aname = rNames[ai], aav = rAvatars[ai] || '';
         if (aav) {
-          html += '<div class="cm-role-card bound"><img class="cm-role-avatar" src="' + aav + '" alt="' + aname + '"><div class="cm-role-info"><div class="cm-role-name">' + aname + '<span class="cm-role-role"> 饰 ' + aname + '</span></div><div class="cm-role-ip"><span class="cm-role-ip-tag">IP算力 ' + (rPower[aname] || '—') + '</span></div></div><button class="cm-sign-btn">签约</button></div>';
-        } else {
-          html += '<div class="cm-role-card"><div class="cm-role-avatar unbound"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(aname) + '" width="44" height="44" style="border-radius:50%"></div><div class="cm-role-info"><div class="cm-role-name">' + aname + '</div><div class="cm-role-status">未绑定 IP</div></div></div>';
+          html += '<div class="cm-role-card bound"><img class="cm-role-avatar" src="' + aav + '" alt="' + aname + '"><div class="cm-role-info"><div class="cm-role-name">' + aname + '</div><div class="cm-role-ip"><span class="cm-role-ip-tag">IP算力 ' + (rPower[aname] || '—') + '</span></div></div><button class="cm-sign-btn">签约</button></div>';
         }
       }
       return html + '</div>';

@@ -28,7 +28,7 @@
 //      episodes: '全44集',                 // 集数
 //      creator: 'JACK',                    // 创作者昵称
 //      creatorAvatar: 'https://...',       // 创作者头像
-//      link:   'drama-detail.html'         // 卡片点击跳转（默认 drama-detail.html）
+//      link:   'drama-player.html'         // 卡片点击跳转（默认 drama-player.html）
 //    }
 // ============================================================
 
@@ -451,7 +451,7 @@
     var episodes = escapeHTML(data.episodes || '');
     var creator = escapeHTML(data.creator || '');
     var creatorAvatar = escapeHTML(data.creatorAvatar || '');
-    var link = escapeHTML(data.link || 'drama-detail.html');
+    var link = escapeHTML(data.link || 'drama-player.html');
 
     var certHTML = '<div class="card-cert-corner">' + getBadgeHTML(certType, false) + '</div>';
 

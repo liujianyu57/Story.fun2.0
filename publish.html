@@ -222,25 +222,24 @@
     .char-add-btn:hover { background: rgba(0,179,136,0.2); }
     .char-add-btn .plus-icon { font-size: 1.1rem; line-height: 1; }
 
-    .char-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 28px; }
+    .char-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 28px; }
 
-    .char-card { border: 1px solid var(--border); border-radius: 18px; overflow: hidden; background: #fafcff; transition: all 0.25s ease; }
-    .char-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(0,179,136,0.08); }
-    .char-card .char-avatar-area { height: 160px; background: #f0f4f8; display: grid; place-items: center; position: relative; overflow: hidden; }
-    .char-card .char-avatar-area img { width: 100%; height: 100%; object-fit: cover; }
-    .char-card .char-avatar-area .char-avatar-placeholder { width: 80px; height: 80px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; font-size: 2rem; color: var(--accent); }
-    .char-card .char-body { padding: 18px 20px 20px; }
-    .char-card .char-body .char-name { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .char-card .char-body .char-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 14px; min-height: 2.6em; }
-    .char-card .char-body .char-actions { display: flex; gap: 10px; }
-    .char-card .char-body .char-actions .char-action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 7px 12px; border-radius: 80px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
-    .char-card .char-body .char-actions .char-action-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    .char-card .char-body .char-actions .char-action-btn.danger:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
+    /* 角色 IP 卡（参考 studio.html 的演出位卡，去掉体力条/补充/休息） */
+    .char-card { position: relative; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--surface); transition: all 0.25s ease; display: flex; flex-direction: column; min-width: 0; }
+    .char-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .char-card .char-avatar-area { position: relative; width: 100%; aspect-ratio: 1 / 1; background: linear-gradient(135deg, #e8f5ef, #d4ece5); overflow: hidden; flex-shrink: 0; z-index: 1; }
+    .char-card .char-avatar-area img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .char-card .char-avatar-area .char-avatar-placeholder { width: 100%; height: 100%; display: grid; place-items: center; font-size: 2rem; color: var(--accent); }
+    .char-card .char-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 4px; }
+    .char-card .char-body .char-name { font-size: 0.85rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .char-card .char-body .char-salary { font-size: 0.78rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .char-card .char-remove-btn { margin-top: 6px; width: 100%; padding: 7px 0; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
+    .char-card .char-remove-btn:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
 
-    .char-card.add-card { border: 2px dashed var(--border); background: transparent; display: grid; place-items: center; cursor: pointer; min-height: 320px; transition: all 0.25s ease; }
+    .char-card.add-card { border: 2px dashed var(--border); background: transparent; display: grid; place-items: center; cursor: pointer; transition: all 0.25s ease; }
     .char-card.add-card:hover { border-color: var(--accent); background: var(--accent-soft); }
     .char-card.add-card .add-card-content { text-align: center; padding: 24px; }
-    .char-card.add-card .add-card-content .add-icon { font-size: 2.4rem; color: var(--text-muted); margin-bottom: 12px; }
+    .char-card.add-card .add-card-content .add-icon { font-size: 2.4rem; color: var(--text-muted); }
     .char-card.add-card .add-card-content p { color: var(--text-muted); font-size: 0.95rem; }
     .char-card.add-card .add-card-content p strong { color: var(--accent); }
 
@@ -269,13 +268,15 @@
     .char-modal-footer .button { min-width: 100px; justify-content: center; }
 
     /* ===== Actor Bind Modal ===== */
-    .actor-bind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-height: 360px; overflow-y: auto; padding: 4px 0; }
-    .actor-bind-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.2s ease; background: #fafcff; }
-    .actor-bind-item:hover { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 2px 8px rgba(0,179,136,0.08); }
-    .actor-bind-item .abi-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #f0f4f8; }
-    .actor-bind-item .abi-info { flex: 1; min-width: 0; }
-    .actor-bind-item .abi-name { font-size: 0.92rem; font-weight: 600; color: var(--text); }
-    .actor-bind-item .abi-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; }
+    .actor-bind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 360px; overflow-y: auto; padding: 4px; }
+    .actor-bind-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.18s ease; background: var(--surface); position: relative; }
+    .actor-bind-item:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(0, 179, 136, 0.10); }
+    .actor-bind-item.is-selected { border-color: var(--accent); background: rgba(0, 179, 136, 0.05); }
+    .actor-bind-item.is-bound { opacity: 0.5; cursor: default; }
+    .actor-bind-item .abi-avatar { width: 46px; height: 46px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: linear-gradient(135deg, #e8f5ef, #d4ece5); }
+    .actor-bind-item .abi-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+    .actor-bind-item .abi-name { font-size: 0.88rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .actor-bind-item .abi-id { font-size: 0.72rem; font-weight: 600; color: var(--accent); letter-spacing: 0.02em; }
     .actor-bind-empty { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 0.92rem; }
     .actor-bind-empty .empty-icon { font-size: 2rem; margin-bottom: 10px; }
     .actor-bind-status { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 500; white-space: nowrap; margin-top: 8px; }
@@ -625,10 +626,9 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         overflow: hidden;
       }
-      .char-card .char-avatar-area { height: 130px; }
-      .char-card .char-body { padding: 16px 18px 18px; }
-      .char-card .char-name { font-size: 1rem; font-weight: 600; }
-      .char-card .char-desc { font-size: 0.8rem; color: #8E8E93; margin-bottom: 12px; }
+      .char-card .char-body { padding: 10px 12px 12px; }
+      .char-card .char-name { font-size: 0.9rem; font-weight: 700; }
+      .char-card .char-salary { font-size: 0.8rem; }
       .char-card.add-card {
         min-height: 200px;
         border: 2px dashed rgba(0,0,0,0.10);
@@ -749,7 +749,7 @@
       <span style="color:#deeaf7;font-size:1.2rem;">›</span>
       <div class="step-item">
         <span class="step-circle">3</span>
-        <span class="step-label">人物管理</span>
+        <span class="step-label">绑定 IP</span>
       </div>
     </div>
 
@@ -772,10 +772,6 @@
 
     <!-- Step 1: 基本信息 -->
     <div class="form-panel" id="step1">
-      <div class="form-panel-header">
-        <h3>基本信息</h3>
-        <p>填写短剧的基本信息，包括名称、封面、简介与分类等。</p>
-      </div>
       <div class="form-panel-body">
         <div class="form-row full">
           <div class="form-group">
@@ -824,10 +820,6 @@
 
     <!-- Step 2: 剧集管理 (批量上传) -->
     <div class="form-panel" id="step2" style="display:none;">
-      <div class="form-panel-header">
-        <h3>剧集管理</h3>
-        <p>批量上传视频文件，系统将自动按文件名排序生成剧集列表。支持拖拽排序、删除、编辑标题等操作。</p>
-      </div>
       <div class="form-panel-body">
         <!-- Batch Upload Zone -->
         <div class="batch-upload-zone" id="batchUploadZone">
@@ -861,45 +853,23 @@
 
       <div class="form-panel-footer">
         <button class="button-ghost" onclick="goToStep(1)">← 上一步</button>
-        <button class="button" onclick="goToStep(3)">下一步：人物管理 →</button>
+        <button class="button" onclick="goToStep(3)">下一步：绑定 IP →</button>
       </div>
     </div>
 
 
     <!-- Step 3: 角色管理 - Figma Card Grid Style -->
     <div class="form-panel" id="step3" style="display:none;">
-      <div class="form-panel-header">
-        <h3>人物管理</h3>
-        <p>为短剧创建剧中人物，设定角色名称、头像与介绍。</p>
-      </div>
       <div class="form-panel-body">
-        <!-- Character Manager Header -->
-        <div class="char-panel-header">
-          <h3>添加主要人物</h3>
-          <button class="char-add-btn" onclick="charManager.openAddModal()">
-            <span class="plus-icon">+</span> 添加人物
-          </button>
+        <!-- Actor IP Grid -->
+        <div class="char-grid" id="charGrid">
+          <!-- Actor IPs rendered by JS -->
         </div>
 
         <!-- Limit Hint -->
-        <div style="font-size:0.85rem;color:var(--text-muted);padding:0 0 16px;display:flex;flex-direction:column;gap:6px;">
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span>💡</span>
-            <span>每部短剧可添加 <strong style="color:var(--accent);">5</strong> 个人物，人物可绑定角色 IP，必须持有角色才能使用该 IP。</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;padding-left:22px;">
-            <span>⏳</span>
-            <span>短剧上架后 <strong style="color:var(--accent);">7 天内</strong> 可新增绑定角色 IP，期间产生的播放数据将同步积累到所绑定的角色 IP 上。</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;padding-left:22px;">
-            <span>🔒</span>
-            <span>已绑定参演的角色，审核通过后不可解除或更换。</span>
-          </div>
-        </div>
-
-        <!-- Character Grid -->
-        <div class="char-grid" id="charGrid">
-          <!-- Characters rendered by JS -->
+        <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.7;display:flex;flex-direction:column;gap:4px;">
+          <div>每部短剧最多绑定 5 个角色 IP，上架 7 天内可新增，发布后不可解除或更换。</div>
+          <div>绑定后，角色IP将关联短剧的完播和热度数据，用于升级角色和产出STORY。</div>
         </div>
 
       </div>
@@ -915,43 +885,6 @@
       </div>
     </div>
 
-    <!-- Character Edit Modal -->
-    <div class="char-modal-overlay" id="charModal">
-      <div class="char-modal">
-        <div class="char-modal-header">
-          <h3 id="charModalTitle">添加角色</h3>
-          <button class="char-modal-close" onclick="charManager.closeModal()">✕</button>
-        </div>
-        <div class="char-modal-body">
-          <input type="hidden" id="editCharId" />
-          <div class="form-group">
-            <label>头像</label>
-            <div class="char-avatar-upload">
-              <div class="avatar-preview" id="avatarPreview">👤</div>
-              <button class="avatar-upload-btn" onclick="charManager.uploadAvatar()">上传头像</button>
-              <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>角色名称</label>
-
-            <input type="text" id="editCharName" placeholder="请输入角色名称" maxlength="20" />
-
-          </div>
-          <div class="form-group">
-            <label>角色简介</label>
-
-
-            <textarea id="editCharDesc" placeholder="描述角色的性格、背景故事……" maxlength="200"></textarea>
-          </div>
-        </div>
-        <div class="char-modal-footer">
-          <button class="button-ghost" onclick="charManager.closeModal()">取消</button>
-          <button class="button" onclick="charManager.saveChar()">保存</button>
-        </div>
-      </div>
-    </div>
-
     <!-- Actor Bind Modal -->
     <div class="char-modal-overlay" id="actorBindModal">
       <div class="char-modal">
@@ -960,12 +893,14 @@
           <button class="char-modal-close" onclick="charManager.closeBindModal()">✕</button>
         </div>
         <div class="char-modal-body">
-          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;" id="actorBindModalHint">选择一名角色 IP 来饰演该角色</p>
           <div id="actorBindGrid" class="actor-bind-grid"></div>
         </div>
         <div class="char-modal-footer" style="justify-content:space-between;">
           <span style="font-size:0.82rem;color:var(--text-muted);" id="actorBindCount"></span>
-          <button class="button-ghost" onclick="charManager.closeBindModal()">取消</button>
+          <div style="display:flex;gap:10px;">
+            <button class="button-ghost" onclick="charManager.closeBindModal()">取消</button>
+            <button class="button" id="actorBindConfirmBtn" onclick="charManager.confirmBindModal()" disabled>确认绑定</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1015,7 +950,7 @@ function submitForReview() {
  */
 function goToStep(num) {
   const steps = ['step1','step2','step3'];
-  const stepTitles = ['基本信息', '剧集管理', '人物管理'];
+  const stepTitles = ['基本信息', '剧集管理', '绑定 IP'];
 
   // Show/hide panels
   const stepItems = document.querySelectorAll('.step-item');
@@ -1070,19 +1005,36 @@ function goToStep(num) {
 
     // === Actor IP Database ===
     const ACTOR_IP_DB = {
-      'Luna': { name: 'Luna', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。' },
-      '苏婉清': { name: '苏婉清', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。' },
-      '李云飞': { name: '李云飞', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。' },
-      '林梦瑶': { name: '林梦瑶', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。' },
-      '赵无极': { name: '赵无极', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。' },
-      '上官婉儿': { name: '上官婉儿', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。' },
-      '叶倾城': { name: '叶倾城', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80', description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。' },
-      '慕容云': { name: '慕容云', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80', description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。' },
-      '花木兰': { name: '花木兰', image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80', description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。' },
-      '东方朔': { name: '东方朔', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。' },
-      '柳如是': { name: '柳如是', image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80', description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。' },
-      '萧景琰': { name: '萧景琰', image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80', description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。' },
-      '江小鱼': { name: '江小鱼', image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80', description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。' }
+      'Luna': { name: 'Luna', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80', description: '未来偶像型AI角色，科技感造型，适合对话与剧情分润场景。', power: '5,230' },
+      '苏婉清': { name: '苏婉清', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80', description: '温婉端庄的江南女子，琴棋书画样样精通，举止间尽显大家闺秀风范。', power: '8,562' },
+      '李云飞': { name: '李云飞', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', description: '身手矫健的侠客，性格豪爽仗义，自幼习武练就一身好本领。', power: '6,230' },
+      '林梦瑶': { name: '林梦瑶', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', description: '聪慧机敏的现代女性，擅长推理分析，拥有敏锐的洞察力。', power: '5,891' },
+      '赵无极': { name: '赵无极', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', description: '深不可测的武林高手，亦正亦邪，武功深不可测，行事风格独特。', power: '7,105' },
+      '上官婉儿': { name: '上官婉儿', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', description: '才情横溢的宫廷女官，精通诗词歌赋，智慧与美貌并重。', power: '4,720' },
+      '叶倾城': { name: '叶倾城', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80', description: '倾国倾城的绝世佳人，一颦一笑皆动人心魄，气质高贵冷艳。', power: '6,540' },
+      '慕容云': { name: '慕容云', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80', description: '冷峻孤傲的世家公子，剑术超群，性格深沉内敛，眉宇间带着一丝忧郁。', power: '5,910' },
+      '花木兰': { name: '花木兰', image: 'https://images.unsplash.com/photo-1592621385612-4d7129426394?auto=format&fit=crop&w=200&q=80', description: '英姿飒爽的女将军，替父从军征战沙场，巾帼不让须眉，忠孝两全。', power: '7,880' },
+      '东方朔': { name: '东方朔', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', description: '神秘莫测的方士，通晓天文地理，善奇门遁甲之术，行事飘忽不定。', power: '6,120' },
+      '柳如是': { name: '柳如是', image: 'https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?auto=format&fit=crop&w=200&q=80', description: '秦淮河畔的才女，琴棋书画无一不精，性格清高傲骨，不为世俗所困。', power: '4,350' },
+      '萧景琰': { name: '萧景琰', image: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=200&q=80', description: '威震四方的大将军，战功赫赫，为人刚正不阿，深受将士爱戴。', power: '8,210' },
+      '江小鱼': { name: '江小鱼', image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=200&q=80', description: '古灵精怪的江湖少年，机智幽默，轻功了得，总能在危机关头化险为夷。', power: '3,980' }
+    };
+
+    // 角色 IP 编号映射（卡片与绑定弹窗共用）
+    const ACTOR_IP_ID = {
+      'Luna': '5874...2301',
+      '苏婉清': '3131...7979',
+      '李云飞': '6428...1170',
+      '林梦瑶': '7905...4482',
+      '赵无极': '1026...6659',
+      '上官婉儿': '3341...2288',
+      '叶倾城': '8857...9913',
+      '慕容云': '2210...7746',
+      '花木兰': '5590...3387',
+      '东方朔': '4473...1128',
+      '柳如是': '6682...5594',
+      '萧景琰': '7741...8850',
+      '江小鱼': '9933...7718'
     };
 
     /**
@@ -1090,206 +1042,80 @@ function goToStep(num) {
      */
     const charManager = {
       characters: [],
-      idCounter: 0,
-      editingId: null,
       bindCharId: null,
-
-      defaultChars: [],
 
       init() {
         this.render();
-
-
-        // Avatar file input
-        document.getElementById('avatarFileInput').addEventListener('change', (e) => {
-          if (e.target.files.length > 0) {
-            const file = e.target.files[0];
-            if (!file.type.startsWith('image/')) {
-              this.showToast('请选择图片文件');
-              return;
-            }
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-              const preview = document.getElementById('avatarPreview');
-              preview.innerHTML = `<img src="${ev.target.result}" alt="" />`;
-              preview.dataset.avatar = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-            e.target.value = '';
-          }
-        });
       },
 
-      addChar(name, desc, avatar, actorKey) {
-        this.characters.push({
-          id: ++this.idCounter,
-          name: name || '未命名角色',
-          desc: desc || '',
-          avatar: avatar || null,
-          actorKey: actorKey || null,
-        });
+      addActor(actorKey) {
+        if (this.characters.includes(actorKey)) {
+          this.showToast('该角色 IP 已在此剧中绑定');
+          return false;
+        }
+        if (this.characters.length >= 5) {
+          this.showToast('每部短剧最多绑定 5 个角色 IP');
+          return false;
+        }
+        this.characters.push(actorKey);
+        return true;
       },
 
-      removeChar(id) {
-        const char = this.characters.find(c => c.id === id);
-        if (!char) return;
-        if (!confirm(`确定要删除角色"${char.name}"吗？`)) return;
-        this.characters = this.characters.filter(c => c.id !== id);
+      removeActor(actorKey) {
+        const name = ACTOR_IP_DB[actorKey] ? ACTOR_IP_DB[actorKey].name : actorKey;
+        if (!confirm('确定要移除角色 IP「' + name + '」吗？')) return;
+        this.characters = this.characters.filter(k => k !== actorKey);
         this.render();
-      },
-
-      openAddModal() {
-        this.editingId = null;
-        document.getElementById('charModalTitle').textContent = '添加角色';
-        document.getElementById('editCharId').value = '';
-        document.getElementById('editCharName').value = '';
-        document.getElementById('editCharDesc').value = '';
-        document.getElementById('avatarPreview').innerHTML = '👤';
-        delete document.getElementById('avatarPreview').dataset.avatar;
-        document.getElementById('charModal').classList.add('active');
-      },
-
-      openEditModal(id) {
-        const char = this.characters.find(c => c.id === id);
-        if (!char) return;
-        this.editingId = id;
-        document.getElementById('charModalTitle').textContent = '编辑角色';
-        document.getElementById('editCharId').value = id;
-        document.getElementById('editCharName').value = char.name;
-        document.getElementById('editCharDesc').value = char.desc;
-        if (char.avatar) {
-          document.getElementById('avatarPreview').innerHTML = `<img src="${char.avatar}" alt="" />`;
-        } else {
-          document.getElementById('avatarPreview').innerHTML = '👤';
-        }
-        document.getElementById('charModal').classList.add('active');
-      },
-
-      closeModal() {
-        document.getElementById('charModal').classList.remove('active');
-      },
-
-      uploadAvatar() {
-        document.getElementById('avatarFileInput').click();
-      },
-
-      saveChar() {
-        const name = document.getElementById('editCharName').value.trim();
-        if (!name) {
-          this.showToast('请输入角色名称');
-          return;
-        }
-        const desc = document.getElementById('editCharDesc').value.trim();
-        const avatarPreview = document.getElementById('avatarPreview');
-        const avatar = avatarPreview.dataset.avatar || null;
-
-        if (this.editingId) {
-          const char = this.characters.find(c => c.id === this.editingId);
-          if (char) {
-            char.name = name;
-            char.desc = desc;
-            char.avatar = avatar;
-          }
-        } else {
-          this.addChar(name, desc, avatar);
-        }
-
-        this.closeModal();
-        this.render();
-        this.showToast(this.editingId ? '角色已更新' : '角色已添加');
       },
 
       render() {
         const grid = document.getElementById('charGrid');
-        grid.innerHTML = this.characters.map(c => this.renderCard(c)).join('');
-        // Add the "add card" at the end
-        grid.insertAdjacentHTML('beforeend', this.renderAddCard());
+        grid.innerHTML = this.characters.map(k => this.renderCard(k)).join('');
+        if (this.characters.length < 5) {
+          grid.insertAdjacentHTML('beforeend', this.renderAddCard());
+        }
         this.bindCardEvents();
       },
 
       bindCardEvents() {
-        // Bind click events for the actor bind buttons
-        document.querySelectorAll('.js-bind-actor').forEach(btn => {
+        // Bind remove buttons
+        document.querySelectorAll('.js-remove-actor').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const card = btn.closest('.char-card');
-            const id = parseInt(card.dataset.charId);
-            this.openBindModal(id);
-          });
-        });
-        // Bind click events for edit buttons (replacing inline onclick)
-        document.querySelectorAll('.js-edit-char').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const card = btn.closest('.char-card');
-            const id = parseInt(card.dataset.charId);
-            this.openEditModal(id);
-          });
-        });
-        // Bind click events for remove buttons
-        document.querySelectorAll('.js-remove-char').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const card = btn.closest('.char-card');
-            const id = parseInt(card.dataset.charId);
-            this.removeChar(id);
+            const key = card.dataset.actorKey;
+            this.removeActor(key);
           });
         });
         // Bind click events for add card
-        const addCard = document.querySelector('.js-add-char');
+        const addCard = document.querySelector('.js-add-actor');
         if (addCard) {
-          addCard.addEventListener('click', () => this.openAddModal());
+          addCard.addEventListener('click', () => this.openBindModal());
         }
       },
 
-      renderCard(char) {
-        const avatarHtml = char.avatar
-          ? `<img src="${char.avatar}" alt="${char.name}" />`
-          : `<div class="char-avatar-placeholder">${char.name.charAt(0)}</div>`;
+      renderCard(actorKey) {
+        const actor = ACTOR_IP_DB[actorKey];
+        const name = actor ? actor.name : actorKey;
+        const image = actor ? actor.image : '';
+        const avatarArea = image
+          ? '<div class="char-avatar-area"><img src="' + image + '" alt="' + this.escapeHtml(name) + '" /></div>'
+          : '<div class="char-avatar-area"><div class="char-avatar-placeholder">🎭</div></div>';
 
-        // Build bind button HTML
-        let bindHtml = '';
-        if (char.actorKey && ACTOR_IP_DB[char.actorKey]) {
-          const actor = ACTOR_IP_DB[char.actorKey];
-          const actorKeys = this.getUserActorKeys();
-          const actorIndex = actorKeys.indexOf(char.actorKey);
-          const actorNum = actorIndex !== -1 ? actorIndex + 1 : '';
-          bindHtml = '<div style="margin-top:8px;">'
-            + '<button class="char-bind-btn bound js-bind-actor" data-char-id="' + char.id + '">'
-            + '<img class="char-bind-actor-avatar" src="' + actor.image + '" alt="" />'
-            + this.escapeHtml(actor.name) + (actorNum ? ' <span style="font-size:0.75rem;font-weight:400;">角色IP' + actorNum + '</span>' : '')
-            + '</button>'
-            + '</div>';
-
-        } else {
-          bindHtml = '<div style="margin-top:8px;">'
-            + '<button class="char-bind-btn js-bind-actor" data-char-id="' + char.id + '">🎭 角色参演</button>'
-            + '</div>';
-        }
-
-        return `<div class="char-card" data-char-id="${char.id}">
-          <div class="char-avatar-area">
-            ${avatarHtml}
-          </div>
-          <div class="char-body">
-            <div class="char-name" title="${this.escapeHtml(char.name)}">${this.escapeHtml(char.name)}</div>
-            <div class="char-desc">${this.escapeHtml(char.desc || '暂无简介')}</div>
-            ${bindHtml}
-            <div class="char-actions" style="margin-top:8px;">
-              <button class="char-action-btn js-edit-char">✎ 编辑</button>
-              <button class="char-action-btn danger js-remove-char">✕ 删除</button>
-            </div>
-          </div>
-        </div>`;
+        return '<div class="char-card" data-actor-key="' + this.escapeHtml(actorKey) + '">'
+          + avatarArea
+          + '<div class="char-body">'
+          + '<div class="char-name" title="' + this.escapeHtml(name) + '">' + this.escapeHtml(name) + '</div>'
+          + '<div class="char-salary">IP：' + (ACTOR_IP_ID[actorKey] || '—') + '</div>'
+          + '<button class="char-remove-btn js-remove-actor">移除</button>'
+          + '</div></div>';
       },
 
       renderAddCard() {
-        return `<div class="char-card add-card js-add-char">
-          <div class="add-card-content">
-            <div class="add-icon">+</div>
-            <p><strong>添加人物</strong></p>
-          </div>
-        </div>`;
+        return '<div class="char-card add-card js-add-actor">'
+          + '<div class="add-card-content">'
+          + '<div class="add-icon">+</div>'
+          + '</div></div>';
       },
 
       // ===== Actor Binding Methods =====
@@ -1300,13 +1126,8 @@ function goToStep(num) {
         return held.filter(k => ACTOR_IP_DB[k]);
       },
 
-      openBindModal(charId) {
-        const char = this.characters.find(c => c.id === charId);
-        if (!char) return;
-        this.bindCharId = charId;
-
-        const hint = document.getElementById('actorBindModalHint');
-        hint.textContent = '选择一名角色 IP 来饰演「' + char.name + '」';
+      openBindModal() {
+        this.bindSelection = [];
 
         this.renderBindModal();
         document.getElementById('actorBindModal').classList.add('active');
@@ -1314,64 +1135,80 @@ function goToStep(num) {
 
       closeBindModal() {
         document.getElementById('actorBindModal').classList.remove('active');
-        this.bindCharId = null;
+        this.bindSelection = [];
       },
 
       renderBindModal() {
         const grid = document.getElementById('actorBindGrid');
         const countEl = document.getElementById('actorBindCount');
+        const confirmBtn = document.getElementById('actorBindConfirmBtn');
         const actorKeys = this.getUserActorKeys();
+        this.bindSelection = this.bindSelection || [];
 
         if (actorKeys.length === 0) {
           grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何角色 IP<br/>请先创建或购买角色素材</div>';
           countEl.textContent = '';
+          if (confirmBtn) confirmBtn.disabled = true;
           return;
         }
 
-        const alreadyBound = this.characters
-          .filter(c => c.actorKey)
-          .map(c => c.actorKey);
-
         let html = '';
-        actorKeys.forEach((key, index) => {
+        actorKeys.forEach((key) => {
           const actor = ACTOR_IP_DB[key];
-          const isBoundToOther = alreadyBound.includes(key);
-          const actorNum = index + 1;
-          html += '<div class="actor-bind-item js-bind-select" data-actor-key="' + key + '" style="' + (isBoundToOther ? 'opacity:0.5;' : '') + '">'
-            + '<img class="abi-avatar" src="' + actor.image + '" alt="" onerror="this.outerHTML=\'<div class=abi-avatar style=display:grid;place-items:center;font-size:1.2rem;>🎭</div>\'" />'
-            + '<div class="abi-info">'
-            + '<div class="abi-name">' + this.escapeHtml(actor.name) + ' <span style="font-size:0.78rem;color:var(--accent);font-weight:500;">角色IP' + actorNum + '</span></div>'
+          const isBound = this.characters.includes(key);
+          const isSelected = this.bindSelection.includes(key);
+          const checkBox = isBound
+            ? '<span style="width:20px;height:20px;border-radius:6px;border:1px solid var(--border);background:rgba(0,0,0,0.04);flex-shrink:0;display:grid;place-items:center;color:var(--text-muted);font-size:0.65rem;">—</span>'
+            : '<span style="width:20px;height:20px;border-radius:6px;border:2px solid ' + (isSelected ? 'var(--accent)' : '#d5dfeb') + ';background:' + (isSelected ? 'var(--accent)' : '#fff') + ';flex-shrink:0;display:grid;place-items:center;color:#fff;font-size:0.7rem;transition:all 0.18s;">' + (isSelected ? '✓' : '') + '</span>';
 
-            + '<div class="abi-desc">' + this.escapeHtml(actor.description || '') + '</div>'
-            + (isBoundToOther ? '<div style="font-size:0.7rem;color:var(--warning);margin-top:2px;">⚠️ 已被其他角色绑定</div>' : '')
+          html += '<div class="actor-bind-item js-bind-select' + (isBound ? ' is-bound' : '') + (isSelected ? ' is-selected' : '') + '" data-actor-key="' + key + '">'
+            + checkBox
+            + '<img class="abi-avatar" src="' + actor.image + '" alt="' + this.escapeHtml(actor.name) + '" onerror="this.outerHTML=\'<div class=abi-avatar style=display:grid;place-items:center;font-size:1.2rem;>🎭</div>\'" />'
+            + '<div class="abi-info">'
+            + '<div class="abi-name">' + this.escapeHtml(actor.name) + '</div>'
+            + '<div class="abi-id">IP：' + (ACTOR_IP_ID[key] || '—') + '</div>'
+            + (isBound ? '<div style="font-size:0.65rem;color:var(--text-muted);">已绑定</div>' : '')
             + '</div></div>';
         });
 
         grid.innerHTML = html;
-        countEl.textContent = '持有 ' + actorKeys.length + ' 个角色 IP';
+        const remaining = Math.max(0, 5 - this.characters.length);
+        countEl.textContent = '已选 ' + this.bindSelection.length + ' 个';
+        if (confirmBtn) confirmBtn.disabled = this.bindSelection.length === 0;
 
-        // Bind click events
         grid.querySelectorAll('.js-bind-select').forEach(el => {
           el.addEventListener('click', () => {
+            if (el.classList.contains('is-bound')) return;
             const key = el.dataset.actorKey;
-            // Check if already bound to another character
-            const boundChar = this.characters.find(c => c.actorKey === key && c.id !== this.bindCharId);
-            if (boundChar) {
-              this.showToast('该角色 IP 已被角色「' + boundChar.name + '」绑定');
-              return;
+            const idx = this.bindSelection.indexOf(key);
+            if (idx !== -1) {
+              this.bindSelection.splice(idx, 1);
+            } else {
+              const maxSelect = Math.max(0, 5 - this.characters.length);
+              if (this.bindSelection.length >= maxSelect) {
+                this.showToast('最多还可绑定 ' + maxSelect + ' 个角色 IP');
+                return;
+              }
+              this.bindSelection.push(key);
             }
-            this.bindActor(this.bindCharId, key);
+            this.renderBindModal();
           });
         });
       },
 
-      bindActor(charId, actorKey) {
-        const char = this.characters.find(c => c.id === charId);
-        if (!char) return;
-        char.actorKey = actorKey;
+      confirmBindModal() {
+        const added = [];
+        (this.bindSelection || []).forEach((key) => {
+          if (!this.characters.includes(key) && this.characters.length < 5) {
+            this.characters.push(key);
+            added.push(key);
+          }
+        });
         this.closeBindModal();
         this.render();
-        this.showToast('✅ 已绑定角色「' + ACTOR_IP_DB[actorKey].name + '」');
+        if (added.length > 0) {
+          this.showToast('✅ 已绑定 ' + added.length + ' 个角色 IP');
+        }
       },
 
       saveDraft() {
