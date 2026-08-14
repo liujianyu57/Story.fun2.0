@@ -776,14 +776,14 @@
         <div class="form-row full">
           <div class="form-group">
             <label>短剧标题</label>
-            <input type="text" placeholder="请输入短剧标题" maxlength="30" />
+            <input type="text" id="pTitle" placeholder="请输入短剧标题" maxlength="30" />
             <span class="char-count">0/30</span>
           </div>
         </div>
         <div class="form-row full">
           <div class="form-group">
             <label>简介</label>
-            <textarea placeholder="讲述一个什么样的故事..."></textarea>
+            <textarea id="pDesc" placeholder="讲述一个什么样的故事..."></textarea>
             <span class="char-count">0/500</span>
           </div>
         </div>
@@ -800,14 +800,14 @@
           <div class="form-group">
             <label>标签</label>
             <div class="tag-options">
-              <span class="tag-option">AI 生成</span>
-              <span class="tag-option">热门改编</span>
-              <span class="tag-option">原创剧本</span>
-              <span class="tag-option">连载中</span>
-              <span class="tag-option">已完结</span>
-              <span class="tag-option">互动叙事</span>
-              <span class="tag-option">多人共创</span>
-              <span class="tag-option">影视级</span>
+              <span class="tag-option" data-tag="AI 生成">AI 生成</span>
+              <span class="tag-option" data-tag="热门改编">热门改编</span>
+              <span class="tag-option" data-tag="原创剧本">原创剧本</span>
+              <span class="tag-option" data-tag="连载中">连载中</span>
+              <span class="tag-option" data-tag="已完结">已完结</span>
+              <span class="tag-option" data-tag="互动叙事">互动叙事</span>
+              <span class="tag-option" data-tag="多人共创">多人共创</span>
+              <span class="tag-option" data-tag="影视级">影视级</span>
             </div>
           </div>
         </div>
@@ -1062,8 +1062,6 @@ function goToStep(num) {
       },
 
       removeActor(actorKey) {
-        const name = ACTOR_IP_DB[actorKey] ? ACTOR_IP_DB[actorKey].name : actorKey;
-        if (!confirm('确定要移除角色 IP「' + name + '」吗？')) return;
         this.characters = this.characters.filter(k => k !== actorKey);
         this.render();
       },
@@ -1146,7 +1144,7 @@ function goToStep(num) {
         this.bindSelection = this.bindSelection || [];
 
         if (actorKeys.length === 0) {
-          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何角色 IP<br/>请先创建或购买角色素材</div>';
+          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何角色 IP<br/><button class="char-bind-btn" style="margin-top:14px;max-width:240px;" onclick="charManager.gotoMarket()">前往角色IP市场 →</button></div>';
           countEl.textContent = '';
           if (confirmBtn) confirmBtn.disabled = true;
           return;
@@ -1213,6 +1211,26 @@ function goToStep(num) {
 
       saveDraft() {
         this.showToast('草稿已保存！');
+      },
+
+      gotoMarket() {
+        // 点击瞬间保存草稿，避免跳转后表单内容丢失
+        try {
+          const coverZone = document.querySelector('.cover-upload');
+          const coverImg = coverZone ? coverZone.querySelector('img') : null;
+          const draft = {
+            title: document.getElementById('pTitle') ? document.getElementById('pTitle').value : '',
+            desc: document.getElementById('pDesc') ? document.getElementById('pDesc').value : '',
+            cover: coverImg ? coverImg.src : '',
+            tags: Array.from(document.querySelectorAll('#step1 .tag-option.selected')).map(el => el.textContent.trim()),
+            actors: this.characters.slice(),
+            videos: batchUpload.files.map(f => f.originalName),
+            ts: Date.now(),
+            from: 'publish'
+          };
+          localStorage.setItem('publish_draft', JSON.stringify(draft));
+        } catch (e) {}
+        location.href = 'actors.html';
       },
 
       escapeHtml(str) {
@@ -1666,6 +1684,40 @@ const batchUpload = {
 document.addEventListener('DOMContentLoaded', () => {
   batchUpload.init();
   charManager.init();
+
+  // 从角色市场返回时恢复草稿
+  try {
+    const draft = JSON.parse(localStorage.getItem('publish_draft') || 'null');
+    if (draft && draft.from === 'publish') {
+      localStorage.removeItem('publish_draft');
+      const tEl = document.getElementById('pTitle');
+      const dEl = document.getElementById('pDesc');
+      if (draft.title && tEl) tEl.value = draft.title;
+      if (draft.desc && dEl) dEl.value = draft.desc;
+      if (draft.cover) {
+        const zone = document.querySelector('.cover-upload');
+        const zoneInput = zone ? zone.querySelector('input') : null;
+        if (zone && draft.cover) {
+          zone.innerHTML = '<div style="display:flex;align-items:center;gap:16px;justify-content:center;"><img src="' + draft.cover + '" style="width:100px;height:80px;border-radius:12px;object-fit:cover;border:1px solid var(--border);" /><div style="text-align:left;"><p style="color:var(--accent);font-weight:600;margin:0;font-size:0.95rem;">✅ 已恢复封面</p></div></div>';
+          if (zoneInput) { zone.appendChild(zoneInput); }
+        }
+      }
+      (draft.tags || []).forEach(tag => {
+        document.querySelectorAll('#step1 .tag-option').forEach(el => {
+          if (el.textContent.trim() === tag) el.classList.add('selected');
+        });
+      });
+      if (draft.actors && draft.actors.length) {
+        charManager.characters = draft.actors.slice();
+        charManager.render();
+      }
+      if (draft.videos && draft.videos.length) {
+        charManager.showToast('已恢复草稿，请重新选择视频文件');
+      } else {
+        charManager.showToast('已恢复草稿');
+      }
+    }
+  } catch (e) {}
 
   // Initialize step 1 navigation bar
   goToStep(1);

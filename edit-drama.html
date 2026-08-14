@@ -659,8 +659,6 @@
           showToast('该角色 IP 已通过审核，不可移除');
           return;
         }
-        const name = ACTOR_IP_DB[actorKey] ? ACTOR_IP_DB[actorKey].name : actorKey;
-        if (!confirm('确定要移除角色 IP「' + name + '」吗？')) return;
         this.characters = this.characters.filter(k => k !== actorKey);
         this.render();
       },
@@ -749,7 +747,7 @@
         this.bindSelection = this.bindSelection || [];
 
         if (actorKeys.length === 0) {
-          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何角色 IP<br/>请先创建或购买角色素材</div>';
+          grid.innerHTML = '<div class="actor-bind-empty"><div class="empty-icon">🎭</div>您还没有持有任何角色 IP<br/><button class="char-bind-btn" style="margin-top:14px;max-width:240px;" onclick="charManager.gotoMarket()">前往角色IP市场 →</button></div>';
           countEl.textContent = '';
           if (confirmBtn) confirmBtn.disabled = true;
           return;
@@ -812,6 +810,22 @@
         if (added.length > 0) {
           showToast('✅ 已绑定 ' + added.length + ' 个角色 IP');
         }
+      },
+
+      gotoMarket() {
+        // 点击瞬间保存草稿，避免跳转后表单内容丢失
+        try {
+          const draft = {
+            title: document.getElementById('editDramaName') ? document.getElementById('editDramaName').value : '',
+            desc: document.getElementById('editDescription') ? document.getElementById('editDescription').value : '',
+            cover: coverUploadData.dataUrl || '',
+            tags: Array.from(document.querySelectorAll('#step1 .tag-option.selected')).map(el => el.dataset.tag),
+            actors: this.characters.slice(),
+            from: 'edit'
+          };
+          localStorage.setItem('edit_draft', JSON.stringify(draft));
+        } catch (e) {}
+        location.href = 'actors.html';
       },
 
       escapeHtml(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
@@ -1312,6 +1326,37 @@
       setupCoverUpload();
       charManager.init();
       batchUpload.init();
+
+      // 从角色市场返回时恢复草稿
+      try {
+        const draft = JSON.parse(localStorage.getItem('edit_draft') || 'null');
+        if (draft && draft.from === 'edit') {
+          localStorage.removeItem('edit_draft');
+          const dEl = document.getElementById('editDescription');
+          if (draft.desc && dEl) dEl.value = draft.desc;
+          if (draft.cover) {
+            coverUploadData.dataUrl = draft.cover;
+            const zone = document.getElementById('coverUploadZone');
+            if (zone) {
+              zone.innerHTML = '<div style="display:flex;align-items:center;gap:16px;justify-content:center;"><img src="' + draft.cover + '" style="width:100px;height:70px;border-radius:12px;object-fit:cover;border:1px solid var(--border);" /><div style="text-align:left;"><p style="color:var(--accent);font-weight:600;margin:0;font-size:0.95rem;">✅ 已恢复封面</p></div></div>';
+              zone.insertAdjacentHTML('beforeend', '<input type="file" id="coverFileInput" accept="image/*" />');
+              document.getElementById('coverFileInput').addEventListener('change', (e) => {
+                if (e.target.files.length > 0) { handleCoverFile(e.target.files[0]); e.target.value = ''; }
+              });
+            }
+          }
+          (draft.tags || []).forEach(tag => {
+            document.querySelectorAll('#step1 .tag-option').forEach(el => {
+              if (el.dataset.tag === tag) el.classList.add('selected');
+            });
+          });
+          if (draft.actors && draft.actors.length) {
+            charManager.characters = draft.actors.slice();
+            charManager.render();
+          }
+          showToast('已恢复草稿');
+        }
+      } catch (e) {}
 
       // Calculate and display the 7-day deadline, accurate to seconds
       const bindDeadlineEl = document.getElementById('bindDeadline');
