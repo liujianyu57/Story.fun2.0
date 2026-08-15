@@ -13,6 +13,8 @@ const PRIVY_MOCK_USER = {
   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
   wallet: '0x7A2b3fD81234567890abcdef1234567890abCDEF',
   isLoggedIn: false,
+  // 已绑定的邀请码（一次性，绑定后不可修改；null 表示未绑定）
+  inviteCode: null,
   // 登录方式：'email' | 'wallet' | null
   authMethod: null,
   // 用户持有的角色 NFT 列表（持有 1 个及以上即可与任意角色进行 AI 对话）
@@ -512,6 +514,109 @@ function closeLoginModal() {
 }
 
 // ============================================================
+//  邀请码绑定（选填、一次性；登录成功后自动引导）
+// ============================================================
+
+/* 打开邀请码绑定弹窗
+   force=true 表示用户主动从入口进入（跳过也会记录已提示过）
+   已绑定则直接提示不可修改 */
+function openInviteCodeModal(force) {
+  if (currentUser.inviteCode) {
+    showToast('邀请码已绑定，不可修改');
+    return;
+  }
+  // 确保弹窗样式已注入（无 auth-container 的页面不会自动注入）
+  if (typeof injectAuthStyles === 'function') {
+    try { injectAuthStyles(); } catch (e) {}
+  }
+  // 移除已存在的弹窗
+  var existing = document.getElementById('inviteCodeModal');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.className = 'auth-modal-overlay';
+  overlay.id = 'inviteCodeModal';
+  // 兜底：显式设置定位，避免样式缺失导致弹窗出现在页面底部
+  overlay.style.position = 'fixed';
+  overlay.style.inset = '0';
+  overlay.style.zIndex = '9999';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.padding = '24px';
+  overlay.style.background = 'rgba(15,23,42,0.4)';
+  overlay.style.backdropFilter = 'blur(4px)';
+  overlay.style.opacity = '0';
+  overlay.style.visibility = 'hidden';
+  overlay.style.transition = 'all 0.3s ease';
+  overlay.style.pointerEvents = 'none';
+  setTimeout(function() {
+    overlay.style.opacity = '1';
+    overlay.style.visibility = 'visible';
+    overlay.style.pointerEvents = 'auto';
+  }, 30);
+  overlay.innerHTML =
+    '<div class="auth-modal">' +
+      '<button class="auth-modal-close" onclick="closeInviteCodeModal()">✕</button>' +
+      '<div class="auth-modal-header">' +
+        '<div class="auth-modal-logo">🎁</div>' +
+        '<h2>绑定邀请码</h2>' +
+      '</div>' +
+      '<div class="auth-modal-body">' +
+        '<input type="text" id="inviteCodeInput" placeholder="输入邀请码（选填）" maxlength="32" ' +
+          'style="width:100%;padding:12px 16px;border:1px solid var(--border,#deeaf7);border-radius:14px;font-size:0.95rem;font-family:inherit;outline:none;background:var(--surface,#fff);color:var(--text,#13202e);transition:border-color .2s,box-shadow .2s;" ' +
+          'oninput="var c=this.value;var s=document.getElementById(\'inviteCodeConfirmBtn\');if(s)s.disabled=!c.trim();" />' +
+        '<div style="display:flex;gap:10px;margin-top:4px;">' +
+          '<button class="button-ghost" style="flex:1;padding:12px;border-radius:999px;border:none;background:rgba(0,0,0,.05);color:var(--text,#13202e);font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="skipInviteCode()">跳过</button>' +
+          '<button class="button" id="inviteCodeConfirmBtn" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#00b388);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;disabled" onclick="confirmInviteCode()">确认绑定</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  requestAnimationFrame(function() { overlay.classList.add('active'); });
+  document.body.style.overflow = 'hidden';
+  var input = document.getElementById('inviteCodeInput');
+  if (input) setTimeout(function() { input.focus(); }, 350);
+
+  // 记录已提示过，避免每次登录都弹
+  try { localStorage.setItem('storyfun_invite_prompted', '1'); } catch (e) {}
+}
+
+function closeInviteCodeModal() {
+  var modal = document.getElementById('inviteCodeModal');
+  if (modal) {
+    modal.classList.remove('active');
+    setTimeout(function() { modal.remove(); document.body.style.overflow = ''; }, 300);
+  }
+}
+
+function confirmInviteCode() {
+  var input = document.getElementById('inviteCodeInput');
+  if (!input) return;
+  var code = input.value.trim();
+  if (!code) { showToast('请输入邀请码'); return; }
+  currentUser.inviteCode = code;
+  saveUserToStorage(currentUser);
+  closeInviteCodeModal();
+  document.dispatchEvent(new CustomEvent('invite-code-bound'));
+  showToast('✅ 邀请码已绑定');
+}
+
+function skipInviteCode() {
+  closeInviteCodeModal();
+  showToast('已跳过，可在邀请页随时绑定');
+}
+
+/* 登录成功后调用：未绑定且未提示过 → 自动弹出（延迟 1s，避免打断登录提示） */
+function maybePromptInviteCode() {
+  if (currentUser.inviteCode) return;
+  try {
+    if (localStorage.getItem('storyfun_invite_prompted') === '1') return;
+  } catch (e) {}
+  setTimeout(function() { openInviteCodeModal(); }, 1200);
+}
+
+// ============================================================
 //  模拟登录
 // ============================================================
 function mockLogin(method) {
@@ -562,6 +667,9 @@ function mockLogin(method) {
 
     // 触发 auth-ready 事件，通知其他页面更新
     document.dispatchEvent(new CustomEvent('auth-ready'));
+
+    // 登录成功后引导绑定邀请码（未绑定且未提示过才自动弹）
+    maybePromptInviteCode();
   }, 800);
 }
 

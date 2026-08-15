@@ -6,7 +6,7 @@
   <title>Story.fun | 邀请</title>
   <style>
     :root {
-      --bg: #f5faff;
+      --bg: #ffffff;
       --surface: #ffffff;
       --accent: #00b388;
       --accent-soft: rgba(0, 179, 136, 0.10);
@@ -26,7 +26,7 @@
     }
     * { box-sizing: border-box; margin: 0; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
-    .app-shell { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+    .app-shell { max-width: 680px; margin: 0 auto; padding: 24px 32px; }
     @media (max-width: 640px) { .app-shell { padding: 16px; } }
 
     .page-header {
@@ -45,10 +45,7 @@
 
     /* ===== Grouped List（苹果简约风） ===== */
     .group {
-      background: var(--surface);
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
     .group-label {
       padding: 0 20px 6px;
@@ -78,30 +75,6 @@
     .metric-value.green { color: var(--story-green); }
     .metric-value .unit { font-size: 0.72rem; font-weight: 500; color: var(--text-tertiary); }
 
-    /* ===== 邀请记录（并入白底分组一行） ===== */
-    .pool-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 2px;
-    }
-    .pool-label {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--text-tertiary);
-      letter-spacing: 0.01em;
-    }
-    .pool-value {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--gold);
-      line-height: 1.2;
-    }
-    .pool-unit {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--text-tertiary);
-    }
     .records-cta {
       display: flex;
       align-items: center;
@@ -117,15 +90,69 @@
       opacity: 0.75;
     }
 
+    /* ===== 本周邀请奖池横幅（超大号数值） ===== */
+    .pool-banner {
+      background: linear-gradient(135deg, #fff7e6 0%, #ffefd5 55%, #ffe9c9 100%);
+      border: 1px solid rgba(245,176,66,0.35);
+      border-radius: 18px;
+      padding: 26px 24px 24px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .pool-banner .pb-left { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .pool-banner .pb-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #d4942a;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pool-banner .pb-value {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+    .pool-banner .pb-unit {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #d4942a;
+      margin-left: 6px;
+      letter-spacing: 0.02em;
+    }
+
     /* ===== 邀请链接（白底分组） ===== */
+    /* 绑定邀请码入口行（顶部、仅未绑定显示） */
+    .invite-bind-entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 4px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .invite-bind-entry:hover { opacity: 0.75; }
+    .invite-bind-entry:active { opacity: 0.6; }
+
     .invite-card {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 20px;
+      padding: 8px 0 28px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 28px;
     }
     .invite-card h2 {
-      margin: 0 0 4px;
+      margin: 0 0 16px;
       font-size: 1rem;
       font-weight: 600;
     }
@@ -138,11 +165,10 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 4px 4px 4px 16px;
+      padding: 12px 0 12px 4px;
+      border-bottom: 1px solid var(--border-light);
     }
+    .invite-link-row:last-child { border-bottom: none; }
     .invite-link-row .link-text {
       flex: 1;
       font-size: 0.88rem;
@@ -153,81 +179,72 @@
       white-space: nowrap;
       user-select: all;
     }
-    .invite-link-row .copy-btn {
+    .invite-code-label {
       flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.85rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      color: var(--text-tertiary);
+      letter-spacing: 0.03em;
     }
-    .invite-link-row .copy-btn:hover { opacity: 0.85; }
-    .invite-link-row .copy-btn:active { transform: scale(0.97); }
-
-    /* ===== Section（白底分组） ===== */
-    .section-card {
+    /* 高级复制图标按钮 */
+    .icon-copy-btn {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
       background: var(--surface);
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 20px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      padding: 0;
+      line-height: 1;
+    }
+    .icon-copy-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .icon-copy-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(0,179,136,0.15);
+    }
+    .icon-copy-btn:active { transform: scale(0.92); }
+    .icon-copy-btn.copied {
+      border-color: var(--story-green);
+      background: rgba(5,223,114,0.10);
+      color: var(--story-green);
+    }
+    .icon-copy-btn.copied svg { animation: icon-pop 0.25s ease; }
+    @keyframes icon-pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ===== Section ===== */
+    .section-card {
+      margin-bottom: 28px;
     }
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 20px 0;
+      padding: 4px 0 12px;
     }
     .section-header h3 {
       margin: 0;
       font-size: 0.95rem;
       font-weight: 600;
-    }
-
-    /* ===== 返佣比例 ===== */
-    .level-list {
-      display: flex;
-      flex-direction: column;
-    }
-    .level-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border-light);
-    }
-    .level-row:last-child { border-bottom: none; }
-    .level-row .level-badge {
-      flex-shrink: 0;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-    .level-row .level-badge.lv1 { color: #3b82f6; }
-    .level-row .level-badge.lv2 { color: var(--accent); }
-    .level-row .level-badge.lv3 { color: #d4942a; }
-    .level-row .level-badge.lv4 { color: #d4505e; }
-    .level-row .level-badge.lv5 { color: #7c3aed; }
-    .level-row .level-pct {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      min-width: 44px;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-    .level-row .level-desc {
-      flex: 1;
-      min-width: 0;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      text-align: left;
     }
 
     /* ===== Invited Users Modal ===== */
@@ -306,30 +323,6 @@
       overflow-y: auto;
       flex: 1;
     }
-    .invitees-modal-summary {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding: 16px 0 14px;
-      border-bottom: 1px solid var(--border-light);
-      flex-shrink: 0;
-    }
-    .invitees-modal-summary .stat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .invitees-modal-summary .stat-item .stat-num {
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    .invitees-modal-summary .stat-item .stat-num.blue { color: #3b82f6; }
-    .invitees-modal-summary .stat-item .stat-num.green { color: var(--story-green); }
-    .invitees-modal-summary .stat-item .stat-label {
-      font-size: 0.72rem;
-      color: var(--text-tertiary);
-    }
     .invitees-list {
       display: flex;
       flex-direction: column;
@@ -368,22 +361,6 @@
       font-size: 0.75rem;
       color: var(--text-tertiary);
       margin-top: 1px;
-    }
-    .invitee-row .invitee-status {
-      flex-shrink: 0;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 99px;
-      white-space: nowrap;
-    }
-    .invitee-row .invitee-status.active {
-      background: rgba(0,179,136,0.10);
-      color: var(--accent);
-    }
-    .invitee-row .invitee-status.inactive {
-      background: rgba(139,141,152,0.10);
-      color: var(--text-tertiary);
     }
     .invitees-empty {
       display: flex;
@@ -466,79 +443,53 @@
 
     <!-- ===== Page Header ===== -->
     <div class="page-header">
-      <h1>邀请</h1>
+      <h1>邀请好友，赚取STORY</h1>
+    </div>
+
+    <!-- ===== 本周邀请奖池（超大号数值） ===== -->
+    <div class="pool-banner">
+      <div class="pb-left">
+        <div class="pb-label">🏆 本周邀请奖池</div>
+        <div class="pb-value">12,500 <span class="pb-unit">STORY</span></div>
+      </div>
+    </div>
+
+    <!-- ===== 邀请链接（置顶：复制邀请链接/邀请码） ===== -->
+    <div class="invite-card">
+      <h2>分享专属邀请链接或邀请码</h2>
+      <div class="invite-link-row">
+        <span class="invite-code-label">邀请链接</span>
+        <span class="link-text" id="inviteLink">https://story.fun/invite/7A2b3fD8</span>
+        <button class="icon-copy-btn" id="copyLinkBtn" onclick="copyInviteLink()" aria-label="复制邀请链接" title="复制">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <div class="invite-link-row">
+        <span class="invite-code-label">邀请码</span>
+        <span class="link-text" id="inviteCode">SF-7A2B3F</span>
+        <button class="icon-copy-btn" id="copyCodeBtn" onclick="copyInviteCode()" aria-label="复制邀请码" title="复制">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
     </div>
 
     <!-- ===== 概览指标（白底分组 + 竖线） ===== -->
     <div class="group" style="display: flex;">
       <div class="metric-cell" style="flex: 1; cursor: pointer;" onclick="openInviteesModal()">
-        <div class="metric-label" style="display: flex; align-items: center; gap: 6px;">累计邀请人数 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b8d98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="metric-label" style="display: flex; align-items: center; gap: 6px;">已邀请 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b8d98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
         <div class="metric-value blue" id="mInviteCount">6</div>
       </div>
       <div class="vertical-divider"></div>
-      <div class="metric-cell" style="flex: 1;">
-        <div class="metric-label">累计邀请收益 <span style="opacity:.7">STORY</span></div>
-        <div class="metric-value green" id="mTotalCommission">12,500</div>
+      <div class="metric-cell" style="flex: 1; cursor: pointer;" onclick="location.href='rewards.html'">
+        <div class="metric-label" style="display: flex; align-items: center; gap: 6px;">收益 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b8d98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="metric-value green" id="mTotalCommission">12,500 <span class="unit">STORY</span></div>
       </div>
     </div>
 
-    <!-- ===== 本周邀请奖池 + 收益记录（白底分组一行） ===== -->
-    <div class="group" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;">
-      <div class="pool-wrapper">
-        <div class="pool-label">本周邀请奖池</div>
-        <div class="pool-value" id="weeklyPool">12,500 <span class="pool-unit">STORY</span></div>
-      </div>
-      <div class="records-cta" onclick="goToRewards()">
-        <span>查看邀请收益记录</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </div>
-    </div>
-
-    <!-- ===== Invite Link ===== -->
-    <div class="invite-card">
-      <h2>邀请链接</h2>
-      <p class="sub">好友通过你的链接注册，签约并派遣角色，你将获得额外 STORY 奖励</p>
-      <div class="invite-link-row">
-        <span class="link-text" id="inviteLink">https://story.fun/invite/7A2b3fD8</span>
-        <button class="copy-btn" onclick="copyInviteLink()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          复制链接
-        </button>
-      </div>
-    </div>
-
-    <!-- ===== 返佣比例（常驻直排） ===== -->
-    <div class="section-card">
-      <div class="section-header">
-        <h3>返佣比例</h3>
-      </div>
-      <div class="level-list">
-        <div class="level-row">
-          <span class="level-badge lv1">Lv 1</span>
-          <span class="level-desc">你直接邀请的好友</span>
-          <span class="level-pct">10%</span>
-        </div>
-        <div class="level-row">
-          <span class="level-badge lv2">Lv 2</span>
-          <span class="level-desc">好友的好友</span>
-          <span class="level-pct">5%</span>
-        </div>
-        <div class="level-row">
-          <span class="level-badge lv3">Lv 3</span>
-          <span class="level-desc">三层间接</span>
-          <span class="level-pct">3%</span>
-        </div>
-        <div class="level-row">
-          <span class="level-badge lv4">Lv 4</span>
-          <span class="level-desc">四层间接</span>
-          <span class="level-pct">2%</span>
-        </div>
-        <div class="level-row">
-          <span class="level-badge lv5">Lv 5</span>
-          <span class="level-desc">五层间接</span>
-          <span class="level-pct">1%</span>
-        </div>
-      </div>
+    <!-- ===== 绑定邀请码入口（仅未绑定时显示，绑定后消失） ===== -->
+    <div class="invite-bind-entry" id="inviteBindEntry" style="display:none;" onclick="openInviteCodeModal(true)">
+      <span style="font-size:0.92rem;font-weight:600;color:var(--text);">绑定邀请码</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </div>
 
     <!-- ===== 邀请规则 Q&A ===== -->
@@ -547,28 +498,32 @@
         <h3>邀请规则</h3>
       </div>
       <div class="qa-item">
-        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>邀请奖励来自哪里？</div>
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>每周邀请奖池是什么？</div>
         <div class="qa-answer"><div class="qa-answer-inner">
-          邀请奖励来自挖矿池中独立的<b>邀请子池</b>（占总挖矿池 25%），不从被邀请人收益中扣除。邀请子池有独立周硬顶，触顶后按份额等比缩减。
+          每周邀请奖池是平台为邀请活动设立的<b>独立奖励池</b>，用于奖励当周邀请行为，不会从被邀请人收益中扣除。奖池设有周发放上限，触顶后按份额等比缩减，每周一重新统计发放。
         </div></div>
       </div>
       <div class="qa-item">
         <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>邀请奖励怎么计算？</div>
         <div class="qa-answer"><div class="qa-answer-inner">
-          你获得的返佣 = 有效好友的<b>实际产出 STORY</b> × <b>返佣比例</b><br><br>
+          你获得的返佣 = 好友的<b>实际产出 STORY</b> × <b>返佣比例</b><br><br>
           例如：你的好友本周实得 1000 STORY，你获得 1000 × 10% = <b>100 STORY</b>。
+        </div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>返佣比例是多少？</div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          Lv 1 你直接邀请的好友 <b>10%</b><br>
+          Lv 2 好友的好友 <b>5%</b><br>
+          Lv 3 三层间接 <b>3%</b><br>
+          Lv 4 四层间接 <b>2%</b><br>
+          Lv 5 五层间接 <b>1%</b>
         </div></div>
       </div>
       <div class="qa-item">
         <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>邀请奖励什么时候结算？</div>
         <div class="qa-answer"><div class="qa-answer-inner">
           邀请奖励与经纪人页面的片酬在同一周期统一结算：<b>每周一 00:00 (UTC) 截止统计</b>，结算后可前往收益页领取。
-        </div></div>
-      </div>
-      <div class="qa-item">
-        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>有效邀请用户怎么定义？</div>
-        <div class="qa-answer"><div class="qa-answer-inner">
-          被邀请人在经纪人页面<b>实际获得过 STORY</b>，或进行过<b>付费</b>，才计为有效下线。邀请关系一经建立不可更改。
         </div></div>
       </div>
     </div>
@@ -580,25 +535,11 @@
     <div class="invitees-modal" onclick="event.stopPropagation()">
       <div class="invitees-modal-header">
         <div>
-          <h2>直接下级用户 <span class="header-hint" id="modalInviteeTotal"></span></h2>
+          <h2>已邀请</h2>
         </div>
         <button class="invitees-modal-close" onclick="closeInviteesModal()">✕</button>
       </div>
       <div class="invitees-modal-body">
-        <div class="invitees-modal-summary">
-          <div class="stat-item">
-            <div class="stat-num blue" id="modalTotalCount">0</div>
-            <div class="stat-label">总人数</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num green" id="modalValidCount">0</div>
-            <div class="stat-label">有效用户</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num" style="color: var(--text-tertiary);" id="modalInvalidCount">0</div>
-            <div class="stat-label">待激活</div>
-          </div>
-        </div>
         <div class="invitees-list" id="inviteesList"></div>
       </div>
     </div>
@@ -626,6 +567,17 @@
       toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
     }
 
+    function flashCopied(btnId) {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" style="stroke:currentColor;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"/></svg>';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      }, 900);
+    }
+
     function copyInviteLink() {
       const link = document.getElementById('inviteLink').textContent;
       navigator.clipboard.writeText(link).catch(() => {
@@ -633,7 +585,19 @@
         ta.value = link; document.body.appendChild(ta);
         ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
       });
+      flashCopied('copyLinkBtn');
       showToast('✅ 邀请链接已复制');
+    }
+
+    function copyInviteCode() {
+      const code = document.getElementById('inviteCode').textContent;
+      navigator.clipboard.writeText(code).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = code; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+      });
+      flashCopied('copyCodeBtn');
+      showToast('✅ 邀请码已复制');
     }
 
     // ══════════════════════════════════════════════
@@ -664,24 +628,31 @@
       document.body.style.overflow = '';
     }
 
+    // ══════════════════════════════════════════════
+    //  绑定邀请码入口（未登录或已绑定 → 隐藏）
+    // ══════════════════════════════════════════════
+
+    function updateInviteBindEntry() {
+      var entry = document.getElementById('inviteBindEntry');
+      if (!entry) return;
+      if (typeof currentUser === 'undefined' || !currentUser || !currentUser.isLoggedIn || currentUser.inviteCode) {
+        entry.style.display = 'none';
+      } else {
+        entry.style.display = '';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() { updateInviteBindEntry(); });
+    document.addEventListener('auth-ready', function() { updateInviteBindEntry(); });
+    document.addEventListener('invite-code-bound', function() { updateInviteBindEntry(); });
+
     function renderInvitees() {
-      var total = INVITEES_DB.length;
-      var validCount = INVITEES_DB.filter(function(u) { return u.valid; }).length;
-      var invalidCount = total - validCount;
-
-      // Update summary stats in modal
-      document.getElementById('modalTotalCount').textContent = total;
-      document.getElementById('modalValidCount').textContent = validCount;
-      document.getElementById('modalInvalidCount').textContent = invalidCount;
-      document.getElementById('modalInviteeTotal').textContent = '共 ' + total + ' 人';
-
-      // Render list
       var listEl = document.getElementById('inviteesList');
-      if (total === 0) {
+      if (INVITEES_DB.length === 0) {
         listEl.innerHTML =
           '<div class="invitees-empty">' +
           '  <div class="empty-icon">👥</div>' +
-          '  <p>暂无直接下级用户</p>' +
+          '  <p>暂无已邀请</p>' +
           '</div>';
         return;
       }
@@ -689,17 +660,13 @@
       var html = '';
       for (var i = 0; i < INVITEES_DB.length; i++) {
         var u = INVITEES_DB[i];
-        var statusClass = u.valid ? 'active' : 'inactive';
-        var statusLabel = u.valid ? '有效用户' : '待激活';
-        var metaText = '注册于 ' + u.joined;
         html +=
           '<div class="invitee-row">' +
           '  <img class="invitee-avatar" src="' + u.avatar + '" alt="' + u.name + '" loading="lazy" onerror="this.style.display=\'none\'" />' +
           '  <div class="invitee-info">' +
           '    <div class="invitee-name">' + u.name + '</div>' +
-          '    <div class="invitee-meta">' + metaText + '</div>' +
+          '    <div class="invitee-meta">注册于 ' + u.joined + '</div>' +
           '  </div>' +
-          '  <span class="invitee-status ' + statusClass + '">' + statusLabel + '</span>' +
           '</div>';
       }
       listEl.innerHTML = html;
