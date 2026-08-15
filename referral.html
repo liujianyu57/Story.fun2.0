@@ -26,16 +26,38 @@
     }
     * { box-sizing: border-box; margin: 0; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
-    .app-shell { max-width: 680px; margin: 0 auto; padding: 24px 32px; }
-    @media (max-width: 640px) { .app-shell { padding: 16px; } }
+    @media (min-width: 769px) { body { padding-top: 56px; } }
+    .app-shell { max-width: 680px; margin: 0 auto; padding: 24px 32px calc(24px + env(safe-area-inset-bottom)); }
+    @media (max-width: 640px) { .app-shell { padding: 16px calc(16px) calc(16px + env(safe-area-inset-bottom)); } }
 
     .page-header {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 28px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      margin-top: 8px;
       margin-bottom: 28px;
     }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.05);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-btn:hover { background: rgba(0,0,0,0.10); }
+    .back-btn:active { transform: scale(0.92); }
+    .back-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .page-header h1 {
       margin: 0;
       font-size: 1.75rem;
@@ -443,6 +465,9 @@
 
     <!-- ===== Page Header ===== -->
     <div class="page-header">
+      <button class="back-btn" onclick="history.back()" aria-label="返回" title="返回">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
       <h1>邀请好友，赚取STORY</h1>
     </div>
 
@@ -552,6 +577,7 @@
 
   <script src="load-sidebar.js"></script>
   <script src="auth.js"></script>
+  <script src="load-desktop-header.js"></script>
   <script>
     let toastTimer;
 
@@ -672,7 +698,5 @@
       listEl.innerHTML = html;
     }
   </script>
-  <div id="bottom-nav-placeholder"></div>
-  <script src="load-bottom-nav.js"></script>
 </body>
 </html>
