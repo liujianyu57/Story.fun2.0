@@ -62,6 +62,8 @@ function clearUserFromStorage() {
 }
 
 const storedUser = loadUserFromStorage();
+// 原型阶段：邀请码不持久化，刷新即重置（删除历史遗留的 inviteCode）
+if (storedUser) delete storedUser.inviteCode;
 let currentUser = storedUser ? { ...PRIVY_MOCK_USER, ...storedUser, balances: { ...PRIVY_MOCK_USER.balances } } : { ...PRIVY_MOCK_USER, isLoggedIn: false };
 
 // ============================================================
@@ -119,6 +121,11 @@ function injectAuthStyles() {
   .auth-modal-tos { text-align: center; color: var(--text-muted, #5e6f83); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
   .auth-modal-tos a { color: var(--accent, #00b388); text-decoration: none; }
   .auth-modal-tos a:hover { text-decoration: underline; }
+
+  /* ===== Auth Login Button ===== */
+  .auth-login-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid var(--border,#deeaf7);background:var(--surface,#fff);color:var(--text,#13202e);font-size:0.88rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+  .auth-login-btn:hover{border-color:var(--accent,#00b388);color:var(--accent,#00b388);background:rgba(0,179,136,.08)}
+  .auth-login-btn .auth-login-icon{font-size:1rem}
 
   /* ===== Auth Dropdown Styles ===== */
   .auth-user-menu{position:relative;display:inline-block}
@@ -518,13 +525,15 @@ function closeLoginModal() {
 // ============================================================
 
 /* 打开邀请码绑定弹窗
-   force=true 表示用户主动从入口进入（跳过也会记录已提示过）
+   mode='prompt' → 引导模式（登录后自动弹，按钮：跳过/确认，含小字提示）
+   mode='entry'  → 常驻模式（邀请页入口，按钮：取消/确定）
    已绑定则直接提示不可修改 */
-function openInviteCodeModal(force) {
+function openInviteCodeModal(mode) {
   if (currentUser.inviteCode) {
     showToast('邀请码已绑定，不可修改');
     return;
   }
+  var isPrompt = mode === 'prompt';
   // 确保弹窗样式已注入（无 auth-container 的页面不会自动注入）
   if (typeof injectAuthStyles === 'function') {
     try { injectAuthStyles(); } catch (e) {}
@@ -561,14 +570,18 @@ function openInviteCodeModal(force) {
       '<div class="auth-modal-header">' +
         '<div class="auth-modal-logo">🎁</div>' +
         '<h2>绑定邀请码</h2>' +
+        (isPrompt ? '<p>跳过后可在邀请页绑定</p>' : '') +
       '</div>' +
       '<div class="auth-modal-body">' +
-        '<input type="text" id="inviteCodeInput" placeholder="输入邀请码（选填）" maxlength="32" ' +
-          'style="width:100%;padding:12px 16px;border:1px solid var(--border,#deeaf7);border-radius:14px;font-size:0.95rem;font-family:inherit;outline:none;background:var(--surface,#fff);color:var(--text,#13202e);transition:border-color .2s,box-shadow .2s;" ' +
-          'oninput="var c=this.value;var s=document.getElementById(\'inviteCodeConfirmBtn\');if(s)s.disabled=!c.trim();" />' +
+        '<input type="text" id="inviteCodeInput" placeholder="输入邀请码" maxlength="32" ' +
+          'style="width:100%;padding:12px 16px;border:1px solid var(--border,#deeaf7);border-radius:14px;font-size:0.95rem;font-family:inherit;outline:none;background:var(--surface,#fff);color:var(--text,#13202e);transition:border-color .2s,box-shadow .2s;" />' +
         '<div style="display:flex;gap:10px;margin-top:4px;">' +
-          '<button class="button-ghost" style="flex:1;padding:12px;border-radius:999px;border:none;background:rgba(0,0,0,.05);color:var(--text,#13202e);font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="skipInviteCode()">跳过</button>' +
-          '<button class="button" id="inviteCodeConfirmBtn" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#00b388);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;disabled" onclick="confirmInviteCode()">确认绑定</button>' +
+          (isPrompt
+            ? '<button class="button-ghost" style="flex:1;padding:12px;border-radius:999px;border:none;background:rgba(0,0,0,.05);color:var(--text,#13202e);font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="skipInviteCode()">跳过</button>' +
+              '<button class="button" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#00b388);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="confirmInviteCode()">确认</button>'
+            : '<button class="button-ghost" style="flex:1;padding:12px;border-radius:999px;border:none;background:rgba(0,0,0,.05);color:var(--text,#13202e);font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="closeInviteCodeModal()">取消</button>' +
+              '<button class="button" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#00b388);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="confirmInviteCode()">确定</button>')
+          +
         '</div>' +
       '</div>' +
     '</div>';
@@ -578,8 +591,8 @@ function openInviteCodeModal(force) {
   var input = document.getElementById('inviteCodeInput');
   if (input) setTimeout(function() { input.focus(); }, 350);
 
-  // 记录已提示过，避免每次登录都弹
-  try { localStorage.setItem('storyfun_invite_prompted', '1'); } catch (e) {}
+  // 原型阶段：提示标记仅存内存，刷新后重置；引导弹窗只弹一次
+  if (isPrompt) window._invitePrompted = true;
 }
 
 function closeInviteCodeModal() {
@@ -594,12 +607,16 @@ function confirmInviteCode() {
   var input = document.getElementById('inviteCodeInput');
   if (!input) return;
   var code = input.value.trim();
-  if (!code) { showToast('请输入邀请码'); return; }
+  if (!code) {
+    // 邀请码选填：为空则直接关闭，不绑定、不提示
+    closeInviteCodeModal();
+    return;
+  }
   currentUser.inviteCode = code;
-  saveUserToStorage(currentUser);
+  // 原型阶段：仅存内存，不写入 storage，刷新即重置
   closeInviteCodeModal();
   document.dispatchEvent(new CustomEvent('invite-code-bound'));
-  showToast('✅ 邀请码已绑定');
+  showToast('绑定邀请码成功');
 }
 
 function skipInviteCode() {
@@ -610,10 +627,8 @@ function skipInviteCode() {
 /* 登录成功后调用：未绑定且未提示过 → 自动弹出（延迟 1s，避免打断登录提示） */
 function maybePromptInviteCode() {
   if (currentUser.inviteCode) return;
-  try {
-    if (localStorage.getItem('storyfun_invite_prompted') === '1') return;
-  } catch (e) {}
-  setTimeout(function() { openInviteCodeModal(); }, 1200);
+  if (window._invitePrompted) return;
+  setTimeout(function() { openInviteCodeModal('prompt'); }, 1200);
 }
 
 // ============================================================
