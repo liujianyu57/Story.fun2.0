@@ -24,6 +24,7 @@
     }
     * { box-sizing: border-box; margin: 0; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    @media (min-width: 769px) { body { padding-top: 56px; } }
     .app-shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
 
     /* ===== Auth Styles ===== */
@@ -269,6 +270,28 @@
     .char-bind-btn.bound { border-color: var(--accent); background: rgba(0,179,136,0.06); }
     .char-bind-actor-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 
+    /* ===== 调试：绑定有效期切换按钮 ===== */
+    .bind-expire-debug {
+      position: fixed;
+      right: 16px;
+      bottom: 90px;
+      z-index: 9999;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 16px rgba(27,45,71,0.12);
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .bind-expire-debug:hover { border-color: var(--accent); color: var(--accent); }
+    .bind-expire-debug:active { transform: scale(0.95); }
+
     @media (max-width: 1200px) { .char-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 900px) { .form-row { grid-template-columns: 1fr; } .steps-bar { border-radius: var(--radius); flex-wrap: nowrap; } .char-grid { grid-template-columns: repeat(2, 1fr); } .pricing-panel { padding: 20px; } .actor-bind-grid { grid-template-columns: 1fr; } }
     @media (max-width: 680px) { .form-panel-body, .form-panel-header, .form-panel-footer { padding-left: 20px; padding-right: 20px; } .char-grid { grid-template-columns: 1fr; } .upload-item { padding: 10px 12px; gap: 10px; border-radius: 14px; border: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.04); align-items: flex-start; flex-wrap: wrap; } .upload-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); } .upload-item .episode-num { width: 22px; font-size: 0.85rem; line-height: 44px; } .upload-item .thumb { width: 44px; height: 44px; border-radius: 12px; } .upload-item .info { flex: 1; min-width: 0; } .upload-item .info .name { font-size: 0.82rem; } .upload-item .info .meta { font-size: 0.7rem; gap: 6px; margin-top: 2px; flex-wrap: wrap; } .upload-item .title-edit input { font-size: 0.85rem; width: 100%; border-radius: 10px; margin-top: 6px; } .upload-item .item-actions { margin-left: auto; gap: 4px; flex-shrink: 0; align-self: flex-start; } }
@@ -317,7 +340,7 @@
             <label>封面图</label>
             <div class="cover-upload" id="coverUploadZone">
               <div class="upload-icon">🖼️</div>
-              <p>点击上传封面图片，支持拖拽<br /><strong>支持 JPG、PNG、WebP 格式</strong></p>
+              <p>点击上传封面图片，支持拖拽<br /><strong>支持 JPG、PNG</strong></p>
               <input type="file" id="coverFileInput" accept="image/*" />
             </div>
           </div>
@@ -396,8 +419,9 @@
 
         <!-- Limit Hint -->
         <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.7;display:flex;flex-direction:column;gap:4px;">
-          <div>每部短剧最多绑定 5 个角色 IP，上架 7 天内可新增，发布后不可解除或更换 · 截止 <strong style="color:var(--accent);" id="bindDeadline"></strong></div>
-          <div>绑定后，角色IP将关联短剧的完播和热度数据，用于升级角色和产出STORY。</div>
+          <div>· 每部短剧最多绑定 5 个角色 IP，上架 7 天内可新增，发布后不可解除或更换 · 截止 <strong style="color:var(--accent);" id="bindDeadline"></strong></div>
+          <div>· 绑定后，角色IP将关联短剧的完播和热度数据，用于升级角色和产出STORY。</div>
+          <div>· 绑定 IP 为选填，可不绑定直接发布。</div>
         </div>
       </div>
       <div class="form-panel-footer">
@@ -435,6 +459,7 @@
 
   <script src="load-sidebar.js"></script>
   <script src="auth.js"></script>
+  <script src="load-desktop-header.js"></script>
 
   <script>
     // === Step Navigation ===
@@ -728,6 +753,11 @@
       // ===== Actor Binding Methods =====
 
       openBindModal() {
+        // 调试：已超过 7 天新增窗口时拦截
+        if (window._bindExpired) {
+          showToast('已超过 7天窗口期，不可新增绑定角色IP');
+          return;
+        }
         this.bindSelection = [];
 
         this.renderBindModal();
@@ -1319,6 +1349,20 @@
       setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 2500);
     }
 
+    // === 调试：切换绑定有效期（未过期 / 已过期） ===
+    window._bindExpired = false;
+
+    function toggleBindExpireDebug() {
+      window._bindExpired = !window._bindExpired;
+      var btn = document.getElementById('bindExpireDebugBtn');
+      if (btn) {
+        btn.textContent = window._bindExpired ? '切换绑定有效期（已过期✓）' : '切换绑定有效期（未过期✓）';
+        btn.style.borderColor = window._bindExpired ? 'var(--danger)' : '';
+        btn.style.color = window._bindExpired ? 'var(--danger)' : '';
+      }
+      showToast(window._bindExpired ? '已切换到：绑定已过期（不可新增）' : '已切换到：绑定未过期（可新增）');
+    }
+
     // === Init ===
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('editDescription').addEventListener('input', updateDescCount);
@@ -1373,6 +1417,8 @@
       }
     });
   </script>
+  <button class="bind-expire-debug" id="bindExpireDebugBtn" onclick="toggleBindExpireDebug()">切换绑定有效期（未过期✓）</button>
+
   <div id="bottom-nav-placeholder"></div>
   <script src="load-bottom-nav.js"></script>
 </body>
