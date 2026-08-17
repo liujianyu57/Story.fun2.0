@@ -1468,7 +1468,7 @@
       { type: 'video', title: '打斗精彩片段', author: 'EVA', desc: '精彩打斗片段合集，每一帧都燃爆了！', cover: 'image/chengxiangfu_cover.jpg', link: '#' },
       { type: 'drama', title: '我卸甲后天下大乱了', cat: '古风', rt: 4.6, ep: '全12集', author: 'EVA', desc: '卸下铠甲那一刻，天下风云骤变。一段关于权谋、征战与抉择的古风传奇。', cover: 'image/xiejia_cover.jpg', actors: ['李云飞','赵无极','林梦瑶'], link: 'drama-player.html' },
       { type: 'drama', title: '丞相府今日开饭', cat: '喜剧', rt: 4.7, ep: '全24集', author: 'LENS', desc: '丞相府的厨房里藏着天下大势，一道菜引发的朝堂风波。古风美食喜剧。', cover: 'image/chengxiangfu_cover.jpg', actors: ['苏婉清','上官婉儿','Luna'], link: 'drama-player.html' },
-      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密，揭开千年谜团。', cover: 'image/cover-pyramid.png', link: '#' },
+      { type: 'video', title: '金字塔探险', author: 'NOVA', desc: '探索古老金字塔的秘密，揭开千年谜团。', cover: 'image/cover-pyramid.jpg', link: '#' },
     ];
 
     const SIMULATED_ACTORS = {
@@ -1552,12 +1552,6 @@
   <script src="load-bottom-nav.js"></script>
 <script src="auth.js"></script>
 <script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
-<script>
-function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
-function saveRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});list.unshift(q);if(list.length>8)list.pop();localStorage.setItem("dh_recent_searches",JSON.stringify(list))}
-function renderSearchDropdown(){var hotTags=["凤骨琉璃","打斗精彩片段","古风短剧","1011","AI短剧","苏婉清","星际拓荒者","时间管理局"];var hotEl=document.getElementById("sdHotTags");if(hotEl){hotEl.innerHTML=hotTags.map(function(t){return '<button class="sd-tag" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+t+'\';doSearch(\''+t+'\')">'+t+'</button>'}).join("")}var recent=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");var recentSection=document.getElementById("sdRecentSection");var recentList=document.getElementById("sdRecentList");if(recentSection&&recentList&&recent.length>0){recentSection.style.display="";recentList.innerHTML=recent.map(function(r){return '<div class="sd-item" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+r+'\';doSearch(\''+r+'\')"><span>'+r+'</span><button class="sd-del" onclick="event.stopPropagation();event.preventDefault();removeRecentSearch(\''+r+'\')">✕</button></div>'}).join("")}else if(recentSection){recentSection.style.display="none"}}
-function removeRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});localStorage.setItem("dh_recent_searches",JSON.stringify(list));renderSearchDropdown()}
-(function(){var inp=document.getElementById("dhSearchInput");var dropdown=document.getElementById("dhSearchDropdown");var searchBox=document.getElementById("dhSearch");var searchBtn=document.getElementById("dhSearchBtn");if(!inp||!dropdown||!searchBox)return;renderSearchDropdown();inp.addEventListener("focus",function(){renderSearchDropdown();dropdown.classList.add("show")});inp.addEventListener("input",function(){if(inp.value.trim()){dropdown.classList.remove("show")}else{renderSearchDropdown();dropdown.classList.add("show")}});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){var q=inp.value.trim();if(q)doSearch(q)}});searchBtn.addEventListener("click",function(e){e.stopPropagation();var q=inp.value.trim();if(q)doSearch(q)});document.addEventListener("click",function(e){if(!searchBox.contains(e.target)){dropdown.classList.remove("show")}})})();
-</script>
+<script src="search.js"></script>
 </body>
 </html>

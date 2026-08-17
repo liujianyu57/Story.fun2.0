@@ -652,7 +652,7 @@
 <a class="mobile-drawer-link${is1011Page ? ' active' : ''}" style="cursor:default;">1011 ▾</a>
 <div style="display:flex;flex-direction:column;padding-left:20px;gap:2px;">
   <a class="mobile-drawer-link${currentPage === '1011.html' ? ' active' : ''}" href="1011.html" style="font-size:14px;padding:10px 16px;">1011专题</a>
-  <a class="mobile-drawer-link${currentPage === '1011-museum.html' ? ' active' : ''}" href="1011 Museum/1011-museum.html" target="_blank" style="font-size:14px;padding:10px 16px;">1011博物馆</a>
+  <a class="mobile-drawer-link${currentPage === '1011-museum.html' ? ' active' : ''}" href="1011-museum.html" target="_blank" style="font-size:14px;padding:10px 16px;">1011博物馆</a>
   <a class="mobile-drawer-link${currentPage === 'task.html' ? ' active' : ''}" href="task.html" style="font-size:14px;padding:10px 16px;">1011诺亚方舟</a>
 </div>`;
       }
@@ -827,7 +827,7 @@
         <a class="nav-link nav-link-1011" href="1011.html">1011</a>
         <div class="nav-dropdown-menu">
           <a class="nav-dropdown-item" href="1011.html">1011专题</a>
-          <a class="nav-dropdown-item" href="1011 Museum/1011-museum.html" target="_blank">1011博物馆</a>
+          <a class="nav-dropdown-item" href="1011-museum.html" target="_blank">1011博物馆</a>
           <a class="nav-dropdown-item" href="task.html">1011诺亚方舟</a>
         </div>
       </div>

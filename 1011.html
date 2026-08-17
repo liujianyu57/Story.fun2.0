@@ -262,7 +262,7 @@
 
   <!-- Hero -->
   <section class="hero">
-      <div class="hero-bg"><img src="image/hero-bg-figma.png" alt="1011" /></div>
+      <div class="hero-bg"><img src="image/hero-bg-figma.jpg" alt="1011" /></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1 class="hero-title">1011</h1>
@@ -303,7 +303,7 @@
           <div class="facts-tl-item"><span class="facts-tl-time">10月11日</span><span class="facts-tl-event">Binance 公布 USDe/BNSOL/WBETH 赔偿方案</span></div>
           <div class="facts-tl-item"><span class="facts-tl-time">截至10月22日</span><span class="facts-tl-event">Binance 支付 $3.28 亿+ 直接赔偿</span></div>
         </div>
-        <div class="facts-img"><img src="image/facts-timeline-img.png" alt="烛火" /></div>
+        <div class="facts-img"><img src="image/facts-timeline-img.jpg" alt="烛火" /></div>
       </div>
     </div>
   </section>
@@ -315,32 +315,32 @@
       <h2 class="section-heading">1011 不需要虚构 &nbsp; 角色早已就位</h2>
       <p class="section-desc">一个好故事需要关键角色、受害者、幸存者和讲述者。而 1011 的真实历史，已经把这四个角色摆在了所有人面前—— 用户上传的每一部剧集，都在从其中某个视角讲述</p>
       <div class="roles-grid">
-        <div class="role-card" onclick="location.href='drama-player.html?title=链之纪：凛冬&cover=cover-pyramid.png'">
-          <div class="role-card-img"><img src="image/cover-pyramid.png" alt="大鹏 · 金字塔" /></div>
+        <div class="role-card" onclick="location.href='drama-player.html?title=链之纪：凛冬&cover=cover-pyramid.jpg'">
+          <div class="role-card-img"><img src="image/cover-pyramid.jpg" alt="大鹏 · 金字塔" /></div>
           <div class="role-card-body">
             <div class="role-card-label">关键角色</div>
             <div class="role-card-name">大鹏 · 金字塔</div>
             <div class="role-card-desc">1011 中毫发无伤、甚至受益的一方。它未必真的作恶，但它的沉默与体量本身，就是最大的戏剧张力。</div>
           </div>
         </div>
-        <div class="role-card" onclick="location.href='drama-player.html?title=160万个名字&cover=cover-names.png'">
-          <div class="role-card-img"><img src="image/cover-names.png" alt="16 万爆仓者" /></div>
+        <div class="role-card" onclick="location.href='drama-player.html?title=160万个名字&cover=cover-names.jpg'">
+          <div class="role-card-img"><img src="image/cover-names.jpg" alt="16 万爆仓者" /></div>
           <div class="role-card-body">
             <div class="role-card-label">受害者</div>
             <div class="role-card-name">16 万爆仓者</div>
             <div class="role-card-desc">被清算的普通人</div>
           </div>
         </div>
-        <div class="role-card" onclick="location.href='drama-player.html?title=渊流堡的幸存者&cover=cover-survivor.png'">
-          <div class="role-card-img"><img src="image/cover-survivor.png" alt="渊流堡" /></div>
+        <div class="role-card" onclick="location.href='drama-player.html?title=渊流堡的幸存者&cover=cover-survivor.jpg'">
+          <div class="role-card-img"><img src="image/cover-survivor.jpg" alt="渊流堡" /></div>
           <div class="role-card-body">
             <div class="role-card-label">幸存者</div>
             <div class="role-card-name">渊流堡</div>
             <div class="role-card-desc">毫发无伤的堡垒</div>
           </div>
         </div>
-        <div class="role-card" onclick="location.href='drama-player.html?title=烛火手记&cover=cover-candle.png'">
-          <div class="role-card-img"><img src="image/cover-candle.png" alt="举烛者" /></div>
+        <div class="role-card" onclick="location.href='drama-player.html?title=烛火手记&cover=cover-candle.jpg'">
+          <div class="role-card-img"><img src="image/cover-candle.jpg" alt="举烛者" /></div>
           <div class="role-card-body">
             <div class="role-card-label">见证者</div>
             <div class="role-card-name">举烛者</div>
@@ -358,7 +358,7 @@
       <h2 class="section-heading">《1011》</h2>
       <p class="section-desc">接下来的故事 &nbsp;&nbsp; 由你们来讲</p>
       <div class="trailer-player js-play-trailer">
-        <img src="image/trailer-poster.png" alt="1011" />
+        <img src="image/trailer-poster.jpg" alt="1011" />
         <div class="trailer-play"><span class="trailer-play-circle"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg></span></div>
         <div class="trailer-player-label">
           <div class="trailer-tt">Official Trailer</div>
@@ -441,13 +441,7 @@
 <script src="load-desktop-header.js"></script>
   <script src="auth.js"></script>
   <script>setTimeout(function(){if(typeof initAuth==="function")initAuth()},100)</script>
-<script>
-function doSearch(query){if(!query||!query.trim())return;query=query.trim();saveRecentSearch(query);location.href="search-results.html?q="+encodeURIComponent(query)}
-function saveRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});list.unshift(q);if(list.length>8)list.pop();localStorage.setItem("dh_recent_searches",JSON.stringify(list))}
-function renderSearchDropdown(){var hotTags=["凤骨琉璃","打斗精彩片段","古风短剧","1011","AI短剧","苏婉清","星际拓荒者","时间管理局"];var hotEl=document.getElementById("sdHotTags");if(hotEl){hotEl.innerHTML=hotTags.map(function(t){return '<button class="sd-tag" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+t+'\';doSearch(\''+t+'\')">'+t+'</button>'}).join("")}var recent=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");var recentSection=document.getElementById("sdRecentSection");var recentList=document.getElementById("sdRecentList");if(recentSection&&recentList&&recent.length>0){recentSection.style.display="";recentList.innerHTML=recent.map(function(r){return '<div class="sd-item" onclick="event.stopPropagation();document.getElementById(\'dhSearchInput\').value=\''+r+'\';doSearch(\''+r+'\')"><span>'+r+'</span><button class="sd-del" onclick="event.stopPropagation();event.preventDefault();removeRecentSearch(\''+r+'\')">✕</button></div>'}).join("")}else if(recentSection){recentSection.style.display="none"}}
-function removeRecentSearch(q){var list=JSON.parse(localStorage.getItem("dh_recent_searches")||"[]");list=list.filter(function(i){return i!==q});localStorage.setItem("dh_recent_searches",JSON.stringify(list));renderSearchDropdown()}
-(function(){var inp=document.getElementById("dhSearchInput");var dropdown=document.getElementById("dhSearchDropdown");var searchBox=document.getElementById("dhSearch");var searchBtn=document.getElementById("dhSearchBtn");if(!inp||!dropdown||!searchBox)return;renderSearchDropdown();inp.addEventListener("focus",function(){renderSearchDropdown();dropdown.classList.add("show")});inp.addEventListener("input",function(){if(inp.value.trim()){dropdown.classList.remove("show")}else{renderSearchDropdown();dropdown.classList.add("show")}});inp.addEventListener("keydown",function(e){if(e.key==="Enter"){var q=inp.value.trim();if(q)doSearch(q)}});searchBtn.addEventListener("click",function(e){e.stopPropagation();var q=inp.value.trim();if(q)doSearch(q)});document.addEventListener("click",function(e){if(!searchBox.contains(e.target)){dropdown.classList.remove("show")}})})();
-</script>
+<script src="search.js"></script>
   <script src="load-bottom-nav.js"></script>
 
   <script>
