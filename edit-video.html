@@ -6,8 +6,8 @@
   <title>Story.fun | 编辑视频</title>
   <style>
     :root {
-      --bg: #f7fbff; --surface: #ffffff; --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.12); --text: #1a232f;
+      --bg: #f7fbff; --surface: #ffffff; --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.12); --text: #1a232f;
       --text-muted: #657586; --border: #e6eff7;
       --shadow-sm: 0 4px 12px rgba(27, 45, 71, 0.06);
       --shadow-md: 0 12px 28px rgba(27, 45, 71, 0.07);
@@ -43,7 +43,7 @@
     .status-row label { font-size: 0.92rem; font-weight: 600; color: var(--text); }
     .status-badge { padding: 6px 14px 6px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; color: #fff; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.02em; box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
     .status-pending { background: linear-gradient(135deg, #ff9f2c, #f59e0b); }
-    .status-approved { background: linear-gradient(135deg, #00b388, #00c797); }
+    .status-approved { background: linear-gradient(135deg, #000000, #00c797); }
     .status-rejected { background: linear-gradient(135deg, #f45b69, #e74c5a); }
     .status-delisted { background: linear-gradient(135deg, #8e8e93, #6b6b70); }
     .status-badge .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.7); flex-shrink: 0; }
@@ -58,7 +58,7 @@
       outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .form-group input[type="text"]:focus,
-    .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,179,136,0.1); }
+    .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 0, 0,0.1); }
     .form-group textarea { min-height: 100px; resize: vertical; }
     .form-group .char-count { text-align: right; font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
     .form-group input[readonly] { background: #f8fafc; color: var(--text-muted); cursor: default; }
@@ -67,7 +67,7 @@
     .form-panel-footer { display: flex; justify-content: flex-end; align-items: center; gap: 12px; padding: 20px 32px; border-top: 1px solid var(--border); background: #fafcff; }
     .btn { padding: 10px 24px; border-radius: 999px; border: none; cursor: pointer; font-size: 0.92rem; font-weight: 600; transition: all 0.2s ease; font-family: inherit; }
     .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,179,136,0.3); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0,0.3); }
     .btn-secondary { background: rgba(15, 22, 42, 0.05); color: var(--text); }
     .btn-secondary:hover { background: rgba(15, 22, 42, 0.1); }
 

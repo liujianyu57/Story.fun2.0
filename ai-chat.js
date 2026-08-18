@@ -517,7 +517,7 @@ function escapeHtml(text) {
       justify-content: space-between;
       padding: 20px 24px 16px;
       border-bottom: 1px solid #e6eff7;
-      background: linear-gradient(135deg, rgba(0, 179, 136, 0.06), rgba(255, 255, 255, 0.96));
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.96));
     }
     .ai-chat-actor-info {
       display: flex;
@@ -529,7 +529,7 @@ function escapeHtml(text) {
       height: 48px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2px solid rgba(0, 179, 136, 0.25);
+      border: 2px solid rgba(0, 0, 0, 0.25);
       flex-shrink: 0;
       background: #eaf4ee;
     }
@@ -611,7 +611,7 @@ function escapeHtml(text) {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #00b388;
+      background: #000000;
       animation: chatBounce 1.4s ease-in-out infinite;
     }
     .ai-chat-loading-dots span:nth-child(2) {
@@ -646,7 +646,7 @@ function escapeHtml(text) {
       overflow: hidden;
       flex-shrink: 0;
       background: #eaf4ee;
-      border: 1px solid rgba(0, 179, 136, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.15);
     }
     .message-avatar img {
       width: 100%;
@@ -674,10 +674,10 @@ function escapeHtml(text) {
       word-break: break-word;
     }
     .user .message-bubble {
-      background: linear-gradient(135deg, #00b388, #00c797);
+      background: linear-gradient(135deg, #000000, #00c797);
       color: #ffffff;
       border-color: transparent;
-      box-shadow: 0 4px 12px rgba(0, 179, 136, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     .message-time {
       font-size: 0.72rem;
@@ -717,8 +717,8 @@ function escapeHtml(text) {
       gap: 5px;
       padding: 5px 12px;
       border-radius: 999px;
-      background: rgba(0, 179, 136, 0.1);
-      color: #00b388;
+      background: rgba(0, 0, 0, 0.1);
+      color: #000000;
       font-size: 0.78rem;
       font-weight: 600;
       margin-bottom: 10px;
@@ -744,8 +744,8 @@ function escapeHtml(text) {
       font-family: inherit;
     }
     .ai-chat-input:focus {
-      border-color: #00b388;
-      box-shadow: 0 0 0 3px rgba(0, 179, 136, 0.12);
+      border-color: #000000;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
     }
     .ai-chat-input::placeholder {
       color: #9aabbb;
@@ -755,18 +755,18 @@ function escapeHtml(text) {
       height: 44px;
       border-radius: 50%;
       border: none;
-      background: linear-gradient(135deg, #00b388, #00c797);
+      background: linear-gradient(135deg, #000000, #00c797);
       color: #fff;
       cursor: pointer;
       display: grid;
       place-items: center;
       transition: all 0.2s;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0, 179, 136, 0.25);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
     .ai-chat-send:hover {
       transform: scale(1.06);
-      box-shadow: 0 6px 18px rgba(0, 179, 136, 0.35);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
     }
     .ai-chat-send:disabled {
       opacity: 0.5;

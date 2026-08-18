@@ -8,8 +8,8 @@
     :root {
       --bg: #f5faff;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.12);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.12);
       --text: #13202e;
       --text-muted: #5e6f83;
       --border: #deeaf7;
@@ -104,7 +104,7 @@
       display: flex; align-items: center; gap: 12px;
     }
     .bottom-bar .next-btn {
-      flex: 1; padding: 14px; border-radius: 14px; border: none;
+      flex: 1; padding: 14px; border-radius:999px; border: none;
       font-size: 1rem; font-weight: 700;
       background: rgba(0,0,0,0.05); color: rgba(0,0,0,0.25);
       cursor: pointer; transition: all 0.2s ease;
@@ -112,7 +112,7 @@
     .bottom-bar .next-btn.active { background: var(--accent); color: #fff; }
     .bottom-bar .next-btn:active { opacity: 0.8; }
     .bottom-bar .publish-btn {
-      flex: 1; padding: 14px; border-radius: 14px; border: none;
+      flex: 1; padding: 14px; border-radius:999px; border: none;
       font-size: 1rem; font-weight: 700; background: var(--accent); color: #fff;
       cursor: pointer; transition: opacity 0.15s; display: none;
     }
@@ -175,7 +175,7 @@
       z-index: 10; display: flex; align-items: center; gap: 12px;
     }
     .preview-overlay .preview-bottom-bar .next-btn {
-      flex: 1; padding: 14px; border-radius: 14px; border: none;
+      flex: 1; padding: 14px; border-radius:999px; border: none;
       font-size: 1rem; font-weight: 700; background: var(--accent); color: #fff;
       cursor: pointer; transition: opacity 0.15s;
     }
@@ -188,7 +188,7 @@
     }
     .video-stage .stage-placeholder {
       width: auto; max-width: 140px; aspect-ratio: 9 / 16;
-      object-fit: cover; display: block; border-radius: 16px;
+      object-fit: cover; display: block; border-radius:999px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
     .video-stage .video-play-icon {
@@ -212,7 +212,7 @@
       background: #fff; color: #1C1C1E; font-size: 0.95rem; outline: none;
     }
     .form-group input[type="text"]:focus,
-    .form-group textarea:focus { box-shadow: 0 0 0 2px rgba(0,179,136,0.3); }
+    .form-group textarea:focus { box-shadow: 0 0 0 2px rgba(0, 0, 0,0.3); }
     .form-group textarea { min-height: 100px; resize: vertical; }
     .form-group .char-count {
       text-align: right; font-size: 0.78rem;
@@ -255,7 +255,7 @@
     /* ===== Desktop Upload Zone Styles ===== */
     .upload-zone {
       border: 2px dashed var(--border);
-      border-radius: 20px; padding: 64px 32px;
+      border-radius:999px; padding: 64px 32px;
       text-align: center; cursor: pointer;
       transition: all 0.25s ease;
       background: var(--surface); margin-bottom: 24px;
@@ -295,7 +295,7 @@
       display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.82rem; color: var(--text-muted);
     }
     .selected-video-card .video-info .change-btn {
-      align-self: flex-start; padding: 8px 18px; border-radius: 8px;
+      align-self: flex-start; padding: 8px 18px; border-radius:999px;
       border: 1px solid var(--border); background: var(--bg); color: var(--text);
       font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
     }
@@ -308,7 +308,7 @@
     }
     .desktop-cover-actions .desktop-cover-label { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); }
     .desktop-cover-actions .desktop-cover-thumb {
-      width: 80px; height: 80px; border-radius: 8px;
+      width: 80px; height: 80px; border-radius:999px;
       object-fit: cover; cursor: pointer; background: var(--bg);
       border: 2px dashed var(--border);
     }
@@ -321,7 +321,7 @@
     }
     .desktop-publish-section .form-section { padding: 10px 10px 16px; background: transparent; box-shadow: none; }
     .desktop-publish-btn {
-      width: 100%; padding: 14px; border-radius: 14px; border: none;
+      width: 100%; padding: 14px; border-radius:999px; border: none;
       font-size: 1rem; font-weight: 700; background: var(--accent); color: #fff;
       cursor: pointer; transition: opacity 0.15s;
     }

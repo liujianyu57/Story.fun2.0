@@ -8,9 +8,9 @@
     :root {
       --bg: #f5faff;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.10);
-      --accent-glow: rgba(0, 179, 136, 0.20);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.10);
+      --accent-glow: rgba(0, 0, 0, 0.20);
       --text: #13202e;
       --text-secondary: #405266;
       --text-muted: #6e859e;
@@ -65,7 +65,7 @@
     .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
     .auth-avatar:hover { border-color: var(--accent); }
     .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-avatar-dot { display: none; }
     .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
     .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
     .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
@@ -85,17 +85,17 @@
     .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
     .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
     .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
-    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: #000000; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0, 0, 0,0.3); }
     .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
     .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
     .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
-    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
     .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
     .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
     .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0, 0, 0,0.2); }
     .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
     .auth-modal-tos a { color: var(--accent); text-decoration: none; }
     .auth-modal-tos a:hover { text-decoration: underline; }
@@ -330,7 +330,7 @@
       white-space: nowrap;
       color: #fff;
     }
-    .badge-issuance.official { background: #05DF72; }
+    .badge-issuance.official { background: #000000; }
     .badge-issuance.partner  { background: #4A9EFF; }
     .badge-issuance.certified { background: #FF8C00; }
     .badge-issuance.community { background: linear-gradient(135deg, #94a3b8, #64748b); }
@@ -415,11 +415,11 @@
       background: var(--accent);
       color: #fff;
       border-color: var(--accent);
-      box-shadow: 0 4px 14px rgba(0,179,136,0.30);
+      box-shadow: 0 4px 14px rgba(0, 0, 0,0.30);
     }
     .action-btn.primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,179,136,0.40);
+      box-shadow: 0 8px 24px rgba(0, 0, 0,0.40);
     }
     .action-btn .icon { font-size: 1.1rem; }
     .action-btn.danger {
@@ -618,7 +618,7 @@
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.02em;
-      background: rgba(0,179,136,0.10);
+      background: rgba(0, 0, 0,0.10);
       color: var(--accent);
       white-space: nowrap;
     }
@@ -679,7 +679,7 @@
     .mint-modal-footer .mint-btn {
       width: 100%;
       padding: 16px;
-      border-radius: 14px;
+      border-radius:999px;
       border: none;
       font-size: 1rem;
       font-weight: 700;
@@ -687,12 +687,12 @@
       transition: all 0.25s ease;
     }
     .mint-modal-footer .mint-btn.primary {
-      background: linear-gradient(135deg, #00b388, #00d4a3);
+      background: #000000;
       color: #fff;
     }
     .mint-modal-footer .mint-btn.primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(0,179,136,0.35);
+      box-shadow: 0 8px 24px rgba(0, 0, 0,0.35);
     }
     .mint-modal-footer .mint-btn.primary:disabled {
       opacity: 0.5;
@@ -811,7 +811,7 @@
     .mint-modal-success .success-btn {
       width: 100%;
       padding: 14px;
-      border-radius: 14px;
+      border-radius:999px;
       border: none;
       font-size: 0.95rem;
       font-weight: 700;
@@ -819,12 +819,12 @@
       transition: all 0.25s ease;
     }
     .mint-modal-success .success-btn.primary {
-      background: linear-gradient(135deg, #00b388, #00d4a3);
+      background: #000000;
       color: #fff;
     }
     .mint-modal-success .success-btn.primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(0,179,136,0.35);
+      box-shadow: 0 8px 20px rgba(0, 0, 0,0.35);
     }
     .mint-modal-success .success-btn.secondary {
       background: transparent;
@@ -844,7 +844,7 @@
     .price-tooltip-box h3 { margin: 0 0 4px; font-size: 1.1rem; color: var(--text); }
     .price-tooltip-box .price-tip-sub { margin: 0 0 10px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
     .price-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; background: rgba(15, 22, 42, 0.05); color: var(--text); border: none; cursor: pointer; border-radius: 999px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
-    .price-tooltip-box .button-secondary:hover { background: rgba(0,179,136,0.08); color: var(--accent); }
+    .price-tooltip-box .button-secondary:hover { background: rgba(0, 0, 0,0.08); color: var(--accent); }
     .price-curve-wrap { position: relative; margin: 0 auto 12px; width: 100%; max-width: 500px; }
     .price-curve-wrap canvas { display: block; width: 100%; height: auto; border-radius: 12px; background: #fafdff; border: 1px solid var(--border); }
     .price-curve-info { display: flex; justify-content: space-between; padding: 6px 8px 0; font-size: 0.72rem; color: var(--text-muted); }
@@ -863,7 +863,7 @@
     .stat-tooltip-box h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--text); }
     .stat-tooltip-box p { margin: 0 0 18px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
     .stat-tooltip-box .button-secondary { padding: 8px 24px; font-size: 0.88rem; background: rgba(15, 22, 42, 0.05); color: var(--text); border: none; cursor: pointer; border-radius: 999px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
-    .stat-tooltip-box .button-secondary:hover { background: rgba(0,179,136,0.08); color: var(--accent); }
+    .stat-tooltip-box .button-secondary:hover { background: rgba(0, 0, 0,0.08); color: var(--accent); }
 
     /* ═══ Treasury / 角色IP金库 — 极简重构 ═══ */
     .treasury-panel {
@@ -981,8 +981,8 @@
       .actor-hero-stats .ahs-value { font-size: 1rem; }
       .actor-hero-stats .ahs-divider { height: 24px; }
       .actor-price { padding: 8px 12px; border-radius: 10px; }
-      .action-btn, .action-btn.primary, .action-btn.danger { width: 100%; justify-content: center; padding: 14px; font-size: 0.95rem; border-radius: 14px; min-width: unset; }
-      #floorPriceTag { width: 100%; justify-content: center; border-radius: 14px; }
+      .action-btn, .action-btn.primary, .action-btn.danger { width: 100%; justify-content: center; padding: 14px; font-size: 0.95rem; border-radius:999px; min-width: unset; }
+      #floorPriceTag { width: 100%; justify-content: center; border-radius:999px; }
 
       /* NFT Info Panel */
       .nft-info-panel { padding: 18px 16px; margin-bottom: 20px; border-radius: 14px; }
@@ -1017,7 +1017,7 @@
       .mint-modal-actor-name { font-size: 1.15rem; }
       .mint-price-bar { padding: 14px 14px 14px; border-radius: 14px; }
       .mpb-price-value { font-size: 1.35rem; }
-      .mint-modal-footer .mint-btn { padding: 14px; font-size: 0.95rem; border-radius: 14px; }
+      .mint-modal-footer .mint-btn { padding: 14px; font-size: 0.95rem; border-radius:999px; }
       .mint-modal-success { padding: 36px 20px 24px; }
       .mint-slippage-notice { font-size: 0.7rem; }
 
@@ -1945,10 +1945,10 @@
         var cyn = (cPrice - initPrice) / (maxPrice - initPrice);
         var cy = pad.top + plotH - cyn * plotH;
         ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#00b388'; ctx.fill();
+        ctx.fillStyle = '#000000'; ctx.fill();
         ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
         ctx.setLineDash([2, 3]);
-        ctx.strokeStyle = 'rgba(0,179,136,0.35)'; ctx.lineWidth = 0.8;
+        ctx.strokeStyle = 'rgba(0, 0, 0,0.35)'; ctx.lineWidth = 0.8;
         ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(cx, cy); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(cx, pad.top + plotH); ctx.lineTo(cx, cy); ctx.stroke();
         ctx.setLineDash([]);
@@ -2091,10 +2091,10 @@
       var cyn = (cPrice - initPrice) / (maxPrice - initPrice);
       var cy = pad.top + plotH - cyn * plotH;
       ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-      ctx.fillStyle = '#00b388'; ctx.fill();
+      ctx.fillStyle = '#000000'; ctx.fill();
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.stroke();
       ctx.setLineDash([2, 4]);
-      ctx.strokeStyle = 'rgba(0,179,136,0.35)'; ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(0, 0, 0,0.35)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(cx, cy); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(cx, pad.top + plotH); ctx.lineTo(cx, cy); ctx.stroke();
       ctx.setLineDash([]);

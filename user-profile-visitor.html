@@ -8,8 +8,8 @@
     :root {
       --bg: #f5faff;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.10);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.10);
       --text: #13202e;
       --text-muted: #6e859e;
       --text-sub: #8b8d98;
@@ -23,15 +23,15 @@
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); }
 
     .mobile-top-bar { padding-top: calc(40px + env(safe-area-inset-top)); background: #fff; position: sticky; top: 0; z-index: 100; }
-    .back-btn { display: inline-flex; align-items: center; gap: 4px; padding: 10px 14px; font-size: 0.88rem; font-weight: 600; color: var(--text-secondary, #405266); text-decoration: none; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); cursor: pointer; }
+    .back-btn { display: inline-flex; align-items: center; gap: 4px; padding: 10px 14px; font-size: 0.88rem; font-weight: 600; color: var(--text-secondary, #405266); text-decoration: none; border-radius:999px; background: var(--surface); border: 1px solid var(--border); cursor: pointer; }
 
     .mobile-profile-section { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; background: #fff; }
     .mobile-profile-row { display: flex; align-items: flex-start; gap: 16px; }
-    .avatar-gradient { width: 78px; height: 78px; border-radius: 99px; padding: 2px; background: linear-gradient(135deg, #05DF72, #00BBA7); flex-shrink: 0; position: relative; }
+    .avatar-gradient { width: 78px; height: 78px; border-radius: 99px; padding: 2px; background: #000000; flex-shrink: 0; position: relative; }
     .avatar-bg { width: 100%; height: 100%; border-radius: 99px; overflow: hidden; background: var(--bg); display: flex; align-items: center; justify-content: center; }
     .avatar-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .avatar-letter { font-size: 26px; font-weight: 700; }
-    .gradient-text { background: linear-gradient(135deg, #05DF72, #00BBA7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .gradient-text { background: #000000; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
     .mobile-profile-info { flex: 1; min-width: 0; padding-top: 4px; }
     .mp-name { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.3; }
@@ -44,7 +44,7 @@
     .ms-num { font-size: 18px; font-weight: 700; color: var(--text); }
     .ms-label { font-size: 12px; color: var(--text-sub); }
 
-    .follow-btn { width: 100%; margin: 8px 0; padding: 12px; border-radius: 999px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; background: linear-gradient(135deg, #05DF72, #00BBA7); color: #fff; font-family: inherit; transition: all 0.2s; }
+    .follow-btn { width: 100%; margin: 8px 0; padding: 12px; border-radius: 999px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; background: #000000; color: #fff; font-family: inherit; transition: all 0.2s; }
     .follow-btn:active { opacity: 0.8; }
     .follow-btn.following { background: var(--border); color: var(--text-muted); }
 

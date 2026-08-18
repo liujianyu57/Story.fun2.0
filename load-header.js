@@ -52,7 +52,7 @@
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 590;
   font-size: 19.64px;
-  background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+  background: linear-gradient(45deg, #000000 0%, #1a1a1a 50%, #666666 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -80,7 +80,7 @@
   background: rgba(0,0,0,0.03);
 }
 .story-header-wrapper .nav-link.active {
-  color: #00BBA7;
+  color: #000000;
   border-radius: 999px;
 }
 
@@ -130,8 +130,8 @@
   background: #F5F5F7;
 }
 .story-header-wrapper .nav-dropdown-item.active {
-  color: #00BBA7;
-  background: rgba(0,187,167,0.08);
+  color: #000000;
+  background: rgba(0, 0, 0,0.08);
 }
 .story-header-wrapper .header-actions {
   display: flex;
@@ -148,7 +148,7 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  border-radius: 32px;
+  border-radius:999px;
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 500;
   font-size: 14px;
@@ -250,7 +250,7 @@
   font-size: 14px;
   line-height: 20px;
   color: #ffffff;
-  background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+  background: linear-gradient(45deg, #000000 0%, #1a1a1a 50%, #666666 100%);
   cursor: pointer;
   transition: opacity 0.2s ease;
   white-space: nowrap;
@@ -325,7 +325,7 @@
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 590;
   font-size: 19.64px;
-  background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+  background: linear-gradient(45deg, #000000 0%, #1a1a1a 50%, #666666 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -351,8 +351,8 @@
   background: rgba(0,0,0,0.04);
 }
 .story-header-wrapper .mobile-drawer-link.active {
-  color: #00BBA7;
-  background: rgba(0, 187, 167, 0.08);
+  color: #000000;
+  background: rgba(0, 0, 0, 0.08);
 }
 .story-header-wrapper .mobile-drawer-close {
   align-self: flex-end;
@@ -494,8 +494,8 @@
   }
 
   .story-header-wrapper .nav-link.active {
-    color: #00d4a3;
-    background: rgba(0, 212, 163, 0.1);
+    color: #000000;
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
   }
 
@@ -513,7 +513,7 @@
     width: 100%;
     justify-content: flex-start;
     padding: 10px 14px;
-    border-radius: 8px;
+    border-radius:999px;
     color: #8896a8;
     font-size: 14px;
     gap: 10px;
@@ -531,7 +531,7 @@
   }
 
   .story-header-wrapper .search-btn:hover svg * {
-    stroke: #00d4a3;
+    stroke: #000000;
   }
 
   .story-header-wrapper .auth-login-btn {
@@ -539,7 +539,7 @@
     justify-content: center;
     padding: 10px 16px;
     font-size: 14px;
-    border-radius: 8px;
+    border-radius:999px;
   }
 
   .story-header-wrapper .auth-container {
@@ -583,8 +583,8 @@
   }
 
   .story-header-wrapper .nav-dropdown-item.active {
-    color: #00d4a3;
-    background: rgba(0, 212, 163, 0.1);
+    color: #000000;
+    background: rgba(0, 0, 0, 0.1);
   }
 
   /* Brand 下拉菜单位置修正 */

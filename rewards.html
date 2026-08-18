@@ -8,8 +8,8 @@
     :root {
       --bg: #f5faff;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.10);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.10);
       --text: #13202e;
       --text-secondary: #5e6f83;
       --text-tertiary: #8b8d98;
@@ -21,8 +21,8 @@
       --danger: #f45b69;
       --warning: #ff9f2c;
       --gold: #f5b042;
-      --story-green: #05DF72;
-      --story-teal: #00BBA7;
+      --story-green: #000000;
+      --story-teal: #000000;
       font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
@@ -46,7 +46,7 @@
       background: var(--accent); color: #fff; font-size: 0.88rem; font-weight: 600;
       cursor: pointer; transition: all 0.2s ease;
     }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,179,136,0.25); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0, 0, 0,0.25); }
     .btn-outline {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 10px 24px; border-radius: 999px; border: 1px solid var(--border);
@@ -77,7 +77,7 @@
       background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600;
       cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
     }
-    .btn-sm:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,179,136,0.25); }
+    .btn-sm:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0,0.25); }
     .btn-sm:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
 
     .tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
@@ -115,7 +115,7 @@
     .data-table tr:last-of-type td { border-bottom: none; }
     .data-table tr:hover td { background: #f8fbfe; }
     .tx-tag { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 500; }
-    .tx-tag.staking { background: rgba(0,179,136,0.08); color: var(--accent); }
+    .tx-tag.staking { background: rgba(0, 0, 0,0.08); color: var(--accent); }
     .tx-tag.referral { background: rgba(244,91,105,0.08); color: var(--danger); }
 
     .flow-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }

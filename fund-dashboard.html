@@ -8,8 +8,8 @@
     :root {
       --bg: #f5faff;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.10);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.10);
       --text: #13202e;
       --text-secondary: #5e6f83;
       --text-tertiary: #8b8d98;
@@ -21,8 +21,8 @@
       --danger: #f45b69;
       --warning: #ff9f2c;
       --gold: #f5b042;
-      --story-green: #05DF72;
-      --story-teal: #00BBA7;
+      --story-green: #000000;
+      --story-teal: #000000;
       font-family: -apple-system, "PingFang SC", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
@@ -46,7 +46,7 @@
       background: var(--accent); color: #fff; font-size: 0.88rem; font-weight: 600;
       cursor: pointer; transition: all 0.2s ease;
     }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,179,136,0.25); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0, 0, 0,0.25); }
     .btn-outline {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 10px 24px; border-radius: 999px; border: 1px solid var(--border);
@@ -101,8 +101,8 @@
     .data-table tr:last-of-type td { border-bottom: none; }
     .data-table tr:hover td { background: #f8fbfe; }
     .tx-tag { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 500; }
-    .tx-tag.mint { background: rgba(0,179,136,0.08); color: var(--accent); }
-    .tx-tag.royalty { background: rgba(0,184,219,0.08); color: #00b8db; }
+    .tx-tag.mint { background: rgba(0, 0, 0,0.08); color: var(--accent); }
+    .tx-tag.royalty { background: rgba(0,184,219,0.08); color: #666666; }
     .tx-tag.stamina { background: rgba(245,176,66,0.08); color: var(--gold); }
     .tx-tag.upgrade { background: rgba(244,91,105,0.08); color: var(--danger); }
     .tx-tag.vault { background: rgba(155,92,230,0.08); color: #9b5ce6; }

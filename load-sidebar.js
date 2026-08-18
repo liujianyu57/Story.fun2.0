@@ -16,7 +16,7 @@
             '.app-sidebar{position:fixed;top:0;left:0;bottom:0;z-index:900;width:160px;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;flex-direction:column;padding:0 12px;transition:transform 0.3s ease;overflow-y:auto}',
             '.sb-logo{display:flex;align-items:center;gap:10px;padding:20px 12px 24px;text-decoration:none;flex-shrink:0}',
             '.sb-logo-img{width:32px;height:32px;border-radius:8px;flex-shrink:0}',
-            '.sb-logo-text{font-size:18px;font-weight:700;background:linear-gradient(135deg,#00b388,#34d399,#00c9a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.3px;white-space:nowrap}',
+            '.sb-logo-text{font-size:18px;font-weight:700;background:linear-gradient(135deg,#ff3b30,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.3px;white-space:nowrap}',
             '.sb-logo-sub{font-size:10px;color:#7c3aed;font-weight:400;line-height:1.2}',
             '.sb-nav{display:flex;flex-direction:column;gap:2px;flex:1;padding:4px 0}',
             '.sb-nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#5e6f83;text-decoration:none;font-size:15px;font-weight:500;transition:all 0.2s ease;cursor:pointer;border:none;background:none;text-align:left;width:100%}',
@@ -53,7 +53,7 @@
         return '' +
             '<aside class="app-sidebar" id="appSidebar">' +
                 '<a href="index.html" class="sb-logo">' +
-                    '<img src="image/storyfun-logo-icon.png" alt="StoryFun" class="sb-logo-img">' +
+                    '<img src="image/storyfun-logo-icon-red.png" alt="StoryFun" class="sb-logo-img">' +
                     '<div>' +
                         '<div class="sb-logo-text">StoryFun</div>' +
                     '</div>' +

@@ -307,7 +307,7 @@
 .actors-modal-item-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .actors-modal-item-info { flex: 1; min-width: 0; }
 .actors-modal-item-name { font-size: 0.85rem; font-weight: 600; color: #1a1a2e; line-height: 1.2; }
-.actors-modal-item-power { font-size: 0.72rem; color: #10b981; line-height: 1.2; margin-top: 1px; }
+.actors-modal-item-power { font-size: 0.72rem; color: #999999; line-height: 1.2; margin-top: 1px; }
 .actors-modal-item-arrow {
   font-size: 1.2rem;
   color: #ccc;

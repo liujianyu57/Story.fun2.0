@@ -8,9 +8,9 @@
     :root {
       --bg: #f6f6f6;
       --surface: #ffffff;
-      --accent: #01bab2;
-      --accent-soft: rgba(1, 186, 178, 0.10);
-      --accent-glow: rgba(1, 186, 178, 0.20);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.10);
+      --accent-glow: rgba(0, 0, 0, 0.20);
       --text: #1c2024;
       --text-muted: #60646c;
       --text-hint: #8b8d98;
@@ -36,7 +36,7 @@
     .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
     .auth-avatar:hover { border-color: var(--accent); }
     .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-avatar-dot { display: none; }
     .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border-dark); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
     .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
     .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
@@ -57,17 +57,17 @@
     .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
     .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
     .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
-    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #00b388, #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: #000000; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0, 0, 0,0.3); }
     .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
     .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
     .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
-    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-dark); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 1px solid var(--border-dark); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
     .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
     .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
     .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-dark); }
-    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-    .auth-wallet-btn:hover { background: rgba(1,186,178,0.2); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0,0,0,0.2); }
     .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
     .auth-modal-tos a { color: var(--accent); text-decoration: none; }
     .auth-modal-tos a:hover { text-decoration: underline; }
@@ -121,7 +121,7 @@
       font-weight: 600;
     }
     .status-indicator.approved {
-      background: rgba(1, 186, 178, 0.12);
+      background: rgba(0, 0, 0, 0.12);
       color: var(--accent);
     }
     .status-indicator.pending {
@@ -183,7 +183,7 @@
       width: 192px;
       height: 160px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius:999px;
       background: var(--bg);
       display: flex;
       flex-direction: column;
@@ -211,14 +211,14 @@
       display: none;
       position: absolute;
       inset: 0;
-      border-radius: 11px;
+      border-radius:999px;
     }
     .upload-btn {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       padding: 8px 24px;
-      border-radius: 58px;
+      border-radius:999px;
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
@@ -399,7 +399,7 @@
       align-items: center;
       gap: 6px;
       padding: 16px;
-      background: rgba(1, 186, 178, 0.06);
+      background: rgba(0, 0, 0, 0.06);
       border-radius: 16px;
       margin-top: 24px;
     }
@@ -407,7 +407,7 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), #00d4a3);
+      background: #000000;
       display: grid;
       place-items: center;
       color: #fff;
@@ -450,7 +450,7 @@
       align-items: flex-start;
       gap: 8px;
       padding: 16px;
-      background: rgba(1, 186, 178, 0.06);
+      background: rgba(0, 0, 0, 0.06);
       border-radius: 16px;
       margin-top: 16px;
       font-size: 14px;
@@ -469,7 +469,7 @@
     .button-primary, .button-outline, .button-danger {
       border: none;
       cursor: pointer;
-      border-radius: 60px;
+      border-radius:999px;
       font-size: 14px;
       line-height: 20px;
       font-weight: 700;

@@ -8,9 +8,9 @@
     :root {
       --bg: #f5faff;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.12);
-      --accent-glow: rgba(0, 179, 136, 0.25);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.12);
+      --accent-glow: rgba(0, 0, 0, 0.25);
       --text: #13202e;
       --text-muted: #5e6f83;
       --border: #deeaf7;
@@ -35,7 +35,7 @@
     .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
     .auth-avatar:hover { border-color: var(--accent); }
     .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-avatar-dot { display: none; }
     .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
     .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
     .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
@@ -55,7 +55,7 @@
     .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
     .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
     .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
-    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: #000000; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0, 0, 0,0.3); }
     .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
     .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
     .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
@@ -107,7 +107,7 @@
     .form-group .char-count { text-align: right; font-size: 0.85rem; color: var(--text-muted); }
 
     /* Cover upload */
-    .cover-upload { position: relative; border: 2px dashed var(--border); border-radius: 18px; padding: 40px 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #f8fbff; }
+    .cover-upload { position: relative; border: 2px dashed var(--border); border-radius:999px; padding: 40px 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #f8fbff; }
     .cover-upload:hover { border-color: var(--accent); background: var(--accent-soft); }
     .cover-upload.drag-over { border-color: var(--accent); background: var(--accent-soft); }
     .cover-upload .upload-icon { font-size: 2.4rem; color: var(--text-muted); margin-bottom: 12px; }
@@ -128,7 +128,7 @@
     .char-panel-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 0 16px; border-bottom: 2px solid var(--accent); margin-bottom: 24px; }
     .char-panel-header h3 { font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; }
     .char-add-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; border: none; background: var(--accent-soft); color: var(--accent); font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
-    .char-add-btn:hover { background: rgba(0,179,136,0.2); }
+    .char-add-btn:hover { background: rgba(0, 0, 0,0.2); }
     .char-add-btn .plus-icon { font-size: 1.1rem; line-height: 1; }
 
     .char-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 28px; }
@@ -140,7 +140,7 @@
     .char-card .char-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 4px; }
     .char-card .char-body .char-name { font-size: 0.85rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .char-card .char-body .char-salary { font-size: 0.78rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
-    .char-card .char-remove-btn { margin-top: 6px; width: 100%; padding: 7px 0; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
+    .char-card .char-remove-btn { margin-top: 6px; width: 100%; padding: 7px 0; border-radius:999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
     .char-card .char-remove-btn:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
     .char-card.add-card { border: 2px dashed var(--border); background: transparent; display: grid; place-items: center; cursor: pointer; transition: all 0.25s ease; }
     .char-card.add-card:hover { border-color: var(--accent); background: var(--accent-soft); }
@@ -184,15 +184,15 @@
     .pricing-field .input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
     .pricing-field .input-wrap .unit { font-size: 0.92rem; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
     .pricing-hint { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
-    .revenue-preview { background: rgba(0,179,136,0.06); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .revenue-preview { background: rgba(0, 0, 0,0.06); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
     .revenue-preview .revenue-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .revenue-preview .revenue-header .label { font-size: 1rem; font-weight: 700; color: var(--accent); }
     .revenue-preview .revenue-header .value { font-size: 1rem; font-weight: 700; color: var(--accent); }
-    .revenue-preview .revenue-note { font-size: 0.82rem; color: rgba(0,179,136,0.7); line-height: 1.6; }
+    .revenue-preview .revenue-note { font-size: 0.82rem; color: rgba(0, 0, 0,0.7); line-height: 1.6; }
 
     .button, .button-secondary, .button-ghost, .button-outline { border: none; cursor: pointer; border-radius: 999px; padding: 12px 24px; font-size: 0.95rem; transition: all 0.25s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
-    .button { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(0,179,136,0.30); }
-    .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,179,136,0.40); }
+    .button { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(0, 0, 0,0.30); }
+    .button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0,0.40); }
     .button-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
     .button-secondary:hover { border-color: var(--accent); color: var(--accent); }
     .button-ghost { background: transparent; color: var(--text-muted); }
@@ -201,7 +201,7 @@
     .button-outline:hover { border-color: var(--text); color: var(--text); }
 
     /* ===== Batch Video Upload Styles (from publish.html) ===== */
-    .batch-upload-zone { position: relative; border: 2px dashed var(--border); border-radius: 18px; padding: 28px 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #f8fbff; margin-bottom: 24px; }
+    .batch-upload-zone { position: relative; border: 2px dashed var(--border); border-radius:999px; padding: 28px 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #f8fbff; margin-bottom: 24px; }
     .batch-upload-zone:hover,
     .batch-upload-zone.drag-over { border-color: var(--accent); background: var(--accent-soft); }
     .batch-upload-zone .upload-icon { font-size: 3rem; color: var(--text-muted); margin-bottom: 12px; }
@@ -215,13 +215,13 @@
     .upload-queue-header h4 { font-size: 1rem; font-weight: 600; }
     .upload-queue-header .queue-count { color: var(--text-muted); font-size: 0.88rem; }
     .upload-queue-empty { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 0.95rem; }
-    .upload-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 16px; background: #fafcff; transition: all 0.2s ease; }
-    .upload-item:hover { border-color: rgba(0,179,136,0.25); box-shadow: 0 2px 8px rgba(0,179,136,0.06); }
+    .upload-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1px solid var(--border); border-radius:999px; background: #fafcff; transition: all 0.2s ease; }
+    .upload-item:hover { border-color: rgba(0, 0, 0,0.25); box-shadow: 0 2px 8px rgba(0, 0, 0,0.06); }
     .upload-item .episode-num { width: 28px; text-align: center; font-weight: 700; font-size: 0.95rem; color: var(--accent); flex-shrink: 0; }
-    .upload-item .thumb { width: 48px; height: 48px; border-radius: 10px; background: rgba(0,0,0,0.04); display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0; overflow: hidden; position: relative; }
+    .upload-item .thumb { width: 48px; height: 48px; border-radius:999px; background: rgba(0,0,0,0.04); display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0; overflow: hidden; position: relative; }
     .upload-item .thumb video,
-    .upload-item .thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-    .upload-item .thumb .file-type-badge { position: absolute; bottom: 2px; right: 2px; font-size: 0.6rem; background: rgba(0,0,0,0.6); color: #fff; padding: 1px 5px; border-radius: 4px; line-height: 1.4; }
+    .upload-item .thumb img { width: 100%; height: 100%; object-fit: cover; border-radius:999px; }
+    .upload-item .thumb .file-type-badge { position: absolute; bottom: 2px; right: 2px; font-size: 0.6rem; background: rgba(0,0,0,0.6); color: #fff; padding: 1px 5px; border-radius:999px; line-height: 1.4; }
     .upload-item .info { flex: 1; min-width: 0; }
     .upload-item .info .name { font-size: 0.95rem; font-weight: 600; display: flex; flex-direction: column; align-items: stretch; gap: 0; }
     .upload-item .info .meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -230,20 +230,20 @@
     .upload-item .info .progress-bar .progress-fill.error { background: var(--danger); }
     .upload-item .info .progress-bar .progress-fill.done { background: #16a34a; }
     .upload-item .status-badge { font-size: 0.75rem; padding: 3px 10px; border-radius: 999px; font-weight: 500; white-space: nowrap; }
-    .upload-item .status-badge.uploading { background: rgba(0,179,136,0.1); color: var(--accent); }
+    .upload-item .status-badge.uploading { background: rgba(0, 0, 0,0.1); color: var(--accent); }
     .upload-item .status-badge.done { background: rgba(34,197,94,0.1); color: #16a34a; }
     .upload-item .status-badge.failed { background: rgba(244,91,105,0.1); color: var(--danger); }
     .upload-item .status-badge.waiting { background: rgba(255,159,44,0.1); color: var(--warning); }
     .upload-item .item-actions { display: flex; gap: 6px; flex-shrink: 0; }
     .upload-item .title-edit { display: flex; align-items: center; gap: 6px; }
-    .upload-item .title-edit input { padding: 4px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; font-family: inherit; outline: none; width: 220px; transition: border-color 0.2s; background: var(--surface); }
+    .upload-item .title-edit input { padding: 4px 10px; border: 1px solid var(--border); border-radius:999px; font-size: 0.85rem; font-family: inherit; outline: none; width: 220px; transition: border-color 0.2s; background: var(--surface); }
     .upload-item .title-edit input:placeholder-shown { border-style: dashed; border-color: rgba(0,0,0,0.2); }
     .upload-item .title-edit input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
     .batch-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 16px 0; margin-top: 4px; }
     .batch-toolbar .btn-tool { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
     .batch-toolbar .btn-tool:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
     .batch-toolbar .btn-tool.danger:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
-    .btn-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: 1rem; cursor: pointer; transition: all 0.2s ease; }
+    .btn-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius:999px; border: 1px solid transparent; background: transparent; color: var(--text-muted); font-size: 1rem; cursor: pointer; transition: all 0.2s ease; }
     .btn-icon:hover { border-color: var(--border); color: var(--text); background: rgba(0,0,0,0.02); }
     .btn-icon.danger:hover { border-color: var(--danger); color: var(--danger); background: rgba(244,91,105,0.06); }
     .upload-item.dragging { opacity: 0.4; border-color: var(--accent); }
@@ -254,8 +254,8 @@
     /* ===== Actor Bind Modal ===== */
     .actor-bind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 360px; overflow-y: auto; padding: 4px; }
     .actor-bind-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.18s ease; background: var(--surface); position: relative; }
-    .actor-bind-item:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(0, 179, 136, 0.10); }
-    .actor-bind-item.is-selected { border-color: var(--accent); background: rgba(0, 179, 136, 0.05); }
+    .actor-bind-item:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10); }
+    .actor-bind-item.is-selected { border-color: var(--accent); background: rgba(0, 0, 0, 0.05); }
     .actor-bind-item.is-bound { opacity: 0.5; cursor: default; }
     .actor-bind-item .abi-avatar { width: 46px; height: 46px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: linear-gradient(135deg, #e8f5ef, #d4ece5); }
     .actor-bind-item .abi-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
@@ -265,9 +265,9 @@
     .actor-bind-empty .empty-icon { font-size: 2rem; margin-bottom: 10px; }
     .actor-bind-status { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 500; white-space: nowrap; margin-top: 8px; }
     .actor-bind-status img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-    .char-bind-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px 14px; border-radius: 80px; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+    .char-bind-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px 14px; border-radius:999px; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
     .char-bind-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
-    .char-bind-btn.bound { border-color: var(--accent); background: rgba(0,179,136,0.06); }
+    .char-bind-btn.bound { border-color: var(--accent); background: rgba(0, 0, 0,0.06); }
     .char-bind-actor-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 
     /* ===== 调试：绑定有效期切换按钮 ===== */
@@ -294,7 +294,7 @@
 
     @media (max-width: 1200px) { .char-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 900px) { .form-row { grid-template-columns: 1fr; } .steps-bar { border-radius: var(--radius); flex-wrap: nowrap; } .char-grid { grid-template-columns: repeat(2, 1fr); } .pricing-panel { padding: 20px; } .actor-bind-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 680px) { .form-panel-body, .form-panel-header, .form-panel-footer { padding-left: 20px; padding-right: 20px; } .char-grid { grid-template-columns: 1fr; } .upload-item { padding: 10px 12px; gap: 10px; border-radius: 14px; border: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.04); align-items: flex-start; flex-wrap: wrap; } .upload-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); } .upload-item .episode-num { width: 22px; font-size: 0.85rem; line-height: 44px; } .upload-item .thumb { width: 44px; height: 44px; border-radius: 12px; } .upload-item .info { flex: 1; min-width: 0; } .upload-item .info .name { font-size: 0.82rem; } .upload-item .info .meta { font-size: 0.7rem; gap: 6px; margin-top: 2px; flex-wrap: wrap; } .upload-item .title-edit input { font-size: 0.85rem; width: 100%; border-radius: 10px; margin-top: 6px; } .upload-item .item-actions { margin-left: auto; gap: 4px; flex-shrink: 0; align-self: flex-start; } }
+    @media (max-width: 680px) { .form-panel-body, .form-panel-header, .form-panel-footer { padding-left: 20px; padding-right: 20px; } .char-grid { grid-template-columns: 1fr; } .upload-item { padding: 10px 12px; gap: 10px; border-radius:999px; border: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.04); align-items: flex-start; flex-wrap: wrap; } .upload-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); } .upload-item .episode-num { width: 22px; font-size: 0.85rem; line-height: 44px; } .upload-item .thumb { width: 44px; height: 44px; border-radius:999px; } .upload-item .info { flex: 1; min-width: 0; } .upload-item .info .name { font-size: 0.82rem; } .upload-item .info .meta { font-size: 0.7rem; gap: 6px; margin-top: 2px; flex-wrap: wrap; } .upload-item .title-edit input { font-size: 0.85rem; width: 100%; border-radius:999px; margin-top: 6px; } .upload-item .item-actions { margin-left: auto; gap: 4px; flex-shrink: 0; align-self: flex-start; } }
   </style>
 </head>
 <body>
@@ -584,7 +584,7 @@
         // Update the upload zone's look to show success state
         const zone = document.getElementById('coverUploadZone');
         zone.style.borderColor = 'var(--accent)';
-        zone.style.background = 'rgba(0,179,136,0.06)';
+        zone.style.background = 'rgba(0, 0, 0,0.06)';
         // Replace zone text with preview
         zone.innerHTML = '<div style="display:flex;align-items:center;gap:16px;justify-content:center;">'
           + '<img src="' + e.target.result + '" style="width:100px;height:70px;border-radius:12px;object-fit:cover;border:1px solid var(--border);" />'

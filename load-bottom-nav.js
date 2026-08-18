@@ -58,7 +58,7 @@
 }
 
 .bottom-nav-item.active {
-  color: #00BBA7;
+  color: #ff3b30;
 }
 
 .bottom-nav-icon {
@@ -84,7 +84,13 @@
 /* 创作 - 仅加号，无文字，垂直居中 */
 .bottom-nav-item.bottom-nav-create {
   justify-content: center;
-  padding-bottom: 2px;
+  width: 36px;
+  height: 39px;
+  margin-bottom: 6px;
+  background: #ff3b30;
+  border-radius: 11px;
+  box-shadow: 0 4px 10px rgba(255, 59, 48, 0.4);
+  padding-bottom: 0;
 }
 
 .bottom-nav-icon-create {
@@ -107,7 +113,7 @@
 }
 
 .bottom-nav-wrapper.nav-dark .bottom-nav-item.active {
-  color: #00BBA7;
+  color: #ff3b30;
 }
 
 /* ── 只在 H5 手机宽度下显示 ── */
@@ -127,9 +133,7 @@
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -144,11 +148,12 @@
 .create-action-sheet {
   width: 100%;
   max-width: 500px;
-  background: #F2F2F7;
-  border-radius: 24px 24px 0 0;
-  padding: 12px 16px calc(16px + env(safe-area-inset-bottom, 0));
+  background: #1c1c1e;
+  border-radius: 16px 16px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 16px calc(16px + env(safe-area-inset-bottom, 0px));
   transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -167,7 +172,7 @@
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
-  color: #8E8E93;
+  color: rgba(255, 255, 255, 0.5);
   text-transform: none;
   letter-spacing: 0.02em;
 }
@@ -177,16 +182,17 @@
   align-items: center;
   gap: 14px;
   padding: 18px 20px;
-  background: #FFFFFF;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
   text-decoration: none;
-  color: #1C1C1E;
+  color: #FFFFFF;
   transition: background 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 .create-action-option:active {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .create-action-option-icon {
@@ -196,7 +202,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #F2F2F7;
+  background: rgba(255, 59, 48, 0.14);
   border-radius: 12px;
   flex-shrink: 0;
 }
@@ -214,32 +220,32 @@
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: #1C1C1E;
+  color: #FFFFFF;
 }
 
 .create-action-option-desc {
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 0.82rem;
   font-weight: 400;
-  color: #8E8E93;
+  color: rgba(255, 255, 255, 0.55);
   line-height: 1.4;
 }
 
 .create-action-option svg {
   flex-shrink: 0;
-  color: #C7C7CC;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .create-action-cancel {
   width: 100%;
   padding: 16px;
-  background: #FFFFFF;
-  border: none;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
   font-family: "SF Pro", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
   font-weight: 600;
-  color: #1C1C1E;
+  color: #FFFFFF;
   cursor: pointer;
   transition: background 0.15s ease;
   -webkit-tap-highlight-color: transparent;
@@ -247,7 +253,7 @@
 }
 
 .create-action-cancel:active {
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.12);
 }
 `;
 
@@ -264,7 +270,8 @@
     const items = document.querySelectorAll('.bottom-nav-item');
     items.forEach(item => {
       const href = item.getAttribute('href');
-      if (href === currentPage) {
+      // 发布按钮（实心红色）无选中态
+      if (href === currentPage && !item.classList.contains('bottom-nav-create')) {
         item.classList.add('active');
       }
     });
@@ -337,8 +344,7 @@
     var createBtn = document.querySelector('.bottom-nav-create');
     var overlay = document.getElementById('createActionOverlay');
     var cancelBtn = document.getElementById('createActionCancel');
-
-    if (!createBtn || !overlay || !cancelBtn) return;
+    if (!createBtn || !overlay) return;
 
     // 点击加号 → 显示弹窗
     createBtn.addEventListener('click', function(e) {
@@ -362,10 +368,13 @@
     });
 
     // 取消按钮关闭
-    cancelBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      closeSheet();
-    });
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeSheet();
+      });
+    }
+
   }
 
   // ============================================================
@@ -402,9 +411,8 @@
       <span class="bottom-nav-label">角色IP</span>
     </a>
     <a class="bottom-nav-item bottom-nav-create" href="publish.html" data-tab="create">
-      <svg class="bottom-nav-icon-create" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M12 7v10M7 12h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <svg class="bottom-nav-icon-create" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
       </svg>
     </a>
     <a class="bottom-nav-item" href="studio.html" data-tab="studio">

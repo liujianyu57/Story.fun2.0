@@ -51,7 +51,7 @@
 /* ═══ Story.fun Actor Card (by actor-card.js) ═══ */\
 \
 /* ── 基础变量（如页面未定义则回退） ── */\
-.actor-card-scope { --bg: #f7fbff; --surface: #ffffff; --accent: #00b388; --accent-soft: rgba(0, 179, 136, 0.16); --text: #1a232f; --text-muted: #657586; --border: #e6eff7; font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }\
+.actor-card-scope { --bg: #f7fbff; --surface: #ffffff; --accent: #000000; --accent-soft: rgba(0, 0, 0, 0.16); --text: #1a232f; --text-muted: #657586; --border: #e6eff7; font-family: "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }\
 .actor-card-scope * { box-sizing: border-box; }\
 \
 /* ═══ 卡片骨架 ═══ */\
@@ -127,7 +127,7 @@
   white-space: nowrap;\
   letter-spacing: 0.02em;\
 }\
-.ac-badge-issuance.official { background: #05DF72; color: #fff; }\
+.ac-badge-issuance.official { background: #000000; color: #fff; }\
 .ac-badge-issuance.partner { background: #4A9EFF; color: #fff; }\
 .ac-badge-issuance.certified { background: #FF8C00; color: #fff; }\
 .ac-badge-issuance.community { background: linear-gradient(135deg, #94a3b8, #64748b); color: #fff; }\
@@ -194,9 +194,9 @@
   padding: 13px 16px;\
   font-size: 0.92rem;\
   font-weight: 700;\
-  border-radius: 14px;\
+  border-radius:999px;\
   border: none;\
-  background: linear-gradient(135deg, #00b388, #00d4a3);\
+  background: #000000;\
   color: #fff;\
   cursor: pointer;\
   transition: all 0.25s ease;\
@@ -205,13 +205,13 @@
   justify-content: center;\
   gap: 6px;\
 }\
-.ac-mint-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,179,136,0.35); }\
+.ac-mint-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 0, 0,0.35); }\
 .ac-trade-btn {\
   width: 100%;\
   padding: 13px 16px;\
   font-size: 0.92rem;\
   font-weight: 700;\
-  border-radius: 14px;\
+  border-radius:999px;\
   border: none;\
   background: linear-gradient(135deg, #f59e0b, #f97316);\
   color: #fff;\
@@ -299,13 +299,13 @@
   .ac-stat-item:hover { background: rgba(0,0,0,0.04); }\
   .ac-stat-label { font-size: 0.6rem; color: #8e8e93; font-weight: 500; letter-spacing: 0.03em; }\
   .ac-stat-item .ac-num { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.015em; }\
-  .ac-mint-btn { padding: 10px 14px; font-size: 0.82rem; font-weight: 600; border-radius: 12px; background: linear-gradient(135deg, #00b388, #00c89a); box-shadow: 0 2px 6px rgba(0,179,136,0.16); }\
-  .ac-mint-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(0,179,136,0.1); }\
+  .ac-mint-btn { padding: 10px 14px; font-size: 0.82rem; font-weight: 600; border-radius:999px; background: linear-gradient(135deg, #000000, #00c89a); box-shadow: 0 2px 6px rgba(0, 0, 0,0.16); }\
+  .ac-mint-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(0, 0, 0,0.1); }\
   .ac-actions-soldout { gap: 6px; }\
   .ac-actions-soldout .ac-floor-tag { padding: 2px 8px 2px 0; }\
   .ac-actions-soldout .ac-floor-tag .ac-fpt-label { font-size: 0.62rem; color: #8e8e93; }\
   .ac-actions-soldout .ac-floor-tag .ac-fpt-value { font-size: 0.88rem; }\
-  .ac-trade-btn { padding: 10px 14px; font-size: 0.82rem; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 2px 6px rgba(245,158,11,0.16); }\
+  .ac-trade-btn { padding: 10px 14px; font-size: 0.82rem; border-radius:999px; background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 2px 6px rgba(245,158,11,0.16); }\
   .ac-trade-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(245,158,11,0.1); }\
   .ac-badge-corner { top: 10px; left: 10px; }\
   .ac-collection-tag { left: 10px; bottom: 10px; font-size: 0.58rem; padding: 2px 8px; }\
@@ -327,8 +327,8 @@
   .ac-stat-label { font-size: 0.55rem; color: #8e8e93; font-weight: 500; letter-spacing: 0.03em; }\
   .ac-stat-item .ac-num { font-size: 0.85rem; font-weight: 700; letter-spacing: -0.015em; }\
   .ac-action-area { margin-top: 6px; }\
-  .ac-mint-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius: 10px; }\
-  .ac-trade-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius: 10px; }\
+  .ac-mint-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius:999px; }\
+  .ac-trade-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius:999px; }\
   .ac-meta-foot { font-size: 0.62rem; }\
   .ac-badge-corner { top: 8px; left: 8px; }\
   .ac-collection-tag { left: 8px; bottom: 8px; font-size: 0.55rem; padding: 2px 8px; }\

@@ -107,24 +107,24 @@ function injectAuthStyles() {
   .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted, #5e6f83); transition: all 0.2s; z-index: 1; }
   .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text, #13202e); }
   .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
-  .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent, #00b388), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+  .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent, #000000), #000000); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0, 0, 0,0.3); }
   .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; color: var(--text, #13202e); }
   .auth-modal-header p { margin: 0; color: var(--text-muted, #5e6f83); font-size: 0.92rem; }
   .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
-  .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border, #deeaf7); background: var(--surface, #ffffff); color: var(--text, #13202e); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-  .auth-social-btn:hover { border-color: var(--accent, #00b388); background: var(--accent-soft, rgba(0, 179, 136, 0.12)); }
+  .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 1px solid var(--border, #deeaf7); background: var(--surface, #ffffff); color: var(--text, #13202e); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+  .auth-social-btn:hover { border-color: var(--accent, #000000); background: var(--accent-soft, rgba(0, 0, 0, 0.12)); }
   .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted, #5e6f83); font-size: 0.85rem; margin: 4px 0; }
   .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border, #deeaf7); }
-  .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent, #00b388); background: var(--accent-soft, rgba(0,179,136,0.12)); color: var(--accent, #00b388); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-  .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+  .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 2px dashed var(--accent, #000000); background: var(--accent-soft, rgba(0, 0, 0,0.12)); color: var(--accent, #000000); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+  .auth-wallet-btn:hover { background: rgba(0, 0, 0,0.2); }
   .auth-modal-tos { text-align: center; color: var(--text-muted, #5e6f83); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
-  .auth-modal-tos a { color: var(--accent, #00b388); text-decoration: none; }
+  .auth-modal-tos a { color: var(--accent, #000000); text-decoration: none; }
   .auth-modal-tos a:hover { text-decoration: underline; }
 
   /* ===== Auth Login Button ===== */
   .auth-login-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;border:1px solid var(--border,#deeaf7);background:var(--surface,#fff);color:var(--text,#13202e);font-size:0.88rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
-  .auth-login-btn:hover{border-color:var(--accent,#00b388);color:var(--accent,#00b388);background:rgba(0,179,136,.08)}
+  .auth-login-btn:hover{border-color:var(--accent,#000000);color:var(--accent,#000000);background:rgba(0, 0, 0,.08)}
   .auth-login-btn .auth-login-icon{font-size:1rem}
 
   /* ===== Auth Dropdown Styles ===== */
@@ -140,23 +140,23 @@ function injectAuthStyles() {
   .auth-dropdown-main{font-weight:700;font-size:18px;color:#0b1720}
   .auth-dropdown-sub{color:#8b98a6;margin-top:4px}
 
-  .auth-network-badge{display:flex;align-items:center;gap:8px;padding:10px 12px;margin:4px 0 8px;background:linear-gradient(135deg,rgba(153,69,255,0.08),rgba(20,241,149,0.08));border-radius:10px;font-weight:600;font-size:13px;color:#0b1720}
+  .auth-network-badge{display:flex;align-items:center;gap:8px;padding:10px 12px;margin:4px 0 8px;background:linear-gradient(135deg,rgba(153,69,255,0.08),rgba(51,51,51,0.08));border-radius:10px;font-weight:600;font-size:13px;color:#0b1720}
   .auth-network-badge svg{flex-shrink:0}
 
   .auth-balance-list{margin-top:8px}
   .auth-balance-item{display:flex;align-items:center;justify-content:space-between;background:#f7f8f9;padding:12px;border-radius:12px;margin-bottom:10px}
   .auth-balance-left{display:flex;align-items:center;gap:12px}
   .auth-token-icon{width:44px;height:44px;border-radius:10px;flex:0 0 44px}
-  .token-story{background:linear-gradient(135deg,#00c2a8,#00b3ff);}
-  .token-usdc{background:linear-gradient(135deg,#0bb07b,#10a37a);}
+  .token-story{background:#000000;}
+  .token-usdc{background:linear-gradient(135deg,#2775CA,#3a8fd4);}
   .auth-token-name{font-weight:700}
   .auth-token-sub{color:#7d8a94;font-size:13px}
   .auth-balance-amount{font-weight:700;color:#0b1720}
 
    .auth-balance-actions{display:flex;gap:16px;padding:12px 0}
-   .btn{padding:12px 20px;border-radius:28px;font-weight:700;cursor:pointer;border:0;flex:1}
-  .btn-primary{background:linear-gradient(90deg,#00c2a8,#00b3ff);color:#fff}
-  .btn-outline{background:transparent;border:2px solid #10b39a;color:#0b1720}
+   .btn{padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;border:0;flex:1;display:flex;align-items:center;justify-content:center;text-align:center}
+  .btn-primary{background:#000000;color:#fff}
+  .btn-outline{background:transparent;border:2px solid #000000;color:#000000}
 
   .auth-dropdown-divider{height:1px;background:#eef2f4;margin:8px 0;border-radius:1px}
   .auth-dropdown-item{display:flex;align-items:center;gap:10px;padding:12px 6px;color:#0b1720;text-decoration:none}
@@ -171,8 +171,8 @@ function injectAuthStyles() {
   .deposit-close{width:24px;height:24px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;font-size:18px;border-radius:50%;transition:background 0.2s;padding:0}
   .deposit-close:hover{background:rgba(0,0,0,0.06)}
   .deposit-body{display:flex;flex-direction:column;gap:32px}
-  .deposit-info-banner{display:flex;align-items:center;gap:10px;padding:16px;background:rgba(1,186,178,0.16);border-radius:12px}
-  .deposit-info-text{flex:1;font-size:12px;line-height:16px;color:#01BAB2}
+  .deposit-info-banner{display:flex;align-items:center;gap:10px;padding:16px;background:rgba(0,0,0,0.16);border-radius:12px}
+  .deposit-info-text{flex:1;font-size:12px;line-height:16px;color:#666666}
   .deposit-field-group{display:flex;flex-direction:column;gap:8px}
   .deposit-field-label{font-weight:510;font-size:16px;color:#1C2024}
   .deposit-select-field{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 8px 16px;height:48px;background:#F0F0F3;border-radius:12px;border:none;cursor:pointer}
@@ -185,13 +185,13 @@ function injectAuthStyles() {
   .deposit-network-helper{font-size:12px;color:#8B8D98}
   .deposit-address-field{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid #D9D9E0;border-radius:12px}
   .deposit-address-text{flex:1;font-size:16px;color:#1C2024;word-break:break-all;font-family:"SF Mono",monospace}
-  .deposit-copy-btn{width:24px;height:24px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;font-size:16px;border-radius:4px;padding:0;transition:color 0.2s}
-  .deposit-copy-btn:hover{color:#00b388}
-  .deposit-copy-btn.copied{color:#00b388}
+  .deposit-copy-btn{width:24px;height:24px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;font-size:16px;border-radius:999px;padding:0;transition:color 0.2s}
+  .deposit-copy-btn:hover{color:#000000}
+  .deposit-copy-btn.copied{color:#000000}
   .deposit-coin-dropdown{position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);border:1px solid rgba(0,0,0,.06);overflow:hidden;z-index:10}
   .deposit-coin-dropdown-item{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .15s}
-  .deposit-coin-dropdown-item:hover{background:rgba(0,179,136,.06)}
-  .deposit-coin-dropdown-item:active{background:rgba(0,179,136,.12)}
+  .deposit-coin-dropdown-item:hover{background:rgba(0, 0, 0,.06)}
+  .deposit-coin-dropdown-item:active{background:rgba(0, 0, 0,.12)}
   .deposit-coin-dropdown-item .dcd-icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0;color:#fff}
   .deposit-coin-dropdown-item .dcd-name{font-weight:600;font-size:15px;color:#1C2024}
   .deposit-coin-select-wrapper{position:relative;width:100%}
@@ -202,21 +202,21 @@ function injectAuthStyles() {
   .deposit-warning-text p{margin:0;font-size:12px;line-height:16px;color:#60646C}
 
   /* Wallet Deposit Flow Styles */
-  .deposit-back-btn{width:28px;height:28px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;border-radius:8px;transition:all .15s;padding:0;flex-shrink:0}
+  .deposit-back-btn{width:28px;height:28px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;border-radius:999px;transition:all .15s;padding:0;flex-shrink:0}
   .deposit-back-btn:hover{background:rgba(0,0,0,.05);color:#1C2024}
   .deposit-back-btn svg{width:18px;height:18px}
   .deposit-step-title{font-weight:700;font-size:18px;color:#1C2024;flex:1}
   .dw-coin-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1;min-height:0}
   .dw-coin-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#F7F8F9;cursor:pointer;transition:all .15s;border:2px solid transparent;flex-shrink:0}
-  .dw-coin-item:hover{border-color:#00b388;background:rgba(0,179,136,.06)}
+  .dw-coin-item:hover{border-color:#000000;background:rgba(0, 0, 0,.06)}
   .dw-coin-item:active{transform:scale(.98)}
-  .dw-selectable-row.selected{border-color:#00b388!important;background:rgba(0,179,136,.08)!important}
+  .dw-selectable-row.selected{border-color:#000000!important;background:rgba(0, 0, 0,.08)!important}
   .dw-coin-item.zero-balance{display:none!important}
   .dw-coin-item.low-balance{opacity:0.35;pointer-events:none}
   .dw-low-hint{color:#f45b69;font-size:11px;margin-right:4px}
   .dw-coin-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
-  .dw-coin-icon.story{background:linear-gradient(135deg,#00c2a8,#00b3ff)}
-  .dw-coin-icon.usdc{background:linear-gradient(135deg,#0bb07b,#10a37a)}
+  .dw-coin-icon.story{background:#000000}
+  .dw-coin-icon.usdc{background:linear-gradient(135deg,#2775CA,#3a8fd4)}
   .dw-coin-icon.usdt{background:linear-gradient(135deg,#26A17B,#26A17B)}
   .dw-coin-icon-wrap{position:relative;display:inline-flex;flex-shrink:0}
   .dw-chain-badge{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:700;line-height:1;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.1)}
@@ -230,7 +230,7 @@ function injectAuthStyles() {
   .dw-coin-chevron{color:#C7C7CC;flex-shrink:0}
   .dw-selected-coin{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#F0F0F3;border-radius:12px;margin-bottom:16px}
   .dw-amount-input-wrap{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:20px 0 16px;border-bottom:2px solid #EEF2F4;transition:border-color .2s}
-  .dw-amount-input-wrap:focus-within{border-bottom-color:#00b388}
+  .dw-amount-input-wrap:focus-within{border-bottom-color:#000000}
   .dw-amount-input-wrap input{width:auto;min-width:0;max-width:200px;background:transparent;border:none;outline:none;font-size:36px;font-weight:700;color:#1C2024;font-family:inherit;text-align:left;-moz-appearance:textfield}
   .dw-amount-input-wrap input::-webkit-outer-spin-button,
   .dw-amount-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
@@ -238,14 +238,14 @@ function injectAuthStyles() {
   .dw-amount-suffix{font-weight:700;font-size:20px;color:#1C2024;white-space:nowrap}
   .dw-quick-btns{display:flex;gap:8px;justify-content:center;padding-top:12px}
   .dw-quick-btn{padding:8px 16px;border-radius:999px;border:1px solid #EEF2F4;background:#F7F8F9;font-size:13px;font-weight:600;color:#5E6F83;cursor:pointer;transition:all .15s;font-family:inherit}
-  .dw-quick-btn:hover{border-color:#00b388;color:#00b388;background:rgba(0,179,136,.06)}
+  .dw-quick-btn:hover{border-color:#000000;color:#000000;background:rgba(0, 0, 0,.06)}
   .dw-quick-btn:active{transform:scale(.96)}
   .dw-conversion-hint{font-size:12px;color:#8B8D98;line-height:16px;margin-top:8px;display:flex;align-items:center;gap:4px}
   .dw-swap-row{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px;background:#F7F8F9;border-radius:14px;width:100%}
   .dw-swap-side{display:flex;align-items:center;gap:10px;min-width:0}
   .dw-swap-icon-wrap{position:relative;width:40px;height:40px;flex-shrink:0}
   .dw-swap-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center}
-  .dw-swap-icon.usdc{background:linear-gradient(135deg,#0bb07b,#10a37a)}
+  .dw-swap-icon.usdc{background:linear-gradient(135deg,#2775CA,#3a8fd4)}
   .dw-swap-icon.usdt{background:linear-gradient(135deg,#26A17B,#26A17B)}
   .dw-swap-chain{position:absolute;bottom:-4px;right:-4px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:700;line-height:1;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.1)}
   .dw-swap-text{display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -259,19 +259,19 @@ function injectAuthStyles() {
   .dw-divider{height:1px;background:#EEF2F4;margin:8px 0}
   .dw-method-list{display:flex;flex-direction:column;gap:10px}
   .dw-method-item{display:flex;align-items:center;gap:14px;padding:20px;border-radius:16px;background:#F7F8F9;cursor:pointer;transition:all .15s;border:2px solid transparent}
-  .dw-method-item:hover{border-color:#00b388;background:rgba(0,179,136,.06)}
+  .dw-method-item:hover{border-color:#000000;background:rgba(0, 0, 0,.06)}
   .dw-method-item:active{transform:scale(.98)}
   .dw-chain-icons{display:flex;align-items:center;gap:6px}
   .dw-chain-icons img,.dw-chain-icons svg{width:18px;height:18px;border-radius:50%;object-fit:cover;flex-shrink:0}
   .dw-method-icon{width:48px;height:48px;display:grid;place-items:center;flex-shrink:0;border-radius:14px}
-  .dw-method-icon.wallet-icon{background:linear-gradient(135deg,rgba(153,69,255,.15),rgba(20,241,149,.15))}
+  .dw-method-icon.wallet-icon{background:linear-gradient(135deg,rgba(153,69,255,.15),rgba(51,51,51,.15))}
   .dw-method-icon.wallet-icon svg{color:#9945FF}
-  .dw-method-icon.transfer-icon{background:linear-gradient(135deg,rgba(0,179,136,.12),rgba(0,179,136,.05))}
-  .dw-method-icon.transfer-icon svg{color:#00b388}
+  .dw-method-icon.transfer-icon{background:linear-gradient(135deg,rgba(0, 0, 0,.12),rgba(0, 0, 0,.05))}
+  .dw-method-icon.transfer-icon svg{color:#000000}
   .dw-method-info{flex:1;min-width:0}
   .dw-method-name{font-weight:700;font-size:16px;color:#1C2024}
   .dw-method-desc{font-size:12px;color:#8B8D98;margin-top:2px}
-  .dw-sign-btn{display:flex;justify-content:center;align-items:center;padding:14px 16px;background:linear-gradient(90deg,#00c2a8,#00b3ff);border:none;border-radius:14px;color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:all .2s;width:100%}
+  .dw-sign-btn{display:flex;justify-content:center;align-items:center;padding:14px 16px;background:#000000;border:none;border-radius:999px;color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:all .2s;width:100%}
   .dw-sign-btn:hover{opacity:.9}
   .dw-sign-btn:active{transform:scale(.98)}
   .dw-sign-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
@@ -284,17 +284,17 @@ function injectAuthStyles() {
   .withdraw-close{width:24px;height:24px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:#60646C;font-size:18px;border-radius:50%;transition:background 0.2s;padding:0}
   .withdraw-close:hover{background:rgba(0,0,0,0.06)}
   .withdraw-body{display:flex;flex-direction:column;gap:16px}
-  .withdraw-balance-banner{display:flex;flex-direction:column;gap:6px;padding:16px;background:rgba(1,186,178,0.16);border-radius:12px}
-  .withdraw-balance-label{font-size:12px;line-height:16px;color:#01BAB2}
-  .withdraw-balance-amount{font-weight:700;font-size:30px;line-height:36px;color:#01BAB2}
+  .withdraw-balance-banner{display:flex;flex-direction:column;gap:6px;padding:16px;background:rgba(0,0,0,0.16);border-radius:12px}
+  .withdraw-balance-label{font-size:12px;line-height:16px;color:#666666}
+  .withdraw-balance-amount{font-weight:700;font-size:30px;line-height:36px;color:#666666}
   .withdraw-field-group{display:flex;flex-direction:column;gap:8px}
   .withdraw-field-label{font-weight:510;font-size:16px;color:#1C2024}
   .withdraw-input-field{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 8px 16px;height:48px;background:#F0F0F3;border-radius:12px;border:none}
   .withdraw-input-field input{flex:1;background:transparent;border:none;outline:none;font-size:16px;color:#1C2024;font-family:inherit;min-width:0}
-  .withdraw-scan-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#60646C;flex-shrink:0;transition:all 0.2s;padding:0}
-  .withdraw-scan-btn:hover{color:#00BBA7;background:rgba(0,187,167,0.1)}
-  .withdraw-connect-btn{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;border:1px solid rgba(153,69,255,.3);background:linear-gradient(135deg,rgba(153,69,255,.08),rgba(20,241,149,.08));cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#9945FF;font-family:inherit;transition:all .15s;flex-shrink:0}
-  .withdraw-connect-btn:hover{background:linear-gradient(135deg,rgba(153,69,255,.16),rgba(20,241,149,.16));border-color:rgba(153,69,255,.5)}
+  .withdraw-scan-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;border-radius:999px;cursor:pointer;color:#60646C;flex-shrink:0;transition:all 0.2s;padding:0}
+  .withdraw-scan-btn:hover{color:#000000;background:rgba(0, 0, 0,0.1)}
+  .withdraw-connect-btn{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;border:1px solid rgba(153,69,255,.3);background:linear-gradient(135deg,rgba(153,69,255,.08),rgba(51,51,51,.08));cursor:pointer;white-space:nowrap;font-size:12px;font-weight:600;color:#9945FF;font-family:inherit;transition:all .15s;flex-shrink:0}
+  .withdraw-connect-btn:hover{background:linear-gradient(135deg,rgba(153,69,255,.16),rgba(51,51,51,.16));border-color:rgba(153,69,255,.5)}
   .withdraw-connect-btn svg{width:14px;height:14px;flex-shrink:0}
   @media (min-width: 769px) { .withdraw-scan-btn { display: none; } }
   /* H5 扫码弹窗 */
@@ -314,14 +314,14 @@ function injectAuthStyles() {
   .withdraw-select-label{font-size:16px;color:#1C2024}
   .withdraw-select-chevron{width:24px;height:24px;display:grid;place-items:center;color:#60646C;font-size:14px}
   .withdraw-quick-amounts{display:flex;gap:8px}
-  .withdraw-quick-btn{flex:1;display:flex;justify-content:center;align-items:center;padding:6px 8px;border:1px solid #D9D9E0;background:#fff;border-radius:12px;font-weight:510;font-size:14px;color:#1C2024;cursor:pointer;transition:all 0.2s}
-  .withdraw-quick-btn:hover{border-color:#00b388;color:#00b388}
-  .withdraw-submit-btn{display:flex;justify-content:center;align-items:center;padding:10px 16px;background:linear-gradient(45deg,#05DF72 0%,#00BBA7 50%,#00B8DB 100%);border:none;border-radius:88px;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:opacity 0.2s;width:100%}
+  .withdraw-quick-btn{flex:1;display:flex;justify-content:center;align-items:center;padding:6px 8px;border:1px solid #D9D9E0;background:#fff;border-radius:999px;font-weight:510;font-size:14px;color:#1C2024;cursor:pointer;transition:all 0.2s}
+  .withdraw-quick-btn:hover{border-color:#000000;color:#000000}
+  .withdraw-submit-btn{display:flex;justify-content:center;align-items:center;padding:10px 16px;background:linear-gradient(45deg,#000000 0%,#1a1a1a 50%,#666666 100%);border:none;border-radius:999px;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:opacity 0.2s;width:100%}
   .withdraw-submit-btn:hover{opacity:0.9}
   .withdraw-warning-text{display:flex;flex-direction:column;gap:6px}
   .withdraw-warning-text p{margin:0;font-size:12px;line-height:16px;color:#60646C}
-  .auth-copy-btn{width:22px;height:22px;border:none;background:transparent;color:var(--text-muted,#8b98a6);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;padding:0;border-radius:4px}
-  .auth-copy-btn:hover{color:var(--accent,#00b388);background:rgba(0,0,0,.04)}
+  .auth-copy-btn{width:22px;height:22px;border:none;background:transparent;color:var(--text-muted,#8b98a6);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;padding:0;border-radius:999px}
+  .auth-copy-btn:hover{color:var(--accent,#000000);background:rgba(0,0,0,.04)}
   .auth-copy-btn svg{width:14px;height:14px}
 
    /* ===== Logout Confirm Modal ===== */
@@ -333,7 +333,7 @@ function injectAuthStyles() {
    .logout-confirm-title{font-size:17px;font-weight:700;color:#13202e;margin-bottom:6px}
    .logout-confirm-desc{font-size:14px;color:#5e6f83;margin-bottom:24px}
    .logout-confirm-actions{display:flex;gap:12px}
-   .logout-confirm-actions button{flex:1;padding:12px;border-radius:14px;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+   .logout-confirm-actions button{flex:1;padding:12px;border-radius:999px;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
    .logout-confirm-actions .btn-cancel{background:rgba(0,0,0,.06);color:#13202e}
    .logout-confirm-actions .btn-cancel:active{background:rgba(0,0,0,.12)}
    .logout-confirm-actions .btn-confirm{background:#f45b69;color:#fff}
@@ -344,7 +344,7 @@ function injectAuthStyles() {
   .dh-usdc-badge:hover{background:rgba(0,0,0,.08)}
   .dh-usdc-amount{padding:0 4px 0 14px;font-size:12px;font-weight:600;color:#13202e;white-space:nowrap;line-height:36px}
   .dh-usdc-avatar-wrap{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(0,0,0,.08);flex-shrink:0;margin:1px;margin-left:6px;transition:border-color .15s}
-  .dh-usdc-badge:hover .dh-usdc-avatar-wrap{border-color:#00b388}
+  .dh-usdc-badge:hover .dh-usdc-avatar-wrap{border-color:#000000}
   .dh-usdc-avatar-wrap img{width:100%;height:100%;object-fit:cover;display:block}
   `;
 
@@ -393,7 +393,7 @@ function renderAuthUI(container) {
               <defs>
                 <linearGradient id="solana-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
                   <stop stop-color="#9945FF"/>
-                  <stop offset="1" stop-color="#14F195"/>
+                  <stop offset="1" stop-color="#333333"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -578,9 +578,9 @@ function openInviteCodeModal(mode) {
         '<div style="display:flex;gap:10px;margin-top:4px;">' +
           (isPrompt
             ? '<button class="button-ghost" style="flex:1;padding:12px;border-radius:999px;border:none;background:rgba(0,0,0,.05);color:var(--text,#13202e);font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="skipInviteCode()">跳过</button>' +
-              '<button class="button" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#00b388);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="confirmInviteCode()">确认</button>'
+              '<button class="button" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#000000);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="confirmInviteCode()">确认</button>'
             : '<button class="button-ghost" style="flex:1;padding:12px;border-radius:999px;border:none;background:rgba(0,0,0,.05);color:var(--text,#13202e);font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="closeInviteCodeModal()">取消</button>' +
-              '<button class="button" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#00b388);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="confirmInviteCode()">确定</button>')
+              '<button class="button" style="flex:1;padding:12px;border-radius:999px;border:none;background:var(--accent,#000000);color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;" onclick="confirmInviteCode()">确定</button>')
           +
         '</div>' +
       '</div>' +
@@ -838,7 +838,7 @@ function openWithdrawModal() {
               </button>
               <div class="deposit-coin-dropdown" id="withdrawCoinDropdown" style="display:none">
                 <div class="deposit-coin-dropdown-item" data-coin="USDC" onclick="event.stopPropagation();selectWithdrawCoin('USDC')"><div class="dcd-icon" style="background:#2775CA">$</div><span class="dcd-name">USDC</span></div>
-                <div class="deposit-coin-dropdown-item" data-coin="STORY" onclick="event.stopPropagation();selectWithdrawCoin('STORY')"><div class="dcd-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff)">S</div><span class="dcd-name">STORY</span></div>
+                <div class="deposit-coin-dropdown-item" data-coin="STORY" onclick="event.stopPropagation();selectWithdrawCoin('STORY')"><div class="dcd-icon" style="background:#000000">S</div><span class="dcd-name">STORY</span></div>
               </div>
             </div>
           </div>
@@ -875,7 +875,7 @@ function openWithdrawModal() {
             <div class="withdraw-field-label">提现网络</div>
             <button class="withdraw-select-field">
               <div class="withdraw-select-left">
-                <div class="withdraw-crypto-icon" style="background:linear-gradient(135deg,#9945FF,#14F195);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">S</div>
+                <div class="withdraw-crypto-icon" style="background:linear-gradient(135deg,#9945FF,#333333);color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">S</div>
                 <span class="withdraw-select-label">Solana</span>
               </div>
               <span class="withdraw-select-chevron">▾</span>
@@ -950,7 +950,7 @@ function selectWithdrawCoin(coin) {
   };
 
   if (coin === 'STORY') {
-    if (iconEl) { iconEl.style.cssText = 'background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff'; iconEl.textContent = 'S'; }
+    if (iconEl) { iconEl.style.cssText = 'background:#000000;color:#fff'; iconEl.textContent = 'S'; }
     if (labelEl) labelEl.textContent = 'STORY';
     if (suffixEl) suffixEl.textContent = 'STORY';
     if (hintEl) hintEl.textContent = '可提现 ' + getBalanceFormatted('STORY') + ' STORY';
@@ -1009,7 +1009,7 @@ function openQrScanner() {
           <button class="qr-scanner-close" onclick="closeQrScanner()">✕</button>
           <video class="qr-scanner-video" autoplay playsinline></video>
           <div class="qr-scanner-hint">将二维码对准相机</div>
-          <div class="qr-scanner-hint" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.5)">或 <button onclick="openQrScannerFallback()" style="background:none;border:none;color:#00BBA7;text-decoration:underline;cursor:pointer;font-size:13px">上传二维码图片</button></div>
+          <div class="qr-scanner-hint" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.5)">或 <button onclick="openQrScannerFallback()" style="background:none;border:none;color:#000000;text-decoration:underline;cursor:pointer;font-size:13px">上传二维码图片</button></div>
         `;
         const videoEl = overlay.querySelector('video');
         videoEl.srcObject = stream;
@@ -1069,7 +1069,7 @@ function openQrScannerFallback() {
       <div style="width:120px;height:120px;border-radius:20px;background:rgba(255,255,255,0.1);display:grid;place-items:center;font-size:48px">📷</div>
       <div class="qr-scanner-hint">选择包含二维码的图片</div>
       <input type="file" id="qrFileInput" accept="image/*" style="display:none" onchange="decodeQrFromFile(event)" />
-      <button onclick="document.getElementById('qrFileInput').click()" style="padding:12px 24px;border-radius:999px;border:none;background:#00BBA7;color:#fff;font-size:15px;font-weight:600;cursor:pointer">选择图片</button>
+      <button onclick="document.getElementById('qrFileInput').click()" style="padding:12px 24px;border-radius:999px;border:none;background:#000000;color:#fff;font-size:15px;font-weight:600;cursor:pointer">选择图片</button>
     </div>
   `;
 }
@@ -1277,14 +1277,14 @@ var depositSelectedNetwork = 'Ethereum'; // 当前选中的网络
 
 // 网络配置
 var DEPOSIT_NETWORKS = [
-  { id: 'Solana',   bold: 'SOL',   sub: 'Solana',                  bg: 'linear-gradient(135deg,#9945FF,#14F195)', letter: 'S' },
+  { id: 'Solana',   bold: 'SOL',   sub: 'Solana',                  bg: 'linear-gradient(135deg,#9945FF,#333333)', letter: 'S' },
   { id: 'Ethereum', bold: 'ETH',   sub: 'Ethereum (ERC20)',          bg: '#627EEA', letter: 'E' },
   { id: 'BSC',      bold: 'BSC',   sub: 'BNB Smart Chain (BEP20)',   bg: '#F0B90B', letter: 'B' },
   { id: 'Arbitrum', bold: 'ARBITRUM', sub: 'Arbitrum One',           bg: '#28A0F0', letter: 'A' }
 ];
 // STORY 可选网络（仅 Solana）
 var DEPOSIT_STORY_NETWORKS = [
-  { id: 'Solana', bold: 'SOL', sub: 'Solana', bg: 'linear-gradient(135deg,#9945FF,#14F195)', letter: 'S' }
+  { id: 'Solana', bold: 'SOL', sub: 'Solana', bg: 'linear-gradient(135deg,#9945FF,#333333)', letter: 'S' }
 ];
 
 function renderDepositNetworkDropdown(networks) {
@@ -1323,7 +1323,7 @@ function openDepositTransferModal(fromWallet) {
     + '<div class="deposit-coin-dropdown" id="depositCoinDropdown" style="display:none">'
     + '<div class="deposit-coin-dropdown-item" data-coin="USDC" onclick="event.stopPropagation();selectDepositCoin(\'USDC\')"><div class="dcd-icon" style="background:#2775CA">$</div><span class="dcd-name">USDC</span></div>'
     + '<div class="deposit-coin-dropdown-item" data-coin="USDT" onclick="event.stopPropagation();selectDepositCoin(\'USDT\')"><div class="dcd-icon" style="background:#26A17B">$</div><span class="dcd-name">USDT</span></div>'
-    + '<div class="deposit-coin-dropdown-item" data-coin="STORY" onclick="event.stopPropagation();selectDepositCoin(\'STORY\')"><div class="dcd-icon" style="background:linear-gradient(135deg,#00c2a8,#00b3ff)">S</div><span class="dcd-name">STORY</span></div>'
+    + '<div class="deposit-coin-dropdown-item" data-coin="STORY" onclick="event.stopPropagation();selectDepositCoin(\'STORY\')"><div class="dcd-icon" style="background:#000000">S</div><span class="dcd-name">STORY</span></div>'
     + '</div></div></div>'
     + '<div class="deposit-field-group"><div class="deposit-field-label">网络</div>'
     + '<div class="deposit-coin-select-wrapper">'
@@ -1340,7 +1340,7 @@ function openDepositTransferModal(fromWallet) {
     + '<div class="dw-swap-row" id="depositSwapRow" style="margin-top:4px">'
     + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc" id="depositSwapSendIcon"></div><div class="dw-swap-chain" id="depositSwapSendChain" style="background:#627EEA">E</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin" id="depositSwapSendCoin">USDC</span></div></div>'
     + '<span class="dw-swap-arrow">→</span>'
-    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin" id="depositSwapReceiveCoin">USDC</span></div></div>'
+    + '<div class="dw-swap-side"><div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#333333)">S</div></div><div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin" id="depositSwapReceiveCoin">USDC</span></div></div>'
     + '</div>'
     + '<div id="depositSwapHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;">将代币发送到这个地址，它将自动在你的 Story.fun 账户中兑换成USDC</div>'
     + '<div id="depositMinHint" style="font-size:12px;color:#8B8D98;text-align:center;line-height:1.6;margin-top:4px">最小充币金额 5 USDC</div>'
@@ -1373,7 +1373,7 @@ function selectDepositCoin(coin) {
   var labelEl = document.getElementById('depositCoinLabel');
 
   if (coin === 'STORY') {
-    if (iconEl) { iconEl.style.cssText = 'background:linear-gradient(135deg,#00c2a8,#00b3ff);color:#fff'; iconEl.textContent = 'S'; }
+    if (iconEl) { iconEl.style.cssText = 'background:#000000;color:#fff'; iconEl.textContent = 'S'; }
     if (labelEl) labelEl.textContent = 'STORY';
     // STORY 仅支持 Solana，自动切换网络
     selectDepositNetwork('Solana');
@@ -1567,7 +1567,7 @@ function openDepositWalletStep2() {
   if (!modal) return;
 
   var chains = [
-    { id: 'Solana',   label: 'Solana',   bg: 'linear-gradient(135deg,#9945FF,#14F195)', letter: 'S' },
+    { id: 'Solana',   label: 'Solana',   bg: 'linear-gradient(135deg,#9945FF,#333333)', letter: 'S' },
     { id: 'Ethereum', label: 'Ethereum', bg: '#627EEA', letter: 'E' },
     { id: 'BSC',      label: 'BSC',      bg: '#F0B90B', letter: 'B' },
     { id: 'Arbitrum', label: 'Arbitrum', bg: '#28A0F0', letter: 'A' }
@@ -1667,12 +1667,12 @@ function openDepositWalletStep3() {
     + '<div class="dw-quick-btns"><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'25\',' + balance + ')">25%</button><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'50\',' + balance + ')">50%</button><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'75\',' + balance + ')">75%</button><button class="dw-quick-btn" onclick="dwSetQuickAmount(\'max\',' + balance + ')">最大</button></div>'
     + '<div class="dw-swap-row">'
     + '<div class="dw-swap-side">'
-    + '<div class="dw-swap-icon-wrap"><div class="dw-swap-icon ' + iconClass + '"></div><div class="dw-swap-chain" style="background:' + (function(){var c=dwSelectedChain,bg;if(c==="Solana")bg="linear-gradient(135deg,#9945FF,#14F195)";else if(c==="Ethereum")bg="#627EEA";else if(c==="BSC")bg="#F0B90B";else bg="#28A0F0";return bg;})() + '">' + dwSelectedChain.charAt(0) + '</div></div>'
+    + '<div class="dw-swap-icon-wrap"><div class="dw-swap-icon ' + iconClass + '"></div><div class="dw-swap-chain" style="background:' + (function(){var c=dwSelectedChain,bg;if(c==="Solana")bg="linear-gradient(135deg,#9945FF,#333333)";else if(c==="Ethereum")bg="#627EEA";else if(c==="BSC")bg="#F0B90B";else bg="#28A0F0";return bg;})() + '">' + dwSelectedChain.charAt(0) + '</div></div>'
     + '<div class="dw-swap-text"><span class="dw-swap-text-label">发送</span><span class="dw-swap-text-coin">' + coin + '</span></div>'
     + '</div>'
     + '<span class="dw-swap-arrow">→</span>'
     + '<div class="dw-swap-side">'
-    + '<div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#14F195)">S</div></div>'
+    + '<div class="dw-swap-icon-wrap"><div class="dw-swap-icon usdc"></div><div class="dw-swap-chain" style="background:linear-gradient(135deg,#9945FF,#333333)">S</div></div>'
     + '<div class="dw-swap-text"><span class="dw-swap-text-label">接收</span><span class="dw-swap-text-coin" id="dwReceiveAmount">' + Math.ceil(balance / 2) + ' USDC</span></div>'
     + '</div></div>'
     + '<button class="dw-sign-btn" id="dwContinueBtn" onclick="dwSignAndDeposit()" disabled>确认充值</button>'

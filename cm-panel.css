@@ -31,7 +31,7 @@
   --cm-role-role: rgba(0,0,0,.45);
   --cm-role-status: rgba(0,0,0,.3);
   --cm-role-card-border: rgba(0,0,0,.05);
-  --cm-role-avatar-border: rgba(0,179,136,.4);
+  --cm-role-avatar-border: rgba(0, 0, 0,.4);
   --cm-role-unbound-bg: rgba(0,0,0,.04);
   --cm-role-unbound-border: rgba(0,0,0,.08);
   --cm-ep-item-bg: rgba(0,0,0,.04);
@@ -39,8 +39,8 @@
   --cm-ep-title: #13202e;
   --cm-ep-desc: rgba(0,0,0,.4);
   --cm-ep-likes: rgba(0,0,0,.45);
-  --cm-stat-bg: rgba(0,179,136,.1);
-  --cm-stat-border: rgba(0,179,136,.15);
+  --cm-stat-bg: rgba(0, 0, 0,.1);
+  --cm-stat-border: rgba(0, 0, 0,.15);
   --cm-footer-border: rgba(0,0,0,.06);
   --cm-cr-star: rgba(0,0,0,.12);
   --cm-cr-label: rgba(0,0,0,.4);
@@ -201,7 +201,7 @@ body[data-cm-theme="dark"] {
   transition: color .2s;
 }
 .cm-tab.active {
-  color: var(--accent, #00b388);
+  color: #ff3b30;
   font-weight: 600;
 }
 .cm-tab.active::after {
@@ -213,7 +213,7 @@ body[data-cm-theme="dark"] {
   width: 24px;
   height: 2.5px;
   border-radius: 2px;
-  background: var(--accent, #00b388);
+  background: #ff3b30;
 }
 .cm-drawer .cm-header .cm-tabs {
   padding: 0;
@@ -297,12 +297,12 @@ body[data-cm-theme="dark"] {
   display: block;
   font-size: 16px;
   font-weight: 800;
-  color: var(--accent, #00b388);
+  color: #ffffff;
 }
 .cm-stat-label {
   display: block;
   font-size: 11px;
-  color: var(--accent, #00b388);
+  color: rgba(255,255,255,.55);
   margin-top: 2px;
   font-weight: 500;
 }
@@ -356,15 +356,15 @@ body[data-cm-theme="dark"] {
   transition: all .15s;
 }
 .cm-ep-item:active {
-  background: rgba(0,179,136,.12);
+  background: rgba(0, 0, 0,.12);
   transform: scale(.98);
 }
 .cm-ep-item.active {
-  background: rgba(0,179,136,.15);
-  border-color: rgba(0,179,136,.35);
+  background: rgba(0, 0, 0,.15);
+  border-color: rgba(0, 0, 0,.35);
 }
 .cm-ep-item.active .cm-ep-title {
-  color: #00b388;
+  color: #ff3b30;
   font-weight: 700;
 }
 .cm-ep-item .cm-ep-cover-wrap {
@@ -449,22 +449,22 @@ body[data-cm-theme="dark"] {
   padding: 10px 12px;
   margin: 12px 0 4px;
   border-radius: 10px;
-  background: rgba(0,179,136,.06);
-  border: 1px solid rgba(0,179,136,.1);
+  background: rgba(0, 0, 0,.06);
+  border: 1px solid rgba(0, 0, 0,.1);
   cursor: pointer;
   transition: all .2s;
   flex-shrink: 0;
 }
 .cm-role-more-entry:hover {
-  background: rgba(0,179,136,.12);
-  border-color: rgba(0,179,136,.24);
+  background: rgba(0, 0, 0,.12);
+  border-color: rgba(0, 0, 0,.24);
 }
 .cm-role-more-entry:active { transform: scale(.98); }
 .cm-role-more-entry .cmr-icon {
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: linear-gradient(135deg,#00b388,#00c9a0);
+  background: #ff3b30;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -561,8 +561,8 @@ body[data-cm-theme="dark"] {
 .cm-role-ip-tag {
   font-size: 11px;
   font-weight: 600;
-  color: var(--accent, #00b388);
-  background: rgba(0,179,136,.12);
+  color: #ff3b30;
+  background: rgba(0, 0, 0,.12);
   padding: 1px 8px;
   border-radius: 999px;
 }
@@ -573,8 +573,8 @@ body[data-cm-theme="dark"] {
 .cm-sign-btn {
   padding: 2px 8px;
   border-radius: 999px;
-  border: 1px solid var(--accent, #00b388);
-  background: var(--accent, #00b388);
+  border: 1px solid #ff3b30;
+  background: #ff3b30;
   color: #fff;
   font-size: 10px;
   font-weight: 600;
@@ -619,7 +619,7 @@ body[data-cm-theme="dark"] {
   border: none;
   border-radius: 999px;
   padding: 10px 20px;
-  background: linear-gradient(135deg,#00b388,#00c9a0);
+  background: #ff3b30;
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -684,8 +684,8 @@ body[data-cm-theme="dark"] {
   background: rgba(0,0,0,.04);
 }
 .cm-item .cm-actions button:active {
-  background: rgba(0,179,136,.2);
-  color: #34d399;
+  background: rgba(0, 0, 0,.2);
+  color: #999999;
 }
 
 /* ---- 子评论 ---- */
@@ -719,7 +719,7 @@ body[data-cm-theme="dark"] {
   background: none; border: none; color: var(--cm-text-muted); font-size: 10px; cursor: pointer;
   padding: 2px 6px; border-radius: 999px; transition: all .2s; display: inline-flex; align-items: center; gap: 2px; background: rgba(0,0,0,.03);
 }
-.cm-sub-item .cm-actions button:active { background: rgba(0,179,136,.2); color: #34d399; }
+.cm-sub-item .cm-actions button:active { background: rgba(0, 0, 0,.2); color: #999999; }
 
 /* 桌面端子评论暗色 */
 @media(min-width:769px) {
@@ -750,7 +750,7 @@ body[data-cm-theme="dark"] {
 .cm-reply-box .cm-reply-input::placeholder { color: var(--cm-input-placeholder, rgba(0,0,0,.35)); }
 .cm-reply-box .cm-reply-send {
   border: none; border-radius: 999px; padding: 6px 16px;
-  background: linear-gradient(135deg,#00b388,#00c9a0); color: #fff;
+  background: #ff3b30; color: #fff;
   font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0;
 }
 
@@ -878,11 +878,11 @@ body[data-cm-theme="dark"] {
   .cm-ep-item .cm-ep-desc { color: rgba(255,255,255,.5) !important; }
   .cm-ep-item .cm-ep-likes { color: rgba(255,255,255,.45) !important; }
   .cm-ep-item .cm-ep-meta { color: rgba(255,255,255,.35) !important; }
-  .cm-ep-item.active { background: rgba(0,179,136,.18) !important; border-color: rgba(0,179,136,.4) !important; }
-  .cm-ep-item.active .cm-ep-title { color: #00b388 !important; font-weight: 700 !important; }
+  .cm-ep-item.active { background: rgba(0, 0, 0,.18) !important; border-color: rgba(0, 0, 0,.4) !important; }
+  .cm-ep-item.active .cm-ep-title { color: #ff3b30 !important; font-weight: 700 !important; }
   .cm-role-card { border-bottom-color: rgba(255,255,255,.05) !important; }
   .cm-sign-btn { color: #fff !important; }
-  .cm-role-ip-tag { color: var(--accent, #00b388) !important; }
+  .cm-role-ip-tag { color: #ff3b30 !important; }
   .cm-footer { border-top-color: rgba(255,255,255,.1) !important; }
   .cm-footer .comment-input-wrap input { background: rgba(255,255,255,.06) !important; color: rgba(255,255,255,.9) !important; border-color: rgba(255,255,255,.15) !important; }
   .cm-footer .comment-input-wrap input::placeholder { color: rgba(255,255,255,.35) !important; }

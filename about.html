@@ -8,9 +8,9 @@
     :root {
       --bg: #f5faff;
       --surface: #ffffff;
-      --accent: #00b388;
-      --accent-soft: rgba(0, 179, 136, 0.12);
-      --accent-glow: rgba(0, 179, 136, 0.25);
+      --accent: #000000;
+      --accent-soft: rgba(0, 0, 0, 0.12);
+      --accent-glow: rgba(0, 0, 0, 0.25);
       --text: #13202e;
       --text-muted: #5e6f83;
       --border: #deeaf7;
@@ -32,7 +32,7 @@
     .auth-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--accent-soft); transition: border-color 0.2s; position: relative; flex-shrink: 0; }
     .auth-avatar:hover { border-color: var(--accent); }
     .auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .auth-avatar-dot { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; border: 2px solid var(--surface); }
+    .auth-avatar-dot { display: none; }
     .auth-dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 240px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 40px rgba(27,45,71,0.15); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.25s ease; z-index: 100; overflow: hidden; }
     .auth-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
     .auth-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
@@ -53,17 +53,17 @@
     .auth-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); cursor: pointer; display: grid; place-items: center; font-size: 1.1rem; color: var(--text-muted); transition: all 0.2s; z-index: 1; }
     .auth-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
     .auth-modal-header { text-align: center; padding: 36px 28px 20px; position: relative; }
-    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4a3); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0,179,136,0.3); }
+    .auth-modal-logo { width: 56px; height: 56px; border-radius: 50%; background: #000000; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.3rem; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(0, 0, 0,0.3); }
     .auth-modal-header h2 { margin: 0 0 6px; font-size: 1.4rem; }
     .auth-modal-header p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
     .auth-modal-body { padding: 8px 28px 32px; display: flex; flex-direction: column; gap: 12px; }
-    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
     .auth-social-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
     .auth-social-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 4px 0; }
     .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-    .auth-wallet-btn:hover { background: rgba(0,179,136,0.2); }
+    .auth-wallet-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius:999px; border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .auth-wallet-btn:hover { background: rgba(0, 0, 0,0.2); }
     .auth-modal-tos { text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; margin: 4px 0 0; }
     .auth-modal-tos a { color: var(--accent); text-decoration: none; }
     .auth-modal-tos a:hover { text-decoration: underline; }
@@ -98,7 +98,7 @@
       font-weight: 700;
       line-height: 140%;
       letter-spacing: -0.21%;
-      background: linear-gradient(46deg, #05DF72 0%, #00BBA7 45%, #00B8DB 92%);
+      background: linear-gradient(46deg, #000000 0%, #1a1a1a 45%, #666666 92%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -119,7 +119,7 @@
       font-weight: 700;
       line-height: 20px;
       text-decoration: none;
-      background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);
+      background: linear-gradient(45deg, #000000 0%, #1a1a1a 50%, #666666 100%);
       color: #fff;
       border: none;
       cursor: pointer;
@@ -135,7 +135,7 @@
       align-items: center;
       justify-content: center;
       padding: 10px 32px;
-      border-radius: 88px;
+      border-radius:999px;
       font-size: 14px;
       font-weight: 700;
       line-height: 20px;
@@ -166,7 +166,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #05DF72;
+      background: #000000;
       flex-shrink: 0;
     }
     .hero-banner {
@@ -508,7 +508,7 @@
       align-items: center;
       justify-content: center;
       padding: 10px 32px;
-      border-radius: 88px;
+      border-radius:999px;
       font-size: 14px;
       font-weight: 700;
       line-height: 20px;
@@ -538,7 +538,7 @@
       gap: 16px;
       padding: 24px 32px;
       background: #FFFFFF;
-      border-radius: 24px;
+      border-radius:999px;
       box-shadow: 3px 4px 12px 0px rgba(0, 0, 0, 0.08);
     }
     .story-section-card-icon {
@@ -577,7 +577,7 @@
       padding: 44px 88px;
       background: #FFFFFF;
       border: 2px solid #F0F0F3;
-      border-radius: 24px;
+      border-radius:999px;
     }
     .story-section-flow-item {
       display: flex;
@@ -618,7 +618,7 @@
 
     .site-footer { margin-top: 64px; padding: 48px 0 32px; border-top: 1px solid var(--border); }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
-    .footer-brand .icon { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, rgba(0,179,136,0.18), rgba(0,179,136,0.06)); display: grid; place-items: center; color: var(--accent); font-weight: 700; font-size: 1rem; border: 1px solid rgba(0, 179, 136, 0.30); margin-bottom: 16px; }
+    .footer-brand .icon { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, rgba(0, 0, 0,0.18), rgba(0, 0, 0,0.06)); display: grid; place-items: center; color: var(--accent); font-weight: 700; font-size: 1rem; border: 1px solid rgba(0, 0, 0, 0.30); margin-bottom: 16px; }
     .footer-brand h3 { margin: 0 0 8px; font-size: 1.15rem; }
     .footer-brand p { margin: 0 0 16px; color: var(--text-muted); line-height: 1.7; font-size: 0.92rem; max-width: 300px; }
     .footer-social { display: flex; gap: 12px; }
@@ -753,7 +753,7 @@
       </div>
       <div class="second-screen-cards">
         <div class="second-screen-card">
-          <div class="second-screen-card-icon" style="background: linear-gradient(45deg, #05DF72 0%, #00BBA7 50%, #00B8DB 100%);">
+          <div class="second-screen-card-icon" style="background: linear-gradient(45deg, #000000 0%, #1a1a1a 50%, #666666 100%);">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip_ai)">
                 <path d="M15.75 2.33329C15.75 2.85129 15.5248 3.31679 15.1667 3.63763V5.83329H21C21.9283 5.83329 22.8185 6.20204 23.4749 6.85842C24.1313 7.5148 24.5 8.40503 24.5 9.33329V21C24.5 21.9282 24.1313 22.8185 23.4749 23.4748C22.8185 24.1312 21.9283 24.5 21 24.5H7C6.07174 24.5 5.1815 24.1312 4.52513 23.4748C3.86875 22.8185 3.5 21.9282 3.5 21V9.33329C3.5 8.40503 3.86875 7.5148 4.52513 6.85842C5.1815 6.20204 6.07174 5.83329 7 5.83329H12.8333V3.63763C12.6158 3.44302 12.4503 3.19707 12.3521 2.92219C12.2538 2.6473 12.2259 2.35221 12.2709 2.06377C12.3158 1.77534 12.4322 1.50274 12.6094 1.27078C12.7867 1.03883 13.0191 0.85489 13.2856 0.73572C13.5521 0.61655 13.8441 0.565934 14.1352 0.58848C14.4262 0.611026 14.707 0.706018 14.9519 0.864807C15.1969 1.0236 15.3982 1.24114 15.5376 1.49762C15.677 1.7541 15.75 2.04138 15.75 2.33329ZM0 11.6666H2.33333V18.6666H0V11.6666ZM28 11.6666H25.6667V18.6666H28V11.6666ZM10.5 16.9166C10.9641 16.9166 11.4092 16.7323 11.7374 16.4041C12.0656 16.0759 12.25 15.6308 12.25 15.1666C12.25 14.7025 12.0656 14.2574 11.7374 13.9292C11.4092 13.601 10.9641 13.4166 10.5 13.4166C10.0359 13.4166 9.59075 13.601 9.26256 13.9292C8.93437 14.2574 8.75 14.7025 8.75 15.1666C8.75 15.6308 8.93437 16.0759 9.26256 16.4041C9.59075 16.7323 10.0359 16.9166 10.5 16.9166ZM19.25 15.1666C19.25 14.7025 19.0656 14.2574 18.7374 13.9292C18.4092 13.601 17.9641 13.4166 17.5 13.4166C17.0359 13.4166 16.5908 13.601 16.2626 13.9292C15.9344 14.2574 15.75 14.7025 15.75 15.1666C15.75 15.6308 15.9344 16.0759 16.2626 16.4041C16.5908 16.7323 17.0359 16.9166 17.5 16.9166C17.9641 16.9166 18.4092 16.7323 18.7374 16.4041C19.0656 16.0759 19.25 15.6308 19.25 15.1666Z" fill="white"/>
