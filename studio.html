@@ -1881,38 +1881,29 @@
       <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeActualOutputModal()">✕</button>
       <h2>奖池</h2>
       <!-- 总奖池 -->
-      <div style="background:var(--accent-soft);border:1px solid rgba(0, 0, 0,0.15);border-radius:16px;padding:18px 14px;margin-bottom:14px;text-align:center;">
+      <div style="background:var(--bg);border-radius:16px;padding:18px 14px;margin-bottom:14px;text-align:center;">
         <div style="font-size:0.72rem;color:var(--text-sub);margin-bottom:4px;font-weight:600;">本周总奖池</div>
-        <div style="font-size:2rem;font-weight:800;color:var(--accent);line-height:1;" id="actualOutputPoolTotal">2,115,385 STORY</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--text);line-height:1;" id="actualOutputPoolTotal">2,115,385 STORY</div>
         <div style="font-size:0.7rem;color:var(--text-muted);margin-top:6px;">周衰减系数 ×0.99572</div>
       </div>
       <!-- 奖池分配双卡 -->
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 12px;text-align:center;">
           <div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:2px;">演出奖池（75%）</div>
-          <div style="font-weight:700;font-size:0.95rem;color:var(--accent);" id="actualOutputPoolStaking">1,586,539</div>
+          <div style="font-weight:700;font-size:0.95rem;color:var(--text);" id="actualOutputPoolStaking">1,586,539</div>
         </div>
         <div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 12px;text-align:center;">
           <div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:2px;">邀请奖池（25%）</div>
-          <div style="font-weight:700;font-size:0.95rem;color:var(--accent);" id="actualOutputPoolReferral">528,846</div>
+          <div style="font-weight:700;font-size:0.95rem;color:var(--text);" id="actualOutputPoolReferral">528,846</div>
         </div>
       </div>
       <!-- 分配规则 -->
-      <div style="background:var(--bg);border-radius:14px;padding:14px 16px;margin-bottom:14px;">
+      <div style="margin-bottom:14px;">
         <div style="font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:10px;">分配规则</div>
-        <div style="font-size:0.82rem;line-height:1.8;color:var(--text-muted);">
-          <div style="margin-bottom:8px;">
-            <span style="font-weight:600;color:var(--text);">全网名义产出 ≤ 当周硬顶：</span><br>
-            <span style="padding-left:8px;">用户实得 = 用户名义产出</span>
-          </div>
-          <div style="margin-bottom:8px;">
-            <span style="font-weight:600;color:var(--text);">全网名义产出 > 当周硬顶：</span><br>
-            <span style="padding-left:8px;">用户实得 = 用户名义产出 ×（当周硬顶 ÷ 全网名义产出）</span>
-          </div>
-          <div>
-            <span style="font-weight:600;color:var(--text);">单地址周封顶：</span><br>
-            <span style="padding-left:8px;">单个地址每周最多领取当周硬顶的 5%</span>
-          </div>
+        <div style="font-size:0.82rem;line-height:1.9;color:var(--text-muted);">
+          <div style="margin-bottom:6px;">全网名义产出 ≤ 当周硬顶：用户实得 = 用户名义产出</div>
+          <div style="margin-bottom:6px;">全网名义产出 > 当周硬顶：用户实得 = 用户名义产出 ×（当周硬顶 ÷ 全网名义产出）</div>
+          <div>单地址周封顶：单个地址每周最多领取当周硬顶的 5%</div>
         </div>
       </div>
     </div>
