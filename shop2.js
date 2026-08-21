@@ -16,9 +16,9 @@ window.Shop = (function () {
     { key: 'manual', name: '训练手册', icon: '📘', price: 0.1, unit: 'USDC', tile: '#EDF2FF',
       desc: '角色升级材料，升级时按角色等级消耗。' },
     { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY', tile: '#EAF6EF', claw: 'week', days: 7,
-      benefits: ['自动补体力', '体力耗尽自动休息', '自动安排最优演出', '所有角色产出 +5%'] },
+      benefits: ['自动使用体力包进行补充', '无体力包时自动休息', '自动安排最优演出', '产出STORY +5%'] },
     { key: 'clawMonth', name: 'Story Claw 月卡', icon: '🐾', price: 3000, unit: 'STORY', tile: '#EAF6EF', claw: 'month', days: 30,
-      benefits: ['自动补体力', '体力耗尽自动休息', '自动安排最优演出', '所有角色产出 +5%'] },
+      benefits: ['自动使用体力包进行补充', '无体力包时自动休息', '自动安排最优演出', '产出STORY +5%'] },
   ];
 
   function findItem(key) {
@@ -190,7 +190,7 @@ window.Shop = (function () {
     d.style.cssText = OVERLAY + 'z-index:100000;';
     d.innerHTML = '<div style="' + CARD + 'width:460px;max-width:calc(100% - 32px);flex-shrink:0;padding:28px 24px 24px;">'
       + '<div style="font-size:20px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 6px;">Story Claw 订阅</div>'
-      + '<div style="font-size:13px;color:#86868b;margin:0 0 14px;">购买即生效 · 重复续费延长有效期</div>'
+      + '<div style="font-size:13px;color:#86868b;margin:0 0 14px;">购买即生效 · 续费延长有效期</div>'
       + '<button onclick="Shop.closeSub()" class="sf-close" style="' + CLOSE + '">✕</button>'
       + '<div id="shopSubStatus" style="display:none;margin:0 0 14px;"></div>'
       + '<div id="shopSubCards" style="display:flex;gap:12px;margin-bottom:20px;"></div>'
