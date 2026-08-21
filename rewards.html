@@ -39,6 +39,14 @@
       margin-bottom: 24px;
     }
     .page-header h1 { margin: 0; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.015em; }
+    .page-header-back { display: none; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(0,0,0,.05); color: var(--text); cursor: pointer; align-items: center; justify-content: center; flex-shrink: 0; }
+    .page-header-back:active { background: rgba(0,0,0,.1); }
+    /* 移动端：显示返回按钮，隐藏底部导航（仅本页，不影响桌面） */
+    @media (max-width: 768px) {
+      .page-header-back { display: inline-flex; }
+      .bottom-nav-wrapper { display: none !important; }
+      body { padding-bottom: 0 !important; }
+    }
     .page-header-actions { display: flex; gap: 12px; align-items: center; }
     .btn-primary {
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -195,7 +203,12 @@
   <div class="app-shell">
 
     <div class="page-header">
-      <h1>收益</h1>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="page-header-back" onclick="history.back()" aria-label="返回">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h1>收益</h1>
+      </div>
     </div>
 
     <!-- ===== 核心指标 ===== -->
