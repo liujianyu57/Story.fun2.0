@@ -1864,11 +1864,6 @@
         <div class="consume-grid" id="consumeGrid"></div>
       </div>
 
-      <div id="modalLevelCostRow" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,rgba(245,176,66,0.10),rgba(245,208,66,0.06));border:1px solid rgba(245,176,66,0.2);margin-bottom:16px;">
-        <span style="font-size:0.88rem;font-weight:600;color:var(--text);">升级费用</span>
-        <span id="modalLevelCost" style="font-size:1.15rem;font-weight:800;color:var(--gold);">0 USDC</span>
-      </div>
-
       <button class="modal-btn confirm" id="modalLevelUpBtn" onclick="upgradeLevel()" style="display:none;">✦ 确认升级</button>
       <div id="modalLevelMaxMsg" style="text-align:center;padding:24px 12px;background:linear-gradient(135deg, rgba(245,176,66,0.12), rgba(245,208,66,0.08));border-radius:16px;margin-bottom:16px;display:none;">
         <div style="font-size:1.2rem;font-weight:800;color:var(--gold);">已达到顶级咖位</div>
@@ -3270,15 +3265,10 @@
       updateConsumeUI();
 
       if (nextLevel && threshold) {
-        var manualNeed = ItemStore.manualNeeded(nextLevel);
-        var manualStock = ItemStore.count('manual');
-        document.getElementById('modalLevelCost').textContent = '训练手册 ×' + manualNeed + '（库存 ' + manualStock + '）';
-        document.getElementById('modalLevelCostRow').style.display = 'flex';
         document.getElementById('modalLevelUpBtn').style.display = 'block';
         document.getElementById('consumeList').style.display = 'block';
         document.getElementById('modalLevelMaxMsg').style.display = 'none';
       } else {
-        document.getElementById('modalLevelCostRow').style.display = 'none';
         document.getElementById('modalLevelUpBtn').style.display = 'none';
         document.getElementById('consumeList').style.display = 'none';
         document.getElementById('modalLevelMaxMsg').style.display = 'block';
