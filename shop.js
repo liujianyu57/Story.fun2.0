@@ -63,7 +63,7 @@ window.Shop = (function () {
     var d = document.createElement('div');
     d.id = 'shopModal';
     d.style.cssText = OVERLAY + 'z-index:99999;';
-    d.innerHTML = '<div style="' + CARD + 'max-width:360px;width:calc(100% - 32px);">'
+    d.innerHTML = '<div style="' + CARD + 'width:360px;max-width:calc(100% - 32px);">'
       + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 14px;">购买中心</div>'
       + '<button onclick="Shop.close()" class="sf-close" style="' + CLOSE + '">✕</button>'
       + '<div id="shopList"></div>'
@@ -114,7 +114,7 @@ window.Shop = (function () {
     var d = document.createElement('div');
     d.id = 'shopBuyModal';
     d.style.cssText = OVERLAY + 'z-index:100000;';
-    d.innerHTML = '<div style="' + CARD + 'max-width:340px;width:calc(100% - 32px);">'
+    d.innerHTML = '<div style="' + CARD + 'width:340px;max-width:calc(100% - 32px);">'
       + '<button onclick="Shop.closeBuyModal()" class="sf-close" style="' + CLOSE + '">✕</button>'
       + '<div id="shopBuyIcon" style="width:52px;height:52px;border-radius:15px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px;"></div>'
       + '<div id="shopBuyTitle" style="font-size:16px;font-weight:650;color:#1d1d1f;text-align:center;letter-spacing:-.01em;margin:0 0 8px;"></div>'
@@ -188,7 +188,7 @@ window.Shop = (function () {
     var d = document.createElement('div');
     d.id = 'shopSubModal';
     d.style.cssText = OVERLAY + 'z-index:100000;';
-    d.innerHTML = '<div style="' + CARD + 'max-width:460px;width:calc(100% - 32px);padding:28px 24px 24px;">'
+    d.innerHTML = '<div style="' + CARD + 'width:460px;max-width:calc(100% - 32px);padding:28px 24px 24px;">'
       + '<div style="font-size:20px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 6px;">Story Claw 订阅</div>'
       + '<div style="font-size:13px;color:#86868b;margin:0 0 14px;">购买即生效 · 重复续费延长有效期</div>'
       + '<button onclick="Shop.closeSub()" class="sf-close" style="' + CLOSE + '">✕</button>'
