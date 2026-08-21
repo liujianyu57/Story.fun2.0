@@ -163,9 +163,14 @@ window.Shop = (function () {
   function stepBuy(delta) {
     var el = document.getElementById('shopBuyQty');
     var v = parseInt(el.value, 10) || 1;
-    // 训练手册按 100 本/档步进（消耗 100/200/400/800），体力包按 1 个/档；最低均为 1
-    var step = pendingKey === 'manual' ? 100 : 1;
-    el.value = Math.max(1, v + delta * step);
+    if (pendingKey === 'manual') {
+      // 训练手册按档位步进：1 → 100 → 200 → 300 …（与升级消耗 100/200/400/800 对齐）
+      v = delta > 0 ? (v < 100 ? 100 : Math.ceil((v + 1) / 100) * 100)
+                    : (v <= 100 ? 1 : Math.floor((v - 1) / 100) * 100);
+    } else {
+      v += delta; // 体力包 ±1
+    }
+    el.value = Math.max(1, v);
     refreshBuyTotal();
   }
   function refreshBuyTotal() {
