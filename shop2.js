@@ -62,7 +62,7 @@ window.Shop = (function () {
     injectStyles();
     var d = document.createElement('div');
     d.id = 'shopModal';
-    d.style.cssText = OVERLAY + 'z-index:99999;';
+    d.style.cssText = 'position:fixed;inset:0;display:none;background:transparent;';
     d.innerHTML = '<div style="' + CARD + 'width:360px;max-width:calc(100% - 32px);flex-shrink:0;">'
       + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 14px;">购买中心</div>'
       + '<button onclick="Shop.close()" class="sf-close" style="' + CLOSE + '">✕</button>'
@@ -86,11 +86,13 @@ window.Shop = (function () {
   }
 
   function renderCenter() {
-    var el = document.getElementById('shopList');
-    if (!el) return; // 购买中心未打开过（如从补体力/一键补充直达）时跳过刷新
     var html = '';
     ITEMS.forEach(function (it) { html += centerRow(it); });
-    el.innerHTML = html;
+    // 桌面端 header 下拉（#dhShopList）与移动端卡片（#shopList）各自存在才填充
+    ['shopList', 'dhShopList'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    });
   }
 
   function open() {
@@ -283,7 +285,7 @@ window.Shop = (function () {
   }
 
   return {
-    open: open, close: close,
+    open: open, close: close, renderCenter: renderCenter,
     openBuyModal: openBuyModal, closeBuyModal: closeBuyModal, stepBuy: stepBuy, confirmBuy: confirmBuy,
     openSub: openSub, closeSub: closeSub, selectSub: selectSub, confirmSub: confirmSub,
   };
