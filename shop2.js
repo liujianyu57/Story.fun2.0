@@ -49,7 +49,7 @@ window.Shop = (function () {
     document.head.appendChild(s);
   }
 
-  var FONT = '-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Segoe UI",Roboto,sans-serif';
+  var FONT = "-apple-system,BlinkMacSystemFont,'SF Pro Text','PingFang SC','Segoe UI',Roboto,sans-serif";
   var OVERLAY = 'position:fixed;inset:0;display:none;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);';
   var CARD = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:24px 20px 20px;box-shadow:0 24px 64px rgba(0,0,0,.18);font-family:' + FONT + ';animation:sfPop .2s ease;';
   var CLOSE = 'position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:0.95rem;color:#86868b;line-height:1;';
