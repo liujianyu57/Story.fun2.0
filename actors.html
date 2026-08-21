@@ -1025,7 +1025,7 @@
       overlay.innerHTML = '<div style="background:#fff;border-radius:16px;max-width:340px;width:calc(100% - 48px);padding:26px 22px 20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);">' +
         '<div style="font-size:1.1rem;font-weight:800;color:var(--text,#13202e);margin-bottom:12px;">🐾 Story Claw</div>' +
         '<div style="font-size:.85rem;line-height:1.9;color:#556;text-align:left;">' +
-          '签约 5 张角色卡，赠送 7 天 Story Claw。激活后自动运营：<br>' +
+          '签约 5 张角色卡，赠送 7 天 Story Claw（自动生效）。生效期间自动运营：<br>' +
           '· 自动补体力<br>' +
           '· 体力耗尽自动休息<br>' +
           '· 自动安排最优演出<br>' +
@@ -1042,9 +1042,9 @@
       localStorage.setItem('sf2_sign_count', String(n));
       if (n >= 5 && !getSignGifted()) {
         localStorage.setItem('sf2_sign_gift', '1');
-        ItemStore.add('clawWeek', 1);
+        ItemStore.activateClaw('week');
         renderSignProgress();
-        showToast('🎉 获得 Story Claw，去经纪人页激活');
+        showToast('🎉 签约 5 张达成，Story Claw 周卡已生效（7 天）');
       } else {
         renderSignProgress();
       }

@@ -51,14 +51,21 @@ window.Shop = (function () {
         desc: '补满角色体力至 168h。<br>按角色等级消耗：Lv1-5 分别 1 / 2 / 5 / 13 / 32 个。' },
       { key: 'manual', name: '训练手册', icon: '📘', price: 0.1, unit: 'USDC',
         desc: '角色升级材料。<br>升级消耗：Lv1→5 分别 100 / 200 / 400 / 800 本。' },
-      { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY',
-        desc: '激活后 7 天自动运营：自动补体力、体力耗尽自动休息、自动安排最优演出。<br>期间所有角色产出 +5%。' },
-      { key: 'clawMonth', name: 'Story Claw 月卡', icon: '🐾', price: 3000, unit: 'STORY',
-        desc: '同周卡，有效期 30 天。<br>重复激活只延长有效期，产出加成不叠加。' },
+      { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY', claw: 'week',
+        desc: '购买后立即生效，7 天自动运营：自动补体力、体力耗尽自动休息、自动安排最优演出。<br>期间所有角色产出 +5%。' },
+      { key: 'clawMonth', name: 'Story Claw 月卡', icon: '🐾', price: 3000, unit: 'STORY', claw: 'month',
+        desc: '同周卡，有效期 30 天。<br>续费延长有效期，产出加成不叠加。' },
     ];
     var html = '';
     items.forEach(function (it) {
-      var n = ItemStore.count(it.key);
+      var cs = it.claw ? ItemStore.clawState() : null;
+      var isActive = !!cs;
+      var statusHtml = it.claw
+        ? (isActive ? '激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天' : '未激活')
+        : ('我有 ' + ItemStore.count(it.key));
+      var btnHtml = it.claw
+        ? '<button onclick="Shop.buyClaw(\'' + it.claw + '\')" style="flex-shrink:0;padding:5px 14px;border-radius:8px;border:none;background:#13202e;color:#fff;font-size:0.8rem;cursor:pointer;">' + (isActive ? '续费' : '开通') + '</button>'
+        : '<button onclick="Shop.openBuy(\'' + it.key + '\')" style="flex-shrink:0;padding:5px 14px;border-radius:8px;border:none;background:#13202e;color:#fff;font-size:0.8rem;cursor:pointer;">购买</button>';
       html += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid #e5e8ee;border-radius:12px;margin-bottom:10px;background:#fff;">'
         + '<span style="font-size:1.4rem;line-height:1;">' + it.icon + '</span>'
         + '<div style="flex:1;min-width:0;">'
@@ -67,9 +74,9 @@ window.Shop = (function () {
         + '</div>'
         + '<div style="text-align:right;flex-shrink:0;">'
         + '<div style="font-size:0.8rem;font-weight:800;color:#d03050;">' + it.price + ' ' + it.unit + '</div>'
-        + '<div style="font-size:0.7rem;color:#99a;margin-top:2px;">我有 ' + n + '</div>'
+        + '<div style="font-size:0.7rem;color:#99a;margin-top:2px;">' + statusHtml + '</div>'
         + '</div>'
-        + '<button onclick="Shop.openBuy(\'' + it.key + '\')" style="flex-shrink:0;padding:5px 14px;border-radius:8px;border:none;background:#13202e;color:#fff;font-size:0.8rem;cursor:pointer;">购买</button>'
+        + btnHtml
         + '</div>';
     });
     return html;
@@ -113,6 +120,16 @@ window.Shop = (function () {
     toast('已购买 ' + n + ' 个' + it.name);
   }
 
+  // Claw 周卡/月卡：购买即生效（订阅模式），无需库存与二次确认
+  function buyClaw(kind) {
+    var it = findItem(kind === 'week' ? 'clawWeek' : 'clawMonth');
+    var wasActive = !!ItemStore.clawState();
+    ItemStore.activateClaw(kind);
+    render();
+    var days = kind === 'week' ? 7 : 30;
+    toast(wasActive ? it.name + ' 已续费，延长 ' + days + ' 天' : 'Story Claw 已开通（' + days + ' 天）');
+  }
+
   function findItem(key) {
     var map = {
       supply: { name: '体力补给包', icon: '🧃', price: 10, unit: 'USDC' },
@@ -134,6 +151,6 @@ window.Shop = (function () {
     clearTimeout(t._t); t._t = setTimeout(function () { t.style.opacity = '0'; }, 2200);
   }
 
-  return { open: open, close: close, openBuy: openBuy, closeBuy: closeBuy, step: step, confirm: confirm };
+  return { open: open, close: close, openBuy: openBuy, closeBuy: closeBuy, step: step, confirm: confirm, buyClaw: buyClaw };
 })();
 window.openShop = function () { window.Shop.open(); };

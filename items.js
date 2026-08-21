@@ -34,27 +34,36 @@ window.ItemStore = (function () {
     buy: function (type, n) { this.add(type, n); return true; },
 
     // ---- Claw 状态 ----
-    // 返回 { expireAt, remainMs } 或 null（未激活/已过期）
+    // 返回 { expireAt, kind, remainMs } 或 null（未激活/已过期）
     clawState: function () {
       const s = load();
       if (!s.clawActive) return null;
       if (s.clawActive.expireAt <= Date.now()) {
         s.clawActive = null; save(s); return null;
       }
-      return { expireAt: s.clawActive.expireAt, remainMs: s.clawActive.expireAt - Date.now() };
+      return { expireAt: s.clawActive.expireAt, kind: s.clawActive.kind || 'week', remainMs: s.clawActive.expireAt - Date.now() };
     },
 
-    // 激活 Claw（kind: 'week'|'month'），消耗 1 张对应库存；重复激活只延长有效期
+    // 开通/续费 Claw（kind: 'week'|'month'）：购买即生效，不占库存；重复开通只延长有效期
     activateClaw: function (kind) {
-      const type = kind === 'week' ? 'clawWeek' : 'clawMonth';
       const s = load();
-      if ((s[type] || 0) < 1) return { ok: false, reason: 'no-stock' };
-      const days = kind === 'week' ? 7 : 30;
+      const days = kind === 'month' ? 30 : 7;
       const base = s.clawActive && s.clawActive.expireAt > Date.now() ? s.clawActive.expireAt : Date.now();
-      s[type] -= 1;
-      s.clawActive = { expireAt: base + days * 86400000 };
+      s.clawActive = { expireAt: base + days * 86400000, kind: kind };
       save(s);
       return { ok: true, expireAt: s.clawActive.expireAt };
+    },
+
+    // 调试用：切换 Claw 激活状态（激活 ↔ 未激活），返回 'on' | 'off'
+    toggleClawDebug: function () {
+      const s = load();
+      if (s.clawActive && s.clawActive.expireAt > Date.now()) {
+        s.clawActive = null;
+      } else {
+        s.clawActive = { expireAt: Date.now() + 7 * 86400000, kind: 'week' };
+      }
+      save(s);
+      return s.clawActive ? 'on' : 'off';
     },
 
     // ---- 消耗规则（与 PRD 一致）----
@@ -66,8 +75,8 @@ window.ItemStore = (function () {
 })();
 
 window.ITEM_DEFS = {
-  supply:    { key: 'supply',    name: '体力补给包', icon: '🧃', price: 10,    unit: 'USDC', desc: '补满角色体力' },
-  manual:    { key: 'manual',    name: '训练手册',   icon: '📘', price: 0.1,  unit: 'USDC', desc: '升级角色' },
-  clawWeek:  { key: 'clawWeek',  name: 'Story Claw 周卡',  icon: '🐾', price: 800,  unit: 'STORY', desc: '7 天自动运营' },
-  clawMonth: { key: 'clawMonth', name: 'Story Claw 月卡',  icon: '🐾', price: 3000, unit: 'STORY', desc: '30 天自动运营' },
+  supply:    { key: 'supply',    name: '体力补给包', icon: '🧃', price: 10,    unit: 'USDC', desc: '补满角色体力', detail: '补满角色体力至 168h。\n按角色等级消耗：Lv1-5 分别 1 / 2 / 5 / 13 / 32 个。' },
+  manual:    { key: 'manual',    name: '训练手册',   icon: '📘', price: 0.1,  unit: 'USDC', desc: '升级角色', detail: '角色升级材料。\n升级消耗：Lv1→5 分别 100 / 200 / 400 / 800 本。' },
+  clawWeek:  { key: 'clawWeek',  name: 'Story Claw 周卡',  icon: '🐾', price: 800,  unit: 'STORY', desc: '7 天自动运营', detail: '购买后立即生效，7 天自动运营：\n· 期间所有角色产出 +5%\n· 自动安排最优演出\n· 自动补充体力\n· 体力耗尽自动休息\n续费延长有效期，产出加成不叠加。' },
+  clawMonth: { key: 'clawMonth', name: 'Story Claw 月卡',  icon: '🐾', price: 3000, unit: 'STORY', desc: '30 天自动运营', detail: '购买后立即生效，30 天自动运营：\n· 期间所有角色产出 +5%\n· 自动安排最优演出\n· 自动补充体力\n· 体力耗尽自动休息\n续费延长有效期，产出加成不叠加。' },
 };

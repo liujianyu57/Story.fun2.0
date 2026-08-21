@@ -1492,12 +1492,8 @@
       .batch-btn.charge, .batch-btn.rest { display: none; }
 
       /* 弹窗桌面/移动显隐 */
-      .charge-desk-btns { display: none !important; }
-      .charge-mob-btn { display: block !important; }
-      .charge-batch-area { display: block !important; }
       .recall-desk-btns { display: none !important; }
       .recall-mob-btn { display: block !important; }
-      .recall-batch-area { display: block !important; }
 
       .studio-links { display: none; }
 
@@ -1652,16 +1648,19 @@
   <div class="auth-container" id="authContainer"></div>
 </div>
 
+  <!-- 调试按钮：切换 Story Claw 激活状态（demo 演示用） -->
+  <button id="clawDebugBtn" onclick="toggleClawDebug()" title="调试：切换 Story Claw 激活状态"
+    style="position:fixed;right:10px;top:70px;z-index:10000;display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;border:1px dashed #c3c9d2;background:rgba(255,255,255,.92);color:#8a94a3;font-size:0.72rem;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.08);">🛠 <span id="clawDebugLabel">Claw 未激活</span></button>
+
   <div class="app-shell">
 
     <!-- ===== 顶部状态 ===== -->
     <div class="studio-topbar">
       <div class="studio-status">
         <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;">本周片酬 <strong id="statusWeekly">0.0</strong> <span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:#000;color:#fff;font-size:10px;font-weight:800;vertical-align:middle;margin-left:2px;">S</span></span>
-        <button id="clawTopBadge" onclick="openClawSheet()" style="display:none;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--accent);background:var(--accent-soft);cursor:pointer;font-size:0.76rem;color:var(--accent);flex-shrink:0;">🐾 Story Claw</button>
+        <button id="clawTopBadge" onclick="openClawSheet()" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.76rem;color:var(--text-muted);flex-shrink:0;"><span id="clawTopIcon">💤</span> Story Claw</button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
-      <button id="itemsTopBtn" onclick="openItemsSheet()" title="我的道具" style="margin-left:auto;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.85rem;color:var(--text);flex-shrink:0;">🎒 我的道具</button>
       <div class="mob-more-wrap" id="mobMoreWrap">
         <button class="mob-more-btn" onclick="toggleMobMore(event)">···</button>
         <div class="mob-more-menu" id="mobMoreMenu">
@@ -1684,9 +1683,10 @@
         </div>
         <div id="deployArea"><!-- 桌面：5 格一行；移动：焦点卡 + 箭头 + 圆点 --></div>
         <div class="batch-actions">
-          <button class="batch-btn primary" id="batchPerformBtn" onclick="openBatchModal('perform')">一键演出</button>
+          <button class="batch-btn primary" id="batchPerformBtn" onclick="autoPerform()">一键演出</button>
           <button class="batch-btn charge" id="batchChargeBtn" onclick="openBatchModal('charge')">一键补充</button>
-          <button class="batch-btn rest" id="batchRestBtn" onclick="openBatchModal('rest')">一键休息</button>
+          <button class="batch-btn rest" id="batchRestBtn" onclick="autoRest()">一键休息</button>
+          <button id="itemsTopBtn" onclick="openItemsSheet()" title="我的道具" style="margin-left:auto;padding:7px 18px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--text);flex-shrink:0;">🎒 我的道具</button>
         </div>
       </section>
 
@@ -1775,6 +1775,17 @@
       <h2 style="font-size:1rem;margin:0 0 14px;">我的道具</h2>
       <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);" onclick="closeItemsSheet()">✕</button>
       <div id="itemsSheetList"></div>
+      <button class="modal-btn confirm" style="width:100%;margin-top:12px;" onclick="goShopFromItems()">购买道具</button>
+    </div>
+  </div>
+
+  <!-- ===== 道具详情（纯描述）===== -->
+  <div class="modal-overlay" id="itemDetailModal">
+    <div class="modal-card" style="position:relative;max-width:360px;width:calc(100% - 32px);text-align:center;">
+      <h2 style="font-size:1rem;margin:0 0 12px;" id="itemDetailTitle"></h2>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);" onclick="closeItemDetail()">✕</button>
+      <div id="itemDetailBody" style="text-align:left;font-size:0.85rem;color:var(--text-muted);line-height:1.8;padding:4px 8px;white-space:pre-line;"></div>
+      <button class="modal-btn cancel" style="width:100%;margin-top:14px;" onclick="closeItemDetail()">关闭</button>
     </div>
   </div>
 
@@ -1798,14 +1809,23 @@
 
   <!-- ===== 批量操作确认弹窗 ===== -->
   <div class="modal-overlay" id="batchModal">
-    <div class="modal-card">
-      <h2 id="batchModalTitle">批量操作</h2>
-      <p class="modal-sub" id="batchModalUnit"></p>
-      <div style="background:var(--bg);border-radius:14px;padding:18px;margin-bottom:18px;text-align:center;">
-        <div style="font-size:1.4rem;font-weight:800;color:var(--text);" id="batchModalCount">0</div>
+    <div class="modal-card" style="position:relative;">
+      <h2 style="text-align:center;margin:0 0 4px;">一键补充</h2>
+      <div style="text-align:center;font-size:0.78rem;color:var(--text-muted);margin-bottom:14px;">补满演出中角色的体力</div>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);" onclick="closeBatchModal()">✕</button>
+      <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:0.9rem;color:var(--text);">消耗</span>
+          <span style="font-size:1.2rem;line-height:1;">🧃</span>
+          <strong style="font-size:1rem;color:var(--text);" id="batchNeed">0</strong>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="font-size:0.9rem;color:var(--text-muted);">我的</span>
+          <span style="font-size:1.2rem;line-height:1;">🧃</span>
+          <strong style="font-size:1rem;color:var(--text);" id="batchStock">0</strong>
+        </div>
       </div>
-      <button class="modal-btn confirm" id="batchModalConfirmBtn" onclick="confirmBatch()">确认</button>
-      <button class="modal-btn cancel" onclick="closeBatchModal()">取消</button>
+      <button class="modal-btn confirm" id="batchActionBtn" style="width:100%;margin-bottom:0;" onclick="confirmBatch()">使用</button>
     </div>
   </div>
 
@@ -1858,52 +1878,26 @@
   <!-- ===== Charge Modal (补充体力) ===== -->
   <div class="modal-overlay" id="chargeModal">
     <div class="modal-card" style="position:relative;">
-      <h2 id="chargeModalTitle">补充体力</h2>
+      <h2 id="chargeModalTitle" style="text-align:center;margin:0 0 16px;">补满体力</h2>
       <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeChargeModal()">✕</button>
 
-      <!-- L1: 角色 -->
-      <div id="modalChargeActor" style="text-align:center;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:12px;">—</div>
-
-      <!-- L2: 数据 -->
-      <div style="background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:14px;text-align:center;">
-        <span id="modalChargeCurrent" style="font-weight:700;color:var(--text);">0/168 → 168</span>
-        <span style="color:var(--text-sub);margin:0 6px;">·</span>
-        <span style="color:var(--warning);font-weight:700;">消耗补给包 <span id="modalChargeNeed">—</span></span>
-        <div style="margin-top:8px;font-size:0.82rem;color:var(--text-muted);">
-          我的库存 <span id="modalChargeStock">0</span> 个
-          <button id="chargeBuyBtn" onclick="openChargeBuy()" style="display:none;margin-left:8px;padding:2px 10px;border-radius:999px;border:1px solid var(--accent);color:var(--accent);background:transparent;font-size:0.78rem;cursor:pointer;">购买</button>
+      <!-- 消耗 + 持有 -->
+      <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:0.9rem;color:var(--text);">消耗</span>
+          <span style="font-size:1.2rem;line-height:1;">🧃</span>
+          <strong style="font-size:1rem;color:var(--text);" id="modalChargeNeed">—</strong>
         </div>
-        <div id="chargeBuyPanel" style="display:none;margin-top:10px;padding:10px;border:1px dashed var(--border);border-radius:10px;">
-          <div style="font-size:0.85rem;color:var(--text);">单价 10 USDC/个 · 数量 <input id="chargeBuyQty" type="number" min="1" value="5" style="width:56px;text-align:center;margin:0 6px;border:1px solid var(--border);border-radius:6px;padding:2px;"> 个</div>
-          <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;">
-            <button class="modal-btn confirm" style="padding:4px 16px;" onclick="confirmChargeBuy()">确认购买</button>
-            <button class="modal-btn cancel" style="padding:4px 16px;" onclick="closeChargeBuy()">取消</button>
-          </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="font-size:0.9rem;color:var(--text-muted);">我的</span>
+          <span style="font-size:1.2rem;line-height:1;">🧃</span>
+          <strong style="font-size:1rem;color:var(--text);" id="modalChargeStock">0</strong>
         </div>
       </div>
 
-      <!-- L3: 桌面按钮行 -->
-      <div class="charge-desk-btns" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <button class="modal-btn confirm" onclick="confirmCharge()" id="chargeDeskBtn" style="flex:1;margin-bottom:0;">补充</button>
-        <button class="modal-btn cancel" onclick="closeChargeModal()" style="flex:1;">取消</button>
-      </div>
+      <!-- 使用 / 购买（按库存切换，购买跳商城） -->
+      <button class="modal-btn confirm" id="chargeActionBtn" style="width:100%;margin-bottom:0;" onclick="confirmCharge()">使用</button>
 
-      <!-- L3: 移动端按钮行 -->
-      <div class="charge-mob-btn" style="display:none;">
-        <button class="modal-btn confirm" onclick="confirmCharge()" style="margin-bottom:0;">该角色</button>
-      </div>
-
-      <!-- 分隔 + 批量操作区域 -->
-      <div class="charge-batch-area" id="chargeBatchArea" style="display:none;">
-        <div style="height:1px;background:var(--border);margin:14px 0;"></div>
-        <div style="text-align:center;font-size:0.72rem;color:var(--text-sub);margin-bottom:6px;font-weight:600;">补充全部演出中角色</div>
-        <div class="charge-batch-info" style="background:var(--bg);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center;">
-          <span style="font-size:0.85rem;font-weight:700;color:var(--text);" id="chargeBatchCount">3 位</span>
-          <span style="color:var(--text-sub);margin:0 4px;">·</span>
-          <span style="font-size:0.85rem;font-weight:700;color:var(--warning);" id="chargeBatchCost">80 USDC</span>
-        </div>
-        <button class="modal-btn cancel" style="width:100%;" onclick="confirmChargeAll()">全部补充</button>
-      </div>
     </div>
   </div>
 
@@ -2037,15 +2031,6 @@
         <button class="modal-btn confirm" onclick="confirmRecall()" style="background:rgba(244,91,105,0.9);margin-bottom:0;">该角色</button>
       </div>
 
-      <!-- 分隔 + 批量操作区域 -->
-      <div class="recall-batch-area" style="display:none;">
-        <div style="height:1px;background:var(--border);margin:14px 0;"></div>
-        <div style="text-align:center;font-size:0.72rem;color:var(--text-sub);margin-bottom:6px;font-weight:600;">全部休息</div>
-        <div class="recall-batch-info" style="background:var(--bg);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center;">
-          <span style="font-size:0.85rem;font-weight:700;color:var(--text);" id="recallBatchCount">3 位</span>
-        </div>
-        <button class="modal-btn cancel" style="width:100%;" onclick="confirmRecallAll()">全部休息</button>
-      </div>
     </div>
   </div>
 
@@ -2834,34 +2819,24 @@
     }
 
     function openBatchModal(type) {
-      var count = getBatchCount(type);
-      if (count <= 0) {
-        if (type === 'perform') showToast('没有可安排演出的角色或已在演位');
-        if (type === 'charge') showToast('演出中的角色体力已满');
-        if (type === 'rest') showToast('没有在演角色');
-        return;
-      }
-      pendingBatchType = type;
-      var title = type === 'perform' ? '一键演出' : type === 'charge' ? '一键补充' : '一键休息';
-      var unit = type === 'perform' ? '将按片酬从高到低安排到空在演位' : type === 'charge' ? '将恢复演出中角色的全部体力' : '将让所有在演角色休息';
+      // 一键补充（charge 专用弹窗，参考补满体力设计）
+      var targets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
+      if (targets.length === 0) { showToast('演出中的角色体力已满'); return; }
+      var totalNeed = 0;
+      targets.forEach(function(a) { totalNeed += ItemStore.supplyNeeded(a.level); });
+      var stock = ItemStore.count('supply');
 
-      // 计算一键补充的总花费
-      var batchCost = 0;
-      if (type === 'charge') {
-        var chargeTargets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
-        chargeTargets.forEach(function(a) {
-          var cfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
-          batchCost += cfg.costCoeff * 10;
-        });
+      pendingBatchType = 'charge';
+      document.getElementById('batchNeed').textContent = totalNeed;
+      document.getElementById('batchStock').textContent = stock;
+      var btn = document.getElementById('batchActionBtn');
+      if (stock >= totalNeed) {
+        btn.textContent = '使用';
+        btn.className = 'modal-btn confirm';
+      } else {
+        btn.textContent = '购买';
+        btn.className = 'modal-btn cancel';
       }
-
-      document.getElementById('batchModalTitle').textContent = title;
-      document.getElementById('batchModalUnit').textContent = unit;
-      document.getElementById('batchModalCount').textContent = count + ' 个角色';
-      if (type === 'charge') {
-        document.getElementById('batchModalCount').textContent = count + ' 个角色 · 总花费 ' + batchCost.toFixed(1) + ' USDC';
-      }
-      document.getElementById('batchModalConfirmBtn').textContent = '确认' + title;
       document.getElementById('batchModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
@@ -2873,11 +2848,19 @@
     }
 
     function confirmBatch() {
-      var type = pendingBatchType;
-      if (!type) return;
-      if (type === 'perform') autoPerform();
-      if (type === 'charge') autoCharge();
-      if (type === 'rest') autoRest();
+      if (pendingBatchType !== 'charge') { closeBatchModal(); return; }
+      var targets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
+      var totalNeed = 0;
+      targets.forEach(function(a) { totalNeed += ItemStore.supplyNeeded(a.level); });
+      // 库存不足 → 购买模式：跳商城
+      if (ItemStore.count('supply') < totalNeed) {
+        closeBatchModal();
+        openShopSafe();
+        return;
+      }
+      ItemStore.spend('supply', totalNeed);
+      targets.forEach(function(a) { a.energy = a.energyMax; a.status = 'active'; });
+      showToast('已补充 ' + targets.length + ' 位角色的体力（消耗补给包 ×' + totalNeed + '）');
       closeBatchModal();
       renderAll();
     }
@@ -2897,23 +2880,6 @@
         a.stakingDays = 0;
       });
       showToast('已安排 ' + count + ' 位角色演出');
-    }
-
-    // 一键补充：只补充演出中的角色
-    function autoCharge() {
-      var targets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
-      if (targets.length === 0) { showToast('演出中的角色体力已满'); return; }
-      var totalNeed = 0;
-      targets.forEach(function(a) { totalNeed += ItemStore.supplyNeeded(a.level); });
-      if (!ItemStore.spend('supply', totalNeed)) {
-        showToast('体力补给包不足，还差 ' + (totalNeed - ItemStore.count('supply')) + ' 个（可去道具区购买）');
-        return;
-      }
-      targets.forEach(function(a) {
-        a.energy = a.energyMax;
-        a.status = 'active';
-      });
-      showToast('已补充 ' + targets.length + ' 位角色的体力（消耗补给包 ×' + totalNeed + '）');
     }
 
     // 一键休息：所有在演角色休息
@@ -2967,23 +2933,25 @@
     // ============================================================
     //  演出 Modal
     // ============================================================
+    // 角色名 + #编号（toast 提示用）
+    function actorLabel(a) {
+      var m = (a && a.id) ? String(a.id).match(/\d+/) : null;
+      return a.name + (m ? ' #' + parseInt(m[0], 10) : '');
+    }
+
     function openStakeModal(actorId) {
-      pendingStakeActorId = actorId;
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
-
       const deployed = getDeployedActors();
       if (deployed.length >= MAX_STAKING_SLOTS) {
         showToast('在演位已满（最多 5 位），请先安排一位休息');
         return;
       }
-
-      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      document.getElementById('modalStakeActorName').textContent = actor.name;
-      document.getElementById('modalStakeActorLevel').textContent = levelCfg.name + ' · Lv' + actor.level;
-
-      document.getElementById('stakeModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
+      actor.isStaking = true;
+      actor.status = 'active';
+      actor.stakingDays = 0;
+      showToast(actorLabel(actor) + ' 已安排演出');
+      renderAll();
     }
 
     function closeStakeModal() {
@@ -2999,7 +2967,7 @@
         actor.isStaking = true;
         actor.status = 'active';
         actor.stakingDays = 0;
-        showToast(actor.name + ' 已安排演出');
+        showToast(actorLabel(actor) + ' 已安排演出');
       }
       closeStakeModal();
       renderAll();
@@ -3011,22 +2979,10 @@
     function recallActor(actorId) {
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
-      pendingRecallActorId = actorId;
-
-      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      document.getElementById('recallModalName').textContent = actor.name + ' · Lv' + actor.level;
-      document.getElementById('recallModalLevel').textContent = levelCfg.name;
-
-      // 批量入口
-      var allDeployed = getDeployedActors();
-      var allCount = allDeployed.length;
-      var batchCountEl = document.getElementById('recallBatchCount');
-      if (allCount > 1) {
-        if (batchCountEl) batchCountEl.textContent = allCount + ' 位';
-      }
-
-      document.getElementById('recallConfirmModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
+      actor.isStaking = false;
+      actor.status = 'idle';
+      showToast(actorLabel(actor) + ' 已休息');
+      renderAll();
     }
 
     function closeRecallModal() {
@@ -3035,19 +2991,13 @@
       pendingRecallActorId = null;
     }
 
-    function confirmRecallAll() {
-      closeRecallModal();
-      autoRest();
-      renderAll();
-    }
-
     function confirmRecall() {
       if (!pendingRecallActorId) return;
       const actor = MY_ACTORS.find(a => a.id === pendingRecallActorId);
       if (actor) {
         actor.isStaking = false;
         actor.status = 'idle';
-        showToast(actor.name + ' 已休息');
+        showToast(actorLabel(actor) + ' 已休息');
       }
       closeRecallModal();
       renderAll();
@@ -3061,39 +3011,25 @@
       const actor = MY_ACTORS.find(a => a.id === actorId);
       if (!actor) return;
 
-      const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
       const need = ItemStore.supplyNeeded(actor.level);
       const stock = ItemStore.count('supply');
 
-      document.getElementById('modalChargeActor').textContent = actor.name + ' · Lv' + actor.level;
-      document.getElementById('modalChargeCurrent').textContent = actor.energy + '/' + actor.energyMax + ' → ' + actor.energyMax;
-      document.getElementById('modalChargeNeed').textContent = '×' + need;
+      document.getElementById('modalChargeNeed').textContent = need;
       document.getElementById('modalChargeStock').textContent = stock;
-      document.getElementById('chargeBuyBtn').style.display = stock < need ? 'inline-block' : 'none';
-
-      // 移动端批量入口
-      var allTargets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
-      var allCount = allTargets.length;
-      var allNeed = 0;
-      allTargets.forEach(function(a) {
-        allNeed += ItemStore.supplyNeeded(a.level);
-      });
-      var batchCountEl = document.getElementById('chargeBatchCount');
-      var batchCostEl = document.getElementById('chargeBatchCost');
-      if (allCount > 1) {
-        if (batchCountEl) batchCountEl.textContent = allCount + ' 位';
-        if (batchCostEl) batchCostEl.textContent = '消耗补给包 ×' + allNeed;
+      // 「使用」/「购买」按库存切换：够则使用补满，不够则跳商城购买
+      var actionBtn = document.getElementById('chargeActionBtn');
+      if (stock >= need) {
+        actionBtn.textContent = '使用';
+        actionBtn.className = 'modal-btn confirm';
+        actionBtn.onclick = confirmCharge;
+      } else {
+        actionBtn.textContent = '购买';
+        actionBtn.className = 'modal-btn cancel';
+        actionBtn.onclick = function () { closeChargeModal(); openShopSafe(); };
       }
-      document.getElementById('chargeBatchArea').style.display = allCount > 1 ? 'block' : 'none';
 
       document.getElementById('chargeModal').classList.add('active');
       document.body.style.overflow = 'hidden';
-    }
-
-    function confirmChargeAll() {
-      closeChargeModal();
-      autoCharge();
-      renderAll();
     }
 
     function closeChargeModal() {
@@ -3113,24 +3049,12 @@
         }
         actor.energy = actor.energyMax;
         if (actor.isStaking) actor.status = 'active';
-        showToast(actor.name + ' 已补充（消耗补给包 ×' + need + '）');
+        showToast(actorLabel(actor) + ' 已补充（消耗补给包 ×' + need + '）');
       }
       closeChargeModal();
       renderAll();
     }
 
-    // ---- 补充体力弹窗内嵌购买（补给包）----
-    function openChargeBuy() { document.getElementById('chargeBuyPanel').style.display = 'block'; }
-    function closeChargeBuy() { document.getElementById('chargeBuyPanel').style.display = 'none'; }
-    function confirmChargeBuy() {
-      var qty = Math.max(1, parseInt(document.getElementById('chargeBuyQty').value, 10) || 1);
-      ItemStore.buy('supply', qty);
-      document.getElementById('modalChargeStock').textContent = ItemStore.count('supply');
-      var need = ItemStore.supplyNeeded((MY_ACTORS.find(function(a){return a.id===pendingChargeActorId;})||{}).level || 1);
-      document.getElementById('chargeBuyBtn').style.display = ItemStore.count('supply') >= need ? 'none' : 'inline-block';
-      closeChargeBuy();
-      showToast('已购买 ' + qty + ' 个体力补给包');
-    }
 
     // ============================================================
     //  我的道具（查看 + 获取）
@@ -3145,27 +3069,42 @@
       document.body.style.overflow = '';
     }
     function renderItemsSheet() {
-      var order = ['supply', 'manual', 'clawWeek', 'clawMonth'];
+      // 周卡/月卡是订阅（购买即生效），不占库存，不在「我的道具」显示
+      var order = ['supply', 'manual'];
       var html = '';
       order.forEach(function (key) {
         var d = window.ITEM_DEFS[key];
         var n = ItemStore.count(key);
-        html += '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;">'
-          + '<span style="font-size:1.3rem;">' + d.icon + '</span>'
+        html += '<div onclick="openItemDetail(\'' + key + '\')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer;">'
+          + '<span style="font-size:2.4rem;line-height:1;">' + d.icon + '</span>'
           + '<div style="flex:1;min-width:0;">'
           + '<div style="font-size:0.9rem;font-weight:700;color:var(--text);">' + d.name + '</div>'
-          + '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:1px;">' + d.desc + '</div>'
           + '</div>'
-          + '<div style="text-align:right;flex-shrink:0;">'
-          + '<div style="font-size:0.78rem;color:var(--text-sub);">我有 <strong style="font-size:1.05rem;color:var(--text);">' + n + '</strong></div>'
-          + '</div>'
+          + '<div style="text-align:right;"><strong style="font-size:1.05rem;color:var(--text);">' + n + '</strong></div>'
           + '</div>';
       });
       document.getElementById('itemsSheetList').innerHTML = html;
     }
+    // ---- 道具详情（纯描述）----
+    function openItemDetail(key) {
+      var d = window.ITEM_DEFS[key];
+      document.getElementById('itemDetailTitle').textContent = d.icon + ' ' + d.name;
+      document.getElementById('itemDetailBody').textContent = d.detail;
+      document.getElementById('itemDetailModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeItemDetail() {
+      document.getElementById('itemDetailModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    // 我的道具弹窗底部「购买道具」→ 打开商城
+    function goShopFromItems() {
+      closeItemsSheet();
+      openShopSafe();
+    }
 
     // ============================================================
-    //  Claw 面板（独立：状态 + 激活 + 设置）
+    //  Claw 面板（独立：状态 + 开通/续费 + 设置）
     // ============================================================
     function openClawSheet() {
       renderClawSheet();
@@ -3181,18 +3120,18 @@
       var html = '';
       if (cs) {
         var days = Math.ceil(cs.remainMs / 86400000);
-        html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:12px;">'
-          + '<div style="font-size:0.95rem;font-weight:700;color:var(--accent);">激活中 · 剩 ' + days + ' 天</div>'
-          + '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">自动运营中，产出 +5%</div>'
-          + '</div>';
+        var kindName = cs.kind === 'month' ? '月卡' : '周卡';
+        html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:10px;">'
+          + '<div style="font-size:0.95rem;font-weight:700;color:var(--accent);">🐾 ' + kindName + '激活中 · 剩 ' + days + ' 天</div>'
+          + '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">自动运营中，所有角色产出 +5%</div>'
+          + '</div>'
+          + '<button class="modal-btn confirm" style="width:100%;margin-bottom:12px;" onclick="closeClawSheet();openShopSafe();">续费</button>';
       } else {
-        html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:12px;color:var(--text-muted);font-size:0.85rem;">未激活</div>';
+        html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:10px;color:var(--text-muted);font-size:0.85rem;">💤 未激活</div>'
+          + '<div style="font-size:0.76rem;color:var(--text-muted);margin:0 0 10px;line-height:1.6;">开通后自动运营：自动补体力、体力耗尽自动休息、自动安排最优演出，期间所有角色产出 +5%。</div>'
+          + '<button class="modal-btn confirm" style="width:100%;margin-bottom:12px;" onclick="closeClawSheet();openShopSafe();">去开通</button>';
       }
-      html += '<div style="display:flex;gap:8px;margin-bottom:12px;">'
-        + '<button class="modal-btn confirm" style="flex:1;padding:8px 0;" onclick="activateClaw(\'week\')">激活周卡</button>'
-        + '<button class="modal-btn confirm" style="flex:1;padding:8px 0;" onclick="activateClaw(\'month\')">激活月卡</button>'
-        + '</div>'
-        + '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);">'
+      html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);">'
         + '<div style="font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:8px;">自动化</div>'
         + '<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text);"><input type="checkbox" id="clawAutoSupply" style="accent-color:var(--accent);"> 自动补体力</label>'
         + '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text-muted);margin-left:24px;">体力低于 <input type="number" id="clawThreshold" min="0" max="168" value="0" style="width:48px;text-align:center;border:1px solid var(--border);border-radius:6px;padding:2px;"> h 时补</div>'
@@ -3206,13 +3145,6 @@
       document.getElementById('clawThreshold').value = st.threshold || 0;
       document.getElementById('clawAutoRest').checked = !!st.autoRest;
       document.getElementById('clawAutoOptimal').checked = !!st.autoOptimal;
-    }
-    function activateClaw(kind) {
-      var r = ItemStore.activateClaw(kind);
-      if (!r.ok) { showToast('周卡或月卡不足'); return; }
-      renderClawSheet();
-      updateClawBadge();
-      showToast('Story Claw 已激活');
     }
     function getClawSettings() {
       try { return Object.assign({ autoSupply: true, autoRest: true, autoOptimal: false, threshold: 0 }, JSON.parse(localStorage.getItem('sf2_claw_settings') || '{}')); }
@@ -3232,15 +3164,41 @@
     // ---- Story Claw 顶部常驻标识（仅激活期间显示，点击打开 Claw 面板）----
     function updateClawBadge() {
       var el = document.getElementById('clawTopBadge');
-      if (!el) return;
+      var icon = document.getElementById('clawTopIcon');
+      if (!el || !icon) return;
       var cs = ItemStore.clawState();
-      if (!cs) { el.style.display = 'none'; return; }
-      el.style.display = 'inline-flex';
-      var days = Math.ceil(cs.remainMs / 86400000);
-      var warn = days <= 3;
-      el.style.borderColor = warn ? 'var(--warning)' : 'var(--accent)';
-      el.style.color = warn ? 'var(--warning)' : 'var(--accent)';
-      el.style.background = warn ? 'rgba(245,158,11,0.1)' : 'var(--accent-soft)';
+      if (!cs) {
+        // 未激活：灰显
+        el.style.borderColor = 'var(--border)';
+        el.style.background = 'var(--surface)';
+        el.style.color = 'var(--text-muted)';
+        icon.textContent = '💤';
+        return;
+      }
+      // 激活中：主题色
+      el.style.borderColor = 'var(--accent)';
+      el.style.background = 'var(--accent-soft)';
+      el.style.color = 'var(--accent)';
+      icon.textContent = '🐾';
+    }
+
+    // ---- 调试按钮：切换 Claw 激活状态（demo 演示用）----
+    function updateClawDebugBtn() {
+      var el = document.getElementById('clawDebugBtn');
+      var label = document.getElementById('clawDebugLabel');
+      if (!el || !label) return;
+      var on = !!ItemStore.clawState();
+      label.textContent = on ? 'Claw 激活中' : 'Claw 未激活';
+      el.style.borderColor = on ? 'var(--accent)' : '#c3c9d2';
+      el.style.color = on ? 'var(--accent)' : '#8a94a3';
+    }
+    function toggleClawDebug() {
+      var state = ItemStore.toggleClawDebug();
+      updateClawBadge();
+      updateClawDebugBtn();
+      var sheet = document.getElementById('clawSheet');
+      if (sheet && sheet.classList.contains('active')) renderClawSheet();
+      showToast('调试：Story Claw ' + (state === 'on' ? '已激活（7 天）' : '已取消激活'));
     }
 
     // ---- Claw 自动补体力（30s 检查一次）----
@@ -3411,7 +3369,7 @@
       actor.energy = LEVEL_CONFIG[nextLevel].energyMax;
       closeLevelModal();
       renderAll();
-      showToast(actor.name + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name);
+      showToast(actorLabel(actor) + ' 已升级到 Lv' + nextLevel + ' ' + LEVEL_CONFIG[nextLevel].name);
     }
 
     // ============================================================
@@ -3639,6 +3597,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       renderAll();
       updateClawBadge();
+      updateClawDebugBtn();
       setInterval(clawTick, 30000);
       // 桌面端通用标题栏 🎒/🐾 跳转：自动打开道具 sheet
       if (location.hash === '#items') openItemsSheet();
