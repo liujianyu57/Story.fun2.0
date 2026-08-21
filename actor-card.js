@@ -449,7 +449,6 @@
     data = data || {};
     var name = data.name || '';
     var avatar = data.avatar || ACTOR_AVATARS[name] || DEFAULT_AVATAR;
-    var desc = data.description || '';
     var issuanceType = data.issuanceType || 'community';
     var pricing = data.pricing || 'curve';
     var collection = data.collection || '';
@@ -524,7 +523,6 @@
       '<div class="ac-card-body">' +
         '<div>' +
           '<h3>' + escapeHTML(name) + '</h3>' +
-          '<p>' + escapeHTML(desc) + '</p>' +
         '</div>' +
         statsHTML +
         priceRow +
