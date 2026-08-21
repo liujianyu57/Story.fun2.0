@@ -245,7 +245,7 @@ window.Shop = (function () {
     var st = document.getElementById('shopSubStatus');
     if (isActive) {
       st.style.display = 'block';
-      st.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;line-height:1.6;background:rgba(208,48,80,.08);color:#c02b4a;"><span style="width:6px;height:6px;border-radius:50%;background:#c02b4a;"></span>激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天</span>';
+      st.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;line-height:1.6;background:rgba(208,48,80,.08);color:#c02b4a;"><span style="width:6px;height:6px;border-radius:50%;background:#c02b4a;"></span>激活中 · ' + ItemStore.formatExpiry(cs.expireAt) + ' 到期</span>';
     } else {
       st.style.display = 'none';
     }

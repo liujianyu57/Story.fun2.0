@@ -66,6 +66,13 @@ window.ItemStore = (function () {
       return s.clawActive ? 'on' : 'off';
     },
 
+    // ---- 到期时间格式化（本地时区，纯数字 YYYY-MM-DD HH:mm，语言无关）----
+    formatExpiry: function (ms) {
+      const d = new Date(ms);
+      const pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    },
+
     // ---- 消耗规则（与 PRD 一致）----
     // 补满体力按等级固定消耗补给包：Lv1~5 = 1/2/5/13/32
     supplyNeeded: function (level) { return [0, 1, 2, 5, 13, 32][level] || 1; },
