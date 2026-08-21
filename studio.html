@@ -1337,6 +1337,7 @@
       .mob-act-btn strong { font-size: 0.7rem; min-width: 12px; text-align: center; font-weight: 700; }
       .mob-act-btn.mob-todo strong { color: var(--accent); }
       .mob-act-btn.mob-upgrade strong { color: var(--gold); }
+      .mob-act-btn.mob-recycle strong { color: #d03050; }
       #itemsTopBtn { display: none; }
       .mob-more-wrap { display: block; position: fixed; top: 50px; right: 16px; z-index: 55; }
       .mob-more-btn {
@@ -1701,6 +1702,7 @@
           <button class="batch-btn charge" id="batchChargeBtn" onclick="openBatchModal('charge')">一键补充</button>
           <button class="batch-btn rest" id="batchRestBtn" onclick="autoRest()">一键休息</button>
           <button id="itemsTopBtn" onclick="openItemsSheet()" title="我的道具" style="margin-left:auto;padding:7px 18px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--text);flex-shrink:0;">🎒 我的道具</button>
+          <button id="recycleTopBtn" onclick="openRecycleList()" title="角色回收" style="margin-left:8px;padding:7px 18px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--text);flex-shrink:0;">♻ 回收</button>
         </div>
       </section>
 
@@ -1709,6 +1711,7 @@
         <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级">⬆️<strong id="mobileUpgradeBadge">0</strong></button>
         <button class="mob-act-btn mob-items" onclick="openItemsSheet()" title="道具">🎒</button>
         <button class="mob-act-btn mob-shop" onclick="openShopSafe()" title="商店">🛒</button>
+        <button class="mob-act-btn mob-recycle" onclick="openRecycleList()" title="回收">♻<strong id="mobileRecycleBadge">0</strong></button>
       </div>
 
       <!-- ===== 常驻双面板：待办 + 升级管理入口 ===== -->
@@ -3564,6 +3567,102 @@
     }
 
     // ============================================================
+    //  角色回收（demo：模拟发放，角色永久销毁）
+    //  残值 = P0×80% + 升级投入×50%（升级投入 = 累计消耗手册折价 0.1 USDC/本）
+    //  返还 = 80% USDC + 20% 生态资产（固定折成训练手册）
+    // ============================================================
+    // 累计训练手册消耗：Lv1=0、Lv2=100、Lv3=300、Lv4=700、Lv5=1500
+    function recycleBooks(level) { return [0, 100, 300, 700, 1500][level] || 0; }
+    function recycleValue(actor) {
+      var mint = (actor.initPrice || 0) * 0.8;
+      var upgrade = recycleBooks(actor.level || 1) * 0.1 * 0.5;
+      var total = mint + upgrade;
+      return { mint: mint, upgrade: upgrade, total: total };
+    }
+    function updateRecycleBadge() {
+      var el = document.getElementById('mobileRecycleBadge');
+      if (el) el.textContent = (typeof MY_ACTORS !== 'undefined' ? MY_ACTORS.length : 0);
+    }
+    // 回收列表：按片酬倒序，卡片信息精简（头像 + 名称#编号 + Lv + 可回收金额）
+    function openRecycleList() {
+      if (typeof MY_ACTORS === 'undefined' || !MY_ACTORS.length) { showToast('暂无角色可回收'); return; }
+      var list = MY_ACTORS.slice().sort(function (a, b) { return computeActorPower(b) - computeActorPower(a); });
+      var rows = '';
+      list.forEach(function (a) {
+        var v = recycleValue(a);
+        var num = a.id.match(/\d+/); var numStr = num ? '#' + parseInt(num[0], 10) : '';
+        rows += '<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;">'
+          + '<img src="' + a.avatar + '" alt="" style="width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0;">'
+          + '<div style="flex:1;min-width:0;"><div style="font-size:0.9rem;font-weight:700;color:var(--text);">' + a.name + ' ' + numStr + '</div>'
+          + '<div style="font-size:0.74rem;color:var(--text-muted);margin-top:2px;">Lv.' + a.level + ' · 可回收 <span style="color:var(--gold);font-weight:700;">' + v.total.toFixed(1) + ' USDC</span></div></div>'
+          + '<button onclick="openRecycleConfirm(\'' + a.id + '\')" style="flex-shrink:0;padding:7px 16px;border-radius:999px;border:none;background:var(--text);color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;">回收</button>'
+          + '</div>';
+      });
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.setAttribute('data-recycle', '1');
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div class="modal-card" style="max-width:420px;width:calc(100% - 32px);padding:22px 20px;">'
+        + '<h2 style="margin:0 0 14px;font-size:1.1rem;">♻ 角色回收</h2>'
+        + '<div style="max-height:50vh;overflow-y:auto;">' + rows + '</div>'
+        + '<div style="font-size:0.74rem;color:var(--text-muted);line-height:1.6;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);">回收 = 永久销毁角色，返还 80% USDC + 20% 生态资产（训练手册）。</div>'
+        + '<button class="modal-btn cancel" onclick="this.closest(\'.modal-overlay\').remove()" style="width:100%;margin-top:12px;">关闭</button>'
+        + '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function (e) { if (e.target === this) this.remove(); });
+    }
+    // 回收确认：明细 + 返还构成 + 销毁警告 + 二次确认（第一次点变文案，第二次执行）
+    function openRecycleConfirm(actorId) {
+      var actor = MY_ACTORS.find(function (a) { return a.id === actorId; });
+      if (!actor) return;
+      var v = recycleValue(actor);
+      var usdc = v.total * 0.8;
+      var books = Math.floor(v.total * 0.2 / 0.1);
+      var num = actor.id.match(/\d+/); var numStr = num ? '#' + parseInt(num[0], 10) : '';
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.setAttribute('data-recycle', '1');
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div class="modal-card" style="max-width:400px;width:calc(100% - 32px);padding:22px 20px;text-align:center;">'
+        + '<h2 style="margin:0 0 12px;font-size:1.1rem;">回收 ' + actor.name + ' ' + numStr + '</h2>'
+        + '<div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:12px;text-align:left;">'
+          + '<div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:6px;"><span>Mint 部分（P0×80%）</span><span>' + v.mint.toFixed(1) + ' USDC</span></div>'
+          + '<div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:6px;"><span>升级部分（投入×50%）</span><span>' + v.upgrade.toFixed(1) + ' USDC</span></div>'
+          + '<div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;color:var(--text);border-top:1px solid var(--border);padding-top:8px;"><span>合计</span><span>' + v.total.toFixed(1) + ' USDC</span></div>'
+        + '</div>'
+        + '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:12px;text-align:left;font-size:0.82rem;color:var(--text);">'
+          + '<div style="margin-bottom:4px;">返还：80% USDC<span style="float:right;font-weight:700;">' + usdc.toFixed(2) + ' USDC</span></div>'
+          + '<div>+ 20% 生态资产（训练手册）<span style="float:right;font-weight:700;">×' + books + '</span></div>'
+        + '</div>'
+        + '<div style="background:rgba(244,91,105,.08);border:1px solid rgba(244,91,105,.2);border-radius:10px;padding:10px 12px;font-size:0.8rem;color:#d0344a;margin-bottom:14px;">⚠ 角色将被永久销毁，不可恢复</div>'
+        + '<button id="recycleConfirmBtn" style="width:100%;height:44px;border:none;border-radius:999px;background:#d0344a;color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;">确认销毁</button>'
+        + '<button class="modal-btn cancel" onclick="this.closest(\'.modal-overlay\').remove()" style="width:100%;margin-top:8px;">取消</button>'
+        + '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function (e) { if (e.target === this) this.remove(); });
+      // 二次确认：第一次点击变文案，第二次执行
+      var armed = false;
+      var btn = overlay.querySelector('#recycleConfirmBtn');
+      btn.addEventListener('click', function () {
+        if (!armed) { armed = true; btn.textContent = '再次点击确认销毁'; return; }
+        doRecycle(actorId, overlay);
+      });
+    }
+    function doRecycle(actorId, confirmOverlay) {
+      var actor = MY_ACTORS.find(function (a) { return a.id === actorId; });
+      if (!actor) return;
+      var v = recycleValue(actor);
+      var usdc = v.total * 0.8;
+      var books = Math.floor(v.total * 0.2 / 0.1);
+      if (books > 0) ItemStore.add('manual', books);
+      MY_ACTORS = MY_ACTORS.filter(function (a) { return a.id !== actorId; });
+      document.querySelectorAll('.modal-overlay[data-recycle]').forEach(function (o) { o.remove(); });
+      renderAll();
+      updateRecycleBadge();
+      showToast('回收完成：+' + usdc.toFixed(2) + ' USDC、训练手册 ×' + books);
+    }
+
+    // ============================================================
     //  获取更多角色弹窗
     // ============================================================
     function openNeedRoleModal(actorName, parentIP) {
@@ -3653,6 +3752,7 @@
       renderAll();
       updateClawBadge();
       updateClawDebugBtn();
+      updateRecycleBadge();
       setInterval(clawTick, 30000);
       // 订阅弹窗（shop.js）购买/续费后刷新 Claw 状态
       document.addEventListener('sf:claw-changed', function() {
