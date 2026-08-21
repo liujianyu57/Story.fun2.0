@@ -86,9 +86,11 @@ window.Shop = (function () {
   }
 
   function renderCenter() {
+    var el = document.getElementById('shopList');
+    if (!el) return; // 购买中心未打开过（如从补体力/一键补充直达）时跳过刷新
     var html = '';
     ITEMS.forEach(function (it) { html += centerRow(it); });
-    document.getElementById('shopList').innerHTML = html;
+    el.innerHTML = html;
   }
 
   function open() {
