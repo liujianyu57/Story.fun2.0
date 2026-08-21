@@ -146,7 +146,7 @@ window.Shop = (function () {
     document.getElementById('shopBuyDesc').innerHTML = it.desc;
     document.getElementById('shopBuyQtyRow').style.display = 'flex';
     document.getElementById('shopBuyQty').value = 1;
-    document.getElementById('shopBuyStatus').textContent = '单价 ' + it.price + ' ' + it.unit + '/个';
+    document.getElementById('shopBuyStatus').textContent = '单价 ' + it.price + ' ' + it.unit;
     refreshBuyTotal();
     document.getElementById('shopBuyConfirm').textContent = '购买';
     document.getElementById('shopBuyModal').style.display = 'block';
