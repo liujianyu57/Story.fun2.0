@@ -1792,16 +1792,6 @@
     </div>
   </div>
 
-  <!-- ===== 道具详情（纯描述）===== -->
-  <div class="modal-overlay" id="itemDetailModal">
-    <div class="modal-card" style="position:relative;max-width:360px;width:calc(100% - 32px);text-align:center;">
-      <h2 style="font-size:1rem;margin:0 0 12px;" id="itemDetailTitle"></h2>
-      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);" onclick="closeItemDetail()">✕</button>
-      <div id="itemDetailBody" style="text-align:left;font-size:0.85rem;color:var(--text-muted);line-height:1.8;padding:4px 8px;white-space:pre-line;"></div>
-      <button class="modal-btn confirm" style="width:100%;margin-top:14px;" onclick="buyFromItemDetail()">购买</button>
-    </div>
-  </div>
-
   <!-- ===== Claw 面板（独立）===== -->
   <div class="modal-overlay" id="clawSheet">
     <div class="modal-card" style="position:relative;max-width:400px;width:calc(100% - 32px);">
@@ -3089,7 +3079,7 @@
       order.forEach(function (key) {
         var d = window.ITEM_DEFS[key];
         var n = ItemStore.count(key);
-        html += '<div onclick="openItemDetail(\'' + key + '\')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer;">'
+        html += '<div onclick="openShopSafe(\'' + key + '\')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer;">'
           + '<span style="font-size:2.4rem;line-height:1;">' + d.icon + '</span>'
           + '<div style="flex:1;min-width:0;">'
           + '<div style="font-size:0.9rem;font-weight:700;color:var(--text);">' + d.name + '</div>'
@@ -3098,28 +3088,6 @@
           + '</div>';
       });
       document.getElementById('itemsSheetList').innerHTML = html;
-    }
-    // ---- 道具详情（纯描述）----
-    var pendingItemDetailKey = null;
-    function openItemDetail(key) {
-      pendingItemDetailKey = key;
-      var d = window.ITEM_DEFS[key];
-      document.getElementById('itemDetailTitle').textContent = d.icon + ' ' + d.name;
-      document.getElementById('itemDetailBody').textContent = d.detail;
-      document.getElementById('itemDetailModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeItemDetail() {
-      pendingItemDetailKey = null;
-      document.getElementById('itemDetailModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-    // 详情底部「购买」→ 直达对应商品购买弹窗
-    function buyFromItemDetail() {
-      if (!pendingItemDetailKey) return;
-      var key = pendingItemDetailKey;
-      closeItemDetail();
-      openShopSafe(key);
     }
     // ============================================================
     //  Claw 面板（独立：状态 + 开通/续费 + 设置）
