@@ -793,8 +793,10 @@
       document.getElementById('signCount').textContent = n;
       document.getElementById('signGiftBadge').style.display = gifted ? 'inline-block' : 'none';
     }
-    // 点击「已领取」收起激励横条（demo 不持久化，刷新恢复）
+    // 点击「已领取」收起横条并重置签约进度（demo 重置：刷新后回到 0/5，可重复演示）
     function dismissSignBar() {
+      localStorage.removeItem('sf2_sign_count');
+      localStorage.removeItem('sf2_sign_gift');
       var bar = document.getElementById('signGiftBar');
       if (bar) bar.style.display = 'none';
     }
