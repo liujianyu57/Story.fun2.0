@@ -186,7 +186,7 @@ window.Shop = (function () {
     ItemStore.buy(pendingKey, n);
     closeBuyModal();
     renderCenter();
-    toast('购买成功 · 已放入背包');
+    toast('购买成功，已放入道具背包（经纪人页面）');
     try { document.dispatchEvent(new CustomEvent('sf:items-changed', { detail: { n: n } })); } catch (e) {}
   }
 
