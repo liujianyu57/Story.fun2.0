@@ -3156,8 +3156,8 @@
       document.getElementById('clawAutoOptimal').checked = !!st.autoOptimal;
     }
     function getClawSettings() {
-      try { return Object.assign({ autoSupply: true, autoRest: true, autoOptimal: false }, JSON.parse(localStorage.getItem('sf2_claw_settings') || '{}')); }
-      catch (e) { return { autoSupply: true, autoRest: true, autoOptimal: false }; }
+      try { return Object.assign({ autoSupply: true, autoRest: true, autoOptimal: true }, JSON.parse(localStorage.getItem('sf2_claw_settings') || '{}')); }
+      catch (e) { return { autoSupply: true, autoRest: true, autoOptimal: true }; }
     }
     function saveClawSettings() {
       var st = {
