@@ -149,7 +149,7 @@ window.Shop = (function () {
     document.getElementById('shopBuyTitle').textContent = it.name;
     document.getElementById('shopBuyDesc').innerHTML = it.desc;
     document.getElementById('shopBuyQtyRow').style.display = 'flex';
-    document.getElementById('shopBuyQty').value = 1;
+    document.getElementById('shopBuyQty').value = (key === 'manual') ? 100 : 1;
     document.getElementById('shopBuyStatus').textContent = '单价 ' + it.price + ' ' + it.unit;
     refreshBuyTotal();
     document.getElementById('shopBuyConfirm').textContent = '购买';
@@ -162,7 +162,10 @@ window.Shop = (function () {
   }
   function stepBuy(delta) {
     var el = document.getElementById('shopBuyQty');
-    el.value = Math.max(1, (parseInt(el.value, 10) || 1) + delta);
+    var v = parseInt(el.value, 10) || 1;
+    // 训练手册按 100 本/档步进（消耗 100/200/400/800），体力包按 1 个/档；最低均为 1
+    var step = pendingKey === 'manual' ? 100 : 1;
+    el.value = Math.max(1, v + delta * step);
     refreshBuyTotal();
   }
   function refreshBuyTotal() {
