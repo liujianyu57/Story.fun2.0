@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>widthtest</title></head>
+<body style="margin:0">
+<script src="items.js"></script>
+<script src="shop.js"></script>
+<script>
+try {
+  Shop.openSub();
+  var o = document.getElementById('shopSubModal');
+  var c = o ? o.firstElementChild : null;
+  var s = c ? getComputedStyle(c) : null;
+  var r = {
+    viewport: document.documentElement.clientWidth,
+    overlay: o ? Math.round(o.getBoundingClientRect().width * 100) / 100 : -1,
+    w: s ? s.width : 'none',
+    mw: s ? s.maxWidth : 'none',
+    fs: s ? s.flexShrink : 'none',
+    display: s ? s.display : 'none',
+    has460: c ? (c.getAttribute('style').indexOf('width:460px') >= 0) : false,
+  };
+  document.title = 'R=' + JSON.stringify(r);
+} catch (e) {
+  document.title = 'R={"err":"' + e.message + '"}';
+}
+</script>
+</body>
+</html>
