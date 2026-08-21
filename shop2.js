@@ -174,7 +174,8 @@ window.Shop = (function () {
     ItemStore.buy(pendingKey, n);
     closeBuyModal();
     renderCenter();
-    toast('已购买 ' + n + ' 个' + it.name);
+    toast('购买成功 · 已放入背包');
+    try { document.dispatchEvent(new CustomEvent('sf:items-changed', { detail: { n: n } })); } catch (e) {}
   }
 
   // ============================================================

@@ -1628,6 +1628,12 @@
     .claw-switch input:checked + .track{background:#2E9E6B}
     .claw-switch input:checked + .track + .thumb{transform:translateX(18px)}
     .claw-switch:active .thumb{width:22px}
+
+    /* ===== 购买成功 · 道具进包特效 ===== */
+    @keyframes sfBagBump{0%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(.96)}100%{transform:scale(1)}}
+    .bag-bump{animation:sfBagBump .6s ease}
+    @keyframes sfBagFloat{0%{opacity:0;transform:translateY(4px) scale(.9)}15%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-22px) scale(1)}}
+    .bag-float{position:fixed;z-index:100001;background:#2E9E6B;color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;pointer-events:none;box-shadow:0 4px 12px rgba(46,158,107,.35);animation:sfBagFloat 1.2s ease forwards}
   </style>
 </head>
 <body>
@@ -3614,6 +3620,22 @@
         updateClawDebugBtn();
         var s = document.getElementById('clawSheet');
         if (s && s.classList.contains('active')) renderClawSheet();
+      });
+      // 购买成功 → 我的道具入口弹跳 + 「+N」进包气泡
+      document.addEventListener('sf:items-changed', function(e) {
+        var n = (e.detail && e.detail.n) || 1;
+        [document.getElementById('itemsTopBtn'), document.querySelector('.mob-items')].forEach(function(b) {
+          if (!b || b.offsetParent === null) return; // 只处理可见入口
+          b.classList.remove('bag-bump'); void b.offsetWidth; b.classList.add('bag-bump');
+          var r = b.getBoundingClientRect();
+          var f = document.createElement('div');
+          f.className = 'bag-float';
+          f.textContent = '+' + n;
+          f.style.left = (r.left + r.width / 2 - 14) + 'px';
+          f.style.top = (r.top - 6) + 'px';
+          document.body.appendChild(f);
+          setTimeout(function() { f.remove(); }, 1300);
+        });
       });
       // 桌面端通用标题栏 🎒/🐾 跳转：自动打开道具 sheet
       if (location.hash === '#items') openItemsSheet();
