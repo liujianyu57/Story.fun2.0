@@ -3626,10 +3626,9 @@
       overlay.style.cssText = 'position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
       overlay.innerHTML = '<div class="modal-card" style="max-width:400px;width:calc(100% - 32px);padding:22px 20px;text-align:center;">'
         + '<h2 style="margin:0 0 12px;font-size:1.1rem;">回收 ' + actor.name + ' ' + numStr + '</h2>'
-        + '<div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:12px;text-align:left;">'
-          + '<div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:6px;"><span>Mint 部分（P0×80%）</span><span>' + v.mint.toFixed(1) + ' USDC</span></div>'
-          + '<div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:6px;"><span>升级部分（投入×50%）</span><span>' + v.upgrade.toFixed(1) + ' USDC</span></div>'
-          + '<div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;color:var(--text);border-top:1px solid var(--border);padding-top:8px;"><span>合计</span><span>' + v.total.toFixed(1) + ' USDC</span></div>'
+        + '<div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;">'
+          + '<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:4px;">可回收</div>'
+          + '<div style="font-size:1.8rem;font-weight:800;color:var(--gold);">' + v.total.toFixed(1) + ' USDC</div>'
         + '</div>'
         + '<div style="background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:12px;text-align:left;font-size:0.82rem;color:var(--text);">'
           + '<div style="margin-bottom:4px;">返还：80% USDC<span style="float:right;font-weight:700;">' + usdc.toFixed(2) + ' USDC</span></div>'
