@@ -8,15 +8,16 @@
     'use strict';
 
     // 动态引入商城依赖：items.js（ItemStore）→ shop.js（商城弹窗）
+    // 带时间戳版本号，避免浏览器缓存旧文件
     (function() {
         if (!document.getElementById('itemsJs')) {
             var a = document.createElement('script');
-            a.id = 'itemsJs'; a.src = 'items.js';
+            a.id = 'itemsJs'; a.src = 'items.js?v=' + Date.now();
             document.head.appendChild(a);
         }
         if (!document.getElementById('shopJs')) {
             var s = document.createElement('script');
-            s.id = 'shopJs'; s.src = 'shop.js';
+            s.id = 'shopJs'; s.src = 'shop.js?v=' + Date.now();
             document.head.appendChild(s);
         }
     })();
@@ -37,7 +38,7 @@
         var loaded = 0;
         need.forEach(function(src) {
             var s = document.createElement('script');
-            s.src = src;
+            s.src = src + '?v=' + Date.now();
             s.onload = function() { loaded++; if (loaded === need.length) go(); };
             document.head.appendChild(s);
         });
