@@ -414,7 +414,7 @@
         <span>🐾</span>
         <span style="font-weight:700;color:var(--text);"><span id="signCount">0</span>/5 签约得</span>
         <button onclick="openClawInfo()" style="border:none;background:none;padding:0;font-size:0.78rem;font-weight:700;color:var(--accent);cursor:pointer;text-decoration:underline;flex-shrink:0;">Story Claw</button>
-        <span id="signGiftBadge" style="display:none;flex-shrink:0;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px;font-size:0.68rem;">已领取</span>
+        <button id="signGiftBadge" onclick="dismissSignBar()" style="display:none;flex-shrink:0;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px;font-size:0.68rem;border:none;cursor:pointer;">已领取</button>
       </div>
     </div>
     <!-- Sort -->
@@ -792,6 +792,11 @@
       var gifted = getSignGifted();
       document.getElementById('signCount').textContent = n;
       document.getElementById('signGiftBadge').style.display = gifted ? 'inline-block' : 'none';
+    }
+    // 点击「已领取」收起激励横条（demo 不持久化，刷新恢复）
+    function dismissSignBar() {
+      var bar = document.getElementById('signGiftBar');
+      if (bar) bar.style.display = 'none';
     }
     function openClawInfo() {
       var overlay = document.createElement('div');
