@@ -12,7 +12,7 @@ window.Shop = (function () {
 
   var ITEMS = [
     { key: 'supply', name: '体力补给包', icon: '🧃', price: 10, unit: 'USDC', tile: '#FFF3E2',
-      desc: '补满角色体力至 168h，按角色等级消耗。' },
+      desc: '补满角色体力，按角色等级消耗。' },
     { key: 'manual', name: '训练手册', icon: '📘', price: 0.1, unit: 'USDC', tile: '#EDF2FF',
       desc: '角色升级材料，升级时按角色等级消耗。' },
     { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY', tile: '#EAF6EF', claw: 'week', days: 7,
