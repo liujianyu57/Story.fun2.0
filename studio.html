@@ -2471,7 +2471,7 @@
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
           + '<span class="ur-cond-label">同IP同等级角色</span>'
-          + '<span class="ur-cond-status' + (cloneReady ? ' done' : ' pending') + '"' + (!cloneReady ? ' onclick="event.stopPropagation();openUpgradeBlockedModal(\'' + actor.id + '\')"' : '') + '>' + (cloneReady ? '✓' : '+') + '</span>'
+          + '<span class="ur-cond-status' + (cloneReady ? ' done' : ' pending') + '"' + (!cloneReady ? ' onclick="event.stopPropagation();openSignCloneModal(\'' + actor.id + '\')"' : '') + '>' + (cloneReady ? '✓' : '+') + '</span>'
           + '</div>'
           + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + Math.round((have / 2) * 100) + '%;"></i><span class="ur-cond-bar-text">' + have + '/2</span></div>'
           + '</div>'
@@ -3499,6 +3499,87 @@
       overlay.addEventListener('click', function(e) {
         if (e.target === this) this.remove();
       });
+    }
+
+    // ============================================================
+    //  签约弹窗（参考 actors.html：头像横幅 + 确认签约 + 成功印章）
+    //  用于升级列表「同IP同等级角色」的 +
+    // ============================================================
+    function openSignCloneModal(actorId) {
+      var actor = MY_ACTORS.find(function(a) { return a.id === actorId; });
+      if (!actor) return;
+      var lv = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
+      var coeff = actor.initPrice ? computePriceCoefficient(actor.initPrice).toFixed(4) : '—';
+
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div style="background:#fff;border-radius:20px;max-width:380px;width:calc(100% - 32px);overflow:hidden;box-shadow:0 40px 80px rgba(27,45,71,0.2);">' +
+        '<div style="position:relative;height:170px;">' +
+          '<img src="' + actor.avatar + '" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">' +
+          '<div style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;">角色 IP</div>' +
+        '</div>' +
+        '<div style="padding:18px 20px 20px;">' +
+          '<div style="font-size:15px;font-weight:700;color:#13202e;margin-bottom:4px;">确认签约 · Lv.' + actor.level + ' ' + lv.name + '</div>' +
+          '<div style="font-size:22px;font-weight:800;color:#13202e;margin-bottom:14px;">' + actor.name + '</div>' +
+          '<div style="background:#f6f8fb;border-radius:12px;padding:12px 14px;margin-bottom:14px;">' +
+            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+              '<span style="font-size:11px;font-weight:600;color:#5e6f83;background:rgba(0,0,0,.05);padding:2px 8px;border-radius:999px;">曲线价格</span>' +
+              '<span style="font-size:11px;color:#8b8d98;">价格系数 ' + coeff + '</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:baseline;gap:8px;">' +
+              '<span style="font-size:22px;font-weight:800;color:#13202e;">' + (actor.initPrice || 10) + ' USDC</span>' +
+              '<span style="font-size:11px;color:#8b8d98;">签约价</span>' +
+            '</div>' +
+            '<div style="font-size:11px;color:#8b8d98;margin-top:6px;">总发行 1000 · 剩余 999</div>' +
+          '</div>' +
+          '<button onclick="confirmSignClone(this,\'' + actor.id + '\')" style="width:100%;height:44px;border:none;border-radius:999px;background:#13202e;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;">确认签约</button>' +
+          '<button onclick="this.closest(\'.modal-overlay\').remove()" style="width:100%;height:44px;border:1px solid #deeaf7;border-radius:999px;background:transparent;color:#5e6f83;font-size:15px;font-weight:600;cursor:pointer;">取消</button>' +
+        '</div>' +
+      '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) this.remove();
+      });
+    }
+
+    function confirmSignClone(btn, actorId) {
+      var actor = MY_ACTORS.find(function(a) { return a.id === actorId; });
+      if (!actor) return;
+      // 生成同IP同等级克隆角色（编号顺延）
+      var maxN = 0;
+      MY_ACTORS.forEach(function(a) {
+        if (a.parentIP === actor.parentIP) {
+          var m = String(a.id).match(/(\d+)\s*$/);
+          if (m) maxN = Math.max(maxN, parseInt(m[1], 10));
+        }
+      });
+      var newId = actor.id.replace(/(\d+)\s*$/, function() { return String(maxN + 1).padStart(3, '0'); });
+      MY_ACTORS.push({
+        id: newId, name: actor.name, avatar: actor.avatar,
+        parentIP: actor.parentIP, ipCode: actor.ipCode,
+        level: actor.level, energy: 168, energyMax: 168,
+        heat: actor.heat || 0, dailyStory: 0, cumulativeStory: 0, cumulativePlays: 0,
+        isStaking: false, stakingDays: 0, status: 'idle', todayOutput: 0, outputRate: 0,
+        initPrice: actor.initPrice
+      });
+      // 成功态
+      var overlay = btn.closest('.modal-overlay');
+      if (overlay) {
+        overlay.innerHTML = '<div style="background:#fff;border-radius:20px;max-width:340px;width:calc(100% - 32px);text-align:center;padding:36px 24px 24px;box-shadow:0 40px 80px rgba(27,45,71,0.2);">' +
+          '<div style="width:76px;height:76px;border-radius:50%;background:#e8f5ee;display:flex;align-items:center;justify-content:center;font-size:36px;color:#2E9E6B;font-weight:800;margin:0 auto 14px;">✓</div>' +
+          '<div style="font-size:20px;font-weight:800;color:#13202e;margin-bottom:8px;">签约成功</div>' +
+          '<div style="font-size:14px;color:#5e6f83;line-height:1.7;margin-bottom:22px;">已获得同IP同等级角色「<strong>' + actor.name + '</strong>」</div>' +
+          '<button onclick="closeSignCloneSuccess(this)" style="width:100%;height:44px;border:none;border-radius:999px;background:#13202e;color:#fff;font-size:15px;font-weight:700;cursor:pointer;">完成</button>' +
+        '</div>';
+      }
+    }
+    function closeSignCloneSuccess(btn) {
+      var overlay = btn.closest('.modal-overlay');
+      if (overlay) overlay.remove();
+      renderAll();
+      if (document.getElementById('upgradeModal') && document.getElementById('upgradeModal').classList.contains('active')) renderUpgradeList();
+      showToast('签约成功，已获得同IP同等级角色');
     }
 
     // ============================================================
