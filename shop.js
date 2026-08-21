@@ -188,29 +188,30 @@ window.Shop = (function () {
     var d = document.createElement('div');
     d.id = 'shopSubModal';
     d.style.cssText = OVERLAY + 'z-index:100000;';
-    d.innerHTML = '<div style="' + CARD + 'max-width:360px;width:calc(100% - 32px);">'
-      + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 4px;">Story Claw 订阅</div>'
-      + '<div style="font-size:12px;color:#86868b;margin:0 0 12px;">购买即生效 · 重复续费延长有效期</div>'
+    d.innerHTML = '<div style="' + CARD + 'max-width:460px;width:calc(100% - 32px);padding:28px 24px 24px;">'
+      + '<div style="font-size:20px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 6px;">Story Claw 订阅</div>'
+      + '<div style="font-size:13px;color:#86868b;margin:0 0 14px;">购买即生效 · 重复续费延长有效期</div>'
       + '<button onclick="Shop.closeSub()" class="sf-close" style="' + CLOSE + '">✕</button>'
-      + '<div id="shopSubStatus" style="display:none;margin:0 0 12px;"></div>'
-      + '<div id="shopSubCards" style="display:flex;gap:10px;margin-bottom:16px;"></div>'
-      + '<div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#86868b;margin:0 2px 8px;">权益</div>'
-      + '<div id="shopSubBenefits" style="background:#F8F8FA;border-radius:14px;padding:12px 14px;margin-bottom:16px;"></div>'
-      + '<button id="shopSubBtn" onclick="Shop.confirmSub()" class="sf-btn" style="width:100%;height:44px;border:none;border-radius:12px;background:#1d1d1f;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">确认开通</button>'
+      + '<div id="shopSubStatus" style="display:none;margin:0 0 14px;"></div>'
+      + '<div id="shopSubCards" style="display:flex;gap:12px;margin-bottom:20px;"></div>'
+      + '<div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#86868b;margin:0 2px 10px;">权益</div>'
+      + '<div id="shopSubBenefits" style="background:#F8F8FA;border-radius:16px;padding:16px 18px;margin-bottom:20px;"></div>'
+      + '<button id="shopSubBtn" onclick="Shop.confirmSub()" class="sf-btn" style="width:100%;height:48px;border:none;border-radius:13px;background:#1d1d1f;color:#fff;font-size:16px;font-weight:600;cursor:pointer;">确认开通</button>'
       + '</div>';
     document.body.appendChild(d);
     d.addEventListener('click', function (e) { if (e.target === d) closeSub(); });
   }
 
-  // 顶部选卡小卡片（时间 + 大字费用）
+  // 顶部选卡大卡片（图标 + 时间 + 大字费用）
   function subCard(it) {
     var sel = subKind === it.claw;
     var short = it.claw === 'week' ? '周卡' : '月卡';
-    return '<div class="sf-card" onclick="Shop.selectSub(\'' + it.claw + '\')" style="flex:1;padding:12px 10px;border:1px solid ' + (sel ? '#2E9E6B' : '#ececf1') + ';border-radius:14px;background:' + (sel ? '#F4FBF6' : '#fff') + ';cursor:pointer;text-align:center;">'
-      + '<div style="font-size:13px;font-weight:650;color:#1d1d1f;">' + short + '</div>'
-      + '<div style="font-size:11px;font-weight:600;color:' + (sel ? '#2E9E6B' : '#86868b') + ';margin-top:2px;">' + it.days + ' 天</div>'
-      + '<div style="font-size:17px;font-weight:750;color:#1d1d1f;letter-spacing:-.01em;margin-top:8px;">' + it.price + '</div>'
-      + '<div style="font-size:10px;color:#86868b;margin-top:1px;">' + it.unit + '</div>'
+    return '<div class="sf-card" onclick="Shop.selectSub(\'' + it.claw + '\')" style="flex:1;padding:18px 12px 16px;border:1.5px solid ' + (sel ? '#2E9E6B' : '#ececf1') + ';border-radius:16px;background:' + (sel ? '#F4FBF6' : '#fff') + ';cursor:pointer;text-align:center;">'
+      + '<span style="width:44px;height:44px;border-radius:14px;background:' + it.tile + ';display:inline-flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px;">' + it.icon + '</span>'
+      + '<div style="font-size:15px;font-weight:650;color:#1d1d1f;">' + short + '</div>'
+      + '<div style="font-size:12px;font-weight:600;color:' + (sel ? '#2E9E6B' : '#86868b') + ';margin-top:3px;">' + it.days + ' 天</div>'
+      + '<div style="font-size:24px;font-weight:750;color:#1d1d1f;letter-spacing:-.01em;margin-top:10px;">' + it.price + '</div>'
+      + '<div style="font-size:11px;color:#86868b;margin-top:2px;">' + it.unit + '</div>'
       + '</div>';
   }
 
@@ -220,8 +221,8 @@ window.Shop = (function () {
     var it = findItem(subKind === 'week' ? 'clawWeek' : 'clawMonth');
     var benefits = '';
     it.benefits.forEach(function (b) {
-      benefits += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12.5px;color:#4a4a50;">'
-        + '<span style="width:16px;height:16px;border-radius:50%;background:#EAF6EF;display:inline-flex;align-items:center;justify-content:center;color:#2E9E6B;font-size:10px;font-weight:800;flex-shrink:0;">✓</span>' + b + '</div>';
+      benefits += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13.5px;color:#4a4a50;">'
+        + '<span style="width:18px;height:18px;border-radius:50%;background:#EAF6EF;display:inline-flex;align-items:center;justify-content:center;color:#2E9E6B;font-size:11px;font-weight:800;flex-shrink:0;">✓</span>' + b + '</div>';
     });
     document.getElementById('shopSubBenefits').innerHTML = benefits;
     // 底部按钮 + 顶部状态
@@ -231,7 +232,7 @@ window.Shop = (function () {
     var st = document.getElementById('shopSubStatus');
     if (isActive) {
       st.style.display = 'block';
-      st.innerHTML = '<span style="display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;line-height:1.7;background:rgba(208,48,80,.08);color:#c02b4a;"><span style="width:5px;height:5px;border-radius:50%;background:#c02b4a;"></span>激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天</span>';
+      st.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;line-height:1.6;background:rgba(208,48,80,.08);color:#c02b4a;"><span style="width:6px;height:6px;border-radius:50%;background:#c02b4a;"></span>激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天</span>';
     } else {
       st.style.display = 'none';
     }
