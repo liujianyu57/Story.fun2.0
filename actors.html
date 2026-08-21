@@ -59,71 +59,6 @@
     .button { background: var(--accent); color: #fff; font-weight: 600; }
     .button-secondary { background: rgba(15, 22, 42, 0.05); color: var(--text); }
 
-    /* ═══ Apple-Inspired Sign Modal ═══ */
-    .mint-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(15,23,42,0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-    .mint-modal-overlay.active { display: flex; }
-    .mint-modal { width: min(440px, 100%); background: var(--surface); border-radius: 28px; box-shadow: 0 40px 80px rgba(15,23,42,0.18); overflow: hidden; transform: scale(0.92) translateY(12px); opacity: 0; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-    .mint-modal-overlay.active .mint-modal { transform: scale(1) translateY(0); opacity: 1; }
-    .mint-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.04); color: var(--text-muted); font-size: 1.2rem; cursor: pointer; display: grid; place-items: center; transition: all 0.2s ease; z-index: 2; }
-    .mint-modal-close:hover { background: rgba(0,0,0,0.08); color: var(--text); }
-    .mint-modal-hero { position: relative; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; background: #f0f5fa; }
-    .mint-modal-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .mint-modal-hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.08) 100%); }
-    .mint-modal-badge { position: absolute; left: 16px; bottom: 16px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); color: var(--text); font-size: 0.78rem; font-weight: 600; }
-    .mint-modal-body { padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 20px; }
-    .mint-modal-header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-    .mint-modal-header h2 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-muted); flex-shrink: 0; }
-    .mint-modal-actor-name { font-size: 1.5rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; text-align: right; }
-    .mint-price-bar { background: var(--bg); border-radius: 16px; padding: 22px 20px 18px; }
-    .mpb-badge-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
-    .mpb-pricing-tag { display: inline-flex; align-items: center; gap: 3px; padding: 2px 10px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.02em; background: rgba(0, 0, 0,0.10); color: var(--accent); white-space: nowrap; }
-    .mpb-pricing-tag .actor-price-help { width: 16px; height: 16px; font-size: 0.55rem; }
-    .mpb-pricing-tag.fixed { background: rgba(101,117,134,0.10); color: var(--text-muted); }
-    .mpb-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 24px; }
-    .mpb-price-value { font-size: 1.6rem; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; line-height: 1.2; }
-    .mpb-price-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
-    .mpb-coeff-inline { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 500; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
-    .mpb-coeff-inline strong { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
-    .mpb-coeff-inline .actor-price-help { width: 16px; height: 16px; font-size: 0.55rem; }
-    /* Mint modal ? 按钮基础圆形样式 */
-    .actor-price-help { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.04); color: var(--text-muted); font-size: 0.6rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; border: none; padding: 0; line-height: 1; }
-    .actor-price-help:hover { background: var(--accent); color: #fff; }
-    .mpb-progress { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--border); }
-    .mpb-progress strong { color: var(--text); font-weight: 700; }
-    .mint-slippage-notice { text-align: center; font-size: 0.78rem; color: var(--text-muted); padding: 6px 0 2px; opacity: 0.85; }
-    .mint-modal-footer { display: flex; flex-direction: column; gap: 10px; }
-    .mint-modal-footer .mint-btn { width: 100%; padding: 16px; border-radius:999px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease; }
-    .mint-modal-footer .mint-btn.primary { background: #000000; color: #fff; }
-    .mint-modal-footer .mint-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0, 0, 0,0.35); }
-    .mint-modal-footer .mint-btn.primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-    .mint-modal-footer .mint-btn.secondary { background: transparent; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; padding: 12px; }
-    .mint-modal-footer .mint-btn.secondary:hover { color: var(--text); background: rgba(0,0,0,0.03); }
-
-    /* Success state */
-    .mint-modal-success { display: none; flex-direction: column; align-items: center; gap: 10px; padding: 48px 28px 32px; text-align: center; position: relative; overflow: hidden; }
-    .mint-modal-success.show { display: flex; }
-    .stamp-icon-wrap { position: relative; width: 80px; height: 80px; margin-bottom: 6px; }
-    .stamp-seal { width: 80px; height: 80px; border-radius: 50%; background: #e53935; display: grid; place-items: center; color: #fff; font-size: 1.3rem; font-weight: 900; box-shadow: 0 4px 20px rgba(229,57,53,0.35); position: relative; transform: scale(0) rotate(-30deg); opacity: 0; transition: none; letter-spacing: 0.04em; border: 3px solid #c62828; }
-    .mint-modal-success.show .stamp-seal { animation: stamp-drop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 0.3s; }
-    .stamp-seal-inner { display: flex; flex-direction: column; align-items: center; gap: 0; line-height: 1; }
-    .stamp-seal-inner span:first-child { font-size: 1.6rem; }
-    .stamp-seal-inner span:last-child { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; margin-top: -2px; }
-    .stamp-ripple { position: absolute; inset: -12px; border-radius: 50%; border: 2px solid rgba(229,57,53,0.15); transform: scale(0); opacity: 0; }
-    .mint-modal-success.show .stamp-ripple { animation: ripple-out 0.6s ease-out forwards; animation-delay: 0.6s; }
-    .stamp-ripple:nth-child(2) { inset: -24px; border-width: 1.5px; }
-    .mint-modal-success.show .stamp-ripple:nth-child(2) { animation-delay: 0.7s; }
-    @keyframes stamp-drop { 0% { transform: scale(0) rotate(-30deg); opacity: 0; } 50% { transform: scale(1.25) rotate(6deg); opacity: 1; } 70% { transform: scale(0.92) rotate(-2deg); opacity: 1; } 85% { transform: scale(1.04) rotate(1deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
-    @keyframes ripple-out { 0% { transform: scale(0.5); opacity: 0.6; } 100% { transform: scale(1.5); opacity: 0; } }
-    .mint-modal-success .success-content { display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; transform: translateY(12px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); width: 100%; }
-    .mint-modal-success.show .success-content { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
-    .mint-modal-success h2 { margin: 0; font-size: 1.25rem; font-weight: 700; }
-    .mint-modal-success p { margin: 4px 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
-    .mint-modal-success .success-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; width: 100%; }
-    .mint-modal-success .success-btn { width: 100%; padding: 14px; border-radius:999px; border: none; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease; }
-    .mint-modal-success .success-btn.primary { background: #000000; color: #fff; }
-    .mint-modal-success .success-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0, 0, 0,0.35); }
-    .mint-modal-success .success-btn.secondary { background: transparent; color: var(--text-muted); font-weight: 600; padding: 12px; }
-    .mint-modal-success .success-btn.secondary:hover { color: var(--text); background: rgba(0,0,0,0.03); }
 
     .banner-1 { background: linear-gradient(135deg, #e0f7ff 0%, #ffffff 100%); }
     .banner-2 { background: linear-gradient(135deg, #ffe4e7 0%, #fff9fb 100%); }
@@ -225,17 +160,6 @@
       .sort-container { gap: 6px; margin-bottom: 16px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .sort-container::-webkit-scrollbar { display: none; }
       .sort-tag { font-size: 0.8rem; padding: 6px 12px; white-space: nowrap; flex-shrink: 0; }
-      .mint-modal-overlay { padding: 12px; align-items: flex-end; }
-      .mint-modal { border-radius: 24px 24px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-      .mint-modal-overlay.active .mint-modal { transform: translateY(0); }
-      .mint-modal-body { padding: 18px 18px 22px; gap: 14px; }
-      .mint-modal-header h2 { font-size: 0.9rem; }
-      .mint-modal-actor-name { font-size: 1.2rem; }
-      .mint-price-bar { padding: 14px 14px 14px; border-radius: 14px; }
-      .mpb-price-value { font-size: 1.35rem; }
-      .mint-slippage-notice { font-size: 0.72rem; }
-      .mint-modal-footer .mint-btn { padding: 14px; font-size: 0.95rem; border-radius:999px; }
-      .mint-modal-success { padding: 36px 20px 24px; }
       .price-tooltip-box { padding: 20px 16px 16px; max-width: 100%; border-radius: 20px; }
       .stat-tooltip-box { padding: 20px 16px 16px; border-radius: 20px; }
       .auth-modal { border-radius: 24px 24px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-top: auto; max-width: 100%; }
@@ -260,22 +184,6 @@
       .sort-container { gap: 4px; margin-bottom: 10px; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .sort-container::-webkit-scrollbar { display: none; }
       .sort-tag { font-size: 0.72rem; padding: 5px 10px; white-space: nowrap; flex-shrink: 0; }
-      .mint-modal-overlay { padding: 0; align-items: flex-end; }
-      .mint-modal { border-radius: 20px 20px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-      .mint-modal-overlay.active .mint-modal { transform: translateY(0); }
-      .mint-modal-hero { aspect-ratio: 16 / 10; }
-      .mint-modal-body { padding: 16px 16px 20px; gap: 12px; }
-      .mint-modal-header h2 { font-size: 0.85rem; color: #8e8e93; }
-      .mint-modal-actor-name { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
-      .mint-price-bar { padding: 14px 12px 12px; border-radius: 14px; background: rgba(0,0,0,0.015); }
-      .mpb-price-value { font-size: 1.3rem; }
-      .mpb-price-row { margin-bottom: 14px; }
-      .mint-slippage-notice { font-size: 0.68rem; color: #8e8e93; }
-      .mint-modal-footer .mint-btn { padding: 12px; font-size: 0.9rem; border-radius:999px; font-weight: 700; }
-      .mint-modal-footer .mint-btn.primary { background: linear-gradient(135deg, #000000, #00c89a); }
-      .mint-modal-footer .mint-btn.primary:active { transform: scale(0.97); }
-      .mint-modal-footer .mint-btn.secondary { color: #8e8e93; }
-      .mint-modal-success { padding: 32px 16px 20px; }
       .price-tooltip-box { padding: 20px 14px 14px; max-width: 100%; border-radius: 20px; }
       .stat-tooltip-box { padding: 20px 14px 14px; border-radius: 20px; }
       .auth-modal { border-radius: 20px 20px 0 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-top: auto; max-width: 100%; }
@@ -626,57 +534,6 @@
       </div>
     </div>
 
-    <!-- Mint Modal -->
-    <div class="mint-modal-overlay" id="mintModal" aria-hidden="true">
-      <div class="mint-modal" role="dialog" aria-modal="true" aria-labelledby="mintModalTitle">
-        <button class="mint-modal-close" type="button" id="mintModalClose" aria-label="关闭弹窗">✕</button>
-        <div class="mint-modal-hero">
-          <img id="mintModalImage" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="角色预览" />
-          <div class="mint-modal-hero-overlay"></div>
-          <div class="mint-modal-badge" id="mintModalTag">角色 IP</div>
-        </div>
-        <div class="mint-modal-body">
-          <div class="mint-modal-header">
-            <h2 id="mintModalTitle">确认签约 · Lv.1 群演</h2>
-            <div class="mint-modal-actor-name" id="mintModalActorName">Luna</div>
-          </div>
-          <div class="mint-price-bar" id="mintPriceBar">
-            <div class="mpb-badge-row">
-              <span class="mpb-pricing-tag" id="mpbPricingTag"><span id="mpbPricingLabel">曲线价格</span><button class="actor-price-help" id="mintPriceHelp" type="button">?</button></span>
-              <span class="mpb-coeff-inline" id="mintCoeffRow">价格系数 <strong id="mintCoeffValue">—</strong><button class="actor-price-help" id="mintCoeffHelp" type="button">?</button></span>
-            </div>
-            <div class="mpb-price-row">
-              <span class="mpb-price-value" id="mintEstimate">10.0 USDC</span>
-              <span class="mpb-price-label">签约价</span>
-            </div>
-            <div class="mpb-progress" id="mpbProgress">
-              <span class="mpb-progress-text">总发行 <strong id="mpbPctTotal">0</strong> · 剩余 <strong id="mpbRemain">0</strong></span>
-            </div>
-          </div>
-          <input type="hidden" id="slippageSlider" value="10" />
-          <div class="mint-modal-footer">
-            <div class="mint-slippage-notice" id="slippageNotice">已开启 1% 滑点保护，价格超出时将取消交易</div>
-            <button class="mint-btn primary" type="button" id="mintConfirm">确认签约</button>
-            <button class="mint-btn secondary" type="button" id="mintCancel">取消</button>
-          </div>
-        </div>
-        <div class="mint-modal-success" id="mintModalSuccess">
-          <div class="stamp-icon-wrap">
-            <div class="stamp-seal"><div class="stamp-seal-inner"><span>✓</span><span>签约</span></div></div>
-            <div class="stamp-ripple"></div>
-            <div class="stamp-ripple"></div>
-          </div>
-          <div class="success-content">
-            <h2>签约成功</h2>
-            <p id="successText">已获得 Lv.1 群演「<strong id="successActorName">Luna</strong> #1」，快去安排演出吧。</p>
-            <div class="success-actions">
-              <button class="success-btn primary" id="viewNftBtn">查看我的角色</button>
-              <button class="success-btn secondary" id="continueBtn">继续浏览</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- IP Guide Modal -->
     <div class="stat-tooltip-overlay" id="ipGuideModal" style="z-index:10003;">
@@ -750,6 +607,7 @@
 
   <script src="auth.js"></script>
   <script src="items.js"></script>
+  <script src="sign-modal.js"></script>
   <script src="actor-card.js"></script>
   <script src="load-sidebar.js"></script>
   <script src="load-desktop-header.js?v=3"></script>
@@ -822,24 +680,6 @@
     // ============================================================
     //  Wire Up Card Interactions
     // ============================================================
-    var MintModal = document.getElementById('mintModal');
-    var MintModalClose = document.getElementById('mintModalClose');
-    var MintCancel = document.getElementById('mintCancel');
-    var MintConfirm = document.getElementById('mintConfirm');
-    var MintModalActorName = document.getElementById('mintModalActorName');
-    var MintModalImage = document.getElementById('mintModalImage');
-    var MintModalTag = document.getElementById('mintModalTag');
-    var MintEstimate = document.getElementById('mintEstimate');
-    var MintModalSuccess = document.getElementById('mintModalSuccess');
-    var MintModalBody = document.querySelector('.mint-modal-body');
-    var viewNftBtn = document.getElementById('viewNftBtn');
-    var continueBtn = document.getElementById('continueBtn');
-    var mpbPricingTag = document.getElementById('mpbPricingTag');
-    var mpbRemain = document.getElementById('mpbRemain');
-    var mpbPctTotal = document.getElementById('mpbPctTotal');
-    var mpbPricingLabel = document.getElementById('mpbPricingLabel');
-    var slippageNotice = document.getElementById('slippageNotice');
-
     var curveInitTooltip = document.getElementById('curveInitTooltip');
     var curveCurrTooltip = document.getElementById('curveCurrTooltip');
     var curveEndPriceTooltip = document.getElementById('curveEndPriceTooltip');
@@ -848,16 +688,6 @@
     var curveRemainSupply = document.getElementById('curveRemainSupply');
     var curveCanvas = document.getElementById('priceCurveCanvas');
     var BASE = 5;
-
-    function closeMintModal() {
-      MintModal.classList.remove('active');
-      MintModal.setAttribute('aria-hidden', 'true');
-    }
-
-    function setButtonLoading(btn, loading) {
-      if (loading) { btn.dataset.orig = btn.innerHTML; btn.innerHTML = '处理中...'; btn.disabled = true; }
-      else { if (btn.dataset.orig) btn.innerHTML = btn.dataset.orig; btn.disabled = false; }
-    }
 
     function drawBondingCurve(initialPrice, totalSupply, minted) {
       var canvas = curveCanvas, ctx = canvas.getContext('2d');
@@ -916,40 +746,6 @@
       curveRemainSupply.textContent = (totalSupply - minted).toLocaleString();
     }
 
-    function openMintModal(data) {
-      MintModalActorName.textContent = data.name;
-      MintModalImage.src = data.image;
-      MintModalTag.textContent = data.tag + (data.collection ? ' · ' + data.collection : '');
-      MintEstimate.textContent = data.price;
-      MintModalSuccess.classList.remove('show');
-      MintModalBody.style.display = 'flex';
-      MintModal.classList.add('active');
-      MintModal.setAttribute('aria-hidden', 'false');
-
-      var pricing = data.pricing || 'curve';
-      var total = data.total || 0;
-      var minted = data.minted || 0;
-      if (pricing === 'curve') { mpbPricingLabel.textContent = '曲线价格'; mpbPricingTag.classList.remove('fixed'); }
-      else { mpbPricingLabel.textContent = '固定价格'; mpbPricingTag.classList.add('fixed'); }
-      mpbRemain.textContent = (total - minted).toLocaleString();
-      mpbPctTotal.textContent = total.toLocaleString();
-
-      var coeffRow = document.getElementById('mintCoeffRow');
-      var coeffVal = document.getElementById('mintCoeffValue');
-      var initPrice = data.initPrice ? parseFloat(data.initPrice) : 0;
-      if (coeffRow && coeffVal && initPrice > 0) {
-        coeffRow.style.display = '';
-        coeffVal.textContent = computePriceCoefficient(initPrice).toFixed(4);
-      } else if (coeffRow) { coeffRow.style.display = 'none'; }
-      if (slippageNotice) slippageNotice.style.display = (pricing === 'curve') ? '' : 'none';
-    }
-
-    function showSuccessInModal(data) {
-      document.getElementById('successActorName').textContent = data.name || 'Luna';
-      MintModalBody.style.display = 'none';
-      MintModalSuccess.classList.add('show');
-    }
-
     function updateCardCounts(card) {
       try {
         var avail = (parseInt(card.dataset.available) || 0) - 1;
@@ -982,28 +778,6 @@
       }
       return null;
     }
-
-    // ============================================================
-    //  Modal Close Handlers
-    // ============================================================
-    MintModalClose.addEventListener('click', closeMintModal);
-    MintCancel.addEventListener('click', closeMintModal);
-    MintModal.addEventListener('click', function(e) { if (e.target === MintModal || e.target.classList.contains('mint-modal-overlay')) closeMintModal(); });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && MintModal.classList.contains('active')) closeMintModal(); });
-
-    MintConfirm.addEventListener('click', function() {
-      setButtonLoading(MintConfirm, true);
-      setTimeout(function() {
-        var imgSrc = document.getElementById('mintModalImage').src;
-        var cards = document.querySelectorAll('#actorGrid .ac-card');
-        var targetCard = null;
-        cards.forEach(function(c) { var aImg = c.querySelector('.ac-avatar img'); if (aImg && aImg.src === imgSrc) targetCard = c; });
-        if (targetCard) updateCardCounts(targetCard);
-        showSuccessInModal({ name: MintModalActorName.textContent || 'Luna' });
-        addSignCount();
-        setButtonLoading(MintConfirm, false);
-      }, 1200);
-    });
 
     // ---- 签约激励（demo：累计签约 5 张角色卡送 Claw 周卡，生命周期 1 次）----
     function getSignCount() {
@@ -1061,9 +835,6 @@
     }
     if (document.getElementById('signCount')) renderSignProgress();
 
-    viewNftBtn.addEventListener('click', function() { window.location.href = 'studio.html'; });
-    continueBtn.addEventListener('click', function() { closeMintModal(); });
-
     // ============================================================
     //  Price Tooltip
     // ============================================================
@@ -1096,15 +867,6 @@
     priceTooltipClose.addEventListener('click', function() { priceTooltip.classList.remove('active'); });
     priceTooltip.addEventListener('click', function(e) { if (e.target === priceTooltip) priceTooltip.classList.remove('active'); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && priceTooltip.classList.contains('active')) priceTooltip.classList.remove('active'); });
-
-    // Mint modal price help button
-    document.getElementById('mintPriceHelp').addEventListener('click', function(e) {
-      e.stopPropagation();
-      var name = MintModalActorName.textContent;
-      var data = findActorData(name);
-      if (data) openPriceTooltipForData(data);
-      priceTooltip.classList.add('active');
-    });
 
     // ============================================================
     //  Stat Tooltip
@@ -1254,17 +1016,37 @@
         var name = card.dataset.actor || '';
         var avatarEl = card.querySelector('.ac-avatar img');
         var avatarSrc = avatarEl ? avatarEl.src : 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80';
-        openMintModal({
+        var initPrice = parseFloat(card.dataset.initPrice) || 0;
+        SignModal.open({
           name: name,
-          collection: card.dataset.collection || '',
-          price: card.dataset.price || '10 USDC',
-          amount: card.dataset.available || '10',
-          minted: parseInt(card.dataset.minted) || 0,
-          total: parseInt(card.dataset.total) || 10000,
-          pricing: card.dataset.pricing || 'curve',
-          tag: '角色 IP',
+          title: '确认签约 · Lv.1 群演',
           image: avatarSrc,
-          initPrice: parseFloat(card.dataset.initPrice) || 0
+          tag: '角色 IP' + (card.dataset.collection ? ' · ' + card.dataset.collection : ''),
+          price: card.dataset.price || '10 USDC',
+          pricing: card.dataset.pricing || 'curve',
+          coeff: initPrice > 0 ? computePriceCoefficient(initPrice).toFixed(4) : null,
+          total: parseInt(card.dataset.total) || 10000,
+          minted: parseInt(card.dataset.minted) || 0,
+          onPriceHelp: function(actorName) {
+            var d = findActorData(actorName);
+            if (d) openPriceTooltipForData(d);
+            priceTooltip.classList.add('active');
+          },
+          onConfirm: function(done) {
+            setTimeout(function() {
+              var cards = document.querySelectorAll('#actorGrid .ac-card');
+              var targetCard = null;
+              cards.forEach(function(c) { var aImg = c.querySelector('.ac-avatar img'); if (aImg && aImg.src === avatarSrc) targetCard = c; });
+              if (targetCard) updateCardCounts(targetCard);
+              addSignCount();
+              done();
+            }, 1200);
+          },
+          success: {
+            text: '已获得 Lv.1 群演「<strong>' + name + '</strong>」，快去安排演出吧。',
+            primary: { label: '查看我的角色', href: 'studio.html' },
+            secondary: { label: '继续浏览' }
+          }
         });
       }
     });
