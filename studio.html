@@ -3594,7 +3594,7 @@
         rows += '<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;">'
           + '<img src="' + a.avatar + '" alt="" style="width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0;">'
           + '<div style="flex:1;min-width:0;"><div style="font-size:0.9rem;font-weight:700;color:var(--text);">' + a.name + ' ' + numStr + '</div>'
-          + '<div style="font-size:0.74rem;color:var(--text-muted);margin-top:2px;">Lv.' + a.level + ' · 可回收 <span style="color:var(--gold);font-weight:700;">' + v.total.toFixed(1) + ' USDC</span></div></div>'
+          + '<div style="font-size:0.74rem;color:var(--text-muted);margin-top:2px;">Lv.' + a.level + ' · 片酬 ' + computeActorPower(a).toFixed(1) + ' STORY/h · 可回收 <span style="color:var(--gold);font-weight:700;">' + v.total.toFixed(1) + ' USDC</span></div></div>'
           + '<button onclick="openRecycleConfirm(\'' + a.id + '\')" style="flex-shrink:0;padding:7px 16px;border-radius:999px;border:none;background:var(--text);color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;">回收</button>'
           + '</div>';
       });
