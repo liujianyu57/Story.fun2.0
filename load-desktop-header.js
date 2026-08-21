@@ -468,11 +468,19 @@
         }
         ensureShopBtn();
         bindSearch();
-        // 购买中心 hover 时刷新内容（购买/开通/续费状态随库存与 Claw 变化）
+        // 购买中心 hover：进入时渲染一次（不在鼠标移动中反复重渲染，避免打断点击）
         document.addEventListener('mouseover', function (e) {
             var wrap = e.target && e.target.closest ? e.target.closest('.dh-shop-wrap') : null;
-            if (wrap && window.Shop && window.Shop.renderCenter) window.Shop.renderCenter();
+            if (!wrap || wrap._rendered) return;
+            wrap._rendered = true;
+            if (window.Shop && window.Shop.renderCenter) window.Shop.renderCenter();
         });
+        document.addEventListener('mouseout', function (e) {
+            var wrap = e.target && e.target.closest ? e.target.closest('.dh-shop-wrap') : null;
+            if (wrap && e.relatedTarget && !wrap.contains(e.relatedTarget)) wrap._rendered = false;
+        });
+        // 初始渲染一次（页面加载后下拉内容就绪）
+        if (window.Shop && window.Shop.renderCenter) window.Shop.renderCenter();
         // 确保 auth.js 已加载，然后渲染头像
         ensureAuthScript(function() {
             setTimeout(function() {
