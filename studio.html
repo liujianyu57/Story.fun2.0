@@ -1337,7 +1337,6 @@
       .mob-act-btn strong { font-size: 0.7rem; min-width: 12px; text-align: center; font-weight: 700; }
       .mob-act-btn.mob-todo strong { color: var(--accent); }
       .mob-act-btn.mob-upgrade strong { color: var(--gold); }
-      .mob-act-btn.mob-recycle strong { color: #d03050; }
       #itemsTopBtn { display: none; }
       #recycleTopBtn { display: none; }
       .mob-more-wrap { display: block; position: fixed; top: 50px; right: 16px; z-index: 55; }
@@ -1712,7 +1711,7 @@
         <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级">⬆️<strong id="mobileUpgradeBadge">0</strong></button>
         <button class="mob-act-btn mob-items" onclick="openItemsSheet()" title="道具">🎒</button>
         <button class="mob-act-btn mob-shop" onclick="openShopSafe()" title="商店">🛒</button>
-        <button class="mob-act-btn mob-recycle" onclick="openRecycleList()" title="回收">♻<strong id="mobileRecycleBadge">0</strong></button>
+        <button class="mob-act-btn mob-recycle" onclick="openRecycleList()" title="回收">♻</button>
       </div>
 
       <!-- ===== 常驻双面板：待办 + 升级管理入口 ===== -->
@@ -3580,10 +3579,6 @@
       var total = mint + upgrade;
       return { mint: mint, upgrade: upgrade, total: total };
     }
-    function updateRecycleBadge() {
-      var el = document.getElementById('mobileRecycleBadge');
-      if (el) el.textContent = (typeof MY_ACTORS !== 'undefined' ? MY_ACTORS.length : 0);
-    }
     // 回收列表：按片酬倒序，卡片信息精简（头像 + 名称#编号 + Lv + 可回收金额）
     function openRecycleList() {
       if (typeof MY_ACTORS === 'undefined' || !MY_ACTORS.length) { showToast('暂无角色可回收'); return; }
@@ -3655,7 +3650,6 @@
       MY_ACTORS = MY_ACTORS.filter(function (a) { return a.id !== actorId; });
       document.querySelectorAll('.modal-overlay[data-recycle]').forEach(function (o) { o.remove(); });
       renderAll();
-      updateRecycleBadge();
       showToast('回收完成：+' + usdc.toFixed(2) + ' USDC、训练手册 ×' + books);
     }
 
@@ -3749,7 +3743,6 @@
       renderAll();
       updateClawBadge();
       updateClawDebugBtn();
-      updateRecycleBadge();
       setInterval(clawTick, 30000);
       // 订阅弹窗（shop.js）购买/续费后刷新 Claw 状态
       document.addEventListener('sf:claw-changed', function() {
