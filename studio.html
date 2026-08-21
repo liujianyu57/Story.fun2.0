@@ -3116,20 +3116,19 @@
       html += '<div style="background:#fff;border:1px solid #e6eef7;border-radius:16px;padding:10px 16px 14px;margin-bottom:12px;">'
         + '<div style="display:flex;align-items:center;gap:12px;padding:9px 0;">'
         + '<div style="flex:1;min-width:0;font-size:13.5px;font-weight:600;color:#1d1d1f;">自动补充</div>'
-        + '<label class="claw-switch"><input type="checkbox" id="clawAutoSupply"><span class="track"></span><span class="thumb"></span></label>'
+        + '<label class="claw-switch"><input type="checkbox" id="clawAutoSupply" onchange="saveClawSettings()"><span class="track"></span><span class="thumb"></span></label>'
         + '</div>'
         + '<div style="height:1px;background:#f0f0f4;"></div>'
         + '<div style="display:flex;align-items:center;gap:12px;padding:9px 0;">'
         + '<div style="flex:1;min-width:0;font-size:13.5px;font-weight:600;color:#1d1d1f;">自动休息</div>'
-        + '<label class="claw-switch"><input type="checkbox" id="clawAutoRest"><span class="track"></span><span class="thumb"></span></label>'
+        + '<label class="claw-switch"><input type="checkbox" id="clawAutoRest" onchange="saveClawSettings()"><span class="track"></span><span class="thumb"></span></label>'
         + '</div>'
         + '<div style="height:1px;background:#f0f0f4;"></div>'
         + '<div style="display:flex;align-items:center;gap:12px;padding:9px 0;">'
         + '<div style="flex:1;min-width:0;font-size:13.5px;font-weight:600;color:#1d1d1f;">自动演出</div>'
-        + '<label class="claw-switch"><input type="checkbox" id="clawAutoOptimal"><span class="track"></span><span class="thumb"></span></label>'
+        + '<label class="claw-switch"><input type="checkbox" id="clawAutoOptimal" onchange="saveClawSettings()"><span class="track"></span><span class="thumb"></span></label>'
         + '</div>'
-        + '</div>'
-        + '<button class="modal-btn cancel" style="width:100%;border-color:#1d1d1f;color:#1d1d1f;font-weight:600;" onclick="saveClawSettings()">保存设置</button>';
+        + '</div>';
       document.getElementById('clawSheetBody').innerHTML = html;
       var st = getClawSettings();
       document.getElementById('clawAutoSupply').checked = !!st.autoSupply;
@@ -3147,7 +3146,6 @@
         autoOptimal: document.getElementById('clawAutoOptimal').checked,
       };
       localStorage.setItem('sf2_claw_settings', JSON.stringify(st));
-      showToast('已保存');
     }
 
     // ---- Story Claw 顶部常驻标识（仅激活期间显示，点击打开 Claw 面板）----
