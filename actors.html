@@ -413,7 +413,7 @@
       <div id="signGiftBar" style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:linear-gradient(135deg,rgba(255,215,0,.1),rgba(245,158,11,.08));border:1px solid rgba(245,158,11,.25);margin-left:auto;font-size:0.78rem;">
         <span>🐾</span>
         <span style="font-weight:700;color:var(--text);"><span id="signCount">0</span>/5 签约得</span>
-        <button onclick="openClawInfo()" style="border:none;background:none;padding:0;font-size:0.78rem;font-weight:700;color:var(--accent);cursor:pointer;text-decoration:underline;flex-shrink:0;">Story Claw</button>
+        <button onclick="openShopSafe('sub')" style="border:none;background:none;padding:0;font-size:0.78rem;font-weight:700;color:var(--accent);cursor:pointer;text-decoration:underline;flex-shrink:0;">Story Claw</button>
         <button id="signGiftBadge" onclick="dismissSignBar()" style="display:none;flex-shrink:0;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px;font-size:0.68rem;border:none;cursor:pointer;">已领取</button>
       </div>
     </div>
@@ -799,24 +799,6 @@
       localStorage.removeItem('sf2_sign_gift');
       var bar = document.getElementById('signGiftBar');
       if (bar) bar.style.display = 'none';
-    }
-    function openClawInfo() {
-      var overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
-      overlay.innerHTML = '<div style="background:#fff;border-radius:16px;max-width:340px;width:calc(100% - 48px);padding:26px 22px 20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);">' +
-        '<div style="font-size:1.1rem;font-weight:800;color:var(--text,#13202e);margin-bottom:12px;">🐾 Story Claw</div>' +
-        '<div style="font-size:.85rem;line-height:1.9;color:#556;text-align:left;">' +
-          '签约 5 张角色卡，赠送 7 天 Story Claw（自动生效）。生效期间自动运营：<br>' +
-          '· 自动补体力<br>' +
-          '· 体力耗尽自动休息<br>' +
-          '· 自动安排最优演出<br>' +
-          '· 期间产出 +5%<br><br>' +
-          '到期后可续费（周卡 / 月卡）。' +
-        '</div>' +
-        '<button onclick="this.parentElement.parentElement.remove()" style="width:100%;margin-top:16px;padding:10px 0;border:none;border-radius:999px;background:#000;color:#fff;font-size:.88rem;cursor:pointer;">知道了</button>' +
-        '</div>';
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
     }
     function addSignCount() {
       var n = getSignCount() + 1;
