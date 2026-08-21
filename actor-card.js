@@ -588,16 +588,6 @@
         case 'power-desc':
           var pw = computeIPPower(parseFloat(card.dataset.initPrice) || 0, parseFloat(card.dataset.heat) || 0);
           return isNaN(pw) ? 0 : pw;
-        case 'target-desc': {
-          var pw2 = computeIPPower(parseFloat(card.dataset.initPrice) || 0, parseFloat(card.dataset.heat) || 0);
-          var viewsN = parseChineseNum(card.dataset.views);
-          var T = UPGRADE_TABLE;
-          var mult = 1.0;
-          for (var i = T.length - 1; i >= 0; i--) {
-            if (viewsN >= T[i].threshold) { mult = T[i].multiplier; break; }
-          }
-          return pw2 * mult;
-        }
         case 'heat-desc':
           return parseChineseNum(card.dataset.heat);
         default:
