@@ -32,7 +32,7 @@ window.Shop = (function () {
     var s = document.createElement('style');
     s.id = 'sfShopStyles';
     s.textContent = [
-      '@keyframes sfPop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}',
+      '@keyframes sfPop{from{opacity:0}to{opacity:1}}',
       '.sf-card{transition:border-color .2s,box-shadow .2s,transform .2s}',
       '.sf-card:hover{border-color:#d6d6de;box-shadow:0 4px 18px rgba(0,0,0,.06);transform:translateY(-1px)}',
       '.sf-btn{transition:background .2s,box-shadow .2s,transform .15s}',
@@ -50,8 +50,8 @@ window.Shop = (function () {
   }
 
   var FONT = '-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Segoe UI",Roboto,sans-serif';
-  var OVERLAY = 'position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);';
-  var CARD = 'background:#fff;border-radius:20px;padding:24px 20px 20px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.18);font-family:' + FONT + ';animation:sfPop .2s ease;';
+  var OVERLAY = 'position:fixed;inset:0;display:none;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);';
+  var CARD = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:24px 20px 20px;box-shadow:0 24px 64px rgba(0,0,0,.18);font-family:' + FONT + ';animation:sfPop .2s ease;';
   var CLOSE = 'position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:0.95rem;color:#86868b;line-height:1;';
 
   // ============================================================
@@ -96,7 +96,7 @@ window.Shop = (function () {
     closeBuyModal();
     closeSub();
     renderCenter();
-    document.getElementById('shopModal').style.display = 'flex';
+    document.getElementById('shopModal').style.display = 'block';
   }
   function close() {
     closeBuyModal();
@@ -149,7 +149,7 @@ window.Shop = (function () {
     document.getElementById('shopBuyStatus').textContent = '单价 ' + it.price + ' ' + it.unit + '/个';
     refreshBuyTotal();
     document.getElementById('shopBuyConfirm').textContent = '购买';
-    document.getElementById('shopBuyModal').style.display = 'flex';
+    document.getElementById('shopBuyModal').style.display = 'block';
   }
   function closeBuyModal() {
     pendingKey = null;
@@ -249,7 +249,7 @@ window.Shop = (function () {
     var cs = ItemStore.clawState();
     subKind = (cs && cs.kind) || 'week';
     renderSub();
-    document.getElementById('shopSubModal').style.display = 'flex';
+    document.getElementById('shopSubModal').style.display = 'block';
   }
   function closeSub() {
     var m = document.getElementById('shopSubModal');
