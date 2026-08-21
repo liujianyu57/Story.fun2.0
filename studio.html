@@ -2464,7 +2464,7 @@
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
           + '<span class="ur-cond-label">训练手册 ×' + manualReq + '</span>'
-          + '<span class="ur-cond-status' + (manualDone ? ' done' : ' pending') + '"' + (!manualDone ? ' onclick="event.stopPropagation();openUpgradeBlockedModal(\'' + actor.id + '\')"' : '') + '>' + (manualDone ? '✓' : '+') + '</span>'
+          + '<span class="ur-cond-status' + (manualDone ? ' done' : ' pending') + '"' + (!manualDone ? ' onclick="event.stopPropagation();openShopSafe(\'manual\')"' : '') + '>' + (manualDone ? '✓' : '+') + '</span>'
           + '</div>'
           + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + manualPct + '%;"></i><span class="ur-cond-bar-text">' + manualStock + '/' + manualReq + '</span></div>'
           + '</div>'
