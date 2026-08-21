@@ -20,27 +20,28 @@
             document.head.appendChild(s);
         }
     })();
-    // 商城入口兜底：依赖未加载完成时点击，先加载再打开
-    window.openShopSafe = function() {
-        function tryOpen() {
-            if (typeof window.openShop === 'function' && typeof window.ItemStore !== 'undefined') {
-                window.openShop();
-                return true;
-            }
-            return false;
+    // 购买入口兜底：依赖未加载完成时点击，先加载再打开
+    // target：无 → 购买中心；'supply'/'manual' → 数量购买弹窗；'sub' → 订阅弹窗
+    window.openShopSafe = function(target) {
+        function go() {
+            if (typeof window.ItemStore === 'undefined' || typeof window.Shop === 'undefined') return false;
+            if (target === 'sub') { window.Shop.openSub(); }
+            else if (target === 'supply' || target === 'manual') { window.Shop.openBuyModal(target); }
+            else { window.Shop.open(); }
+            return true;
         }
-        if (tryOpen()) return;
+        if (go()) return;
         var need = [];
         if (typeof window.ItemStore === 'undefined') need.push('items.js');
-        if (typeof window.openShop !== 'function') need.push('shop.js');
+        if (typeof window.Shop === 'undefined') need.push('shop.js');
         var loaded = 0;
         need.forEach(function(src) {
             var s = document.createElement('script');
             s.src = src;
-            s.onload = function() { loaded++; if (loaded === need.length) tryOpen(); };
+            s.onload = function() { loaded++; if (loaded === need.length) go(); };
             document.head.appendChild(s);
         });
-        setTimeout(tryOpen, 800);
+        setTimeout(go, 800);
     };
 
     // 内嵌 Desktop Header 样式
@@ -156,7 +157,7 @@
                         '</div>' +
                     '</div>' +
                 '</div>' +
-                '<button class="dh-icon-btn" title="商城" onclick="openShopSafe()">' +
+                '<button class="dh-icon-btn" title="购买中心" onclick="openShopSafe()">' +
                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>' +
                 '</button>' +
                 '<div class="dh-notify-wrap">' +
@@ -214,10 +215,10 @@
     function ensureShopBtn() {
         var header = document.getElementById('desktopHeader');
         if (!header) return;
-        if (header.querySelector('.dh-icon-btn[title="商城"]')) return; // 已有
+        if (header.querySelector('.dh-icon-btn[title="购买中心"]')) return; // 已有
         var btn = document.createElement('button');
         btn.className = 'dh-icon-btn';
-        btn.title = '商城';
+        btn.title = '购买中心';
         btn.onclick = function () { window.openShopSafe && window.openShopSafe(); };
         btn.style.cssText = 'width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,.55);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;transition:background .15s;';
         btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';

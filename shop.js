@@ -1,22 +1,25 @@
 /* ============================================================
-   Story.fun 商城公共弹窗组件（shop.js）
+   Story.fun 购买组件（shop.js）
    自包含样式（不依赖页面 .modal-overlay/.modal-card），任何页面可调用
-   window.openShop() 打开；商品列表（道具/订阅分区）+ 独立购买弹窗
-   购买/开通/续费均弹出独立弹窗确认，不在商城弹窗底部内嵌购买
-   视觉：极简白 · 大留白 · 细字重标题 · 克制圆角与阴影
+   场景直达购买，无商品列表页：
+   - 购买中心（🛒 入口）：4 件商品快捷行（无描述，直达对应弹窗）
+   - 数量购买弹窗：补给包 / 训练手册（数量 + 合计）
+   - 订阅弹窗：Story Claw 周卡 / 月卡权益计划卡（上下对比）
+   - 订阅确认弹窗：开通 / 续费二次确认
    ============================================================ */
 window.Shop = (function () {
-  var pendingKey = null;
+  var pendingKey = null;      // 数量购买弹窗当前商品
+  var pendingSubKind = null;  // 订阅确认卡种（week / month）
 
   var ITEMS = [
     { key: 'supply', name: '体力补给包', icon: '🧃', price: 10, unit: 'USDC', tile: '#FFF3E2',
       desc: '补满角色体力至 168h，按角色等级消耗。' },
     { key: 'manual', name: '训练手册', icon: '📘', price: 0.1, unit: 'USDC', tile: '#EDF2FF',
       desc: '角色升级材料，升级时按角色等级消耗。' },
-    { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY', tile: '#EAF6EF', claw: 'week',
-      desc: '购买后立即生效，7 天自动运营：自动补体力、体力耗尽自动休息、自动安排最优演出。<br>期间所有角色产出 +5%。' },
-    { key: 'clawMonth', name: 'Story Claw 月卡', icon: '🐾', price: 3000, unit: 'STORY', tile: '#EAF6EF', claw: 'month',
-      desc: '同周卡，有效期 30 天。<br>续费延长有效期，产出加成不叠加。' },
+    { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY', tile: '#EAF6EF', claw: 'week', days: 7,
+      benefits: ['自动补体力', '体力耗尽自动休息', '自动安排最优演出', '所有角色产出 +5%'] },
+    { key: 'clawMonth', name: 'Story Claw 月卡', icon: '🐾', price: 3000, unit: 'STORY', tile: '#EAF6EF', claw: 'month', days: 30,
+      benefits: ['自动补体力', '体力耗尽自动休息', '自动安排最优演出', '所有角色产出 +5%'] },
   ];
 
   function findItem(key) {
@@ -47,139 +50,106 @@ window.Shop = (function () {
     document.head.appendChild(s);
   }
 
-  // ---- 商城弹窗（商品列表）----
+  var FONT = '-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Segoe UI",Roboto,sans-serif';
+  var OVERLAY = 'position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);';
+  var CARD = 'background:#fff;border-radius:20px;padding:24px 20px 20px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.18);font-family:' + FONT + ';animation:sfPop .2s ease;';
+  var CLOSE = 'position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:0.95rem;color:#86868b;line-height:1;';
+
+  // ============================================================
+  //  购买中心（轻量快捷入口，无描述）
+  // ============================================================
   function mount() {
     if (document.getElementById('shopModal')) return;
     injectStyles();
     var d = document.createElement('div');
     d.id = 'shopModal';
-    d.style.cssText = 'position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);';
-    d.innerHTML =
-      '<div style="background:#fff;border-radius:20px;max-width:440px;width:calc(100% - 32px);max-height:82vh;overflow-y:auto;padding:24px 20px 20px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.18);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Segoe UI",Roboto,sans-serif;animation:sfPop .2s ease;">' +
-      '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 4px;">商城</div>' +
-      '<button onclick="Shop.close()" class="sf-close" style="position:absolute;top:18px;right:18px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:0.95rem;color:#86868b;line-height:1;">✕</button>' +
-      '<div id="shopList"></div>' +
-      '</div>';
+    d.style.cssText = OVERLAY + 'z-index:99999;';
+    d.innerHTML = '<div style="' + CARD + 'max-width:360px;width:calc(100% - 32px);">'
+      + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 14px;">购买中心</div>'
+      + '<button onclick="Shop.close()" class="sf-close" style="' + CLOSE + '">✕</button>'
+      + '<div id="shopList"></div>'
+      + '</div>';
     document.body.appendChild(d);
     d.addEventListener('click', function (e) { if (e.target === d) close(); });
   }
 
-  // ---- 独立购买弹窗（盖在商城之上）----
-  function mountBuy() {
-    if (document.getElementById('shopBuyModal')) return;
-    injectStyles();
-    var d = document.createElement('div');
-    d.id = 'shopBuyModal';
-    d.style.cssText = 'position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);';
-    d.innerHTML =
-      '<div style="background:#fff;border-radius:20px;max-width:360px;width:calc(100% - 32px);padding:24px 22px 20px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.18);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Segoe UI",Roboto,sans-serif;animation:sfPop .2s ease;">' +
-      '<button onclick="Shop.closeBuyModal()" class="sf-close" style="position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:0.95rem;color:#86868b;line-height:1;">✕</button>' +
-      '<div id="shopBuyIcon" style="width:56px;height:56px;border-radius:16px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:26px;"></div>' +
-      '<div id="shopBuyTitle" style="font-size:16px;font-weight:650;color:#1d1d1f;text-align:center;letter-spacing:-.01em;margin:0 0 8px;"></div>' +
-      '<div id="shopBuyDesc" style="font-size:12.5px;color:#6e6e73;line-height:1.7;text-align:center;margin-bottom:16px;"></div>' +
-      '<div id="shopBuyQtyRow" style="display:flex;align-items:center;justify-content:center;margin-bottom:14px;">' +
-      '<button onclick="Shop.stepBuy(-1)" class="sf-qty-btn" style="width:38px;height:38px;border:1px solid #e4e4ea;border-right:none;border-radius:12px 0 0 12px;background:#fff;cursor:pointer;font-size:1.05rem;color:#1d1d1f;">−</button>' +
-      '<input id="shopBuyQty" type="number" min="1" value="1" style="width:56px;height:38px;text-align:center;border:1px solid #e4e4ea;background:#fff;font-size:15px;font-weight:600;color:#1d1d1f;outline:none;">' +
-      '<button onclick="Shop.stepBuy(1)" class="sf-qty-btn" style="width:38px;height:38px;border:1px solid #e4e4ea;border-left:none;border-radius:0 12px 12px 0;background:#fff;cursor:pointer;font-size:1.05rem;color:#1d1d1f;">+</button>' +
-      '</div>' +
-      '<div id="shopBuyStatus" style="font-size:12px;color:#86868b;text-align:center;margin-bottom:8px;"></div>' +
-      '<div id="shopBuyTotal" style="font-size:18px;font-weight:700;color:#1d1d1f;text-align:center;letter-spacing:-.01em;margin-bottom:18px;"></div>' +
-      '<div style="display:flex;gap:10px;">' +
-      '<button id="shopBuyConfirm" onclick="Shop.confirmBuy()" class="sf-btn" style="flex:1;height:44px;border:none;border-radius:12px;background:#1d1d1f;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">购买</button>' +
-      '<button onclick="Shop.closeBuyModal()" class="sf-ghost" style="flex:1;height:44px;border:1px solid #e4e4ea;border-radius:12px;background:#fff;color:#6e6e73;font-size:15px;font-weight:600;cursor:pointer;">取消</button>' +
-      '</div>' +
-      '</div>';
-    document.body.appendChild(d);
-    d.addEventListener('click', function (e) { if (e.target === d) closeBuyModal(); });
+  function centerRow(it) {
+    var cs = it.claw ? ItemStore.clawState() : null;
+    var isActive = !!cs;
+    var btnText = it.claw ? (isActive ? '续费' : '开通') : '购买';
+    var act = it.claw ? "Shop.openSub()" : "Shop.openBuyModal('" + it.key + "')";
+    return '<div class="sf-card" onclick="' + act + '" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #ececf1;border-radius:14px;margin-bottom:8px;background:#fff;cursor:pointer;">'
+      + '<span style="width:36px;height:36px;border-radius:11px;background:' + it.tile + ';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">' + it.icon + '</span>'
+      + '<span style="flex:1;font-size:14px;font-weight:600;color:#1d1d1f;">' + it.name + '</span>'
+      + '<span style="font-size:13px;font-weight:700;color:#1d1d1f;letter-spacing:-.01em;">' + it.price + ' <span style="font-size:10px;color:#86868b;font-weight:500;">' + it.unit + '</span></span>'
+      + '<button onclick="event.stopPropagation();' + act + '" class="sf-btn" style="flex-shrink:0;padding:7px 14px;border-radius:9px;border:none;background:#1d1d1f;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">' + btnText + '</button>'
+      + '</div>';
+  }
+
+  function renderCenter() {
+    var html = '';
+    ITEMS.forEach(function (it) { html += centerRow(it); });
+    document.getElementById('shopList').innerHTML = html;
   }
 
   function open() {
     mount();
     closeBuyModal();
-    render();
+    closeSub();
+    renderCenter();
     document.getElementById('shopModal').style.display = 'flex';
   }
   function close() {
     closeBuyModal();
+    closeSub();
     var m = document.getElementById('shopModal');
     if (m) m.style.display = 'none';
   }
 
-  // 状态胶囊
-  function chipHtml(it, cs, isActive) {
-    var base = 'display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:500;line-height:1.6;';
-    if (it.claw) {
-      if (isActive) {
-        return '<span style="' + base + 'background:rgba(208,48,80,.08);color:#c02b4a;font-weight:600;"><span style="width:5px;height:5px;border-radius:50%;background:#c02b4a;"></span>激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天</span>';
-      }
-      return '<span style="' + base + 'background:#f2f2f5;color:#86868b;">未激活</span>';
-    }
-    return '<span style="' + base + 'background:#f2f2f5;color:#6e6e73;">持有 ' + ItemStore.count(it.key) + '</span>';
+  // ============================================================
+  //  数量购买弹窗（补给包 / 训练手册）
+  // ============================================================
+  function mountBuy() {
+    if (document.getElementById('shopBuyModal')) return;
+    injectStyles();
+    var d = document.createElement('div');
+    d.id = 'shopBuyModal';
+    d.style.cssText = OVERLAY + 'z-index:100000;';
+    d.innerHTML = '<div style="' + CARD + 'max-width:340px;width:calc(100% - 32px);">'
+      + '<button onclick="Shop.closeBuyModal()" class="sf-close" style="' + CLOSE + '">✕</button>'
+      + '<div id="shopBuyIcon" style="width:52px;height:52px;border-radius:15px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px;"></div>'
+      + '<div id="shopBuyTitle" style="font-size:16px;font-weight:650;color:#1d1d1f;text-align:center;letter-spacing:-.01em;margin:0 0 8px;"></div>'
+      + '<div id="shopBuyDesc" style="font-size:12.5px;color:#6e6e73;line-height:1.7;text-align:center;margin-bottom:16px;"></div>'
+      + '<div id="shopBuyQtyRow" style="display:flex;align-items:center;justify-content:center;margin-bottom:14px;">'
+      + '<button onclick="Shop.stepBuy(-1)" class="sf-qty-btn" style="width:38px;height:38px;border:1px solid #e4e4ea;border-right:none;border-radius:12px 0 0 12px;background:#fff;cursor:pointer;font-size:1.05rem;color:#1d1d1f;">−</button>'
+      + '<input id="shopBuyQty" type="number" min="1" value="1" style="width:56px;height:38px;text-align:center;border:1px solid #e4e4ea;background:#fff;font-size:15px;font-weight:600;color:#1d1d1f;outline:none;">'
+      + '<button onclick="Shop.stepBuy(1)" class="sf-qty-btn" style="width:38px;height:38px;border:1px solid #e4e4ea;border-left:none;border-radius:0 12px 12px 0;background:#fff;cursor:pointer;font-size:1.05rem;color:#1d1d1f;">+</button>'
+      + '</div>'
+      + '<div id="shopBuyStatus" style="font-size:12px;color:#86868b;text-align:center;margin-bottom:8px;"></div>'
+      + '<div id="shopBuyTotal" style="font-size:18px;font-weight:700;color:#1d1d1f;text-align:center;letter-spacing:-.01em;margin-bottom:18px;"></div>'
+      + '<div style="display:flex;gap:10px;">'
+      + '<button id="shopBuyConfirm" onclick="Shop.confirmBuy()" class="sf-btn" style="flex:1;height:44px;border:none;border-radius:12px;background:#1d1d1f;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">购买</button>'
+      + '<button onclick="Shop.closeBuyModal()" class="sf-ghost" style="flex:1;height:44px;border:1px solid #e4e4ea;border-radius:12px;background:#fff;color:#6e6e73;font-size:15px;font-weight:600;cursor:pointer;">取消</button>'
+      + '</div>'
+      + '</div>';
+    document.body.appendChild(d);
+    d.addEventListener('click', function (e) { if (e.target === d) closeBuyModal(); });
   }
 
-  function cardHtml() {
-    var html = '';
-    var lastGroup = null;
-    ITEMS.forEach(function (it) {
-      var group = it.claw ? '订阅' : '道具';
-      if (group !== lastGroup) {
-        html += '<div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#86868b;margin:' + (lastGroup ? '20px 2px 10px' : '8px 2px 10px') + ';">' + group + '</div>';
-        lastGroup = group;
-      }
-      var cs = it.claw ? ItemStore.clawState() : null;
-      var isActive = !!cs;
-      var btnText = it.claw ? (isActive ? '续费' : '开通') : '购买';
-      html += '<div class="sf-card" onclick="Shop.openBuyModal(\'' + it.key + '\')" style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid #ececf1;border-radius:16px;margin-bottom:10px;background:#fff;cursor:pointer;">'
-        + '<span style="width:46px;height:46px;border-radius:14px;background:' + it.tile + ';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">' + it.icon + '</span>'
-        + '<div style="flex:1;min-width:0;">'
-        + '<div style="font-size:15px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;">' + it.name + '</div>'
-        + '<div style="font-size:12px;color:#6e6e73;line-height:1.55;margin-top:3px;">' + it.desc + '</div>'
-        + '</div>'
-        + '<div style="text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;">'
-        + '<div><span style="font-size:15px;font-weight:750;color:#1d1d1f;letter-spacing:-.01em;">' + it.price + '</span> <span style="font-size:11px;color:#86868b;">' + it.unit + '</span></div>'
-        + chipHtml(it, cs, isActive)
-        + '</div>'
-        + '<button onclick="event.stopPropagation();Shop.openBuyModal(\'' + it.key + '\')" class="sf-btn" style="flex-shrink:0;padding:8px 16px;border-radius:10px;border:none;background:#1d1d1f;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">' + btnText + '</button>'
-        + '</div>';
-    });
-    return html;
-  }
-
-  function render() {
-    document.getElementById('shopList').innerHTML = cardHtml();
-  }
-
-  // ---- 购买弹窗：打开（按商品类型填充）----
   function openBuyModal(key) {
+    var it = findItem(key);
+    if (it.claw) { openSub(); return; } // 订阅卡走订阅弹窗
     mountBuy();
     pendingKey = key;
-    var it = findItem(key);
-    var cs = it.claw ? ItemStore.clawState() : null;
-    var isActive = !!cs;
     document.getElementById('shopBuyIcon').style.background = it.tile;
     document.getElementById('shopBuyIcon').textContent = it.icon;
     document.getElementById('shopBuyTitle').textContent = it.name;
     document.getElementById('shopBuyDesc').innerHTML = it.desc;
-    var qtyRow = document.getElementById('shopBuyQtyRow');
-    var status = document.getElementById('shopBuyStatus');
-    var total = document.getElementById('shopBuyTotal');
-    var confirmBtn = document.getElementById('shopBuyConfirm');
-    if (it.claw) {
-      var days = it.claw === 'week' ? 7 : 30;
-      qtyRow.style.display = 'none';
-      status.style.color = isActive ? '#c02b4a' : '#86868b';
-      status.textContent = isActive ? '激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天' : '当前未激活';
-      total.innerHTML = '<div>' + it.price + ' ' + it.unit + '</div>'
-        + '<div style="font-size:12px;color:#86868b;font-weight:500;margin-top:2px;">' + (isActive ? '续费延长 ' + days + ' 天' : '开通后 ' + days + ' 天生效') + '</div>';
-      confirmBtn.textContent = isActive ? '续费' : '开通';
-    } else {
-      qtyRow.style.display = 'flex';
-      document.getElementById('shopBuyQty').value = 1;
-      status.style.color = '#86868b';
-      status.textContent = '单价 ' + it.price + ' ' + it.unit + '/个';
-      refreshBuyTotal();
-      confirmBtn.textContent = '购买';
-    }
+    document.getElementById('shopBuyQtyRow').style.display = 'flex';
+    document.getElementById('shopBuyQty').value = 1;
+    document.getElementById('shopBuyStatus').textContent = '单价 ' + it.price + ' ' + it.unit + '/个';
+    refreshBuyTotal();
+    document.getElementById('shopBuyConfirm').textContent = '购买';
     document.getElementById('shopBuyModal').style.display = 'flex';
   }
   function closeBuyModal() {
@@ -195,41 +165,153 @@ window.Shop = (function () {
   function refreshBuyTotal() {
     if (!pendingKey) return;
     var it = findItem(pendingKey);
-    if (it.claw) return;
     var n = Math.max(1, parseInt(document.getElementById('shopBuyQty').value, 10) || 1);
     document.getElementById('shopBuyTotal').textContent = '合计 ' + (it.price * n) + ' ' + it.unit;
   }
   function confirmBuy() {
     if (!pendingKey) return;
     var it = findItem(pendingKey);
-    if (it.claw) {
-      // Claw：购买即生效（订阅模式），重复续费延长有效期
-      var wasActive = !!ItemStore.clawState();
-      ItemStore.activateClaw(it.claw);
-      var days = it.claw === 'week' ? 7 : 30;
-      closeBuyModal();
-      render();
-      toast(wasActive ? it.name + ' 已续费，延长 ' + days + ' 天' : 'Story Claw 已开通（' + days + ' 天）');
-    } else {
-      var n = Math.max(1, parseInt(document.getElementById('shopBuyQty').value, 10) || 1);
-      ItemStore.buy(pendingKey, n);
-      closeBuyModal();
-      render();
-      toast('已购买 ' + n + ' 个' + it.name);
-    }
+    var n = Math.max(1, parseInt(document.getElementById('shopBuyQty').value, 10) || 1);
+    ItemStore.buy(pendingKey, n);
+    closeBuyModal();
+    renderCenter();
+    toast('已购买 ' + n + ' 个' + it.name);
+  }
+
+  // ============================================================
+  //  订阅弹窗（周卡 / 月卡权益计划卡）
+  // ============================================================
+  function mountSub() {
+    if (document.getElementById('shopSubModal')) return;
+    injectStyles();
+    var d = document.createElement('div');
+    d.id = 'shopSubModal';
+    d.style.cssText = OVERLAY + 'z-index:100000;';
+    d.innerHTML = '<div style="' + CARD + 'max-width:380px;width:calc(100% - 32px);max-height:84vh;overflow-y:auto;">'
+      + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 4px;">Story Claw 订阅</div>'
+      + '<div style="font-size:12px;color:#86868b;margin:0 0 14px;">购买即生效 · 重复续费延长有效期</div>'
+      + '<button onclick="Shop.closeSub()" class="sf-close" style="' + CLOSE + '">✕</button>'
+      + '<div id="shopSubBody"></div>'
+      + '</div>';
+    document.body.appendChild(d);
+    d.addEventListener('click', function (e) { if (e.target === d) closeSub(); });
+  }
+
+  function planCard(it) {
+    var cs = ItemStore.clawState();
+    var isActive = !!cs;
+    var statusPill = isActive
+      ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:1px 9px;border-radius:999px;font-size:11px;font-weight:600;line-height:1.7;background:rgba(208,48,80,.08);color:#c02b4a;"><span style="width:5px;height:5px;border-radius:50%;background:#c02b4a;"></span>激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天</span>'
+      : '<span style="display:inline-flex;padding:1px 9px;border-radius:999px;font-size:11px;font-weight:500;line-height:1.7;background:#f2f2f5;color:#86868b;">未激活</span>';
+    var btnText = isActive ? '续费' : '开通';
+    var benefits = '';
+    it.benefits.forEach(function (b) {
+      benefits += '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px;color:#4a4a50;">'
+        + '<span style="width:16px;height:16px;border-radius:50%;background:#EAF6EF;display:inline-flex;align-items:center;justify-content:center;color:#2E9E6B;font-size:10px;font-weight:800;flex-shrink:0;">✓</span>' + b + '</div>';
+    });
+    return '<div class="sf-card" onclick="Shop.openSubConfirm(\'' + it.claw + '\')" style="padding:14px;border:1px solid ' + (isActive ? 'rgba(208,48,80,.35)' : '#ececf1') + ';border-radius:16px;margin-bottom:10px;background:' + (isActive ? '#FFFCFD' : '#fff') + ';cursor:pointer;">'
+      + '<div style="display:flex;align-items:flex-start;justify-content:space-between;">'
+      + '<div style="display:flex;align-items:center;gap:10px;min-width:0;">'
+      + '<span style="width:42px;height:42px;border-radius:13px;background:' + it.tile + ';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">' + it.icon + '</span>'
+      + '<div style="min-width:0;">'
+      + '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span style="font-size:14.5px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;">' + it.name + '</span><span style="background:#EAF6EF;color:#2E9E6B;font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px;">' + it.days + ' 天</span></div>'
+      + '<div style="margin-top:4px;">' + statusPill + '</div>'
+      + '</div>'
+      + '</div>'
+      + '<div style="text-align:right;flex-shrink:0;"><div style="font-size:15px;font-weight:750;color:#1d1d1f;letter-spacing:-.01em;">' + it.price + ' <span style="font-size:10px;color:#86868b;font-weight:500;">' + it.unit + '</span></div></div>'
+      + '</div>'
+      + '<div style="height:1px;background:#f0f0f4;margin:12px 0 8px;"></div>'
+      + benefits
+      + '<button onclick="event.stopPropagation();Shop.openSubConfirm(\'' + it.claw + '\')" class="sf-btn" style="width:100%;height:38px;margin-top:12px;border:none;border-radius:11px;background:#1d1d1f;color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;">' + btnText + '</button>'
+      + '</div>';
+  }
+
+  function renderSub() {
+    document.getElementById('shopSubBody').innerHTML =
+      planCard(findItem('clawWeek')) + planCard(findItem('clawMonth'))
+      + '<div style="font-size:11px;color:#a0a0a8;text-align:center;margin-top:2px;">重复续费延长有效期，产出加成不叠加。</div>';
+  }
+
+  function openSub() {
+    mountSub();
+    renderSub();
+    document.getElementById('shopSubModal').style.display = 'flex';
+  }
+  function closeSub() {
+    closeSubConfirm();
+    var m = document.getElementById('shopSubModal');
+    if (m) m.style.display = 'none';
+  }
+
+  // ---- 订阅确认（开通 / 续费二次确认）----
+  function mountSubConfirm() {
+    if (document.getElementById('shopSubConfirm')) return;
+    injectStyles();
+    var d = document.createElement('div');
+    d.id = 'shopSubConfirm';
+    d.style.cssText = OVERLAY + 'z-index:100001;';
+    d.innerHTML = '<div style="' + CARD + 'max-width:300px;width:calc(100% - 32px);text-align:center;">'
+      + '<button onclick="Shop.closeSubConfirm()" class="sf-close" style="' + CLOSE + '">✕</button>'
+      + '<div id="shopSubCfmIcon" style="width:52px;height:52px;border-radius:15px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px;"></div>'
+      + '<div id="shopSubCfmTitle" style="font-size:15px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 10px;"></div>'
+      + '<div id="shopSubCfmPrice" style="font-size:17px;font-weight:700;color:#1d1d1f;margin-bottom:16px;"></div>'
+      + '<div style="display:flex;gap:10px;">'
+      + '<button id="shopSubCfmBtn" onclick="Shop.confirmSub()" class="sf-btn" style="flex:1;height:42px;border:none;border-radius:12px;background:#1d1d1f;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">确认开通</button>'
+      + '<button onclick="Shop.closeSubConfirm()" class="sf-ghost" style="flex:1;height:42px;border:1px solid #e4e4ea;border-radius:12px;background:#fff;color:#6e6e73;font-size:14px;font-weight:600;cursor:pointer;">取消</button>'
+      + '</div>'
+      + '</div>';
+    document.body.appendChild(d);
+    d.addEventListener('click', function (e) { if (e.target === d) closeSubConfirm(); });
+  }
+
+  function openSubConfirm(kind) {
+    mountSubConfirm();
+    pendingSubKind = kind;
+    var it = findItem(kind === 'week' ? 'clawWeek' : 'clawMonth');
+    var isActive = !!ItemStore.clawState();
+    document.getElementById('shopSubCfmIcon').style.background = it.tile;
+    document.getElementById('shopSubCfmIcon').textContent = it.icon;
+    document.getElementById('shopSubCfmTitle').textContent = (isActive ? '续费 ' : '开通 ') + it.name;
+    document.getElementById('shopSubCfmPrice').innerHTML = '<div>' + it.price + ' ' + it.unit + '</div>'
+      + '<div style="font-size:12px;color:#86868b;font-weight:500;margin-top:2px;">' + (isActive ? '续费延长 ' + it.days + ' 天' : '开通后 ' + it.days + ' 天生效') + '</div>';
+    document.getElementById('shopSubCfmBtn').textContent = isActive ? '确认续费' : '确认开通';
+    document.getElementById('shopSubConfirm').style.display = 'flex';
+  }
+  function closeSubConfirm() {
+    pendingSubKind = null;
+    var m = document.getElementById('shopSubConfirm');
+    if (m) m.style.display = 'none';
+  }
+  function confirmSub() {
+    if (!pendingSubKind) return;
+    var kind = pendingSubKind;
+    var it = findItem(kind === 'week' ? 'clawWeek' : 'clawMonth');
+    var wasActive = !!ItemStore.clawState();
+    ItemStore.activateClaw(kind);
+    closeSubConfirm();
+    renderSub();
+    if (document.getElementById('shopModal') && document.getElementById('shopModal').style.display === 'flex') renderCenter();
+    // 通知宿主页面（studio 等）刷新 Claw 状态
+    try { document.dispatchEvent(new CustomEvent('sf:claw-changed')); } catch (e) {}
+    toast(wasActive ? it.name + ' 已续费，延长 ' + it.days + ' 天' : 'Story Claw 已开通（' + it.days + ' 天）');
   }
 
   function toast(msg) {
     var t = document.getElementById('shopToast');
     if (!t) {
       t = document.createElement('div'); t.id = 'shopToast';
-      t.style.cssText = 'position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:100001;background:rgba(0,0,0,.85);color:#fff;padding:10px 18px;border-radius:999px;font-size:.85rem;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;';
+      t.style.cssText = 'position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:100002;background:rgba(0,0,0,.85);color:#fff;padding:10px 18px;border-radius:999px;font-size:.85rem;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;';
       document.body.appendChild(t);
     }
     t.textContent = msg; t.style.opacity = '1';
     clearTimeout(t._t); t._t = setTimeout(function () { t.style.opacity = '0'; }, 2200);
   }
 
-  return { open: open, close: close, openBuyModal: openBuyModal, closeBuyModal: closeBuyModal, stepBuy: stepBuy, confirmBuy: confirmBuy };
+  return {
+    open: open, close: close,
+    openBuyModal: openBuyModal, closeBuyModal: closeBuyModal, stepBuy: stepBuy, confirmBuy: confirmBuy,
+    openSub: openSub, closeSub: closeSub,
+    openSubConfirm: openSubConfirm, closeSubConfirm: closeSubConfirm, confirmSub: confirmSub,
+  };
 })();
 window.openShop = function () { window.Shop.open(); };

@@ -1694,7 +1694,7 @@
         <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()" title="待办">📋<strong id="mobileTodoBadge">0</strong></button>
         <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级">⬆️<strong id="mobileUpgradeBadge">0</strong></button>
         <button class="mob-act-btn mob-items" onclick="openItemsSheet()" title="道具">🎒</button>
-        <button class="mob-act-btn mob-shop" onclick="openShopSafe()" title="商城">🛒</button>
+        <button class="mob-act-btn mob-shop" onclick="openShopSafe()" title="购买中心">🛒</button>
       </div>
 
       <!-- ===== 常驻双面板：待办 + 升级管理入口 ===== -->
@@ -1775,7 +1775,6 @@
       <h2 style="font-size:1rem;margin:0 0 14px;">我的道具</h2>
       <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);" onclick="closeItemsSheet()">✕</button>
       <div id="itemsSheetList"></div>
-      <button class="modal-btn confirm" style="width:100%;margin-top:12px;" onclick="goShopFromItems()">购买道具</button>
     </div>
   </div>
 
@@ -2852,10 +2851,10 @@
       var targets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
       var totalNeed = 0;
       targets.forEach(function(a) { totalNeed += ItemStore.supplyNeeded(a.level); });
-      // 库存不足 → 购买模式：跳商城
+      // 库存不足 → 购买模式：直达补给包购买弹窗
       if (ItemStore.count('supply') < totalNeed) {
         closeBatchModal();
-        openShopSafe();
+        openShopSafe('supply');
         return;
       }
       ItemStore.spend('supply', totalNeed);
@@ -3025,7 +3024,7 @@
       } else {
         actionBtn.textContent = '购买';
         actionBtn.className = 'modal-btn cancel';
-        actionBtn.onclick = function () { closeChargeModal(); openShopSafe(); };
+        actionBtn.onclick = function () { closeChargeModal(); openShopSafe('supply'); };
       }
 
       document.getElementById('chargeModal').classList.add('active');
@@ -3097,12 +3096,6 @@
       document.getElementById('itemDetailModal').classList.remove('active');
       document.body.style.overflow = '';
     }
-    // 我的道具弹窗底部「购买道具」→ 打开商城
-    function goShopFromItems() {
-      closeItemsSheet();
-      openShopSafe();
-    }
-
     // ============================================================
     //  Claw 面板（独立：状态 + 开通/续费 + 设置）
     // ============================================================
@@ -3125,11 +3118,11 @@
           + '<div style="font-size:0.95rem;font-weight:700;color:var(--accent);">🐾 ' + kindName + '激活中 · 剩 ' + days + ' 天</div>'
           + '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">自动运营中，所有角色产出 +5%</div>'
           + '</div>'
-          + '<button class="modal-btn confirm" style="width:100%;margin-bottom:12px;" onclick="closeClawSheet();openShopSafe();">续费</button>';
+          + '<button class="modal-btn confirm" style="width:100%;margin-bottom:12px;" onclick="openShopSafe(\'sub\')">续费</button>';
       } else {
         html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:10px;color:var(--text-muted);font-size:0.85rem;">💤 未激活</div>'
           + '<div style="font-size:0.76rem;color:var(--text-muted);margin:0 0 10px;line-height:1.6;">开通后自动运营：自动补体力、体力耗尽自动休息、自动安排最优演出，期间所有角色产出 +5%。</div>'
-          + '<button class="modal-btn confirm" style="width:100%;margin-bottom:12px;" onclick="closeClawSheet();openShopSafe();">去开通</button>';
+          + '<button class="modal-btn confirm" style="width:100%;margin-bottom:12px;" onclick="openShopSafe(\'sub\')">去开通</button>';
       }
       html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);">'
         + '<div style="font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:8px;">自动化</div>'
@@ -3467,7 +3460,7 @@
         bodyHtml += '<div style="text-align:left;margin-bottom:16px;">' +
           '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">训练手册不足，还需 ' + gap + ' 本</div>' +
           '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 0.1 USDC/本，可在道具区购买</div>' +
-          '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openItemsSheet()" style="margin-bottom:0;">去购买训练手册</button>' +
+          '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openShopSafe(\'manual\')" style="margin-bottom:0;">去购买训练手册</button>' +
           '</div>';
       }
       if (!cloneDone) {
@@ -3484,7 +3477,7 @@
           '<div style="margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);">' +
             '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">训练手册不足，还需 ' + (manualReq - manualStock) + ' 本</div>' +
             '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 0.1 USDC/本，可在道具区购买</div>' +
-            '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openItemsSheet()" style="margin-bottom:0;">去购买训练手册</button>' +
+            '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openShopSafe(\'manual\')" style="margin-bottom:0;">去购买训练手册</button>' +
           '</div>' +
           '<div>' +
             '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + (2 - have) + ' 张同IP同等级角色</div>' +
@@ -3599,6 +3592,13 @@
       updateClawBadge();
       updateClawDebugBtn();
       setInterval(clawTick, 30000);
+      // 订阅弹窗（shop.js）购买/续费后刷新 Claw 状态
+      document.addEventListener('sf:claw-changed', function() {
+        updateClawBadge();
+        updateClawDebugBtn();
+        var s = document.getElementById('clawSheet');
+        if (s && s.classList.contains('active')) renderClawSheet();
+      });
       // 桌面端通用标题栏 🎒/🐾 跳转：自动打开道具 sheet
       if (location.hash === '#items') openItemsSheet();
 
