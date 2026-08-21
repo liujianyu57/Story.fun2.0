@@ -1891,7 +1891,7 @@
       <!-- 消耗 + 持有 -->
       <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
-          <span style="font-size:0.9rem;color:var(--text);">消耗</span>
+          <span style="font-size:0.9rem;color:var(--text);" id="modalChargeNeedLabel">Lv. 1 消耗</span>
           <span style="font-size:1.2rem;line-height:1;">🧃</span>
           <strong style="font-size:1rem;color:var(--text);" id="modalChargeNeed">—</strong>
         </div>
@@ -3021,6 +3021,7 @@
       const need = ItemStore.supplyNeeded(actor.level);
       const stock = ItemStore.count('supply');
 
+      document.getElementById('modalChargeNeedLabel').textContent = 'Lv. ' + actor.level + ' 消耗';
       document.getElementById('modalChargeNeed').textContent = need;
       document.getElementById('modalChargeStock').textContent = stock;
       // 「使用」/「购买」按库存切换：够则使用补满，不够则跳商城购买
