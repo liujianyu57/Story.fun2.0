@@ -3148,7 +3148,7 @@
         + '<label class="claw-switch"><input type="checkbox" id="clawAutoOptimal"><span class="track"></span><span class="thumb"></span></label>'
         + '</div>'
         + '</div>'
-        + '<button class="modal-btn confirm" style="width:100%;" onclick="saveClawSettings()">保存设置</button>';
+        + '<button class="modal-btn cancel" style="width:100%;border-color:#1d1d1f;color:#1d1d1f;font-weight:600;" onclick="saveClawSettings()">保存设置</button>';
       document.getElementById('clawSheetBody').innerHTML = html;
       var st = getClawSettings();
       document.getElementById('clawAutoSupply').checked = !!st.autoSupply;
