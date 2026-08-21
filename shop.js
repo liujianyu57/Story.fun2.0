@@ -188,7 +188,7 @@ window.Shop = (function () {
     var d = document.createElement('div');
     d.id = 'shopSubModal';
     d.style.cssText = OVERLAY + 'z-index:100000;';
-    d.innerHTML = '<div style="' + CARD + 'width:560px;max-width:calc(100% - 32px);padding:28px 24px 24px;">'
+    d.innerHTML = '<div style="' + CARD + 'width:460px;max-width:calc(100% - 32px);padding:28px 24px 24px;">'
       + '<div style="font-size:20px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 6px;">Story Claw 订阅</div>'
       + '<div style="font-size:13px;color:#86868b;margin:0 0 14px;">购买即生效 · 重复续费延长有效期</div>'
       + '<button onclick="Shop.closeSub()" class="sf-close" style="' + CLOSE + '">✕</button>'
