@@ -75,8 +75,8 @@ window.ItemStore = (function () {
 })();
 
 window.ITEM_DEFS = {
-  supply:    { key: 'supply',    name: '体力补给包', icon: '🧃', price: 10,    unit: 'USDC', desc: '补满角色体力', detail: '补满角色体力至 168h。\n按角色等级消耗：Lv1-5 分别 1 / 2 / 5 / 13 / 32 个。' },
-  manual:    { key: 'manual',    name: '训练手册',   icon: '📘', price: 0.1,  unit: 'USDC', desc: '升级角色', detail: '角色升级材料。\n升级消耗：Lv1→5 分别 100 / 200 / 400 / 800 本。' },
+  supply:    { key: 'supply',    name: '体力补给包', icon: '🧃', price: 10,    unit: 'USDC', desc: '补满角色体力', detail: '补满角色体力至 168h，按角色等级消耗。' },
+  manual:    { key: 'manual',    name: '训练手册',   icon: '📘', price: 0.1,  unit: 'USDC', desc: '升级角色', detail: '角色升级材料，升级时按角色等级消耗。' },
   clawWeek:  { key: 'clawWeek',  name: 'Story Claw 周卡',  icon: '🐾', price: 800,  unit: 'STORY', desc: '7 天自动运营', detail: '购买后立即生效，7 天自动运营：\n· 期间所有角色产出 +5%\n· 自动安排最优演出\n· 自动补充体力\n· 体力耗尽自动休息\n续费延长有效期，产出加成不叠加。' },
   clawMonth: { key: 'clawMonth', name: 'Story Claw 月卡',  icon: '🐾', price: 3000, unit: 'STORY', desc: '30 天自动运营', detail: '购买后立即生效，30 天自动运营：\n· 期间所有角色产出 +5%\n· 自动安排最优演出\n· 自动补充体力\n· 体力耗尽自动休息\n续费延长有效期，产出加成不叠加。' },
 };

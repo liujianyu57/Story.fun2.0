@@ -9,9 +9,9 @@ window.Shop = (function () {
 
   var ITEMS = [
     { key: 'supply', name: '体力补给包', icon: '🧃', price: 10, unit: 'USDC',
-      desc: '补满角色体力至 168h。<br>按角色等级消耗：Lv1-5 分别 1 / 2 / 5 / 13 / 32 个。' },
+      desc: '补满角色体力至 168h，按角色等级消耗。' },
     { key: 'manual', name: '训练手册', icon: '📘', price: 0.1, unit: 'USDC',
-      desc: '角色升级材料。<br>升级消耗：Lv1→5 分别 100 / 200 / 400 / 800 本。' },
+      desc: '角色升级材料，升级时按角色等级消耗。' },
     { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY', claw: 'week',
       desc: '购买后立即生效，7 天自动运营：自动补体力、体力耗尽自动休息、自动安排最优演出。<br>期间所有角色产出 +5%。' },
     { key: 'clawMonth', name: 'Story Claw 月卡', icon: '🐾', price: 3000, unit: 'STORY', claw: 'month',
