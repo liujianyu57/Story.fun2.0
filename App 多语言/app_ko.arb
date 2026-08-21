@@ -1,0 +1,2139 @@
+{
+  "appName": "StoryFun",
+  "commonCancel": "취소",
+  "commonNo": "아니요",
+  "commonYes": "예",
+  "publishDrama": "드라마 게시",
+  "publishVideo": "동영상 게시",
+  "publishVideoUploadTitle": "동영상 파일 업로드",
+  "publishVideoFileHint": "mp4, flv, wmv, mkv, avi, mov, webm 지원, 최대 2GB",
+  "publishVideoChooseFile": "파일 선택",
+  "publishVideoChangeFile": "파일 변경",
+  "publishVideoCoverTitle": "동영상 커버",
+  "publishVideoChangeCover": "커버 변경",
+  "publishVideoCoverHint": "JPG/PNG, 최대 5MB",
+  "publishVideoDescriptionLabel": "설명",
+  "publishVideoRequired": "(필수)",
+  "publishVideoDescriptionHint": "작품 설명 추가(최대 200자)",
+  "publishVideoSaveDraft": "초안 저장",
+  "publishVideoNext": "다음",
+  "publishVideoCoverCropTitle": "동영상 커버 자르기",
+  "publishVideoVideoTooLarge": "동영상 파일은 2GB를 초과할 수 없습니다",
+  "publishVideoVideoPickFailed": "동영상을 선택하지 못했습니다. 다시 시도해 주세요",
+  "publishVideoMetadataUnavailable": "동영상 정보를 읽을 수 없습니다. 다른 파일을 선택해 주세요",
+  "publishVideoCoverTooLarge": "커버 이미지는 5MB를 초과할 수 없습니다",
+  "publishVideoCoverUnsupportedFormat": "JPG/PNG 이미지만 지원됩니다",
+  "publishVideoCoverPickFailed": "커버를 선택하지 못했습니다. 다시 시도해 주세요",
+  "publishVideoUploadSessionFailed": "업로드 세션을 만들지 못했습니다. 다시 시도해 주세요",
+  "publishVideoPublishedSuccess": "동영상이 게시되었습니다",
+  "publishVideoUpdatedSuccess": "동영상이 수정되었습니다",
+  "publishActorIp": "IP 발행",
+  "commonConfirm": "확인",
+  "commonOk": "확인",
+  "commonRetry": "다시 시도",
+  "publicProfileLikedEmpty": "좋아요한 드라마가 없습니다",
+  "profileTabDramas": "숏드라마",
+  "profileTabWorks": "작품",
+  "profileTabActorIp": "캐릭터 IP",
+  "@dramaUnlockConfirmLabel": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaUnlockConfirmLabel": "{price} USDC로 잠금 해제",
+  "dramaAllEpisodes": "{count}화",
+  "dramaAllEpisodesFull": "전체 {count}화",
+  "dramaLoading": "인기 드라마 불러오는 중...",
+  "dramaEmpty": "현재 단편 드라마가 없습니다",
+  "dramaRefresh": "새로고침",
+  "@dramaAllEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navTheater": "극장",
+  "navHome": "홈",
+  "theaterTabShortDrama": "드라마",
+  "theaterTabRecommend": "추천",
+  "playerWatchFullDrama": "전체 단편 시청",
+  "playerStoryPerHourUnit": "STORY/h",
+  "navNft": "마켓",
+  "navNftIp": "캐릭터 IP",
+  "watchFullDramaEpisodes": "드라마 보기 · 총 {count}부",
+  "@watchFullDramaEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navCreate": "창작",
+  "navProfile": "내 정보",
+  "navMy": "매니저",
+  "aboutTitle": "회사 소개",
+  "aboutVision": "AI · 웹3 · 프로토콜",
+  "aboutVisionDesc": "세 가지 동력이 작용하여, 서사를 수동적인 경험에서 능동적인 창작으로 전환한다",
+  "aboutAiDesc": "당신의 생각이 저절로 이야기로 변합니다",
+  "aboutWeb3Desc": "당신의 창작물은 언제나 당신의 것입니다",
+  "aboutProtocolDesc": "당신의 이야기는 끝없이 이어질 수 있습니다",
+  "aboutIdentityTitle": "당신의 서사적 정체성",
+  "aboutIdentityDesc": "당신 그 자체가 펼쳐지고 있는 이야기의 세계입니다",
+  "aboutIdentityCreator": "창조자",
+  "aboutIdentityCreatorDesc": "자신의 이야기를 주도적으로 써 내려가다",
+  "aboutIdentityWitness": "목격자",
+  "aboutIdentityWitnessDesc": "타인의 이야기에 동참하고 이를 검증하다",
+  "aboutIdentityCoCreator": "공동 창시자",
+  "aboutIdentityCoCreatorDesc": "서사 구조에 들어가 재구성하기",
+  "aboutIdentitySpreader": "전파자",
+  "aboutIdentitySpreaderDesc": "당신이 마땅히 받아야 할 이야기를 전하세요",
+  "aboutTokenomicsTitle": "STORY: 서사권 토큰",
+  "aboutTokenomicsDesc": "AI 단편 드라마의 공동 프로듀서가 되어 영화 산업의 이익 배분을 재구성하세요.",
+  "aboutTokenomicsGov": "통치권",
+  "aboutTokenomicsGovDesc": "투표를 통해 다음 AI 단편의 주제와 전개 방향을 결정합니다",
+  "aboutTokenomicsRevenue": "수익권",
+  "aboutTokenomicsRevenueDesc": "공유 플랫폼 구독, 저작권 라이선스 및 굿즈 판매 수익",
+  "aboutTokenomicsAccess": "접근 권한",
+  "aboutTokenomicsAccessDesc": "최신 에피소드를 가장 먼저 시청하고, 독점 콘텐츠를 만나보세요",
+  "aboutStakingTitle": "담보 수익 분배",
+  "aboutStakingDesc": "드라마 NFT · 캐릭터 NFT · STORY → 스테이크로 배당금 획득",
+  "aboutStakingDrama": "드라마 NFT 스테이킹",
+  "aboutStakingDramaDesc": "단편 드라마 제작자 · 수익 분배",
+  "aboutStakingActor": "캐릭터 NFT 스테이킹",
+  "aboutStakingActorDesc": "역할이 단편 드라마에 출연 · 수익 분배 받기",
+  "aboutStakingStory": "STORY 스테이킹",
+  "aboutStakingStoryDesc": "숏폼 콘텐츠에 콘텐츠 제공 · 수익 분배",
+  "aboutHeroTitle": "나만의 이야기를 만들어라",
+  "aboutHeroDesc": "너의 삶은 경험받을 스크립트가 아니라 네가 쓰고 있는 서사입니다",
+  "loginTitle": "이메일 로그인",
+  "loginSubtitle": "Privy 이메일 OTP로 로그인하여 Solana 임베디드 월렛을 자동으로 생성합니다.",
+  "loginPlaceholder": "이메일 주소를 입력해 주세요",
+  "loginEmailHintFormat": "이메일을 입력해 주세요",
+  "loginVerificationFailed": "인증에 실패했습니다",
+  "loginNeedCodeFirst": "먼저 인증 코드를 받아 주세요",
+  "loginCreateWalletFailed": "지갑 생성에 실패했습니다",
+  "loginGetTokenFailed": "액세스 토큰을 가져오지 못했습니다",
+  "loginPrivyUnavailable": "로그인 서비스를 사용할 수 없습니다. 앱을 다시 시작한 후 시도해 주세요",
+  "loginSendCodeFailed": "인증 코드 전송에 실패했습니다. 나중에 다시 시도해 주세요",
+  "loginTooManyRequests": "요청이 너무 많습니다. 잠시 후 다시 시도해 주세요",
+  "loginVerificationSuccessful": "인증에 성공했습니다",
+  "loginSendCode": "코드 받기",
+  "loginSendingCode": "전송 중...",
+  "loginCodePlaceholder": "6자리 인증 코드를 입력해 주세요",
+  "loginSubmit": "로그인",
+  "loginSubmitting": "로그인 중...",
+  "loginEmailRequired": "이메일을 입력해 주세요",
+  "loginCodeRequired": "인증 코드를 입력해 주세요",
+  "loginSuccess": "로그인 성공",
+  "loginErrorPrefix": "로그인 실패: ",
+  "loginCodeSent": "인증 코드가 {email}로 전송되었습니다",
+  "loginEmailLabel": "이메일",
+  "loginCodeLabel": "인증 코드",
+  "loginVerifying": "인증 중입니다. 잠시만 기다려 주세요...",
+  "loginVerifyAndSubmit": "인증 후 로그인",
+  "loginChangeEmail": "이메일 변경",
+  "loginNotNow": "나중에 하기",
+  "loginInvalidEmail": "유효한 이메일 주소를 입력해 주세요",
+  "@loginCodeSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profileTitle": "에이전트",
+  "profileNotLoggedIn": "로그인 안 됨",
+  "profileClickLogin": "로그인 / 회원가입",
+  "profileMyWallet": "내 지갑",
+  "profileWallet": "지갑",
+  "profileTradeStory": "STORY 거래",
+  "profileWalletCreating": "생성 중...",
+  "walletNetworkSolana": "Solana",
+  "walletNetworkEvm": "EVM",
+  "profileEarnings": "수익",
+  "profileMyNft": "내 NFT",
+  "profileMyFavorites": "즐겨찾기",
+  "profileWatchHistory": "시청 기록",
+  "profileCreatorCatalog": "크리에이터",
+  "profileIdentityAuth": "본인 인증",
+  "profileAccountSecurity": "계정 보안",
+  "profileLanguage": "언어",
+  "profileAboutUs": "회사 소개",
+  "profileHelpFeedback": "도움말 및 피드백",
+  "profileLogout": "로그아웃",
+  "profileLogoutConfirm": "로그아웃하시겠습니까?",
+  "profileLogoutSuccess": "로그아웃되었습니다",
+  "mainPressBackAgainToExit": "종료하려면 뒤로 버튼을 한 번 더 누르세요",
+  "languageSelectTitle": "언어 선택",
+  "languageChinese": "중국어(간체)",
+  "languageEnglish": "영어",
+  "searchTitle": "검색",
+  "searchHint": "숏드라마, 작품, 역할, 사용자 검색...",
+  "searchEmpty": "관련 콘텐츠가 없습니다",
+  "searchPlaceholder": "숏드라마, 작품, 역할, 사용자 검색...",
+  "theaterSearchPlaceholder": "숏드라마, 작품, 역할, 사용자 검색...",
+  "searchHistory": "최근 검색",
+  "searchClear": "기록 지우기",
+  "searchAction": "검색",
+  "searchHistoryCleared": "검색 기록이 삭제되었습니다",
+  "searchKeywordTooShort": "최소 2자 이상 입력하세요",
+  "searchTabDramas": "숏드라마",
+  "searchTabWorks": "작품",
+  "searchTabActors": "캐릭터 IP",
+  "searchTabUsers": "사용자",
+  "searchEpisodeNo": "{episodeNo}화",
+  "@searchEpisodeNo": {
+    "placeholders": {
+      "episodeNo": {
+        "type": "int"
+      }
+    }
+  },
+  "searchMinutesAgo": "{count}분 전",
+  "@searchMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchHoursAgo": "{count}시간 전",
+  "@searchHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDaysAgo": "{count}일 전",
+  "@searchDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDramasCount": "드라마 ({count})",
+  "@searchDramasCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchActorsCount": "역할 ({count})",
+  "@searchActorsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDramaEpisodesWithCast": "전체 {count}화 | 출연: {actors}",
+  "@searchDramaEpisodesWithCast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "actors": {
+        "type": "String"
+      }
+    }
+  },
+  "nftTitle": "NFT 역할 광장",
+  "nftLoading": "캐릭터 NFT 로딩 중...",
+  "nftEmpty": "캐릭터 NFT가 없습니다",
+  "nftRefresh": "새로고침",
+  "nftIdPrefix": "ID: #{id}",
+  "@nftIdPrefix": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "nftRarity": "레어리티",
+  "nftStatusStaked": "담보로 제공됨",
+  "nftStatusIdle": "대기 중",
+  "nftPrice": "가격",
+  "dramaDetailTitle": "드라마 상세",
+  "dramaDetailLoading": "로딩 중…",
+  "dramaDetailRetry": "다시 시도",
+  "dramaDetailEpisodeList": "드라마 목록",
+  "dramaDetailSynopsis": "줄거리",
+  "dramaDetailExpand": "펼치기",
+  "dramaDetailCollapse": "접기",
+  "dramaDetailTabIntro": "소개",
+  "dramaDetailTabEpisodes": "선집",
+  "dramaDetailTabComments": "댓글",
+  "dramaDetailTabRoles": "캐릭터 IP",
+  "dramaDetailSignMoreCharacterIps": "더 많은 캐릭터 IP 계약하기",
+  "dramaDetailRoleSalary": "출연료 {amount}",
+  "@dramaDetailRoleSalary": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailRoleSalaryPerHour": "출연료{amount} STORY/h",
+  "@dramaDetailRoleSalaryPerHour": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailRoleUnbound": "미연결",
+  "dramaCastActorsTitle": "参演角色IP",
+  "dramaDetailCompletion": "{count} 완주",
+  "@dramaDetailCompletion": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailHeat": "{count} 히트",
+  "@dramaDetailHeat": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailTotalEpisodes": "{count} 회차",
+  "@dramaDetailTotalEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailRatingTitle": "작품에 점수 매기기",
+  "dramaDetailWantToRate": "평가하기",
+  "dramaDetailNotRated": "미평가",
+  "dramaDetailCompletionLabel": "완주",
+  "dramaDetailHeatLabel": "히트",
+  "dramaDetailSynopsisLead": "줄거리: ",
+  "dramaDetailRatingEmpty": "내 평점: --",
+  "dramaDetailRatingValue": "내 평점: {rating}",
+  "@dramaDetailRatingValue": {
+    "placeholders": {
+      "rating": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailRatingConfirm": "평점 확인",
+  "dramaDetailRatingSuccess": "평점 등록 성공: {rating}점!",
+  "@dramaDetailRatingSuccess": {
+    "placeholders": {
+      "rating": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailSelectEpisodeHint": "회차를 선택하여 재생을 시작하세요",
+  "dramaFavorited": "즐겨찾기에 추가됨",
+  "dramaUnfavorited": "즐겨찾기에서 삭제됨",
+  "dramaLiked": "좋아요",
+  "dramaUnliked": "좋아요 취소",
+  "playerFollowed": "팔로우했습니다",
+  "playerUnfollowed": "팔로우를 취소했습니다",
+  "errorNetwork": "네트워크 오류, 나중에 다시 시도해 주세요",
+  "errorTimeout": "요청 시간이 초과되었습니다, 다시 시도해 주세요",
+  "errorParse": "응답 데이터 파싱에 실패했습니다",
+  "errorUnauthorized": "먼저 로그인해 주세요",
+  "authSessionExpired": "로그인 상태가 만료되었습니다. 다시 로그인해 주세요",
+  "errorNotFound": "리소스를 찾을 수 없습니다",
+  "errorOperationFailed": "작업에 실패했습니다",
+  "errorInvalidRoleId": "캐릭터 ID가 유효하지 않습니다. 페이지를 새로고침한 후 다시 시도해 주세요.",
+  "errorInvalidRoleNftAssetId": "캐릭터 NFT assetId가 유효하지 않습니다. 페이지를 새로고침한 후 다시 시도해 주세요.",
+  "errorInvalidRoleCollectionAssetId": "캐릭터 컬렉션 assetId가 유효하지 않습니다. 페이지를 새로고침한 후 다시 시도해 주세요.",
+  "roleNftLabelUnknown": "RoleNFT#Unknown",
+  "roleNftLabel": "RoleNFT#{prefix}",
+  "@roleNftLabel": {
+    "placeholders": {
+      "prefix": {
+        "type": "String"
+      }
+    }
+  },
+  "errorBusiness": "작업 실패: {message}",
+  "@errorBusiness": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "errorUnknown": "알 수 없는 오류가 발생했습니다: {message}",
+  "@errorUnknown": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "errorNotSupported": "지원되지 않는 작업: {message}",
+  "@errorNotSupported": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "playerEpisodeSelect": "선집",
+  "playerPlayFailed": "재생에 실패했습니다",
+  "playerDramaUnavailable": "이 드라마는 재생할 수 없어요",
+  "playerContentUnavailable": "이 콘텐츠는 게시되지 않았거나 더 이상 이용할 수 없습니다",
+  "creatorWorkNotFound": "작품이 존재하지 않아 볼 수 없습니다",
+  "creatorWorkNotPublished": "작품이 게시되지 않아 아직 볼 수 없습니다",
+  "playerTapRetry": "탭하여 다시 시도",
+  "playerEpisodeTotal": "총 {count}화",
+  "@playerEpisodeTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playerEpisodeLabel": "{episodeNo}회차",
+  "@playerEpisodeLabel": {
+    "placeholders": {
+      "episodeNo": {
+        "type": "int"
+      }
+    }
+  },
+  "playerLike": "좋아요",
+  "playerComment": "댓글",
+  "playerFavorite": "즐겨찾기",
+  "playerShare": "공유",
+  "playerRatingLabel": "{rating} 포인트",
+  "@playerRatingLabel": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "loginOrSignUp": "로그인 또는 회원가입",
+  "loginEnterCode": "인증 코드 입력",
+  "loginCheckEmailDesc": "{email}에서 privy.io의 이메일을 확인하고 아래에 코드를 입력해 주세요.",
+  "@loginCheckEmailDesc": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "loginResendCountdown": "코드 재전송 {seconds}초",
+  "@loginResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "loginResendBtn": "재전송",
+  "loginProtectedByPrivy": "Privy로 보호됨",
+  "loginAgreeLead": "다음에 동의합니다",
+  "loginAgreeAnd": "및",
+  "loginAgreeConfirmLead": "확인을 누르면 다음에 동의한 것으로 간주됩니다",
+  "loginAgreeRequired": "먼저 서비스 약관과 개인정보 처리방침에 동의해 주세요",
+  "deletingAccountPending": "계정 삭제 대기 중",
+  "deletingAccountCancelDeletion": "계정 삭제 취소",
+  "deletingAccountGoBack": "뒤로",
+  "drawerEmailAccount": "이메일 계정",
+  "drawerClickToLogin": "탭하여 로그인",
+  "drawerBuyStory": "STORY 거래",
+  "drawerDeposit": "충전",
+  "drawerWithdraw": "출금",
+  "drawerNotifications": "알림",
+  "drawerNoNotifications": "알림이 없습니다",
+  "notificationTabSystem": "시스템",
+  "notificationTabInteraction": "활동",
+  "notificationTagIpSign": "캐릭터 IP 계약",
+  "notificationTagRoleManagement": "캐릭터 관리",
+  "notificationTagShowRevenue": "공연 수익",
+  "notificationTagLike": "좋아요",
+  "notificationTagFavorite": "즐겨찾기",
+  "notificationSignedActor": "@{user}님이 캐릭터 IP {actor}와 계약했습니다",
+  "notificationShareEarned": "분배금 {amount}을 획득했습니다",
+  "notificationStaminaLow": "'{actor}의 체력이 부족합니다. 충전하거나 쉬게 해 주세요'",
+  "notificationCurrentStamina": "현재 체력 {value}",
+  "notificationShowEnded": "{range} 공연이 종료되었습니다",
+  "notificationIncomeEarned": "수익 {amount}을 획득했습니다",
+  "notificationActionClaim": "받기",
+  "notificationActionRefill": "충전",
+  "notificationInteractionLikedVideo": "내 동영상을 좋아합니다",
+  "notificationInteractionLikedDrama": "내 숏드라마 ‘{title}’을 좋아합니다",
+  "notificationInteractionFavoritedVideo": "내 동영상을 저장했습니다",
+  "notificationInteractionFavoritedDrama": "내 숏드라마 ‘{title}’을 저장했습니다",
+  "notificationInteractionCommented": "댓글을 남겼습니다: {content}",
+  "notificationInteractionFollowedYou": "나를 팔로우했습니다",
+  "notificationActionMutualFollow": "맞팔",
+  "notificationActionFollow": "팔로우",
+  "notificationRealtimeReceived": "새 알림이 도착했습니다",
+  "drawerEpisodeProgress": "{current}/{total}회",
+  "drawerNotificationSignedActor": "{actor}님이 캐릭터 IP {target}와 계약했습니다",
+  "drawerNotificationLikedVideo": "{actor}님이 내 동영상을 좋아합니다",
+  "drawerNotificationFavoritedDrama": "{actor}님이 내 숏드라마 {target}을 저장했습니다",
+  "depositTitle": "충전",
+  "depositDesc": "거래소나 다른 지갑에서 아래 주소로 전송해 주세요. 입금이 확인되면 잔액이 자동으로 업데이트됩니다.",
+  "depositToken": "통화",
+  "depositNetwork": "네트워크",
+  "depositNetworkNote": "전송 네트워크를 확인해 주세요. 잘못된 네트워크로 전송하면 자산이 손실될 수 있습니다.",
+  "depositAddress": "입금 주소",
+  "depositAddressCopied": "주소가 클립보드에 복사되었습니다",
+  "depositSend": "보내기",
+  "depositReceive": "받기",
+  "depositConvertNote": "이 주소로 토큰을 보내면 Story.fun 계정에서 자동으로 USDC로 전환됩니다.",
+  "depositMinNote": "최소 입금액: {minAmount} {token}",
+  "@depositMinNote": {
+    "placeholders": {
+      "minAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "depositExchangeRateNote": "현재 환율은 {rate}입니다. 실제 입금액 = 입금액 × {rate}",
+  "@depositExchangeRateNote": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "depositWarning": "선택한 네트워크의 선택한 토큰만 입금하세요. 다른 자산은 복구할 수 없습니다.\n전송 네트워크를 확인해 주세요. 네트워크 오류로 자산이 손실될 수 있습니다.",
+  "withdrawTitle": "출금",
+  "withdrawBalance": "출금 가능 잔액",
+  "withdrawToken": "통화",
+  "withdrawAddress": "출금 주소",
+  "withdrawAddressHint": "Solana 수신 주소를 입력하거나 붙여넣어 주세요",
+  "withdrawAddressHintEvm": "EVM 수신 주소를 입력하거나 붙여넣어 주세요",
+  "withdrawInvalidEvmAddress": "유효한 EVM 주소를 입력해 주세요",
+  "withdrawInvalidSolanaAddress": "유효한 Solana 주소를 입력해 주세요",
+  "withdrawEvmGasNote": "EVM 출금에는 가스비용으로 쓸 네이티브 토큰이 필요합니다. 거래는 온체인으로 바로 전송됩니다.",
+  "withdrawEvmFailed": "EVM 출금에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+  "withdrawAddressNote": "주소가 정확한지 확인해 주십시오. 입금 후에는 환불이 불가능합니다.",
+  "withdrawNetwork": "네트워크",
+  "withdrawAmount": "금액",
+  "withdrawAmountHint": "출금 금액을 입력해 주세요",
+  "withdrawMax": "최대",
+  "withdrawAvailableBalance": "잔액 {balance} {token}",
+  "@withdrawAvailableBalance": {
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawMinWarning": "최소 출금: {minAmount} {token}\n주소와 네트워크를 신중히 확인해 주세요. 거래는 취소할 수 없습니다.",
+  "@withdrawMinWarning": {
+    "placeholders": {
+      "minAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawConfirm": "출금 확인",
+  "withdrawAll": "전체",
+  "withdrawMinAmountError": "최소 출금 금액은 {minAmt} {token}입니다",
+  "@withdrawMinAmountError": {
+    "placeholders": {
+      "minAmt": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawExceedBalanceError": "출금 금액은 사용 가능한 잔액을 초과할 수 없습니다",
+  "withdrawSameAsWalletError": "출금 주소는 현재 지갑 주소와 같을 수 없습니다",
+  "withdrawConfirmTitle": "출금 확인",
+  "withdrawConfirmMessage": "다음 Solana 주소로 {amount} {token}를 출금하시겠습니까?\n\n{address}",
+  "@withdrawConfirmMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      },
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawSuccessToast": "출금 요청이 성공적으로 제출되었습니다!",
+  "withdrawFailedToast": "출금에 실패했습니다. 다시 시도해 주세요.",
+  "withdrawErrorToast": "출금 중 오류가 발생했습니다: {error}",
+  "@withdrawErrorToast": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawAddressHintWithToken": "{token}을 수신할 지갑 주소를 입력하세요",
+  "@withdrawAddressHintWithToken": {
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawFee": "수수료",
+  "withdrawFeeValue": "{fee} {token}",
+  "@withdrawFeeValue": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawMinAmount": "최소 출금: {minAmount} {token}",
+  "@withdrawMinAmount": {
+    "placeholders": {
+      "minAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawMaxAmount": "최대 출금 금액: {maxAmount} {token}",
+  "@withdrawMaxAmount": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawSponsorSigning": "트랜잭션 서명 중...",
+  "withdrawSponsorSubmitting": "온체인 트랜잭션 제출 중...",
+  "withdrawSponsorSuccess": "출금이 성공적으로 제출되었습니다!",
+  "withdrawSponsorFailed": "트랜잭션 제출에 실패했습니다. 다시 시도해 주세요.",
+  "withdrawOrderProcessing": "주문 처리 중",
+  "withdrawOrderSuccess": "주문 완료",
+  "withdrawOrderFailed": "주문 실패",
+  "withdrawOrderStatus": "주문 상태: {status}",
+  "@withdrawOrderStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "qrScannerTitle": "QR 코드 스캔",
+  "qrScannerHint": "QR 코드를 프레임 안에 맞추어 스캔",
+  "drawerProfile": "내 계정",
+  "drawerCreatorManagement": "크리에이터 관리",
+  "drawerInvite": "초대",
+  "inviteTitle": "초대",
+  "inviteTotalPeople": "누적 초대 인원",
+  "inviteTotalRewards": "총 초대 보상",
+  "inviteWeeklyPool": "이번 주 초대 보상 풀",
+  "inviteViewHistory": "수익 내역 보기",
+  "inviteLinkSection": "초대 링크",
+  "inviteLinkSubtitle": "친구가 귀하의 링크로 가입하고, 캐릭터를 계약한 뒤 파견하면 귀하에게 추가 STORY 보상이 지급됩니다.",
+  "inviteCopyButton": "링크 복사",
+  "inviteCopiedSuccess": "초대 링크가 클립보드에 복사되었습니다!",
+  "inviteRulesSection": "초대 규칙",
+  "inviteRuleSourceTitle": "보상 출처",
+  "inviteRuleSourceSubtitle": "독립된 하위 풀 초대",
+  "inviteRuleSourceBody": "초대 보상은 NFT 채굴 풀 내의 독립된 초대 하위 풀(전체 채굴 풀의 25% 차지)에서 지급되며, 초대받은 사람의 수익에서 공제되지 않습니다. 초대 하위 풀에는 별도의 주간 상한선이 적용되며, 상한선에 도달하면 지분 비율에 따라 비례하여 감소합니다.",
+  "inviteRuleBaseTitle": "계산 기수",
+  "inviteRuleBaseSubtitle": "실제 수령액 기준 STORY",
+  "inviteRuleBaseBody": "보상은 초대받은 사람이 해당 기간에 실제로 수령한 STORY를 기준으로 산정되며, 명목상 생산량을 기준으로 산정되지 않습니다. 초대받은 사람이 직접 채굴한 STORY에는 영향을 미치지 않으며, 초대 보상은 별도로 지급됩니다.",
+  "inviteRuleLevelTitle": "보상 범위",
+  "inviteRuleLevelSubtitle": "직접 초대만",
+  "inviteRuleLevelBody": "초대 보상은 직접 초대한 사용자에게만 지급됩니다. 다단계 또는 간접 커미션은 없습니다.",
+  "inviteRuleConditionTitle": "유효 조건",
+  "inviteRuleConditionSubtitle": "실제 오프라인 활동 시에만 보상이 지급됩니다",
+  "inviteRuleConditionBody": "초대받은 사람이 실제로 STORY를 채굴했거나 USDC 결제가 발생한 경우에만 유효한 하위 회원으로 인정됩니다. 유령 계정으로 등록한 경우 보상이 지급되지 않습니다. 초대 관계는 일단 설정되면 변경할 수 없습니다.",
+  "drawerTxHistory": "거래 내역",
+  "drawerFinanceDashboard": "자금 대시보드",
+  "financeDashboardComingSoon": "자금 대시보드가 곧 출시될 예정입니다. 기대해 주세요.",
+  "financeDashboardLedgerBizSigningFee": "계약 수수료",
+  "financeDashboardLedgerBizManualCredit": "수동 입금",
+  "financeDashboardLedgerBizManualDebit": "수동 차감",
+  "financeDashboardLedgerBizStaminaPurchase": "체력 구매 비용",
+  "financeDashboardLedgerBizSynthesisUpgrade": "합성 업그레이드 비용",
+  "financeDashboardLedgerBizTransactionFee": "거래 수수료",
+  "drawerWhitepaper": "백서",
+  "drawerSettings": "설정",
+  "commonClose": "닫기",
+  "commonLoadFailed": "로딩 실패",
+  "commonNone": "없음",
+  "commonUntitled": "제목 없음",
+  "actorDetailTitle": "캐릭터 상세",
+  "actorDetailCastDramas": "단편 연극 출연",
+  "actorDetailNoCastRecords": "출연 기록이 없습니다",
+  "actorBondingCurve": "가격 결합 곡선",
+  "actorContractAddress": "계약 주소",
+  "actorCurrentPosition": "현재 위치",
+  "actorCurrentPrice": "현재 가격 {price} USDC",
+  "@actorCurrentPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "actorFloorPrice": "최저가",
+  "actorGoTrade": "거래하기",
+  "actorHeatCoefficient": "히트 계수",
+  "actorIpPower": "IP 출연료",
+  "actorPayMax": "최대",
+  "actorPayUpgradeTitle": "출연료 인상 규칙",
+  "actorPayUpgradeReachHint": "이 IP가 출연한 숏드라마의 현재 완주 수는 역할을 다음 레벨까지 업그레이드할 수 있습니다",
+  "actorPayUpgradeCompletions": "{count} 완주",
+  "@actorPayUpgradeCompletions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPayUpgradeMultiplier": "출연료 ×{value}",
+  "@actorPayUpgradeMultiplier": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPayTitle": "{name} · 출연료",
+  "@actorPayTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorLv1PayHint": "계약하면 Lv.1 캐릭터를 획득할 수 있습니다",
+  "actorLv1PayFormula": "Lv.1 출연료 = 가격 계수 × 히트 계수",
+  "actorLv1PayEquals": "={value}",
+  "@actorLv1PayEquals": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIpPowerTitle": "{name} · IP 출연료",
+  "@actorIpPowerTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIpPowerFormula": "IP 출연료 = 가격 계수 × 히트 계수 × Trust1",
+  "actorPriceCoefficient": "가격 계수",
+  "actorPriceCoefficientValue": "가격 계수 {value}",
+  "@actorPriceCoefficientValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPriceCoefficientHelpA11y": "가격 계수 설명 보기",
+  "actorPriceCoefficientDialogFormulaLe100": "계수 = P0 ÷ 10",
+  "actorPriceCoefficientDialogDescLe100": "선형 증가",
+  "actorPriceCoefficientDialogTitleGt100": "P0 > 10 USDC",
+  "actorPriceCoefficientDialogFormulaGt100": "계수 = 1.6 × (P0/10)^1.3 / [(P0/10)^1.3 + 0.6]",
+  "actorPriceCoefficientDialogDescGt100": "증가 속도가 완만해지며, 상한은 1.6",
+  "actorPriceCoefficientDialogTitleLe100": "P0 ≤ 10 USDC",
+  "actorPriceCoefficientFactorDesc": "P0 ≤ 10 USDC 계수= P0/10（선형 증가）\nP0 > 10 USDC → 계수 = 1.6 × (P0/10)^1.3 / [(P0/10)^1.3 + 0.6]（점근 상한 1.6）",
+  "actorHeatCoefficientFactorDesc": "캐릭터 IP의 최근 30일 히트 배수. 단편 드라마 완주, 좋아요, 즐겨찾기 등 상호작용에 따라 결정됩니다",
+  "actorTrustFactorDesc": "플랫폼 리스크 관리 계수, 기본값은 1.0",
+  "actorStatCompletion": "완주",
+  "actorIdCopied": "번호가 복사되었습니다",
+  "actorInitialPrice": "초기 가격: {price} USDC",
+  "@actorInitialPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIpLabel": "캐릭터 IP {label}",
+  "@actorIpLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIssueInfo": "출시 정보",
+  "actorIssuer": "출시자 {name}",
+  "@actorIssuer": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorMintedCount": "발행 완료 {minted}/{maxSupply}",
+  "@actorMintedCount": {
+    "placeholders": {
+      "minted": {
+        "type": "int"
+      },
+      "maxSupply": {
+        "type": "int"
+      }
+    }
+  },
+  "actorPriceCurve": "가격 곡선",
+  "actorSign": "계약하기",
+  "actorConfirmSign": "계약 확인",
+  "actorSignPriceLabel": "계약 가격",
+  "actorSignPriceDescription": "계약 수가 늘어남에 따라 계약 가격이 자동으로 상승합니다. 일찍 계약할수록 더 유리합니다.",
+  "actorSignPriceFormula": "공식: 가격 = 초기 가격 × 5^(계약 수 ÷ 총 발행량)",
+  "actorPriceAxisLabel": "가격 (USDC)",
+  "actorSignedCountAxisLabel": "계약 수",
+  "actorSignRemainingCount": "{count}개 남았습니다",
+  "actorSignSoldOut": "매진되었습니다",
+  "@actorSignRemainingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actorSignSupplySummary": "총 출시 {total} · 잔여 {remaining}",
+  "@actorSignSupplySummary": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPricingFixed": "고정 가격",
+  "actorPricingCurve": "곡선 가격",
+  "actorPriceCurveDisclaimer": "초기 가격은 플랫폼의 기업 가치를 나타내는 것이 아니며, 곡선의 상승이 2차 시장 가격의 상승을 의미하는 것도 아니며, 플랫폼은 수익을 보장하지 않습니다.",
+  "actorPriceStatInitialPrice": "초기 가격",
+  "actorPriceStatCurrentPrice": "현재 가격",
+  "actorPriceStatTailPrice": "낙찰가",
+  "actorPriceStatTotalSupply": "총 발행량",
+  "actorPriceStatSigned": "계약 완료",
+  "actorPriceStatRemaining": "남은",
+  "actorPricingType": "가격 책정 유형",
+  "contentBadgeOfficialIssue": "공식 출시",
+  "contentBadgeCommunityIssue": "커뮤니티 출시",
+  "contentBadgePartnerIssue": "파트너 출시",
+  "contentBadgeVerifiedIssue": "인증 크리에이터 출시",
+  "contentBadgeOfficialDrama": "공식 단편 드라마",
+  "contentBadgeCommunityDrama": "동네 단편 드라마",
+  "contentBadgePartnerDrama": "파트너사와의 단편 드라마",
+  "contentBadgeVerifiedDrama": "인증된 크리에이터의 단편 드라마",
+  "actorIpCopied": "복사 성공",
+  "actorRiskIp": "위험 IP",
+  "actorRiskIpDescription": "이 캐릭터 IP의 신뢰 계수가 비정상입니다. 마이닝 가중치에 영향을 줍니다.",
+  "actorIpVault": "캐릭터 IP 금고",
+  "actorIpVaultDescription": "계약 수익의 30%는 캐릭터 IP 금고로 자동 적립되어 IP 생태계의 장기적인 발전을 뒷받침합니다. 2차 시장 로열티 수익의 30%도 동일하게 금고에 적립되어 지속적인 자금 풀을 형성합니다. V1 버전 금고는 데이터 조회 기능만 제공하며, 당분간 배분은 진행되지 않습니다.",
+  "actorIpVaultSignIncomePrefix": "계약 수익 · 적립 ",
+  "actorIpVaultSecondaryRoyaltyPrefix": "2차 로열티 · 누적 ",
+  "actorFixedPriceDialogDesc": "이 캐릭터 IP는 고정 가격 모델을 채택하며, 모든 캐릭터가 동일한 가격으로 계약되므로 판매량 변동에 따라 가격이 변동되지 않습니다.",
+  "actorCurvePriceDialogDesc": "가격은 결합 곡선 공식에 따라 계약 수에 맞춰 자동으로 상승합니다. 일찍 계약할수록 더 유리합니다.",
+  "actorFixedPriceNote1": "출시자가 고정 가격을 설정하면, 모든 계약은 해당 가격으로 정산됩니다.",
+  "actorFixedPriceNote2": "계약 수가 늘어나도 가격이 오르지 않습니다.",
+  "actorFixedPriceNote3": "비용을 고정하고자 하는 구매자에게 적합합니다",
+  "actorIssueFixedPriceDesc": "해당 캐릭터 IP는 고정 가격 방식을 채택하며, 모든 계약은 판매량에 관계없이 고정 가격으로 정산됩니다.",
+  "actorSignSlippageNote": "1% 슬리피지 보호 기능이 활성화되었으며, 가격이 이 범위를 벗어나면 거래가 취소됩니다.",
+  "actorSignSuccessTitle": "계약 완료!",
+  "actorSignSuccessMessage": "캐릭터 「{name}」 계약이 완료되었습니다",
+  "@actorSignSuccessMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorSignSuccessNftId": "NFT 번호: {nftId}",
+  "@actorSignSuccessNftId": {
+    "placeholders": {
+      "nftId": {
+        "type": "String"
+      }
+    }
+  },
+  "actorSignChainConfigMissing": "온체인 설정이 불완전합니다. 나중에 다시 시도해 주세요.",
+  "actorSignPriceSoldOut": "계약 가격 · 매진",
+  "actorSignPriceRemaining": "계약 가격 · 재고 {count}개",
+  "@actorSignPriceRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actorSignedCount": "계약 체결 건수{count}",
+  "@actorSignedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actorStatusLabelOffline": "오프라인",
+  "actorStatusLabelOnline": "온라인",
+  "actorStatusLabelPending": "검토 중",
+  "actorStatusLabelRejected": "거부됨",
+  "actorTotalSupply": "총 발행량",
+  "commentTagAuthor": "작가",
+  "commentTagMe": "나",
+  "commentTagFriend": "내 친구",
+  "commentTagFan": "내 팔로워",
+  "commentTagFirst": "첫 댓글",
+  "commentTagAuthorLiked": "작가가 좋아요",
+  "commentsAnonymous": "익명 사용자",
+  "commentsEmpty": "아직 댓글이 없습니다",
+  "commentsHint": "멋진 댓글을 작성...",
+  "commentsInvalidContent": "유효한 내용을 입력해 주세요",
+  "commentsReply": "답글",
+  "commentsViewReplies": "답글 {count}개 보기",
+  "@commentsViewReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsCollapseReplies": "접기",
+  "commentsViewMoreReplies": "더 보기",
+  "commentsReplyHint": "{nickname}에게 답글",
+  "@commentsReplyHint": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "commentsDeleteCommentTitle": "이 댓글을 삭제하시겠습니까?",
+  "commentsDeleteReplyTitle": "이 답글을 삭제하시겠습니까?",
+  "commentsReplyCommentNotExists": "댓글이 존재하지 않습니다",
+
+  "commentsTabComments": "댓글",
+"commentsTabAllComments": "전체 댓글",
+  "commentsTabDramas": "단편 드라마",
+  "commentsTabActors": "캐릭터",
+  "timeJustNow": "방금 전",
+  "timeYesterday": "어제",
+  "timeDayBeforeYesterday": "그저께",
+  "timeMinutesAgo": "{count}분 전",
+  "timeHoursAgo": "{count}시간 전",
+  "timeDaysAgo": "{count}일 전",
+  "commentsTitle": "댓글 ({count})",
+  "@commentsTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "createActorTitle": "역할 만들기",
+  "createActorHeroTitle": "캐릭터 NFT 발행",
+  "createActorHeroSubtitle": "독점 AI 역할을 만들고 수익 배분을 연결하여 드라마에 참여",
+  "createActorNameLabel": "역할 이름",
+  "createActorNameHint": "역할 이름을 입력하세요",
+  "createActorBioLabel": "역할 소개",
+  "createActorBioHint": "캐릭터의 배경을 설명하세요",
+  "createActorGenderLabel": "성별",
+  "createActorGenderMale": "남자",
+  "createActorGenderFemale": "여성",
+  "createActorMintParams": "NFT 발행 매개변수",
+  "createActorTokenStandard": "토큰 표준",
+  "createActorChain": "체인",
+  "createActorMinHolding": "최소 보유량",
+  "createActorMintNft": "NFT 발행",
+  "createActorIpTitle": "캐릭터 IP 출시",
+  "createActorIpSubtitle": "캐릭터 IP를 출시한 후 해당 IP 아래에서 캐릭터를 계약할 수 있으며, 계약한 캐릭터를 파견하여 수익을 창출할 수 있습니다.",
+  "createActorSelectMaterial": "역할 자료 선택",
+  "createActorDreamOsBadge": "DreamOS",
+  "createActorSelectMaterialDesc": "DreamOS에서 이미 생성한 캐릭터 자료를 선택하면 캐릭터의 IP 정보가 자동으로 채워집니다.",
+  "createActorSelectButton": "역할 선택",
+  "createActorNameLabelNew": "역할 이름",
+  "createActorNamePlaceholder": "역할 이름 입력",
+  "createActorBioLabelNew": "소개",
+  "createActorBioPlaceholder": "캐릭터 IP 소개를 입력해 주세요",
+  "createActorParamsTitle": "캐릭터 IP 출시 매개변수",
+  "createActorParamsSubtitle": "캐릭터 IP 출시 매개변수를 설정합니다. 출시 후에는 수정할 수 없습니다.",
+  "createActorTotalSupplyLabel": "캐릭터 총 발행량",
+  "createActorTotalSupplyDesc": "총 발행량 범위: 100 - 5,000.",
+  "createActorTotalSupplyPlaceholder": "입력해 주세요",
+  "createActorPricingFixed": "고정 가격",
+  "createActorPricingCurve": "곡선 가격",
+  "createActorFixedPriceLabel": "고정 가격 (USDC)",
+  "createActorFixedPricePlaceholder": "캐릭터당 고정 가격을 입력하세요",
+  "createActorFixedPriceDesc": "모든 캐릭터는 고정된 가격으로 구매되며, 판매량에 따라 변동되지 않습니다.",
+  "createActorInitialPriceLabel": "초기 가격 (USDC)",
+  "createActorInitialPricePlaceholder": "입력해 주세요",
+  "createActorInitialPriceDesc": "초기 가격은 결합 곡선의 시작 가격입니다. 캐릭터를 1명 계약할 때마다 가격은 P = P₀ × 5^(계약 수 ÷ 총 발행량) 공식에 따라 자동으로 상승하므로, 일찍 계약할수록 더 유리합니다.",
+  "createActorFormIncomplete": "먼저 캐릭터 소재, 이름, 소개, 출시 매개변수를 입력해 주세요",
+  "createActorValidationNameRequired": "역할 이름을 입력해 주세요",
+  "createActorValidationNameTooLong": "캐릭터 이름은 20자 이하여야 합니다",
+  "createActorValidationBioRequired": "소개를 입력해 주세요",
+  "createActorValidationBioTooLong": "소개는 500자 이하여야 합니다",
+  "createActorValidationTotalSupplyRequired": "유효한 NFT 총 발행량을 입력해 주세요",
+  "createActorValidationTotalSupplyPositiveInteger": "NFT 총 발행량은 양의 정수여야 합니다",
+  "createActorValidationTotalSupplyRange": "캐릭터 총 발행량은 100~5,000 사이여야 합니다",
+  "createActorValidationPriceRequired": "유효한 발행 가격을 입력해 주세요",
+  "createActorValidationPriceInvalid": "Mint 가격은 10 이상 1,000 이하여야 합니다",
+  "createActorValidationPriceMaxDecimals": "발행 가격은 소수점 이하 2자리까지 가능합니다",
+  "createActorSelectMaterialRequired": "캐릭터 소재를 선택해 주세요",
+  "createActorCancelButton": "취소",
+  "createActorConfirmButton": "출시 확정",
+  "createActorIssueFee": "수수료",
+  "createActorSuccessTitle": "출시 성공!",
+  "createActorSuccessDesc": "캐릭터 IP {name} 출시 성공!",
+  "@createActorSuccessDesc": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createActorCloseButton": "닫기",
+  "createActorViewButton": "보기",
+  "createActorEmptyTitle": "아직 DreamOS에서 조건을 충족하고 시스템이 자동 생성한 NFT 출시가 없습니다.",
+  "createActorGotoDreamOs": "DreamOS로 이동하여 생성하기",
+  "createActorSearchPlaceholder": "캐릭터 소재 검색",
+  "createActorInvalidOrderId": "캐릭터 IP 주문 번호가 유효하지 않습니다. 새로고침 후 다시 시도해 주세요",
+  "createDramaTitle": "드라마 만들기",
+  "createDramaTitleLabel": "단편 드라마 제목",
+  "createDramaTitleHint": "드라마 이름을 입력하세요",
+  "createDramaSynopsisLabel": "줄거리",
+  "createDramaSynopsisHint": "어떤 이야기를 다룰 것인가... (최대 1,000자)",
+  "createDramaAiSettings": "AI 생성 설정",
+  "createDramaVisualStyle": "비주얼 스타일",
+  "createDramaVisualStyleRealistic": "실사",
+  "createDramaEpisodeDuration": "회차 시간",
+  "createDramaEpisodeDurationValue": "3-5분",
+  "createDramaTotalEpisodes": "총 회차",
+  "createDramaTotalEpisodesValue": "8회",
+  "createDramaGenreLabel": "유형",
+  "createDramaGenreDrama": "드라마",
+  "createDramaGenreComedy": "코미디",
+  "createDramaGenreAction": "액션",
+  "createDramaGenreRomance": "로맨스",
+  "createDramaGenreSciFi": "공상과학",
+  "createDramaGenreMystery": "미스터리",
+  "createDramaGenreHorror": "호러",
+  "createDramaGenreAnimation": "애니메이션",
+  "createDramaHeroTitle": "AI 드라마 제작",
+  "createDramaHeroSubtitle": "원클릭으로 다음 히트 드라마 생성",
+  "createDramaStartGeneration": "생성 시작",
+  "creatorDramaManagementTab": "단편 드라마 관리",
+  "creatorDramaNftTab": "숏폼 영상 NFT",
+  "creatorHeaderSubtitle": "단편 드라마 게시, 검토 및 제작.",
+  "creatorV2Subtitle": "숏드라마/동영상 게시 및 관리.",
+  "creatorV2DramaTabCount": "숏드라마({count})",
+  "creatorV2VideoTabCount": "동영상({count})",
+  "creatorV2NoVideos": "동영상이 없습니다",
+  "creatorLoginPrompt": "로그인하여 크리에이션을 확인하세요",
+  "creatorNoCreatedActors": "만든 역할이 없습니다",
+  "creatorNoPublishedDramas": "게시한 드라마가 없습니다",
+  "creatorOwnedNftCount": "보유 중인 NFT 수",
+  "creatorCreateDrama": "드라마 제작",
+  "creatorPublishNewDrama": "새로운 단편 드라마 게시",
+  "creatorPublishedDramas": "단편 드라마 게시",
+  "creatorReviewFilterAll": "전체",
+  "creatorReviewFilterApproved": "통과됨",
+  "creatorReviewFilterPending": "검토 중",
+  "creatorReviewFilterRejected": "불합격",
+  "creatorReviewFilterOffline": "게시 중단",
+  "creatorDramaOtherReason": "기타 사유",
+  "creatorDramaStatusOnline": "통과됨",
+  "creatorDramaStatusPendingReview": "심사 중",
+  "creatorDramaStatusReviewRejected": "불합격",
+  "creatorDramaStatusPendingOnline": "온라인 대기 중",
+  "creatorDramaAuditReason": "심사 불합격 사유: {reason}",
+  "@creatorDramaAuditReason": {
+    "placeholders": {
+      "reason": {}
+    }
+  },
+  "creatorDramaNftMinted": "이미 주조됨",
+  "creatorDramaEpisodeCount": "{count} 편",
+  "@creatorDramaEpisodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "creatorDramaEdit": "편집",
+  "creatorDramaDelete": "삭제",
+  "creatorActorDelete": "역할 삭제",
+  "creatorDeleteDramaConfirm": "이 단편 영상을 삭제하시겠습니까?",
+  "creatorDeleteVideoConfirmTitle": "동영상 삭제 확인",
+  "creatorDeleteVideoConfirmMessage": "“{name}”을(를) 삭제하시겠습니까?\n이 작업은 취소할 수 없습니다.",
+  "@creatorDeleteVideoConfirmMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "creatorDeleteActorConfirm": "이 캐릭터를 삭제하시겠습니까?",
+  "creatorDeleting": "삭제 중...",
+  "creatorNoDramas": "현재 단편 드라마가 없습니다",
+  "creatorNoNfts": "현재 단편 드라마 NFT는 없습니다.",
+  "creatorsComingSoon": "출시 예정",
+  "creatorsHeroSubtitle": "뛰어난 크리에이터를 발견하세요",
+  "creatorsHeroTitle": "크리에이터",
+  "dramaBatchUnlockAll": "모두 해제",
+  "dramaBatchUnlockDiscount": "일괄 해제 할인 {discount}%",
+  "@dramaBatchUnlockDiscount": {
+    "placeholders": {
+      "discount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaBatchUnlockSubtitle": "모든 회차를 한 번에 해제하여 더 저렴하게",
+  "dramaBatchUnlockSuccess": "해제 성공, 시청을 시작하세요",
+  "dramaDetailAllFree": "모두 무료",
+  "dramaDetailBoundActors": "{count}명의 역할 연결됨",
+  "@dramaDetailBoundActors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailEpisodeCount": "{count} 편",
+  "@dramaDetailEpisodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailEpisodePrice": "회당 가격",
+  "dramaDetailFree": "무료",
+  "dramaDetailFreeEpisodes": "첫 {count}화 무료",
+  "@dramaDetailFreeEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailMainCharacters": "주요 역할",
+  "dramaDetailNftMinted": "NFT 발행됨",
+  "dramaDetailNoEpisodes": "회차가 없습니다",
+  "dramaDetailPaid": "유료",
+  "dramaDetailRoleAs": "{roleName} 역할",
+  "@dramaDetailRoleAs": {
+    "placeholders": {
+      "roleName": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailPendingActor": "캐릭터 미정",
+  "dramaDetailRoleCount": "캐릭터 수",
+  "dramaUnlockFailedRetry": "해제에 실패했습니다, 다시 시도해 주세요",
+  "dramaUnlockFetchTimeout": "재생 주소 가져오기 시간 초과, 다시 시도해 주세요",
+  "dramaUnlockLoginRequired": "회차를 해제하려면 로그인해 주세요",
+  "dramaUnlockMessage": "{epNo}화는 해제에 결제가 필요합니다\n가격: {price} USDC\n일괄 해제 할인: {discount}",
+  "@dramaUnlockMessage": {
+    "placeholders": {
+      "epNo": {
+        "type": "int"
+      },
+      "price": {
+        "type": "String"
+      },
+      "discount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaUnlockSuccessFetching": "해제 성공, 재생 주소 가져오는 중...",
+  "dramaUnlockTitle": "에피소드 잠금 해제",
+  "editActorTitle": "역할 편집",
+  "editDramaTitle": "단편 드라마 편집",
+  "editVideoTitle": "동영상 편집",
+  "editSaveChanges": "변경 사항 저장",
+  "editProfileTitle": "프로필 편집",
+  "editNicknameLabel": "닉네임",
+  "editRoleNameLabel": "사용자 이름",
+  "editNicknameHint": "닉네임을 입력하세요",
+  "editNicknameRequired": "닉네임을 입력해 주세요",
+  "editProfileBioLabel": "소개",
+  "editProfileBioHint": "소개를 입력해 주세요",
+  "editProfileEmailLabel": "이메일 주소",
+  "editAvatarCropTitle": "아바타 자르기",
+  "profileUpdateSuccess": "프로필이 업데이트되었습니다",
+  "incomeClaimAmount": "{amount} USDC 청구",
+  "@incomeClaimAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimFailed": "청구 실패",
+  "incomeClaimMessage": "청구 가능 금액: {amount} {currency}\n수익이 지갑 잔액으로 이체됩니다",
+  "@incomeClaimMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimSuccess": "청구 성공",
+  "incomeClaimTitle": "수익 수령",
+  "incomeConfirmClaim": "수령 확인",
+  "incomeHistoryTab": "기록",
+  "incomeInviteHeroSubtitle": "친구를 초대하여 소비와 인터랙션을 유도하고, 초대자가 활발할수록 보상이 높아집니다",
+  "incomeInviteHeroTitle": "친구 초대하여 캐시백 받기",
+  "incomeInviteNoRecords": "캐시백 기록이 없습니다",
+  "incomeInvitePaidUnlockDesc": "친구가 회차 해제에 결제",
+  "incomeInvitePaidUnlockTitle": "유료 해제",
+  "incomeInviteRecords": "캐시백 기록",
+  "incomeInviteRegisterDesc": "친구가 추천 링크를 통해 가입",
+  "incomeInviteRegisterTitle": "초대 가입",
+  "incomeInviteRules": "캐시백 규칙",
+  "incomeInviteShareLink": "초대 링크 공유",
+  "incomeInviteStakeDesc": "친구가 NFT 또는 STORY를 스테이킹",
+  "incomeInviteStakeTitle": "스테이킹 투자",
+  "incomeInviteTab": "초대 캐시백",
+  "incomeInviteWatchDesc": "친구가 드라마를 시청하여 포인트 획득",
+  "incomeInviteWatchTitle": "드라마 시청",
+  "incomeNoHistory": "기록이 없습니다",
+  "incomeNoRecords": "수익 기록이 없습니다",
+  "incomeNothingToClaim": "청구할 것이 없습니다",
+  "incomeOverviewTab": "개요",
+  "incomePendingClaim": "청구 대기",
+  "incomeRecords": "수익 기록",
+  "incomeThisMonth": "이번 달",
+  "incomeToday": "오늘",
+  "incomeTotalEarnings": "누적 수익",
+  "incomeCumulativeStory": "누적 STORY",
+  "incomeCumulativeUsdc": "누적 USDC",
+  "incomeClaimableStory": "STORY 수령 가능",
+  "incomeClaimableUsdc": "USDC를 수령할 수 있습니다",
+  "incomeSettlingStory": "STORY 정산 중",
+  "incomeSettlingHint": "정산 중; 도착 후 청구 가능",
+  "incomeFilterAll": "전체",
+  "incomeFilterMining": "파견 수익",
+  "incomeFilterInvite": "초대 수익",
+  "incomeMiningReward": "파견 수익",
+  "incomeInviteReward": "초대 수익",
+  "incomeUsdcActorSignShare": "캐릭터 계약 수익 분배",
+  "incomeClaimNoWallet": "먼저 지갑을 연결해 주세요",
+  "incomeClaimCurrencyTitle": "{currency} 청구",
+  "@incomeClaimCurrencyTitle": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimWithdrawMessage": "Solana 지갑으로 {amount} {currency}를 출금하시겠습니까?\n수신자: {address}",
+  "@incomeClaimWithdrawMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      },
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimWithdrawConfirm": "출금 확인",
+  "incomeClaimWithdrawSubmitted": "출금 성공!",
+  "incomeClaimWithdrawFailed": "출금 실패, 다시 시도해 주세요",
+  "incomeClaimAction": "수령",
+  "nftCreateActorIp": "캐릭터 IP 생성",
+  "nftHeaderSubtitle": "독점 캐릭터 NFT를 탐색하고 수집하세요",
+  "nftHeaderTitle": "캐릭터 NFT 광장",
+  "nftSearchHint": "숏드라마, 작품, 역할, 사용자 검색...",
+  "actorHowToPlayTitle": "캐릭터 IP는 어떻게 활용하나요?",
+  "actorHowToPlayHelpTooltip": "게임 방법 안내",
+  "actorHowToPlaySignTab": "계약 IP",
+  "actorHowToPlaySignSubtitle": "출연료 자동 수령",
+  "actorHowToPlayIssueTab": "IP 출시",
+  "actorHowToPlayIssueSubtitle": "창작을 통한 수익 창출",
+  "actorHowToPlaySignPositioning": "포지셔닝: 창작 진입 장벽 제로, 손쉽게 안정적인 수익 창출",
+  "actorHowToPlaySignAudience": "창작은 하고 싶지 않고, 진입 장벽이 낮은 방법으로 STORY 수익을 얻고 싶은 일반 사용자",
+  "actorHowToPlaySignGuide": "히트가 높고 출연료가 높은 캐릭터 IP와 계약한 후, 에이전트 페이지에서 출연을 예약하기만 하면 수익을 얻을 수 있습니다",
+  "actorHowToPlaySignRightsTitle": "이중 수익",
+  "actorHowToPlaySignRightPerform": "공연을 기획하고, 지속적으로 STORY 토큰을 획득하세요",
+  "actorHowToPlaySignRightTrade": "캐릭터 IP는 거래가 가능하며, 프리미엄 수익을 창출할 수 있습니다.",
+  "actorHowToPlayIssuePositioning": "포지셔닝: 창작·출시, 다중 수익, IP 장기 가치 상승",
+  "actorHowToPlayIssueAudience": "창작 능력이 있으며, 캐릭터 IP나 숏폼 콘텐츠를 통해 수익을 창출하고자 하는 크리에이터",
+  "actorHowToPlayIssueGuide": "캐릭터 IP를 출시하고 AI 단편 드라마와 연계해 작품 히트를 높여 IP 출연료와 수익을 끌어올립니다",
+  "actorHowToPlayIssueRightsTitle": "3중 수익",
+  "actorHowToPlayIssueRightSignLabel": "계약 수익 분배:",
+  "actorHowToPlayIssueRightSign": "자체 IP가 계약되면 40% 수익 분배를 받습니다",
+  "actorHowToPlayIssueRightPerformLabel": "공연 수익:",
+  "actorHowToPlayIssueRightPerform": "자체 IP와 계약하고, 공연으로 STORY를 벌기",
+  "actorHowToPlayIssueRightValueLabel": "부가가치:",
+  "actorHowToPlayIssueRightValue": "IP는 거래 가능하며, 히트가 높을수록 프리미엄도 높아집니다",
+  "actorHowToPlayAudienceTitle": "적합한 대상",
+  "actorHowToPlayGuideTitle": "플레이 가이드",
+  "actorHowToPlayCreateHint": "DreamOS를 사용하면 한 번의 클릭으로 캐릭터 IP와 AI 단편 드라마를 생성하여, 고품질 콘텐츠를 효율적으로 제작할 수 있습니다.",
+  "actorHowToPlayCreateCta": "창작하기",
+  "nftSignInDevelopment": "이 기능은 아직 제공되지 않습니다.",
+  "nftSortCompleted": "완주",
+  "nftSortHeat": "히트",
+  "nftSortLowestPrice": "가격",
+  "nftSortLv1Pay": "Lv.1 출연료",
+  "nftSortMaxPay": "최대 출연료",
+  "nftTradeUnavailable": "거래는 아직 이용할 수 없습니다",
+  "playerEpisodeBarCompleted": "전 {count}화 · 완료",
+  "@playerEpisodeBarCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playerEpisodeSynopsis": "{episodeNo}화 | {synopsis}",
+  "@playerEpisodeSynopsis": {
+    "placeholders": {
+      "episodeNo": {
+        "type": "int"
+      },
+      "synopsis": {
+        "type": "String"
+      }
+    }
+  },
+  "playerPlayFailedRetry": "재생 실패, 나중에 다시 시도해 주세요",
+  "publicProfileDramas": "단편 드라마",
+  "publicProfileEmpty": "공개 콘텐츠가 없습니다",
+  "publicProfileFollowers": "팔로워",
+  "publicProfileFollowing": "팔로잉",
+  "followTabMutual": "맞팔",
+  "profileLikesReceived": "좋아요",
+  "profileLikesReceivedDialogMessage": "총 {count}개의 좋아요를 받았습니다. 멋진 작품을 함께해주세요!",
+  "profileTabWorks": "작품",
+  "profileTabLikes": "좋아요",
+  "profileTabFavorites": "즐겨찾기",
+  "profileWalletTitle": "지갑",
+  "profileTradeStory": "STORY 거래",
+  "profileAddressCopied": "주소가 복사되었습니다",
+  "followActionFollow": "팔로우",
+  "followActionFollowBack": "맞팔하기",
+  "followActionFollowing": "팔로잉",
+  "followActionMutual": "맞팔",
+  "followUnfollowTitle": "언팔로우",
+  "followUnfollowMessage": "{handle}님을 언팔로우할까요?",
+  "@followUnfollowMessage": {
+    "placeholders": {
+      "handle": {
+        "type": "String"
+      }
+    }
+  },
+  "followUnfollowNo": "아니요",
+  "followUnfollowYes": "예",
+  "followListEmpty": "사용자가 없습니다",
+  "followFollowingEmpty": "아직 팔로우한 사용자가 없어요. 흥미로운 크리에이터를 찾아보세요~",
+  "followFollowingEmptyCta": "둘러보기",
+  "followFollowingEmptyGuest": "팔로우 없음",
+  "followFollowersEmpty": "아직 팔로워가 없어요. 작품을 게시해 노출을 늘려보세요~",
+  "followFollowersEmptyCta": "게시하기",
+  "followFollowersEmptyGuest": "팔로워 없음",
+  "followMutualsEmpty": "아직 맞팔 친구가 없어요",
+  "followMutualsSelfOnly": "맞팔 목록은 본인만 볼 수 있습니다",
+  "followRelationsSelfOnly": "관계 목록은 본인만 볼 수 있습니다",
+  "followMoreTitle": "더보기",
+  "followRemoveFollower": "팔로워 삭제",
+  "followRemoveFollowerSuccess": "삭제되었습니다. 상대에게는 알림이 가지 않습니다",
+  "followUserHandleFallback": "@사용자",
+  "publicProfileTitle": "사용자 프로필",
+  "publicProfileUserFallback": "사용자 #{id}",
+  "@publicProfileUserFallback": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "watchHistoryEmpty": "시청 기록이 없습니다",
+  "gamePageTitle": "에이전트",
+  "gamePageSubtitle": "역할을 관리하고, 수익을 창출할 수 있도록 배정하세요.",
+  "gameRiskAccount": "위험 계정",
+  "gameRiskAccountDescription": "이 계정의 신뢰 계수가 비정상입니다. 마이닝 가중치에 영향을 줍니다.",
+  "gameWeeklyStats": "주간 통계",
+  "gameDeployedActors": "배치된 역할",
+  "gameMyActors": "내가 맡은 역할",
+  "gameComingSoon": "출시 예정",
+  "gameSignActor": "캐릭터 계약",
+  "gameGoProduce": "드라마 촬영하러 가다",
+  "gameWorkingActors": "출연 중인 역할",
+  "gameWeekPool": "이번 주 보상 풀 (STORY)",
+  "gameWeekNominalOutput": "이번 주 명목 생산량 (STORY)",
+  "gameWeekEstimatedOutput": "이번 주 예상 산출량 (STORY)",
+  "gameMiningRules": "채굴 규칙",
+  "agentV2RulesTitle": "규칙",
+  "agentV2RulesSummary": "핵심 순환: 캐릭터 계약 → 공연 배치 → STORY 자동 획득 → 등급 업그레이드 → 더 많은 수익 획득. 매주 월요일 00:00(UTC)에 정산되며 수익 페이지에서 수령할 수 있습니다. 체력이 소진되면 휴식시키거나 보충해 캐릭터의 활동이 멈추지 않게 하세요.",
+  "agentV2RulesHowToPlay": "이용 방법",
+  "agentV2RulesStartTitle": "캐릭터가 수익을 올리게 하려면?",
+  "agentV2RulesStartDescription": "대기 중인 캐릭터를 공연에 배치하면 매시간 STORY가 자동으로 생성됩니다. 동시에 최대 5명까지 배치할 수 있으며 같은 IP의 카드도 여러 장 함께 공연할 수 있습니다. 공연 중에는 시간당 체력 1이 소모되며 체력이 0보다 큰 동안 계속 수익이 발생합니다.",
+  "agentV2RulesStaminaTitle": "체력은 어떻게 관리하나요? 소진되면 어떻게 되나요?",
+  "agentV2RulesStaminaDescription": "체력은 보유 여부만 중요합니다. 체력이 {staminaLimit}이든 1이든 시간당 수익은 같습니다. 한 번에 가득 채우는 방식으로만 보충할 수 있으며 가격은 캐릭터 등급에 따라 결정됩니다. 0에 가까울수록 보충 효율이 좋습니다.",
+  "@agentV2RulesStaminaDescription": {
+    "placeholders": {
+      "staminaLimit": {
+        "type": "int"
+      }
+    }
+  },
+  "agentV2RulesBatchTitle": "일괄 작업이 가능한가요?",
+  "agentV2RulesBatchDescription": "네. 페이지 하단의 전체 공연, 전체 보충, 전체 휴식을 사용해 공연 슬롯의 모든 캐릭터에게 한 번에 작업을 적용할 수 있습니다.",
+  "agentV2RulesEarnings": "예상 수익",
+  "agentV2RulesSalaryTitle": "출연료는 어떻게 계산되나요?",
+  "agentV2RulesSalaryDescription": "인기가 높고 배역 가치가 높으며 단편 드라마가 더 인기를 끌수록 시간당 출연료가 더 높아집니다.",
+  "agentV2RulesSalaryFormula": "카드당 시간 출연료 = 캐릭터 출연료 × 1 STORY",
+  "agentV2RulesRolePowerFormula": "캐릭터 출연료 = IP 출연료 × 출연료 계수 × CP 계수 × Trust2",
+  "agentV2RulesIpSalaryFormula": "IP 출연료 = 가격 계수 × 히트 계수",
+  "agentV2RulesCoefficientTitle": "계수 설명",
+  "agentV2RulesSalaryExample": "린멍야오 · Lv3 주연 · P0=120U(가격 계수 ≈1.5046) · 히트 3.5\n→ 시간당 출연료 = 5.0 × 1.5046 × 3.5 × 1 = 26.3 STORY\nLv1 단역이라면 시간당 약 5.3 STORY에 불과하지만 Lv3로 올리면 5배가 됩니다.",
+  "agentV2RulesSettlementTitle": "언제 정산되고 어떻게 지급되나요?",
+  "agentV2RulesSettlementDescription": "정산 주기는 7일입니다. 매주 월요일 00:00(UTC)에 집계를 마감하고 24시간 이내에 정산을 완료합니다. 수익 페이지에서 수령하세요. 플랫폼 전체에는 주간 보상 풀(상한)이 있으며 초기 약 211만 STORY에서 매주 감소합니다(× 0.99572).",
+  "agentV2RulesSettlementExample": "이번 주 보상 풀이 100,000 STORY라고 가정하면:\n사례 A: 플랫폼 전체에서 나만 134 생산 → 134를 받고 나머지는 지급되지 않음\n사례 B: 전체 네트워크 생산량 250,000 → 100,000 ÷ 250,000 = 40%, 명목 생산량이 40%로 조정됨\n사례 C: 조정 후 6,000을 받아야 하지만 상한이 5,000이면 5,000만 지급됨",
+  "agentV2RulesStronger": "강해지는 방법",
+  "agentV2RulesUpgradeTitle": "캐릭터를 어떻게 업그레이드하나요?",
+  "agentV2RulesUpgradeDescription": "업그레이드 = 같은 캐릭터와 같은 레벨의 복제 카드 2장 소모 + 합성 수수료 지불 + 누적 완주 기준 달성(대상 카드 포함 총 3장). 업그레이드하면 출연료 계수가 크게 올라 시간당 생산량이 몇 배로 증가합니다.",
+  "agentV2RulesPerforming": "공연 중",
+  "agentV2RulesNormalSalary": "일반 출연료",
+  "agentV2RulesSalaryCoefficient": "출연료 계수",
+  "agentV2RulesPriceCoefficientDescription": "P0≤100U에서 선형 증가 · P0>100U에서 상한 1.6에 점근",
+  "agentV2RulesTrust2": "Trust2",
+  "agentV2RulesTrust2Factor": "플랫폼 Trust2",
+  "agentV2RulesSettlementCase1": "실제 지급액 = 명목 생산량, 남은 한도는 소멸",
+  "agentV2RulesSettlementCase2": "비례 조정: 실제 수령액 = 명목 생산량 × (보상 풀 ÷ 전체 네트워크 생산량)",
+  "gameSettlementRecords": "주간 정산 내역",
+  "gameFilterComputingPower": "출연료",
+  "gameFilterLevel": "레벨",
+  "gameFilterHeat": "히트",
+  "gameFilterStamina": "체력",
+  "gameHeatCoef": "히트 계수",
+  "gameMiningCoef": "채굴 계수",
+  "gameActorPower": "캐릭터 출연료",
+  "gameActorPowerDetailTitle": "캐릭터 출연료 상세",
+  "gameActorPowerFormula": "캐릭터 출연료 = IP 출연료 × 채굴 계수 × CP 계수 × Trust2",
+  "gameActorPowerIpFormula": "IP 출연료 = 가격 계수 × 히트 계수 × Trust1",
+  "gameActorPowerHourlyOutput": "시간당 산출",
+  "gameCpCoefficient": "CP 계수",
+  "gameTrust2": "Trust2",
+  "gameWeeklyNominalOutputLabel": "이번 주 명목 생산량",
+  "gameRoundNominalOutputLabel": "기간 nominal 출력",
+  "gameSupplement": "추가",
+  "gameRest": "휴식",
+  "gameDeploy": "파견",
+  "gameDeployActor": "캐릭터 캐스팅",
+  "gameStatusIdle": "미사용",
+  "gameStatusMining": "채굴 중",
+  "gameActorIpLabel": "캐릭터 IP {id}",
+  "@gameActorIpLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "gameStaminaProgress": "{current}/{max}",
+  "@gameStaminaProgress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "gameStaminaMechanismTitle": "체력 시스템",
+  "gameStaminaMechanismDesc": "파견 중인 역할는 매시간 체력 1포인트를 소모합니다. 체력이 모두 소진되면 수익 생성이 중단되며, 휴식 중에는 자동으로 회복됩니다. USDC를 사용해 체력을 즉시 보충할 수 있습니다.",
+  "gameStaminaMechanismAction": "알겠습니다",
+  "gameLevelBadge": "Lv{level}",
+  "@gameLevelBadge": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "gameEmptyDeployed": "현재 배치된 역할이 없습니다",
+  "gameEmptyMyActors": "아직 캐릭터가 없습니다. 계약하고 시작하세요.",
+  "gameDeployConfirmTitle": "이 캐릭터를 배치하시겠습니까?",
+  "gameRestConfirmTitle": "이 캐릭터를 휴식시키시겠습니까?",
+  "gameRestConfirmDesc": "캐릭터가 휴식하는 동안 채굴 보상이 일시 중지되며, 체력은 시간이 지남에 따라 회복됩니다.",
+  "gameRestConfirmAction": "휴식 확인",
+  "gameRestSuccessToast": "휴식 시작",
+  "gameDeploySlotFull": "배치 슬롯이 가득 찼습니다 (최대 5)",
+  "gameRefillTitle": "체력 회복",
+  "gameRefillCurrentStamina": "현재 체력",
+  "gameRefillCost": "복구 비용",
+  "gameRefillConfirm": "체력을 모두 회복하다",
+  "gameRefillSuccess": "체력 회복 성공",
+  "gameRefillFailed": "체력 회복에 실패했습니다. 다시 시도해 주세요.",
+  "gameBatchRefillTransactionTooLarge": "일괄 체력 회복 트랜잭션이 너무 큽니다. 배우 수를 줄인 후 다시 시도해 주세요.",
+  "agentV2RefillTitle": "체력 보충",
+  "agentV2RefillCost": "비용",
+  "agentV2RefillActorButton": "이 캐릭터",
+  "agentV2RefillAllActors": "공연 중인 모든 캐릭터 보충",
+  "agentV2RefillActorCount": "{count}명",
+  "@agentV2RefillActorCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "agentV2RefillAllButton": "모두 보충",
+  "agentV2RefillOr": "또는",
+  "agentV2RestAll": "모두 휴식",
+  "agentV2RestActorCount": "{count}명",
+  "@agentV2RestActorCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "gameInsufficientUsdc": "USDC 잔액이 부족합니다",
+  "walletInsufficientStory": "STORY 잔액이 부족합니다",
+  "gameSupplementComingSoon": "체력 충전은 곧 출시됩니다",
+  "gameStatHelpWeekPoolTitle": "이번 주 보상 풀",
+  "gameStatHelpWeekPoolSubtitle": "즉, STORY 채굴의 주간 고정 지급 상한선(주간 상한선)",
+  "gameStatHelpWeekTotalPool": "이번 주 총 보상 풀",
+  "gameStatHelpWeekTotalPoolValue": "2,115,385 STORY",
+  "gameStatHelpWeekStakePool": "이번 주 스테이킹 보상 풀(75%)",
+  "gameStatHelpWeekStakePoolValue": "1,586,538 STORY",
+  "gameStatHelpWeekInvitePool": "이번 주 초대 보상 풀(25%)",
+  "gameStatHelpWeekInvitePoolValue": "528,846 STORY",
+  "gameStatHelpInitialHardCap": "초기 주 하드탑",
+  "gameStatHelpInitialHardCapValue": "2,115,385 STORY",
+  "gameStatHelpWeeklyDecay": "주간 감쇠 계수",
+  "gameStatHelpWeeklyDecayValue": "× 0.99572",
+  "gameStatHelpWeeklyDistributionFormula": "주간 실제 지급량 = min(전체 네트워크 명목 생산량, 해당 주 상한선)",
+  "gameStatHelpUnusedQuotaNote": "미사용 잔여 할당량은 지급되지 않으며, 환원되지 않고, 점수도 보충되지 않습니다.",
+  "gameStatHelpNominalTitle": "이번 주 명목 생산량",
+  "gameStatHelpNominalSummary": "내 모든 역할의 주간 누적 명목 생산량 합계",
+  "gameStatHelpNominalSummaryHint": "단일 카드 공식은 아래 설명을 참조하십시오.",
+  "gameStatHelpNominalFormula": "카드당 명목 생산량 = 카드당 시간 가중치 × R_base × 유효 채굴 시간",
+  "gameStatHelpHourlyWeight": "단일 카드 시간 가중치",
+  "gameStatHelpHourlyWeightValue": "= 캐릭터 출연료",
+  "gameStatHelpActorPower": "캐릭터 출연료",
+  "gameStatHelpActorPowerValue": "= IP 출연료 × 채굴 계수 × CP 계수 × Trust2",
+  "gameStatHelpCpCoef": "CP 계수",
+  "gameStatHelpRBase": "R_base",
+  "gameStatHelpRBaseValue": "1 STORY / 단위 가중치 / 시간",
+  "gameStatHelpEffectiveDuration": "유효 채굴 시간",
+  "gameStatHelpEffectiveDurationValue": "담보로 설정된 상태에서 체력이 0보다 큰 상태의 누적 시간",
+  "gameStatHelpActualTitle": "이번 주 예상 생산량",
+  "gameStatHelpActualSubtitle": "예상 생산량은 주간 상한선과 단일 주소 상한선의 제약을 받으며, 주가 끝날 때 실제 수익이 확정됩니다",
+  "gameStatHelpIfNominalLte": "전체 네트워크의 명목 생산량이 해당 주의 상한선 이하인 경우:",
+  "gameStatHelpUserActualEqNominal": "사용자 실제 수령액 = 사용자 명목 생산량",
+  "gameStatHelpIfNominalGt": "전체 네트워크의 명목 생산량이 해당 주의 상한선을 초과할 경우:",
+  "gameStatHelpUserActualFormula": "사용자 실제 수령액 = 사용자 명목 생산량 × 해당 주 상한선 / 전체 네트워크 명목 생산량",
+  "gameStatHelpAddressCap": "주당 최대 한도",
+  "gameStatHelpAddressCapValue": "개별 주소당 매주 해당 주의 상한선의 최대 5%까지 수령할 수 있습니다.",
+  "theaterCategoryAll": "전체",
+  "theaterCategoryAncient": "사극",
+  "theaterCategoryFinance": "금융",
+  "theaterCategorySuspense": "서스펜스",
+  "theaterCategorySciFi": "공상과학",
+  "theaterCategoryRealStory": "실화를 바탕으로 한",
+  "theaterCategoryUrban": "도시",
+  "theaterSortHottest": "가장 인기 있는",
+  "theaterSortNewest": "최신",
+  "theaterSortTopRated": "가장 많이 저장된 항목",
+  "theaterPlayCount": "{count} 재생",
+  "@theaterPlayCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBasicInfo": "기본 정보",
+  "createDramaEpisodes": "드라마 관리",
+  "createDramaRoles": "역할 관리",
+  "createDramaCover": "표지",
+  "createDramaCoverUpload": "업로드",
+  "createDramaCoverPlaceholder": "JPG/PNG 지원, 6:5 화면 비율 권장, 최대 5MB",
+  "createDramaCoverCropTitle": "커버 이미지 자르기",
+  "createDramaName": "단편 드라마 제목",
+  "createDramaNameHint": "단편 드라마 제목을 입력해 주세요",
+  "createDramaSynopsis": "소개",
+  "createDramaTags": "태그",
+  "createDramaTagsHint": "태그를 입력하고 Enter로 추가 (예: 로맨스, 코미디)",
+  "createDramaTagsLoading": "태그 로딩 중…",
+  "createDramaTagsEmpty": "사용 가능한 태그가 없습니다",
+  "createDramaTagsRetry": "다시 시도",
+  "createDramaUploadDesc": "‘업로드’를 클릭하면, 제출 후 동영상 이름 순으로 자동 정렬됩니다.",
+  "@createDramaUploadDesc": {},
+  "createDramaEpisodesDesc": "동영상 파일을 일괄 업로드하면 시스템이 파일 이름 순서대로 에피소드 목록을 자동으로 생성합니다. 드래그 앤 드롭으로 정렬, 삭제, 제목 편집 등의 작업을 수행할 수 있습니다.",
+  "@createDramaEpisodesDesc": {},
+  "createDramaVideoFileTypeHint": "지원 형식: mp4, flv, wmv, asf, mkv, avi, rm, rmvb, mpg, mpeg, mov, webm. 최대 파일 크기 2GB.",
+  "@createDramaVideoFileTypeHint": {},
+  "createDramaUploadVideo": "동영상 업로드",
+  "createDramaVideoEmpty": "아직 추가된 동영상이 없습니다",
+  "createDramaVideoPickFailed": "동영상 선택에 실패했습니다",
+  "createDramaVideoAnyTooLarge": "2GB를 초과하는 비디오가 있습니다. 조정 후 다시 시도해 주세요",
+  "createDramaVideoStatusUploading": "업로드 중",
+  "createDramaVideoStatusDone": "업로드 완료",
+  "createDramaVideoStatusFailed": "업로드 실패",
+  "createDramaVideoTooLarge": "동영상 크기는 2GB를 초과할 수 없으며 업로드할 수 없습니다",
+  "createDramaVideoUploadComplete": "모든 동영상이 업로드되었습니다",
+  "createDramaVideoUploadFailed": "{name} 업로드 실패",
+  "@createDramaVideoUploadFailed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaVideoPickOverflow": "최대 {count}개의 회차를 더 추가할 수 있습니다. {overflow}개가 초과되어 건너뜁니다.",
+  "@createDramaVideoPickOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "overflow": {
+        "type": "int"
+      }
+    }
+  },
+  "createDramaAddedVideos": "추가된 동영상 ({count}개 파일)",
+  "@createDramaAddedVideos": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaAddedVideosCount": "({count}개 파일)",
+  "@createDramaAddedVideosCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaAddedVideosLabel": "추가된 동영상",
+  "createDramaRolesDesc": "단편 드라마의 역할을 생성하고, 역할 이름, 프로필 사진 및 성격 소개를 설정합니다.",
+  "createDramaRolesRule1": "크리에이터당 최대 5개의 역할을 추가하고, 최대 5개의 역할을 선택하여 캐릭터 IP에 연결할 수 있습니다. IP를 사용하려면 해당 캐릭터를 보유해야 합니다.",
+  "createDramaRolesRule2": "드라마 심사 통과 후 7일 이내에 캐릭터 IP를 연결할 수 있습니다. 이 기간에 생성된 재생 데이터는 연결된 캐릭터 IP에 누적됩니다.",
+  "@createDramaRolesRule2": {
+    "description": "创建短剧角色规则2：短剧通过审核后7天内可绑定演员IP，期间产生的播放数据将同步积累到所绑定的演员IP上。"
+  },
+  "createDramaRolesExpireTime": "마감 시간",
+  "createDramaRolesRule3": "캐릭터가 연결되어 참여 중인 경우, 심사 승인 후 연결 해제나 교체가 불가능합니다.",
+  "createDramaAddRole": "역할 추가",
+  "createDramaBindActor": "출연 역할",
+  "createDramaRoleActing": "출연 역할",
+  "createDramaSelectActor": "역할 선택",
+  "createDramaBindActorTitle": "캐릭터 IP 선택",
+  "createDramaBindActorSubtitle": "“{roleName}” 역을 맡을 캐릭터 IP를 선택하세요",
+  "@createDramaBindActorSubtitle": {
+    "placeholders": {
+      "roleName": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBindActorOwnedCount": "{count}개의 캐릭터 IP를 보유하고 있습니다",
+  "@createDramaBindActorOwnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "createDramaBindActorIpLabel": "캐릭터 IP {code}",
+  "@createDramaBindActorIpLabel": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBindActorBoundTag": "연동됨",
+  "createDramaBindActorBoundToast": "{name} 연결됨",
+  "@createDramaBindActorBoundToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBindActorUnbind": "연결 해제",
+  "createDramaBindActorExpired": "단막극이 출시된 지 7일이 지나면 역할을 출연시킬 수 없습니다",
+  "createDramaBindActorEmptyTitle": "연결할 캐릭터 IP가 없습니다",
+  "createDramaBindActorEmptyDesc": "역할에 연결하기 전에 캐릭터 IP를 보유해야 합니다",
+  "createDramaBindActorGotoCreate": "역할 만들기",
+  "createDramaPrevStep": "이전 단계",
+  "createDramaNextStep": "다음 단계",
+  "createDramaSubmit": "게시",
+  "createDramaRoleNameLabel": "역할 이름",
+  "createDramaRoleNameHint": "역할 이름을 입력해 주세요",
+  "createDramaRoleNameRequired": "역할 이름을 입력해 주세요",
+  "createDramaRoleBioLabel": "역할 소개",
+  "createDramaRoleBioHint": "역할 소개를 입력해 주세요",
+  "createDramaRoleBioRequired": "역할 소개를 입력해 주세요",
+  "createDramaRoleAddTitle": "역할 추가",
+  "createDramaRoleEditTitle": "역할 편집",
+  "createDramaRoleUploadAvatar": "프로필 사진 업로드",
+  "createDramaRoleSave": "저장",
+  "createDramaRoleDeleteConfirm": "이 캐릭터를 삭제하시겠습니까?",
+  "createDramaVideoDeleteConfirm": "\"{name}\"을(를) 삭제하시겠습니까?",
+  "@createDramaVideoDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaVideoDeleteTitle": "동영상 삭제",
+  "createDramaVideoPreviewUnavailable": "이전에 업로드한 동영상은 현재 미리 볼 수 없습니다",
+  "createDramaRoleEmpty": "아직 추가된 역할이 없습니다",
+  "createDramaRoleBindComingSoon": "역할 연결은 곧 출시됩니다",
+  "createDramaRoleAvatarCropTitle": "역할 아바타 자르기",
+  "createDramaRoleAvatarUploadFailed": "역할 아바타 업로드 실패",
+  "createDramaPublishedSuccess": "게시되었습니다",
+  "createDramaDraftRestored": "미완성 초안이 복원되었습니다",
+  "createDramaDraftClear": "데이터 지우기",
+  "createDramaDraftDiscard": "저장하지 않고 돌아가기",
+  "createDramaDraftSave": "초안 저장",
+  "createDramaEditLoading": "로딩 중...",
+  "createDramaEditLoadError": "드라마 정보 로딩 실패, 다시 시도해 주세요",
+  "createDramaSubmitValidationTitle": "드라마 제목을 입력해 주세요",
+  "createDramaSubmitValidationCover": "커버 이미지를 업로드해 주세요",
+  "createDramaSubmitValidationVideos": "최소 1개의 동영상을 업로드해 주세요",
+  "createDramaSubmitValidationSession": "업로드 세션이 유효하지 않습니다, 동영상을 다시 업로드해 주세요",
+  "createDramaUploadSessionFailed": "업로드 세션 생성에 실패했습니다",
+  "createDramaSubmitValidationRoles": "최소 1개의 역할을 추가해 주세요",
+  "createDramaStep1TitleRequired": "단편 드라마 제목을 입력해 주세요",
+  "createDramaStep1SynopsisRequired": "소개 내용을 입력해 주세요",
+  "createDramaStep1CoverRequired": "커버를 추가해 주세요",
+  "createDramaStep1TagsRequired": "태그를 선택해 주세요",
+  "settingsLanguage": "언어",
+  "settingsTheme": "테마",
+  "settingsThemeLight": "라이트",
+  "settingsThemeDark": "다크",
+  "settingsThemeSystem": "시스템",
+  "settingsUI": "인터페이스",
+  "settingsAppVersion": "버전",
+  "settingsVersionLatestToast": "최신 버전을 사용하고 있습니다",
+  "settingsTermsOfService": "서비스 약관",
+  "settingsPrivacyPolicy": "개인정보 처리방침",
+  "settingsDeleteAccount": "계정 삭제",
+  "settingsDeleteAccountConfirm": "계정이 {deadline}에 삭제됩니다. 이 기간 내에 다시 로그인하면 계정 삭제를 취소할 수 있습니다.",
+  "settingsDeleteAccountSuccess": "계정 삭제 신청이 제출되었습니다",
+  "settingsClearCache": "캐시 지우기",
+  "settingsNetworkInspector": "네트워크 인스펙터",
+  "settingsClearCacheConfirm": "캐시를 지우시겠습니까?",
+  "miningRulesHowToPlay": "파밍 파견은 어떻게 하나요?",
+  "miningRulesFlowSubtitle": "한 장의 그림으로 인력 파견부터 급여 수령까지의 전체 과정을 한눈에 파악하기",
+  "miningRulesSection1Title": "1. 사람을 보내서 광산을 개발하게 한다",
+  "miningRulesSection1Desc": "유휴 상태인 역할을 아래의 5개 슬롯에 ‘배치’하면, 그 역할이 자동으로 채굴을 시작하여 STORY를 생산합니다.",
+  "miningRulesSection1Bullet1": "1인당 동시에 최대 5명의 역할을 파견할 수 있습니다.",
+  "miningRulesSection1Bullet2": "동일한 캐릭터 IP에 대해 여러 장의 카드를 동시에 배정할 수도 있습니다.",
+  "miningRulesSection1Bullet3": "파견 후 매 1시간마다 ⚡체력 1을 소모하며, 체력이 0보다 크면 계속 생산하고, 체력이 0이면 생산이 중단됩니다.",
+  "miningRulesSection2Title": "2. 계산, 산출 공식",
+  "miningRulesSection2Desc": "카드 한 장당 시간당 생산량은 다음과 같이 계산됩니다:",
+  "miningRulesSection2Formula": "1카드 시간당 출력 = 캐릭터 출연료 × 1 STORY",
+  "miningRulesSection2FactorsTitle": "세 가지 결정 요인:",
+  "miningRulesSection2Factor1": "채굴 계수 — 등급이 높을수록 계수가 커집니다. Lv1=1.0 → Lv2=2.2 → Lv3=5.0 → Lv4=11 → Lv5=24",
+  "miningRulesSection2Factor2": "IP 출연료 = 가격 계수 × 히트 계수 × Trust1",
+  "miningRulesCoefTableTitle": "Coefficient details",
+  "miningRulesCoefColCoef": "Coefficient",
+  "miningRulesCoefColFactor": "Determined by",
+  "miningRulesCoefColDesc": "Details",
+  "miningRulesCoefMining": "Mining Coefficient",
+  "miningRulesCoefPrice": "Price Coefficient",
+  "miningRulesCoefHeat": "히트 계수",
+  "miningRulesCoefCp": "CP Coefficient",
+  "miningRulesCoefTrust": "Trust",
+  "miningRulesCoefMiningFactor": "Tier",
+  "miningRulesCoefPriceFactor": "출시가 P0",
+  "miningRulesCoefHeatFactor": "Recent drama performance",
+  "miningRulesCoefCpFactor": "-",
+  "miningRulesCoefTrustFactor": "Platform risk control",
+  "miningRulesCoefMiningDesc": "Lv1=1.0 · Lv2=2.2 · Lv3=5.0 · Lv4=11 · Lv5=24",
+  "miningRulesCoefPriceDesc": "Linear when P0≤10U · asymptotic cap 1.6 when P0>10U",
+  "miningRulesCoefHeatDesc": "완주, 좋아요, 저장, 댓글이 많을수록 히트가 높아집니다",
+  "miningRulesCoefCpDesc": "Not open yet",
+  "miningRulesCoefTrustDesc": "Defaults to 1.0",
+  "miningRulesSettleColCondition": "Condition",
+  "miningRulesSettleColRule": "Distribution rule",
+  "miningRulesUpgradePathSubtitle": "Upgrade path",
+  "miningRulesUpgradeColPath": "Upgrade path",
+  "miningRulesUpgradeColHeat": "누적 완주 기준",
+  "miningRulesUpgradeColFee": "Synthesis fee",
+  "miningRulesUpgradePath12": "Lv1 → Lv2",
+  "miningRulesUpgradePath23": "Lv2 → Lv3",
+  "miningRulesUpgradePath34": "Lv3 → Lv4",
+  "miningRulesUpgradePath45": "Lv4 → Lv5",
+  "miningRulesUpgradeHeat12": "≥ 10,000",
+  "miningRulesUpgradeHeat23": "≥ 50,000",
+  "miningRulesUpgradeHeat34": "≥ 200,000",
+  "miningRulesUpgradeHeat45": "≥ 1,000,000",
+  "miningRulesUpgradeFee12": "10 USDC",
+  "miningRulesUpgradeFee23": "20 USDC",
+  "miningRulesUpgradeFee34": "40 USDC",
+  "miningRulesUpgradeFee45": "80 USDC",
+  "miningRulesSection2Factor3": "R_base——고정값, 현재 1 STORY이며, 추후 플랫폼에서 수동으로 조정될 수 있음",
+  "miningRulesSection2StaminaText": "체력은 ‘있는지 없는지’만 중요할 뿐, 얼마나 남았는지는 중요하지 않습니다. 체력이 {staminaLimit}점이든 1점이든 시간당 생산량은 동일하며, 체력은 채굴 중인지 아닌지만을 따집니다.",
+  "@miningRulesSection2StaminaText": {
+    "placeholders": {
+      "staminaLimit": {
+        "type": "int"
+      }
+    }
+  },
+  "miningRulesSection2ExampleTitle": "예를 들어:",
+  "miningRulesSection2ExampleDesc": "린멍야오 · Lv3 주연 · P0=12U(가격 계수 ≈1.0859) · 히트 3.5\n→ 시간당 생산량 = 5.0 × 1.0859 × 3.5 × 1 = 19.00325 STORY",
+  "miningRulesSection3Title": "3. 돈을 지급하지만, 상한선이 있다",
+  "miningRulesSection3Desc": "매주 플랫폼 전체에서 총 보상 풀(주간 하드 캡)이 설정되며, 약 2,115,385 STORY에서 시작하여 매주 감소합니다(주 × 0.99572). 보상 분배는 세 가지 경우로 나뉩니다:",
+  "miningRulesSection3Case1Title": "전 플랫폼 명목 생산량 ≤ 이번 주 상금 풀",
+  "miningRulesSection3Case1Desc": "모든 참가자는 명단에 기재된 대로 전액을 수령하며, 남은 상금은 지급되지 않으며 보충되지도 않습니다.",
+  "miningRulesSection3Case2Title": "전 플랫폼 명목 생산량 &gt; 이번 주 상금 풀",
+  "miningRulesSection3Case2Desc": "비례 조정: 실제 수익 = 명목 생산량 × 보상 풀 ÷ 전체 플랫폼 생산량",
+  "miningRulesSection3Case3Title": "단일 주소가 보상 풀의 5%를 초과함",
+  "miningRulesSection3Case3Desc": "초과분은 지급하지 않으며, 환원되지 않고, 점수도 보충되지 않습니다.",
+  "miningRulesSection3ExampleDesc": "주간 보상 풀이 100,000 STORY라고 가정:\n케이스 A: 플랫폼에 본인만 있고, 주간 134를 생산 → 134를 획득, 나머지 99,866은 분배되지 않음\n케이스 B: 플랫폼 전체 출력이 250,000이면, 모두 40%로 스케일링 (100,000÷250,000)\n케이스 C: 특정인의 비례 보상이 6,000이지만, 1주소당 상한이 5,000 → 5,000만 분배",
+  "miningRulesSection4Title": "4. 체력을 잘 관리해야 계속 채굴할 수 있다",
+  "miningRulesTableStatus": "상태",
+  "miningRulesTableStaminaChange": "체력 변화",
+  "miningRulesTableOutput": "산출물",
+  "miningRulesStatusMining": "파견 중 (채굴)",
+  "miningRulesStaminaMining": "시간당 -1",
+  "miningRulesOutputNormal": "정상적인 생산량",
+  "miningRulesStatusZeroStamina": "체력 = 0",
+  "miningRulesStaminaZeroStamina": "더 이상 변하지 않는다",
+  "miningRulesOutputZero": "출력값은 0입니다.",
+  "miningRulesStatusResting": "휴식 시간",
+  "miningRulesStaminaResting": "시간당 +1 (자동 회복)",
+  "miningRulesOutputPaused": "생산 일시 중단",
+  "miningRulesStatusPaidRefill": "체력 보충 (유료)",
+  "miningRulesStaminaPaidRefill": "순간적으로 {staminaLimit}까지 회복",
+  "@miningRulesStaminaPaidRefill": {
+    "placeholders": {
+      "staminaLimit": {
+        "type": "int"
+      }
+    }
+  },
+  "miningRulesOutputRestored": "생산 재개",
+  "miningRulesSection4TipsTitle": "체력을 보충하는 데 관한 3가지 사항:",
+  "miningRulesSection4Tip1": "한 번의 클릭으로 최대량만 충전할 수 있으며, 10포인트만 구매할 수는 없습니다.",
+  "miningRulesSection4Tip2": "가격은 캐릭터의 등급만 보고, 남은 체력은 고려하지 않습니다. 체력이 0일 때 최대치로 채우는 것과 체력이 100일 때 최대치로 채우는 데 드는 비용은 똑같습니다.",
+  "miningRulesSection4Tip3": "0에 가까울수록 보충하는 것이 더 유리합니다——같은 비용을 지불하고도 가장 많은 추가 채굴 시간을 확보할 수 있습니다",
+  "miningRulesSection4PriceTitle": "각 등급별 추가 가격:",
+  "miningRulesPriceTableTier": "지위",
+  "miningRulesPriceTableFullRefill": "한 번의 클릭으로 가득 채우기",
+  "miningRulesLv1": "Lv1 엑스트라",
+  "miningRulesLv2": "Lv2 조연",
+  "miningRulesLv3": "Lv3 주인공",
+  "miningRulesLv4": "Lv4 슈퍼스타",
+  "miningRulesLv5": "Lv5 최정상",
+  "miningRulesLv1Price": "15 USDC",
+  "miningRulesLv2Price": "36 USDC",
+  "miningRulesLv3Price": "87 USDC",
+  "miningRulesLv4Price": "208 USDC",
+  "miningRulesLv5Price": "465 USDC",
+  "miningRulesSection5Title": "5. 등급을 올려 더 많은 수익을 올리세요",
+  "miningRulesSection5Desc": "동급 캐릭터 카드 3장 + 합성 비용 + 해당 캐릭터의 누적 완주 목표 달성 = 1레벨 상승. 레벨 업 후 채굴 계수가 급증하여 시간당 생산량이 두 배, 심지어 몇 배로 늘어납니다.",
+  "miningRulesSummaryTitle": "한 마디로 요약하면",
+  "miningRulesSummaryDesc": "파견 → 생산 → 체력 확인 → 수령. 체력이 얼마 안 남으면 보충하거나 불러와 휴식시키세요. 히트는 캐릭터의 드라마 성과로 올라가며, 업그레이드하면 생산이 비약적으로 늘어납니다.",
+  "playerNotInterested": "관심 없음",
+  "playerNotInterestedDone": "비슷한 영상을 줄이겠습니다",
+  "playerClearScreen": "화면 정리",
+  "playerAutoPlay": "연속 재생",
+  "playerReport": "신고",
+  "playerReportSuccess": "신고 완료",
+  "commentReportSuccess": "제출되었습니다. 곧 처리해 드리겠습니다",
+  "reportDescription": "신고 내용",
+  "reportDescriptionPlaceholder": "상세 내용을 기술하세요 (선택사항)",
+  "reportReasonPorn": "포르노 및 음란물",
+  "reportReasonIllegal": "불법 또는 범죄",
+  "reportReasonSensitive": "민감한 콘텐츠",
+  "reportReasonGambling": "도박 또는 폭력",
+  "reportReasonMinors": "미해자 유해",
+  "reportReasonCopyright": "저작권 침해",
+  "reportReasonQuality": "품질 문제",
+  "reportReasonNotLike": "마음에 들지 않아요",
+  "reportReasonOther": "기타",
+  "gameUpgrade": "업그레이드",
+  "gameUpgradeTitle": "레벨 업그레이드",
+  "gameUpgradeCurrentLevel": "현재 레벨",
+  "gameUpgradeTargetLevel": "목표 레벨",
+  "gameUpgradeHeatThreshold": "드라마 누적 완주",
+  "gameUpgradeRequiredCount": "동일 IP 동일 레벨 역할 소모",
+  "gameUpgradeFee": "업그레이드 비용",
+  "gameUpgradeNextLevelReq": "다음 레벨 업그레이드 조건",
+  "gameUpgradeBeforeAfter": "업그레이드 전후 비교",
+  "gameUpgradeSelectMaterialDesc": "소모할 동일 IP 동일 레벨 역할 선택",
+  "gameUpgradeMaterialCount": "{current}/{required}",
+  "@gameUpgradeMaterialCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "gameUpgradeToLevel": "Lv{level} {levelName}로 업그레이드",
+  "@gameUpgradeToLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      },
+      "levelName": {
+        "type": "String"
+      }
+    }
+  },
+  "gameUpgradeSelectMaterialLabel": "재료 선택 ({current}/{required})",
+  "@gameUpgradeSelectMaterialLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "gameUpgradeSelectMaterials": "{count}개의 재료를 선택하세요",
+  "@gameUpgradeSelectMaterials": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameUpgradeConfirm": "업그레이드 확인",
+  "gameUpgradeSuccess": "업그레이드 성공",
+  "gameUpgradeFailed": "업그레이드 실패, 다시 시도해주세요",
+  "gameUpgradeInsufficientMaterials": "재료 부족",
+  "gameUpgradeNoMaterials": "소모 가능한 동일 IP 동일 레벨의 역할이 없습니다",
+  "creatorDramaStatusMinted": "민팅 완료",
+  "creatorDramaStatusOffline": "하차됨",
+  "creatorDramaStatusUnavailable": "일시적으로 사용 불가",
+  "creatorMintDramaNft": "드라마 NFT 민팅",
+  "creatorMintConfirmDesc": "이 드라마를 온체인 NFT로 민팅합니다. 민팅 후 이 드라마는 STORY 마이닝 보상을 생성합니다.",
+  "creatorMintFee": "민팅 수수료",
+  "creatorMintInsufficientUsdc": "USDC 잔액이 부족합니다. 온체인 출시에는 최소 1 USDC가 필요합니다.",
+  "creatorMintInvalidDramaId": "잘못된 드라마 ID입니다",
+  "creatorMintInProgress": "민팅이 진행 중입니다. 잠시만 기다려 주세요",
+  "creatorMintWalletNotReady": "Solana 지갑 주소가 준비되지 않았습니다. 다시 로그인해 주세요",
+  "creatorMintDigestEmpty": "출시 서명 데이터가 비어 있습니다. 잠시 후 다시 시도해 주세요.",
+  "creatorMintWalletMismatch": "민팅 지갑이 현재 지갑과 일치하지 않습니다. 다시 로그인해 주세요",
+  "creatorMintSuccess": "민팅 성공!",
+  "@creatorMintDramaOnChain": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "creatorMintDramaOnChain": "드라마 NFT 「{name}」이(가) 온체인에 민팅되었습니다",
+  "@creatorMintNftNumber": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "creatorMintNftNumber": "NFT 번호: {id}",
+  "creatorMintTxHash": "트랜잭션 해시: ",
+  "gameSelectActor": "파견할 역할 선택",
+  "gameSelectActorDesc": "대기 중인 캐릭터를 한 명 선택하여 파견하세요",
+  "agentV2SchedulePerformance": "공연",
+  "agentV2PerformAllTitle": "한 번에 공연",
+  "agentV2PerformAllDescription": "출연료가 높은 순서대로 빈 공연 슬롯에 배치합니다",
+  "agentV2PerformAllFailed": "원탭 공연에 실패했습니다. 다시 시도해 주세요",
+  "agentV2PerformAllCount": "캐릭터 {count}명",
+  "agentV2CandidateActorsTitle": "후보 역할",
+  "agentV2CandidateActorsDescription": "휴식 중인 역할은 시간당 체력을 1 회복합니다",
+  "agentV2UpgradeableActorsTitle": "역할 업그레이드",
+  "agentV2UpgradeableActorsEmpty": "업그레이드할 수 있는 역할이 없습니다",
+  "agentV2NoActors": "역할이 없습니다",
+  "agentV2UpgradeNow": "지금 업그레이드",
+  "agentV2UpgradeCompletion": "완주",
+  "agentV2UpgradeMaterials": "역할",
+  "agentV2UpgradeRequirementsTitle": "{name} 업그레이드",
+  "agentV2UpgradeCompletionRemaining": "완주 {count}회가 더 필요합니다",
+  "agentV2UpgradeCompletionHint": "이 캐릭터가 출연한 드라마를 시청하거나 새 드라마를 제작하면 완주 수가 증가합니다",
+  "agentV2UpgradeWatchDramas": "출연 드라마 보기",
+  "agentV2UpgradeCreateDrama": "드라마 제작하기",
+  "agentV2UpgradeMaterialsRemaining": "동일 IP·동일 레벨 역할이 {count}개 더 필요합니다",
+  "agentV2UpgradeMaterialsHint": "캐릭터 프로필에서 ‘{name}’을 더 계약하세요",
+  "agentV2UpgradeGetActors": "역할 획득하기",
+  "agentV2UpgradeActorsSyncing": "새 캐릭터 {count}개를 동기화하는 중입니다. 업그레이드 조건이 업데이트되었습니다",
+  "agentV2PerformanceConfirmDescription": "이 캐릭터는 공연 시 자동으로 출연료를 얻습니다. 공연 중에는 시간당 체력 1이 소모되며, 체력이 소진되면 수익 발생이 중단됩니다.",
+  "agentV2PerformanceScheduledSuccess": "공연이 예약되었습니다",
+  "agentV2PerformanceSlotsFull": "공연 슬롯이 가득 찼습니다(최대 5개)",
+  "gameDeployStaminaDepleted": "체력이 소진되었습니다. 체력을 보충한 후 공연할 수 있습니다",
+  "agentV2MoreRules": "규칙",
+  "agentV2MoreSalaryAndPool": "출연료와 보상 풀",
+  "agentV2WeeklySalaryTitle": "레벨업 · 공연 · 출연료 벌기",
+  "agentV2WeeklySalaryLabel": "이번 주 출연료",
+  "gameDeployConfirmDesc": "이 캐릭터는 자동으로 스테이킹 채굴에 참여하여 지속적으로 STORY 수익을 생성합니다. 참고: 매 정각마다 체력 1포인트가 소모되며, 체력이 모두 소진되면 수익 생성이 중단됩니다.",
+  "gameRecallConfirm": "소환 확인",
+  "gameRecallDesc": "이 캐릭터를 소환하면 드라마 생산 보상이 일시 중지되지만, 현재 체력에는 영향을 미치지 않습니다.",
+  "actorStatCompletionTitle": "완주",
+  "actorStatCompletionDesc": "이 캐릭터가 출연한 모든 드라마의 완주 횟수 합계",
+  "actorStatHeatTitle": "히트",
+  "actorStatHeatDesc": "이 캐릭터 IP가 출연한 모든 단편 드라마의 최근 30일 히트 합계",
+  "dramaFavoriteLabel": "찜",
+  "dramaRatingLabel": "평점",
+  "dramaUnnamed": "제목 없음",
+  "videoNotReady": "비디오가 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요",
+  "inviteDirectSubordinates": "직접 하위 사용자",
+  "@inviteTotalCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inviteTotalCount": "총 {count}명",
+  "inviteTotalLabel": "총 인원",
+  "inviteActiveLabel": "활성 사용자",
+  "invitePendingLabel": "활성화 대기",
+  "inviteEmpty": "하위 사용자가 없습니다",
+  "@inviteRegisteredAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteRegisteredAt": "{date}에 등록",
+  "searchNoData": "관련 콘텐츠가 없습니다",
+  "gameActorLevelName1": "엑스트라",
+  "gameActorLevelName2": "조연",
+  "gameActorLevelName3": "주연",
+  "gameActorLevelName4": "슈퍼스타",
+  "gameActorLevelName5": "탑 티어",
+  "gameUpgradeMaxLevel": "최대 등급에 도달했습니다",
+  "listNoMoreData": "더 이상 데이터가 없습니다",
+  "publishDrama": "드라마 게시",
+  "publishVideo": "동영상 게시",
+  "publishVideoUploadTitle": "동영상 파일 업로드",
+  "publishVideoFileHint": "mp4, flv, wmv, mkv, avi, mov, webm 지원, 최대 2GB",
+  "publishVideoChooseFile": "파일 선택",
+  "publishVideoChangeFile": "파일 변경",
+  "publishVideoCoverTitle": "동영상 커버",
+  "publishVideoChangeCover": "커버 변경",
+  "publishVideoCoverHint": "JPG/PNG, 최대 5MB",
+  "publishVideoDescriptionLabel": "설명",
+  "publishVideoRequired": "(필수)",
+  "publishVideoDescriptionHint": "작품 설명 추가(최대 200자)",
+  "publishVideoSaveDraft": "초안 저장",
+  "publishVideoNext": "다음",
+  "publishVideoCoverCropTitle": "동영상 커버 자르기",
+  "publishVideoVideoTooLarge": "동영상 파일은 2GB를 초과할 수 없습니다",
+  "publishVideoVideoPickFailed": "동영상을 선택하지 못했습니다. 다시 시도해 주세요",
+  "publishVideoMetadataUnavailable": "동영상 정보를 읽을 수 없습니다. 다른 파일을 선택해 주세요",
+  "publishVideoCoverTooLarge": "커버 이미지는 5MB를 초과할 수 없습니다",
+  "publishVideoCoverUnsupportedFormat": "JPG/PNG 이미지만 지원됩니다",
+  "publishVideoCoverPickFailed": "커버를 선택하지 못했습니다. 다시 시도해 주세요",
+  "publishVideoUploadSessionFailed": "업로드 세션을 만들지 못했습니다. 다시 시도해 주세요",
+  "publishVideoPublishedSuccess": "동영상이 게시되었습니다",
+  "publishActorIp": "IP 발행",
+  "navHome": "홈",
+  "navProfile": "내 정보",
+  "mainPressBackAgainToExit": "종료하려면 뒤로 버튼을 한 번 더 누르세요",
+  "gameBatchRefillTransactionTooLarge": "일괄 체력 회복 트랜잭션이 너무 큽니다. 배우 수를 줄인 후 다시 시도해 주세요.",
+  "agentV2RefillTitle": "체력 보충",
+  "agentV2RefillCost": "비용",
+  "agentV2RefillActorButton": "이 캐릭터",
+  "agentV2RefillAllActors": "공연 중인 모든 캐릭터 보충",
+  "agentV2RefillActorCount": "{count}명",
+  "@agentV2RefillActorCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agentV2RefillAllButton": "모두 보충",
+  "agentV2RefillOr": "또는",
+  "agentV2RestAll": "모두 휴식",
+  "agentV2RestActorCount": "{count}명",
+  "@agentV2RestActorCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agentV2SchedulePerformance": "공연",
+  "agentV2PerformAllTitle": "한 번에 공연",
+  "agentV2PerformAllDescription": "출연료가 높은 순서대로 빈 공연 슬롯에 배치합니다",
+  "agentV2PerformAllCount": "캐릭터 {count}명",
+  "agentV2CandidateActorsTitle": "후보 역할",
+  "agentV2CandidateActorsDescription": "휴식 중인 역할은 시간당 체력을 1 회복합니다",
+  "agentV2UpgradeableActorsTitle": "역할 업그레이드",
+  "agentV2UpgradeableActorsEmpty": "업그레이드할 수 있는 역할이 없습니다",
+  "agentV2NoActors": "역할이 없습니다",
+  "agentV2UpgradeNow": "지금 업그레이드",
+  "agentV2UpgradeCompletion": "완주",
+  "agentV2UpgradeMaterials": "역할",
+  "agentV2UpgradeRequirementsTitle": "{name} 업그레이드",
+  "agentV2UpgradeCompletionRemaining": "완주 {count}회가 더 필요합니다",
+  "agentV2UpgradeCompletionHint": "이 캐릭터가 출연한 드라마를 시청하거나 새 드라마를 제작하면 완주 수가 증가합니다",
+  "agentV2UpgradeWatchDramas": "출연 드라마 보기",
+  "agentV2UpgradeCreateDrama": "드라마 제작하기",
+  "agentV2UpgradeMaterialsRemaining": "동일 IP·동일 레벨 역할이 {count}개 더 필요합니다",
+  "agentV2UpgradeMaterialsHint": "캐릭터 프로필에서 ‘{name}’을 더 계약하세요",
+  "agentV2UpgradeGetActors": "역할 획득하기",
+  "agentV2UpgradeActorsSyncing": "새 캐릭터 {count}개를 동기화하는 중입니다. 업그레이드 조건이 업데이트되었습니다",
+  "agentV2PerformanceConfirmDescription": "이 캐릭터는 공연 시 자동으로 출연료를 얻습니다. 공연 중에는 시간당 체력 1이 소모되며, 체력이 소진되면 수익 발생이 중단됩니다.",
+  "agentV2PerformanceScheduledSuccess": "공연이 예약되었습니다",
+  "agentV2PerformanceSlotsFull": "공연 슬롯이 가득 찼습니다(최대 5개)",
+  "agentV2MoreRules": "규칙",
+  "agentV2MoreSalaryAndPool": "출연료와 보상 풀",
+  "agentV2WeeklySalaryTitle": "레벨업 · 공연 · 출연료 벌기",
+  "agentV2WeeklySalaryLabel": "이번 주 출연료"
+}

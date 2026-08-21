@@ -1,0 +1,2139 @@
+{
+  "appName": "StoryFun",
+  "commonCancel": "キャンセル",
+  "commonNo": "いいえ",
+  "commonYes": "はい",
+  "publishDrama": "ドラマを投稿",
+  "publishVideo": "動画を投稿",
+  "publishVideoUploadTitle": "動画ファイルをアップロード",
+  "publishVideoFileHint": "mp4、flv、wmv、mkv、avi、mov、webm、最大2GB",
+  "publishVideoChooseFile": "ファイルを選択",
+  "publishVideoChangeFile": "ファイルを変更",
+  "publishVideoCoverTitle": "動画カバー",
+  "publishVideoChangeCover": "カバーを変更",
+  "publishVideoCoverHint": "JPG/PNG、最大5MB",
+  "publishVideoDescriptionLabel": "説明",
+  "publishVideoRequired": "（必須）",
+  "publishVideoDescriptionHint": "作品の説明を追加（最大200文字）",
+  "publishVideoSaveDraft": "下書きを保存",
+  "publishVideoNext": "次へ",
+  "publishVideoCoverCropTitle": "動画カバーを切り抜く",
+  "publishVideoVideoTooLarge": "動画ファイルは2GB以下にしてください",
+  "publishVideoVideoPickFailed": "動画を選択できませんでした。もう一度お試しください",
+  "publishVideoMetadataUnavailable": "動画情報を読み取れません。別のファイルを選択してください",
+  "publishVideoCoverTooLarge": "カバー画像は5MB以下にしてください",
+  "publishVideoCoverUnsupportedFormat": "JPG/PNG形式の画像のみ対応しています",
+  "publishVideoCoverPickFailed": "カバーを選択できませんでした。もう一度お試しください",
+  "publishVideoUploadSessionFailed": "アップロードセッションを作成できませんでした",
+  "publishVideoPublishedSuccess": "動画を投稿しました",
+  "publishVideoUpdatedSuccess": "動画を更新しました",
+  "publishActorIp": "IPを発行",
+  "commonConfirm": "確認",
+  "commonOk": "了解",
+  "commonRetry": "再試行",
+  "publicProfileLikedEmpty": "いいねした作品はまだありません",
+  "profileTabDramas": "ショートドラマ",
+  "profileTabWorks": "作品",
+  "profileTabActorIp": "キャラクターIP",
+  "@dramaUnlockConfirmLabel": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaUnlockConfirmLabel": "{price} USDCで解除",
+  "dramaAllEpisodes": "{count}エピソード",
+  "dramaAllEpisodesFull": "全{count}エピソード",
+  "dramaLoading": "注目ドラマを読み込み中...",
+  "dramaEmpty": "ショートドラマはありません",
+  "dramaRefresh": "更新",
+  "@dramaAllEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navTheater": "シアター",
+  "navHome": "ホーム",
+  "theaterTabShortDrama": "ドラマ",
+  "theaterTabRecommend": "おすすめ",
+  "playerWatchFullDrama": "フル短編を視聴",
+  "playerStoryPerHourUnit": "STORY/h",
+  "navNft": "マーケット",
+  "navNftIp": "キャラクターIP",
+  "watchFullDramaEpisodes": "ドラマを見る · 全{count}話",
+  "@watchFullDramaEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navCreate": "作成",
+  "navProfile": "マイページ",
+  "navMy": "マネージャー",
+  "aboutTitle": "私たちについて",
+  "aboutVision": "AI・Web3・プロトコル",
+  "aboutVisionDesc": "3つの力が原動力となり、物語を「受動的な体験」から「能動的な創造」へと変える",
+  "aboutAiDesc": "あなたのアイデアが、自動的に物語になる",
+  "aboutWeb3Desc": "あなたの作品は、いつまでもあなただけのものです",
+  "aboutProtocolDesc": "あなたの物語は、いつまでも続いていきます",
+  "aboutIdentityTitle": "あなたの語り手としての立場",
+  "aboutIdentityDesc": "あなた自身、まさに展開しつつある物語の世界そのものなのです",
+  "aboutIdentityCreator": "クリエイター",
+  "aboutIdentityCreatorDesc": "自らの物語を自ら紡ぐ",
+  "aboutIdentityWitness": "証人",
+  "aboutIdentityWitnessDesc": "他者の物語に参加し、それを検証する",
+  "aboutIdentityCoCreator": "共同クリエイター",
+  "aboutIdentityCoCreatorDesc": "物語の構造に入り、書き直す",
+  "aboutIdentitySpreader": "拡散者",
+  "aboutIdentitySpreaderDesc": "あなたにふさわしい物語を広めよう",
+  "aboutTokenomicsTitle": "STORY：ストーリーテリング権トークン",
+  "aboutTokenomicsDesc": "AI短劇の共同プロデューサーになり、映像業界の利益分配を再構築します。",
+  "aboutTokenomicsGov": "ガバナンス",
+  "aboutTokenomicsGovDesc": "投票で次回のAI短編ドラマのテーマと展開を決定しましょう",
+  "aboutTokenomicsRevenue": "収益",
+  "aboutTokenomicsRevenueDesc": "シェアプラットフォームの購読、著作権ライセンス、および関連グッズ販売による収益",
+  "aboutTokenomicsAccess": "アクセス権",
+  "aboutTokenomicsAccessDesc": "最新エピソードをいち早く視聴し、限定コンテンツをアンロック",
+  "aboutStakingTitle": "担保による利益分配",
+  "aboutStakingDesc": "ドラマNFT · キャラクターNFT · STORY → ステークで配当を獲得",
+  "aboutStakingDrama": "ドラマNFTステーキング",
+  "aboutStakingDramaDesc": "ショートドラマクリエイター・収益分配を受け取る",
+  "aboutStakingActor": "キャラクターNFTステーキング",
+  "aboutStakingActorDesc": "ロールがショートドラマに出演・収益分配を受け取る",
+  "aboutStakingStory": "STORYステーキング",
+  "aboutStakingStoryDesc": "ショートドラマへの投稿・収益分配",
+  "aboutHeroTitle": "あなただけの物語を創造する",
+  "aboutHeroDesc": "あなたの人生は体験される脚本ではなく、あなたが書いている物語です",
+  "loginTitle": "メールアドレスでログイン",
+  "loginSubtitle": "PrivyメールOTPでログインし、Solana組み込みウォレットを自動作成します。",
+  "loginPlaceholder": "メールアドレスを入力してください",
+  "loginEmailHintFormat": "メールアドレスを入力",
+  "loginVerificationFailed": "認証に失敗しました",
+  "loginNeedCodeFirst": "先に認証コードを取得してください",
+  "loginCreateWalletFailed": "ウォレットの作成に失敗しました",
+  "loginGetTokenFailed": "アクセストークンの取得に失敗しました",
+  "loginPrivyUnavailable": "ログインサービスを利用できません。アプリを再起動してからお試しください",
+  "loginSendCodeFailed": "認証コードの送信に失敗しました。しばらくしてからもう一度お試しください",
+  "loginTooManyRequests": "リクエストが多すぎます。しばらくしてからもう一度お試しください",
+  "loginVerificationSuccessful": "認証に成功しました",
+  "loginSendCode": "コードを取得",
+  "loginSendingCode": "送信中...",
+  "loginCodePlaceholder": "6桁の認証コードを入力してください",
+  "loginSubmit": "ログイン",
+  "loginSubmitting": "ログイン中...",
+  "loginEmailRequired": "メールアドレスを入力してください",
+  "loginCodeRequired": "認証コードを入力してください",
+  "loginSuccess": "ログイン成功",
+  "loginErrorPrefix": "ログインエラー: ",
+  "loginCodeSent": "認証コードが{email}に送信されました",
+  "loginEmailLabel": "メールアドレス",
+  "loginCodeLabel": "認証コード",
+  "loginVerifying": "認証中です。しばらくお待ちください...",
+  "loginVerifyAndSubmit": "認証してログイン",
+  "loginChangeEmail": "メールアドレスを変更",
+  "loginNotNow": "今はしない",
+  "loginInvalidEmail": "有効なメールアドレスを入力してください",
+  "@loginCodeSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profileTitle": "エージェント",
+  "profileNotLoggedIn": "未ログイン",
+  "profileClickLogin": "ログイン / 新規登録",
+  "profileMyWallet": "マイウォレット",
+  "profileWallet": "ウォレット",
+  "profileTradeStory": "STORYを取引",
+  "profileWalletCreating": "作成中...",
+  "walletNetworkSolana": "Solana",
+  "walletNetworkEvm": "EVM",
+  "profileEarnings": "収益",
+  "profileMyNft": "マイNFT",
+  "profileMyFavorites": "お気に入り",
+  "profileWatchHistory": "視聴履歴",
+  "profileCreatorCatalog": "クリエイター",
+  "profileIdentityAuth": "本人確認",
+  "profileAccountSecurity": "アカウントセキュリティ",
+  "profileLanguage": "言語",
+  "profileAboutUs": "私たちについて",
+  "profileHelpFeedback": "ヘルプとフィードバック",
+  "profileLogout": "ログアウト",
+  "profileLogoutConfirm": "ログアウトしてもよろしいですか？",
+  "profileLogoutSuccess": "ログアウトしました",
+  "mainPressBackAgainToExit": "もう一度戻るボタンを押すと終了します",
+  "languageSelectTitle": "言語を選択",
+  "languageChinese": "簡体字中国語",
+  "languageEnglish": "英語",
+  "searchTitle": "検索",
+  "searchHint": "短編ドラマ、作品、ロール、ユーザーを検索...",
+  "searchEmpty": "関連コンテンツがありません",
+  "searchPlaceholder": "短編ドラマ、作品、ロール、ユーザーを検索...",
+  "theaterSearchPlaceholder": "短編ドラマ、作品、ロール、ユーザーを検索...",
+  "searchHistory": "最近の検索",
+  "searchClear": "履歴をクリア",
+  "searchAction": "検索",
+  "searchHistoryCleared": "検索履歴をクリアしました",
+  "searchKeywordTooShort": "2文字以上入力してください",
+  "searchTabDramas": "短編ドラマ",
+  "searchTabWorks": "作品",
+  "searchTabActors": "キャラクター IP",
+  "searchTabUsers": "ユーザー",
+  "searchEpisodeNo": "第{episodeNo}話",
+  "@searchEpisodeNo": {
+    "placeholders": {
+      "episodeNo": {
+        "type": "int"
+      }
+    }
+  },
+  "searchMinutesAgo": "{count}分前",
+  "@searchMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchHoursAgo": "{count}時間前",
+  "@searchHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDaysAgo": "{count}日前",
+  "@searchDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDramasCount": "ドラマ ({count})",
+  "@searchDramasCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchActorsCount": "ロール ({count})",
+  "@searchActorsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDramaEpisodesWithCast": "全{count}話 | 出演：{actors}",
+  "@searchDramaEpisodesWithCast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "actors": {
+        "type": "String"
+      }
+    }
+  },
+  "nftTitle": "NFTロール広場",
+  "nftLoading": "キャラクターNFTを読み込み中...",
+  "nftEmpty": "キャラクターNFTがありません",
+  "nftRefresh": "更新",
+  "nftIdPrefix": "ID: #{id}",
+  "@nftIdPrefix": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "nftRarity": "レアリティ",
+  "nftStatusStaked": "担保に供されている",
+  "nftStatusIdle": "アイドル",
+  "nftPrice": "価格",
+  "dramaDetailTitle": "ドラマ詳細",
+  "dramaDetailLoading": "読み込み中…",
+  "dramaDetailRetry": "再試行",
+  "dramaDetailEpisodeList": "番組一覧",
+  "dramaDetailSynopsis": "あらすじ",
+  "dramaDetailExpand": "展開",
+  "dramaDetailCollapse": "閉じる",
+  "dramaDetailTabIntro": "概要",
+  "dramaDetailTabEpisodes": "選集",
+  "dramaDetailTabComments": "コメント",
+  "dramaDetailTabRoles": "キャラクター",
+  "dramaDetailSignMoreCharacterIps": "さらにキャラクターIPを契約",
+  "dramaDetailRoleSalary": "出演料 {amount}",
+  "@dramaDetailRoleSalary": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailRoleSalaryPerHour": "出演料{amount} STORY/h",
+  "@dramaDetailRoleSalaryPerHour": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailRoleUnbound": "未契約",
+  "dramaCastActorsTitle": "参演角色IP",
+  "dramaDetailCompletion": "{count} 回再生",
+  "@dramaDetailCompletion": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailHeat": "{count} ヒート",
+  "@dramaDetailHeat": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailTotalEpisodes": "{count} 話",
+  "@dramaDetailTotalEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailRatingTitle": "作品に評価をつける",
+  "dramaDetailWantToRate": "評価する",
+  "dramaDetailNotRated": "未評価",
+  "dramaDetailCompletionLabel": "完走",
+  "dramaDetailHeatLabel": "ヒート",
+  "dramaDetailSynopsisLead": "あらすじ：",
+  "dramaDetailRatingEmpty": "あなたの評価: --",
+  "dramaDetailRatingValue": "あなたの評価: {rating}",
+  "@dramaDetailRatingValue": {
+    "placeholders": {
+      "rating": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailRatingConfirm": "評価を確定",
+  "dramaDetailRatingSuccess": "評価成功: {rating}スター！",
+  "@dramaDetailRatingSuccess": {
+    "placeholders": {
+      "rating": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailSelectEpisodeHint": "エピソードを選択して再生を開始",
+  "dramaFavorited": "お気に入りに追加",
+  "dramaUnfavorited": "お気に入りから削除",
+  "dramaLiked": "いいね！",
+  "dramaUnliked": "いいね！取消",
+  "playerFollowed": "フォローしました",
+  "playerUnfollowed": "フォローを解除しました",
+  "errorNetwork": "ネットワークエラー、しばらくしてからもう一度お試しください",
+  "errorTimeout": "リクエストがタイムアウトしました、もう一度お試しください",
+  "errorParse": "レスポンスデータの解析に失敗しました",
+  "errorUnauthorized": "まずログインしてください",
+  "authSessionExpired": "ログインの有効期限が切れました。再度ログインしてください",
+  "errorNotFound": "リソースが存在しません",
+  "errorOperationFailed": "操作に失敗しました",
+  "errorInvalidRoleId": "キャラクターIDが無効です。ページを更新して、もう一度お試しください。",
+  "errorInvalidRoleNftAssetId": "キャラクターNFTのassetIdが無効です。ページを更新して、もう一度お試しください。",
+  "errorInvalidRoleCollectionAssetId": "キャラクターコレクションのassetIdが無効です。ページを更新して、もう一度お試しください。",
+  "roleNftLabelUnknown": "RoleNFT#Unknown",
+  "roleNftLabel": "RoleNFT#{prefix}",
+  "@roleNftLabel": {
+    "placeholders": {
+      "prefix": {
+        "type": "String"
+      }
+    }
+  },
+  "errorBusiness": "操作失敗: {message}",
+  "@errorBusiness": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "errorUnknown": "不明なエラーが発生しました: {message}",
+  "@errorUnknown": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "errorNotSupported": "サポートされていない操作です: {message}",
+  "@errorNotSupported": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "playerEpisodeSelect": "選集",
+  "playerPlayFailed": "再生に失敗しました",
+  "playerDramaUnavailable": "この短編ドラマは再生できません",
+  "playerContentUnavailable": "このコンテンツは未公開、または公開が終了しています",
+  "creatorWorkNotFound": "作品が存在しないため、閲覧できません",
+  "creatorWorkNotPublished": "作品は未公開のため、現在閲覧できません",
+  "playerTapRetry": "タップして再試行",
+  "playerEpisodeTotal": "全{count}話",
+  "@playerEpisodeTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playerEpisodeLabel": "第{episodeNo}話",
+  "@playerEpisodeLabel": {
+    "placeholders": {
+      "episodeNo": {
+        "type": "int"
+      }
+    }
+  },
+  "playerLike": "「いいね」",
+  "playerComment": "コメント",
+  "playerFavorite": "お気に入り",
+  "playerShare": "シェア",
+  "playerRatingLabel": "{rating} ポイント",
+  "@playerRatingLabel": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "loginOrSignUp": "ログインまたは新規登録",
+  "loginEnterCode": "確認コードを入力",
+  "loginCheckEmailDesc": "{email}に送信されたprivy.ioからのメールを確認し、以下にコードを入力してください。",
+  "@loginCheckEmailDesc": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "loginResendCountdown": "コード再送まで {seconds}秒",
+  "@loginResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "loginResendBtn": "再送信",
+  "loginProtectedByPrivy": "Privyで保護されています",
+  "loginAgreeLead": "同意します",
+  "loginAgreeAnd": "および",
+  "loginAgreeConfirmLead": "確定をタップすると、次に同意したことになります",
+  "loginAgreeRequired": "先に利用規約とプライバシーポリシーに同意してください",
+  "deletingAccountPending": "アカウント削除待ち",
+  "deletingAccountCancelDeletion": "アカウント削除を取り消す",
+  "deletingAccountGoBack": "戻る",
+  "drawerEmailAccount": "メールアカウント",
+  "drawerClickToLogin": "タップしてログイン",
+  "drawerBuyStory": "STORYを取引",
+  "drawerDeposit": "チャージ",
+  "drawerWithdraw": "出金",
+  "drawerNotifications": "通知",
+  "drawerNoNotifications": "通知はありません",
+  "notificationTabSystem": "システム",
+  "notificationTabInteraction": "アクティビティ",
+  "notificationTagIpSign": "キャラクターIP契約",
+  "notificationTagRoleManagement": "キャラクター管理",
+  "notificationTagShowRevenue": "公演収益",
+  "notificationTagLike": "いいね",
+  "notificationTagFavorite": "お気に入り",
+  "notificationSignedActor": "@{user}がキャラクターIP {actor}と契約しました",
+  "notificationShareEarned": "分配金 {amount}を獲得しました",
+  "notificationStaminaLow": "{actor}のスタミナが不足しています。補充するか休ませてください",
+  "notificationCurrentStamina": "現在のスタミナ {value}",
+  "notificationShowEnded": "{range}の公演が終了しました",
+  "notificationIncomeEarned": "収益 {amount}を獲得しました",
+  "notificationActionClaim": "受取",
+  "notificationActionRefill": "補充",
+  "notificationInteractionLikedVideo": "あなたの動画にいいねしました",
+  "notificationInteractionLikedDrama": "短編ドラマ「{title}」にいいねしました",
+  "notificationInteractionFavoritedVideo": "あなたの動画を保存しました",
+  "notificationInteractionFavoritedDrama": "短編ドラマ「{title}」を保存しました",
+  "notificationInteractionCommented": "コメントしました：{content}",
+  "notificationInteractionFollowedYou": "あなたをフォローしました",
+  "notificationActionMutualFollow": "相互",
+  "notificationActionFollow": "フォロー",
+  "notificationRealtimeReceived": "新しい通知が届きました",
+  "drawerEpisodeProgress": "{current}/{total}話",
+  "drawerNotificationSignedActor": "{actor}がキャラクターIP {target}と契約しました",
+  "drawerNotificationLikedVideo": "{actor}があなたの動画にいいねしました",
+  "drawerNotificationFavoritedDrama": "{actor}が短編ドラマ {target}を保存しました",
+  "depositTitle": "チャージ",
+  "depositDesc": "取引所や他のウォレットから以下のアドレスに送金してください。入金が確認されると残高は自動的に更新されます。",
+  "depositToken": "通貨",
+  "depositNetwork": "ネットワーク",
+  "depositNetworkNote": "転送ネットワークを確認してください。ネットワークを間違えると資産を失う可能性があります。",
+  "depositAddress": "チャージ先アドレス",
+  "depositAddressCopied": "アドレスがクリップボードにコピーされました",
+  "depositSend": "送信",
+  "depositReceive": "受取",
+  "depositConvertNote": "このアドレスにトークンを送金すると、Story.funアカウントで自動的にUSDCに交換されます。",
+  "depositMinNote": "最低入金額：{minAmount} {token}",
+  "@depositMinNote": {
+    "placeholders": {
+      "minAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "depositExchangeRateNote": "現在の為替レートは {rate} です。着金額 = 入金額 × {rate}",
+  "@depositExchangeRateNote": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "depositWarning": "選択したネットワーク上の選択トークンのみ入金してください。他の資産は復元できません。\n送金ネットワークを確認してください。ネットワークエラーにより資産が失われる可能性があります。",
+  "withdrawTitle": "出金",
+  "withdrawBalance": "出金可能残高",
+  "withdrawToken": "通貨",
+  "withdrawAddress": "出金先",
+  "withdrawAddressHint": "Solana受取アドレスを入力または貼り付けてください",
+  "withdrawAddressHintEvm": "EVM受取アドレスを入力または貼り付けてください",
+  "withdrawInvalidEvmAddress": "有効なEVMアドレスを入力してください",
+  "withdrawInvalidSolanaAddress": "有効なSolanaアドレスを入力してください",
+  "withdrawEvmGasNote": "EVM出金にはガス代用のネイティブトークンが必要です。取引はチェーン上で直接送信されます。",
+  "withdrawEvmFailed": "EVM出金に失敗しました。しばらくしてから再試行してください。",
+  "withdrawAddressNote": "住所が正しいかご確認ください。振込後の取り消しはできません。",
+  "withdrawNetwork": "ネットワーク",
+  "withdrawAmount": "金額",
+  "withdrawAmountHint": "出金額を入力してください",
+  "withdrawMax": "最大",
+  "withdrawAvailableBalance": "残高 {balance} {token}",
+  "@withdrawAvailableBalance": {
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawMinWarning": "最低出金額: {minAmount} {token}\nアドレスとネットワークを慎重に確認してください。取引は取り消せません。",
+  "@withdrawMinWarning": {
+    "placeholders": {
+      "minAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawConfirm": "出金を確定する",
+  "withdrawAll": "すべて",
+  "withdrawMinAmountError": "最低出金額は {minAmt} {token} です",
+  "@withdrawMinAmountError": {
+    "placeholders": {
+      "minAmt": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawExceedBalanceError": "出金額は利用可能残高を exceeded できません",
+  "withdrawSameAsWalletError": "出金先アドレスは現在のウォレットアドレスと同じにできません",
+  "withdrawConfirmTitle": "出金を確定する",
+  "withdrawConfirmMessage": "以下のSolanaアドレスに {amount} {token} を出金してもよろしいですか？\n\n{address}",
+  "@withdrawConfirmMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      },
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawSuccessToast": "出金リクエストが正常に送信されました！",
+  "withdrawFailedToast": "出金に失敗しました。もう一度お試しください。",
+  "withdrawErrorToast": "出金中にエラーが発生しました: {error}",
+  "@withdrawErrorToast": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawAddressHintWithToken": "{token} を受け取るウォレットアドレスを入力してください",
+  "@withdrawAddressHintWithToken": {
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawFee": "手数料",
+  "withdrawFeeValue": "{fee} {token}",
+  "@withdrawFeeValue": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawMinAmount": "最低出金額: {minAmount} {token}",
+  "@withdrawMinAmount": {
+    "placeholders": {
+      "minAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawMaxAmount": "最大出金額: {maxAmount} {token}",
+  "@withdrawMaxAmount": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      },
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawSponsorSigning": "トランザクション署名中...",
+  "withdrawSponsorSubmitting": "オンチェーントランザクション送信中...",
+  "withdrawSponsorSuccess": "出金が正常に送信されました！",
+  "withdrawSponsorFailed": "トランザクション送信に失敗しました。もう一度お試しください。",
+  "withdrawOrderProcessing": "注文処理中",
+  "withdrawOrderSuccess": "注文完了",
+  "withdrawOrderFailed": "注文失敗",
+  "withdrawOrderStatus": "注文状態: {status}",
+  "@withdrawOrderStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "qrScannerTitle": "QRコードスキャン",
+  "qrScannerHint": "QRコードをフレーム内に合わせてスキャン",
+  "drawerProfile": "マイページ",
+  "drawerCreatorManagement": "クリエイター管理",
+  "drawerInvite": "招待",
+  "inviteTitle": "招待",
+  "inviteTotalPeople": "累計招待者数",
+  "inviteTotalRewards": "招待報酬合計",
+  "inviteWeeklyPool": "今週の招待賞金プール",
+  "inviteViewHistory": "収益履歴を確認する",
+  "inviteLinkSection": "招待リンク",
+  "inviteLinkSubtitle": "友達があなたのリンクから登録し、契約を結び、ロールを派遣すると、追加の STORY 報酬を獲得できます",
+  "inviteCopyButton": "リンクをコピー",
+  "inviteCopiedSuccess": "招待リンクがクリップボードにコピーされました！",
+  "inviteRulesSection": "招待ルール",
+  "inviteRuleSourceTitle": "報奨金の出所",
+  "inviteRuleSourceSubtitle": "独立したサブプールへの招待",
+  "inviteRuleSourceBody": "紹介報酬は、NFTマイニングプール内の独立した紹介サブプール（マイニングプール全体の25％を占める）から支払われ、紹介されたユーザーの収益から差し引かれることはありません。紹介サブプールには独立した週間上限が設定されており、上限に達した後は、保有割合に応じて比例的に削減されます。",
+  "inviteRuleBaseTitle": "計算基数",
+  "inviteRuleBaseSubtitle": "実体験に基づく STORY",
+  "inviteRuleBaseBody": "報酬は、招待されたユーザーが当期間に実際に受け取ったSTORYに基づいて計算され、名目上の生産量に基づいて計算されるものではありません。招待されたユーザーが自らマイニングしたSTORYには影響がなく、招待報酬は別途支給されます。",
+  "inviteRuleLevelTitle": "報酬の範囲",
+  "inviteRuleLevelSubtitle": "直接招待のみ",
+  "inviteRuleLevelBody": "招待報酬は、あなたが直接招待したユーザーに対してのみ支払われます。多段階・間接的なコミッションはありません。",
+  "inviteRuleConditionTitle": "有効条件",
+  "inviteRuleConditionSubtitle": "アクティブなダウンラインがあって初めて報酬が発生します",
+  "inviteRuleConditionBody": "招待されたユーザーが実際にSTORYをマイニングした、またはUSDCでの支払いを行った場合にのみ、有効なダウンラインとしてカウントされます。無効なアカウントでの登録では報酬は発生しません。招待関係は一度確立されると変更できません。",
+  "drawerTxHistory": "取引履歴",
+  "drawerFinanceDashboard": "資金ダッシュボード",
+  "financeDashboardComingSoon": "資金ダッシュボードは近日公開予定です。お楽しみに。",
+  "financeDashboardLedgerBizSigningFee": "契約料",
+  "financeDashboardLedgerBizManualCredit": "手動入金",
+  "financeDashboardLedgerBizManualDebit": "手動減額",
+  "financeDashboardLedgerBizStaminaPurchase": "スタミナ購入料",
+  "financeDashboardLedgerBizSynthesisUpgrade": "合成アップグレード料",
+  "financeDashboardLedgerBizTransactionFee": "取引手数料",
+  "drawerWhitepaper": "白書",
+  "drawerSettings": "設定",
+  "commonClose": "閉じる",
+  "commonLoadFailed": "読み込みに失敗しました",
+  "commonNone": "なし",
+  "commonUntitled": "無題",
+  "actorDetailTitle": "キャラクター詳細",
+  "actorDetailCastDramas": "短編ドラマへの出演",
+  "actorDetailNoCastRecords": "出演記録がありません",
+  "actorBondingCurve": "価格の結合曲線",
+  "actorContractAddress": "契約アドレス",
+  "actorCurrentPosition": "現在位置",
+  "actorCurrentPrice": "現在の価格 {price} USDC",
+  "@actorCurrentPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "actorFloorPrice": "最低価格",
+  "actorGoTrade": "取引する",
+  "actorHeatCoefficient": "熱度係数",
+  "actorIpPower": "IP算力",
+  "actorPayMax": "最大",
+  "actorPayUpgradeTitle": "出演料アップグレード規則",
+  "actorPayUpgradeReachHint": "このIPが出演する短編ドラマの現在の完走数は、ロールを次のレベルまでアップグレードできます",
+  "actorPayUpgradeCompletions": "{count} 完走",
+  "@actorPayUpgradeCompletions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPayUpgradeMultiplier": "出演料 ×{value}",
+  "@actorPayUpgradeMultiplier": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPayTitle": "{name} · 出演料",
+  "@actorPayTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorLv1PayHint": "契約するとLv.1キャラクターを獲得できます",
+  "actorLv1PayFormula": "Lv.1出演料=価格係数×熱度係数",
+  "actorLv1PayEquals": "={value}",
+  "@actorLv1PayEquals": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIpPowerTitle": "{name} · IP算力",
+  "@actorIpPowerTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIpPowerFormula": "IP算力 = 価格係数 × 熱度係数 × Trust1",
+  "actorPriceCoefficient": "価格係数",
+  "actorPriceCoefficientValue": "価格係数 {value}",
+  "@actorPriceCoefficientValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPriceCoefficientHelpA11y": "価格係数の説明を見る",
+  "actorPriceCoefficientDialogFormulaLe100": "係数 = P0 ÷ 10",
+  "actorPriceCoefficientDialogDescLe100": "線形増加",
+  "actorPriceCoefficientDialogTitleGt100": "P0 > 10 USDC",
+  "actorPriceCoefficientDialogFormulaGt100": "係数 = 1.6 × (P0/10)^1.3 / [(P0/10)^1.3 + 0.6]",
+  "actorPriceCoefficientDialogDescGt100": "増加が緩やかになり、上限は 1.6",
+  "actorPriceCoefficientDialogTitleLe100": "P0 ≤ 10 USDC",
+  "actorPriceCoefficientFactorDesc": "P0 ≤ 10 USDC 係数= P0/10（線形増加）\nP0 > 10 USDC → 係数 = 1.6 × (P0/10)^1.3 / [(P0/10)^1.3 + 0.6]（漸近上限 1.6）",
+  "actorHeatCoefficientFactorDesc": "キャラクターIPの直近30日間の熱度乗数。短編ドラマの完走・いいね・お気に入りなどのインタラクションに基づく",
+  "actorTrustFactorDesc": "プラットフォームのリスク管理係数。デフォルトは1.0",
+  "actorStatCompletion": "全話視聴",
+  "actorIdCopied": "番号がコピーされました",
+  "actorInitialPrice": "初期価格: {price} USDC",
+  "@actorInitialPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIpLabel": "キャラクターIP {label}",
+  "@actorIpLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "actorIssueInfo": "発行情報",
+  "actorIssuer": "発行者 {name}",
+  "@actorIssuer": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorMintedCount": "鋳造済み {minted}/{maxSupply}",
+  "@actorMintedCount": {
+    "placeholders": {
+      "minted": {
+        "type": "int"
+      },
+      "maxSupply": {
+        "type": "int"
+      }
+    }
+  },
+  "actorPriceCurve": "価格曲線",
+  "actorSign": "契約",
+  "actorConfirmSign": "契約の確認",
+  "actorSignPriceLabel": "契約価格",
+  "actorSignPriceDescription": "契約数は増加するにつれて契約価格が自動的に上昇するため、早期に契約を結ぶほどお得になります。",
+  "actorSignPriceFormula": "計算式：価格 = 初期価格 × 5^(契約済み数 ÷ 総発行量)",
+  "actorPriceAxisLabel": "価格（USDC）",
+  "actorSignedCountAxisLabel": "契約件数",
+  "actorSignRemainingCount": "残り{count}個",
+  "actorSignSoldOut": "完売しました",
+  "@actorSignRemainingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actorSignSupplySummary": "総発行 {total} · 残り {remaining}",
+  "@actorSignSupplySummary": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "actorPricingFixed": "固定価格",
+  "actorPricingCurve": "曲線価格",
+  "actorPriceCurveDisclaimer": "初期価格はプラットフォームの評価額を反映するものではありません。曲線の上昇は二次市場での価格上昇を意味するものではなく、当プラットフォームは収益を保証するものではありません。",
+  "actorPriceStatInitialPrice": "初期価格",
+  "actorPriceStatCurrentPrice": "現在の価格",
+  "actorPriceStatTailPrice": "落札価格",
+  "actorPriceStatTotalSupply": "総発行部数",
+  "actorPriceStatSigned": "契約済み",
+  "actorPriceStatRemaining": "残り",
+  "actorPricingType": "価格設定の種類",
+  "contentBadgeOfficialIssue": "公式発行",
+  "contentBadgeCommunityIssue": "コミュニティ発行",
+  "contentBadgePartnerIssue": "パートナーによる発行",
+  "contentBadgeVerifiedIssue": "認定クリエイターによる発行",
+  "contentBadgeOfficialDrama": "公式ショートドラマ",
+  "contentBadgeCommunityDrama": "コミュニティ短編ドラマ",
+  "contentBadgePartnerDrama": "パートナー制作のショートドラマ",
+  "contentBadgeVerifiedDrama": "認定クリエイターによるショートドラマ",
+  "actorIpCopied": "コピーに成功しました",
+  "actorRiskIp": "リスクIP",
+  "actorRiskIpDescription": "このキャラクターIPの信頼係数に異常があります。マイニング重みに影響します。",
+  "actorIpVault": "キャラクターIP金庫",
+  "actorIpVaultDescription": "契約収入の30％は自動的にキャラクターのIP金庫に積み立てられ、IPエコシステムの長期的な発展を支えるために活用されます。セカンダリーマーケットからのロイヤリティ収入の30％も同様に金庫に積み立てられ、持続的な資金源となります。V1バージョンの金庫では、データ表示のみを提供しており、現時点では分配は行われません。",
+  "actorIpVaultSignIncomePrefix": "契約収入・蓄積 ",
+  "actorIpVaultSecondaryRoyaltyPrefix": "二次ロイヤリティ・蓄積 ",
+  "actorFixedPriceDialogDesc": "このキャラクターのIPは固定価格モデルを採用しており、各キャラクターは一律の価格で契約され、販売数の変動は価格に影響しません。",
+  "actorCurvePriceDialogDesc": "価格は共同曲線の式に基づき、契約数に応じて自動的に上昇するため、早期に契約を結ぶほどお得になります。",
+  "actorFixedPriceNote1": "発行者が固定価格を設定すると、すべての契約はこの価格に基づいて決済されます。",
+  "actorFixedPriceNote2": "契約件数が増えても価格は上がりません",
+  "actorFixedPriceNote3": "コストを抑えたい買い手に最適",
+  "actorIssueFixedPriceDesc": "このキャラクターのIPは固定価格モデルを採用しており、すべての契約は固定価格で精算され、販売数による変動はありません。",
+  "actorSignSlippageNote": "1%のスリッページ保護が有効になっています。価格がこれを超えた場合、取引はキャンセルされます。",
+  "actorSignSuccessTitle": "契約成立！",
+  "actorSignSuccessMessage": "ロール「{name}」の署名が成功しました",
+  "@actorSignSuccessMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actorSignSuccessNftId": "NFT ID：{nftId}",
+  "@actorSignSuccessNftId": {
+    "placeholders": {
+      "nftId": {
+        "type": "String"
+      }
+    }
+  },
+  "actorSignChainConfigMissing": "オンチェーン設定が不完全です。しばらくしてからもう一度お試しください。",
+  "actorSignPriceSoldOut": "契約価格・完売",
+  "actorSignPriceRemaining": "契約価格 · 残り{count}個",
+  "@actorSignPriceRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actorSignedCount": "契約済み {count}",
+  "@actorSignedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actorStatusLabelOffline": "オフライン",
+  "actorStatusLabelOnline": "オンライン",
+  "actorStatusLabelPending": "審査中",
+  "actorStatusLabelRejected": "却下",
+  "actorTotalSupply": "発行総量",
+  "commentTagAuthor": "作者",
+  "commentTagMe": "私",
+  "commentTagFriend": "あなたの友達",
+  "commentTagFan": "あなたのフォロワー",
+  "commentTagFirst": "初コメント",
+  "commentTagAuthorLiked": "作者がいいね",
+  "commentsAnonymous": "匿名ユーザー",
+  "commentsEmpty": "まだコメントがありません",
+  "commentsHint": "素晴らしいコメントを投稿...",
+  "commentsInvalidContent": "有効な内容を入力してください",
+  "commentsReply": "返信",
+  "commentsViewReplies": "{count}件の返信を表示",
+  "@commentsViewReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentsCollapseReplies": "折りたたむ",
+  "commentsViewMoreReplies": "さらに表示",
+  "commentsReplyHint": "{nickname} に返信",
+  "@commentsReplyHint": {
+    "placeholders": {
+      "nickname": {
+        "type": "String"
+      }
+    }
+  },
+  "commentsDeleteCommentTitle": "このコメントを削除しますか？",
+  "commentsDeleteReplyTitle": "この返信を削除しますか？",
+  "commentsReplyCommentNotExists": "コメントが存在しません",
+
+  "commentsTabComments": "コメント",
+"commentsTabAllComments": "すべてのコメント",
+  "commentsTabDramas": "ショートドラマ",
+  "commentsTabActors": "キャラクター",
+  "timeJustNow": "たった今",
+  "timeYesterday": "昨日",
+  "timeDayBeforeYesterday": "一昨日",
+  "timeMinutesAgo": "{count}分前",
+  "timeHoursAgo": "{count}時間前",
+  "timeDaysAgo": "{count}日前",
+  "commentsTitle": "コメント ({count})",
+  "@commentsTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "createActorTitle": "ロールを作成",
+  "createActorHeroTitle": "キャラクターNFTを鋳造",
+  "createActorHeroSubtitle": "独占AIロールを作成し、収益分配を紐付けてドラマに参加",
+  "createActorNameLabel": "ロール名",
+  "createActorNameHint": "ロール名を入力",
+  "createActorBioLabel": "ロールプロフィール",
+  "createActorBioHint": "キャラクターの背景を説明",
+  "createActorGenderLabel": "性別",
+  "createActorGenderMale": "男性",
+  "createActorGenderFemale": "女性",
+  "createActorMintParams": "NFT鋳造パラメータ",
+  "createActorTokenStandard": "トークン規格",
+  "createActorChain": "チェーン",
+  "createActorMinHolding": "最小保有量",
+  "createActorMintNft": "NFTを鋳造",
+  "createActorIpTitle": "キャラクターIPを発行",
+  "createActorIpSubtitle": "キャラクターのIPを発行した後、そのIPの下でキャラクターと契約を結ぶことができ、そのキャラクターを派遣することで収益を生み出すことができます。",
+  "createActorSelectMaterial": "ロールの素材を選択する",
+  "createActorDreamOsBadge": "DreamOS",
+  "createActorSelectMaterialDesc": "DreamOS で作成済みのキャラクター素材を選択すると、キャラクターの IP 情報が自動的に入力されます。",
+  "createActorSelectButton": "ロールを選択",
+  "createActorNameLabelNew": "ロール名",
+  "createActorNamePlaceholder": "ロールの名前を入力してください",
+  "createActorBioLabelNew": "概要",
+  "createActorBioPlaceholder": "キャラクターのIP紹介を入力してください",
+  "createActorParamsTitle": "キャラクターのIP発行パラメータ",
+  "createActorParamsSubtitle": "キャラクターのIPに関する発行パラメータを設定します。発行後は変更できません。",
+  "createActorTotalSupplyLabel": "キャラクターの総発行量",
+  "createActorTotalSupplyDesc": "発行総数は50,000に固定されており、変更することはできません。",
+  "createActorTotalSupplyPlaceholder": "入力してください",
+  "createActorPricingFixed": "固定価格",
+  "createActorPricingCurve": "曲線価格",
+  "createActorFixedPriceLabel": "固定価格（USDC）",
+  "createActorFixedPricePlaceholder": "キャラクターあたりの固定価格を入力",
+  "createActorFixedPriceDesc": "各キャラクターは固定価格で購入され、販売数に応じて変動することはありません。",
+  "createActorInitialPriceLabel": "初期価格（USDC）",
+  "createActorInitialPricePlaceholder": "入力してください",
+  "createActorInitialPriceDesc": "初期価格は連合曲線の開始価格であり、ロール1名と契約するごとに、価格は式 P = P₀ × 5^(契約済み数/総発行数) に従って自動的に上昇するため、早期に契約を結ぶほどお得になります。",
+  "createActorFormIncomplete": "キャラクター素材、名前、プロフィール、発行パラメータを完了してください",
+  "createActorValidationNameRequired": "ロール名を入力してください",
+  "createActorValidationNameTooLong": "キャラクター名は20文字以下にしてください",
+  "createActorValidationBioRequired": "プロフィールを入力してください",
+  "createActorValidationBioTooLong": "プロフィールは500文字以下にしてください",
+  "createActorValidationTotalSupplyRequired": "有効なNFT総供給量を入力してください",
+  "createActorValidationTotalSupplyPositiveInteger": "NFT総供給量は正の整数でなければなりません",
+  "createActorValidationTotalSupplyRange": "ロールの総供給量は100〜5000の範囲でなければなりません",
+  "createActorValidationPriceRequired": "有効な鋳造価格を入力してください",
+  "createActorValidationPriceInvalid": "Mint価格は10以上、1,000以下でなければなりません",
+  "createActorValidationPriceMaxDecimals": "鋳造価格は小数点以下2桁までです",
+  "createActorSelectMaterialRequired": "キャラクター素材を選択してください",
+  "createActorCancelButton": "キャンセル",
+  "createActorConfirmButton": "発行を確定する",
+  "createActorIssueFee": "手数料",
+  "createActorSuccessTitle": "発行成功！",
+  "createActorSuccessDesc": "キャラクターIP {name} が正常に発行されました！",
+  "@createActorSuccessDesc": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createActorCloseButton": "閉じる",
+  "createActorViewButton": "表示",
+  "createActorEmptyTitle": "条件を満たすDreamOSでのNFT発行がまだありません。",
+  "createActorGotoDreamOs": "DreamOS に移動して作成する",
+  "createActorSearchPlaceholder": "キャラクター素材を検索",
+  "createActorInvalidOrderId": "キャラクターのIP注文番号が無効です。ページを更新してからもう一度お試しください",
+  "createDramaTitle": "ドラマを作成",
+  "createDramaTitleLabel": "ショートドラマのタイトル",
+  "createDramaTitleHint": "ドラマ名を入力",
+  "createDramaSynopsisLabel": "あらすじ",
+  "createDramaSynopsisHint": "どのような物語を描くのか……（最大1000字）",
+  "createDramaAiSettings": "AI生成設定",
+  "createDramaVisualStyle": "ビジュアルスタイル",
+  "createDramaVisualStyleRealistic": "リアル",
+  "createDramaEpisodeDuration": "エピソード時間",
+  "createDramaEpisodeDurationValue": "3-5分",
+  "createDramaTotalEpisodes": "総エピソード数",
+  "createDramaTotalEpisodesValue": "8話",
+  "createDramaGenreLabel": "タイプ",
+  "createDramaGenreDrama": "ドラマ",
+  "createDramaGenreComedy": "コメディ",
+  "createDramaGenreAction": "アクション",
+  "createDramaGenreRomance": "ロマンス",
+  "createDramaGenreSciFi": "SF",
+  "createDramaGenreMystery": "サスペンス",
+  "createDramaGenreHorror": "ホラー",
+  "createDramaGenreAnimation": "アニメーション",
+  "createDramaHeroTitle": "AIドラマ制作",
+  "createDramaHeroSubtitle": "ワンクリックで次のヒットドラマを生成",
+  "createDramaStartGeneration": "生成を開始",
+  "creatorDramaManagementTab": "ショートドラマの管理",
+  "creatorDramaNftTab": "ショートドラマNFT",
+  "creatorHeaderSubtitle": "ショートドラマの投稿、審査、および制作。",
+  "creatorV2Subtitle": "ショートドラマ/動画の投稿と管理。",
+  "creatorV2DramaTabCount": "ショートドラマ（{count}）",
+  "creatorV2VideoTabCount": "動画（{count}）",
+  "creatorV2NoVideos": "動画はありません",
+  "creatorLoginPrompt": "ログインしてクリエイションを表示",
+  "creatorNoCreatedActors": "作成したロールがありません",
+  "creatorNoPublishedDramas": "投稿したドラマがありません",
+  "creatorOwnedNftCount": "NFTの保有数",
+  "creatorCreateDrama": "ドラマを制作",
+  "creatorPublishNewDrama": "新しいショートドラマを投稿",
+  "creatorPublishedDramas": "ショートドラマを投稿",
+  "creatorReviewFilterAll": "すべて",
+  "creatorReviewFilterApproved": "承認済み",
+  "creatorReviewFilterPending": "審査中",
+  "creatorReviewFilterRejected": "不合格",
+  "creatorReviewFilterOffline": "公開終了",
+  "creatorDramaOtherReason": "その他の理由",
+  "creatorDramaStatusOnline": "承認済み",
+  "creatorDramaStatusPendingReview": "審査中",
+  "creatorDramaStatusReviewRejected": "不合格",
+  "creatorDramaStatusPendingOnline": "公開待ち",
+  "creatorDramaAuditReason": "審査不合格理由：{reason}",
+  "@creatorDramaAuditReason": {
+    "placeholders": {
+      "reason": {}
+    }
+  },
+  "creatorDramaNftMinted": "鋳造済み",
+  "creatorDramaEpisodeCount": "{count} 話",
+  "@creatorDramaEpisodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "creatorDramaEdit": "編集",
+  "creatorDramaDelete": "削除",
+  "creatorActorDelete": "ロールを削除する",
+  "creatorDeleteDramaConfirm": "このショートドラマを削除してもよろしいですか？",
+  "creatorDeleteVideoConfirmTitle": "動画削除の確認",
+  "creatorDeleteVideoConfirmMessage": "「{name}」を削除してもよろしいですか？\nこの操作は元に戻せません。",
+  "@creatorDeleteVideoConfirmMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "creatorDeleteActorConfirm": "このキャラクターを削除してもよろしいですか？",
+  "creatorDeleting": "削除中...",
+  "creatorNoDramas": "ショートドラマはありません",
+  "creatorNoNfts": "ショートドラマのNFTは現在ありません",
+  "creatorsComingSoon": "近日公開",
+  "creatorsHeroSubtitle": "優れたクリエイターを発見",
+  "creatorsHeroTitle": "クリエイター",
+  "dramaBatchUnlockAll": "すべて解除",
+  "dramaBatchUnlockDiscount": "一括解除割引 {discount}%",
+  "@dramaBatchUnlockDiscount": {
+    "placeholders": {
+      "discount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaBatchUnlockSubtitle": "すべてのエピソードを一度に解除してお得に",
+  "dramaBatchUnlockSuccess": "解除成功、視聴を開始してください",
+  "dramaDetailAllFree": "すべて無料",
+  "dramaDetailBoundActors": "{count}人のロールが紐付け済み",
+  "@dramaDetailBoundActors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailEpisodeCount": "{count} 話",
+  "@dramaDetailEpisodeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailEpisodePrice": "1回あたりの価格",
+  "dramaDetailFree": "無料",
+  "dramaDetailFreeEpisodes": "最初の{count}話無料",
+  "@dramaDetailFreeEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dramaDetailMainCharacters": "主な登場ロール",
+  "dramaDetailNftMinted": "NFT鋳造済み",
+  "dramaDetailNoEpisodes": "エピソードがありません",
+  "dramaDetailPaid": "有料",
+  "dramaDetailRoleAs": "{roleName}役",
+  "@dramaDetailRoleAs": {
+    "placeholders": {
+      "roleName": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaDetailPendingActor": "出演ロール未定",
+  "dramaDetailRoleCount": "ロール数",
+  "dramaUnlockFailedRetry": "解除に失敗しました、再試行してください",
+  "dramaUnlockFetchTimeout": "再生アドレスの取得がタイムアウトしました、再試行してください",
+  "dramaUnlockLoginRequired": "エピソードを解除するにはログインしてください",
+  "dramaUnlockMessage": "エピソード{epNo}の解除には支払いが必要です\n価格: {price} USDC\n一括解除割引: {discount}",
+  "@dramaUnlockMessage": {
+    "placeholders": {
+      "epNo": {
+        "type": "int"
+      },
+      "price": {
+        "type": "String"
+      },
+      "discount": {
+        "type": "String"
+      }
+    }
+  },
+  "dramaUnlockSuccessFetching": "解除成功、再生アドレスを取得中...",
+  "dramaUnlockTitle": "エピソードをアンロック",
+  "editActorTitle": "ロールを編集",
+  "editDramaTitle": "ショートドラマを編集する",
+  "editVideoTitle": "動画を編集する",
+  "editSaveChanges": "変更を保存",
+  "editProfileTitle": "プロフィールを編集",
+  "editNicknameLabel": "ニックネーム",
+  "editRoleNameLabel": "ユーザー名",
+  "editNicknameHint": "ニックネームを入力",
+  "editNicknameRequired": "ニックネームを入力してください",
+  "editProfileBioLabel": "プロフィール",
+  "editProfileBioHint": "プロフィールを入力してください",
+  "editProfileEmailLabel": "メールアドレス",
+  "editAvatarCropTitle": "アバターを切り取り",
+  "profileUpdateSuccess": "プロフィールを更新しました",
+  "incomeClaimAmount": "{amount} USDCを請求",
+  "@incomeClaimAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimFailed": "請求に失敗しました",
+  "incomeClaimMessage": "請求可能額: {amount} {currency}\n収益はウォレット残高に転送されます",
+  "@incomeClaimMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimSuccess": "請求成功",
+  "incomeClaimTitle": "収益を受け取る",
+  "incomeConfirmClaim": "受取を確認",
+  "incomeHistoryTab": "履歴",
+  "incomeInviteHeroSubtitle": "友達を招待して消費やインタラクションを促し、招待者が活発なほど報酬が高くなります",
+  "incomeInviteHeroTitle": "友達を招待して還元を受け取る",
+  "incomeInviteNoRecords": "還元記録がありません",
+  "incomeInvitePaidUnlockDesc": "友達がエピソードの解除に支払い",
+  "incomeInvitePaidUnlockTitle": "有料解除",
+  "incomeInviteRecords": "還元記録",
+  "incomeInviteRegisterDesc": "友達が紹介リンクで登録",
+  "incomeInviteRegisterTitle": "招待登録",
+  "incomeInviteRules": "還元ルール",
+  "incomeInviteShareLink": "招待リンクを共有",
+  "incomeInviteStakeDesc": "友達がNFTやSTORYをステーク",
+  "incomeInviteStakeTitle": "ステーク投資",
+  "incomeInviteTab": "招待還元",
+  "incomeInviteWatchDesc": "友達がドラマを視聴してポイントを獲得",
+  "incomeInviteWatchTitle": "ドラマを視聴",
+  "incomeNoHistory": "履歴記録がありません",
+  "incomeNoRecords": "収益記録がありません",
+  "incomeNothingToClaim": "請求するものはありません",
+  "incomeOverviewTab": "概要",
+  "incomePendingClaim": "請求待ち",
+  "incomeRecords": "収益記録",
+  "incomeThisMonth": "今月",
+  "incomeToday": "今日",
+  "incomeTotalEarnings": "累計収益",
+  "incomeCumulativeStory": "累計 STORY",
+  "incomeCumulativeUsdc": "USDCの累計",
+  "incomeClaimableStory": "STORYを受け取れます",
+  "incomeClaimableUsdc": "USDCを受け取ることができます",
+  "incomeSettlingStory": "STORY決済中",
+  "incomeSettlingHint": "決済中；到着後に請求可能",
+  "incomeFilterAll": "すべて",
+  "incomeFilterMining": "派遣収入",
+  "incomeFilterInvite": "紹介報酬",
+  "incomeMiningReward": "派遣収入",
+  "incomeInviteReward": "紹介報酬",
+  "incomeUsdcActorSignShare": "ロールの契約に基づく収益分配",
+  "incomeClaimNoWallet": "まずウォレットを紐付けてください",
+  "incomeClaimCurrencyTitle": "{currency}を請求",
+  "@incomeClaimCurrencyTitle": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimWithdrawMessage": "Solanaウォレットに {amount} {currency} を出金してもよろしいですか？\n受取先: {address}",
+  "@incomeClaimWithdrawMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      },
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeClaimWithdrawConfirm": "出金を確認",
+  "incomeClaimWithdrawSubmitted": "出金成功！",
+  "incomeClaimWithdrawFailed": "出金に失敗しました、再試行してください",
+  "incomeClaimAction": "受け取る",
+  "nftCreateActorIp": "キャラクターIPを発行する",
+  "nftHeaderSubtitle": "独占的なキャラクターNFTを集めて探索",
+  "nftHeaderTitle": "キャラクターNFT広場",
+  "nftSearchHint": "短編ドラマ、作品、ロール、ユーザーを検索...",
+  "actorHowToPlayTitle": "キャラクターIPの活用方法",
+  "actorHowToPlayHelpTooltip": "遊び方の説明",
+  "actorHowToPlaySignTab": "契約済みIP",
+  "actorHowToPlaySignSubtitle": "出演料をただ受け取る",
+  "actorHowToPlayIssueTab": "IPの配信",
+  "actorHowToPlayIssueSubtitle": "創作による収益化",
+  "actorHowToPlaySignPositioning": "コンセプト：創作のハードルゼロ、手軽に安定した収益を得られる",
+  "actorHowToPlaySignAudience": "創作はしたくないが、手軽に STORY の収益を得たい一般ユーザー",
+  "actorHowToPlaySignGuide": "注目度が高く、高額なギャラが期待できるIP作品の役を獲得し、マネージャーのページから出演を手配するだけで収益を得ることができます",
+  "actorHowToPlaySignRightsTitle": "二重収益",
+  "actorHowToPlaySignRightPerform": "公演を手配して、STORYトークンを継続的に獲得する",
+  "actorHowToPlaySignRightTrade": "キャラクターのIPは取引可能で、プレミアム収益を得ることができます",
+  "actorHowToPlayIssuePositioning": "位置づけ：制作・配信、多角的な収益、IPの長期的な価値向上",
+  "actorHowToPlayIssueAudience": "創作能力があり、キャラクターのIPやショートドラマを通じて収益化を図りたいクリエイター",
+  "actorHowToPlayIssueGuide": "キャラクターIPを配信し、AIショートドラマと連動させることで、作品の人気を高め、IPの出演料と収益を向上させる",
+  "actorHowToPlayIssueRightsTitle": "三重の収益",
+  "actorHowToPlayIssueRightSignLabel": "契約に基づく収益分配：",
+  "actorHowToPlayIssueRightSign": "独自のIPが契約された場合、40％の収益分配を受けられます",
+  "actorHowToPlayIssueRightPerformLabel": "公演の収益：",
+  "actorHowToPlayIssueRightPerform": "自社IPと契約し、ライブ出演でSTORYを稼ぐ",
+  "actorHowToPlayIssueRightValueLabel": "付加価値：",
+  "actorHowToPlayIssueRightValue": "IPは取引可能で、人気が高ければ高いほどプレミアムも高くなる",
+  "actorHowToPlayAudienceTitle": "対象者",
+  "actorHowToPlayGuideTitle": "遊び方ガイド",
+  "actorHowToPlayCreateHint": "DreamOS を使えば、ワンクリックでキャラクターのIPやAIショートドラマを生成でき、高品質なコンテンツを効率的に制作できます",
+  "actorHowToPlayCreateCta": "創作しよう",
+  "nftSignInDevelopment": "この機能は現在利用できません",
+  "nftSortCompleted": "全話視聴",
+  "nftSortHeat": "最も人気のある",
+  "nftSortLowestPrice": "価格",
+  "nftSortLv1Pay": "Lv.1 報酬",
+  "nftSortMaxPay": "最高報酬",
+  "nftTradeUnavailable": "取引はまだ利用できません",
+  "playerEpisodeBarCompleted": "全{count}話 · 完了",
+  "@playerEpisodeBarCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playerEpisodeSynopsis": "第{episodeNo}話 | {synopsis}",
+  "@playerEpisodeSynopsis": {
+    "placeholders": {
+      "episodeNo": {
+        "type": "int"
+      },
+      "synopsis": {
+        "type": "String"
+      }
+    }
+  },
+  "playerPlayFailedRetry": "再生に失敗しました、しばらくしてからもう一度お試しください",
+  "publicProfileDramas": "ショートドラマ",
+  "publicProfileEmpty": "公開コンテンツがありません",
+  "publicProfileFollowers": "フォロワー",
+  "publicProfileFollowing": "フォロー",
+  "followTabMutual": "相互フォロー",
+  "profileLikesReceived": "いいね",
+  "profileLikesReceivedDialogMessage": "これまでに{count}件のいいねを獲得しました。素晴らしい作品をありがとう！",
+  "profileTabWorks": "作品",
+  "profileTabLikes": "いいね",
+  "profileTabFavorites": "お気に入り",
+  "profileWalletTitle": "ウォレット",
+  "profileTradeStory": "STORYを取引",
+  "profileAddressCopied": "アドレスをコピーしました",
+  "followActionFollow": "フォロー",
+  "followActionFollowBack": "フォローバック",
+  "followActionFollowing": "フォロー中",
+  "followActionMutual": "相互フォロー",
+  "followUnfollowTitle": "フォロー解除",
+  "followUnfollowMessage": "{handle} のフォローを解除しますか？",
+  "@followUnfollowMessage": {
+    "placeholders": {
+      "handle": {
+        "type": "String"
+      }
+    }
+  },
+  "followUnfollowNo": "いいえ",
+  "followUnfollowYes": "はい",
+  "followListEmpty": "ユーザーがいません",
+  "followFollowingEmpty": "まだフォローしていません。気になるクリエイターを見つけよう～",
+  "followFollowingEmptyCta": "見てみる",
+  "followFollowingEmptyGuest": "フォローなし",
+  "followFollowersEmpty": "まだフォロワーがいません。作品を投稿して注目を集めよう～",
+  "followFollowersEmptyCta": "投稿する",
+  "followFollowersEmptyGuest": "フォロワーなし",
+  "followMutualsEmpty": "相互フォローの友達はまだいません",
+  "followMutualsSelfOnly": "相互フォロー一覧は本人のみ閲覧できます",
+  "followRelationsSelfOnly": "フォロー一覧は本人のみ閲覧できます",
+  "followMoreTitle": "その他",
+  "followRemoveFollower": "フォロワーを削除",
+  "followRemoveFollowerSuccess": "削除しました。相手には通知されません",
+  "followUserHandleFallback": "@ユーザー",
+  "publicProfileTitle": "ユーザープロフィール",
+  "publicProfileUserFallback": "ユーザー #{id}",
+  "@publicProfileUserFallback": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "watchHistoryEmpty": "視聴履歴がありません",
+  "gamePageTitle": "エージェント",
+  "gamePageSubtitle": "ロールを管理し、派遣して収益を上げよう。",
+  "gameRiskAccount": "リスクアカウント",
+  "gameRiskAccountDescription": "このアカウントの信頼係数に異常があります。マイニング重みに影響します。",
+  "gameWeeklyStats": "週間統計",
+  "gameDeployedActors": "配信中のロール",
+  "gameMyActors": "私のロール",
+  "gameComingSoon": "近日公開",
+  "gameSignActor": "所属タレント",
+  "gameGoProduce": "ドラマの撮影に行く",
+  "gameWorkingActors": "派遣中のロール",
+  "gameWeekPool": "今週のジャックポット (STORY)",
+  "gameWeekNominalOutput": "今週の名目生産高 (STORY)",
+  "gameWeekEstimatedOutput": "今週の予想生産量 (STORY)",
+  "gameMiningRules": "マイニングのルール",
+  "agentV2RulesTitle": "ルール",
+  "agentV2RulesSummary": "基本サイクル：キャラクターと契約 → 出演を設定 → STORYを自動獲得 → ランクアップ → さらに多く獲得。毎週月曜日 00:00（UTC）に精算され、収益ページで受け取れます。体力がなくなったら休ませるか補充し、稼働を止めないようにしましょう。",
+  "agentV2RulesHowToPlay": "遊び方",
+  "agentV2RulesStartTitle": "キャラクターに収益を発生させるには？",
+  "agentV2RulesStartDescription": "待機中のキャラクターを出演させると、1時間ごとにSTORYを自動獲得します。同時に最大5体まで出演でき、同じIPのカードも複数出演できます。出演中は1時間ごとに体力を1消費し、体力が0より多い間は獲得が続きます。",
+  "agentV2RulesStaminaTitle": "体力はどう管理する？なくなったら？",
+  "agentV2RulesStaminaDescription": "体力は「あるかどうか」だけが影響します。体力{staminaLimit}でも1でも、1時間あたりの収益は同じです。補充は一括で満タンにすることしかできず、価格はランクだけで決まります。0に近いほど補充がお得です。",
+  "@agentV2RulesStaminaDescription": {
+    "placeholders": {
+      "staminaLimit": {
+        "type": "int"
+      }
+    }
+  },
+  "agentV2RulesBatchTitle": "一括操作はできますか？",
+  "agentV2RulesBatchDescription": "はい。ページ下部の「全員出演」「全員補充」「全員休憩」で、出演枠にいるすべてのロールを一括操作できます。",
+  "agentV2RulesEarnings": "獲得できる収益",
+  "agentV2RulesSalaryTitle": "報酬はどう計算されますか？",
+  "agentV2RulesSalaryDescription": "ランクが高く、価値の高いキャラクターが人気ドラマに出演するほど、1時間あたりの報酬が増えます。",
+  "agentV2RulesSalaryFormula": "カード1枚の時間報酬 = キャラクター算力 × 1 STORY",
+  "agentV2RulesRolePowerFormula": "キャラクター算力 = IP算力 × 報酬係数 × CP係数 × Trust2",
+  "agentV2RulesIpSalaryFormula": "IP報酬 = 価格係数 × 人気度係数",
+  "agentV2RulesCoefficientTitle": "係数の説明",
+  "agentV2RulesSalaryExample": "林夢瑶 · Lv3 主役 · P0=120U（価格係数 ≈1.5046）· 人気度 3.5\n→ 時間報酬 = 5.0 × 1.5046 × 3.5 × 1 = 26.3 STORY\nLv1 エキストラの場合は1時間あたり約5.3 STORYのみ——Lv3への昇格で5倍になります。",
+  "agentV2RulesSettlementTitle": "いつ精算され、どう受け取れますか？",
+  "agentV2RulesSettlementDescription": "精算周期は7日間です。毎週月曜日 00:00（UTC）に集計を締め切り、24時間以内に精算が完了します。収益ページで受け取ってください。プラットフォーム全体には週間報酬プール（上限）があり、初期は約211万STORYで、その後は毎週減少します（× 0.99572）。",
+  "agentV2RulesSettlementExample": "今週の報酬プールが100,000 STORYの場合：\nケースA：プラットフォーム全体であなただけが134を産出 → 134を受け取り、残りは配布されません\nケースB：ネットワーク全体の産出が250,000 → 100,000 ÷ 250,000 = 40%となり、名目産出は40%に縮小\nケースC：縮小後の受取額が6,000でも、上限が5,000なら5,000のみ配布",
+  "agentV2RulesStronger": "強化方法",
+  "agentV2RulesUpgradeTitle": "キャラクターをアップグレードするには？",
+  "agentV2RulesUpgradeDescription": "アップグレード = 同じキャラクター・同じレベルの複製カード2枚を消費 + 合成手数料を支払う + 累計完視聴数の条件を達成（対象カードを含め合計3枚）。アップグレードすると報酬係数が大幅に上がり、時間産出が数倍になります。",
+  "agentV2RulesPerforming": "出演中",
+  "agentV2RulesNormalSalary": "通常報酬",
+  "agentV2RulesSalaryCoefficient": "報酬係数",
+  "agentV2RulesPriceCoefficientDescription": "P0≤100Uは線形増加 · P0>100Uは上限1.6に漸近",
+  "agentV2RulesTrust2": "Trust2",
+  "agentV2RulesTrust2Factor": "プラットフォームTrust2",
+  "agentV2RulesSettlementCase1": "実際の配布額 = 名目産出、未使用分は失効",
+  "agentV2RulesSettlementCase2": "比例調整：実際の受取額 = 名目産出 ×（報酬プール ÷ ネットワーク全体の産出）",
+  "gameSettlementRecords": "週次決算記録",
+  "gameFilterComputingPower": "算力",
+  "gameFilterLevel": "レベル",
+  "gameFilterHeat": "注目度",
+  "gameFilterStamina": "体力",
+  "gameHeatCoef": "熱度係数",
+  "gameMiningCoef": "マイニング係数",
+  "gameActorPower": "キャラクター算力",
+  "gameActorPowerDetailTitle": "キャラクター算力の詳細",
+  "gameActorPowerFormula": "キャラクター算力 = IP算力 × マイニング係数 × CP係数 × Trust2",
+  "gameActorPowerIpFormula": "IP算力 = 価格係数 × 熱度係数 × Trust1",
+  "gameActorPowerHourlyOutput": "1時間あたりの産出",
+  "gameCpCoefficient": "CP係数",
+  "gameTrust2": "Trust2",
+  "gameWeeklyNominalOutputLabel": "今週の名目生産高",
+  "gameRoundNominalOutputLabel": "期間 nominal 出力",
+  "gameSupplement": "補足",
+  "gameRest": "休憩",
+  "gameDeploy": "派遣",
+  "gameDeployActor": "キャラクターの派遣",
+  "gameStatusIdle": "未使用",
+  "gameStatusMining": "マイニング中",
+  "gameActorIpLabel": "キャラクターIP {id}",
+  "@gameActorIpLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "gameStaminaProgress": "{current}/{max}",
+  "@gameStaminaProgress": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "gameStaminaMechanismTitle": "体力の仕組み",
+  "gameStaminaMechanismDesc": "派遣中のロールは1時間ごとに体力を1ポイント消費します。体力がなくなると報酬の獲得が停止し、休息中は自動的に回復します。USDCを使って体力を即時補充できます。",
+  "gameStaminaMechanismAction": "わかりました",
+  "gameLevelBadge": "Lv{level}",
+  "@gameLevelBadge": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "gameEmptyDeployed": "現在配信中のロールはいません",
+  "gameEmptyMyActors": "まだロールがいません。署名して始めましょう。",
+  "gameDeployConfirmTitle": "このキャラクターを派遣しますか？",
+  "gameRestConfirmTitle": "このキャラクターを休憩させますか？",
+  "gameRestConfirmDesc": "キャラクターの休憩中は採掘報酬が停止し、体力は時間経過で回復します。",
+  "gameRestConfirmAction": "休憩を確認",
+  "gameRestSuccessToast": "休憩しました",
+  "gameDeploySlotFull": "配信スロットが満杯です（最大5）",
+  "gameRefillTitle": "体力を回復する",
+  "gameRefillCurrentStamina": "現在のスタミナ",
+  "gameRefillCost": "復旧費用",
+  "gameRefillConfirm": "体力をすべて回復する",
+  "gameRefillSuccess": "体力の回復に成功しました",
+  "gameRefillFailed": "体力の回復に失敗しました。もう一度お試しください。",
+  "gameBatchRefillTransactionTooLarge": "一括体力回復トランザクションが大きすぎます。俳優の人数を減らして再試行してください。",
+  "agentV2RefillTitle": "体力を補充",
+  "agentV2RefillCost": "費用",
+  "agentV2RefillActorButton": "このキャラクター",
+  "agentV2RefillAllActors": "出演中の全キャラクターに補充",
+  "agentV2RefillActorCount": "{count}人",
+  "@agentV2RefillActorCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "agentV2RefillAllButton": "すべて補充",
+  "agentV2RefillOr": "または",
+  "agentV2RestAll": "全員休憩",
+  "agentV2RestActorCount": "{count}人",
+  "@agentV2RestActorCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "gameInsufficientUsdc": "USDCの残高が不足しています",
+  "walletInsufficientStory": "STORYの残高が不足しています",
+  "gameSupplementComingSoon": "スタミナ回復は近日公開",
+  "gameStatHelpWeekPoolTitle": "今週の賞金総額",
+  "gameStatHelpWeekPoolSubtitle": "すなわち、STORYマイニングにおける毎週の固定配布上限（週次上限）",
+  "gameStatHelpWeekTotalPool": "今週の総賞金プール",
+  "gameStatHelpWeekTotalPoolValue": "2,115,385 STORY",
+  "gameStatHelpWeekStakePool": "今週のステーキング賞金プール（75%）",
+  "gameStatHelpWeekStakePoolValue": "1,586,538 STORY",
+  "gameStatHelpWeekInvitePool": "今週の招待賞金プール（25%）",
+  "gameStatHelpWeekInvitePoolValue": "528,846 STORY",
+  "gameStatHelpInitialHardCap": "初期のハードトップ",
+  "gameStatHelpInitialHardCapValue": "2,115,385 STORY",
+  "gameStatHelpWeeklyDecay": "週減衰係数",
+  "gameStatHelpWeeklyDecayValue": "× 0.99572",
+  "gameStatHelpWeeklyDistributionFormula": "週間の実質配布量 = min(ネットワーク全体の名目生産量, 当該週のハードキャップ)",
+  "gameStatHelpUnusedQuotaNote": "未配布の残枠については、配布せず、戻さず、ポイントの補填も行いません。",
+  "gameStatHelpNominalTitle": "今週の名目産出",
+  "gameStatHelpNominalSummary": "すべてのロールの週間累計名目産出の合計",
+  "gameStatHelpNominalSummaryHint": "シングルカードの計算式については、以下の説明を参照してください。",
+  "gameStatHelpNominalFormula": "1枚あたりの名目産出 = 1枚あたりの時間重み × R_base × 有効マイニング時間",
+  "gameStatHelpHourlyWeight": "シングルカード時間加重",
+  "gameStatHelpHourlyWeightValue": "= キャラクター算力",
+  "gameStatHelpActorPower": "キャラクター算力",
+  "gameStatHelpActorPowerValue": "= IP算力 × マイニング係数 × CP係数 × Trust2",
+  "gameStatHelpCpCoef": "CP係数",
+  "gameStatHelpRBase": "R_base",
+  "gameStatHelpRBaseValue": "1 STORY / 単位重み / 時間",
+  "gameStatHelpEffectiveDuration": "有効なマイニング時間",
+  "gameStatHelpEffectiveDurationValue": "担保中であり、かつスタミナが 0 より大きい状態の累計時間",
+  "gameStatHelpActualTitle": "今週の生産見込み",
+  "gameStatHelpActualSubtitle": "名目産出は週次上限と単一アドレス上限の制約を受け、週末に実際の収益が確定します",
+  "gameStatHelpIfNominalLte": "ネットワーク全体の名目生産量が、当該週のハードキャップ以下である場合：",
+  "gameStatHelpUserActualEqNominal": "ユーザーの実受取額 ＝ ユーザーの名目生産高",
+  "gameStatHelpIfNominalGt": "ネットワーク全体の名目生産量が、その週のハードキャップを上回る場合：",
+  "gameStatHelpUserActualFormula": "ユーザーの実受取額 = ユーザーの名目生産量 × 当該週のハードキャップ / ネットワーク全体の名目生産量",
+  "gameStatHelpAddressCap": "1アドレスあたりの週間上限",
+  "gameStatHelpAddressCapValue": "1つのアドレスにつき、毎週その週のハードキャップの最大5％まで受け取ることができます。",
+  "theaterCategoryAll": "すべて",
+  "theaterCategoryAncient": "時代劇",
+  "theaterCategoryFinance": "金融",
+  "theaterCategorySuspense": "サスペンス",
+  "theaterCategorySciFi": "SF",
+  "theaterCategoryRealStory": "実話に基づく",
+  "theaterCategoryUrban": "都市",
+  "theaterSortHottest": "最も人気のある",
+  "theaterSortNewest": "最新",
+  "theaterSortTopRated": "最も多くのお気に入り登録",
+  "theaterPlayCount": "{count} 回再生",
+  "@theaterPlayCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBasicInfo": "基本情報",
+  "createDramaEpisodes": "ドラマ管理",
+  "createDramaRoles": "ロール管理",
+  "createDramaCover": "表紙",
+  "createDramaCoverUpload": "アップロード",
+  "createDramaCoverPlaceholder": "JPG/PNG対応、6:5のアスペクト比推奨、最大5MB",
+  "createDramaCoverCropTitle": "カバーを切り取り",
+  "createDramaName": "ショートドラマのタイトル",
+  "createDramaNameHint": "ショートドラマのタイトルを入力してください",
+  "createDramaSynopsis": "概要",
+  "createDramaTags": "タグ",
+  "createDramaTagsHint": "タグを入力してEnterで追加（例：ラブ、コメディ）",
+  "createDramaTagsLoading": "タグ読み込み中…",
+  "createDramaTagsEmpty": "利用可能なタグがありません",
+  "createDramaTagsRetry": "再試行",
+  "createDramaUploadDesc": "「アップロード」をクリックすると、送信後に動画名順に自動的に並べ替えられます",
+  "@createDramaUploadDesc": {},
+  "createDramaEpisodesDesc": "動画ファイルを一括アップロードすると、システムが自動的にファイル名順に並べ替えてエピソード一覧を生成します。ドラッグ＆ドロップによる並べ替え、削除、タイトルの編集などの操作が可能です。",
+  "@createDramaEpisodesDesc": {},
+  "createDramaVideoFileTypeHint": "対応形式: mp4, flv, wmv, asf, mkv, avi, rm, rmvb, mpg, mpeg, mov, webm。最大ファイルサイズ2GB。",
+  "@createDramaVideoFileTypeHint": {},
+  "createDramaUploadVideo": "動画をアップロードする",
+  "createDramaVideoEmpty": "まだ動画が追加されていません",
+  "createDramaVideoPickFailed": "動画の選択に失敗しました",
+  "createDramaVideoAnyTooLarge": "2GBを超えるビデオファイルがあります。調整して再選択してください",
+  "createDramaVideoStatusUploading": "アップロード中",
+  "createDramaVideoStatusDone": "アップロードが完了しました",
+  "createDramaVideoStatusFailed": "アップロードに失敗しました",
+  "createDramaVideoTooLarge": "動画サイズは2GBを超えることはできず、アップロードできません",
+  "createDramaVideoUploadComplete": "すべての動画がアップロードされました",
+  "createDramaVideoUploadFailed": "{name}のアップロードに失敗しました",
+  "@createDramaVideoUploadFailed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaVideoPickOverflow": "さらに{count}話追加できます。{overflow}件の余分なファイルはスキップされました。",
+  "@createDramaVideoPickOverflow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "overflow": {
+        "type": "int"
+      }
+    }
+  },
+  "createDramaAddedVideos": "追加された動画 ({count}ファイル)",
+  "@createDramaAddedVideos": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaAddedVideosCount": "({count}ファイル)",
+  "@createDramaAddedVideosCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaAddedVideosLabel": "追加された動画",
+  "createDramaRolesDesc": "ショートドラマのロールを作成し、名前、プロフィール画像、性格設定を決定します。",
+  "createDramaRolesRule1": "各クリエイターは最大5つのロールを追加し、その中から最大5つのロールを選んでキャラクターIPに紐付けできます。IPを使用するにはキャラクターを保有している必要があります。",
+  "createDramaRolesRule2": "ドラマの審査通過後7日以内にキャラクターIPを紐付けることができます。この期間に生成された再生データは、紐付けられたキャラクターIPに蓄積されます。",
+  "@createDramaRolesRule2": {
+    "description": "创建短剧角色规则2：短剧通过审核后7天内可绑定演员IP，期间产生的播放数据将同步积累到所绑定的演员IP上。"
+  },
+  "createDramaRolesExpireTime": "期限",
+  "createDramaRolesRule3": "キャラクターが紐付けられ参加している場合、審査承認後に紐付けの解除や変更はできません。",
+  "createDramaAddRole": "ロールを追加",
+  "createDramaBindActor": "出演ロール",
+  "createDramaRoleActing": "出演ロール",
+  "createDramaSelectActor": "ロールを選択",
+  "createDramaBindActorTitle": "キャラクターのIPを選択",
+  "createDramaBindActorSubtitle": "「{roleName}」を演じるキャラクターを1人選んでください",
+  "@createDramaBindActorSubtitle": {
+    "placeholders": {
+      "roleName": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBindActorOwnedCount": "{count}件のキャラクターのIPを保有しています",
+  "@createDramaBindActorOwnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "createDramaBindActorIpLabel": "キャラクターIP {code}",
+  "@createDramaBindActorIpLabel": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBindActorBoundTag": "連携済み",
+  "createDramaBindActorBoundToast": "{name}を紐付けました",
+  "@createDramaBindActorBoundToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaBindActorUnbind": "紐付け解除",
+  "createDramaBindActorExpired": "短劇の配信開始から7日以降はロールを出演させることができません",
+  "createDramaBindActorEmptyTitle": "紐付けるキャラクターIPがありません",
+  "createDramaBindActorEmptyDesc": "ロールに紐付ける前にキャラクターIPを保有している必要があります",
+  "createDramaBindActorGotoCreate": "ロールを作成",
+  "createDramaPrevStep": "前のページ",
+  "createDramaNextStep": "次のステップ",
+  "createDramaSubmit": "投稿",
+  "createDramaRoleNameLabel": "ロール名",
+  "createDramaRoleNameHint": "ロール名を入力してください",
+  "createDramaRoleNameRequired": "ロール名を入力してください",
+  "createDramaRoleBioLabel": "ロール概要",
+  "createDramaRoleBioHint": "ロールのプロフィールを入力してください",
+  "createDramaRoleBioRequired": "ロールのプロフィールを入力してください",
+  "createDramaRoleAddTitle": "ロールを追加",
+  "createDramaRoleEditTitle": "ロールを編集",
+  "createDramaRoleUploadAvatar": "プロフィール写真をアップロード",
+  "createDramaRoleSave": "保存",
+  "createDramaRoleDeleteConfirm": "このキャラクターを削除しますか？",
+  "createDramaVideoDeleteConfirm": "「{name}」を削除しますか？",
+  "@createDramaVideoDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createDramaVideoDeleteTitle": "動画を削除",
+  "createDramaVideoPreviewUnavailable": "以前にアップロードした動画は現在プレビューできません",
+  "createDramaRoleEmpty": "まだロールが追加されていません",
+  "createDramaRoleBindComingSoon": "ロールの紐付けは近日公開",
+  "createDramaRoleAvatarCropTitle": "ロールアバターを切り取り",
+  "createDramaRoleAvatarUploadFailed": "ロールアバターのアップロードに失敗しました",
+  "createDramaPublishedSuccess": "投稿に成功しました",
+  "createDramaDraftRestored": "未完成の下書きが復元されました",
+  "createDramaDraftClear": "データを消去",
+  "createDramaDraftDiscard": "保存せず戻る",
+  "createDramaDraftSave": "下書きを保存",
+  "createDramaEditLoading": "読み込み中...",
+  "createDramaEditLoadError": "ドラマ情報の読み込みに失敗しました、再試行してください",
+  "createDramaSubmitValidationTitle": "ドラマタイトルを入力してください",
+  "createDramaSubmitValidationCover": "カバー画像をアップロードしてください",
+  "createDramaSubmitValidationVideos": "少なくとも1つの動画をアップロードしてください",
+  "createDramaSubmitValidationSession": "アップロードセッションが無効です、動画を再アップロードしてください",
+  "createDramaUploadSessionFailed": "アップロードセッションの作成に失敗しました",
+  "createDramaSubmitValidationRoles": "少なくとも1つのロールを追加してください",
+  "createDramaStep1TitleRequired": "ショートドラマのタイトルを入力してください",
+  "createDramaStep1SynopsisRequired": "自己紹介を入力してください",
+  "createDramaStep1CoverRequired": "カバーを追加してください",
+  "createDramaStep1TagsRequired": "タグを選択してください",
+  "settingsLanguage": "言語",
+  "settingsTheme": "テーマ",
+  "settingsThemeLight": "ライト",
+  "settingsThemeDark": "ダーク",
+  "settingsThemeSystem": "システム",
+  "settingsUI": "インターフェース",
+  "settingsAppVersion": "バージョン",
+  "settingsVersionLatestToast": "最新バージョンを使用しています",
+  "settingsTermsOfService": "利用規約",
+  "settingsPrivacyPolicy": "プライバシーポリシー",
+  "settingsDeleteAccount": "アカウント削除",
+  "settingsDeleteAccountConfirm": "アカウントは {deadline} に削除されます。この期間中に再ログインすると、アカウント削除を取り消せます。",
+  "settingsDeleteAccountSuccess": "アカウント削除申請を送信しました",
+  "settingsClearCache": "キャッシュをクリア",
+  "settingsNetworkInspector": "ネットワークインスペクター",
+  "settingsClearCacheConfirm": "キャッシュをクリアしてもよろしいですか？",
+  "miningRulesHowToPlay": "マイニングの派遣はどのように行うのか",
+  "miningRulesFlowSubtitle": "派遣から報酬受け取りまでの全プロセスを1枚の図で理解する",
+  "miningRulesSection1Title": "1. 人を派遣して、採掘させる",
+  "miningRulesSection1Desc": "空き状態のキャラクターを以下の5つのスロットに「配置」すると、そのキャラクターは自動的に採掘を開始し、STORYを生成するようになります。",
+  "miningRulesSection1Bullet1": "1人につき、同時に最大5人のロールを派遣できます",
+  "miningRulesSection1Bullet2": "同じキャラクターのIPに対して、複数のカードを同時に派遣することも可能です",
+  "miningRulesSection1Bullet3": "派遣後、1時間ごとに⚡スタミナが1ポイント消費されます。スタミナが0より大きい間は生産が継続され、スタミナが0になると生産が停止します。",
+  "miningRulesSection2Title": "2. 計算、生産量の算出式",
+  "miningRulesSection2Desc": "1枚あたりの1時間あたりの生産量は、次のように計算されます：",
+  "miningRulesSection2Formula": "1カード1時間出力 = キャラクター算力 × 1 STORY",
+  "miningRulesSection2FactorsTitle": "3つの決定要因：",
+  "miningRulesSection2Factor1": "マイニング係数――ランクが高いほど係数は大きくなる。Lv1=1.0 → Lv2=2.2 → Lv3=5.0 → Lv4=11 → Lv5=24",
+  "miningRulesSection2Factor2": "人気度――ロールの最近のドラマでの演技が優れているほど、人気度は高くなる。そのロールのドラマを視聴したり、全話見終えたり、いいね！やブックマーク、コメントを付けたりする人が増えれば、人気度は上昇する。",
+  "miningRulesCoefTableTitle": "Coefficient details",
+  "miningRulesCoefColCoef": "Coefficient",
+  "miningRulesCoefColFactor": "Determined by",
+  "miningRulesCoefColDesc": "Details",
+  "miningRulesCoefMining": "Mining Coefficient",
+  "miningRulesCoefPrice": "Price Coefficient",
+  "miningRulesCoefHeat": "Heat Coefficient",
+  "miningRulesCoefCp": "CP Coefficient",
+  "miningRulesCoefTrust": "Trust",
+  "miningRulesCoefMiningFactor": "Tier",
+  "miningRulesCoefPriceFactor": "Issue price P0",
+  "miningRulesCoefHeatFactor": "Recent drama performance",
+  "miningRulesCoefCpFactor": "-",
+  "miningRulesCoefTrustFactor": "Platform risk control",
+  "miningRulesCoefMiningDesc": "Lv1=1.0 · Lv2=2.2 · Lv3=5.0 · Lv4=11 · Lv5=24",
+  "miningRulesCoefPriceDesc": "Linear when P0≤10U · asymptotic cap 1.6 when P0>10U",
+  "miningRulesCoefHeatDesc": "More completions, likes, favorites, and comments raise heat",
+  "miningRulesCoefCpDesc": "Not open yet",
+  "miningRulesCoefTrustDesc": "Defaults to 1.0",
+  "miningRulesSettleColCondition": "Condition",
+  "miningRulesSettleColRule": "Distribution rule",
+  "miningRulesUpgradePathSubtitle": "Upgrade path",
+  "miningRulesUpgradeColPath": "Upgrade path",
+  "miningRulesUpgradeColHeat": "Completion threshold",
+  "miningRulesUpgradeColFee": "Synthesis fee",
+  "miningRulesUpgradePath12": "Lv1 → Lv2",
+  "miningRulesUpgradePath23": "Lv2 → Lv3",
+  "miningRulesUpgradePath34": "Lv3 → Lv4",
+  "miningRulesUpgradePath45": "Lv4 → Lv5",
+  "miningRulesUpgradeHeat12": "≥ 10,000",
+  "miningRulesUpgradeHeat23": "≥ 50,000",
+  "miningRulesUpgradeHeat34": "≥ 200,000",
+  "miningRulesUpgradeHeat45": "≥ 1,000,000",
+  "miningRulesUpgradeFee12": "10 USDC",
+  "miningRulesUpgradeFee23": "20 USDC",
+  "miningRulesUpgradeFee34": "40 USDC",
+  "miningRulesUpgradeFee45": "80 USDC",
+  "miningRulesSection2Factor3": "R_base——固定値。現在は 1 STORY ですが、今後プラットフォーム側で手動で調整される可能性があります。",
+  "miningRulesSection2StaminaText": "スタミナは「あるかどうかのみ」が重要で、残量には関係ありません。{staminaLimit}ポイントでも1ポイントでも、1時間あたりの獲得量は同じです。スタミナは、採掘しているかどうかだけが重要です。",
+  "@miningRulesSection2StaminaText": {
+    "placeholders": {
+      "staminaLimit": {
+        "type": "int"
+      }
+    }
+  },
+  "miningRulesSection2ExampleTitle": "例えば：",
+  "miningRulesSection2ExampleDesc": "あなたの「林夢瑶」はLv3の主人公（マイニング係数 5.0）で、現在の人気度は 3.5、\n1時間あたりの生産量 = 5.0 × 3.5 × 1 = 17.5 STORY\n1日の生産量 = 17.5 × 24 = 420 STORY\n1週間の生産量 = 17.5 × 168 = 2,940 STORY",
+  "miningRulesSection3Title": "3. お金を支給するが、上限がある",
+  "miningRulesSection3Desc": "毎週、プラットフォーム全体で総報酬プール（週間ハードキャップ）が設定され、約2,115,385 STORYから始まり、毎週減少します（週 × 0.99572）。報酬分配は3つのケースに分かれます：",
+  "miningRulesSection3Case1Title": "全プラットフォームの名目生産量 ≤ 今週の賞金プール",
+  "miningRulesSection3Case1Desc": "参加者は全員、記載された賞金を全額受け取ります。残りの賞金プールは支給されず、補充も行われません。",
+  "miningRulesSection3Case2Title": "全プラットフォームの想定生産量 &gt; 今週の賞金プール",
+  "miningRulesSection3Case2Desc": "比例スケーリング：実際の獲得量 = 名目上の生産量 × 賞金プール ÷ プラットフォーム全体の生産量",
+  "miningRulesSection3Case3Title": "単一アドレスの賞金総額が賞金プール全体の5%を超えた場合",
+  "miningRulesSection3Case3Desc": "超過分は付与されず、返還されず、補填もされません",
+  "miningRulesSection3ExampleDesc": "週間プールが100,000 STORYと仮定：\nケースA: プラットフォームにあなただけがいて、1週間に134を生成 → 134を取得、残り99,866は分配されない\nケースB: プラットフォーム全体の出力が250,000で、全員が40%にスケーリング（100,000÷250,000）\nケースC: 誰かの比例報酬が6,000だが、1アドレスの上限が5,000 → 5,000のみ分配",
+  "miningRulesSection4Title": "4. 体力をしっかり管理してこそ、ずっと掘り続けられる",
+  "miningRulesTableStatus": "ステータス",
+  "miningRulesTableStaminaChange": "体力の変化",
+  "miningRulesTableOutput": "成果",
+  "miningRulesStatusMining": "処理中（マイニング）",
+  "miningRulesStaminaMining": "1時間あたり -1",
+  "miningRulesOutputNormal": "通常の生産量",
+  "miningRulesStatusZeroStamina": "体力 = 0",
+  "miningRulesStaminaZeroStamina": "もう変化しない",
+  "miningRulesOutputZero": "出力は 0 です",
+  "miningRulesStatusResting": "休憩に戻る",
+  "miningRulesStaminaResting": "1時間ごとに +1（自動回復）",
+  "miningRulesOutputPaused": "生産の一時停止",
+  "miningRulesStatusPaidRefill": "体力を回復する（有料）",
+  "miningRulesStaminaPaidRefill": "瞬時に{staminaLimit}まで回復",
+  "@miningRulesStaminaPaidRefill": {
+    "placeholders": {
+      "staminaLimit": {
+        "type": "int"
+      }
+    }
+  },
+  "miningRulesOutputRestored": "生産の回復",
+  "miningRulesSection4TipsTitle": "体力を回復させるための3つのポイント：",
+  "miningRulesSection4Tip1": "ワンクリックで満タンにするしかなく、10ポイントだけ購入することはできません",
+  "miningRulesSection4Tip2": "価格はランクのみで決まり、残りのスタミナは考慮されません。スタミナが0の状態で満タンにするのも、スタミナが100の状態で満タンにするのも、かかる費用は同じです。",
+  "miningRulesSection4Tip3": "0に近づくほど、補充がお得になります――同じ金額で、追加のマイニング時間を最大限に確保できるからです。",
+  "miningRulesSection4PriceTitle": "各ランクごとの追加料金：",
+  "miningRulesPriceTableTier": "地位",
+  "miningRulesPriceTableFullRefill": "ワンクリックで満タン",
+  "miningRulesLv1": "Lv1 エキストラ",
+  "miningRulesLv2": "Lv2 脇役",
+  "miningRulesLv3": "Lv3 主人公",
+  "miningRulesLv4": "Lv4 スーパースター",
+  "miningRulesLv5": "Lv5 トップスター",
+  "miningRulesLv1Price": "15 USDC",
+  "miningRulesLv2Price": "36 USDC",
+  "miningRulesLv3Price": "87 USDC",
+  "miningRulesLv4Price": "208 USDC",
+  "miningRulesLv5Price": "465 USDC",
+  "miningRulesSection5Title": "5. ランクアップして、もっと稼ぐ",
+  "miningRulesSection5Desc": "同格のキャラクターカード3枚 + 合成費用 + 当該キャラクターの累計視聴完了目標達成 = レベルアップ1段階。レベルアップ後は採掘係数が急上昇し、1時間あたりの生産量が2倍、あるいは数倍になる。",
+  "miningRulesSummaryTitle": "一言でまとめると",
+  "miningRulesSummaryDesc": "メンバーを派遣 → 人気度を確認 → スタミナを監視 → 報酬を受け取る。スタミナが切れそうになったら補充するか、呼び戻して休ませる。人気度はキャラクターの演技によって向上し、レベルアップすることで報酬が飛躍的に増える。",
+  "playerNotInterested": "興味なし",
+  "playerNotInterestedDone": "類似の動画を減らします",
+  "playerClearScreen": "クリア画面",
+  "playerAutoPlay": "連続再生",
+  "playerReport": "報告",
+  "playerReportSuccess": "報告しました",
+  "commentReportSuccess": "送信しました。速やかに対応いたします",
+  "reportDescription": "報告の説明",
+  "reportDescriptionPlaceholder": "詳細を記述（オプション）",
+  "reportReasonPorn": "ポルノとわいせつ",
+  "reportReasonIllegal": "違法または犯罪",
+  "reportReasonSensitive": "センシティブコンテンツ",
+  "reportReasonGambling": "賭博または暴力",
+  "reportReasonMinors": "未成年者への有害",
+  "reportReasonCopyright": "著作権侵害",
+  "reportReasonQuality": "品質の問題",
+  "reportReasonNotLike": "好みではない",
+  "reportReasonOther": "その他",
+  "gameUpgrade": "アップグレード",
+  "gameUpgradeTitle": "レベルアップグレード",
+  "gameUpgradeCurrentLevel": "現在のレベル",
+  "gameUpgradeTargetLevel": "目標レベル",
+  "gameUpgradeHeatThreshold": "ドラマ累計完播",
+  "gameUpgradeRequiredCount": "同IP同レベルロールを消費",
+  "gameUpgradeFee": "アップグレード費用",
+  "gameUpgradeNextLevelReq": "次のレベルアップ条件",
+  "gameUpgradeBeforeAfter": "アップグレード前後の比較",
+  "gameUpgradeSelectMaterialDesc": "消費する同IP同レベルロールを選択",
+  "gameUpgradeMaterialCount": "{current}/{required}",
+  "@gameUpgradeMaterialCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "gameUpgradeToLevel": "Lv{level} {levelName}へアップグレード",
+  "@gameUpgradeToLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      },
+      "levelName": {
+        "type": "String"
+      }
+    }
+  },
+  "gameUpgradeSelectMaterialLabel": "材料を選択 ({current}/{required})",
+  "@gameUpgradeSelectMaterialLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "gameUpgradeSelectMaterials": "{count}個の材料を選択してください",
+  "@gameUpgradeSelectMaterials": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gameUpgradeConfirm": "アップグレード確認",
+  "gameUpgradeSuccess": "アップグレード成功",
+  "gameUpgradeFailed": "アップグレード失敗、もう一度お試しください",
+  "gameUpgradeInsufficientMaterials": "材料が不足しています",
+  "gameUpgradeNoMaterials": "同じIP・同じレベルの消費可能なロールがいません",
+  "creatorDramaStatusMinted": "mint済み",
+  "creatorDramaStatusOffline": "取り下げ済み",
+  "creatorDramaStatusUnavailable": "一時的に利用できません",
+  "creatorMintDramaNft": "ドラマNFTをmintする",
+  "creatorMintConfirmDesc": "このドラマをオンチェーンNFTとしてmintすることを確認します。mint後、このドラマはSTORYマイニング報酬を生成します。",
+  "creatorMintFee": "mint手数料",
+  "creatorMintInsufficientUsdc": "USDC残高が不足しています。オンチェーン発行には少なくとも1 USDCが必要です",
+  "creatorMintInvalidDramaId": "ドラマIDが無効です",
+  "creatorMintInProgress": "mint処理中です。しばらくお待ちください",
+  "creatorMintWalletNotReady": "Solanaウォレットアドレスの準備ができていません。再度ログインしてください",
+  "creatorMintDigestEmpty": "発行署名データが空です。しばらくしてからもう一度お試しください",
+  "creatorMintWalletMismatch": "mintウォレットと現在のウォレットが一致しません。再度ログインしてください",
+  "creatorMintSuccess": "mint成功！",
+  "@creatorMintDramaOnChain": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "creatorMintDramaOnChain": "「{name}」のドラマNFTがオンチェーンにmintされました",
+  "@creatorMintNftNumber": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "creatorMintNftNumber": "NFT番号：{id}",
+  "creatorMintTxHash": "トランザクションハッシュ：",
+  "gameSelectActor": "派遣するロールを選択",
+  "gameSelectActorDesc": "待機中のキャラクターを1人選択して派遣してください",
+  "agentV2SchedulePerformance": "出演",
+  "agentV2PerformAllTitle": "一括出演",
+  "agentV2PerformAllDescription": "報酬の高い順に空いている公演枠へ配置します",
+  "agentV2PerformAllFailed": "一括公演に失敗しました。もう一度お試しください",
+  "agentV2PerformAllCount": "{count}人のキャラクター",
+  "agentV2CandidateActorsTitle": "候補ロール",
+  "agentV2CandidateActorsDescription": "休息中のロールは1時間に体力を1回復します",
+  "agentV2UpgradeableActorsTitle": "役をアップグレード",
+  "agentV2UpgradeableActorsEmpty": "アップグレード可能な役はありません",
+  "agentV2NoActors": "ロールがいません",
+  "agentV2UpgradeNow": "今すぐアップグレード",
+  "agentV2UpgradeCompletion": "完走",
+  "agentV2UpgradeMaterials": "役",
+  "agentV2UpgradeRequirementsTitle": "{name}をアップグレード",
+  "agentV2UpgradeCompletionRemaining": "あと{count}回の完走が必要です",
+  "agentV2UpgradeCompletionHint": "このキャラクターが出演するドラマを視聴するか、新しいドラマを制作すると完走数が増えます",
+  "agentV2UpgradeWatchDramas": "出演ドラマを見る",
+  "agentV2UpgradeCreateDrama": "ドラマを制作する",
+  "agentV2UpgradeMaterialsRemaining": "同じIP・同じレベルの役があと{count}枚必要です",
+  "agentV2UpgradeMaterialsHint": "キャラクターのプロフィールで「{name}」をさらに契約してください",
+  "agentV2UpgradeGetActors": "役を獲得する",
+  "agentV2UpgradeActorsSyncing": "新しいキャラクター{count}件を同期中です。アップグレード条件を更新しました",
+  "agentV2PerformanceConfirmDescription": "このキャラクターは出演中、自動的に出演料収益を生み出します。出演中は1時間ごとに体力を1消費し、体力が尽きると収益の生成が停止します。",
+  "agentV2PerformanceScheduledSuccess": "公演を手配しました",
+  "agentV2PerformanceSlotsFull": "出演枠が満杯です（最大5枠）",
+  "gameDeployStaminaDepleted": "体力が尽きています。補充してから出演してください",
+  "agentV2MoreRules": "ルール",
+  "agentV2MoreSalaryAndPool": "出演料とプール",
+  "agentV2WeeklySalaryTitle": "レベルアップ · 出演 · 稼ぐ",
+  "agentV2WeeklySalaryLabel": "今週のギャラ",
+  "gameDeployConfirmDesc": "このキャラクターは自動的にステーキングマイニングを行い、継続的にSTORY報酬を生み出します。注意：毎正時にスタミナを1ポイント消費し、スタミナがなくなると報酬の獲得が停止します。",
+  "gameRecallConfirm": "召還を確認",
+  "gameRecallDesc": "このキャラクターを召還するとドラマの生産報酬が一時停止しますが、現在の体力には影響しません。",
+  "actorStatCompletionTitle": "完走",
+  "actorStatCompletionDesc": "このキャラクターが出演した全ドラマの完走回数の合計",
+  "actorStatHeatTitle": "ヒート",
+  "actorStatHeatDesc": "このキャラクターが出演した全ドラマの直近30日間のヒート合計",
+  "dramaFavoriteLabel": "お気に入り",
+  "dramaRatingLabel": "評価",
+  "dramaUnnamed": "無題",
+  "videoNotReady": "動画がまだ準備ができていません。しばらくしてからお試しください",
+  "inviteDirectSubordinates": "直接下位ユーザー",
+  "@inviteTotalCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inviteTotalCount": "合計 {count} 人",
+  "inviteTotalLabel": "総人数",
+  "inviteActiveLabel": "有効ユーザー",
+  "invitePendingLabel": "アクティベーション待ち",
+  "inviteEmpty": "下位ユーザーはまだいません",
+  "@inviteRegisteredAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteRegisteredAt": "{date} に登録",
+  "searchNoData": "関連コンテンツがありません",
+  "gameActorLevelName1": "エキストラ",
+  "gameActorLevelName2": "脇役",
+  "gameActorLevelName3": "主役",
+  "gameActorLevelName4": "スーパースター",
+  "gameActorLevelName5": "トップティア",
+  "gameUpgradeMaxLevel": "最大レベルに達しました",
+  "listNoMoreData": "これ以上のデータはありません",
+  "publishDrama": "ドラマを投稿",
+  "publishVideo": "動画を投稿",
+  "publishVideoUploadTitle": "動画ファイルをアップロード",
+  "publishVideoFileHint": "mp4、flv、wmv、mkv、avi、mov、webm、最大2GB",
+  "publishVideoChooseFile": "ファイルを選択",
+  "publishVideoChangeFile": "ファイルを変更",
+  "publishVideoCoverTitle": "動画カバー",
+  "publishVideoChangeCover": "カバーを変更",
+  "publishVideoCoverHint": "JPG/PNG、最大5MB",
+  "publishVideoDescriptionLabel": "説明",
+  "publishVideoRequired": "（必須）",
+  "publishVideoDescriptionHint": "作品の説明を追加（最大200文字）",
+  "publishVideoSaveDraft": "下書きを保存",
+  "publishVideoNext": "次へ",
+  "publishVideoCoverCropTitle": "動画カバーを切り抜く",
+  "publishVideoVideoTooLarge": "動画ファイルは2GB以下にしてください",
+  "publishVideoVideoPickFailed": "動画を選択できませんでした。もう一度お試しください",
+  "publishVideoMetadataUnavailable": "動画情報を読み取れません。別のファイルを選択してください",
+  "publishVideoCoverTooLarge": "カバー画像は5MB以下にしてください",
+  "publishVideoCoverUnsupportedFormat": "JPG/PNG形式の画像のみ対応しています",
+  "publishVideoCoverPickFailed": "カバーを選択できませんでした。もう一度お試しください",
+  "publishVideoUploadSessionFailed": "アップロードセッションを作成できませんでした",
+  "publishVideoPublishedSuccess": "動画を投稿しました",
+  "publishActorIp": "IPを発行",
+  "navHome": "ホーム",
+  "navProfile": "マイページ",
+  "mainPressBackAgainToExit": "もう一度戻るボタンを押すと終了します",
+  "gameBatchRefillTransactionTooLarge": "一括体力回復トランザクションが大きすぎます。俳優の人数を減らして再試行してください。",
+  "agentV2RefillTitle": "体力を補充",
+  "agentV2RefillCost": "費用",
+  "agentV2RefillActorButton": "このキャラクター",
+  "agentV2RefillAllActors": "出演中の全キャラクターに補充",
+  "agentV2RefillActorCount": "{count}人",
+  "@agentV2RefillActorCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agentV2RefillAllButton": "すべて補充",
+  "agentV2RefillOr": "または",
+  "agentV2RestAll": "全員休憩",
+  "agentV2RestActorCount": "{count}人",
+  "@agentV2RestActorCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agentV2SchedulePerformance": "出演",
+  "agentV2PerformAllTitle": "一括出演",
+  "agentV2PerformAllDescription": "報酬の高い順に空いている公演枠へ配置します",
+  "agentV2PerformAllCount": "{count}人のキャラクター",
+  "agentV2CandidateActorsTitle": "候補ロール",
+  "agentV2CandidateActorsDescription": "休息中のロールは1時間に体力を1回復します",
+  "agentV2UpgradeableActorsTitle": "役をアップグレード",
+  "agentV2UpgradeableActorsEmpty": "アップグレード可能な役はありません",
+  "agentV2NoActors": "ロールがいません",
+  "agentV2UpgradeNow": "今すぐアップグレード",
+  "agentV2UpgradeCompletion": "完走",
+  "agentV2UpgradeMaterials": "役",
+  "agentV2UpgradeRequirementsTitle": "{name}をアップグレード",
+  "agentV2UpgradeCompletionRemaining": "あと{count}回の完走が必要です",
+  "agentV2UpgradeCompletionHint": "このキャラクターが出演するドラマを視聴するか、新しいドラマを制作すると完走数が増えます",
+  "agentV2UpgradeWatchDramas": "出演ドラマを見る",
+  "agentV2UpgradeCreateDrama": "ドラマを制作する",
+  "agentV2UpgradeMaterialsRemaining": "同じIP・同じレベルの役があと{count}枚必要です",
+  "agentV2UpgradeMaterialsHint": "キャラクターのプロフィールで「{name}」をさらに契約してください",
+  "agentV2UpgradeGetActors": "役を獲得する",
+  "agentV2UpgradeActorsSyncing": "新しいキャラクター{count}件を同期中です。アップグレード条件を更新しました",
+  "agentV2PerformanceConfirmDescription": "このキャラクターは出演中、自動的に出演料収益を生み出します。出演中は1時間ごとに体力を1消費し、体力が尽きると収益の生成が停止します。",
+  "agentV2PerformanceScheduledSuccess": "公演を手配しました",
+  "agentV2PerformanceSlotsFull": "出演枠が満杯です（最大5枠）",
+  "agentV2MoreRules": "ルール",
+  "agentV2MoreSalaryAndPool": "出演料とプール",
+  "agentV2WeeklySalaryTitle": "レベルアップ · 出演 · 稼ぐ",
+  "agentV2WeeklySalaryLabel": "今週のギャラ"
+}
