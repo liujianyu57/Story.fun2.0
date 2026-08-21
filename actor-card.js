@@ -114,23 +114,6 @@
   white-space: nowrap;\
 }\
 \
-/* ═══ 发行标识角标 ═══ */\
-.ac-badge-corner { position: absolute; top: 12px; left: 12px; z-index: 3; pointer-events: auto; }\
-.ac-badge-issuance {\
-  display: inline-flex;\
-  align-items: center;\
-  gap: 3px;\
-  padding: 2px 8px;\
-  border-radius: 4px;\
-  font-size: 0.65rem;\
-  font-weight: 600;\
-  white-space: nowrap;\
-  letter-spacing: 0.02em;\
-}\
-.ac-badge-issuance.official { background: #000000; color: #fff; }\
-.ac-badge-issuance.partner { background: #4A9EFF; color: #fff; }\
-.ac-badge-issuance.certified { background: #FF8C00; color: #fff; }\
-.ac-badge-issuance.community { background: linear-gradient(135deg, #94a3b8, #64748b); color: #fff; }\
 .ac-collection-tag {\
   position: absolute;\
   left: 12px;\
@@ -307,7 +290,6 @@
   .ac-actions-soldout .ac-floor-tag .ac-fpt-value { font-size: 0.88rem; }\
   .ac-trade-btn { padding: 10px 14px; font-size: 0.82rem; border-radius:999px; background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 2px 6px rgba(245,158,11,0.16); }\
   .ac-trade-btn:active { transform: scale(0.97); box-shadow: 0 1px 3px rgba(245,158,11,0.1); }\
-  .ac-badge-corner { top: 10px; left: 10px; }\
   .ac-collection-tag { left: 10px; bottom: 10px; font-size: 0.58rem; padding: 2px 8px; }\
 }\
 \
@@ -330,7 +312,6 @@
   .ac-mint-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius:999px; }\
   .ac-trade-btn { padding: 9px 12px; font-size: 0.78rem; font-weight: 600; border-radius:999px; }\
   .ac-meta-foot { font-size: 0.62rem; }\
-  .ac-badge-corner { top: 8px; left: 8px; }\
   .ac-collection-tag { left: 8px; bottom: 8px; font-size: 0.55rem; padding: 2px 8px; }\
 }\
 ';
@@ -343,14 +324,6 @@
   // ============================================================
   //  数据常量
   // ============================================================
-
-  /** 发行标识配置 */
-  var ISSUANCE_CONFIG = {
-    official:  { cls: 'official',  label: '官方', icon: '' },
-    partner:   { cls: 'partner',   label: '合作', icon: '' },
-    certified: { cls: 'certified', label: '认证', icon: '' },
-    community: { cls: 'community', label: '社区', icon: '' }
-  };
 
   /** 角色头像数据库 */
   var ACTOR_AVATARS = {
@@ -433,14 +406,6 @@
   // ============================================================
 
   /**
-   * 渲染发行标识徽章
-   */
-  function renderBadge(issuanceType) {
-    var cfg = ISSUANCE_CONFIG[issuanceType] || ISSUANCE_CONFIG.community;
-    return '<span class="ac-badge-issuance ' + cfg.cls + '">' + cfg.label + '</span>';
-  }
-
-  /**
    * 渲染单张角色 IP 卡片
    * @param {Object} data 卡片数据
    * @returns {string} HTML 字符串
@@ -517,7 +482,6 @@
         '<div class="ac-avatar">' +
           '<img src="' + avatar + '" alt="角色 ' + escapeHTML(name) + '" loading="lazy" />' +
         '</div>' +
-        '<div class="ac-badge-corner">' + renderBadge(issuanceType) + '</div>' +
         (collection ? '<div class="ac-collection-tag">' + escapeHTML(collection) + '</div>' : '') +
       '</div>' +
       '<div class="ac-card-body">' +
@@ -663,7 +627,6 @@
   window.initActorSorting = initActorSorting;
   window.computePriceCoefficient = computePriceCoefficient;
   window.computeIPPower = computeIPPower;
-  window.ISSUANCE_CONFIG = ISSUANCE_CONFIG;
   window.ACTOR_AVATARS_IP = ACTOR_AVATARS;
   window.UPGRADE_TABLE = UPGRADE_TABLE;
   window.parseChineseNum = parseChineseNum;

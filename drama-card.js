@@ -44,59 +44,8 @@
     var css = `
 /* ── Story.fun Drama Card (by drama-card.js) ── */
 
-/* ═══ 短剧标识徽章 ═══ */
-.drama-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  color: #1a1a2e;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-  vertical-align: middle;
-  line-height: 1.3;
-}
-.drama-badge .badge-icon {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-}
-/* 官方短剧 — 金色 */
-.drama-badge.official {
-  background: linear-gradient(135deg, #ffd700, #f59e0b);
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
-}
-/* 合作方短剧 — 蓝色 */
-.drama-badge.partner {
-  background: linear-gradient(135deg, #60a5fa, #6366f1);
-  color: #1a232f;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
-}
-/* 认证创作者短剧 — 紫色 */
-.drama-badge.creator {
-  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-  color: #1a232f;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.35);
-}
-/* 社区短剧 — 灰色 */
-.drama-badge.community {
-  background: linear-gradient(135deg, #94a3b8, #64748b);
-  color: #1a232f;
-  box-shadow: 0 2px 4px rgba(100, 116, 139, 0.25);
-}
-
 /* ═══ 卡片骨架 ═══ */
 .card { position: relative; }
-.card .card-cert-corner {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 2;
-}
 .card-wrapper { display: flex; flex-direction: column; cursor: pointer; }
 .card {
   border-radius: 18px;
@@ -360,19 +309,6 @@
   // ============================================================
   //  短剧标识配置（与 index.html 现有逻辑保持一致）
   // ============================================================
-  var BADGE_CONFIG = {
-    official:  { cls: 'official',  icon: '🏅', label: '官方', fullLabel: '官方短剧' },
-    partner:   { cls: 'partner',   icon: '🤝', label: '合作', fullLabel: '合作方短剧' },
-    creator:   { cls: 'creator',   icon: '✅', label: '认证', fullLabel: '认证创作者短剧' },
-    community: { cls: 'community', icon: '🌐', label: '社区', fullLabel: '社区短剧' }
-  };
-
-  function getBadgeHTML(certType, longText) {
-    var cfg = BADGE_CONFIG[certType] || BADGE_CONFIG.community;
-    return '<span class="drama-badge ' + cfg.cls + '">' + cfg.icon + ' ' + (longText ? cfg.fullLabel : cfg.label) + '</span>';
-  }
-
-  // ============================================================
   //  角色 IP 数据库（与 actors.html / index.html 保持一致）
   // ============================================================
   var ACTOR_AVATARS = {
@@ -453,7 +389,6 @@
     var creatorAvatar = escapeHTML(data.creatorAvatar || '');
     var link = escapeHTML(data.link || 'drama-player.html');
 
-    var certHTML = '<div class="card-cert-corner">' + getBadgeHTML(certType, false) + '</div>';
 
     var actorsHTML = '';
     if (actors.length > 0) {
@@ -490,7 +425,6 @@
 
     return '<div class="card-wrapper" onclick="location.href=\'' + link + '\'">' +
       '<article class="card" data-category="' + category + '" data-sort="' + sort + '">' +
-        certHTML +
         '<div class="card-thumb-wrap">' +
           '<img class="card-thumb" src="' + cover + '" alt="' + title + '" />' +
           actorsHTML +
@@ -573,8 +507,6 @@
   // ============================================================
   window.renderDramaCard = renderDramaCard;
   window.renderDramaCardList = renderDramaCardList;
-  window.getBadgeHTML = getBadgeHTML;
-  window.BADGE_CONFIG = BADGE_CONFIG;
   window.ACTOR_AVATARS = ACTOR_AVATARS;
   window.ACTOR_POWER = ACTOR_POWER;
 
