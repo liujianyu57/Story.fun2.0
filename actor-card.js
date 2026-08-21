@@ -464,7 +464,6 @@
     var ipPower = computeIPPower(initPrice, heat);
     var maxLevel = getMaxUpgradeLevel(views);
     var maxMultiplier = UPGRADE_TABLE[maxLevel - 1] ? UPGRADE_TABLE[maxLevel - 1].multiplier : 1.0;
-    var targetPower = ipPower * maxMultiplier;
     var isSoldout = available <= 0;
     var bannerClass = data.bannerClass || 'banner-1';
     var id = data.id || '';
@@ -484,10 +483,6 @@
       '<span class="ac-stat-item" data-stat="ip-power">' +
         '<span class="ac-stat-label">Lv.1 片酬</span>' +
         '<span class="ac-num">' + ipPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY/h</span></span>' +
-      '</span>' +
-      '<span class="ac-stat-item" data-stat="target-power">' +
-        '<span class="ac-stat-label">最高</span>' +
-        '<span class="ac-num">' + targetPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY/h</span></span>' +
       '</span>' +
     '</div>';
 
