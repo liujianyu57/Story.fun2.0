@@ -17,7 +17,7 @@
         }
         if (!document.getElementById('shopJs')) {
             var s = document.createElement('script');
-            s.id = 'shopJs'; s.src = 'shop.js?v=' + Date.now();
+            s.id = 'shopJs'; s.src = 'shop2.js?v=' + Date.now();
             document.head.appendChild(s);
         }
     })();
@@ -34,7 +34,7 @@
         if (go()) return;
         var need = [];
         if (typeof window.ItemStore === 'undefined') need.push('items.js');
-        if (typeof window.Shop === 'undefined') need.push('shop.js');
+        if (typeof window.Shop === 'undefined') need.push('shop2.js');
         var loaded = 0;
         need.forEach(function(src) {
             var s = document.createElement('script');
