@@ -9,7 +9,6 @@
    ============================================================ */
 window.Shop = (function () {
   var pendingKey = null;      // 数量购买弹窗当前商品
-  var pendingSubKind = null;  // 订阅确认卡种（week / month）
 
   var ITEMS = [
     { key: 'supply', name: '体力补给包', icon: '🧃', price: 10, unit: 'USDC', tile: '#FFF3E2',
@@ -179,117 +178,89 @@ window.Shop = (function () {
   }
 
   // ============================================================
-  //  订阅弹窗（周卡 / 月卡权益计划卡）
+  //  订阅弹窗（顶部选卡 → 权益 → 底部一键开通/续费）
   // ============================================================
+  var subKind = 'week'; // 当前选中卡种（week / month）
+
   function mountSub() {
     if (document.getElementById('shopSubModal')) return;
     injectStyles();
     var d = document.createElement('div');
     d.id = 'shopSubModal';
     d.style.cssText = OVERLAY + 'z-index:100000;';
-    d.innerHTML = '<div style="' + CARD + 'max-width:380px;width:calc(100% - 32px);max-height:84vh;overflow-y:auto;">'
+    d.innerHTML = '<div style="' + CARD + 'max-width:360px;width:calc(100% - 32px);">'
       + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 4px;">Story Claw 订阅</div>'
-      + '<div style="font-size:12px;color:#86868b;margin:0 0 14px;">购买即生效 · 重复续费延长有效期</div>'
+      + '<div style="font-size:12px;color:#86868b;margin:0 0 12px;">购买即生效 · 重复续费延长有效期</div>'
       + '<button onclick="Shop.closeSub()" class="sf-close" style="' + CLOSE + '">✕</button>'
-      + '<div id="shopSubBody"></div>'
+      + '<div id="shopSubStatus" style="display:none;margin:0 0 12px;"></div>'
+      + '<div id="shopSubCards" style="display:flex;gap:10px;margin-bottom:16px;"></div>'
+      + '<div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#86868b;margin:0 2px 8px;">权益</div>'
+      + '<div id="shopSubBenefits" style="background:#F8F8FA;border-radius:14px;padding:12px 14px;margin-bottom:16px;"></div>'
+      + '<button id="shopSubBtn" onclick="Shop.confirmSub()" class="sf-btn" style="width:100%;height:44px;border:none;border-radius:12px;background:#1d1d1f;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">确认开通</button>'
       + '</div>';
     document.body.appendChild(d);
     d.addEventListener('click', function (e) { if (e.target === d) closeSub(); });
   }
 
-  function planCard(it) {
-    var cs = ItemStore.clawState();
-    var isActive = !!cs;
-    var statusPill = isActive
-      ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:1px 9px;border-radius:999px;font-size:11px;font-weight:600;line-height:1.7;background:rgba(208,48,80,.08);color:#c02b4a;"><span style="width:5px;height:5px;border-radius:50%;background:#c02b4a;"></span>激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天</span>'
-      : '<span style="display:inline-flex;padding:1px 9px;border-radius:999px;font-size:11px;font-weight:500;line-height:1.7;background:#f2f2f5;color:#86868b;">未激活</span>';
-    var btnText = isActive ? '续费' : '开通';
-    var benefits = '';
-    it.benefits.forEach(function (b) {
-      benefits += '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px;color:#4a4a50;">'
-        + '<span style="width:16px;height:16px;border-radius:50%;background:#EAF6EF;display:inline-flex;align-items:center;justify-content:center;color:#2E9E6B;font-size:10px;font-weight:800;flex-shrink:0;">✓</span>' + b + '</div>';
-    });
-    return '<div class="sf-card" onclick="Shop.openSubConfirm(\'' + it.claw + '\')" style="padding:14px;border:1px solid ' + (isActive ? 'rgba(208,48,80,.35)' : '#ececf1') + ';border-radius:16px;margin-bottom:10px;background:' + (isActive ? '#FFFCFD' : '#fff') + ';cursor:pointer;">'
-      + '<div style="display:flex;align-items:flex-start;justify-content:space-between;">'
-      + '<div style="display:flex;align-items:center;gap:10px;min-width:0;">'
-      + '<span style="width:42px;height:42px;border-radius:13px;background:' + it.tile + ';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">' + it.icon + '</span>'
-      + '<div style="min-width:0;">'
-      + '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span style="font-size:14.5px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;">' + it.name + '</span><span style="background:#EAF6EF;color:#2E9E6B;font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px;">' + it.days + ' 天</span></div>'
-      + '<div style="margin-top:4px;">' + statusPill + '</div>'
-      + '</div>'
-      + '</div>'
-      + '<div style="text-align:right;flex-shrink:0;"><div style="font-size:15px;font-weight:750;color:#1d1d1f;letter-spacing:-.01em;">' + it.price + ' <span style="font-size:10px;color:#86868b;font-weight:500;">' + it.unit + '</span></div></div>'
-      + '</div>'
-      + '<div style="height:1px;background:#f0f0f4;margin:12px 0 8px;"></div>'
-      + benefits
-      + '<button onclick="event.stopPropagation();Shop.openSubConfirm(\'' + it.claw + '\')" class="sf-btn" style="width:100%;height:38px;margin-top:12px;border:none;border-radius:11px;background:#1d1d1f;color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;">' + btnText + '</button>'
+  // 顶部选卡小卡片（时间 + 大字费用）
+  function subCard(it) {
+    var sel = subKind === it.claw;
+    var short = it.claw === 'week' ? '周卡' : '月卡';
+    return '<div class="sf-card" onclick="Shop.selectSub(\'' + it.claw + '\')" style="flex:1;padding:12px 10px;border:1px solid ' + (sel ? '#2E9E6B' : '#ececf1') + ';border-radius:14px;background:' + (sel ? '#F4FBF6' : '#fff') + ';cursor:pointer;text-align:center;">'
+      + '<div style="font-size:13px;font-weight:650;color:#1d1d1f;">' + short + '</div>'
+      + '<div style="font-size:11px;font-weight:600;color:' + (sel ? '#2E9E6B' : '#86868b') + ';margin-top:2px;">' + it.days + ' 天</div>'
+      + '<div style="font-size:17px;font-weight:750;color:#1d1d1f;letter-spacing:-.01em;margin-top:8px;">' + it.price + '</div>'
+      + '<div style="font-size:10px;color:#86868b;margin-top:1px;">' + it.unit + '</div>'
       + '</div>';
   }
 
   function renderSub() {
-    document.getElementById('shopSubBody').innerHTML =
-      planCard(findItem('clawWeek')) + planCard(findItem('clawMonth'))
-      + '<div style="font-size:11px;color:#a0a0a8;text-align:center;margin-top:2px;">重复续费延长有效期，产出加成不叠加。</div>';
+    document.getElementById('shopSubCards').innerHTML = subCard(findItem('clawWeek')) + subCard(findItem('clawMonth'));
+    // 权益区：按当前选中卡种
+    var it = findItem(subKind === 'week' ? 'clawWeek' : 'clawMonth');
+    var benefits = '';
+    it.benefits.forEach(function (b) {
+      benefits += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12.5px;color:#4a4a50;">'
+        + '<span style="width:16px;height:16px;border-radius:50%;background:#EAF6EF;display:inline-flex;align-items:center;justify-content:center;color:#2E9E6B;font-size:10px;font-weight:800;flex-shrink:0;">✓</span>' + b + '</div>';
+    });
+    document.getElementById('shopSubBenefits').innerHTML = benefits;
+    // 底部按钮 + 顶部状态
+    var cs = ItemStore.clawState();
+    var isActive = !!cs;
+    document.getElementById('shopSubBtn').textContent = isActive ? '确认续费' : '确认开通';
+    var st = document.getElementById('shopSubStatus');
+    if (isActive) {
+      st.style.display = 'block';
+      st.innerHTML = '<span style="display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;line-height:1.7;background:rgba(208,48,80,.08);color:#c02b4a;"><span style="width:5px;height:5px;border-radius:50%;background:#c02b4a;"></span>激活中 · 剩 ' + Math.ceil(cs.remainMs / 86400000) + ' 天</span>';
+    } else {
+      st.style.display = 'none';
+    }
+  }
+
+  function selectSub(kind) {
+    if (subKind === kind) return;
+    subKind = kind;
+    renderSub();
   }
 
   function openSub() {
     mountSub();
+    var cs = ItemStore.clawState();
+    subKind = (cs && cs.kind) || 'week';
     renderSub();
     document.getElementById('shopSubModal').style.display = 'flex';
   }
   function closeSub() {
-    closeSubConfirm();
     var m = document.getElementById('shopSubModal');
     if (m) m.style.display = 'none';
   }
 
-  // ---- 订阅确认（开通 / 续费二次确认）----
-  function mountSubConfirm() {
-    if (document.getElementById('shopSubConfirm')) return;
-    injectStyles();
-    var d = document.createElement('div');
-    d.id = 'shopSubConfirm';
-    d.style.cssText = OVERLAY + 'z-index:100001;';
-    d.innerHTML = '<div style="' + CARD + 'max-width:300px;width:calc(100% - 32px);text-align:center;">'
-      + '<button onclick="Shop.closeSubConfirm()" class="sf-close" style="' + CLOSE + '">✕</button>'
-      + '<div id="shopSubCfmIcon" style="width:52px;height:52px;border-radius:15px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px;"></div>'
-      + '<div id="shopSubCfmTitle" style="font-size:15px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 10px;"></div>'
-      + '<div id="shopSubCfmPrice" style="font-size:17px;font-weight:700;color:#1d1d1f;margin-bottom:16px;"></div>'
-      + '<div style="display:flex;gap:10px;">'
-      + '<button id="shopSubCfmBtn" onclick="Shop.confirmSub()" class="sf-btn" style="flex:1;height:42px;border:none;border-radius:12px;background:#1d1d1f;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">确认开通</button>'
-      + '<button onclick="Shop.closeSubConfirm()" class="sf-ghost" style="flex:1;height:42px;border:1px solid #e4e4ea;border-radius:12px;background:#fff;color:#6e6e73;font-size:14px;font-weight:600;cursor:pointer;">取消</button>'
-      + '</div>'
-      + '</div>';
-    document.body.appendChild(d);
-    d.addEventListener('click', function (e) { if (e.target === d) closeSubConfirm(); });
-  }
-
-  function openSubConfirm(kind) {
-    mountSubConfirm();
-    pendingSubKind = kind;
-    var it = findItem(kind === 'week' ? 'clawWeek' : 'clawMonth');
-    var isActive = !!ItemStore.clawState();
-    document.getElementById('shopSubCfmIcon').style.background = it.tile;
-    document.getElementById('shopSubCfmIcon').textContent = it.icon;
-    document.getElementById('shopSubCfmTitle').textContent = (isActive ? '续费 ' : '开通 ') + it.name;
-    document.getElementById('shopSubCfmPrice').innerHTML = '<div>' + it.price + ' ' + it.unit + '</div>'
-      + '<div style="font-size:12px;color:#86868b;font-weight:500;margin-top:2px;">' + (isActive ? '续费延长 ' + it.days + ' 天' : '开通后 ' + it.days + ' 天生效') + '</div>';
-    document.getElementById('shopSubCfmBtn').textContent = isActive ? '确认续费' : '确认开通';
-    document.getElementById('shopSubConfirm').style.display = 'flex';
-  }
-  function closeSubConfirm() {
-    pendingSubKind = null;
-    var m = document.getElementById('shopSubConfirm');
-    if (m) m.style.display = 'none';
-  }
+  // 一键开通 / 续费（无二次确认）
   function confirmSub() {
-    if (!pendingSubKind) return;
-    var kind = pendingSubKind;
-    var it = findItem(kind === 'week' ? 'clawWeek' : 'clawMonth');
+    var it = findItem(subKind === 'week' ? 'clawWeek' : 'clawMonth');
     var wasActive = !!ItemStore.clawState();
-    ItemStore.activateClaw(kind);
-    closeSubConfirm();
-    renderSub();
+    ItemStore.activateClaw(subKind);
+    closeSub();
     if (document.getElementById('shopModal') && document.getElementById('shopModal').style.display === 'flex') renderCenter();
     // 通知宿主页面（studio 等）刷新 Claw 状态
     try { document.dispatchEvent(new CustomEvent('sf:claw-changed')); } catch (e) {}
@@ -310,8 +281,7 @@ window.Shop = (function () {
   return {
     open: open, close: close,
     openBuyModal: openBuyModal, closeBuyModal: closeBuyModal, stepBuy: stepBuy, confirmBuy: confirmBuy,
-    openSub: openSub, closeSub: closeSub,
-    openSubConfirm: openSubConfirm, closeSubConfirm: closeSubConfirm, confirmSub: confirmSub,
+    openSub: openSub, closeSub: closeSub, selectSub: selectSub, confirmSub: confirmSub,
   };
 })();
 window.openShop = function () { window.Shop.open(); };
