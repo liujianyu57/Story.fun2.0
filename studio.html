@@ -1620,6 +1620,14 @@
         margin-bottom: 8px;
       }
     }
+    /* ===== Claw 自动化开关（高级样式）===== */
+    .claw-switch{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0;cursor:pointer}
+    .claw-switch input{opacity:0;width:0;height:0;position:absolute}
+    .claw-switch .track{position:absolute;inset:0;border-radius:999px;background:#e5e5ea;transition:background .2s}
+    .claw-switch .thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+    .claw-switch input:checked + .track{background:#2E9E6B}
+    .claw-switch input:checked + .track + .thumb{transform:translateX(18px)}
+    .claw-switch:active .thumb{width:22px}
   </style>
 </head>
 <body>
@@ -3124,14 +3132,34 @@
           + '<div style="font-size:0.76rem;color:var(--text-muted);margin:0 0 10px;line-height:1.6;">开通后自动运营：自动补体力、体力耗尽自动休息、自动安排最优演出，期间所有角色产出 +5%。</div>'
           + '<button class="modal-btn confirm" style="width:100%;margin-bottom:12px;" onclick="openShopSafe(\'sub\')">去开通</button>';
       }
-      html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);">'
-        + '<div style="font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:8px;">自动化</div>'
-        + '<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text);"><input type="checkbox" id="clawAutoSupply" style="accent-color:var(--accent);"> 自动补体力</label>'
-        + '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text-muted);margin-left:24px;">体力低于 <input type="number" id="clawThreshold" min="0" max="168" value="0" style="width:48px;text-align:center;border:1px solid var(--border);border-radius:6px;padding:2px;"> h 时补</div>'
-        + '<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text);"><input type="checkbox" id="clawAutoRest" style="accent-color:var(--accent);"> 体力耗尽自动休息</label>'
-        + '<label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text);"><input type="checkbox" id="clawAutoOptimal" style="accent-color:var(--accent);"> 自动安排最优演出</label>'
+      html += '<div style="background:#fff;border:1px solid #e6eef7;border-radius:16px;padding:16px 16px 14px;margin-bottom:12px;">'
+        + '<div style="display:flex;align-items:center;gap:8px;">'
+        + '<span style="font-size:15px;line-height:1;">⚙️</span>'
+        + '<span style="font-size:14px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;">自动化运营</span>'
         + '</div>'
-        + '<button class="modal-btn confirm" style="width:100%;margin-top:12px;" onclick="saveClawSettings()">保存</button>';
+        + '<div style="font-size:11.5px;color:#8b8d98;margin:3px 0 4px;">Story Claw 自动处理日常运营</div>'
+        + '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;">'
+        + '<span style="width:36px;height:36px;border-radius:11px;background:#FFF3E2;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🧃</span>'
+        + '<div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#1d1d1f;">自动补体力</div><div style="font-size:11px;color:#8b8d98;margin-top:2px;">体力低于阈值自动使用补给包</div></div>'
+        + '<label class="claw-switch"><input type="checkbox" id="clawAutoSupply"><span class="track"></span><span class="thumb"></span></label>'
+        + '</div>'
+        + '<div style="display:flex;align-items:center;gap:8px;padding:0 0 12px 48px;font-size:12px;color:#6e6e73;">'
+        + '体力低于 <input type="number" id="clawThreshold" min="0" max="168" value="' + (getClawSettings().threshold || 0) + '" style="width:52px;height:28px;text-align:center;border:1px solid #e6eef7;border-radius:8px;background:#f8fafc;font-size:12px;font-weight:600;color:#1d1d1f;outline:none;"> h 时补充'
+        + '</div>'
+        + '<div style="height:1px;background:#f0f0f4;"></div>'
+        + '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;">'
+        + '<span style="width:36px;height:36px;border-radius:11px;background:#EDF2FF;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">😴</span>'
+        + '<div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#1d1d1f;">体力耗尽自动休息</div><div style="font-size:11px;color:#8b8d98;margin-top:2px;">体力耗尽后停止演出并休息</div></div>'
+        + '<label class="claw-switch"><input type="checkbox" id="clawAutoRest"><span class="track"></span><span class="thumb"></span></label>'
+        + '</div>'
+        + '<div style="height:1px;background:#f0f0f4;"></div>'
+        + '<div style="display:flex;align-items:center;gap:12px;padding:10px 0 2px;">'
+        + '<span style="width:36px;height:36px;border-radius:11px;background:#F1EFFF;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🎬</span>'
+        + '<div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#1d1d1f;">自动安排最优演出</div><div style="font-size:11px;color:#8b8d98;margin-top:2px;">自动安排片酬最高的角色上台</div></div>'
+        + '<label class="claw-switch"><input type="checkbox" id="clawAutoOptimal"><span class="track"></span><span class="thumb"></span></label>'
+        + '</div>'
+        + '</div>'
+        + '<button class="modal-btn confirm" style="width:100%;" onclick="saveClawSettings()">保存设置</button>';
       document.getElementById('clawSheetBody').innerHTML = html;
       var st = getClawSettings();
       document.getElementById('clawAutoSupply').checked = !!st.autoSupply;
