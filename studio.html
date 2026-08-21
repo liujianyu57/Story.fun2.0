@@ -3586,7 +3586,7 @@
     // 回收列表：按片酬倒序，卡片信息精简（头像 + 名称#编号 + Lv + 可回收金额）
     function openRecycleList() {
       if (typeof MY_ACTORS === 'undefined' || !MY_ACTORS.length) { showToast('暂无角色可回收'); return; }
-      var list = MY_ACTORS.slice().sort(function (a, b) { return computeActorPower(b) - computeActorPower(a); });
+      var list = MY_ACTORS.slice().sort(function (a, b) { return computeActorPower(a) - computeActorPower(b); });
       var rows = '';
       list.forEach(function (a) {
         var v = recycleValue(a);
