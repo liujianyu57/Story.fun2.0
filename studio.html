@@ -3196,22 +3196,42 @@
       var cs = ItemStore.clawState();
       if (!cs) return;
       var st = getClawSettings();
-      if (!st.autoSupply) return;
-      var urgent = MY_ACTORS.filter(function (a) { return a.isStaking && a.energy <= 0; });
-      if (!urgent.length) return;
       var changed = false;
-      urgent.forEach(function (a) {
-        var need = ItemStore.supplyNeeded(a.level);
-        if (ItemStore.count('supply') >= need) {
-          ItemStore.spend('supply', need);
-          a.energy = a.energyMax;
-          changed = true;
-        } else if (st.autoRest && a.energy <= 0) {
-          a.isStaking = false;
-          a.status = 'rest';
-          changed = true;
+
+      // 自动演出：空在演位 → 按片酬从高到低安排候场角色上台
+      if (st.autoOptimal) {
+        var deployed = getDeployedActors();
+        var emptyCount = MAX_STAKING_SLOTS - deployed.length;
+        if (emptyCount > 0) {
+          var candidates = MY_ACTORS.filter(function (a) { return !a.isStaking; })
+            .sort(function (a, b) { return computeActorPower(b) - computeActorPower(a); });
+          var n = Math.min(emptyCount, candidates.length);
+          for (var i = 0; i < n; i++) {
+            candidates[i].isStaking = true;
+            candidates[i].status = 'active';
+            candidates[i].stakingDays = 0;
+            changed = true;
+          }
         }
-      });
+      }
+
+      // 自动补充：体力归 0 自动补满；缺补给包且开自动休息 → 休息
+      if (st.autoSupply) {
+        var urgent = MY_ACTORS.filter(function (a) { return a.isStaking && a.energy <= 0; });
+        urgent.forEach(function (a) {
+          var need = ItemStore.supplyNeeded(a.level);
+          if (ItemStore.count('supply') >= need) {
+            ItemStore.spend('supply', need);
+            a.energy = a.energyMax;
+            changed = true;
+          } else if (st.autoRest) {
+            a.isStaking = false;
+            a.status = 'rest';
+            changed = true;
+          }
+        });
+      }
+
       if (changed) { renderAll(); updateClawBadge(); }
     }
 
