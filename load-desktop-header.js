@@ -22,7 +22,7 @@
         }
     })();
     // 购买入口兜底：依赖未加载完成时点击，先加载再打开
-    // target：无 → 购买中心；'supply'/'manual' → 数量购买弹窗；'sub' → 订阅弹窗
+    // target：无 → 商店；'supply'/'manual' → 数量购买弹窗；'sub' → 订阅弹窗
     window.openShopSafe = function(target) {
         function go() {
             if (typeof window.ItemStore === 'undefined' || typeof window.Shop === 'undefined') return false;
@@ -95,7 +95,7 @@
             '.desktop-header .auth-login-btn{margin-left:auto}',
             '@media(min-width:769px){.desktop-header{left:160px;right:0}body{padding-top:56px}}',
             '@media(max-width:768px){.desktop-header{display:none}}',
-            '/* ── 购买中心 hover 下拉（无遮罩）── */',
+            '/* ── 商店 hover 下拉（无遮罩）── */',
             '@media(min-width:769px){',
             '.dh-shop-wrap{position:relative;flex-shrink:0;display:flex;align-items:center}',
             '.dh-shop-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:340px;background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);padding:12px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s ease;z-index:300}',
@@ -165,11 +165,11 @@
                     '</div>' +
                 '</div>' +
                 '<div class="dh-shop-wrap">' +
-                    '<button class="dh-icon-btn" title="购买中心">' +
+                    '<button class="dh-icon-btn" title="商店">' +
                         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>' +
                     '</button>' +
                     '<div class="dh-shop-dropdown">' +
-                        '<div style="font-size:14px;font-weight:700;color:#13202e;padding:2px 4px 10px;">购买中心</div>' +
+                        '<div style="font-size:14px;font-weight:700;color:#13202e;padding:2px 4px 10px;">商店</div>' +
                         '<div id="dhShopList"></div>' +
                     '</div>' +
                 '</div>' +
@@ -224,21 +224,21 @@
             '</div>';
     }
 
-    // 注入 HTML 到 body 最前面（如果已存在则跳过渲染，但仍确保购买中心 hover 入口存在）
+    // 注入 HTML 到 body 最前面（如果已存在则跳过渲染，但仍确保商店 hover 入口存在）
     function ensureShopBtn() {
         var header = document.getElementById('desktopHeader');
         if (!header) return;
-        if (header.querySelector('.dh-icon-btn[title="购买中心"]')) return; // 已有
+        if (header.querySelector('.dh-icon-btn[title="商店"]')) return; // 已有
         var btn = document.createElement('button');
         btn.className = 'dh-icon-btn';
-        btn.title = '购买中心';
+        btn.title = '商店';
         btn.style.cssText = 'width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,.55);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;transition:background .15s;';
         btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
         var wrap = document.createElement('div');
         wrap.className = 'dh-shop-wrap';
         var dd = document.createElement('div');
         dd.className = 'dh-shop-dropdown';
-        dd.innerHTML = '<div style="font-size:14px;font-weight:700;color:#13202e;padding:2px 4px 10px;">购买中心</div><div id="dhShopList"></div>';
+        dd.innerHTML = '<div style="font-size:14px;font-weight:700;color:#13202e;padding:2px 4px 10px;">商店</div><div id="dhShopList"></div>';
         wrap.appendChild(btn);
         wrap.appendChild(dd);
         var notify = header.querySelector('.dh-icon-btn[title="通知"]') || header.querySelector('.dh-notify-wrap');
@@ -468,7 +468,7 @@
         }
         ensureShopBtn();
         bindSearch();
-        // 购买中心 hover：进入时渲染一次（不在鼠标移动中反复重渲染，避免打断点击）
+        // 商店 hover：进入时渲染一次（不在鼠标移动中反复重渲染，避免打断点击）
         document.addEventListener('mouseover', function (e) {
             var wrap = e.target && e.target.closest ? e.target.closest('.dh-shop-wrap') : null;
             if (!wrap || wrap._rendered) return;

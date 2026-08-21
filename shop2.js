@@ -2,7 +2,7 @@
    Story.fun 购买组件（shop.js）
    自包含样式（不依赖页面 .modal-overlay/.modal-card），任何页面可调用
    场景直达购买，无商品列表页：
-   - 购买中心（🛒 入口）：4 件商品快捷行（无描述，直达对应弹窗）
+   - 商店（🛒 入口）：4 件商品快捷行（无描述，直达对应弹窗）
    - 数量购买弹窗：补给包 / 训练手册（数量 + 合计）
    - 订阅弹窗：Story Claw 周卡 / 月卡权益计划卡（上下对比）
    - 订阅确认弹窗：开通 / 续费二次确认
@@ -55,7 +55,7 @@ window.Shop = (function () {
   var CLOSE = 'position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:0.95rem;color:#86868b;line-height:1;';
 
   // ============================================================
-  //  购买中心（轻量快捷入口，无描述）
+  //  商店（轻量快捷入口，无描述）
   // ============================================================
   function mount() {
     if (document.getElementById('shopModal')) return;
@@ -64,7 +64,7 @@ window.Shop = (function () {
     d.id = 'shopModal';
     d.style.cssText = 'position:fixed;inset:0;display:none;background:transparent;';
     d.innerHTML = '<div style="' + CARD + 'width:360px;max-width:calc(100% - 32px);flex-shrink:0;">'
-      + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 14px;">购买中心</div>'
+      + '<div style="font-size:18px;font-weight:650;color:#1d1d1f;letter-spacing:-.01em;margin:0 0 14px;">商店</div>'
       + '<button onclick="Shop.close()" class="sf-close" style="' + CLOSE + '">✕</button>'
       + '<div id="shopList"></div>'
       + '</div>';
