@@ -124,10 +124,9 @@
     /* ── 顶部状态 ── */
     .studio-topbar {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
-      padding: 6px 0 14px;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0 12px;
     }
     .studio-topbar h1 {
       margin: 0;
@@ -139,7 +138,7 @@
     .studio-status {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       color: var(--text-muted);
       font-size: 0.9rem;
       font-weight: 500;
@@ -1330,14 +1329,15 @@
         display: inline-flex; align-items: center; justify-content: center; gap: 4px;
         padding: 10px 0; border-radius:999px;
         border: 1px solid var(--border); background: var(--surface);
-        font-size: 0.82rem; font-weight: 600; color: var(--text);
+        font-size: 1.05rem; font-weight: 600; color: var(--text);
         cursor: pointer; transition: all 0.15s;
         font-family: inherit;
       }
       .mob-act-btn:hover { border-color: var(--accent); color: var(--accent); }
-      .mob-act-btn strong { font-size: 0.75rem; min-width: 12px; text-align: center; }
+      .mob-act-btn strong { font-size: 0.7rem; min-width: 12px; text-align: center; font-weight: 700; }
       .mob-act-btn.mob-todo strong { color: var(--accent); }
       .mob-act-btn.mob-upgrade strong { color: var(--gold); }
+      #itemsTopBtn { display: none; }
       .mob-more-wrap { display: block; position: fixed; top: 50px; right: 16px; z-index: 55; }
       .mob-more-btn {
         display: inline-flex; align-items: center; justify-content: center;
@@ -1656,11 +1656,12 @@
 
     <!-- ===== 顶部状态 ===== -->
     <div class="studio-topbar">
-      <h1>升级 · 演出 · 赚片酬</h1>
       <div class="studio-status">
-        <span>本周片酬 <strong id="statusWeekly">0.0</strong> STORY</span>
+        <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;">本周片酬 <strong id="statusWeekly">0.0</strong> <span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:#000;color:#fff;font-size:10px;font-weight:800;vertical-align:middle;margin-left:2px;">S</span></span>
+        <button id="clawTopBadge" onclick="openClawSheet()" style="display:none;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--accent);background:var(--accent-soft);cursor:pointer;font-size:0.76rem;color:var(--accent);flex-shrink:0;">🐾 Story Claw</button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
+      <button id="itemsTopBtn" onclick="openItemsSheet()" title="我的道具" style="margin-left:auto;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.85rem;color:var(--text);flex-shrink:0;">🎒 我的道具</button>
       <div class="mob-more-wrap" id="mobMoreWrap">
         <button class="mob-more-btn" onclick="toggleMobMore(event)">···</button>
         <div class="mob-more-menu" id="mobMoreMenu">
@@ -1690,8 +1691,10 @@
       </section>
 
       <div class="mobile-actions" id="mobileActions">
-        <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()">待办 · <strong id="mobileTodoBadge">0</strong></button>
-        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()">✦升级 · <strong id="mobileUpgradeBadge">0</strong></button>
+        <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()" title="待办">📋<strong id="mobileTodoBadge">0</strong></button>
+        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级">⬆️<strong id="mobileUpgradeBadge">0</strong></button>
+        <button class="mob-act-btn mob-items" onclick="openItemsSheet()" title="道具">🎒</button>
+        <button class="mob-act-btn mob-shop" onclick="openShopSafe()" title="商城">🛒</button>
       </div>
 
       <!-- ===== 常驻双面板：待办 + 升级管理入口 ===== -->
@@ -1763,6 +1766,24 @@
       <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeFullPicker()">✕</button>
       <p style="text-align:center;color:var(--text-muted);font-size:0.78rem;margin:0 0 12px 0;">休息中的角色每小时恢复1点体力</p>
       <div class="picker-grid" id="fullPickerGrid"></div>
+    </div>
+  </div>
+
+  <!-- ===== 我的道具（查看 + 获取）===== -->
+  <div class="modal-overlay" id="itemsSheet">
+    <div class="modal-card" style="position:relative;max-width:400px;width:calc(100% - 32px);">
+      <h2 style="font-size:1rem;margin:0 0 14px;">我的道具</h2>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);" onclick="closeItemsSheet()">✕</button>
+      <div id="itemsSheetList"></div>
+    </div>
+  </div>
+
+  <!-- ===== Claw 面板（独立）===== -->
+  <div class="modal-overlay" id="clawSheet">
+    <div class="modal-card" style="position:relative;max-width:400px;width:calc(100% - 32px);">
+      <h2 style="font-size:1rem;margin:0 0 14px;">🐾 Story Claw</h2>
+      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);" onclick="closeClawSheet()">✕</button>
+      <div id="clawSheetBody"></div>
     </div>
   </div>
 
@@ -1847,7 +1868,18 @@
       <div style="background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:14px;text-align:center;">
         <span id="modalChargeCurrent" style="font-weight:700;color:var(--text);">0/168 → 168</span>
         <span style="color:var(--text-sub);margin:0 6px;">·</span>
-        <span style="color:var(--warning);font-weight:700;">花费 <span id="modalChargeCost">—</span> USDC</span>
+        <span style="color:var(--warning);font-weight:700;">消耗补给包 <span id="modalChargeNeed">—</span></span>
+        <div style="margin-top:8px;font-size:0.82rem;color:var(--text-muted);">
+          我的库存 <span id="modalChargeStock">0</span> 个
+          <button id="chargeBuyBtn" onclick="openChargeBuy()" style="display:none;margin-left:8px;padding:2px 10px;border-radius:999px;border:1px solid var(--accent);color:var(--accent);background:transparent;font-size:0.78rem;cursor:pointer;">购买</button>
+        </div>
+        <div id="chargeBuyPanel" style="display:none;margin-top:10px;padding:10px;border:1px dashed var(--border);border-radius:10px;">
+          <div style="font-size:0.85rem;color:var(--text);">单价 10 USDC/个 · 数量 <input id="chargeBuyQty" type="number" min="1" value="5" style="width:56px;text-align:center;margin:0 6px;border:1px solid var(--border);border-radius:6px;padding:2px;"> 个</div>
+          <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;">
+            <button class="modal-btn confirm" style="padding:4px 16px;" onclick="confirmChargeBuy()">确认购买</button>
+            <button class="modal-btn cancel" style="padding:4px 16px;" onclick="closeChargeBuy()">取消</button>
+          </div>
+        </div>
       </div>
 
       <!-- L3: 桌面按钮行 -->
@@ -1862,7 +1894,7 @@
       </div>
 
       <!-- 分隔 + 批量操作区域 -->
-      <div class="charge-batch-area" style="display:none;">
+      <div class="charge-batch-area" id="chargeBatchArea" style="display:none;">
         <div style="height:1px;background:var(--border);margin:14px 0;"></div>
         <div style="text-align:center;font-size:0.72rem;color:var(--text-sub);margin-bottom:6px;font-weight:600;">补充全部演出中角色</div>
         <div class="charge-batch-info" style="background:var(--bg);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center;">
@@ -2123,6 +2155,7 @@
   </div>
 
   <script src="auth.js"></script>
+  <script src="items.js"></script>
 <script>if(window.innerWidth<=768&&typeof currentUser!=="undefined"&&currentUser&&!currentUser.isLoggedIn)location.href="mobile-login.html?redirect=studio.html";</script>
   <script>
     // ============================================================
@@ -2159,7 +2192,10 @@
 
     function computeActorPower(actor) {
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      return computeIPPower(actor) * levelCfg.miningCoeff * 1.0 * 1.0;
+      var base = computeIPPower(actor) * levelCfg.miningCoeff * 1.0 * 1.0;
+      // Claw 生效期间：账号名义产出 +5%（demo：直接作用于每卡产出）
+      if (ItemStore.clawState()) base *= 1.05;
+      return base;
     }
 
     function getActorPowerBreakdown(actor) {
@@ -2409,10 +2445,11 @@
         var have = Math.min(sameLevel, 2);
         var cloneReady = have >= 2;
 
-        var playReq = LEVEL_UP_THRESHOLDS[actor.level + 1]?.playsRequired || 1;
-        var playPct = Math.min(100, Math.round((actor.cumulativePlays || 0) / playReq * 100));
-        var playDone = (actor.cumulativePlays || 0) >= playReq;
-        var bothDone = cloneReady && playDone;
+        var manualReq = ItemStore.manualNeeded(actor.level + 1);
+        var manualStock = ItemStore.count('manual');
+        var manualPct = Math.min(100, Math.round(manualStock / manualReq * 100));
+        var manualDone = manualStock >= manualReq;
+        var bothDone = cloneReady && manualDone;
         var cardCls = bothDone ? ' ready-card' : '';
 
 
@@ -2438,10 +2475,10 @@
           + '<div class="ur-conditions">'
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
-          + '<span class="ur-cond-label">参演短剧完播</span>'
-          + '<span class="ur-cond-status' + (playDone ? ' done' : ' pending') + '"' + (!playDone ? ' onclick="event.stopPropagation();openUpgradeBlockedModal(\'' + actor.id + '\')"' : '') + '>' + (playDone ? '✓' : '+') + '</span>'
+          + '<span class="ur-cond-label">训练手册 ×' + manualReq + '</span>'
+          + '<span class="ur-cond-status' + (manualDone ? ' done' : ' pending') + '"' + (!manualDone ? ' onclick="event.stopPropagation();openUpgradeBlockedModal(\'' + actor.id + '\')"' : '') + '>' + (manualDone ? '✓' : '+') + '</span>'
           + '</div>'
-          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + playPct + '%;"></i><span class="ur-cond-bar-text">' + (actor.cumulativePlays || 0).toLocaleString() + '/' + playReq.toLocaleString() + '</span></div>'
+          + '<div class="ur-cond-bar-wrap"><i class="fill-amber" style="width:' + manualPct + '%;"></i><span class="ur-cond-bar-text">' + manualStock + '/' + manualReq + '</span></div>'
           + '</div>'
           + '<div class="ur-cond">'
           + '<div class="ur-cond-body">'
@@ -2866,14 +2903,17 @@
     function autoCharge() {
       var targets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
       if (targets.length === 0) { showToast('演出中的角色体力已满'); return; }
-      var totalCost = 0;
+      var totalNeed = 0;
+      targets.forEach(function(a) { totalNeed += ItemStore.supplyNeeded(a.level); });
+      if (!ItemStore.spend('supply', totalNeed)) {
+        showToast('体力补给包不足，还差 ' + (totalNeed - ItemStore.count('supply')) + ' 个（可去道具区购买）');
+        return;
+      }
       targets.forEach(function(a) {
-        var cfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
-        totalCost += cfg.costCoeff * 10;
         a.energy = a.energyMax;
         a.status = 'active';
       });
-      showToast('已补充 ' + targets.length + ' 位角色的体力（共花费 ' + totalCost.toFixed(1) + ' USDC）');
+      showToast('已补充 ' + targets.length + ' 位角色的体力（消耗补给包 ×' + totalNeed + '）');
     }
 
     // 一键休息：所有在演角色休息
@@ -3022,26 +3062,29 @@
       if (!actor) return;
 
       const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-      const cost = levelCfg.costCoeff * 10;
+      const need = ItemStore.supplyNeeded(actor.level);
+      const stock = ItemStore.count('supply');
 
       document.getElementById('modalChargeActor').textContent = actor.name + ' · Lv' + actor.level;
       document.getElementById('modalChargeCurrent').textContent = actor.energy + '/' + actor.energyMax + ' → ' + actor.energyMax;
-      document.getElementById('modalChargeCost').textContent = cost.toFixed(1);
+      document.getElementById('modalChargeNeed').textContent = '×' + need;
+      document.getElementById('modalChargeStock').textContent = stock;
+      document.getElementById('chargeBuyBtn').style.display = stock < need ? 'inline-block' : 'none';
 
       // 移动端批量入口
       var allTargets = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; });
       var allCount = allTargets.length;
-      var allCost = 0;
+      var allNeed = 0;
       allTargets.forEach(function(a) {
-        var cfg = LEVEL_CONFIG[a.level] || LEVEL_CONFIG[1];
-        allCost += cfg.costCoeff * 10;
+        allNeed += ItemStore.supplyNeeded(a.level);
       });
       var batchCountEl = document.getElementById('chargeBatchCount');
       var batchCostEl = document.getElementById('chargeBatchCost');
       if (allCount > 1) {
         if (batchCountEl) batchCountEl.textContent = allCount + ' 位';
-        if (batchCostEl) batchCostEl.textContent = allCost.toFixed(1) + ' USDC';
+        if (batchCostEl) batchCostEl.textContent = '消耗补给包 ×' + allNeed;
       }
+      document.getElementById('chargeBatchArea').style.display = allCount > 1 ? 'block' : 'none';
 
       document.getElementById('chargeModal').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -3063,14 +3106,166 @@
       if (!pendingChargeActorId) return;
       const actor = MY_ACTORS.find(a => a.id === pendingChargeActorId);
       if (actor) {
-        const levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-        const cost = levelCfg.costCoeff * 10;
+        const need = ItemStore.supplyNeeded(actor.level);
+        if (!ItemStore.spend('supply', need)) {
+          showToast('体力补给包不足，还差 ' + (need - ItemStore.count('supply')) + ' 个，可点击"购买"补充');
+          return;
+        }
         actor.energy = actor.energyMax;
         if (actor.isStaking) actor.status = 'active';
-        showToast(actor.name + ' 已补充（花费 ' + cost.toFixed(1) + ' USDC）');
+        showToast(actor.name + ' 已补充（消耗补给包 ×' + need + '）');
       }
       closeChargeModal();
       renderAll();
+    }
+
+    // ---- 补充体力弹窗内嵌购买（补给包）----
+    function openChargeBuy() { document.getElementById('chargeBuyPanel').style.display = 'block'; }
+    function closeChargeBuy() { document.getElementById('chargeBuyPanel').style.display = 'none'; }
+    function confirmChargeBuy() {
+      var qty = Math.max(1, parseInt(document.getElementById('chargeBuyQty').value, 10) || 1);
+      ItemStore.buy('supply', qty);
+      document.getElementById('modalChargeStock').textContent = ItemStore.count('supply');
+      var need = ItemStore.supplyNeeded((MY_ACTORS.find(function(a){return a.id===pendingChargeActorId;})||{}).level || 1);
+      document.getElementById('chargeBuyBtn').style.display = ItemStore.count('supply') >= need ? 'none' : 'inline-block';
+      closeChargeBuy();
+      showToast('已购买 ' + qty + ' 个体力补给包');
+    }
+
+    // ============================================================
+    //  我的道具（查看 + 获取）
+    // ============================================================
+    function openItemsSheet() {
+      renderItemsSheet();
+      document.getElementById('itemsSheet').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeItemsSheet() {
+      document.getElementById('itemsSheet').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function renderItemsSheet() {
+      var order = ['supply', 'manual', 'clawWeek', 'clawMonth'];
+      var html = '';
+      order.forEach(function (key) {
+        var d = window.ITEM_DEFS[key];
+        var n = ItemStore.count(key);
+        html += '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;">'
+          + '<span style="font-size:1.3rem;">' + d.icon + '</span>'
+          + '<div style="flex:1;min-width:0;">'
+          + '<div style="font-size:0.9rem;font-weight:700;color:var(--text);">' + d.name + '</div>'
+          + '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:1px;">' + d.desc + '</div>'
+          + '</div>'
+          + '<div style="text-align:right;flex-shrink:0;">'
+          + '<div style="font-size:0.78rem;color:var(--text-sub);">我有 <strong style="font-size:1.05rem;color:var(--text);">' + n + '</strong></div>'
+          + '</div>'
+          + '</div>';
+      });
+      document.getElementById('itemsSheetList').innerHTML = html;
+    }
+
+    // ============================================================
+    //  Claw 面板（独立：状态 + 激活 + 设置）
+    // ============================================================
+    function openClawSheet() {
+      renderClawSheet();
+      document.getElementById('clawSheet').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeClawSheet() {
+      document.getElementById('clawSheet').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function renderClawSheet() {
+      var cs = ItemStore.clawState();
+      var html = '';
+      if (cs) {
+        var days = Math.ceil(cs.remainMs / 86400000);
+        html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:12px;">'
+          + '<div style="font-size:0.95rem;font-weight:700;color:var(--accent);">激活中 · 剩 ' + days + ' 天</div>'
+          + '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">自动运营中，产出 +5%</div>'
+          + '</div>';
+      } else {
+        html += '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:12px;color:var(--text-muted);font-size:0.85rem;">未激活</div>';
+      }
+      html += '<div style="display:flex;gap:8px;margin-bottom:12px;">'
+        + '<button class="modal-btn confirm" style="flex:1;padding:8px 0;" onclick="activateClaw(\'week\')">激活周卡</button>'
+        + '<button class="modal-btn confirm" style="flex:1;padding:8px 0;" onclick="activateClaw(\'month\')">激活月卡</button>'
+        + '</div>'
+        + '<div style="padding:12px 14px;border-radius:12px;background:var(--bg);">'
+        + '<div style="font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:8px;">自动化</div>'
+        + '<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text);"><input type="checkbox" id="clawAutoSupply" style="accent-color:var(--accent);"> 自动补体力</label>'
+        + '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text-muted);margin-left:24px;">体力低于 <input type="number" id="clawThreshold" min="0" max="168" value="0" style="width:48px;text-align:center;border:1px solid var(--border);border-radius:6px;padding:2px;"> h 时补</div>'
+        + '<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.82rem;color:var(--text);"><input type="checkbox" id="clawAutoRest" style="accent-color:var(--accent);"> 体力耗尽自动休息</label>'
+        + '<label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text);"><input type="checkbox" id="clawAutoOptimal" style="accent-color:var(--accent);"> 自动安排最优演出</label>'
+        + '</div>'
+        + '<button class="modal-btn confirm" style="width:100%;margin-top:12px;" onclick="saveClawSettings()">保存</button>';
+      document.getElementById('clawSheetBody').innerHTML = html;
+      var st = getClawSettings();
+      document.getElementById('clawAutoSupply').checked = !!st.autoSupply;
+      document.getElementById('clawThreshold').value = st.threshold || 0;
+      document.getElementById('clawAutoRest').checked = !!st.autoRest;
+      document.getElementById('clawAutoOptimal').checked = !!st.autoOptimal;
+    }
+    function activateClaw(kind) {
+      var r = ItemStore.activateClaw(kind);
+      if (!r.ok) { showToast('周卡或月卡不足'); return; }
+      renderClawSheet();
+      updateClawBadge();
+      showToast('Story Claw 已激活');
+    }
+    function getClawSettings() {
+      try { return Object.assign({ autoSupply: true, autoRest: true, autoOptimal: false, threshold: 0 }, JSON.parse(localStorage.getItem('sf2_claw_settings') || '{}')); }
+      catch (e) { return { autoSupply: true, autoRest: true, autoOptimal: false, threshold: 0 }; }
+    }
+    function saveClawSettings() {
+      var st = {
+        autoSupply: document.getElementById('clawAutoSupply').checked,
+        threshold: Math.min(168, Math.max(0, parseInt(document.getElementById('clawThreshold').value, 10) || 0)),
+        autoRest: document.getElementById('clawAutoRest').checked,
+        autoOptimal: document.getElementById('clawAutoOptimal').checked,
+      };
+      localStorage.setItem('sf2_claw_settings', JSON.stringify(st));
+      showToast('已保存');
+    }
+
+    // ---- Story Claw 顶部常驻标识（仅激活期间显示，点击打开 Claw 面板）----
+    function updateClawBadge() {
+      var el = document.getElementById('clawTopBadge');
+      if (!el) return;
+      var cs = ItemStore.clawState();
+      if (!cs) { el.style.display = 'none'; return; }
+      el.style.display = 'inline-flex';
+      var days = Math.ceil(cs.remainMs / 86400000);
+      var warn = days <= 3;
+      el.style.borderColor = warn ? 'var(--warning)' : 'var(--accent)';
+      el.style.color = warn ? 'var(--warning)' : 'var(--accent)';
+      el.style.background = warn ? 'rgba(245,158,11,0.1)' : 'var(--accent-soft)';
+    }
+
+    // ---- Claw 自动补体力（30s 检查一次）----
+    function clawTick() {
+      if (typeof MY_ACTORS === 'undefined') return;
+      var cs = ItemStore.clawState();
+      if (!cs) return;
+      var st = getClawSettings();
+      if (!st.autoSupply) return;
+      var urgent = MY_ACTORS.filter(function (a) { return a.isStaking && a.energy <= st.threshold; });
+      if (!urgent.length) return;
+      var changed = false;
+      urgent.forEach(function (a) {
+        var need = ItemStore.supplyNeeded(a.level);
+        if (ItemStore.count('supply') >= need) {
+          ItemStore.spend('supply', need);
+          a.energy = a.energyMax;
+          changed = true;
+        } else if (st.autoRest && a.energy <= 0) {
+          a.isStaking = false;
+          a.status = 'rest';
+          changed = true;
+        }
+      });
+      if (changed) { renderAll(); updateClawBadge(); }
     }
 
     // ============================================================
@@ -3123,7 +3318,9 @@
       updateConsumeUI();
 
       if (nextLevel && threshold) {
-        document.getElementById('modalLevelCost').textContent = threshold.cost + ' USDC';
+        var manualNeed = ItemStore.manualNeeded(nextLevel);
+        var manualStock = ItemStore.count('manual');
+        document.getElementById('modalLevelCost').textContent = '训练手册 ×' + manualNeed + '（库存 ' + manualStock + '）';
         document.getElementById('modalLevelCostRow').style.display = 'flex';
         document.getElementById('modalLevelUpBtn').style.display = 'block';
         document.getElementById('consumeList').style.display = 'block';
@@ -3198,6 +3395,11 @@
       if (!nextLevel) return;
       if (selectedConsumeIds.length !== 2) {
         showToast('请选择 2 个同IP同等级分身进行消耗');
+        return;
+      }
+      const manualNeed = ItemStore.manualNeeded(nextLevel);
+      if (!ItemStore.spend('manual', manualNeed)) {
+        showToast('训练手册不足，还差 ' + (manualNeed - ItemStore.count('manual')) + ' 本（可去道具区购买）');
         return;
       }
       selectedConsumeIds.forEach(id => {
@@ -3291,11 +3493,9 @@
       var actor = MY_ACTORS.find(function(a) { return a.id === actorId; });
       if (!actor) return;
       var nextLevel = actor.level + 1;
-      var threshold = LEVEL_UP_THRESHOLDS[nextLevel];
-      if (!threshold) return;
-      var playReq = threshold.playsRequired || 0;
-      var currentPlays = actor.cumulativePlays || 0;
-      var playDone = currentPlays >= playReq;
+      var manualReq = ItemStore.manualNeeded(nextLevel);
+      var manualStock = ItemStore.count('manual');
+      var manualDone = manualStock >= manualReq;
       var sameLevel = MY_ACTORS.filter(function(x) { return x.parentIP === actor.parentIP && x.level === actor.level && x.id !== actor.id; }).length;
       var have = Math.min(sameLevel, 2);
       var cloneDone = have >= 2;
@@ -3304,13 +3504,12 @@
       var title = '升级 ' + actor.name + actorNumStr;
 
       var bodyHtml = '';
-      if (!playDone) {
-        var gap = formatNumber(playReq - currentPlays);
+      if (!manualDone) {
+        var gap = manualReq - manualStock;
         bodyHtml += '<div style="text-align:left;margin-bottom:16px;">' +
-          '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + gap + ' 完播</div>' +
-          '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">观看该角色参演的短剧，或为它创作新剧，都可提升完播</div>' +
-          '<button class="modal-btn confirm" onclick="window.location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="margin-bottom:6px;">看参演短剧</button>' +
-          '<button class="modal-btn confirm" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin-bottom:0;" onclick="window.location.href=\'narrator.html\'">创作新短剧</button>' +
+          '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">训练手册不足，还需 ' + gap + ' 本</div>' +
+          '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 0.1 USDC/本，可在道具区购买</div>' +
+          '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openItemsSheet()" style="margin-bottom:0;">去购买训练手册</button>' +
           '</div>';
       }
       if (!cloneDone) {
@@ -3322,13 +3521,12 @@
           '</div>';
       }
 
-      if (!playDone && !cloneDone) {
+      if (!manualDone && !cloneDone) {
         bodyHtml = '<div style="text-align:left;">' +
           '<div style="margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);">' +
-            '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + formatNumber(playReq - currentPlays) + ' 完播</div>' +
-            '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">观看该角色参演的短剧，或为它创作新剧，都可提升完播</div>' +
-            '<button class="modal-btn confirm" onclick="window.location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="margin-bottom:6px;">去角色主页 · 看参演短剧</button>' +
-            '<button class="modal-btn confirm" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin-bottom:0;" onclick="window.location.href=\'narrator.html\'">去创作短剧</button>' +
+            '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">训练手册不足，还需 ' + (manualReq - manualStock) + ' 本</div>' +
+            '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 0.1 USDC/本，可在道具区购买</div>' +
+            '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openItemsSheet()" style="margin-bottom:0;">去购买训练手册</button>' +
           '</div>' +
           '<div>' +
             '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">还需 ' + (2 - have) + ' 张同IP同等级角色</div>' +
@@ -3440,6 +3638,10 @@
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
       renderAll();
+      updateClawBadge();
+      setInterval(clawTick, 30000);
+      // 桌面端通用标题栏 🎒/🐾 跳转：自动打开道具 sheet
+      if (location.hash === '#items') openItemsSheet();
 
       setInterval(energyTick, 1000);
 

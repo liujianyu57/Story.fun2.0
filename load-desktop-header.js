@@ -7,6 +7,42 @@
 (function() {
     'use strict';
 
+    // 动态引入商城依赖：items.js（ItemStore）→ shop.js（商城弹窗）
+    (function() {
+        if (!document.getElementById('itemsJs')) {
+            var a = document.createElement('script');
+            a.id = 'itemsJs'; a.src = 'items.js';
+            document.head.appendChild(a);
+        }
+        if (!document.getElementById('shopJs')) {
+            var s = document.createElement('script');
+            s.id = 'shopJs'; s.src = 'shop.js';
+            document.head.appendChild(s);
+        }
+    })();
+    // 商城入口兜底：依赖未加载完成时点击，先加载再打开
+    window.openShopSafe = function() {
+        function tryOpen() {
+            if (typeof window.openShop === 'function' && typeof window.ItemStore !== 'undefined') {
+                window.openShop();
+                return true;
+            }
+            return false;
+        }
+        if (tryOpen()) return;
+        var need = [];
+        if (typeof window.ItemStore === 'undefined') need.push('items.js');
+        if (typeof window.openShop !== 'function') need.push('shop.js');
+        var loaded = 0;
+        need.forEach(function(src) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.onload = function() { loaded++; if (loaded === need.length) tryOpen(); };
+            document.head.appendChild(s);
+        });
+        setTimeout(tryOpen, 800);
+    };
+
     // 内嵌 Desktop Header 样式
     function injectStyles() {
         if (document.getElementById('dh-injected-styles')) return;
@@ -59,7 +95,7 @@
             '@media(max-width:768px){.desktop-header{display:none}}',
             '/* ── Notify Dropdown (matches notifications.html cards) ── */',
             '@media(min-width:769px){',
-            '.dh-notify-wrap{position:relative;flex-shrink:0}',
+            '.dh-notify-wrap{position:relative;flex-shrink:0;display:flex;align-items:center;gap:4px}',
             '.dh-notify-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:460px;max-height:540px;background:#f8f9fb;border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s ease;z-index:300;overflow:hidden;display:flex;flex-direction:column}',
             '.dh-notify-wrap:hover .dh-notify-dropdown{opacity:1;visibility:visible;transform:translateY(0)}',
 '.dh-notify-dropdown .dn-header{display:flex;align-items:center;justify-content:center;padding:12px 16px 8px;flex-shrink:0;gap:24px}',
@@ -120,6 +156,9 @@
                         '</div>' +
                     '</div>' +
                 '</div>' +
+                '<button class="dh-icon-btn" title="商城" onclick="openShopSafe()">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>' +
+                '</button>' +
                 '<div class="dh-notify-wrap">' +
                     '<button class="dh-icon-btn" title="通知">' +
                         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>' +
@@ -171,16 +210,39 @@
             '</div>';
     }
 
-    // 注入 HTML 到 body 最前面（如果已存在则跳过）
-    function injectHeaderHTML() {
-        if (document.getElementById('desktopHeader')) return;
-        var html = buildHeaderHTML();
-        var temp = document.createElement('div');
-        temp.innerHTML = html;
-        var header = temp.querySelector('.desktop-header');
-        if (header) {
-            document.body.insertBefore(header, document.body.firstChild);
+    // 注入 HTML 到 body 最前面（如果已存在则跳过渲染，但仍确保商城按钮存在）
+    function ensureShopBtn() {
+        var header = document.getElementById('desktopHeader');
+        if (!header) return;
+        if (header.querySelector('.dh-icon-btn[title="商城"]')) return; // 已有
+        var btn = document.createElement('button');
+        btn.className = 'dh-icon-btn';
+        btn.title = '商城';
+        btn.onclick = function () { window.openShopSafe && window.openShopSafe(); };
+        btn.style.cssText = 'width:36px;height:36px;border-radius:50%;border:none;background:none;color:rgba(0,0,0,.55);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;transition:background .15s;';
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
+        var notify = header.querySelector('.dh-icon-btn[title="通知"]') || header.querySelector('.dh-notify-wrap');
+        if (notify) {
+            // 找到 notify 在 header 下的直接子节点（insertBefore 要求目标为 header 直接子级）
+            var target = notify;
+            while (target.parentNode && target.parentNode !== header) target = target.parentNode;
+            if (target.parentNode === header) header.insertBefore(btn, target);
+            else header.appendChild(btn);
+        } else {
+            header.appendChild(btn);
         }
+    }
+    function injectHeaderHTML() {
+        if (!document.getElementById('desktopHeader')) {
+            var html = buildHeaderHTML();
+            var temp = document.createElement('div');
+            temp.innerHTML = html;
+            var header = temp.querySelector('.desktop-header');
+            if (header) {
+                document.body.insertBefore(header, document.body.firstChild);
+            }
+        }
+        ensureShopBtn();
     }
 
     // 绑定搜索交互
@@ -384,6 +446,7 @@
         if (!enhanceExistingHeader()) {
             injectHeaderHTML();
         }
+        ensureShopBtn();
         bindSearch();
         // 确保 auth.js 已加载，然后渲染头像
         ensureAuthScript(function() {

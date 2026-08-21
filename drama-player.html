@@ -462,6 +462,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
     <div class="back-btn" id="backBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <span class="ep-badge" id="epBadge">第1集</span>
   </div>
+  <!-- 刷剧宝箱（播放器左上角，demo：10 秒 = 1 分钟加速）-->
+  <button id="boxBtn" onclick="toggleBoxPanel()" title="刷剧宝箱" style="position:absolute;top:64px;left:12px;z-index:12;padding:8px 10px;border-radius:12px;border:none;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);color:#ffd700;font-size:1.2rem;cursor:pointer;">🎁</button>
+  <div id="boxPanel" style="display:none;position:absolute;top:112px;left:12px;z-index:12;width:228px;background:rgba(15,20,30,.94);border-radius:14px;padding:14px;color:#fff;font-size:.82rem;"></div>
   <div class="player-bottom-bar" id="bottomBar">
     <button class="bb-btn bb-ep" id="bbEpBtn"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>选集 全<span id="bbEpTotal">24</span>集</button>
     <button class="bb-btn bb-full" id="bbFullBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
@@ -555,6 +558,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);-webkit-ta
 </div>
 
 <script src="cm-panel.js"></script>
+<script src="items.js"></script>
 <script>
 (function(){
 'use strict';
@@ -1193,5 +1197,62 @@ reportOverlay.addEventListener('click',function(){closeReportDrawer()});
 
 <script src="screen-fullscreen.js"></script>
 <script src="player-controls.js" defer></script>
+<script>
+// ============================================================
+//  刷剧宝箱（demo：10 秒 = 1 分钟加速计时）
+//  看满 1 分钟 → +1 训练手册；看满 20 分钟 → 再 +1
+//  每日 00:00 (UTC) 重置；生命周期上限 60 本，达到后不显示
+// ============================================================
+(function () {
+  var BOX_KEY = 'sf2_box_v1';
+  function getBox() {
+    var today = new Date().toISOString().slice(0, 10);
+    var b = { date: today, minutes: 0, got1m: false, got20m: false, lifetime: 0 };
+    try { b = Object.assign(b, JSON.parse(localStorage.getItem(BOX_KEY) || '{}')); } catch (e) { }
+    if (b.date !== today) { b.date = today; b.minutes = 0; b.got1m = false; b.got20m = false; }
+    return b;
+  }
+  function saveBox(b) { localStorage.setItem(BOX_KEY, JSON.stringify(b)); }
+
+  function renderBox() {
+    var b = getBox();
+    var el = document.getElementById('boxPanel');
+    if (!el) return;
+    if (b.lifetime >= 60) { document.getElementById('boxBtn').style.display = 'none'; return; }
+    el.innerHTML =
+      '<div style="font-weight:700;margin-bottom:8px;">🎁 刷剧宝箱 · 已领 ' + b.lifetime + '/60</div>'
+      + '<div style="margin-bottom:6px;">'
+      + '<div>' + (b.got1m ? '✅' : '☐') + ' 看满 1 分钟 → +1 本' + (b.got1m ? ' <span style="color:#4ade80;">已领取</span>' : ' <span style="color:#ffd700;">' + Math.min(1, b.minutes) + '/1 分钟</span>') + '</div>'
+      + '</div>'
+      + '<div>'
+      + '<div>' + (b.got20m ? '✅' : '☐') + ' 看满 20 分钟 → +1 本' + (b.got20m ? ' <span style="color:#4ade80;">已领取</span>' : ' <span style="color:#ffd700;">' + Math.min(20, b.minutes) + '/20 分钟</span>') + '</div>'
+      + '</div>'
+      + '<div style="margin-top:8px;font-size:.72rem;color:rgba(255,255,255,.5);">每日重置 · 演示加速（10 秒 = 1 分钟）</div>';
+  }
+
+  function boxTick() {
+    var btn = document.getElementById('boxBtn');
+    var b = getBox();
+    if (b.lifetime >= 60) { if (btn) btn.style.display = 'none'; return; }
+    b.minutes += 1;
+    var awarded = false;
+    if (b.minutes >= 1 && !b.got1m) { b.got1m = true; ItemStore.add('manual', 1); b.lifetime++; awarded = true; }
+    if (b.minutes >= 20 && !b.got20m) { b.got20m = true; ItemStore.add('manual', 1); b.lifetime++; awarded = true; }
+    saveBox(b);
+    if (awarded) { renderBox(); showToast('🎁 获得 1 本训练手册'); }
+    else if (document.getElementById('boxPanel').style.display !== 'none') renderBox();
+  }
+
+  window.toggleBoxPanel = function () {
+    var p = document.getElementById('boxPanel');
+    if (p.style.display === 'none') { renderBox(); p.style.display = 'block'; }
+    else p.style.display = 'none';
+  };
+
+  // 初始化 + 计时（页面打开即计时；播放器未激活时也可积累，demo 简化）
+  renderBox();
+  setInterval(boxTick, 10000);
+})();
+</script>
 </body>
 </html>

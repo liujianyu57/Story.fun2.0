@@ -205,6 +205,10 @@
     .desktop-header .auth-login-btn:hover{border-color:#000000;color:#000000;background:rgba(0, 0, 0,0.08)}
     @media(min-width:769px){.desktop-header{left:160px;right:0;display:flex}body{padding-top:56px}#debugSwitchBtn{display:none}}
     @media(max-width:768px){.desktop-header{display:none}}
+    /* 签约激励：移动端独占一行（桌面端与标题同排靠右） */
+    @media (max-width: 768px) {
+      #signGiftBar { width: 100%; margin-left: 0; }
+    }
 
     /* ═══ 平板响应式 ═══ */
     @media (min-width: 600px) and (max-width: 960px) {
@@ -494,10 +498,16 @@
   </div>
 
   <div class="app-shell">
-    <!-- Page Title -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+    <!-- Page Title + 签约激励（桌面端同行靠右，移动端换行独占） -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
       <h1 style="margin:0;font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;color:var(--text);">角色 IP 市场</h1>
       <button class="ip-guide-btn" id="ipGuideBtn" title="角色 IP 是什么？" style="margin-left:0;">?</button>
+      <div id="signGiftBar" style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:linear-gradient(135deg,rgba(255,215,0,.1),rgba(245,158,11,.08));border:1px solid rgba(245,158,11,.25);margin-left:auto;font-size:0.78rem;">
+        <span>🐾</span>
+        <span style="font-weight:700;color:var(--text);"><span id="signCount">0</span>/5 签约得</span>
+        <button onclick="openClawInfo()" style="border:none;background:none;padding:0;font-size:0.78rem;font-weight:700;color:var(--accent);cursor:pointer;text-decoration:underline;flex-shrink:0;">Story Claw</button>
+        <span id="signGiftBadge" style="display:none;flex-shrink:0;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px;font-size:0.68rem;">已领取</span>
+      </div>
     </div>
     <!-- Sort -->
     <div class="sort-container" id="sortContainer">
@@ -739,6 +749,7 @@
   <div id="bottom-nav-placeholder"></div>
 
   <script src="auth.js"></script>
+  <script src="items.js"></script>
   <script src="actor-card.js"></script>
   <script src="load-sidebar.js"></script>
   <script src="load-desktop-header.js"></script>
@@ -989,9 +1000,66 @@
         cards.forEach(function(c) { var aImg = c.querySelector('.ac-avatar img'); if (aImg && aImg.src === imgSrc) targetCard = c; });
         if (targetCard) updateCardCounts(targetCard);
         showSuccessInModal({ name: MintModalActorName.textContent || 'Luna' });
+        addSignCount();
         setButtonLoading(MintConfirm, false);
       }, 1200);
     });
+
+    // ---- 签约激励（demo：累计签约 5 张角色卡送 Claw 周卡，生命周期 1 次）----
+    function getSignCount() {
+      var n = parseInt(localStorage.getItem('sf2_sign_count') || '0', 10);
+      return isNaN(n) ? 0 : n;
+    }
+    function getSignGifted() {
+      return localStorage.getItem('sf2_sign_gift') === '1';
+    }
+    function renderSignProgress() {
+      var n = getSignCount();
+      var gifted = getSignGifted();
+      document.getElementById('signCount').textContent = n;
+      document.getElementById('signGiftBadge').style.display = gifted ? 'inline-block' : 'none';
+    }
+    function openClawInfo() {
+      var overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);';
+      overlay.innerHTML = '<div style="background:#fff;border-radius:16px;max-width:340px;width:calc(100% - 48px);padding:26px 22px 20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);">' +
+        '<div style="font-size:1.1rem;font-weight:800;color:var(--text,#13202e);margin-bottom:12px;">🐾 Story Claw</div>' +
+        '<div style="font-size:.85rem;line-height:1.9;color:#556;text-align:left;">' +
+          '签约 5 张角色卡，赠送 7 天 Story Claw。激活后自动运营：<br>' +
+          '· 自动补体力<br>' +
+          '· 体力耗尽自动休息<br>' +
+          '· 自动安排最优演出<br>' +
+          '· 期间产出 +5%<br><br>' +
+          '到期后可续费（周卡 / 月卡）。' +
+        '</div>' +
+        '<button onclick="this.parentElement.parentElement.remove()" style="width:100%;margin-top:16px;padding:10px 0;border:none;border-radius:999px;background:#000;color:#fff;font-size:.88rem;cursor:pointer;">知道了</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+    }
+    function addSignCount() {
+      var n = getSignCount() + 1;
+      localStorage.setItem('sf2_sign_count', String(n));
+      if (n >= 5 && !getSignGifted()) {
+        localStorage.setItem('sf2_sign_gift', '1');
+        ItemStore.add('clawWeek', 1);
+        renderSignProgress();
+        showToast('🎉 获得 Story Claw，去经纪人页激活');
+      } else {
+        renderSignProgress();
+      }
+    }
+    function showToast(msg) {
+      var t = document.getElementById('sfToast');
+      if (!t) {
+        t = document.createElement('div'); t.id = 'sfToast';
+        t.style.cssText = 'position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(0,0,0,.85);color:#fff;padding:10px 18px;border-radius:999px;font-size:.85rem;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg; t.style.opacity = '1';
+      clearTimeout(t._t); t._t = setTimeout(function () { t.style.opacity = '0'; }, 2200);
+    }
+    if (document.getElementById('signCount')) renderSignProgress();
 
     viewNftBtn.addEventListener('click', function() { window.location.href = 'studio.html'; });
     continueBtn.addEventListener('click', function() { closeMintModal(); });
