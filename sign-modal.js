@@ -123,8 +123,7 @@ window.SignModal = (function () {
 
     var pricing = config.pricing === 'fixed' ? 'fixed' : 'curve';
     var remain = (config.total || 0) - (config.minted || 0);
-    var help = typeof config.onPriceHelp === 'function'
-      ? '<button class="actor-price-help" type="button">?</button>' : '';
+    var help = '<button class="actor-price-help" type="button">?</button>';
     var coeffRow = config.coeff
       ? '<span class="mpb-coeff-inline">价格系数 <strong>' + config.coeff + '</strong>' + help + '</span>' : '';
     var slip = (pricing === 'curve')
@@ -188,16 +187,18 @@ window.SignModal = (function () {
     overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && current && current.overlay === overlay) close(); });
 
-    // ? 价格帮助
-    if (typeof config.onPriceHelp === 'function') {
-      var name = config.name;
-      overlay.querySelectorAll('.actor-price-help').forEach(function (b) {
-        b.addEventListener('click', function (e) {
-          e.stopPropagation();
-          config.onPriceHelp(name);
-        });
+    // ? 价格帮助（始终显示；默认内置气泡说明，调用方传 onPriceHelp 则覆盖为页面实现）
+    var isCurve = pricing === 'curve';
+    var defaultHelpText = isCurve
+      ? '签约价随已签约数按联合曲线上涨，越早签约越便宜。'
+      : '该角色 IP 采用固定价格，销量变化不影响签约价。';
+    overlay.querySelectorAll('.actor-price-help').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (typeof config.onPriceHelp === 'function') { config.onPriceHelp(config.name); return; }
+        showHelpBubble(b, defaultHelpText);
       });
-    }
+    });
 
     // 确认签约 → 业务 → 成功态
     var confirmBtn = overlay.querySelector('.mint-btn.primary');
@@ -240,6 +241,33 @@ window.SignModal = (function () {
     var success = overlay.querySelector('.mint-modal-success');
     if (body) body.style.display = 'none';
     if (success) success.classList.add('show');
+  }
+
+  // 内置问号说明气泡（组件默认行为）
+  function showHelpBubble(anchor, text) {
+    var old = document.querySelector('.sgn-help-bubble');
+    if (old) old.remove();
+    var r = anchor.getBoundingClientRect();
+    var b = document.createElement('div');
+    b.className = 'sgn-help-bubble';
+    b.style.cssText = 'position:fixed;z-index:10002;background:rgba(26,35,47,.95);color:#fff;font-size:12px;line-height:1.7;padding:10px 14px;border-radius:10px;max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.25);';
+    b.textContent = text;
+    document.body.appendChild(b);
+    var bw = b.offsetWidth, bh = b.offsetHeight;
+    var left = Math.min(Math.max(8, r.left + r.width / 2 - bw / 2), window.innerWidth - bw - 8);
+    var top = r.bottom + 8;
+    if (top + bh > window.innerHeight - 8) top = Math.max(8, r.top - bh - 8);
+    b.style.left = left + 'px';
+    b.style.top = top + 'px';
+    function dismiss() {
+      if (b.parentNode) b.remove();
+      document.removeEventListener('click', dismiss, true);
+      document.removeEventListener('keydown', esc);
+    }
+    function esc(e) { if (e.key === 'Escape') dismiss(); }
+    setTimeout(dismiss, 2600);
+    document.addEventListener('click', dismiss, true);
+    document.addEventListener('keydown', esc);
   }
 
   function close() {

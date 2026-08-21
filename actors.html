@@ -1027,11 +1027,6 @@
           coeff: initPrice > 0 ? computePriceCoefficient(initPrice).toFixed(4) : null,
           total: parseInt(card.dataset.total) || 10000,
           minted: parseInt(card.dataset.minted) || 0,
-          onPriceHelp: function(actorName) {
-            var d = findActorData(actorName);
-            if (d) openPriceTooltipForData(d);
-            priceTooltip.classList.add('active');
-          },
           onConfirm: function(done) {
             setTimeout(function() {
               var cards = document.querySelectorAll('#actorGrid .ac-card');
