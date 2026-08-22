@@ -55,9 +55,19 @@
     box-shadow:0 0 22px rgba(167,139,250,.55), 0 0 46px rgba(245,176,66,.30), inset 0 1px 0 rgba(255,255,255,.45);
   }
   .hero-label { font-size:12px; font-weight:600; letter-spacing:.16em; color:var(--muted); }
-  .hero-score { font-size:76px; font-weight:700; letter-spacing:-.02em; color:#fff; line-height:1.1; margin-top:8px; font-variant-numeric:tabular-nums; font-family:var(--mono); }
+  .hero-score {
+    font-size:76px; font-weight:700; letter-spacing:-.02em; line-height:1.1; margin-top:8px;
+    font-variant-numeric:tabular-nums; font-family:var(--mono);
+    background:linear-gradient(135deg,#fff 0%,#f5b042 55%,#a78bfa 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 16px rgba(245,176,66,.45)) drop-shadow(0 0 40px rgba(167,139,250,.35));
+    animation:breathe 2.8s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%,100% { filter:drop-shadow(0 0 12px rgba(245,176,66,.35)) drop-shadow(0 0 30px rgba(167,139,250,.25)); }
+    50% { filter:drop-shadow(0 0 22px rgba(245,176,66,.60)) drop-shadow(0 0 56px rgba(167,139,250,.50)); }
+  }
   .hero-score .unit { font-size:20px; font-weight:600; color:var(--muted); margin-left:8px; letter-spacing:0; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','PingFang SC','Segoe UI',Roboto,sans-serif; }
-  .hero-score .unit { font-size:20px; font-weight:600; color:var(--muted); margin-left:8px; letter-spacing:0; }
   /* 空投提示条 */
   .airdrop-bar {
     margin:24px auto 30px; max-width:560px; text-align:center; padding:12px 18px; border-radius:14px;
@@ -68,12 +78,24 @@
   /* Bento */
   .bento { display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:118px; gap:14px; }
   .card {
-    position:relative; border:1px solid var(--card-border); background:var(--card); border-radius:20px; padding:16px;
+    position:relative; border-radius:20px; padding:16px;
     display:flex; flex-direction:column; justify-content:space-between; overflow:hidden;
-    transition:transform .25s, box-shadow .25s, border-color .25s;
+    background:
+      linear-gradient(rgba(255,255,255,.045), rgba(255,255,255,.045)) padding-box,
+      linear-gradient(150deg, rgba(245,176,66,.55), rgba(167,139,250,.55) 60%, rgba(56,189,248,.35)) border-box;
+    border:1px solid transparent;
+    transition:transform .25s, box-shadow .25s, filter .25s;
     opacity:0; transform:translateY(14px); animation:rise .6s ease forwards;
   }
-  .card:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,0,0,.35); border-color:rgba(255,255,255,.16); }
+  .card::before {
+    content:''; position:absolute; inset:0 0 auto 0; height:56%; border-radius:20px 20px 0 0; pointer-events:none; z-index:0;
+    background:radial-gradient(120% 100% at 50% 0%, rgba(167,139,250,.14), transparent 70%);
+  }
+  .card > * { position:relative; z-index:1; }
+  .card:hover {
+    transform:translateY(-2px);
+    box-shadow:0 0 0 1px rgba(167,139,250,.35), 0 0 26px rgba(167,139,250,.30), 0 10px 34px rgba(0,0,0,.45);
+  }
   .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.12s}.card:nth-child(3){animation-delay:.19s}
   .card:nth-child(4){animation-delay:.26s}.card:nth-child(5){animation-delay:.33s}.card:nth-child(6){animation-delay:.40s}
   @keyframes rise { to { opacity:1; transform:none; } }
