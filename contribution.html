@@ -66,12 +66,29 @@
   .locked-tip svg { width:20px; height:20px; flex-shrink:0; color:var(--gold); }
   .locked-tip span { color:#c6ccd8; }
   .hero-score .unit { font-size:20px; font-weight:600; color:var(--muted); margin-left:8px; letter-spacing:0; }
-  /* 空投提示条（信息条，非按钮） */
+  /* 空投提示条（活动卡片：左侧金紫光条 + 图标） */
   .airdrop-bar {
-    margin:28px auto 34px; max-width:560px; text-align:center; padding:13px 18px; border-radius:14px;
-    font-size:14px; font-weight:600; color:#f5b042; line-height:1.5;
-    background:rgba(255,255,255,.04); border:1px solid rgba(245,176,66,.35);
+    position:relative; margin:28px auto 34px; max-width:560px; text-align:left;
+    padding:16px 18px 16px 20px; border-radius:16px; overflow:hidden;
+    font-size:14px; font-weight:600; color:#f2f4f8; line-height:1.5;
+    background:linear-gradient(90deg, rgba(245,176,66,.10), rgba(255,255,255,.04) 55%, rgba(167,139,250,.06));
+    border:1px solid rgba(255,255,255,.09);
+    display:flex; align-items:center; gap:12px;
   }
+  .airdrop-bar::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(180deg,#f5b042,#a78bfa);
+    box-shadow:0 0 12px rgba(245,176,66,.55);
+  }
+  .airdrop-bar .ab-icon {
+    width:30px; height:30px; border-radius:9px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,rgba(245,176,66,.18),rgba(167,139,250,.18));
+    color:var(--gold);
+  }
+  .airdrop-bar .ab-icon svg { width:16px; height:16px; }
+  .airdrop-bar .ab-text { flex:1; min-width:0; }
+  .airdrop-bar .ab-text strong { color:var(--gold); font-weight:700; }
   /* Bento */
   .bento { display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:118px; gap:14px; }
   .card {
@@ -205,7 +222,10 @@
     </div>
   </header>
 
-  <div class="airdrop-bar" id="airdropBar">TGE 前贡献越多，空投越多 STORY</div>
+  <div class="airdrop-bar" id="airdropBar">
+    <span class="ab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+    <span class="ab-text" id="airdropBarText">TGE 前贡献越多，空投越多 <strong>STORY</strong></span>
+  </div>
 
   <div class="phase-cta"><button id="phaseCtaBtn">TGE 后领取</button></div>
 
@@ -287,10 +307,13 @@
   };
   // 演示值：待领取 STORY 数量（接入真实数据后替换）
   var pendingAirdrop = 666;
-  document.getElementById('airdropBar').textContent =
+  var barText =
     loggedIn && phase === 'airdrop'
       ? '待领取 ' + pendingAirdrop + ' STORY'
       : (barTexts[phase] || barTexts.pre);
+  // 高亮其中的 STORY 字样
+  var barHtml = barText.replace(/STORY/g, '<strong>STORY</strong>');
+  document.getElementById('airdropBarText').innerHTML = barHtml;
 
   // 阶段 CTA
   var ctaBtn = document.getElementById('phaseCtaBtn');
