@@ -111,7 +111,6 @@
   .det-time { width:74px; font-size:11px; color:var(--muted); flex-shrink:0; }
   .det-act { flex:1; font-size:13px; color:#c6ccd8; }
   .det-pts { font-size:13px; font-weight:700; color:var(--gold); flex-shrink:0; font-family:var(--mono); }
-  .det-note { text-align:center; font-size:11px; color:var(--muted); padding:10px 0 14px; }
   /* 阶段 CTA */
   .phase-cta { text-align:center; margin:26px auto 8px; }
   .phase-cta button {
@@ -364,7 +363,7 @@
     ];
     document.getElementById('detailList').innerHTML = det.map(function (d) {
       return '<div class="det-row"><span class="det-time">' + d[0] + '</span><span class="det-act">' + d[1] + '</span><span class="det-pts">' + d[2] + '</span></div>';
-    }).join('') + '<div class="det-note">示例数据 · 待接入真实记录</div>';
+    }).join('');
   }
   // 登录态变化（登录/退出）后刷新页面，切换登录/未登录展示
   document.addEventListener('auth-ready', function () { location.reload(); });
