@@ -358,6 +358,8 @@
       return '<div class="det-row"><span class="det-time">' + d[0] + '</span><span class="det-act">' + d[1] + '</span><span class="det-pts">' + d[2] + '</span></div>';
     }).join('') + '<div class="det-note">示例数据 · 待接入真实记录</div>';
   }
+  // 登录态变化（登录/退出）后刷新页面，切换登录/未登录展示
+  document.addEventListener('auth-ready', function () { location.reload(); });
 })();
 </script>
 <script src="auth.js"></script>
