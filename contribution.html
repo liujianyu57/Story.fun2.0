@@ -279,10 +279,19 @@
     document.getElementById('detailLocked').style.display = 'flex';
   }
 
-  // 空投提示（按阶段）
+  // 空投提示（按阶段 × 登录态）
   var phase = (window.SFPhase && SFPhase.get()) || 'pre';
-  var barTexts = { pre: 'TGE 前贡献越多，空投越多 STORY', airdrop: '已按贡献值空投 STORY', mining: '挖矿已开放' };
-  document.getElementById('airdropBar').textContent = barTexts[phase] || barTexts.pre;
+  var barTexts = {
+    pre: 'TGE 前贡献越多，空投越多 STORY',
+    airdrop: '空投已开放领取',
+    mining: '挖矿已开放'
+  };
+  // 演示值：待领取 STORY 数量（接入真实数据后替换）
+  var pendingAirdrop = 666;
+  document.getElementById('airdropBar').textContent =
+    loggedIn && phase === 'airdrop'
+      ? '待领取 ' + pendingAirdrop + ' STORY'
+      : (barTexts[phase] || barTexts.pre);
 
   // 阶段 CTA
   var ctaBtn = document.getElementById('phaseCtaBtn');
