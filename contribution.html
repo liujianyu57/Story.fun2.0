@@ -48,14 +48,13 @@
   /* Hero */
   .hero { text-align:center; padding:14px 0 8px; }
   .token-badge {
-    width:52px; height:52px; margin:0 auto 18px; border-radius:15px;
+    width:52px; height:52px; margin:0 auto 14px; border-radius:15px;
     display:flex; align-items:center; justify-content:center;
     font-size:11px; font-weight:800; letter-spacing:.08em; color:#14100a;
     background:linear-gradient(135deg,#f5b042 0%,#a78bfa 100%);
     box-shadow:0 0 22px rgba(167,139,250,.55), 0 0 46px rgba(245,176,66,.30), inset 0 1px 0 rgba(255,255,255,.45);
   }
-  .hero-label { font-size:12px; font-weight:600; letter-spacing:.16em; color:var(--muted); line-height:1.6; }
-  .hero-score { font-size:76px; font-weight:700; letter-spacing:-.02em; color:#fff; line-height:1.15; margin-top:10px; font-variant-numeric:tabular-nums; font-family:var(--mono); }
+  .hero-score { font-size:76px; font-weight:700; letter-spacing:-.02em; color:#fff; line-height:1.15; margin-top:6px; font-variant-numeric:tabular-nums; font-family:var(--mono); }
   .hero-score .unit {
     font-size:20px; font-weight:600; color:var(--muted); margin-left:10px; letter-spacing:0;
     font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','PingFang SC','Segoe UI',Roboto,sans-serif;
@@ -226,7 +225,6 @@
 <main>
   <header class="hero">
     <div class="token-badge">STORY</div>
-    <div class="hero-label">星光</div>
     <div class="hero-score" id="heroScoreWrap"><span id="heroScore">0</span><span class="unit"><svg viewBox="0 0 24 24"><defs><linearGradient id="starGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5b042"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M12 2l2.9 6.26 6.86.6-5.2 4.54 1.55 6.7L12 16.9 5.89 20.1l1.55-6.7-5.2-4.54 6.86-.6L12 2z"/></svg>星光</span></div>
     <div class="locked-tip hero-locked" id="heroLocked" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -352,15 +350,16 @@
 
   // Bento 卡片（仅登录后渲染）
   if (loggedIn) {
+    var starIcon = '<svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-1.5px;margin-left:4px;flex-shrink:0;"><path d="M12 2l2.9 6.26 6.86.6-5.2 4.54 1.55 6.7L12 16.9 5.89 20.1l1.55-6.7-5.2-4.54 6.86-.6L12 2z" fill="#f5b042"/></svg>';
     var html = '';
     items.forEach(function (it) {
       var cls = it.big ? 'big' : (it.tall ? 'tall' : (it.wide ? 'wide' : 'small'));
       var inner = '<div class="card ' + cls + '"><div class="icon">' + it.icon + '</div><div class="name">' + it.name + '</div>';
       if (it.big || it.tall) {
         inner += '<div class="big-head"><div class="big-score">' + it.count.toLocaleString() + '</div><div class="big-sub">' + it.unit + ' · +' + it.pts + '/' + it.unit + '</div></div>'
-          + '<div class="big-total">+' + it.total.toLocaleString() + ' 星光</div>';
+          + '<div class="big-total">+' + it.total.toLocaleString() + starIcon + '</div>';
       } else {
-        inner += '<div class="stat"><span class="count">×' + it.count.toLocaleString() + ' ' + it.unit + '</span><span class="pts">+' + it.total + '星光</span></div>';
+        inner += '<div class="stat"><span class="count">×' + it.count.toLocaleString() + ' ' + it.unit + '</span><span class="pts">+' + it.total + starIcon + '</span></div>';
       }
       inner += '</div>';
       html += inner;
