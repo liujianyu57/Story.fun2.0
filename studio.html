@@ -1672,7 +1672,7 @@
     <!-- ===== 顶部状态 ===== -->
     <div class="studio-topbar">
       <div class="studio-status">
-        <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;">本周片酬 <strong id="statusWeekly">0.0</strong> <span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:#000;color:#fff;font-size:10px;font-weight:800;vertical-align:middle;margin-left:2px;">S</span></span>
+        <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;">本周片酬 <strong id="statusWeekly">0.0</strong> <span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:#000;color:#fff;font-size:10px;font-weight:800;vertical-align:middle;margin-left:2px;" id="statusWeeklyBadge">S</span></span>
         <button id="clawTopBadge" onclick="openClawSheet()" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.76rem;color:var(--text-muted);flex-shrink:0;"><span id="clawTopIcon">💤</span> Story Claw</button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
@@ -2053,14 +2053,14 @@
       <div class="rules-modal-scroll">
 
         <div class="rules-section">
-          <p style="margin:0;font-size:0.85rem;line-height:1.8;">签约角色、安排演出，每小时获得 STORY。<br>升级角色，成倍提升每小时片酬。<br>体力耗尽时及时补充，产出不间断。<br>每周一 00:00 (UTC) 开始结算本期收益，前往收益页领取。</p>
+          <p style="margin:0;font-size:0.85rem;line-height:1.8;">签约角色、安排演出，每小时获得片酬。<br>升级角色，成倍提升每小时片酬。<br>体力耗尽时及时补充，产出不间断。<br>每周一 00:00 (UTC) 开始结算本期收益，前往收益页领取。</p>
         </div>
 
         <!-- 怎么玩 -->
         <div class="rules-section">
           <div class="qa-item">
             <div class="qa-question" onclick="this.parentElement.classList.toggle('open')"><span class="qa-arrow">▸</span>怎么让角色开始赚钱？</div>
-            <div class="qa-answer"><div class="qa-answer-inner">安排候场角色演出，每小时消耗1点体力并根据片酬产出 STORY。<br>产出的STORY在每期结束时统一结算，结算后可前往收益页面领取。</div></div>
+            <div class="qa-answer"><div class="qa-answer-inner">安排候场角色演出，每小时消耗 1 点体力并产出片酬。<br>片酬在每期结束时统一结算，结算后可前往收益页面领取。</div></div>
           </div>
 
           <div class="qa-item">
@@ -2156,6 +2156,9 @@
       { level: 4, name: '巨星',  miningCoeff: 27,  costCoeff: 13,   energyMax: 168,  color: '#f0ad4e' },
       { level: 5, name: '顶流',  miningCoeff: 81,  costCoeff: 32,   energyMax: 168,  color: '#d9534f' },
     ];
+
+    // 片酬单位：Pre-TGE 为纯数字「片酬/h」，挖矿阶段恢复「STORY/h」
+    function salaryUnit() { return (window.SFPhase && SFPhase.unit()) || '片酬/h'; }
 
     // ============================================================
     //  价格系数
@@ -2456,7 +2459,7 @@
           + '</div>'
           + '<div class="ur-rate-row" onclick="event.stopPropagation();">'
           + '<span class="ur-rate-label">片酬</span>'
-          + '<span class="ur-rate">' + before.toFixed(1) + ' → ' + after.toFixed(1) + '<span style="font-size:0.58rem;color:var(--text-sub);"> STORY/h</span></span>'
+          + '<span class="ur-rate">' + before.toFixed(1) + ' → ' + after.toFixed(1) + '<span style="font-size:0.58rem;color:var(--text-sub);"> ' + salaryUnit() + '</span></span>'
           + '</div>'
           + '</div>'
           + '<div class="ur-conditions">'
@@ -2517,7 +2520,7 @@
             + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
             + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
             + '</div>'
-            + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
+            + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>' + salaryUnit() + '</span></div>'
             + '</div>'
             + '<div class="slot-actions">'
             + (actor.energy < actor.energyMax
@@ -2562,7 +2565,7 @@
           + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
           + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
           + '</div>'
-          + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
+          + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">' + computeActorPower(actor).toFixed(1) + ' <span>' + salaryUnit() + '</span></div>'
           + '</div>'
           + '<div class="slot-actions">'
           + (actor.energy < actor.energyMax
@@ -2786,7 +2789,7 @@
           + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
           + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
           + '</div>'
-+ '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>STORY/h</span></div>'
++ '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>' + salaryUnit() + '</span></div>'
             + '</div>'
             + '<div class="slot-actions">'
             + (actor.energy < actor.energyMax
@@ -3590,7 +3593,7 @@
         rows += '<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;">'
           + '<img src="' + a.avatar + '" alt="" style="width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0;">'
           + '<div style="flex:1;min-width:0;"><div style="font-size:0.9rem;font-weight:700;color:var(--text);">' + a.name + ' ' + numStr + '</div>'
-          + '<div style="font-size:0.74rem;color:var(--text-muted);margin-top:2px;">Lv.' + a.level + ' · 片酬 ' + computeActorPower(a).toFixed(1) + ' STORY/h</div>'
+          + '<div style="font-size:0.74rem;color:var(--text-muted);margin-top:2px;">Lv.' + a.level + ' · 片酬 ' + computeActorPower(a).toFixed(1) + ' ' + salaryUnit() + '</div>'
           + '<div style="font-size:0.8rem;color:var(--text);margin-top:2px;">可回收 <span style="color:var(--gold);font-weight:700;">' + v.total.toFixed(1) + ' USDC</span></div></div>'
           + '<button onclick="openRecycleConfirm(\'' + a.id + '\')" style="flex-shrink:0;padding:7px 16px;border-radius:999px;border:none;background:var(--text);color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;">回收</button>'
           + '</div>';
@@ -3743,6 +3746,9 @@
       renderAll();
       updateClawBadge();
       updateClawDebugBtn();
+      // 阶段：挖矿阶段才显示顶部 S 徽标（Pre-TGE 纯数字）
+      var badge = document.getElementById('statusWeeklyBadge');
+      if (badge) badge.style.display = (window.SFPhase && SFPhase.isMining()) ? '' : 'none';
       setInterval(clawTick, 30000);
       // 订阅弹窗（shop.js）购买/续费后刷新 Claw 状态
       document.addEventListener('sf:claw-changed', function() {

@@ -3,6 +3,24 @@
    库存 localStorage 持久化 + 模拟支付（不真实扣款）
    道具：体力补给包 supply / 训练手册 manual / Story Claw 周卡 clawWeek / Story Claw 月卡 clawMonth
    ============================================================ */
+// 全局阶段：pre（Pre-TGE 计分）/ airdrop（已空投）/ mining（挖矿产出）
+window.SFPhase = {
+  PHASES: ['pre', 'airdrop', 'mining'],
+  NAMES: { pre: '计分', airdrop: '已空投', mining: '挖矿' },
+  get: function () {
+    var p = localStorage.getItem('sf2_phase');
+    return this.PHASES.indexOf(p) >= 0 ? p : 'pre';
+  },
+  set: function (p) { localStorage.setItem('sf2_phase', p); },
+  next: function () {
+    var arr = this.PHASES, i = arr.indexOf(this.get());
+    var n = arr[(i + 1) % arr.length];
+    this.set(n);
+    return n;
+  },
+  unit: function () { return this.get() === 'mining' ? 'STORY/h' : '片酬/h'; },
+  isMining: function () { return this.get() === 'mining'; }
+};
 window.ItemStore = (function () {
   const KEY = 'sf2_items_v1';
   const DEF = { supply: 0, manual: 0, clawWeek: 0, clawMonth: 0, clawActive: null };
