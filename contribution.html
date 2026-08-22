@@ -42,7 +42,7 @@
   .back-btn {
     position:fixed; top:18px; left:18px; z-index:5; width:36px; height:36px; border-radius:50%;
     border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.05); color:var(--ink);
-    cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s;
+    cursor:pointer; display:none; align-items:center; justify-content:center; transition:background .2s;
   }
   .back-btn:hover { background:rgba(255,255,255,.12); }
   /* Hero */
@@ -105,8 +105,20 @@
   .det-act { flex:1; font-size:13px; color:#c6ccd8; }
   .det-pts { font-size:13px; font-weight:700; color:var(--gold); flex-shrink:0; font-family:var(--mono); }
   .det-note { text-align:center; font-size:11px; color:var(--muted); padding:10px 0 14px; }
+  /* 阶段 CTA */
+  .phase-cta { text-align:center; margin:26px auto 8px; }
+  .phase-cta button {
+    padding:13px 44px; border-radius:999px; border:none; cursor:pointer;
+    font-size:15px; font-weight:700; letter-spacing:.02em; font-family:inherit;
+    background:linear-gradient(120deg,#f5b042,#a78bfa); color:#14100a;
+    box-shadow:0 8px 28px rgba(167,139,250,.30);
+    transition:transform .2s, box-shadow .2s, opacity .2s;
+  }
+  .phase-cta button:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 12px 34px rgba(167,139,250,.42); }
+  .phase-cta button:disabled { cursor:not-allowed; opacity:.42; box-shadow:none; }
   @media (max-width:768px) {
     main { padding:44px 16px 48px; }
+    .back-btn { display:flex; }
     .hero-score { font-size:54px; }
     .bento { grid-template-columns:repeat(2,1fr); grid-auto-rows:104px; }
     .card.big { grid-column:span 2; grid-row:span 2; }
@@ -128,6 +140,8 @@
   </header>
 
   <div class="airdrop-bar" id="airdropBar">TGE 前贡献越多，空投越多 STORY</div>
+
+  <div class="phase-cta"><button id="phaseCtaBtn">TGE 后领取</button></div>
 
   <section class="bento" id="bento"></section>
 
@@ -178,6 +192,19 @@
   var barTexts = { pre: 'TGE 前贡献越多，空投越多 STORY', airdrop: '已按贡献值空投 STORY', mining: '挖矿已开放' };
   document.getElementById('airdropBar').textContent = barTexts[phase] || barTexts.pre;
 
+  // 阶段 CTA（按阶段切换）
+  var ctaBtn = document.getElementById('phaseCtaBtn');
+  var ctaTexts = { pre: 'TGE 后领取', airdrop: '领取 STORY', mining: '开始挖矿' };
+  ctaBtn.textContent = ctaTexts[phase] || ctaTexts.pre;
+  if (phase === 'pre') {
+    ctaBtn.disabled = true;
+  } else {
+    ctaBtn.addEventListener('click', function () {
+      if (phase === 'mining') { location.href = 'studio.html'; return; }
+      if (typeof showToast === 'function') { showToast('演示：空投领取流程待接入'); }
+    });
+  }
+
   // Bento 卡片
   var html = '';
   items.forEach(function (it) {
@@ -226,5 +253,9 @@
   }).join('') + '<div class="det-note">示例数据 · 待接入真实记录</div>';
 })();
 </script>
+<script src="auth.js"></script>
+<script src="load-sidebar.js"></script>
+<script src="load-desktop-header.js"></script>
+<script src="load-bottom-nav.js"></script>
 </body>
 </html>
