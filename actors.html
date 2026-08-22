@@ -143,6 +143,10 @@
     /* 签约激励：移动端独占一行（桌面端与标题同排靠右） */
     @media (max-width: 768px) {
       #signGiftBar { width: 100%; margin-left: 0; }
+      /* 移动端卡片精简：去剩余、名字/编号居中 */
+      #actorGrid .ac-meta-foot { display:none !important; }
+      #actorGrid .ac-card-body h3 { text-align:center; }
+      #actorGrid .ac-collection-tag { left:50% !important; right:auto !important; transform:translateX(-50%); bottom:8px; }
     }
 
     /* ═══ 平板响应式 ═══ */
