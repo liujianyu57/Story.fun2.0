@@ -66,12 +66,14 @@
   .card .count { font-size:13px; color:var(--muted); }
   .card .pts { font-size:16px; font-weight:700; color:var(--gold); }
   .card.big { grid-column:span 4; grid-row:span 2; }
+  .card.tall { grid-column:span 2; grid-row:span 2; }
   .card.wide { grid-column:span 3; }
   .card.small { grid-column:span 2; }
-  .card.big .big-head { display:flex; align-items:baseline; gap:10px; }
+  .card.big .big-head, .card.tall .big-head { display:flex; align-items:baseline; gap:10px; }
   .card.big .big-score { font-size:38px; font-weight:700; color:#fff; letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
-  .card.big .big-sub { font-size:12px; color:var(--muted); }
-  .card.big .big-total { margin-top:auto; font-size:15px; font-weight:700; color:var(--gold); }
+  .card.tall .big-score { font-size:30px; font-weight:700; color:#fff; letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+  .card.big .big-sub, .card.tall .big-sub { font-size:12px; color:var(--muted); }
+  .card.big .big-total, .card.tall .big-total { margin-top:auto; font-size:15px; font-weight:700; color:var(--gold); }
   .tagline { text-align:center; margin-top:40px; font-size:13px; letter-spacing:.08em; color:var(--muted); }
   /* 规则与明细 */
   .sec-title { font-size:13px; font-weight:600; letter-spacing:.1em; color:var(--muted); margin:34px 0 12px; }
@@ -90,6 +92,7 @@
     .hero-score { font-size:54px; }
     .bento { grid-template-columns:repeat(2,1fr); grid-auto-rows:104px; }
     .card.big { grid-column:span 2; grid-row:span 2; }
+    .card.tall { grid-column:span 2; grid-row:span 2; }
     .card.wide { grid-column:span 2; }
     .card.small { grid-column:span 1; }
   }
@@ -122,12 +125,12 @@
   var items = [
     { name: '签约', count: 12, unit: '张', pts: 500, big: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>' },
-    { name: '升级', count: 3, unit: '级', pts: 200, small: true,
-      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>' },
-    { name: '演出', count: 345, unit: 'h', pts: 10, wide: true,
+    { name: '演出', count: 345, unit: 'h', pts: 10, tall: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"/></svg>' },
     { name: '补充体力', count: 28, unit: '次', pts: 100, wide: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>' },
+    { name: '升级', count: 3, unit: '级', pts: 200, wide: true,
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>' },
     { name: '登录', count: 18, unit: '天', pts: 10, small: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' },
     { name: '互动', count: 86, unit: '次', pts: 1, small: true,
@@ -158,9 +161,9 @@
   // Bento 卡片
   var html = '';
   items.forEach(function (it) {
-    var cls = it.big ? 'big' : (it.wide ? 'wide' : 'small');
+    var cls = it.big ? 'big' : (it.tall ? 'tall' : (it.wide ? 'wide' : 'small'));
     var inner = '<div class="card ' + cls + '"><div class="icon">' + it.icon + '</div><div class="name">' + it.name + '</div>';
-    if (it.big) {
+    if (it.big || it.tall) {
       inner += '<div class="big-head"><div class="big-score">' + it.count.toLocaleString() + '</div><div class="big-sub">' + it.unit + ' · +' + it.pts + '/' + it.unit + '</div></div>'
         + '<div class="big-total">+' + it.total.toLocaleString() + ' 分</div>';
     } else {
