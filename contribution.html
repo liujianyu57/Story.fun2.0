@@ -71,8 +71,7 @@
   .card.big .big-head { display:flex; align-items:baseline; gap:10px; }
   .card.big .big-score { font-size:38px; font-weight:700; color:#fff; letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
   .card.big .big-sub { font-size:12px; color:var(--muted); }
-  .bar { height:5px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
-  .bar i { display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,#f5b042,#a78bfa); transition:width 1.2s cubic-bezier(.22,1,.36,1); }
+  .card.big .big-total { margin-top:auto; font-size:15px; font-weight:700; color:var(--gold); }
   .tagline { text-align:center; margin-top:40px; font-size:13px; letter-spacing:.08em; color:var(--muted); }
   /* 规则与明细 */
   .sec-title { font-size:13px; font-weight:600; letter-spacing:.1em; color:var(--muted); margin:34px 0 12px; }
@@ -162,10 +161,8 @@
     var cls = it.big ? 'big' : (it.wide ? 'wide' : 'small');
     var inner = '<div class="card ' + cls + '"><div class="icon">' + it.icon + '</div><div class="name">' + it.name + '</div>';
     if (it.big) {
-      var share = Math.round(it.total / grand * 100);
       inner += '<div class="big-head"><div class="big-score">' + it.count.toLocaleString() + '</div><div class="big-sub">' + it.unit + ' · +' + it.pts + '/' + it.unit + '</div></div>'
-        + '<div class="bar"><i data-w="' + share + '"></i></div>'
-        + '<div class="stat"><span class="count">占比 ' + share + '%</span><span class="pts">+' + it.total.toLocaleString() + '分</span></div>';
+        + '<div class="big-total">+' + it.total.toLocaleString() + ' 分</div>';
     } else {
       inner += '<div class="stat"><span class="count">×' + it.count.toLocaleString() + ' ' + it.unit + '</span><span class="pts">+' + it.total + '分</span></div>';
     }
@@ -173,9 +170,6 @@
     html += inner;
   });
   document.getElementById('bento').innerHTML = html;
-  setTimeout(function () {
-    document.querySelectorAll('.bar i').forEach(function (b) { b.style.width = b.dataset.w + '%'; });
-  }, 450);
 
   // 计分规则
   var rules = [
