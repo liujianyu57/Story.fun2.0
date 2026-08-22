@@ -356,7 +356,7 @@
       var cls = it.big ? 'big' : (it.tall ? 'tall' : (it.wide ? 'wide' : 'small'));
       var inner = '<div class="card ' + cls + '"><div class="icon">' + it.icon + '</div><div class="name">' + it.name + '</div>';
       if (it.big || it.tall) {
-        inner += '<div class="big-head"><div class="big-score">' + it.count.toLocaleString() + '</div><div class="big-sub">' + it.unit + ' · +' + it.pts + '/' + it.unit + '</div></div>'
+        inner += '<div class="big-head"><div class="big-score">' + it.count.toLocaleString() + '</div><div class="big-sub">' + it.unit + '</div></div>'
           + '<div class="big-total">+' + it.total.toLocaleString() + starIcon + '</div>';
       } else {
         inner += '<div class="stat"><span class="count">×' + it.count.toLocaleString() + ' ' + it.unit + '</span><span class="pts">+' + it.total + starIcon + '</span></div>';
