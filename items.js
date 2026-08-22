@@ -18,7 +18,7 @@ window.SFPhase = {
     this.set(n);
     return n;
   },
-  unit: function () { return this.get() === 'mining' ? 'STORY/h' : '片酬/h'; },
+  unit: function () { return this.get() === 'mining' ? 'STORY/h' : ''; },
   isMining: function () { return this.get() === 'mining'; }
 };
 window.ItemStore = (function () {

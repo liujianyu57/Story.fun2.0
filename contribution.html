@@ -40,13 +40,6 @@
   .hero-label { font-size:12px; font-weight:600; letter-spacing:.16em; color:var(--muted); }
   .hero-score { font-size:76px; font-weight:700; letter-spacing:-.02em; color:#fff; line-height:1.1; margin-top:8px; font-variant-numeric:tabular-nums; }
   .hero-score .unit { font-size:20px; font-weight:600; color:var(--muted); margin-left:8px; letter-spacing:0; }
-  .hero-level { margin-top:16px; display:flex; align-items:center; justify-content:center; gap:14px; }
-  .ring-wrap { position:relative; width:64px; height:64px; }
-  .ring-wrap svg { transform:rotate(-90deg); }
-  .ring-bg { stroke:rgba(255,255,255,.08); }
-  .ring-fg { stroke:url(#ringGrad); stroke-linecap:round; transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1); filter:drop-shadow(0 0 6px rgba(167,139,250,.45)); }
-  .ring-text { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--muted); }
-  .level-tag { font-size:15px; font-weight:700; color:var(--violet); }
   /* 空投提示条 */
   .airdrop-bar {
     margin:24px auto 30px; max-width:560px; text-align:center; padding:12px 18px; border-radius:14px;
@@ -81,6 +74,18 @@
   .bar { height:5px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
   .bar i { display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,#f5b042,#a78bfa); transition:width 1.2s cubic-bezier(.22,1,.36,1); }
   .tagline { text-align:center; margin-top:40px; font-size:13px; letter-spacing:.08em; color:var(--muted); }
+  /* 规则与明细 */
+  .sec-title { font-size:13px; font-weight:600; letter-spacing:.1em; color:var(--muted); margin:34px 0 12px; }
+  .card-panel { border:1px solid var(--card-border); background:var(--card); border-radius:20px; overflow:hidden; }
+  .rule-row, .det-row { display:flex; align-items:center; gap:12px; padding:13px 16px; }
+  .rule-row + .rule-row, .det-row + .det-row { border-top:1px solid rgba(255,255,255,.06); }
+  .rule-name { flex:1; font-size:14px; color:#c6ccd8; }
+  .rule-desc { font-size:12px; color:var(--muted); }
+  .rule-pts { font-size:15px; font-weight:700; color:var(--gold); flex-shrink:0; }
+  .det-time { width:74px; font-size:11px; color:var(--muted); flex-shrink:0; }
+  .det-act { flex:1; font-size:13px; color:#c6ccd8; }
+  .det-pts { font-size:13px; font-weight:700; color:var(--gold); flex-shrink:0; }
+  .det-note { text-align:center; font-size:11px; color:var(--muted); padding:10px 0 14px; }
   @media (max-width:768px) {
     main { padding:44px 16px 48px; }
     .hero-score { font-size:54px; }
@@ -98,22 +103,17 @@
   <header class="hero">
     <div class="hero-label">贡献值</div>
     <div class="hero-score"><span id="heroScore">0</span><span class="unit">分</span></div>
-    <div class="hero-level">
-      <div class="ring-wrap">
-        <svg width="64" height="64" viewBox="0 0 64 64">
-          <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5b042"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
-          <circle class="ring-bg" cx="32" cy="32" r="27" fill="none" stroke-width="5"/>
-          <circle class="ring-fg" id="ringFg" cx="32" cy="32" r="27" fill="none" stroke-width="5" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
-        </svg>
-        <span class="ring-text" id="ringText">0%</span>
-      </div>
-      <span class="level-tag" id="levelTag">Lv.1</span>
-    </div>
   </header>
 
   <div class="airdrop-bar" id="airdropBar">发币后按贡献值空投</div>
 
   <section class="bento" id="bento"></section>
+
+  <div class="sec-title">计分规则</div>
+  <div class="card-panel" id="rulesList"></div>
+
+  <div class="sec-title">贡献明细</div>
+  <div class="card-panel" id="detailList"></div>
 
   <footer class="tagline">贡献，即未来的 STORY</footer>
 </main>
@@ -138,14 +138,6 @@
   items.forEach(function (it) { it.total = it.count * it.pts; });
   var grand = items.reduce(function (a, b) { return a + b.total; }, 0);
 
-  // 等级：0/1000/3000/6000/10000
-  var LEVELS = [0, 1000, 3000, 6000, 10000];
-  var NAMES = ['Lv.1 新芽', 'Lv.2 新秀', 'Lv.3 新星', 'Lv.4 引领者', 'Lv.5 共建者'];
-  var lv = 0;
-  for (var i = 0; i < LEVELS.length; i++) { if (grand >= LEVELS[i]) lv = i; }
-  var lo = LEVELS[lv], hi = LEVELS[lv + 1] || Math.round(LEVELS[lv] * 1.6);
-  var pct = Math.min(100, Math.round((grand - lo) / (hi - lo) * 100));
-
   // 大数字滚动
   var scoreEl = document.getElementById('heroScore');
   var t0 = null;
@@ -157,12 +149,6 @@
     if (p < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
-
-  document.getElementById('levelTag').textContent = NAMES[lv];
-  document.getElementById('ringText').textContent = pct + '%';
-  var C = 2 * Math.PI * 27;
-  var fg = document.getElementById('ringFg');
-  setTimeout(function () { fg.style.strokeDashoffset = C * (1 - pct / 100); }, 250);
 
   // 空投提示（按阶段）
   var phase = (window.SFPhase && SFPhase.get()) || 'pre';
@@ -189,6 +175,36 @@
   setTimeout(function () {
     document.querySelectorAll('.bar i').forEach(function (b) { b.style.width = b.dataset.w + '%'; });
   }, 450);
+
+  // 计分规则
+  var rules = [
+    { name: '签约角色卡', pts: '+10/张', desc: '每签约一张角色卡' },
+    { name: '角色演出', pts: '+1/小时', desc: '演出每满 1 小时' },
+    { name: '角色升级', pts: '+50/次', desc: '每提升 1 级' },
+    { name: '发布短剧', pts: '+20/部', desc: '每发布一部短剧' },
+    { name: '每日登录', pts: '+5/天', desc: '每天登录一次' },
+    { name: '平台互动', pts: '+1/次', desc: '点赞 / 评论 / 收藏' },
+  ];
+  document.getElementById('rulesList').innerHTML = rules.map(function (r) {
+    return '<div class="rule-row"><span class="rule-name">' + r.name + '</span><span class="rule-desc">' + r.desc + '</span><span class="rule-pts">' + r.pts + '</span></div>';
+  }).join('');
+
+  // 贡献明细（示例样式）
+  var det = [
+    ['06-20 12:30', '签约角色 · 苏婉清', '+10'],
+    ['06-20 18:05', '角色演出 · 1 小时', '+1'],
+    ['06-21 09:00', '每日登录', '+5'],
+    ['06-21 14:20', '发布短剧 · 凤骨琉璃', '+20'],
+    ['06-22 10:15', '角色演出 · 3 小时', '+3'],
+    ['06-22 20:40', '角色升级 · 苏婉清 Lv.3', '+50'],
+    ['06-23 08:30', '每日登录', '+5'],
+    ['06-23 21:10', '互动 · 评论', '+1'],
+    ['06-24 11:00', '角色演出 · 2 小时', '+2'],
+    ['06-24 19:45', '签约角色 · 李云飞', '+10'],
+  ];
+  document.getElementById('detailList').innerHTML = det.map(function (d) {
+    return '<div class="det-row"><span class="det-time">' + d[0] + '</span><span class="det-act">' + d[1] + '</span><span class="det-pts">' + d[2] + '</span></div>';
+  }).join('') + '<div class="det-note">示例数据 · 待接入真实记录</div>';
 })();
 </script>
 </body>
