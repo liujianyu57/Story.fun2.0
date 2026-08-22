@@ -122,18 +122,20 @@
   // 贡献数据：签约读 localStorage（sf2_sign_count），其余为演示值
   var signN = parseInt(localStorage.getItem('sf2_sign_count') || '0', 10) || 0;
   var items = [
-    { name: '签约', count: signN || 12, unit: '张', pts: 10, big: true,
+    { name: '签约', count: signN || 12, unit: '张', pts: 500, big: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>' },
-    { name: '演出', count: 345, unit: 'h', pts: 1, wide: true,
+    { name: '演出', count: 345, unit: 'h', pts: 10, wide: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"/></svg>' },
-    { name: '升级', count: 3, unit: '次', pts: 50, wide: true,
+    { name: '补充体力', count: 28, unit: '次', pts: 100, wide: true,
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>' },
+    { name: '升级', count: 3, unit: '级', pts: 200, small: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>' },
-    { name: '发布', count: 2, unit: '部', pts: 20, small: true,
-      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M8 16V8l8 4-8 4z"/></svg>' },
-    { name: '登录', count: 18, unit: '天', pts: 5, small: true,
+    { name: '登录', count: 18, unit: '天', pts: 10, small: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' },
     { name: '互动', count: 86, unit: '次', pts: 1, small: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>' },
+    { name: '邀请', count: 5, unit: '人', pts: 10, small: true,
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>' },
   ];
   items.forEach(function (it) { it.total = it.count * it.pts; });
   var grand = items.reduce(function (a, b) { return a + b.total; }, 0);
@@ -178,12 +180,13 @@
 
   // 计分规则
   var rules = [
-    { name: '签约角色卡', pts: '+10/张', desc: '每签约一张角色卡' },
-    { name: '角色演出', pts: '+1/小时', desc: '演出每满 1 小时' },
-    { name: '角色升级', pts: '+50/次', desc: '每提升 1 级' },
-    { name: '发布短剧', pts: '+20/部', desc: '每发布一部短剧' },
-    { name: '每日登录', pts: '+5/天', desc: '每天登录一次' },
-    { name: '平台互动', pts: '+1/次', desc: '点赞 / 评论 / 收藏' },
+    { name: '签约角色', pts: '+500/个', desc: '每签约 1 个角色' },
+    { name: '角色演出', pts: '+10/小时', desc: '演出每满 1 小时' },
+    { name: '补充体力', pts: '+100/次', desc: '每补充 1 次' },
+    { name: '角色升级', pts: '+200/级', desc: '每提升 1 级' },
+    { name: '每日登录', pts: '+10/天', desc: '每天登录 1 次' },
+    { name: '平台互动', pts: '+1/次', desc: '点赞 / 收藏' },
+    { name: '邀请好友', pts: '+10/人', desc: '每邀请 1 人' },
   ];
   document.getElementById('rulesList').innerHTML = rules.map(function (r) {
     return '<div class="rule-row"><span class="rule-name">' + r.name + '</span><span class="rule-desc">' + r.desc + '</span><span class="rule-pts">' + r.pts + '</span></div>';
@@ -191,16 +194,16 @@
 
   // 贡献明细（示例样式）
   var det = [
-    ['06-20 12:30', '签约角色 · 苏婉清', '+10'],
-    ['06-20 18:05', '角色演出 · 1 小时', '+1'],
-    ['06-21 09:00', '每日登录', '+5'],
-    ['06-21 14:20', '发布短剧 · 凤骨琉璃', '+20'],
-    ['06-22 10:15', '角色演出 · 3 小时', '+3'],
-    ['06-22 20:40', '角色升级 · 苏婉清 Lv.3', '+50'],
-    ['06-23 08:30', '每日登录', '+5'],
-    ['06-23 21:10', '互动 · 评论', '+1'],
-    ['06-24 11:00', '角色演出 · 2 小时', '+2'],
-    ['06-24 19:45', '签约角色 · 李云飞', '+10'],
+    ['06-20 12:30', '签约角色 · 苏婉清', '+500'],
+    ['06-20 18:05', '角色演出 · 1 小时', '+10'],
+    ['06-21 09:00', '每日登录', '+10'],
+    ['06-21 10:20', '补充体力 · 苏婉清', '+100'],
+    ['06-22 14:15', '角色升级 · 苏婉清 Lv.3', '+200'],
+    ['06-22 20:40', '邀请好友 · 注册', '+10'],
+    ['06-23 08:30', '每日登录', '+10'],
+    ['06-23 21:10', '互动 · 点赞', '+1'],
+    ['06-24 11:00', '角色演出 · 2 小时', '+20'],
+    ['06-24 19:45', '签约角色 · 李云飞', '+500'],
   ];
   document.getElementById('detailList').innerHTML = det.map(function (d) {
     return '<div class="det-row"><span class="det-time">' + d[0] + '</span><span class="det-act">' + d[1] + '</span><span class="det-pts">' + d[2] + '</span></div>';
