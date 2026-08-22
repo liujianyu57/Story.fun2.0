@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>贡献度 | Story.fun</title>
+<title>空投 | Story.fun</title>
 <script src="items.js"></script>
 <style>
   :root {
@@ -215,17 +215,17 @@
 <main>
   <header class="hero">
     <div class="token-badge">STORY</div>
-    <div class="hero-label">贡献值</div>
+    <div class="hero-label">积分</div>
     <div class="hero-score" id="heroScoreWrap"><span id="heroScore">0</span><span class="unit">分</span></div>
     <div class="locked-tip hero-locked" id="heroLocked" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      <span>登录后查看你的贡献值</span>
+      <span>登录后查看你的积分</span>
     </div>
   </header>
 
   <div class="airdrop-bar" id="airdropBar">
     <span class="ab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
-    <span class="ab-text" id="airdropBarText">TGE 前贡献越多，空投越多 <strong>STORY</strong></span>
+    <span class="ab-text" id="airdropBarText">TGE 前积分越多，空投越多 <strong>STORY</strong></span>
   </div>
 
   <div class="phase-cta"><button id="phaseCtaBtn">TGE 后领取</button></div>
@@ -233,20 +233,20 @@
   <section class="bento" id="bento"></section>
   <div class="locked-tip bento-locked" id="bentoLocked" style="display:none">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    <span>登录后查看你的贡献明细</span>
+    <span>登录后查看你的积分明细</span>
   </div>
 
   <div class="sec-title">计分规则</div>
   <div class="card-panel" id="rulesList"></div>
 
-  <div class="sec-title" id="detailTitle">贡献明细</div>
+  <div class="sec-title" id="detailTitle">积分明细</div>
   <div class="card-panel" id="detailList"></div>
   <div class="locked-tip detail-locked" id="detailLocked" style="display:none">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    <span>登录后查看你的贡献明细</span>
+    <span>登录后查看你的积分明细</span>
   </div>
 
-  <footer class="tagline">贡献，即未来的 STORY</footer>
+  <footer class="tagline">积分，即未来的 STORY</footer>
 </main>
 <script>
 (function () {
@@ -257,7 +257,7 @@
     loggedIn = !!(_u && _u.isLoggedIn);
   } catch (e) { loggedIn = false; }
 
-  // 贡献数据：纯展示演示值
+  // 积分数据：纯展示演示值
   var items = [
     { name: '签约', count: 12, unit: '张', pts: 500, big: true,
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>' },
@@ -302,7 +302,7 @@
   // 空投提示（按阶段 × 登录态）
   var phase = (window.SFPhase && SFPhase.get()) || 'pre';
   var barTexts = {
-    pre: 'TGE 前贡献越多，空投越多 STORY',
+    pre: 'TGE 前积分越多，空投越多 STORY',
     airdrop: '空投已开放领取',
     mining: '挖矿已开放'
   };
@@ -371,7 +371,7 @@
     return '<div class="rule-row"><span class="rule-name">' + r.name + '</span><span class="rule-desc">' + r.desc + '</span><span class="rule-pts">' + r.pts + '</span></div>';
   }).join('');
 
-  // 贡献明细（示例样式，仅登录后）
+  // 积分明细（示例样式，仅登录后）
   if (loggedIn) {
     var det = [
       ['06-20 12:30', '签约角色', '+500'],

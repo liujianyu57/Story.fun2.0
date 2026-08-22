@@ -109,7 +109,7 @@
                 '<div class="sb-divider"></div>' +
                     '<a href="contribution.html" class="sb-nav-item" data-page="contribution.html">' +
                         '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>' +
-                        '<span class="sb-label">贡献度</span>' +
+                        '<span class="sb-label">空投</span>' +
                     '</a>' +
                     '<a href="whitepaper.html" class="sb-nav-item" data-page="whitepaper.html">' +
                         '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
