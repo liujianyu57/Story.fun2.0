@@ -3471,7 +3471,7 @@
         var gap = manualReq - manualStock;
         bodyHtml += '<div style="text-align:left;margin-bottom:16px;">' +
           '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">训练手册不足，还需 ' + gap + ' 本</div>' +
-          '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 0.1 USDC/本，可在道具区购买</div>' +
+          '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 10 USDC/本，可在道具区购买</div>' +
           '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openShopSafe(\'manual\')" style="margin-bottom:0;">去购买训练手册</button>' +
           '</div>';
       }
@@ -3488,7 +3488,7 @@
         bodyHtml = '<div style="text-align:left;">' +
           '<div style="margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);">' +
             '<div style="font-size:0.92rem;font-weight:700;color:var(--text);margin-bottom:4px;">训练手册不足，还需 ' + (manualReq - manualStock) + ' 本</div>' +
-            '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 0.1 USDC/本，可在道具区购买</div>' +
+            '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">训练手册 10 USDC/本，可在道具区购买</div>' +
             '<button class="modal-btn confirm" onclick="this.closest(\'.modal-overlay\').remove();openShopSafe(\'manual\')" style="margin-bottom:0;">去购买训练手册</button>' +
           '</div>' +
           '<div>' +
@@ -3568,14 +3568,14 @@
 
     // ============================================================
     //  角色回收（demo：模拟发放，角色永久销毁）
-    //  残值 = P0×80% + 升级投入×50%（升级投入 = 累计消耗手册折价 0.1 USDC/本）
+    //  残值 = P0×80% + 升级投入×50%（升级投入 = 累计消耗手册折价 10 USDC/本）
     //  返还 = 80% USDC + 20% 生态资产（固定折成训练手册）
     // ============================================================
     // 累计训练手册消耗：Lv1=0、Lv2=100、Lv3=300、Lv4=700、Lv5=1500
-    function recycleBooks(level) { return [0, 100, 300, 700, 1500][level] || 0; }
+    function recycleBooks(level) { return [0, 1, 3, 7, 15][level] || 0; }
     function recycleValue(actor) {
       var mint = (actor.initPrice || 0) * 0.8;
-      var upgrade = recycleBooks(actor.level || 1) * 0.1 * 0.5;
+      var upgrade = recycleBooks(actor.level || 1) * 10 * 0.5;
       var total = mint + upgrade;
       return { mint: mint, upgrade: upgrade, total: total };
     }
@@ -3613,7 +3613,7 @@
       if (!actor) return;
       var v = recycleValue(actor);
       var usdc = v.total * 0.8;
-      var books = Math.floor(v.total * 0.2 / 0.1);
+      var books = Math.floor(v.total * 0.2 / 10);
       var num = actor.id.match(/\d+/); var numStr = num ? '#' + parseInt(num[0], 10) : '';
       var overlay = document.createElement('div');
       overlay.className = 'modal-overlay active';
@@ -3645,7 +3645,7 @@
       if (!actor) return;
       var v = recycleValue(actor);
       var usdc = v.total * 0.8;
-      var books = Math.floor(v.total * 0.2 / 0.1);
+      var books = Math.floor(v.total * 0.2 / 10);
       if (books > 0) ItemStore.add('manual', books);
       MY_ACTORS = MY_ACTORS.filter(function (a) { return a.id !== actorId; });
       document.querySelectorAll('.modal-overlay[data-recycle]').forEach(function (o) { o.remove(); });

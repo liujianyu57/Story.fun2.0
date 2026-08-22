@@ -13,7 +13,7 @@ window.Shop = (function () {
   var ITEMS = [
     { key: 'supply', name: '体力补给包', icon: '🧃', price: 10, unit: 'USDC', tile: '#FFF3E2',
       desc: '补满角色体力，按角色等级消耗。' },
-    { key: 'manual', name: '训练手册', icon: '📘', price: 0.1, unit: 'USDC', tile: '#EDF2FF',
+    { key: 'manual', name: '训练手册', icon: '📘', price: 10, unit: 'USDC', tile: '#EDF2FF',
       desc: '角色升级材料，升级时按角色等级消耗。' },
     { key: 'clawWeek', name: 'Story Claw 周卡', icon: '🐾', price: 800, unit: 'STORY', tile: '#EAF6EF', claw: 'week', days: 7,
       benefits: ['自动使用体力包进行补充', '无体力包时自动休息', '自动安排最优演出', '产出STORY +5%'] },
@@ -149,7 +149,7 @@ window.Shop = (function () {
     document.getElementById('shopBuyTitle').textContent = it.name;
     document.getElementById('shopBuyDesc').innerHTML = it.desc;
     document.getElementById('shopBuyQtyRow').style.display = 'flex';
-    document.getElementById('shopBuyQty').value = (key === 'manual') ? 100 : 1;
+    document.getElementById('shopBuyQty').value = 1;
     document.getElementById('shopBuyStatus').textContent = '单价 ' + it.price + ' ' + it.unit;
     refreshBuyTotal();
     document.getElementById('shopBuyConfirm').textContent = '购买';
@@ -163,14 +163,7 @@ window.Shop = (function () {
   function stepBuy(delta) {
     var el = document.getElementById('shopBuyQty');
     var v = parseInt(el.value, 10) || 1;
-    if (pendingKey === 'manual') {
-      // 训练手册按档位步进：1 → 100 → 200 → 300 …（与升级消耗 100/200/400/800 对齐）
-      v = delta > 0 ? (v < 100 ? 100 : Math.ceil((v + 1) / 100) * 100)
-                    : (v <= 100 ? 1 : Math.floor((v - 1) / 100) * 100);
-    } else {
-      v += delta; // 体力包 ±1
-    }
-    el.value = Math.max(1, v);
+    el.value = Math.max(1, v + delta); // 补给包/手册均 ±1
     refreshBuyTotal();
   }
   function refreshBuyTotal() {
