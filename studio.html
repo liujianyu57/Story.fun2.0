@@ -1328,12 +1328,8 @@
         display: flex; flex-direction: row; align-items: center; gap: 7px;
         font-size: 0.7rem; font-weight: 600; color: #8C8C8C;
       }
-      .studio-status > span:first-child #salaryLabel { display: none; }
       .studio-status > span:first-child svg { width: 18px; height: 18px; margin-left: 0; }
       .studio-status strong { font-size: 1.3rem; color: #FFD94D; }
-      .studio-status .salary-unit {
-        font-size: 0.62rem; font-weight: 600; color: #8C8C8C;
-      }
       #studioClaimBadge {
         margin-left: auto;
         border-color: rgba(255,255,255,0.18);
@@ -1694,7 +1690,7 @@
     <!-- ===== 顶部状态 ===== -->
     <div class="studio-topbar">
       <div class="studio-status">
-        <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;display:inline-flex;align-items:center;gap:5px;"><span id="salaryLabel">本周片酬</span> <strong id="statusWeekly">0.0</strong> <svg viewBox="0 0 24 24" style="width:17px;height:17px;vertical-align:middle;" aria-label="片酬"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg><span class="salary-unit" id="salaryUnitLabel">片酬/h</span></span>
+        <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;display:inline-flex;align-items:center;gap:5px;"><span id="salaryLabel">本周片酬</span> <strong id="statusWeekly">0.0</strong> <svg viewBox="0 0 24 24" style="width:17px;height:17px;vertical-align:middle;" aria-label="片酬"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg></span>
         <button id="clawTopBadge" onclick="openClawSheet()" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.76rem;color:var(--text-muted);flex-shrink:0;"><span id="clawTopIcon">💤</span> Story Claw</button>
         <button id="studioClaimBadge" onclick="studioClaimNow()" style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px 4px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:0.76rem;font-weight:600;flex-shrink:0;"><span id="studioClaimBadgeText">领取 STORY</span></button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
