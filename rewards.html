@@ -507,8 +507,6 @@
       var v = parseFloat(document.getElementById('adminPoolInput').value) || 0;
       setPool(Math.max(0, v));
       setApproved(true);
-      // 放行时间戳：studio 领取倒计时（72h 窗口）从此开始
-      localStorage.setItem('sf2_pool_approved_at', String(Date.now()));
       closeAdminDemo();
       renderMetrics();
       showToast('后台已放行：奖池 ' + getPool().toLocaleString() + ' STORY');

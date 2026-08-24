@@ -3177,22 +3177,11 @@
     }
 
     // ---- Story Claw 顶部常驻标识（仅激活期间显示，点击打开 Claw 面板）----
-    // 常驻限时领取：放行后可领 STORY 并显示领取倒计时（72h 窗口），点击直接领取
-    var CLAIM_WINDOW_MS = 72 * 3600 * 1000; // 领取窗口 72 小时
+    // 常驻领取入口：始终显示「可领 XX STORY」，点击直接领取
     function studioClaimState() {
-      // 放行时间戳（放行时写入），未放行/过期返回 null
-      var t = parseInt(localStorage.getItem('sf2_pool_approved_at') || '0', 10);
-      if (!t || Date.now() - t > CLAIM_WINDOW_MS) return null;
       var pool = parseFloat(localStorage.getItem('sf2_weekly_pool')) || 0;
       var claimVal = Math.round(pool * (5860 / 1250000));
-      if (claimVal <= 0) return null;
-      return { val: claimVal, remainMs: CLAIM_WINDOW_MS - (Date.now() - t) };
-    }
-    function fmtCountdown(ms) {
-      var s = Math.max(0, Math.floor(ms / 1000));
-      var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
-      function p(n) { return n < 10 ? '0' + n : '' + n; }
-      return p(h) + ':' + p(m) + ':' + p(sec);
+      return claimVal > 0 ? { val: claimVal } : null;
     }
     function updateStudioClaimBadge() {
       var badge = document.getElementById('studioClaimBadge');
@@ -3204,20 +3193,20 @@
         badge.style.background = 'var(--accent-soft)';
         badge.style.color = 'var(--accent)';
         badge.style.fontWeight = '700';
-        txt.textContent = '可领 ' + st.val.toLocaleString() + ' STORY · 剩 ' + fmtCountdown(st.remainMs);
+        txt.textContent = '可领 ' + st.val.toLocaleString() + ' STORY';
       } else {
         badge.style.borderColor = 'var(--border)';
         badge.style.background = 'var(--surface)';
         badge.style.color = 'var(--text-muted)';
         badge.style.fontWeight = '600';
-        txt.textContent = '领取 STORY';
+        txt.textContent = '可领 0 STORY';
       }
     }
-    // 直接领取：可领清零、累计增加、回到中性态
+    // 直接领取：可领清零、累计增加
     function studioClaimNow() {
       var st = studioClaimState();
       if (!st) {
-        if (typeof showToast === 'function') showToast('本周暂无待领取收益');
+        if (typeof showToast === 'function') showToast('暂无可领取的 STORY');
         return;
       }
       var v = st.val;
@@ -3830,8 +3819,6 @@
       chargeModalWatchPurchases();
       updateStudioClaimBadge();
       setInterval(clawTick, 30000);
-      // 领取倒计时每秒刷新
-      setInterval(updateStudioClaimBadge, 1000);
       // 订阅弹窗（shop.js）购买/续费后刷新 Claw 状态
       document.addEventListener('sf:claw-changed', function() {
         updateClawBadge();
