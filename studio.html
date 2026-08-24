@@ -3208,7 +3208,7 @@
             dBadge.style.background = 'var(--accent-soft)';
             dBadge.style.color = 'var(--accent)';
             dBadge.style.fontWeight = '700';
-            dTxt.textContent = '可领 ' + st.val.toLocaleString() + ' STORY · 领取';
+            dTxt.textContent = st.val.toLocaleString() + ' STORY · 领取';
           } else {
             dBadge.style.display = 'inline-flex';
             dBadge.style.borderColor = 'var(--border)';
@@ -3233,7 +3233,7 @@
 
       if (st) {
         // 1. 领取优先
-        btn.textContent = '可领 ' + st.val.toLocaleString() + ' STORY，领取';
+        btn.textContent = st.val.toLocaleString() + ' STORY · 领取';
         btn.onclick = studioClaimNow;
         if (hint) hint.textContent = '本周片酬已结算，尽快领取';
       } else if (idle.length > 0 && emptyCount > 0) {
