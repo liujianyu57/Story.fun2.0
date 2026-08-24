@@ -1301,7 +1301,6 @@
 
     /* ── 移动端按钮 + 底部候场横栏 ── */
     .mobile-actions { display: none; }
-    .mobile-pool-bar { display: none; }
     .mob-more-wrap { display: none; }
 
     /* ── 移动端：左竖条候场池 + 右焦点在演卡 ── */
@@ -1326,15 +1325,18 @@
       .mobile-actions { display: flex; gap: 10px; flex-shrink: 0; padding: 0 12px; }
       .mob-act-btn {
         flex: 1;
-        display: inline-flex; align-items: center; justify-content: center; gap: 4px;
-        padding: 10px 0; border-radius:999px;
+        display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+        padding: 8px 0 7px; border-radius: 12px;
         border: 1px solid var(--border); background: var(--surface);
-        font-size: 1.05rem; font-weight: 600; color: var(--text);
+        font-size: 1rem; font-weight: 600; color: var(--text);
         cursor: pointer; transition: all 0.15s;
-        font-family: inherit;
+        font-family: inherit; position: relative;
       }
+      .mob-act-btn .mob-icon { font-size: 1.15rem; line-height: 1; }
+      .mob-act-btn .mob-label { font-size: 0.62rem; font-weight: 600; color: var(--text-muted); line-height: 1; }
       .mob-act-btn:hover { border-color: var(--accent); color: var(--accent); }
-      .mob-act-btn strong { font-size: 0.7rem; min-width: 12px; text-align: center; font-weight: 700; }
+      .mob-act-btn:hover .mob-label { color: var(--accent); }
+      .mob-act-btn strong { position: absolute; top: 3px; right: 6px; font-size: 0.6rem; min-width: 12px; text-align: center; font-weight: 700; }
       .mob-act-btn.mob-todo strong { color: var(--accent); }
       .mob-act-btn.mob-upgrade strong { color: var(--gold); }
       #itemsTopBtn { display: none; }
@@ -1365,70 +1367,6 @@
       }
       .mob-more-menu a:last-child { border-bottom: none; }
       .mob-more-menu a:hover { background: var(--accent-soft); color: var(--accent); }
-
-      /* 移动端底部候场横栏 */
-      .mobile-pool-bar {
-        display: block;
-        position: fixed; bottom: 50px; left: 0; right: 0;
-        z-index: 50; background: rgba(255,255,255,0.92);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid var(--border);
-        padding: 18px 0 6px;
-      }
-      .mobile-pool-expand {
-        position: absolute; top: 4px; left: 50%;
-        transform: translateX(-50%);
-        width: 28px; height: 14px;
-        border: none;
-        background: none;
-        color: var(--text-muted);
-        font-size: 0.85rem; font-weight: 700;
-        cursor: pointer; padding: 0;
-        display: flex; align-items: center; justify-content: center;
-        line-height: 1;
-        transition: all 0.15s; font-family: inherit;
-      }
-      .mobile-pool-expand:hover { color: var(--accent); }
-      .mobile-pool-scroll {
-        display: flex; gap: 10px; overflow-x: auto;
-        padding: 0 14px; white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-      .mobile-pool-scroll::-webkit-scrollbar { display: none; }
-      .mobile-pool-item {
-        display: inline-flex; flex-direction: column; align-items: center;
-        gap: 2px; flex-shrink: 0; cursor: pointer;
-      }
-      .mobile-pool-av {
-        width: 44px; height: 44px; border-radius: 12px;
-        overflow: hidden; position: relative; flex-shrink: 0;
-      }
-      .mobile-pool-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .mobile-pool-av .mplv {
-        position: absolute; bottom: -2px; left: -2px;
-        padding: 1px 5px; border-radius: 4px;
-        font-size: 0.48rem; font-weight: 800; color: #fff;
-        line-height: 1.3; z-index: 1;
-      }
-      .mobile-pool-name {
-        font-size: 0.6rem; font-weight: 600; color: var(--text);
-        max-width: 56px; overflow: hidden; text-overflow: ellipsis;
-      }
-      .mobile-pool-rate {
-        font-size: 0.55rem; color: var(--text-sub);
-        font-weight: 500;
-      }
-      .mob-energy-bar {
-        display: block; width: 36px; height: 3px;
-        border-radius: 999px; background: #dde4ed;
-        overflow: hidden; margin-top: 1px;
-      }
-      .mob-energy-bar i {
-        display: block; height: 100%; border-radius: 999px;
-      }
-      .mob-energy-bar i.green { background: var(--accent); }
-      .mob-energy-bar i.yellow { background: var(--warning); }
-      .mob-energy-bar i.red { background: var(--danger); }
 
       /* 右：焦点在演卡 */
       #deployArea { height: auto; min-height: 0; }
@@ -1708,10 +1646,11 @@
       </section>
 
       <div class="mobile-actions" id="mobileActions">
-        <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()" title="待办">📋<strong id="mobileTodoBadge">0</strong></button>
-        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级">⬆️<strong id="mobileUpgradeBadge">0</strong></button>
-        <button class="mob-act-btn mob-items" onclick="openItemsSheet()" title="道具">🎒</button>
-        <button class="mob-act-btn mob-recycle" onclick="openRecycleList()" title="回收">♻</button>
+        <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()" title="待办"><span class="mob-icon">📋</span><strong id="mobileTodoBadge">0</strong><span class="mob-label">待办</span></button>
+        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级"><span class="mob-icon">⬆️</span><strong id="mobileUpgradeBadge">0</strong><span class="mob-label">升级</span></button>
+        <button class="mob-act-btn mob-pool" onclick="openFullPicker()" title="候场"><span class="mob-icon">🎭</span><span class="mob-label">候场</span></button>
+        <button class="mob-act-btn mob-items" onclick="openItemsSheet()" title="道具"><span class="mob-icon">🎒</span><span class="mob-label">道具</span></button>
+        <button class="mob-act-btn mob-recycle" onclick="openRecycleList()" title="回收"><span class="mob-icon">♻</span><span class="mob-label">回收</span></button>
       </div>
 
       <!-- ===== 常驻双面板：待办 + 升级管理入口 ===== -->
@@ -1755,12 +1694,6 @@
     </div>
 
     <!-- ===== 底部入口 ===== -->
-    <!-- ===== 移动端底部候场横栏 ===== -->
-    <div class="mobile-pool-bar" id="mobilePoolBar">
-      <button class="mobile-pool-expand" onclick="openFullPicker()">∧</button>
-      <div class="mobile-pool-scroll" id="mobilePoolScroll"></div>
-    </div>
-
     <div class="studio-links">
       <a onclick="openRulesModal()">规则</a>
       <a onclick="openActualOutputModal()">奖池</a>
@@ -2660,33 +2593,6 @@
       document.body.style.overflow = '';
     }
 
-    function renderMobilePool() {
-      var scroll = document.getElementById('mobilePoolScroll');
-      if (!scroll) return;
-      var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; })
-        .sort(function(a, b) { return computeActorPower(b) - computeActorPower(a); });
-
-      if (idle.length === 0) {
-        scroll.innerHTML = '<span style="font-size:0.72rem;color:var(--text-sub);padding:4px 0;">全部角色都在演出</span>';
-        return;
-      }
-
-      scroll.innerHTML = idle.map(function(actor) {
-        var levelCfg = LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1];
-        var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
-        var barCls = energyBarCls(actor.energy);
-        return '<div class="mobile-pool-item" onclick="openStakeModal(\'' + actor.id + '\')">'
-          + '<div class="mobile-pool-av">'
-          + '<img src="' + actor.avatar + '" alt="" />'
-          + '<span class="mplv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
-          + '</div>'
-          + '<span class="mobile-pool-name">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</span>'
-          + '<span class="mobile-pool-rate">' + computeActorPower(actor).toFixed(1) + '/h</span>'
-          + '<span class="mob-energy-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></span>'
-          + '</div>';
-      }).join('');
-    }
-
     function toggleMobMore(e) {
       if (e) e.stopPropagation();
       var menu = document.getElementById('mobMoreMenu');
@@ -2926,7 +2832,6 @@
       renderBatch();
       renderTodo();
       renderUpgradePanel();
-      renderMobilePool();
       renderMobileActions();
       // 若全屏选人打开则同步刷新
       if (document.getElementById('fullPickerModal').classList.contains('active')) renderFullPicker();
