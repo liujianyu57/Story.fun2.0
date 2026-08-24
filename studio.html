@@ -1489,19 +1489,6 @@
       .fig-card .fig-stamina .btn.charge { background: linear-gradient(180deg, #26D973, #00B366); box-shadow: 0 2px 8px rgba(26,204,102,0.5); }
       .fig-card .fig-stamina .btn.rest { background: linear-gradient(180deg, #5973F2, #8059E6); box-shadow: 0 2px 8px rgba(102,102,255,0.5); font-size: 12px; }
       .fig-card .fig-empty { position: absolute; inset: 0; border-radius: 16px; background: var(--surface); border: 1px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); font-size: 0.8rem; }
-      .focus-dots {
-        display: flex;
-        justify-content: center;
-        gap: 6px;
-        margin-top: 10px;
-      }
-      .focus-dots i {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #c9d5e0;
-      }
-      .focus-dots i.on { background: var(--accent); }
 
       .batch-actions { margin: 14px 12px 0; }
       .batch-btn { flex: 1; justify-content: center; padding: 8px 4px; font-size: 0.74rem; }
@@ -2598,9 +2585,6 @@
         + '<button class="focus-arrow left" onclick="event.stopPropagation();switchFocus(-1)"' + (currentFocusIndex <= 0 ? ' disabled' : '') + '>‹</button>'
         + '<div class="carousel-inner">' + cardHtml + '</div>'
         + '<button class="focus-arrow right" onclick="event.stopPropagation();switchFocus(1)"' + (currentFocusIndex >= MAX_STAKING_SLOTS - 1 ? ' disabled' : '') + '>›</button>'
-        + '</div>'
-        + '<div class="focus-dots">'
-        + (function(){ var d=''; for (var i=0;i<MAX_STAKING_SLOTS;i++){ d += '<i class="' + (i===currentFocusIndex?'on':'') + '"></i>'; } return d; })()
         + '</div>';
     }
 
