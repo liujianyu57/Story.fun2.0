@@ -453,18 +453,17 @@
       document.getElementById('mClaimableUsdc').textContent=WALLET.usdcClaimable.toFixed(2);
       // 本周片酬（金币图标，数值）
       document.getElementById('mPendingSalaryNum').textContent = MY_SALARY.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-      // 可领取 STORY：按放行状态
+      // 可领取 STORY：直接展示数值，副文案只显示状态（不暴露奖池）
       const claimVal = claimableStory();
       const claimBtn = document.getElementById('claimStoryBtn');
       const claimSub = document.getElementById('claimStateSub');
+      document.getElementById('mClaimableStory').textContent = claimVal.toLocaleString();
       if (isApproved()) {
-        document.getElementById('mClaimableStory').textContent = claimVal.toLocaleString();
         claimBtn.disabled = false; claimBtn.style.opacity = '1'; claimBtn.style.cursor = 'pointer';
-        claimSub.textContent = '占比 ' + (myShare() * 100).toFixed(2) + '% · 已放行';
+        claimSub.textContent = '已放行，可领取';
       } else {
-        document.getElementById('mClaimableStory').textContent = '待放行';
         claimBtn.disabled = true; claimBtn.style.opacity = '.5'; claimBtn.style.cursor = 'not-allowed';
-        claimSub.textContent = '奖池 ' + getPool().toLocaleString() + ' STORY · 占比 ' + (myShare() * 100).toFixed(2) + '%';
+        claimSub.textContent = '等待后台放行';
       }
     }
 
