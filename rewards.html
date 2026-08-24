@@ -240,7 +240,7 @@
         <div class="metric-card">
           <div class="metric-card-actions">
             <div class="metric-value-wrap">
-              <div class="metric-label-row"><span class="metric-label">可领取 STORY</span><span class="metric-help" onclick="openHelp('可领取 STORY','后台放行后，按你的片酬占比瓜分本周奖池所得。')">?</span></div>
+              <div class="metric-label-row"><span class="metric-label">可领取 STORY</span></div>
               <div class="metric-value gold" id="mClaimableStory">0</div>
               <div class="metric-sub" id="claimStateSub">等待后台放行</div>
             </div>
@@ -463,7 +463,7 @@
         claimSub.textContent = '已放行，可领取';
       } else {
         claimBtn.disabled = true; claimBtn.style.opacity = '.5'; claimBtn.style.cursor = 'not-allowed';
-        claimSub.textContent = '等待后台放行';
+        claimSub.textContent = '';
       }
     }
 
