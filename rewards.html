@@ -363,7 +363,7 @@
     let currentFilter = 'all';
 
     // ===== 片酬 & 奖池模型（demo：模拟后台）=====
-    // 我的本周片酬（积分，非 STORY）
+    // 我的片酬（积分，非 STORY）
     const MY_SALARY = 5860.0;
     // 全网片酬基准（模拟值，用于算占比）
     const NET_SALARY = 1250000;
@@ -451,7 +451,7 @@
       document.getElementById('mCumulativeStory').textContent=WALLET.storyEarned.toLocaleString();
       document.getElementById('mCumulativeUsdc').textContent=WALLET.usdcEarned.toFixed(2);
       document.getElementById('mClaimableUsdc').textContent=WALLET.usdcClaimable.toFixed(2);
-      // 本周片酬（金币图标，数值）
+      // 我的片酬（金币图标，数值）
       document.getElementById('mPendingSalaryNum').textContent = MY_SALARY.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
       // 可领取 STORY：直接展示数值（不展示后台放行状态）
       document.getElementById('mClaimableStory').textContent = claimableStory().toLocaleString();
