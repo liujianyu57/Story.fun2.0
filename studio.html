@@ -1312,24 +1312,34 @@
 
       .studio-topbar { padding: 4px 16px 10px; gap: 6px 12px; }
       .studio-topbar h1 { font-size: 1.3rem; }
-      /* 移动端：Claw 收进菜单，收益卡只含片酬 + 可领取 */
+      /* 移动端：Claw 收进菜单，收益卡按设计稿改黑底 HUD */
       #clawTopBadge { display: none !important; }
       .studio-status {
         flex: 1; min-width: 0;
         display: flex; align-items: center; justify-content: space-between; gap: 8px;
-        background: var(--surface);
-        border: 1px solid var(--border);
+        background: #0F0F0F;
+        border: 1px solid rgba(255,255,255,0.08);
         border-radius: 14px;
-        padding: 8px 8px 8px 12px;
+        padding: 8px 10px 8px 12px;
+        position: relative;
       }
       .studio-status > span:first-child {
         flex: 1; min-width: 0;
-        display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
-        font-size: 0.7rem; font-weight: 600; color: var(--text-muted);
+        display: flex; flex-direction: row; align-items: center; gap: 7px;
+        font-size: 0.7rem; font-weight: 600; color: #8C8C8C;
       }
-      .studio-status strong { font-size: 1.4rem; }
-      .studio-status > span:first-child svg { margin-left: 0; }
-      #studioClaimBadge { margin-left: auto; }
+      .studio-status > span:first-child #salaryLabel { display: none; }
+      .studio-status > span:first-child svg { width: 18px; height: 18px; margin-left: 0; }
+      .studio-status strong { font-size: 1.3rem; color: #FFD94D; }
+      .studio-status .salary-unit {
+        font-size: 0.62rem; font-weight: 600; color: #8C8C8C;
+      }
+      #studioClaimBadge {
+        margin-left: auto;
+        border-color: rgba(255,255,255,0.18);
+        background: rgba(255,255,255,0.06);
+        color: #fff;
+      }
 
       .studio-main { display: block; padding: 0 10px; }
 
@@ -1341,20 +1351,23 @@
       .mobile-actions { display: flex; gap: 10px; flex-shrink: 0; padding: 0 12px; }
       .mob-act-btn {
         flex: 1;
-        display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+        display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
         padding: 8px 0 7px; border-radius: 12px;
-        border: 1px solid var(--border); background: var(--surface);
-        font-size: 1rem; font-weight: 600; color: var(--text);
+        border: 1px solid rgba(255,255,255,0.5);
+        box-shadow: inset 0 -2px 4px rgba(255,255,255,0.45), inset 0 2px 4px rgba(0,0,0,0.12);
+        color: #fff;
         cursor: pointer; transition: all 0.15s;
         font-family: inherit; position: relative;
       }
-      .mob-act-btn .mob-icon { font-size: 1.15rem; line-height: 1; }
-      .mob-act-btn .mob-label { font-size: 0.62rem; font-weight: 600; color: var(--text-muted); line-height: 1; }
-      .mob-act-btn:hover { border-color: var(--accent); color: var(--accent); }
-      .mob-act-btn:hover .mob-label { color: var(--accent); }
-      .mob-act-btn strong { position: absolute; top: 3px; right: 6px; font-size: 0.6rem; min-width: 12px; text-align: center; font-weight: 700; }
-      .mob-act-btn.mob-todo strong { color: var(--accent); }
-      .mob-act-btn.mob-upgrade strong { color: var(--gold); }
+      .mob-act-btn .mob-icon { font-size: 1.15rem; line-height: 1; color: #fff; }
+      .mob-act-btn .mob-label { font-size: 0.62rem; font-weight: 600; color: #fff; line-height: 1; opacity: .95; }
+      .mob-act-btn:hover { transform: translateY(-1px); }
+      .mob-act-btn strong { position: absolute; right: 3px; top: 3px; background: #EF4444; border-radius: 50%; min-width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff; padding: 0 3px; }
+      .mob-act-btn.mob-todo { background: linear-gradient(180deg, #FDE68A, #B45309); }
+      .mob-act-btn.mob-upgrade { background: linear-gradient(180deg, #34D399, #059669); }
+      .mob-act-btn.mob-pool { background: linear-gradient(180deg, #D97706, #78350F); }
+      .mob-act-btn.mob-items { background: linear-gradient(180deg, #C026D3, #7C3AED); }
+      .mob-act-btn.mob-recycle { background: linear-gradient(180deg, #2DD4BF, #0EA5E9); }
       #itemsTopBtn { display: none; }
       #recycleTopBtn { display: none; }
       .mob-more-wrap { display: block; position: fixed; top: 50px; right: 16px; z-index: 55; }
@@ -1428,6 +1441,54 @@
       .focus-card .ve-glow { top: 30%; }
       .focus-card .slot-av-wrap { aspect-ratio: 1 / 1; max-height: 220px; width: auto; margin: 0 auto; }
       .focus-card .slot-av-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+      /* 设计稿：全图卡 + 覆盖层 */
+      .focus-stage .carousel-inner { position: relative; width: 100%; }
+      .focus-card.fig-card { position: relative; width: 100%; max-width: 260px; margin: 0 auto; aspect-ratio: 3 / 4.2; }
+      .fig-card .fig-img {
+        position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+        border-radius: 16px; border: 1px solid rgba(0,0,0,0.06);
+        box-shadow: 0px 0px 24px rgba(255,217,77,0.18), 0px 4px 16px rgba(0,0,0,0.12);
+      }
+      .fig-card .fig-lv {
+        position: absolute; left: 9px; top: 9px; z-index: 3;
+        background: linear-gradient(90deg, #FFD700, #FFB300, #FF9900);
+        border: 1.5px solid rgba(255,255,255,0.4);
+        box-shadow: 0px 2px 6px rgba(0,0,0,0.25);
+        border-radius: 8px; padding: 5px 9px;
+        font-weight: 900; font-size: 12px; color: #fff;
+      }
+      .fig-card .fig-nameplate {
+        position: absolute; right: 9px; top: 9px; z-index: 3;
+        background: rgba(0,0,0,0.7); border-radius: 8px; padding: 3px 7px;
+        display: flex; align-items: center; gap: 4px; color: #fff;
+      }
+      .fig-card .fig-nameplate .n { font-weight: 900; font-size: 17px; }
+      .fig-card .fig-nameplate .id { font-weight: 700; font-size: 9px; border: 1px solid rgba(255,255,255,0.4); padding: 0 4px; border-radius: 4px; }
+      .fig-card .fig-pay {
+        position: absolute; right: 10px; bottom: 52px; z-index: 3;
+        background: linear-gradient(90deg, #FF8C00, #FF6B00, #FF3B30);
+        border: 1px solid rgba(255,255,255,0.4);
+        box-shadow: 0px 4px 12px rgba(255,59,48,0.25);
+        border-radius: 8px; padding: 5px 9px;
+        display: flex; align-items: center; gap: 5px; color: #fff;
+      }
+      .fig-card .fig-pay svg { width: 17px; height: 17px; }
+      .fig-card .fig-pay .rate { font-weight: 900; font-size: 15px; }
+      .fig-card .fig-pay .unit { font-weight: 600; font-size: 9px; opacity: 0.85; }
+      .fig-card .fig-stamina {
+        position: absolute; left: 9px; right: 9px; bottom: 10px; z-index: 3;
+        height: 38px; background: rgba(0,0,0,0.72); border-radius: 14px;
+        display: flex; align-items: center; padding: 0 9px; gap: 6px;
+      }
+      .fig-card .fig-stamina .bolt { font-size: 14px; color: #FFEB33; flex-shrink: 0; }
+      .fig-card .fig-stamina .track { flex: 1; height: 20px; background: #141F2E; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 2px; position: relative; }
+      .fig-card .fig-stamina .track .fill { height: 14px; background: linear-gradient(90deg, #1AE680, #00BFD9); border-radius: 8px; transition: width .3s; }
+      .fig-card .fig-stamina .track .label { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-weight: 800; font-size: 10px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+      .fig-card .fig-stamina .btn { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.4); color: #fff; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+      .fig-card .fig-stamina .btn.charge { background: linear-gradient(180deg, #26D973, #00B366); box-shadow: 0 2px 8px rgba(26,204,102,0.5); }
+      .fig-card .fig-stamina .btn.rest { background: linear-gradient(180deg, #5973F2, #8059E6); box-shadow: 0 2px 8px rgba(102,102,255,0.5); font-size: 12px; }
+      .fig-card .fig-empty { position: absolute; inset: 0; border-radius: 16px; background: var(--surface); border: 1px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-muted); font-size: 0.8rem; }
       .focus-dots {
         display: flex;
         justify-content: center;
@@ -1445,6 +1506,16 @@
       .batch-actions { margin: 14px 12px 0; }
       .batch-btn { flex: 1; justify-content: center; padding: 8px 4px; font-size: 0.74rem; }
       .batch-btn.charge, .batch-btn.rest { display: none; }
+      /* 设计稿：一键演出 = 橙红渐变大按钮（移动端） */
+      .batch-btn.primary {
+        height: 46px;
+        background: linear-gradient(90deg, #F59E0B, #EF4444);
+        box-shadow: inset 0 -2px 4px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.45);
+        border-radius: 28px;
+        color: #fff; font-weight: 900; font-size: 16px; letter-spacing: 2px;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        border: none;
+      }
 
       /* 弹窗桌面/移动显隐 */
       .recall-desk-btns { display: none !important; }
@@ -1626,7 +1697,7 @@
     <!-- ===== 顶部状态 ===== -->
     <div class="studio-topbar">
       <div class="studio-status">
-        <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;display:inline-flex;align-items:center;gap:5px;">本周片酬 <strong id="statusWeekly">0.0</strong> <svg viewBox="0 0 24 24" style="width:17px;height:17px;vertical-align:middle;" aria-label="片酬"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg></span>
+        <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;display:inline-flex;align-items:center;gap:5px;"><span id="salaryLabel">本周片酬</span> <strong id="statusWeekly">0.0</strong> <svg viewBox="0 0 24 24" style="width:17px;height:17px;vertical-align:middle;" aria-label="片酬"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg><span class="salary-unit" id="salaryUnitLabel">片酬/h</span></span>
         <button id="clawTopBadge" onclick="openClawSheet()" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.76rem;color:var(--text-muted);flex-shrink:0;"><span id="clawTopIcon">💤</span> Story Claw</button>
         <button id="studioClaimBadge" onclick="studioClaimNow()" style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px 4px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:0.76rem;font-weight:600;flex-shrink:0;"><span id="studioClaimBadgeText">领取 STORY</span></button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
@@ -1664,7 +1735,7 @@
 
       <div class="mobile-actions" id="mobileActions">
         <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()" title="待办"><span class="mob-icon">📋</span><strong id="mobileTodoBadge">0</strong><span class="mob-label">待办</span></button>
-        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级"><span class="mob-icon">⬆️</span><strong id="mobileUpgradeBadge">0</strong><span class="mob-label">升级</span></button>
+        <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级"><span class="mob-icon">↑</span><strong id="mobileUpgradeBadge">0</strong><span class="mob-label">升级</span></button>
         <button class="mob-act-btn mob-pool" onclick="openFullPicker()" title="候场"><span class="mob-icon">🎭</span><span class="mob-label">候场</span></button>
         <button class="mob-act-btn mob-items" onclick="openItemsSheet()" title="道具"><span class="mob-icon">🎒</span><span class="mob-label">道具</span></button>
         <button class="mob-act-btn mob-recycle" onclick="openRecycleList()" title="回收"><span class="mob-icon">♻</span><span class="mob-label">回收</span></button>
@@ -2492,55 +2563,44 @@
       area.innerHTML = html;
     }
 
-    // 移动端：焦点卡 + 箭头 + 圆点
+    // 移动端：焦点卡 + 箭头 + 圆点（设计稿：全图卡 + 覆盖层）
     function renderMobileFocus(area, deployed) {
       if (currentFocusIndex >= MAX_STAKING_SLOTS) currentFocusIndex = 0;
       var actor = deployed[currentFocusIndex];
       var levelCfg = actor ? (LEVEL_CONFIG[actor.level] || LEVEL_CONFIG[1]) : null;
+      var coinSvg = '<svg viewBox="0 0 24 24" style="flex-shrink:0;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>';
 
       var cardHtml = '';
       if (actor) {
         var pct = actor.energyMax > 0 ? Math.round((actor.energy / actor.energyMax) * 100) : 0;
-        var barCls = energyBarCls(actor.energy);
-        cardHtml = '<div class="slot occupied">'
-          + '<div class="slot-av-wrap" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;">'
-          + '<img src="' + actor.avatar + '" alt="" />'
-          + '<span class="slot-lv" style="background:' + levelCfg.color + ';">Lv' + actor.level + '</span>'
-          + '</div>'
-          + '<div class="slot-body">'
-          + '<div class="slot-name" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;">' + actor.name + ' #' + parseInt(actor.id.match(/\d+/)[0], 10) + '</div>'
-          + '<div class="slot-energy">'
-          + '<div class="slot-bar"><i class="' + barCls + '" style="width:' + pct + '%;"></i></div>'
-          + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
-          + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
-          + '</div>'
-          + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">' + computeActorPower(actor).toFixed(1) + ' <span>' + salaryUnit() + '</span></div>'
-          + '</div>'
-          + '<div class="slot-actions">'
+        var nid = parseInt(actor.id.match(/\d+/)[0], 10);
+        cardHtml = '<div class="focus-card fig-card">'
+          + '<img class="fig-img" src="' + actor.avatar + '" alt="" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" />'
+          + '<div class="fig-lv">Lv.' + actor.level + '</div>'
+          + '<div class="fig-nameplate"><span class="n">' + actor.name + '</span><span class="id">#' + nid + '</span></div>'
+          + '<div class="fig-pay" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">' + coinSvg + '<span class="rate">' + computeActorPower(actor).toFixed(1) + '</span><span class="unit">' + salaryUnit() + '</span></div>'
+          + '<div class="fig-stamina">'
+          + '<span class="bolt">⚡</span>'
+          + '<div class="track"><div class="fill" style="width:' + pct + '%;"></div><span class="label">' + actor.energy + '/' + actor.energyMax + '</span></div>'
           + (actor.energy < actor.energyMax
-              ? '<button class="mini-btn charge" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">补充</button>'
-              : '<button class="mini-btn disabled" disabled>已满</button>')
-          + '<button class="mini-btn rest" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">休息</button>'
+              ? '<div class="btn charge" onclick="event.stopPropagation();openChargeModal(\'' + actor.id + '\')">+</div>'
+              : '<div class="btn charge" style="opacity:.4;pointer-events:none;">✓</div>')
+          + '<div class="btn rest" onclick="event.stopPropagation();recallActor(\'' + actor.id + '\')">🌙</div>'
           + '</div>'
           + '</div>';
       } else {
-        cardHtml = '<div class="slot empty" onclick="openFullPicker()">'
-          + '<div class="slot-av-wrap">'
-          + '<div class="slot-empty-vision">'
-          + '<span class="ve-glow"></span>'
-          + FIGURE_VISION_SVG
-          + '<span class="ve-label">安排演出</span>'
-          + '</div>'
-          + '</div>'
-          + '<div class="slot-body" style="visibility:hidden;min-height:55px;"></div>'
-          + '<div class="slot-actions" style="visibility:hidden;min-height:32px;"></div>'
+        cardHtml = '<div class="focus-card fig-card">'
+          + '<div class="fig-empty" onclick="openFullPicker()"><span style="font-size:1.6rem;">🎭</span><span>安排演出</span></div>'
           + '</div>';
       }
 
       area.innerHTML = '<div class="focus-stage">'
         + '<button class="focus-arrow left" onclick="event.stopPropagation();switchFocus(-1)"' + (currentFocusIndex <= 0 ? ' disabled' : '') + '>‹</button>'
-        + '<div class="focus-card">' + cardHtml + '</div>'
+        + '<div class="carousel-inner">' + cardHtml + '</div>'
         + '<button class="focus-arrow right" onclick="event.stopPropagation();switchFocus(1)"' + (currentFocusIndex >= MAX_STAKING_SLOTS - 1 ? ' disabled' : '') + '>›</button>'
+        + '</div>'
+        + '<div class="focus-dots">'
+        + (function(){ var d=''; for (var i=0;i<MAX_STAKING_SLOTS;i++){ d += '<i class="' + (i===currentFocusIndex?'on':'') + '"></i>'; } return d; })()
         + '</div>';
     }
 
