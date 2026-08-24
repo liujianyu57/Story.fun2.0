@@ -3021,7 +3021,7 @@
       document.getElementById('modalChargeNeedLabel').textContent = 'Lv. ' + actor.level + ' 消耗';
       document.getElementById('modalChargeNeed').textContent = need;
       document.getElementById('modalChargeStock').textContent = stock;
-      // 「使用」/「购买」按库存切换：够则使用补满，不够则跳商城购买
+      // 「使用」/「购买」按库存切换：够则使用补满，不够则跳商城购买（购买后返回本弹窗）
       var actionBtn = document.getElementById('chargeActionBtn');
       if (stock >= need) {
         actionBtn.textContent = '使用';
@@ -3030,11 +3030,34 @@
       } else {
         actionBtn.textContent = '购买';
         actionBtn.className = 'modal-btn cancel';
-        actionBtn.onclick = function () { closeChargeModal(); openShopSafe('supply'); };
+        actionBtn.onclick = function () { openShopSafe('supply'); };
       }
 
       document.getElementById('chargeModal').classList.add('active');
       document.body.style.overflow = 'hidden';
+    }
+
+    // 补满弹窗中购买道具后：返回补满弹窗并刷新库存
+    function chargeModalWatchPurchases() {
+      document.addEventListener('sf:items-changed', function () {
+        if (!document.getElementById('chargeModal').classList.contains('active')) return;
+        if (!pendingChargeActorId) return;
+        var actor = MY_ACTORS.find(function (a) { return a.id === pendingChargeActorId; });
+        if (!actor) return;
+        var need = ItemStore.supplyNeeded(actor.level);
+        var stock = ItemStore.count('supply');
+        document.getElementById('modalChargeStock').textContent = stock;
+        var actionBtn = document.getElementById('chargeActionBtn');
+        if (stock >= need) {
+          actionBtn.textContent = '使用';
+          actionBtn.className = 'modal-btn confirm';
+          actionBtn.onclick = confirmCharge;
+        } else {
+          actionBtn.textContent = '购买';
+          actionBtn.className = 'modal-btn cancel';
+          actionBtn.onclick = function () { openShopSafe('supply'); };
+        }
+      });
     }
 
     function closeChargeModal() {
@@ -3751,6 +3774,7 @@
       renderAll();
       updateClawBadge();
       updateClawDebugBtn();
+      chargeModalWatchPurchases();
       // 阶段：挖矿阶段才显示顶部 S 徽标（Pre-TGE 纯数字）
       var badge = document.getElementById('statusWeeklyBadge');
       if (badge) badge.style.display = (window.SFPhase && SFPhase.isMining()) ? '' : 'none';
