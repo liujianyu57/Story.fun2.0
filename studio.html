@@ -3225,34 +3225,38 @@
       var dBadge2 = document.getElementById('deskClaimBadge');
       if (dBadge2) dBadge2.style.display = 'none';
 
-      // 移动端 4 级状态机
+      // 移动端 5 级状态机
       var st = studioClaimState();
       var deployed = getDeployedActors();
       var emptyCount = MAX_STAKING_SLOTS - deployed.length;
       var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; });
+      var exhausted = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy <= 0; }).length;
 
       if (st) {
         // 1. 领取优先
         btn.textContent = st.val.toLocaleString() + ' STORY · 领取';
         btn.onclick = studioClaimNow;
-        if (hint) hint.textContent = '本周片酬已结算，尽快领取';
+        if (hint) hint.textContent = '片酬已结算，可领取';
       } else if (idle.length > 0 && emptyCount > 0) {
-        // 2. 有候场且有空间：一键演出
+        // 2. 有空位且有候场：一键演出
         btn.textContent = '一键演出';
         btn.onclick = autoPerform;
-        if (hint) hint.textContent = emptyCount + ' 个空位 · ' + idle.length + ' 位候场';
-      } else if (emptyCount <= 0) {
-        // 3. 槽位全满：一键补充
+        if (hint) hint.textContent = emptyCount + ' 个空位可安排演出';
+      } else if (emptyCount <= 0 && exhausted > 0) {
+        // 3a. 全在演且有体力耗尽：一键补充（止损）
         btn.textContent = '一键补充';
         btn.onclick = function () { openBatchModal('charge'); };
-        var lowEnergy = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; }).length;
-        if (hint) hint.textContent = lowEnergy > 0 ? lowEnergy + ' 位角色需要补充体力' : '全部角色体力充足';
-        btn.disabled = lowEnergy <= 0;
+        if (hint) hint.textContent = exhausted + ' 位角色体力已耗尽';
+      } else if (emptyCount <= 0) {
+        // 3b. 全在演且体力充足：一键休息（轮换）
+        btn.textContent = '一键休息';
+        btn.onclick = autoRest;
+        if (hint) hint.textContent = '可安排休息轮换';
       } else {
-        // 4. 无角色可派：签约角色
+        // 4. 有空位但无角色可派：签约角色
         btn.textContent = '签约角色';
         btn.onclick = function () { location.href = 'actors.html'; };
-        if (hint) hint.textContent = '已有角色都在演出，去签约新角色';
+        if (hint) hint.textContent = '需要 ' + emptyCount + ' 个新角色';
       }
     }
     // 桌面端领取：有货直接领，无货提示结算说明
