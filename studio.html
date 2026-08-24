@@ -1741,8 +1741,6 @@
         </div>
       </section>
 
-      <button id="studioClaimBadge" onclick="studioClaimNow()" style="display:none;align-items:center;justify-content:center;gap:6px;width:calc(100% - 24px);margin:14px 12px 4px;padding:11px 0;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:0.85rem;font-weight:700;flex-shrink:0;"><span id="studioClaimBadgeText">领取 STORY</span></button>
-
       <div class="mobile-actions" id="mobileActions">
         <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()" title="待办"><span class="mob-icon">📋</span><strong id="mobileTodoBadge">0</strong><span class="mob-label">待办</span></button>
         <button class="mob-act-btn mob-upgrade" onclick="openUpgradeModal()" title="升级"><span class="mob-icon">↑</span><strong id="mobileUpgradeBadge">0</strong><span class="mob-label">升级</span></button>
@@ -3173,19 +3171,22 @@
       return claimVal > 0 ? { val: claimVal } : null;
     }
     function updateStudioClaimBadge() {
-      var badge = document.getElementById('studioClaimBadge');
-      if (!badge) return;
-      var txt = document.getElementById('studioClaimBadgeText');
+      var btn = document.getElementById('batchPerformBtn');
+      if (!btn) return;
       var st = studioClaimState();
-      if (st) {
-        badge.style.display = 'flex';
-        badge.style.borderColor = 'var(--accent)';
-        badge.style.background = 'var(--accent-soft)';
-        badge.style.color = 'var(--accent)';
-        badge.style.fontWeight = '700';
-        txt.textContent = '可领 ' + st.val.toLocaleString() + ' STORY，点击领取';
+      var isMobile = window.innerWidth <= 720;
+      if (st && isMobile) {
+        // 有可领：替换一键演出为领取按钮（移动端）
+        btn.textContent = '可领 ' + st.val.toLocaleString() + ' STORY，领取';
+        btn.onclick = studioClaimNow;
+        btn.disabled = false;
+        btn.style.cursor = 'pointer';
       } else {
-        badge.style.display = 'none';
+        // 恢复一键演出
+        btn.textContent = '一键演出';
+        btn.onclick = autoPerform;
+        btn.disabled = getBatchCount && getBatchCount('perform') <= 0;
+        btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer';
       }
     }
     // 直接领取：可领清零、累计增加
