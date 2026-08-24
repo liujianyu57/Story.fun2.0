@@ -1512,6 +1512,12 @@
       .batch-actions { margin: 14px 12px 0; }
       .batch-btn { flex: 1; justify-content: center; padding: 8px 4px; font-size: 0.74rem; }
       .batch-btn.charge, .batch-btn.rest { display: none; }
+      /* 移动端：主按钮状态提示小字 */
+      .cta-hint {
+        display: block;
+        text-align: center; font-size: 0.62rem; color: var(--text-muted);
+        margin: 6px 0 0; min-height: 0;
+      }
       /* 设计稿：一键演出 = 橙红渐变大按钮（移动端） */
       .batch-btn.primary {
         height: 46px;
@@ -1739,6 +1745,7 @@
           <button id="itemsTopBtn" onclick="openItemsSheet()" title="我的道具" style="margin-left:auto;padding:7px 18px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--text);flex-shrink:0;">🎒 我的道具</button>
           <button id="recycleTopBtn" onclick="openRecycleList()" title="角色回收" style="margin-left:8px;padding:7px 18px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--text);flex-shrink:0;">♻ 回收</button>
         </div>
+        <div class="cta-hint" id="ctaHint"></div>
       </section>
 
       <div class="mobile-actions" id="mobileActions">
@@ -2915,6 +2922,7 @@
       renderTodo();
       renderUpgradePanel();
       renderMobileActions();
+      updateStudioClaimBadge(); // 智能主按钮状态（覆盖 renderBatch 的 disabled 重置）
       // 若全屏选人打开则同步刷新
       if (document.getElementById('fullPickerModal').classList.contains('active')) renderFullPicker();
       // 若升级管理打开则同步刷新
@@ -3170,23 +3178,55 @@
       var claimVal = Math.round(pool * (5860 / 1250000));
       return claimVal > 0 ? { val: claimVal } : null;
     }
+    // 智能主按钮（移动端）：按状态自动切换
+    // 1 领取（最高优先） > 2 一键演出（有空位且有候场） > 3 一键补充（全在演） > 4 签约角色（无角色可派）
     function updateStudioClaimBadge() {
       var btn = document.getElementById('batchPerformBtn');
       if (!btn) return;
-      var st = studioClaimState();
+      var hint = document.getElementById('ctaHint');
       var isMobile = window.innerWidth <= 720;
-      if (st && isMobile) {
-        // 有可领：替换一键演出为领取按钮（移动端）
-        btn.textContent = '可领 ' + st.val.toLocaleString() + ' STORY，领取';
-        btn.onclick = studioClaimNow;
-        btn.disabled = false;
-        btn.style.cursor = 'pointer';
-      } else {
-        // 恢复一键演出
+
+      // 恢复默认样式（橙色渐变按钮保留）
+      btn.style.cursor = 'pointer';
+      btn.disabled = false;
+
+      if (!isMobile) {
+        // 桌面端：保持一键演出原逻辑
         btn.textContent = '一键演出';
         btn.onclick = autoPerform;
         btn.disabled = getBatchCount && getBatchCount('perform') <= 0;
-        btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer';
+        if (hint) hint.textContent = '';
+        return;
+      }
+
+      // 移动端 4 级状态机
+      var st = studioClaimState();
+      var deployed = getDeployedActors();
+      var emptyCount = MAX_STAKING_SLOTS - deployed.length;
+      var idle = MY_ACTORS.filter(function(a) { return !a.isStaking; });
+
+      if (st) {
+        // 1. 领取优先
+        btn.textContent = '可领 ' + st.val.toLocaleString() + ' STORY，领取';
+        btn.onclick = studioClaimNow;
+        if (hint) hint.textContent = '本周片酬已结算，尽快领取';
+      } else if (idle.length > 0 && emptyCount > 0) {
+        // 2. 有候场且有空间：一键演出
+        btn.textContent = '一键演出';
+        btn.onclick = autoPerform;
+        if (hint) hint.textContent = emptyCount + ' 个空位 · ' + idle.length + ' 位候场';
+      } else if (emptyCount <= 0) {
+        // 3. 槽位全满：一键补充
+        btn.textContent = '一键补充';
+        btn.onclick = function () { openBatchModal('charge'); };
+        var lowEnergy = MY_ACTORS.filter(function(a) { return a.isStaking && a.energy < a.energyMax; }).length;
+        if (hint) hint.textContent = lowEnergy > 0 ? lowEnergy + ' 位角色需要补充体力' : '全部角色体力充足';
+        btn.disabled = lowEnergy <= 0;
+      } else {
+        // 4. 无角色可派：签约角色
+        btn.textContent = '签约角色';
+        btn.onclick = function () { location.href = 'actors.html'; };
+        if (hint) hint.textContent = '已有角色都在演出，去签约新角色';
       }
     }
     // 直接领取：可领清零、累计增加
