@@ -3742,6 +3742,12 @@
     //  页面初始化
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
+      // demo：每次刷新重置道具库存为 0（保留 Claw 订阅状态，可重复演示购买流程）
+      try {
+        var _it = JSON.parse(localStorage.getItem('sf2_items_v1') || '{}');
+        _it.supply = 0; _it.manual = 0; _it.clawWeek = 0; _it.clawMonth = 0;
+        localStorage.setItem('sf2_items_v1', JSON.stringify(_it));
+      } catch (e) {}
       renderAll();
       updateClawBadge();
       updateClawDebugBtn();
