@@ -451,13 +451,17 @@
       document.getElementById('mCumulativeStory').textContent=WALLET.storyEarned.toLocaleString();
       document.getElementById('mCumulativeUsdc').textContent=WALLET.usdcEarned.toFixed(2);
       document.getElementById('mClaimableUsdc').textContent=WALLET.usdcClaimable.toFixed(2);
-      // 我的片酬（金币图标，数值）
-      document.getElementById('mPendingSalaryNum').textContent = MY_SALARY.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-      // 可领取 STORY：直接展示数值（不展示后台放行状态）
-      document.getElementById('mClaimableStory').textContent = claimableStory().toLocaleString();
+      // 我的片酬（金币图标，数值）：放行（结算）后清零
+      const settled = isApproved();
+      document.getElementById('mPendingSalaryNum').textContent = (settled ? 0 : MY_SALARY).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      // 可领取 STORY：放行（结算）后由片酬兑换，未放行为 0
+      const claimVal = settled ? claimableStory() : 0;
+      document.getElementById('mClaimableStory').textContent = claimVal.toLocaleString();
       const claimBtn = document.getElementById('claimStoryBtn');
       const claimSub = document.getElementById('claimStateSub');
-      claimBtn.disabled = false; claimBtn.style.opacity = '1'; claimBtn.style.cursor = 'pointer';
+      claimBtn.disabled = claimVal <= 0;
+      claimBtn.style.opacity = claimVal <= 0 ? '.5' : '1';
+      claimBtn.style.cursor = claimVal <= 0 ? 'not-allowed' : 'pointer';
       claimSub.textContent = '';
     }
 
