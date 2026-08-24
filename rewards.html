@@ -227,20 +227,24 @@
     </div>
 
     <div class="metrics-group">
-      <div class="metrics-group-header">待处理收益</div>
+      <div class="metrics-group-header" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>待处理收益</span>
+        <button onclick="openAdminDemo()" style="padding:4px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:0.72rem;font-weight:600;cursor:pointer;">演示：后台设置</button>
+      </div>
       <div class="metrics-group-grid cols-3">
         <div class="metric-card">
-          <div class="metric-label-row"><span class="metric-label">结算中片酬</span><span class="metric-help" onclick="openHelp('结算中片酬','上个周期结算中的片酬收益，预计24小时之内结算成功。')">?</span></div>
-          <div class="metric-value gold" id="mPendingStory">1,980</div>
-          <div class="metric-sub">结算后自动兑换为 STORY</div>
+          <div class="metric-label-row"><span class="metric-label">本周片酬</span><span class="metric-help" onclick="openHelp('本周片酬','本周演出产出的片酬（积分），结算后按片酬占比瓜分本周 STORY 奖池。')">?</span></div>
+          <div class="metric-value gold" id="mPendingSalary" style="display:flex;align-items:baseline;gap:6px;"><span id="mPendingSalaryNum">5,860.0</span><svg viewBox="0 0 24 24" style="width:18px;height:18px;vertical-align:middle;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg></div>
+          <div class="metric-sub">结算后按占比瓜分 STORY 奖池</div>
         </div>
         <div class="metric-card">
           <div class="metric-card-actions">
             <div class="metric-value-wrap">
-              <div class="metric-label-row"><span class="metric-label">可领取 STORY</span><span class="metric-help" onclick="openHelp('可领取 STORY','已结算的 STORY，可领取至个人钱包。')">?</span></div>
-              <div class="metric-value gold" id="mClaimableStory">2,350</div>
+              <div class="metric-label-row"><span class="metric-label">可领取 STORY</span><span class="metric-help" onclick="openHelp('可领取 STORY','后台放行后，按你的片酬占比瓜分本周奖池所得。')">?</span></div>
+              <div class="metric-value gold" id="mClaimableStory">0</div>
+              <div class="metric-sub" id="claimStateSub">等待后台放行</div>
             </div>
-            <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn">领取</button>
+            <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn" disabled style="opacity:.5;cursor:not-allowed;">领取</button>
           </div>
         </div>
         <div class="metric-card">
@@ -251,6 +255,23 @@
             </div>
             <button class="btn-sm" onclick="claimUsdc()" id="claimUsdcBtn">领取</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 演示：后台设置弹窗 ===== -->
+    <div class="help-modal-overlay" id="adminDemoModal">
+      <div class="help-modal-card" style="max-width:420px;">
+        <h3>后台设置（演示）</h3>
+        <p style="margin:0 0 16px;font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">模拟平台后台：输入本周 STORY 奖池，放行后用户可按片酬占比领取。</p>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:0.78rem;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">本周 STORY 奖池</label>
+          <input id="adminPoolInput" type="number" value="100000" min="0" step="1000" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);font-size:0.9rem;font-weight:600;color:var(--text);outline:none;background:var(--surface);box-sizing:border-box;" />
+        </div>
+        <div style="margin-bottom:6px;font-size:0.78rem;color:var(--text-secondary);">当前状态：<span id="adminStateLabel">未放行</span></div>
+        <div style="display:flex;gap:8px;margin-top:14px;">
+          <button id="adminApproveBtn" onclick="adminApprove()" style="flex:1;padding:10px 0;border:none;border-radius:10px;background:#000;color:#fff;font-size:0.85rem;font-weight:600;cursor:pointer;">放行</button>
+          <button onclick="closeAdminDemo()" style="flex:1;padding:10px 0;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;">关闭</button>
         </div>
       </div>
     </div>
@@ -269,7 +290,7 @@
       <div class="section-card">
         <div class="filter-bar" id="storyFilterBar">
           <button class="filter-chip active" data-filter="all">全部</button>
-          <button class="filter-chip" data-filter="staking">派遣收益</button>
+          <button class="filter-chip" data-filter="staking">奖池瓜分</button>
           <button class="filter-chip" data-filter="referral">邀请收益</button>
         </div>
 
@@ -341,12 +362,31 @@
     const STORY_PRICE = 0.10;
     let currentFilter = 'all';
 
-    const WALLET = { storyEarned: 12500, storyClaimable: 2350, pendingStory: 1980, usdcEarned: 3580.00, usdcClaimable: 895.50 };
+    // ===== 片酬 & 奖池模型（demo：模拟后台）=====
+    // 我的本周片酬（积分，非 STORY）
+    const MY_SALARY = 5860.0;
+    // 全网片酬基准（模拟值，用于算占比）
+    const NET_SALARY = 1250000;
+    // 本周 STORY 奖池（后台输入，localStorage 持久化）
+    const POOL_KEY = 'sf2_weekly_pool';
+    // 后台放行状态（localStorage 持久化）
+    const APPROVE_KEY = 'sf2_pool_approved';
+    function getPool() { return parseFloat(localStorage.getItem(POOL_KEY)) || 100000; }
+    function setPool(v) { localStorage.setItem(POOL_KEY, String(v)); }
+    function isApproved() { return localStorage.getItem(APPROVE_KEY) === '1'; }
+    function setApproved(v) { localStorage.setItem(APPROVE_KEY, v ? '1' : '0'); }
+
+    // 我的占比 = 我的片酬 ÷ 全网片酬
+    function myShare() { return NET_SALARY > 0 ? MY_SALARY / NET_SALARY : 0; }
+    // 可领 STORY = 奖池 × 占比
+    function claimableStory() { return Math.round(getPool() * myShare()); }
+
+    const WALLET = { storyEarned: 12500, storyClaimable: claimableStory(), usdcEarned: 3580.00, usdcClaimable: 895.50 };
 
     // ===== STORY 流水数据生成 =====
     function generateStoryFlow() {
       const flow = [];
-      // 质押挖矿 — 按周结算，每周一条记录，时间从前往后
+      // 奖池瓜分 — 按周结算，每周一条记录，时间从前往后
       const stakingRecords = [
         { month:5, startDay:11, endDay:17, period:19, amount:220.50 },
         { month:5, startDay:18, endDay:24, period:20, amount:368.30 },
@@ -359,7 +399,7 @@
         const end   = `${String(r.month).padStart(2,'0')}-${String(r.endDay).padStart(2,'0')}`;
         flow.push({
           time: `2025-${end} 00:00`,
-          type:'staking', typeLabel:'派遣收益',
+          type:'staking', typeLabel:'奖池瓜分',
           source: `2025-${start} ~ 2025-${end}`,
           amount: r.amount,
           status:'已到账'
@@ -410,9 +450,22 @@
     function renderMetrics() {
       document.getElementById('mCumulativeStory').textContent=WALLET.storyEarned.toLocaleString();
       document.getElementById('mCumulativeUsdc').textContent=WALLET.usdcEarned.toFixed(2);
-      document.getElementById('mClaimableStory').textContent=WALLET.storyClaimable.toLocaleString();
-      document.getElementById('mPendingStory').textContent=WALLET.pendingStory.toLocaleString();
       document.getElementById('mClaimableUsdc').textContent=WALLET.usdcClaimable.toFixed(2);
+      // 本周片酬（金币图标，数值）
+      document.getElementById('mPendingSalaryNum').textContent = MY_SALARY.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      // 可领取 STORY：按放行状态
+      const claimVal = claimableStory();
+      const claimBtn = document.getElementById('claimStoryBtn');
+      const claimSub = document.getElementById('claimStateSub');
+      if (isApproved()) {
+        document.getElementById('mClaimableStory').textContent = claimVal.toLocaleString();
+        claimBtn.disabled = false; claimBtn.style.opacity = '1'; claimBtn.style.cursor = 'pointer';
+        claimSub.textContent = '占比 ' + (myShare() * 100).toFixed(2) + '% · 已放行';
+      } else {
+        document.getElementById('mClaimableStory').textContent = '待放行';
+        claimBtn.disabled = true; claimBtn.style.opacity = '.5'; claimBtn.style.cursor = 'not-allowed';
+        claimSub.textContent = '奖池 ' + getPool().toLocaleString() + ' STORY · 占比 ' + (myShare() * 100).toFixed(2) + '%';
+      }
     }
 
     function claimAll() {
@@ -424,9 +477,13 @@
     }
 
     function claimStory() {
-      if(WALLET.storyClaimable<=0){showToast('没有可领取的 STORY');return;}
-      showToast('已领取 '+fmt(WALLET.storyClaimable)+' STORY 到钱包');
-      WALLET.storyClaimable=0;
+      if (!isApproved()) { showToast('后台尚未放行，暂不可领取'); return; }
+      const v = claimableStory();
+      if (v <= 0) { showToast('没有可领取的 STORY'); return; }
+      showToast('已领取 ' + v.toLocaleString() + ' STORY 到钱包');
+      WALLET.storyEarned += v;
+      document.getElementById('mCumulativeStory').textContent = WALLET.storyEarned.toLocaleString();
+      setPool(0); // demo：领取后奖池归零（本周期结束）
       renderMetrics();
     }
 
@@ -437,12 +494,31 @@
       renderMetrics();
     }
 
+    // ===== 演示：后台设置 =====
+    function openAdminDemo() {
+      document.getElementById('adminPoolInput').value = getPool();
+      document.getElementById('adminStateLabel').textContent = isApproved() ? '已放行' : '未放行';
+      document.getElementById('adminApproveBtn').textContent = isApproved() ? '已放行' : '放行';
+      document.getElementById('adminDemoModal').classList.add('active');
+    }
+    function closeAdminDemo() {
+      document.getElementById('adminDemoModal').classList.remove('active');
+    }
+    function adminApprove() {
+      var v = parseFloat(document.getElementById('adminPoolInput').value) || 0;
+      setPool(Math.max(0, v));
+      setApproved(true);
+      closeAdminDemo();
+      renderMetrics();
+      showToast('后台已放行：奖池 ' + getPool().toLocaleString() + ' STORY');
+    }
+
     function filterTag(type) {
       const map = { staking:'staking', referral:'referral' };
       return map[type]||'staking';
     }
     function filterLabel(type) {
-      const map = { staking:'派遣收益', referral:'邀请收益' };
+      const map = { staking:'奖池瓜分', referral:'邀请收益' };
       return map[type]||type;
     }
     function renderStoryFlow() {
@@ -559,6 +635,9 @@
       // 点击弹窗背景关闭
       document.getElementById('helpModal').addEventListener('click', function(e) {
         if (e.target === this) closeHelp();
+      });
+      document.getElementById('adminDemoModal').addEventListener('click', function(e) {
+        if (e.target === this) closeAdminDemo();
       });
       renderMetrics();
       renderStoryFlow();
