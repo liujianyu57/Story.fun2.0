@@ -629,7 +629,9 @@
     // ===== 初始化 =====
     document.addEventListener('DOMContentLoaded', function() {
       // demo：刷新页面重置放行状态（可重复演示「后台放行 → 领取」流程）
-      setApproved(false);
+      // 例外：从 studio 快捷入口跳回（?preserve=1）时保留放行状态，确保领取闭环
+      var preserve = new URLSearchParams(window.location.search).get('preserve') === '1';
+      if (!preserve) setApproved(false);
       // 点击弹窗背景关闭
       document.getElementById('helpModal').addEventListener('click', function(e) {
         if (e.target === this) closeHelp();
