@@ -7,21 +7,6 @@
 (function() {
     'use strict';
 
-    // 演示阶段：切换 Pre-TGE 计分 / 已空投 / 挖矿（sf2_phase）
-    function sfPhaseName() {
-        var p = localStorage.getItem('sf2_phase') || 'pre';
-        var names = { pre: '计分', airdrop: '已空投', mining: '挖矿' };
-        return names[p] || '计分';
-    }
-    window.sfPhaseNext = function () {
-        var arr = ['pre', 'airdrop', 'mining'];
-        var i = arr.indexOf(localStorage.getItem('sf2_phase'));
-        var n = arr[(i + 1) % arr.length];
-        if (i < 0) n = 'pre';
-        localStorage.setItem('sf2_phase', n);
-        location.reload();
-    };
-
     // 内嵌侧边栏样式
     function injectStyles() {
         if (document.getElementById('sb-injected-styles')) return;
@@ -107,10 +92,6 @@
                         '<span class="sb-label">我的</span>' +
                     '</a>' +
                 '<div class="sb-divider"></div>' +
-                    '<a href="contribution.html" class="sb-nav-item" data-page="contribution.html">' +
-                        '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>' +
-                        '<span class="sb-label">空投</span>' +
-                    '</a>' +
                     '<a href="whitepaper.html" class="sb-nav-item" data-page="whitepaper.html">' +
                         '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
                         '<span class="sb-label">白皮书</span>' +
@@ -122,7 +103,6 @@
                         '<span class="sb-label">设置</span>' +
                     '</div>' +
                     '<div class="sb-settings-menu">' +
-                        '<button class="sb-settings-item" onclick="sfPhaseNext()"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><circle cx="12" cy="12" r="4"/></svg>演示阶段：<span class="sb-phase-val">' + sfPhaseName() + '</span></button>' +
                         '<button class="sb-settings-item" onclick="showToast(\'浅色模式暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>浅色模式</button>' +
                         '<button class="sb-settings-item" onclick="showToast(\'深色模式暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>深色模式</button>' +
                         '<button class="sb-settings-item" onclick="showToast(\'语言切换暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>语言</button>' +
