@@ -1312,8 +1312,24 @@
 
       .studio-topbar { padding: 4px 16px 10px; gap: 6px 12px; }
       .studio-topbar h1 { font-size: 1.3rem; }
-      .studio-status { font-size: 0.74rem; gap: 10px; }
-      .studio-status strong { font-size: 0.95rem; }
+      /* 移动端：Claw 收进菜单，收益卡只含片酬 + 可领取 */
+      #clawTopBadge { display: none !important; }
+      .studio-status {
+        flex: 1; min-width: 0;
+        display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 8px 8px 8px 12px;
+      }
+      .studio-status > span:first-child {
+        flex: 1; min-width: 0;
+        display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+        font-size: 0.7rem; font-weight: 600; color: var(--text-muted);
+      }
+      .studio-status strong { font-size: 1.4rem; }
+      .studio-status > span:first-child svg { margin-left: 0; }
+      #studioClaimBadge { margin-left: auto; }
 
       .studio-main { display: block; padding: 0 10px; }
 
@@ -1618,6 +1634,7 @@
       <div class="mob-more-wrap" id="mobMoreWrap">
         <button class="mob-more-btn" onclick="toggleMobMore(event)">···</button>
         <div class="mob-more-menu" id="mobMoreMenu">
+          <a onclick="toggleMobMore();openClawSheet()"><span id="mobClawIcon">💤</span> Story Claw</a>
           <a onclick="toggleMobMore();openRulesModal()">规则</a>
           <a onclick="toggleMobMore();openActualOutputModal()">奖池</a>
           <a href="rewards.html">记录</a>
@@ -3125,23 +3142,26 @@
     }
 
     function updateClawBadge() {
+      var on = !!ItemStore.clawState();
+      // 桌面端顶栏徽标
       var el = document.getElementById('clawTopBadge');
       var icon = document.getElementById('clawTopIcon');
-      if (!el || !icon) return;
-      var cs = ItemStore.clawState();
-      if (!cs) {
-        // 未激活：灰显
-        el.style.borderColor = 'var(--border)';
-        el.style.background = 'var(--surface)';
-        el.style.color = 'var(--text-muted)';
-        icon.textContent = '💤';
-        return;
+      if (el && icon) {
+        if (!on) {
+          el.style.borderColor = 'var(--border)';
+          el.style.background = 'var(--surface)';
+          el.style.color = 'var(--text-muted)';
+          icon.textContent = '💤';
+        } else {
+          el.style.borderColor = 'var(--accent)';
+          el.style.background = 'var(--accent-soft)';
+          el.style.color = 'var(--accent)';
+          icon.textContent = '🐾';
+        }
       }
-      // 激活中：主题色
-      el.style.borderColor = 'var(--accent)';
-      el.style.background = 'var(--accent-soft)';
-      el.style.color = 'var(--accent)';
-      icon.textContent = '🐾';
+      // 移动端菜单图标
+      var mIcon = document.getElementById('mobClawIcon');
+      if (mIcon) mIcon.textContent = on ? '🐾' : '💤';
     }
 
     // ---- 调试按钮：切换 Claw 激活状态（demo 演示用）----
