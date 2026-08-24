@@ -1674,7 +1674,7 @@
       <div class="studio-status">
         <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;display:inline-flex;align-items:center;gap:5px;">本周片酬 <strong id="statusWeekly">0.0</strong> <svg viewBox="0 0 24 24" style="width:17px;height:17px;vertical-align:middle;" aria-label="片酬"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg></span>
         <button id="clawTopBadge" onclick="openClawSheet()" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.76rem;color:var(--text-muted);flex-shrink:0;"><span id="clawTopIcon">💤</span> Story Claw</button>
-        <a href="#" onclick="studioClaimNow(event);return false;" id="studioClaimBadge" style="display:none;align-items:center;gap:6px;padding:4px 8px 4px 12px;border-radius:999px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);text-decoration:none;cursor:pointer;font-size:0.76rem;font-weight:700;flex-shrink:0;">可领 <span id="studioClaimBadgeAmt">0</span> STORY →</a>
+        <button id="studioClaimBadge" onclick="studioClaimNow()" style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px 4px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:0.76rem;font-weight:600;flex-shrink:0;"><span id="studioClaimBadgeText">领取 STORY</span></button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
       <div class="mob-more-wrap" id="mobMoreWrap">
@@ -3177,30 +3177,50 @@
     }
 
     // ---- Story Claw 顶部常驻标识（仅激活期间显示，点击打开 Claw 面板）----
-    // 快捷领取徽标：后台放行后显示可领 STORY（与 rewards 页同口径），点击直接领取
+    // 常驻限时领取：放行后可领 STORY 并显示领取倒计时（72h 窗口），点击直接领取
+    var CLAIM_WINDOW_MS = 72 * 3600 * 1000; // 领取窗口 72 小时
+    function studioClaimState() {
+      // 放行时间戳（放行时写入），未放行/过期返回 null
+      var t = parseInt(localStorage.getItem('sf2_pool_approved_at') || '0', 10);
+      if (!t || Date.now() - t > CLAIM_WINDOW_MS) return null;
+      var pool = parseFloat(localStorage.getItem('sf2_weekly_pool')) || 0;
+      var claimVal = Math.round(pool * (5860 / 1250000));
+      if (claimVal <= 0) return null;
+      return { val: claimVal, remainMs: CLAIM_WINDOW_MS - (Date.now() - t) };
+    }
+    function fmtCountdown(ms) {
+      var s = Math.max(0, Math.floor(ms / 1000));
+      var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+      function p(n) { return n < 10 ? '0' + n : '' + n; }
+      return p(h) + ':' + p(m) + ':' + p(sec);
+    }
     function updateStudioClaimBadge() {
       var badge = document.getElementById('studioClaimBadge');
       if (!badge) return;
-      var claimVal = studioClaimable();
-      var amtEl = document.getElementById('studioClaimBadgeAmt');
-      if (claimVal > 0) {
-        if (amtEl) amtEl.textContent = claimVal.toLocaleString();
-        badge.style.display = 'inline-flex';
+      var txt = document.getElementById('studioClaimBadgeText');
+      var st = studioClaimState();
+      if (st) {
+        badge.style.borderColor = 'var(--accent)';
+        badge.style.background = 'var(--accent-soft)';
+        badge.style.color = 'var(--accent)';
+        badge.style.fontWeight = '700';
+        txt.textContent = '可领 ' + st.val.toLocaleString() + ' STORY · 剩 ' + fmtCountdown(st.remainMs);
       } else {
-        badge.style.display = 'none';
+        badge.style.borderColor = 'var(--border)';
+        badge.style.background = 'var(--surface)';
+        badge.style.color = 'var(--text-muted)';
+        badge.style.fontWeight = '600';
+        txt.textContent = '领取 STORY';
       }
     }
-    // 可领值：放行且奖池 >0（口径与 rewards 一致）
-    function studioClaimable() {
-      var approved = localStorage.getItem('sf2_pool_approved') === '1';
-      var pool = parseFloat(localStorage.getItem('sf2_weekly_pool')) || 0;
-      return approved ? Math.round(pool * (5860 / 1250000)) : 0;
-    }
-    // 直接领取：可领清零、累计增加、隐藏徽标
-    function studioClaimNow(e) {
-      if (e) e.preventDefault();
-      var v = studioClaimable();
-      if (v <= 0) { if (typeof showToast === 'function') showToast('暂无可领取的 STORY'); return; }
+    // 直接领取：可领清零、累计增加、回到中性态
+    function studioClaimNow() {
+      var st = studioClaimState();
+      if (!st) {
+        if (typeof showToast === 'function') showToast('本周暂无待领取收益');
+        return;
+      }
+      var v = st.val;
       // 累计已领 STORY（rewards 累计读取同一键）
       var claimed = parseFloat(localStorage.getItem('sf2_claimed_story') || '0') || 0;
       localStorage.setItem('sf2_claimed_story', String(claimed + v));
@@ -3810,6 +3830,8 @@
       chargeModalWatchPurchases();
       updateStudioClaimBadge();
       setInterval(clawTick, 30000);
+      // 领取倒计时每秒刷新
+      setInterval(updateStudioClaimBadge, 1000);
       // 订阅弹窗（shop.js）购买/续费后刷新 Claw 状态
       document.addEventListener('sf:claw-changed', function() {
         updateClawBadge();
