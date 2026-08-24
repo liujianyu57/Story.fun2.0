@@ -1349,12 +1349,6 @@
       }
       .studio-status > span:first-child svg { width: 18px; height: 18px; margin-left: 0; }
       .studio-status strong { font-size: 1.3rem; color: #B45309; }
-      #studioClaimBadge {
-        margin-left: auto;
-        border-color: rgba(0,0,0,0.12);
-        background: rgba(0,0,0,0.04);
-        color: #6B6173;
-      }
 
       .studio-main { display: block; padding: 0 10px; }
 
@@ -1723,7 +1717,6 @@
       <div class="studio-status">
         <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;display:inline-flex;align-items:center;gap:5px;"><span id="salaryLabel">本周片酬</span> <strong id="statusWeekly">0.0</strong> <svg viewBox="0 0 24 24" style="width:17px;height:17px;vertical-align:middle;" aria-label="片酬"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg></span>
         <button id="clawTopBadge" onclick="openClawSheet()" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.76rem;color:var(--text-muted);flex-shrink:0;"><span id="clawTopIcon">💤</span> Story Claw</button>
-        <button id="studioClaimBadge" onclick="studioClaimNow()" style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px 4px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:0.76rem;font-weight:600;flex-shrink:0;"><span id="studioClaimBadgeText">领取 STORY</span></button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
       </div>
     </div>
@@ -1747,6 +1740,8 @@
           <button id="recycleTopBtn" onclick="openRecycleList()" title="角色回收" style="margin-left:8px;padding:7px 18px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--text);flex-shrink:0;">♻ 回收</button>
         </div>
       </section>
+
+      <button id="studioClaimBadge" onclick="studioClaimNow()" style="display:none;align-items:center;justify-content:center;gap:6px;width:calc(100% - 24px);margin:14px 12px 4px;padding:11px 0;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-size:0.85rem;font-weight:700;flex-shrink:0;"><span id="studioClaimBadgeText">领取 STORY</span></button>
 
       <div class="mobile-actions" id="mobileActions">
         <button class="mob-act-btn mob-todo" onclick="openMobileTodoModal()" title="待办"><span class="mob-icon">📋</span><strong id="mobileTodoBadge">0</strong><span class="mob-label">待办</span></button>
@@ -3183,17 +3178,14 @@
       var txt = document.getElementById('studioClaimBadgeText');
       var st = studioClaimState();
       if (st) {
+        badge.style.display = 'flex';
         badge.style.borderColor = 'var(--accent)';
         badge.style.background = 'var(--accent-soft)';
         badge.style.color = 'var(--accent)';
         badge.style.fontWeight = '700';
-        txt.textContent = '可领 ' + st.val.toLocaleString() + ' STORY';
+        txt.textContent = '可领 ' + st.val.toLocaleString() + ' STORY，点击领取';
       } else {
-        badge.style.borderColor = 'var(--border)';
-        badge.style.background = 'var(--surface)';
-        badge.style.color = 'var(--text-muted)';
-        badge.style.fontWeight = '600';
-        txt.textContent = '可领 0 STORY';
+        badge.style.display = 'none';
       }
     }
     // 直接领取：可领清零、累计增加
