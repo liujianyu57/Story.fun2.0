@@ -1675,6 +1675,10 @@
         <span style="font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.01em;">本周片酬 <strong id="statusWeekly">0.0</strong> <span style="display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:#000;color:#fff;font-size:10px;font-weight:800;vertical-align:middle;margin-left:2px;" id="statusWeeklyBadge">S</span></span>
         <button id="clawTopBadge" onclick="openClawSheet()" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.76rem;color:var(--text-muted);flex-shrink:0;"><span id="clawTopIcon">💤</span> Story Claw</button>
         <span class="trust-risk-badge" id="trustRiskBadge" onclick="openUserTrustTooltip()" style="display:none;margin-left:6px;vertical-align:middle;"><span class="dot"></span> 风险账户</span>
+        <button id="studioClaimBtn" onclick="openStudioClaim()" style="display:none;margin-left:auto;align-items:center;gap:7px;padding:7px 8px 7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;flex-shrink:0;font-size:0.82rem;">
+          <span style="font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;"><span id="studioClaimAmt">0</span> STORY</span>
+          <span style="padding:4px 14px;border-radius:999px;background:#000;color:#fff;font-size:0.78rem;font-weight:600;">领取</span>
+        </button>
       </div>
       <div class="mob-more-wrap" id="mobMoreWrap">
         <button class="mob-more-btn" onclick="toggleMobMore(event)">···</button>
@@ -3177,6 +3181,16 @@
     }
 
     // ---- Story Claw 顶部常驻标识（仅激活期间显示，点击打开 Claw 面板）----
+    // 桌面端右上角领取 STORY（demo：点击清零并 toast）
+    function openStudioClaim() {
+      var amt = document.getElementById('studioClaimAmt');
+      var v = amt ? (parseInt(amt.textContent.replace(/,/g, ''), 10) || 0) : 0;
+      if (v <= 0) { showToast('暂无可领取的 STORY'); return; }
+      amt.textContent = '0';
+      localStorage.setItem('sf2_story_claim', '0');
+      showToast('已领取 ' + v.toLocaleString() + ' STORY');
+    }
+
     function updateClawBadge() {
       var el = document.getElementById('clawTopBadge');
       var icon = document.getElementById('clawTopIcon');
@@ -3778,6 +3792,17 @@
       // 阶段：挖矿阶段才显示顶部 S 徽标（Pre-TGE 纯数字）
       var badge = document.getElementById('statusWeeklyBadge');
       if (badge) badge.style.display = (window.SFPhase && SFPhase.isMining()) ? '' : 'none';
+      // 桌面端右上角「xxx STORY 领取」：挖矿阶段显示（demo：首次给演示值）
+      var claimBtn = document.getElementById('studioClaimBtn');
+      if (claimBtn) {
+        claimBtn.style.display = (window.innerWidth > 768 && window.SFPhase && SFPhase.isMining()) ? 'inline-flex' : 'none';
+        var amt = document.getElementById('studioClaimAmt');
+        if (amt) {
+          var claimVal = parseInt(localStorage.getItem('sf2_story_claim') || '0', 10) || 0;
+          if (claimVal === 0 && window.SFPhase && SFPhase.isMining()) { claimVal = 1280; localStorage.setItem('sf2_story_claim', '1280'); }
+          amt.textContent = claimVal.toLocaleString();
+        }
+      }
       setInterval(clawTick, 30000);
       // 订阅弹窗（shop.js）购买/续费后刷新 Claw 状态
       document.addEventListener('sf:claw-changed', function() {
