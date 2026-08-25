@@ -459,7 +459,7 @@
         '<div class="actors-modal-item-avatar"><img src="' + avatarUrl + '" alt="' + escapeHTML(name) + '" /></div>' +
         '<div class="actors-modal-item-info">' +
           '<div class="actors-modal-item-name">' + escapeHTML(name) + '</div>' +
-          '<div class="actors-modal-item-power">' + power + ' <svg viewBox="0 0 24 24" style="width:11px;height:11px;vertical-align:-1px;margin:0 1px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg><span class="cs-unit">/H</span></div>' +
+          '<div class="actors-modal-item-power"><svg viewBox="0 0 24 24" style="width:11px;height:11px;vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + power + ' <span style="font-weight:400;color:#8a8f98;font-size:10px;">片酬/h</span></div>' +
         '</div>' +
         '<span class="actors-modal-item-arrow">\u203A</span>' +
       '</a>';
