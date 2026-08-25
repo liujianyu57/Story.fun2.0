@@ -2556,7 +2556,7 @@
             + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
             + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
             + '</div>'
-            + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>' + salaryUnit() + '</span></div>'
+            + '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情"><svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;flex-shrink:0;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + computeActorPower(actor).toFixed(2) + ' <span>' + salaryUnit() + '</span></div>'
             + '</div>'
             + '<div class="slot-actions">'
             + (actor.energy < actor.energyMax
@@ -2784,7 +2784,7 @@
           + '<svg class="slot-energy-icon" width="11" height="11" viewBox="0 0 11 11" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 0.5L2.5 5.5h2.5l-1 5 4-5H5.5l1-5z"/></svg>'
           + '<span class="slot-energy-num">' + actor.energy + '/' + actor.energyMax + '</span>'
           + '</div>'
-+ '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情">' + computeActorPower(actor).toFixed(1) + ' <span>' + salaryUnit() + '</span></div>'
++ '<div class="slot-out" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')" title="查看片酬详情"><svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;flex-shrink:0;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + computeActorPower(actor).toFixed(2) + ' <span>' + salaryUnit() + '</span></div>'
             + '</div>'
             + '<div class="slot-actions">'
             + (actor.energy < actor.energyMax
