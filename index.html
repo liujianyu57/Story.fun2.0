@@ -960,7 +960,7 @@
         var item = document.createElement('div');
         item.className = 'featured-cast-item';
         item.setAttribute('onclick', 'event.stopPropagation(); var u="actor-profile.html?name=' + encodeURIComponent(name) + '"; if(window!==window.parent){parent.location.href=u}else{location.href=u}');
-        item.innerHTML = '<div class="featured-cast-avatar-wrap"><div class="featured-cast-avatar"><img src="' + avatarUrl + '" alt="' + name + '" loading="lazy" /></div><div class="featured-cast-mining-dot"></div></div><span class="featured-cast-name">' + name + '</span><span class="featured-cast-power" style="color:#3affb1!important;text-shadow:0 0 12px rgba(58,255,177,0.4)">' + power + '</span><span class="featured-cast-unit">STORY/h</span>';
+        item.innerHTML = '<div class="featured-cast-avatar-wrap"><div class="featured-cast-avatar"><img src="' + avatarUrl + '" alt="' + name + '" loading="lazy" /></div><div class="featured-cast-mining-dot"></div></div><span class="featured-cast-name">' + name + '</span><span class="featured-cast-power" style="color:#3affb1!important;text-shadow:0 0 12px rgba(58,255,177,0.4)"><svg viewBox="0 0 24 24" style="width:11px;height:11px;vertical-align:-1px;margin-right:2px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + power + '</span><span class="featured-cast-unit">片酬/h</span>';
         list.appendChild(item);
       });
     }

@@ -881,7 +881,7 @@ if(!isPlayerMode){
     var h='';var rPwr={'苏婉清':'8,562','李云飞':'6,230','林梦瑶':'5,891'};
     var rAv=['https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80','https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'];
     var rNm=['苏婉清','李云飞','林梦瑶'];
-    for(var i=0;i<rNm.length;i++){h+='<div class="im-actor-row"><div class="im-avatar-wrap"><img class="im-avatar" src="'+rAv[i]+'" alt="'+rNm[i]+'" onerror="this.style.display=\'none\'"><div class="im-mining-dot"></div></div><div class="im-hash">'+rPwr[rNm[i]]+'<small>STORY/h</small></div></div>';}
+    for(var i=0;i<rNm.length;i++){h+='<div class="im-actor-row"><div class="im-avatar-wrap"><img class="im-avatar" src="'+rAv[i]+'" alt="'+rNm[i]+'" onerror="this.style.display=\'none\'"><div class="im-mining-dot"></div></div><div class="im-hash"><svg viewBox="0 0 24 24" style="width:10px;height:10px;vertical-align:-1px;margin-right:2px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>'+rPwr[rNm[i]]+'<small>片酬/h</small></div></div>';}
     list.innerHTML=h;panel.style.display='';
   }
   updateMiningPanel();
