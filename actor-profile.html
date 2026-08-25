@@ -261,7 +261,7 @@
     .actor-hero-stats .ahs-value {
       font-size: 1.25rem;
       font-weight: 700;
-      color: var(--text);
+      color: #ff3b30;
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
     }
@@ -1061,7 +1061,6 @@
         <p class="actor-desc" id="actorDesc">—</p>
         <div class="actor-hero-stats">
           <div class="ahs-item" onclick="openIPPowerModal()" style="cursor:pointer;">
-            <span class="ahs-label">片酬</span>
             <span class="ahs-value" id="heroIPPower">—</span>
           </div>
         </div>
@@ -1753,8 +1752,7 @@
       // 更新 stats 行
       var statItems = document.querySelectorAll('.actor-hero-stats .ahs-item');
       if (statItems.length >= 1) {
-        statItems[0].querySelector('.ahs-label').textContent = '片酬';
-        statItems[0].querySelector('.ahs-value').innerHTML = '<svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + ipPowerVal.toFixed(2) + ' <span style="font-size:0.55em;color:var(--text-muted);">片酬/h</span>';
+        statItems[0].querySelector('.ahs-value').innerHTML = '<span style="color:#ff3b30;font-weight:700;"><svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + ipPowerVal.toFixed(2) + '</span> <span style="font-size:0.55em;color:var(--text-muted);">片酬/h</span>';
       }
 
       // ═══ Mint Modal 交互已在顶层统一绑定（bindMintModalEvents），此处不再重复定义 ═══
