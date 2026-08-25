@@ -2594,7 +2594,7 @@
           + '<img class="fig-img" src="' + actor.avatar + '" alt="" onclick="event.stopPropagation();location.href=\'actor-profile.html?name=' + encodeURIComponent(actor.name) + '\'" style="cursor:pointer;" />'
           + '<div class="fig-lv">Lv.' + actor.level + '</div>'
           + '<div class="fig-nameplate"><span class="n">' + actor.name + '</span><span class="id">#' + nid + '</span></div>'
-          + '<div class="fig-pay" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">' + coinSvg + '<span class="rate">' + computeActorPower(actor).toFixed(1) + '</span><span class="unit">' + salaryUnit() + '</span></div>'
+          + '<div class="fig-pay" onclick="event.stopPropagation();openActorPowerModal(\'' + actor.id + '\')">' + coinSvg + '<span class="rate">' + computeActorPower(actor).toFixed(2) + '</span><span class="unit">' + salaryUnit() + '</span></div>'
           + '<div class="fig-stamina">'
           + '<span class="bolt">⚡</span>'
           + '<div class="track"><div class="fill" style="width:' + pct + '%;"></div><span class="label">' + actor.energy + '/' + actor.energyMax + '</span></div>'
