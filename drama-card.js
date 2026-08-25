@@ -393,7 +393,7 @@
       });
       var totalPowerStr = totalPower.toLocaleString('en-US');
       var actorsDataAttr = escapeHTML(JSON.stringify(actors));
-      actorsHTML = '<div class="card-actors" data-actors=\'' + actorsDataAttr + '\'><span class="card-actors-salary"><svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:1px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + totalPowerStr + '<span class="cs-unit">片酬/h</span></span><div class="card-actors-avatars">' + actorItems + '</div></div>';
+      actorsHTML = '<div class="card-actors" data-actors=\'' + actorsDataAttr + '\'><span class="card-actors-salary">' + totalPowerStr + ' <svg viewBox="0 0 24 24" style="width:11px;height:11px;vertical-align:-1px;margin:0 1px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg><span class="cs-unit">/H</span></span><div class="card-actors-avatars">' + actorItems + '</div></div>';
     }
 
     var statsHTML = '';
