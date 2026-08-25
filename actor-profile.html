@@ -125,36 +125,38 @@
       overflow: hidden;
       margin: 0;
       flex-shrink: 0;
+      position: relative;
+      background: linear-gradient(160deg, #f3f0fa, #e8e4f5);
     }
     .actor-hero-avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    .actor-hero-info { display: flex; flex-direction: column; gap: 16px; justify-content: center; padding: 32px 32px 32px 32px; }
+    .actor-hero-info { display: flex; flex-direction: column; gap: 14px; justify-content: center; padding: 36px 40px; }
     .actor-hero-info .actor-name {
-      margin: 0 0 14px 0;
-      font-size: 2.25rem;
+      margin: 0;
+      font-size: 2.1rem;
       line-height: 1.15;
-      letter-spacing: -0.025em;
-      font-weight: 750;
+      letter-spacing: -0.03em;
+      font-weight: 800;
     }
-    .actor-hero-info .actor-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .actor-hero-info .actor-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 2px; }
     .actor-hero-info .actor-tags .tag {
-      padding: 5px 13px;
+      padding: 4px 12px;
       border-radius: 999px;
       background: var(--accent-soft);
       color: var(--accent);
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       font-weight: 600;
       letter-spacing: 0.01em;
     }
     .actor-hero-info .actor-tags .tag.muted {
-      background: rgba(15,22,42,0.04);
+      background: rgba(15,22,42,0.05);
       color: var(--text-muted);
     }
     .actor-hero-info .actor-tags .tag.soldout {
-      background: rgba(239,68,68,0.08);
+      background: rgba(239,68,68,0.1);
       color: #dc2626;
     }
     .actor-hero-info .actor-tags .tag.trust-risk {
@@ -165,8 +167,8 @@
     .actor-hero-info .actor-desc {
       margin: 0;
       color: var(--text-muted);
-      line-height: 1.8;
-      font-size: 0.96rem;
+      line-height: 1.75;
+      font-size: 0.92rem;
     }
 
     /* ═══ Profile Tabs（参演 / 信息） ═══ */
@@ -220,50 +222,45 @@
     }
 
     /* Hero Stats — Apple inspired */
+    /* 统计：轻量指标行（去卡片框，数值+单位内联） */
     .actor-hero-stats {
       display: flex;
-      gap: 12px;
-      width: 100%;
-    }
-    .actor-hero-stats .ahs-divider {
-      width: 1px;
-      background: var(--border);
-      flex-shrink: 0;
-      align-self: stretch;
-      margin: 4px 0;
-    }
-    .actor-hero-stats .ahs-item {
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 2px;
-      padding: 14px 28px;
+      gap: 6px;
+      margin-top: 4px;
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
       cursor: pointer;
-      transition: all 0.25s ease;
-      border-radius: 14px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      flex: 1;
+      transition: opacity 0.2s;
     }
-    .actor-hero-stats .ahs-item:hover {
-      background: rgba(0,0,0,0.02);
-    }
-    .actor-hero-stats .ahs-item:hover .ahs-value {
-      color: var(--accent);
-    }
-    .actor-hero-stats .ahs-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .actor-hero-stats:hover { opacity: 0.85; }
+    .actor-hero-stats .ahs-item {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
     }
     .actor-hero-stats .ahs-value {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.5rem;
+      font-weight: 800;
       color: #ff3b30;
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .actor-hero-stats .ahs-unit {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .actor-hero-stats .ahs-tip {
+      margin-left: 10px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
     }
 
     /* NFT Info Panel */
@@ -976,10 +973,9 @@
       .actor-hero-info .actor-tags { gap: 6px; }
       .actor-hero-info .actor-tags .tag { padding: 4px 10px; font-size: 0.72rem; }
       .actor-hero-info .actor-desc { font-size: 0.85rem; line-height: 1.6; }
-      .actor-hero-stats { width: 100%; padding: 8px 0; border-radius: 12px; }
-      .actor-hero-stats .ahs-item { padding: 4px 16px; }
-      .actor-hero-stats .ahs-value { font-size: 1rem; }
-      .actor-hero-stats .ahs-divider { height: 24px; }
+      .actor-hero-stats { width: 100%; padding: 10px 0; }
+      .actor-hero-stats .ahs-item { padding: 0; }
+      .actor-hero-stats .ahs-value { font-size: 1.15rem; }
       .actor-price { padding: 8px 12px; border-radius: 10px; }
       .action-btn, .action-btn.primary, .action-btn.danger { width: 100%; justify-content: center; padding: 14px; font-size: 0.95rem; border-radius:999px; min-width: unset; }
       #floorPriceTag { width: 100%; justify-content: center; border-radius:999px; }
@@ -1059,10 +1055,12 @@
           </div>
         </div>
         <p class="actor-desc" id="actorDesc">—</p>
-        <div class="actor-hero-stats">
-          <div class="ahs-item" onclick="openIPPowerModal()" style="cursor:pointer;">
+        <div class="actor-hero-stats" onclick="openIPPowerModal()">
+          <div class="ahs-item">
             <span class="ahs-value" id="heroIPPower">—</span>
+            <span class="ahs-unit">片酬/h</span>
           </div>
+          <span class="ahs-tip">点击查看片酬构成 ›</span>
         </div>
         <!-- 签约价格（匹配 actors.html 卡片风格） -->
         <div class="actor-price" id="actorPriceRow">
@@ -1749,10 +1747,10 @@
       }
       var targetPower = ipPowerVal * maxMultiplier;
 
-      // 更新 stats 行
+      // 更新 stats 行（金币图标 + 数值，单位由 HTML 提供）
       var statItems = document.querySelectorAll('.actor-hero-stats .ahs-item');
       if (statItems.length >= 1) {
-        statItems[0].querySelector('.ahs-value').innerHTML = '<span style="color:#ff3b30;font-weight:700;"><svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + ipPowerVal.toFixed(2) + '</span> <span style="font-size:0.55em;color:var(--text-muted);">片酬/h</span>';
+        statItems[0].querySelector('.ahs-value').innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + ipPowerVal.toFixed(2);
       }
 
       // ═══ Mint Modal 交互已在顶层统一绑定（bindMintModalEvents），此处不再重复定义 ═══
@@ -2009,13 +2007,6 @@
         document.getElementById('statTooltipDesc').textContent = desc;
         statTooltip.classList.add('active');
       }
-      document.querySelectorAll('.ahs-item').forEach(function(el) {
-        el.addEventListener('click', function() {
-          var label = this.querySelector('.ahs-label').textContent.trim();
-          if (label === '完播') openStatTooltip('完播', '该角色 IP 参演的所有短剧的完播次数之和');
-          else if (label === '热度系数') openStatTooltip('热度系数', '热度系数是角色 IP 的近30天热度乘子，用于决定该角色在派遣中的产出。');
-        });
-      });
       document.getElementById('statTooltipClose').addEventListener('click', function() { statTooltip.classList.remove('active'); });
       statTooltip.addEventListener('click', function(e) { if (e.target === this) statTooltip.classList.remove('active'); });
       document.addEventListener('keydown', function(e) {
