@@ -151,7 +151,7 @@
 .card-actors-salary {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #3affb1;
+  color: #ff3b30;
   white-space: nowrap;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
   pointer-events: none;
@@ -161,15 +161,7 @@
   gap: 2px;
   line-height: 1;
 }
-.card-actors-salary .cs-story-icon {
-  display: inline-flex;
-  align-items: center;
-}
-.card-actors-salary .cs-story-icon svg {
-  width: 12px;
-  height: 12px;
-  vertical-align: middle;
-}
+.card-actors-salary .cs-unit { color: rgba(255,255,255,0.5); font-weight: 500; }
 .card-actor-name { display: none; }
 .card-foot { display: none; }
 
@@ -337,8 +329,7 @@
   var ICONS = {
     views: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5.5 7-5.5 7 5.5 7 5.5-2.5 5.5-7 5.5-7-5.5-7-5.5z"/><circle cx="8" cy="8" r="2"/></svg>',
     heat: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2c-2 3-3.5 6-3.5 9 0 2.5 1.5 4 3.5 4s3.5-1.5 3.5-4c0-3-1.5-6-3.5-9z"/></svg>',
-    rating: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg>',
-    story: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="7" y="10.5" text-anchor="middle" font-size="9" font-weight="800" fill="currentColor" font-family="system-ui, sans-serif">S</text></svg>'
+    rating: '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 1.5 9.8 5.5 14 6 10.8 9 11.6 13 8 11 4.4 13 5.2 9 2 6 6.2 5.5"/></svg>'
   };
 
   // ============================================================
@@ -402,7 +393,7 @@
       });
       var totalPowerStr = totalPower.toLocaleString('en-US');
       var actorsDataAttr = escapeHTML(JSON.stringify(actors));
-      actorsHTML = '<div class="card-actors" data-actors=\'' + actorsDataAttr + '\'><span class="card-actors-salary">' + totalPowerStr + ' <span class="cs-story-icon">' + ICONS.story + '</span>/h</span><div class="card-actors-avatars">' + actorItems + '</div></div>';
+      actorsHTML = '<div class="card-actors" data-actors=\'' + actorsDataAttr + '\'><span class="card-actors-salary"><svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:1px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>' + totalPowerStr + '<span class="cs-unit">片酬/h</span></span><div class="card-actors-avatars">' + actorItems + '</div></div>';
     }
 
     var statsHTML = '';
