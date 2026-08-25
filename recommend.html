@@ -878,7 +878,7 @@ CMPanel.init({
       var aname = d.actors[ai];
       var ainfo = ACTOR_INFO[aname];
       if (ainfo) {
-        html += '<div class="cm-role-card bound"><img class="cm-role-avatar" src="' + ainfo.avatar + '" alt="' + aname + '"><div class="cm-role-info"><div class="cm-role-name">' + aname + '</div><div class="cm-role-ip"><span class="cm-role-ip-tag">片酬 ' + ainfo.ipPower + ' STORY/h</span></div></div><button class="cm-sign-btn">签约</button></div>';
+        html += '<div class="cm-role-card bound"><img class="cm-role-avatar" src="' + ainfo.avatar + '" alt="' + aname + '"><div class="cm-role-info"><div class="cm-role-name">' + aname + '</div><div class="cm-role-ip"><span class="cm-role-ip-tag"><svg viewBox="0 0 24 24" style="width:11px;height:11px;vertical-align:-1px;margin-right:3px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>片酬 ' + ainfo.ipPower + ' 片酬/h</span></div></div><button class="cm-sign-btn">签约</button></div>';
       }
     }
     return html + '</div>';

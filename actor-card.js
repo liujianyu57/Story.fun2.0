@@ -346,6 +346,9 @@
 
   var DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80';
 
+  // 片酬金币图标（全站统一规范）
+  var COIN_SVG = '<svg viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;flex-shrink:0;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>';
+
   // ============================================================
   //  工具函数
   // ============================================================
@@ -446,7 +449,7 @@
     var statsHTML = '<div class="ac-stats">' +
       '<span class="ac-stat-item" data-stat="ip-power">' +
         '<span class="ac-stat-label">片酬</span>' +
-        '<span class="ac-num">' + ipPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">STORY/h</span></span>' +
+        '<span class="ac-num">' + COIN_SVG + ipPower.toFixed(2) + ' <span style="font-size:0.58em;color:var(--text-muted);">片酬/h</span></span>' +
       '</span>' +
     '</div>';
 
