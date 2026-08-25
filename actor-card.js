@@ -162,7 +162,7 @@
   font-size: 1.1rem;\
   font-weight: 700;\
   letter-spacing: -0.02em;\
-  color: var(--text);\
+  color: #ff3b30;\
   transition: color 0.2s;\
 }\
 .ac-stat-item:hover .ac-num { color: var(--accent); }\
