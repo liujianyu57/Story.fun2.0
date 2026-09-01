@@ -428,6 +428,64 @@
         document.head.appendChild(script);
     }
 
+    // 给 header 通知下拉条目打上子类型标记（revenue: ip/manage/show；social: like/save/comment/follow）
+    // 依据条目内文本判断，避免逐条改写长 HTML 字符串
+    function classifyHeaderNotifyItems() {
+        document.querySelectorAll('.dh-notify-dropdown .notify-item').forEach(function(item) {
+            var cat = item.getAttribute('data-category');
+            if (!cat) return;
+            var text = item.textContent || '';
+            if (cat === 'revenue') {
+                var rt = 'ip';
+                if (text.indexOf('角色管理') !== -1) rt = 'manage';
+                else if (text.indexOf('演出') !== -1 || text.indexOf('收益') !== -1) rt = 'show';
+                item.setAttribute('data-revtype', rt);
+            } else {
+                var st = 'like';
+                if (text.indexOf('收藏') !== -1) st = 'save';
+                else if (text.indexOf('评论') !== -1) st = 'comment';
+                else if (text.indexOf('关注') !== -1) st = 'follow';
+                item.setAttribute('data-sotype', st);
+            }
+        });
+    }
+
+    // 通知设置联动：按「激活 tab + 通知设置」统一计算 header 下拉条目可见性，并刷新红点
+    function dhApplyNotifyFilter() {
+        var dd = document.querySelector('.dh-notify-dropdown');
+        if (!dd) return;
+        var settings = (typeof window.StoryFunNotify !== 'undefined') ? window.StoryFunNotify.getSettings() : null;
+        var activeTabEl = dd.querySelector('.dn-tab.active');
+        var tabText = activeTabEl ? (activeTabEl.textContent || '').trim() : '系统';
+        var tabCat = tabText.indexOf('互动') !== -1 ? 'social' : 'revenue';
+
+        var anyUnreadVisible = false;
+        dd.querySelectorAll('.notify-item').forEach(function(item) {
+            var cat = item.getAttribute('data-category');
+            var sub = cat === 'revenue' ? item.getAttribute('data-revtype') : item.getAttribute('data-sotype');
+            var enabled = true;
+            if (settings) {
+                enabled = settings.master && window.StoryFunNotify.isNotifyEnabled(cat, sub);
+            }
+            if (!enabled || cat !== tabCat) { item.style.display = 'none'; return; }
+            item.style.display = 'flex';
+            if (item.classList.contains('unread')) anyUnreadVisible = true;
+        });
+
+        var dot = document.querySelector('.desktop-header .dh-notify-dot');
+        if (dot) dot.style.display = anyUnreadVisible ? '' : 'none';
+    }
+
+    // 动态加载 notify-settings.js（如果尚未加载）
+    function ensureNotifySettingsScript(callback) {
+        if (typeof window.StoryFunNotify !== 'undefined') { callback(); return; }
+        var script = document.createElement('script');
+        script.src = 'notify-settings.js';
+        script.onload = callback;
+        script.onerror = callback;
+        document.head.appendChild(script);
+    }
+
     // Tab switch in notify dropdown
     window.dhSwitchTab = function(e, cat) {
         e.stopPropagation();
@@ -437,9 +495,7 @@
         // Toggle active
         dd.querySelectorAll('.dn-tab').forEach(function(t){t.classList.remove('active')});
         btn.classList.add('active');
-        dd.querySelectorAll('.notify-item').forEach(function(item){
-            item.style.display = item.getAttribute('data-category') === cat ? 'flex' : 'none';
-        });
+        dhApplyNotifyFilter();
     };
 
     // Delete helpers for notify dropdown
@@ -481,6 +537,11 @@
         });
         // 初始渲染一次（页面加载后下拉内容就绪）
         if (window.Shop && window.Shop.renderCenter) window.Shop.renderCenter();
+        // 通知设置联动：打标 + 按设置过滤下拉条目与红点
+        ensureNotifySettingsScript(function() {
+            classifyHeaderNotifyItems();
+            dhApplyNotifyFilter();
+        });
         // 确保 auth.js 已加载，然后渲染头像
         ensureAuthScript(function() {
             setTimeout(function() {

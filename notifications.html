@@ -531,7 +531,44 @@ html,body{width:100%;height:100%;background:var(--bg);-webkit-tap-highlight-colo
   </div>
 </div>
 
+<script src="notify-settings.js"></script>
 <script>
+// ============================================================
+//  通知设置联动：统一根据「激活 tab + 激活筛选 + 通知设置」计算每个条目的可见性
+// ============================================================
+function applyNotifyVisibility() {
+  var activeTab = document.querySelector('.tab-item.active');
+  var tab = activeTab ? activeTab.dataset.tab : 'revenue';
+
+  // 读取激活的筛选 chip（收益/互动各一组）
+  var activeRevChip = document.querySelector('#revFilterBar .rev-filter-chip.active');
+  var activeSocChip = document.querySelector('#socFilterBar .rev-filter-chip.active');
+  var revType = activeRevChip ? activeRevChip.dataset.revtype : 'all';
+  var soType = activeSocChip ? activeSocChip.dataset.sotype : 'all';
+
+  var masterOff = (typeof window.StoryFunNotify === 'undefined') ? false : !window.StoryFunNotify.getSettings().master;
+
+  document.querySelectorAll('.notify-item').forEach(function(item) {
+    var cat = item.getAttribute('data-category');
+    var subType = cat === 'revenue' ? item.getAttribute('data-revtype') : item.getAttribute('data-sotype');
+
+    // 1) 总开关关闭 → 全部隐藏
+    if (masterOff) { item.style.display = 'none'; return; }
+    // 2) 该类型在设置中被关闭 → 隐藏
+    if (typeof window.StoryFunNotify !== 'undefined' && !window.StoryFunNotify.isNotifyEnabled(cat, subType)) {
+      item.style.display = 'none'; return;
+    }
+    // 3) tab 不匹配 → 隐藏
+    if (cat !== tab) { item.style.display = 'none'; return; }
+    // 4) 筛选 chip 不匹配 → 隐藏
+    if (cat === 'revenue' && revType !== 'all' && item.getAttribute('data-revtype') !== revType) { item.style.display = 'none'; return; }
+    if (cat === 'social' && soType !== 'all' && item.getAttribute('data-sotype') !== soType) { item.style.display = 'none'; return; }
+    item.style.display = 'flex';
+  });
+
+  renderEmpty();
+}
+
 // Tab switching
 var revFilterBar = document.getElementById('revFilterBar');
 var socFilterBar = document.getElementById('socFilterBar');
@@ -550,10 +587,7 @@ document.querySelectorAll('.tab-item').forEach(function(tab){
       var allChip = activeBar.querySelector('[data-revtype="all"], [data-sotype="all"]');
       if(allChip) allChip.classList.add('active');
     }
-    document.querySelectorAll('.notify-item').forEach(function(item){
-      item.style.display = item.getAttribute('data-category') === v ? 'flex' : 'none';
-    });
-    renderEmpty();
+    applyNotifyVisibility();
   });
 });
 
@@ -563,14 +597,7 @@ if(revFilterBar){
     chip.addEventListener('click',function(){
       revFilterBar.querySelectorAll('.rev-filter-chip').forEach(function(c){c.classList.remove('active')});
       this.classList.add('active');
-      var ft = this.dataset.revtype;
-      document.querySelectorAll('.notify-item[data-category="revenue"]').forEach(function(item){
-        if(ft === 'all' || item.getAttribute('data-revtype') === ft){
-          item.style.display = 'flex';
-        } else {
-          item.style.display = 'none';
-        }
-      });
+      applyNotifyVisibility();
     });
   });
 }
@@ -581,14 +608,7 @@ if(socFilterBar){
     chip.addEventListener('click',function(){
       socFilterBar.querySelectorAll('.rev-filter-chip').forEach(function(c){c.classList.remove('active')});
       this.classList.add('active');
-      var ft = this.dataset.sotype;
-      document.querySelectorAll('.notify-item[data-category="social"]').forEach(function(item){
-        if(ft === 'all' || item.getAttribute('data-sotype') === ft){
-          item.style.display = 'flex';
-        } else {
-          item.style.display = 'none';
-        }
-      });
+      applyNotifyVisibility();
     });
   });
 }
@@ -596,18 +616,28 @@ if(socFilterBar){
 // Show empty state when no items
 function renderEmpty(){
   var activeTab = document.querySelector('.tab-item.active').dataset.tab;
-  var visible = document.querySelectorAll('.notify-item[data-category="'+activeTab+'"]');
   var scroll = document.querySelector('.scroll');
 
   // Remove existing empty states
   scroll.querySelectorAll('.notify-empty').forEach(function(e){e.remove()});
 
+  // 总开关关闭 → 统一提示
+  var masterOff = (typeof window.StoryFunNotify !== 'undefined') && !window.StoryFunNotify.getSettings().master;
+  if (masterOff) {
+    var emptyAll = document.createElement('div');
+    emptyAll.className = 'notify-empty';
+    emptyAll.innerHTML = '<div class="empty-icon">🔕</div><p>已关闭全部通知，可在「设置 → 通知设置」中开启</p>';
+    scroll.appendChild(emptyAll);
+    return;
+  }
+
+  var visible = document.querySelectorAll('.notify-item[data-category="'+activeTab+'"]');
   var allHidden = true;
   visible.forEach(function(item){
     if(item.style.display !== 'none') allHidden = false;
   });
 
-  if(allHidden && visible.length === 0){
+  if(allHidden){
     var msg = activeTab === 'revenue' ? '暂无收益通知' : '暂无互动通知';
     var empty = document.createElement('div');
     empty.className = 'notify-empty';
@@ -654,9 +684,7 @@ document.addEventListener('click', function(){
 
 // Initial — show revenue tab
 (function init(){
-  document.querySelectorAll('.notify-item').forEach(function(item){
-    item.style.display = item.getAttribute('data-category') === 'revenue' ? 'flex' : 'none';
-  });
+  applyNotifyVisibility();
 })();
 </script>
 <script src="load-sidebar.js"></script>

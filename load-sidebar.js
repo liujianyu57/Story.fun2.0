@@ -103,6 +103,7 @@
                         '<span class="sb-label">设置</span>' +
                     '</div>' +
                     '<div class="sb-settings-menu">' +
+                        '<button class="sb-settings-item" onclick="openNotifySettingsFromSidebar()"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>通知设置</button>' +
                         '<button class="sb-settings-item" onclick="showToast(\'浅色模式暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>浅色模式</button>' +
                         '<button class="sb-settings-item" onclick="showToast(\'深色模式暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>深色模式</button>' +
                         '<button class="sb-settings-item" onclick="showToast(\'语言切换暂未开放\')"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>语言</button>' +
@@ -142,7 +143,37 @@
         injectStyles();
         injectSidebarHTML();
         runSidebarScripts();
+        ensureNotifySettings();
     }
+
+    // 确保 notify-settings.js 已加载（侧边栏「通知设置」弹窗依赖）
+    function ensureNotifySettings() {
+        if (typeof window.StoryFunNotify !== 'undefined') return;
+        var script = document.createElement('script');
+        script.src = 'notify-settings.js';
+        document.head.appendChild(script);
+    }
+
+    // 侧边栏「通知设置」：打开弹窗
+    window.openNotifySettingsFromSidebar = function () {
+        if (typeof window.StoryFunNotify !== 'undefined' && window.StoryFunNotify.openNotifySettingsModal) {
+            window.StoryFunNotify.openNotifySettingsModal();
+            return;
+        }
+        // 尚未加载完成时兜底：加载后再打开
+        ensureNotifySettings();
+        var tries = 0;
+        var timer = setInterval(function () {
+            tries++;
+            if (typeof window.StoryFunNotify !== 'undefined' && window.StoryFunNotify.openNotifySettingsModal) {
+                clearInterval(timer);
+                window.StoryFunNotify.openNotifySettingsModal();
+            } else if (tries > 20) {
+                clearInterval(timer);
+                if (typeof showToast === 'function') showToast('设置加载失败，请刷新重试');
+            }
+        }, 100);
+    };
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

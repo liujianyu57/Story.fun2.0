@@ -88,6 +88,49 @@
     .btn-sm:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0,0.25); }
     .btn-sm:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
 
+    /* ── 收益总览卡 ── */
+    .overview-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow-sm); margin-bottom: 20px; overflow: hidden;
+    }
+    .overview-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 16px 20px 12px;
+    }
+    .overview-title { margin: 0; font-size: 0.95rem; font-weight: 700; }
+    .overview-demo-btn {
+      padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-secondary); font-size: 0.72rem;
+      font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .overview-demo-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .overview-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+    }
+    @media (min-width: 961px) {
+      .overview-grid { grid-template-columns: repeat(4, 1fr); }
+      /* 我的片酬：通栏显示（横跨 4 列） */
+      .overview-foot { grid-column: 1 / -1; }
+    }
+    .overview-cell {
+      background: var(--surface); padding: 14px 20px;
+    }
+    .ov-label-row { display: flex; align-items: center; gap: 6px; }
+    .ov-label { font-size: 0.76rem; font-weight: 500; color: var(--text-secondary); }
+    .ov-value { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; margin-top: 4px; overflow-wrap: anywhere; }
+    .ov-value.green { color: var(--story-green); }
+    .ov-value.gold { color: var(--gold); }
+    .ov-claim-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .ov-claim-row .ov-value { margin-top: 4px; }
+    .overview-foot {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+      padding: 12px 20px 14px;
+      font-size: 0.78rem; color: var(--text-secondary);
+    }
+    .ov-foot-label { font-weight: 500; }
+    .ov-foot-value { font-weight: 700; color: var(--gold); font-size: 0.85rem; }
+    .ov-foot-desc { color: var(--text-tertiary); margin-left: auto; }
+
     .tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
     .tab-nav-btn {
       padding: 12px 24px; border: none; border-bottom: 2px solid transparent;
@@ -150,6 +193,47 @@
     .filter-chip.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
     .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
 
+    /* ── 收入趋势曲线 ── */
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+    .chart-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 4px; cursor: pointer; user-select: none; }
+    .chart-title { margin: 0; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .chart-toggle { display: inline-block; font-size: 0.8rem; color: var(--text-tertiary); transition: transform 0.25s ease; }
+    .chart-card.collapsed .chart-toggle { transform: rotate(-90deg); }
+    .chart-body { margin-top: 12px; }
+    .chart-card.collapsed .chart-body { display: none; }
+    .chart-toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .chart-range-group { display: flex; gap: 4px; background: rgba(0,0,0,0.05); border-radius: 10px; padding: 3px; }
+    .chart-range-btn {
+      padding: 4px 12px; border: none; border-radius: 8px; background: transparent;
+      color: var(--text-secondary); font-size: 0.76rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .chart-range-btn.active { background: #fff; color: var(--accent); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+    .chart-currency-group { display: flex; gap: 4px; background: rgba(0,0,0,0.05); border-radius: 10px; padding: 3px; }
+    .chart-currency-btn {
+      padding: 4px 12px; border: none; border-radius: 8px; background: transparent;
+      color: var(--text-secondary); font-size: 0.76rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .chart-currency-btn.active { background: #fff; color: var(--accent); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+    .chart-summary { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 4px; }
+    .chart-summary-item .csi-label { font-size: 0.72rem; color: var(--text-tertiary); }
+    .chart-summary-item .csi-value { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+    .chart-summary-item .csi-value.story { color: var(--accent); }
+    .chart-summary-item .csi-value.usdc { color: var(--gold); }
+    .chart-wrap { position: relative; width: 100%; height: 160px; margin-top: 12px; }
+    .chart-wrap svg { width: 100%; height: 100%; display: block; cursor: crosshair; }
+    .chart-tooltip {
+      position: absolute; pointer-events: none; z-index: 5;
+      background: rgba(19,32,46,0.92); color: #fff; border-radius: 10px;
+      padding: 8px 12px; font-size: 0.78rem; line-height: 1.5;
+      transform: translate(-50%, calc(-100% - 12px));
+      white-space: nowrap; backdrop-filter: blur(6px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .chart-tooltip .ct-date { color: rgba(255,255,255,0.65); font-size: 0.7rem; }
+    .chart-tooltip .ct-value { font-weight: 700; font-size: 0.85rem; }
+    .chart-dot { transition: r 0.15s ease; }
+    .chart-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); font-size: 0.85rem; }
+
     .empty-state { text-align: center; padding: 48px 0; color: var(--text-tertiary); font-size: 0.88rem; }
 
     .params-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
@@ -211,49 +295,76 @@
       </div>
     </div>
 
-    <!-- ===== 核心指标 ===== -->
-    <div class="metrics-group">
-      <div class="metrics-group-header">累计收益</div>
-      <div class="metrics-group-grid cols-2">
-        <div class="metric-card">
-          <div class="metric-label-row"><span class="metric-label">累计 STORY</span><span class="metric-help" onclick="openHelp('累计 STORY','历史所有周期累计获得的 STORY 总量（含已领取和未领取）。')">?</span></div>
-          <div class="metric-value green" id="mCumulativeStory">12,500</div>
+    <!-- ===== 收益总览（合并累计 + 可领取 + 片酬） ===== -->
+    <div class="overview-card">
+      <div class="overview-header">
+        <h2 class="overview-title">收益总览</h2>
+        <button onclick="openAdminDemo()" class="overview-demo-btn">演示：后台设置</button>
+      </div>
+
+      <div class="overview-grid">
+        <!-- 累计 -->
+        <div class="overview-cell">
+          <div class="ov-label-row"><span class="ov-label">累计 STORY</span><span class="metric-help" onclick="openHelp('累计 STORY','历史所有周期累计获得的 STORY 总量（含已领取和未领取）。')">?</span></div>
+          <div class="ov-value green" id="mCumulativeStory">12,500</div>
         </div>
-        <div class="metric-card">
-          <div class="metric-label-row"><span class="metric-label">累计 USDC</span><span class="metric-help" onclick="openHelp('累计 USDC','历史所有角色签约分成、二级版税的累计 USDC 收入。')">?</span></div>
-          <div class="metric-value green" id="mCumulativeUsdc">3,580.00</div>
+        <div class="overview-cell">
+          <div class="ov-label-row"><span class="ov-label">累计 USDC</span><span class="metric-help" onclick="openHelp('累计 USDC','历史所有角色签约分成、二级版税的累计 USDC 收入。')">?</span></div>
+          <div class="ov-value green" id="mCumulativeUsdc">3,580.00</div>
+        </div>
+        <!-- 可领取 -->
+        <div class="overview-cell">
+          <div class="ov-label-row"><span class="ov-label">可领取 STORY</span></div>
+          <div class="ov-claim-row">
+            <div class="ov-value gold" id="mClaimableStory">0</div>
+            <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn" disabled style="opacity:.5;cursor:not-allowed;">领取</button>
+          </div>
+        </div>
+        <div class="overview-cell">
+          <div class="ov-label-row"><span class="ov-label">可领取 USDC</span></div>
+          <div class="ov-claim-row">
+            <div class="ov-value gold" id="mClaimableUsdc">895.50</div>
+            <button class="btn-sm" onclick="claimUsdc()" id="claimUsdcBtn">领取</button>
+          </div>
+        </div>
+
+        <!-- 我的片酬：桌面端与「可领取 STORY」同列（第 3 列），移动端通栏 -->
+        <div class="overview-foot">
+          <span class="ov-foot-label">我的片酬</span>
+          <span class="ov-foot-value" id="mPendingSalaryNum">5,860.0</span>
+          <svg viewBox="0 0 24 24" style="width:15px;height:15px;vertical-align:-2px;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg>
+          <span class="ov-foot-desc">结算后按占比兑换为 STORY</span>
         </div>
       </div>
     </div>
 
-    <div class="metrics-group">
-      <div class="metrics-group-header" style="display:flex;align-items:center;justify-content:space-between;">
-        <span>待处理收益</span>
-        <button onclick="openAdminDemo()" style="padding:4px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:0.72rem;font-weight:600;cursor:pointer;">演示：后台设置</button>
-      </div>
-      <div class="metrics-group-grid cols-3">
-        <div class="metric-card">
-          <div class="metric-label-row"><span class="metric-label">我的片酬</span></div>
-          <div class="metric-value gold" id="mPendingSalary" style="display:flex;align-items:baseline;gap:6px;"><span id="mPendingSalaryNum">5,860.0</span><svg viewBox="0 0 24 24" style="width:18px;height:18px;vertical-align:middle;"><circle cx="12" cy="12" r="10" fill="#f5b042"/><circle cx="12" cy="12" r="10" stroke="#d9951a" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="7" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/><path d="M12 8l.9 1.9 2.1.2-1.6 1.4.5 2-1.9-1-1.9 1 .5-2-1.6-1.4 2.1-.2L12 8z" fill="#fff"/></svg></div>
-          <div class="metric-sub">系统结算后自动兑换为 STORY</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-card-actions">
-            <div class="metric-value-wrap">
-              <div class="metric-label-row"><span class="metric-label">可领取 STORY</span></div>
-              <div class="metric-value gold" id="mClaimableStory">0</div>
-              <div class="metric-sub" id="claimStateSub"></div>
-            </div>
-            <button class="btn-sm" onclick="claimStory()" id="claimStoryBtn" disabled style="opacity:.5;cursor:not-allowed;">领取</button>
+    <!-- ===== 收入趋势曲线（可折叠） ===== -->
+    <div class="chart-card" id="chartCard">
+      <div class="chart-header" id="chartHeader" onclick="toggleChart()">
+        <h3 class="chart-title">
+          收入趋势
+          <span class="chart-toggle" id="chartToggle">▾</span>
+        </h3>
+        <div class="chart-toolbar" onclick="event.stopPropagation()">
+          <div class="chart-currency-group" id="chartCurrencyGroup">
+            <button class="chart-currency-btn active" data-cur="story">STORY</button>
+            <button class="chart-currency-btn" data-cur="usdc">USDC</button>
+          </div>
+          <div class="chart-range-group" id="chartRangeGroup">
+            <button class="chart-range-btn" data-days="7">7天</button>
+            <button class="chart-range-btn active" data-days="30">30天</button>
+            <button class="chart-range-btn" data-days="180">180天</button>
+            <button class="chart-range-btn" data-days="360">360天</button>
           </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-card-actions">
-            <div class="metric-value-wrap">
-              <div class="metric-label-row"><span class="metric-label">可领取 USDC</span><span class="metric-help" onclick="openHelp('可领取 USDC','已结算的 USDC，可领取至个人钱包。')">?</span></div>
-              <div class="metric-value gold" id="mClaimableUsdc">895.50</div>
-            </div>
-            <button class="btn-sm" onclick="claimUsdc()" id="claimUsdcBtn">领取</button>
+      </div>
+      <div class="chart-body" id="chartBody">
+        <div class="chart-summary" id="chartSummary"></div>
+        <div class="chart-wrap" id="chartWrap">
+          <svg id="chartSvg" viewBox="0 0 720 160" preserveAspectRatio="none"></svg>
+          <div class="chart-tooltip" id="chartTooltip" style="display:none">
+            <div class="ct-date" id="ctDate"></div>
+            <div class="ct-value" id="ctValue"></div>
           </div>
         </div>
       </div>
@@ -371,7 +482,7 @@
     const POOL_KEY = 'sf2_weekly_pool';
     // 后台放行状态（localStorage 持久化）
     const APPROVE_KEY = 'sf2_pool_approved';
-    function getPool() { return parseFloat(localStorage.getItem(POOL_KEY)) || 100000; }
+    function getPool() { var v = parseFloat(localStorage.getItem(POOL_KEY)); return isNaN(v) ? 100000 : v; }
     function setPool(v) { localStorage.setItem(POOL_KEY, String(v)); }
     function isApproved() { return localStorage.getItem(APPROVE_KEY) === '1'; }
     function setApproved(v) { localStorage.setItem(APPROVE_KEY, v ? '1' : '0'); }
@@ -381,7 +492,7 @@
     // 可领 STORY = 奖池 × 占比
     function claimableStory() { return Math.round(getPool() * myShare()); }
 
-    const WALLET = { storyEarned: 12500, storyClaimable: claimableStory(), usdcEarned: 3580.00, usdcClaimable: 895.50 };
+    const WALLET = { storyEarned: 12500, usdcEarned: 3580.00, usdcClaimable: 895.50 };
 
     // ===== STORY 流水数据生成 =====
     function generateStoryFlow() {
@@ -448,11 +559,12 @@
 
     // ===== 渲染 =====
     function renderMetrics() {
-      // 累计 STORY：基础累计 + studio 快捷领取的累计
+      // 累计 STORY：基础累计 + 已领取累计
       var claimedExtra = parseFloat(localStorage.getItem('sf2_claimed_story') || '0') || 0;
       document.getElementById('mCumulativeStory').textContent=(WALLET.storyEarned + claimedExtra).toLocaleString();
-      document.getElementById('mCumulativeUsdc').textContent=WALLET.usdcEarned.toFixed(2);
-      document.getElementById('mClaimableUsdc').textContent=WALLET.usdcClaimable.toFixed(2);
+      // 累计 USDC：基础累计 + 已领取累计
+      var claimedUsdcExtra = parseFloat(localStorage.getItem('sf2_claimed_usdc') || '0') || 0;
+      document.getElementById('mCumulativeUsdc').textContent=(WALLET.usdcEarned + claimedUsdcExtra).toFixed(2);
       // 我的片酬（金币图标，数值）：放行（结算）后清零
       const settled = isApproved();
       document.getElementById('mPendingSalaryNum').textContent = (settled ? 0 : MY_SALARY).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -460,37 +572,222 @@
       const claimVal = settled ? claimableStory() : 0;
       document.getElementById('mClaimableStory').textContent = claimVal.toLocaleString();
       const claimBtn = document.getElementById('claimStoryBtn');
-      const claimSub = document.getElementById('claimStateSub');
-      claimBtn.disabled = claimVal <= 0;
-      claimBtn.style.opacity = claimVal <= 0 ? '.5' : '1';
-      claimBtn.style.cursor = claimVal <= 0 ? 'not-allowed' : 'pointer';
-      claimSub.textContent = '';
+      if (claimBtn) {
+        claimBtn.disabled = claimVal <= 0;
+        claimBtn.style.opacity = claimVal <= 0 ? '.5' : '1';
+        claimBtn.style.cursor = claimVal <= 0 ? 'not-allowed' : 'pointer';
+      }
+      // 可领取 USDC：基础结算额减去已领取部分（demo 模拟）
+      var claimableUsdc = Math.max(0, WALLET.usdcClaimable - claimedUsdcExtra);
+      document.getElementById('mClaimableUsdc').textContent = claimableUsdc.toFixed(2);
     }
 
-    function claimAll() {
-      if(WALLET.storyClaimable<=0 && WALLET.usdcClaimable<=0){showToast('没有可领取的收益');return;}
-      showToast('已领取 STORY '+fmt(WALLET.storyClaimable)+'、USDC '+d2(WALLET.usdcClaimable)+' 到钱包');
-      WALLET.storyClaimable=0;
-      WALLET.usdcClaimable=0;
-      renderMetrics();
-    }
-
+    // 领取 STORY（放行后可领，与 studio 快捷领取共用累计口径）
     function claimStory() {
       const v = claimableStory();
       if (v <= 0) { showToast('没有可领取的 STORY'); return; }
       showToast('已领取 ' + v.toLocaleString() + ' STORY 到钱包');
-      // 与 studio 快捷领取共用累计口径（累计 = 基础 + 已领取累计）
       var claimed = parseFloat(localStorage.getItem('sf2_claimed_story') || '0') || 0;
       localStorage.setItem('sf2_claimed_story', String(claimed + v));
       setPool(0); // demo：领取后奖池归零（本周期结束）
       renderMetrics();
+      renderChart();
     }
 
+    // 领取 USDC
     function claimUsdc() {
-      if(WALLET.usdcClaimable<=0){showToast('没有可领取的 USDC');return;}
-      showToast('已领取 '+d2(WALLET.usdcClaimable)+' USDC 到钱包');
-      WALLET.usdcClaimable=0;
+      var claimedUsdcExtra = parseFloat(localStorage.getItem('sf2_claimed_usdc') || '0') || 0;
+      var claimableUsdc = Math.max(0, WALLET.usdcClaimable - claimedUsdcExtra);
+      if (claimableUsdc <= 0) { showToast('没有可领取的 USDC'); return; }
+      showToast('已领取 ' + d2(claimableUsdc) + ' USDC 到钱包');
+      localStorage.setItem('sf2_claimed_usdc', String(claimedUsdcExtra + claimableUsdc));
       renderMetrics();
+    }
+
+    // ============================================================
+    //  收入趋势曲线（纯 SVG，无外部依赖）
+    // ============================================================
+    // 模拟每日收入数据：以固定随机种子生成 360 天，STORY 与 USDC 两条序列
+    function mulberry32(seed) {
+      return function () {
+        seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+        var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    var DAILY_DATA = (function () {
+      var rnd = mulberry32(20250601);
+      var days = [];
+      var today = new Date();
+      for (var i = 359; i >= 0; i--) {
+        var d = new Date(today);
+        d.setDate(d.getDate() - i);
+        // STORY：缓慢上升趋势 + 周度波动 + 噪声；USDC：低基数稳定
+        var trend = 30 + (359 - i) * 0.12;
+        var weekly = Math.sin((359 - i) / 7 * Math.PI * 2) * 8;
+        var story = Math.max(2, trend + weekly + (rnd() - 0.5) * 22);
+        var usdc = Math.max(0.2, 2.2 + Math.sin((359 - i) / 30 * Math.PI * 2) * 0.8 + (rnd() - 0.5) * 1.6);
+        days.push({
+          label: (d.getMonth() + 1) + '/' + d.getDate(),
+          story: Math.round(story * 10) / 10,
+          usdc: Math.round(usdc * 100) / 100
+        });
+      }
+      return days;
+    })();
+
+    var chartState = { days: 30, cur: 'story' };
+
+    function renderChart() {
+      var days = chartState.days;
+      var cur = chartState.cur;
+      var data = DAILY_DATA.slice(-days);
+      var svg = document.getElementById('chartSvg');
+      var summary = document.getElementById('chartSummary');
+      if (!svg || !summary) return;
+
+      // 区间累计
+      var total = 0;
+      data.forEach(function (d) { total += d[cur]; });
+      var unit = cur === 'story' ? 'STORY' : 'USDC';
+      var totalStr = cur === 'story' ? total.toLocaleString(undefined, { maximumFractionDigits: 0 }) : total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      summary.innerHTML =
+        '<div class="chart-summary-item"><div class="csi-label">' + days + '天累计</div><div class="csi-value ' + cur + '">' + totalStr + ' ' + unit + '</div></div>';
+
+      // SVG 坐标（紧凑留白，无坐标轴）
+      var W = 720, H = 160, PAD = { top: 8, right: 8, bottom: 8, left: 8 };
+      var iw = W - PAD.left - PAD.right, ih = H - PAD.top - PAD.bottom;
+      var maxVal = 0;
+      data.forEach(function (d) { if (d[cur] > maxVal) maxVal = d[cur]; });
+      if (maxVal <= 0) maxVal = 1;
+      var niceMax = Math.ceil(maxVal * 1.1);
+
+      function x(i) { return PAD.left + (data.length <= 1 ? 0 : (i / (data.length - 1)) * iw); }
+      function y(v) { return PAD.top + ih - (v / niceMax) * ih; }
+
+      // 每日折线
+      var line = '';
+      data.forEach(function (d, i) {
+        line += (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(d[cur]).toFixed(1);
+      });
+      // 面积渐变
+      var area = line + 'L' + x(data.length - 1).toFixed(1) + ',' + (PAD.top + ih) + 'L' + x(0).toFixed(1) + ',' + (PAD.top + ih) + 'Z';
+
+      var color = cur === 'story' ? 'var(--accent)' : 'var(--gold)';
+      svg.innerHTML =
+        '<defs><linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0%" stop-color="' + (cur === 'story' ? '#000000' : '#f5b042') + '" stop-opacity="0.12"/>' +
+          '<stop offset="100%" stop-color="' + (cur === 'story' ? '#000000' : '#f5b042') + '" stop-opacity="0"/>' +
+        '</linearGradient></defs>' +
+        '<path d="' + area + '" fill="url(#chartFill)"/>' +
+        '<path d="' + line + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+        '<line id="chartCross" x1="0" y1="0" x2="0" y2="0" stroke="rgba(19,32,46,0.25)" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>' +
+        '<circle id="chartDot" class="chart-dot" r="4" fill="#fff" stroke="' + color + '" stroke-width="2" visibility="hidden"/>';
+
+      // ── 交互：悬停/点击查看单日明细 ──
+      bindChartHover(data, x, y, cur, PAD, W, H);
+    }
+
+    // 图表交互：mousemove / click 在曲线上显示日期 + 当日收入
+    function bindChartHover(data, x, y, cur, PAD, W, H) {
+      var wrap = document.getElementById('chartWrap');
+      var svg = document.getElementById('chartSvg');
+      var tooltip = document.getElementById('chartTooltip');
+      if (!wrap || !svg || !tooltip) return;
+      if (!PAD) PAD = { top: 8, right: 8, bottom: 8, left: 8 };
+      if (!W) W = 720;
+      if (!H) H = 160;
+
+      // 清除旧的监听（切换时重复绑定）
+      if (wrap._chartHoverBound) {
+        wrap.removeEventListener('mousemove', wrap._chartHoverBound);
+        wrap.removeEventListener('mouseleave', wrap._chartLeaveBound);
+        if (wrap._chartClickBound) wrap.removeEventListener('click', wrap._chartClickBound);
+      }
+
+      var unit = cur === 'story' ? 'STORY' : 'USDC';
+
+      function pointFromEvent(ev) {
+        var rect = svg.getBoundingClientRect();
+        var svgX = (ev.clientX - rect.left) / rect.width * W;
+        var i = Math.round((svgX - PAD.left) / (W - PAD.left - PAD.right) * (data.length - 1));
+        if (i < 0) i = 0;
+        if (i > data.length - 1) i = data.length - 1;
+        return i;
+      }
+
+      function showAt(i) {
+        var cross = document.getElementById('chartCross');
+        var dot = document.getElementById('chartDot');
+        var px = x(i), py = y(data[i][cur]);
+        if (cross) { cross.setAttribute('x1', px); cross.setAttribute('x2', px); cross.setAttribute('y1', PAD.top); cross.setAttribute('y2', H - PAD.bottom); cross.setAttribute('visibility', 'visible'); }
+        if (dot) { dot.setAttribute('cx', px); dot.setAttribute('cy', py); dot.setAttribute('visibility', 'visible'); }
+        var val = cur === 'story' ? data[i].story.toFixed(1) : data[i].usdc.toFixed(2);
+        tooltip.innerHTML = '<div class="ct-date">' + data[i].label + '</div><div class="ct-value">' + val + ' ' + unit + '</div>';
+        // tooltip 定位：相对 wrap（wrap 为 position:relative 锚点）
+        var wrapRect = wrap.getBoundingClientRect();
+        var tpx = (px / W) * wrapRect.width;
+        var tpy = (py / H) * wrapRect.height;
+        tooltip.style.left = tpx + 'px';
+        tooltip.style.top = tpy + 'px';
+        tooltip.style.display = 'block';
+      }
+
+      function hide() {
+        tooltip.style.display = 'none';
+        var cross = document.getElementById('chartCross');
+        var dot = document.getElementById('chartDot');
+        if (cross) cross.setAttribute('visibility', 'hidden');
+        if (dot) dot.setAttribute('visibility', 'hidden');
+      }
+
+      wrap._chartHoverBound = function (ev) { showAt(pointFromEvent(ev)); };
+      wrap._chartLeaveBound = function () { hide(); };
+      wrap.addEventListener('mousemove', wrap._chartHoverBound);
+      wrap.addEventListener('mouseleave', wrap._chartLeaveBound);
+      // 点击保持 tooltip（暂停几秒）
+      wrap._chartClickBound = function (ev) {
+        showAt(pointFromEvent(ev));
+        clearTimeout(wrap._chartClickTimer);
+        wrap._chartClickTimer = setTimeout(hide, 2500);
+      };
+      wrap.addEventListener('click', wrap._chartClickBound);
+    }
+
+    // 图表切换绑定
+    function bindChartControls() {
+      document.querySelectorAll('#chartRangeGroup .chart-range-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('#chartRangeGroup .chart-range-btn').forEach(function (b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          chartState.days = parseInt(this.dataset.days, 10) || 30;
+          renderChart();
+        });
+      });
+      document.querySelectorAll('#chartCurrencyGroup .chart-currency-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('#chartCurrencyGroup .chart-currency-btn').forEach(function (b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          chartState.cur = this.dataset.cur;
+          renderChart();
+        });
+      });
+    }
+
+    // 收入趋势折叠：移动端默认折叠，桌面端默认展开；偏好存 localStorage
+    function initChartCollapse() {
+      var card = document.getElementById('chartCard');
+      if (!card) return;
+      var isDesktop = window.matchMedia && window.matchMedia('(min-width: 961px)').matches;
+      var saved = localStorage.getItem('sf2_chart_collapsed');
+      // 无保存偏好：移动端折叠、桌面端展开；有偏好：跟随保存值
+      var collapsed = saved !== null ? (saved === '1') : !isDesktop;
+      card.classList.toggle('collapsed', collapsed);
+      window.toggleChart = function () {
+        var nowCollapsed = card.classList.toggle('collapsed');
+        try { localStorage.setItem('sf2_chart_collapsed', nowCollapsed ? '1' : '0'); } catch (e) {}
+      };
     }
 
     // ===== 演示：后台设置 =====
@@ -509,7 +806,7 @@
       setApproved(true);
       closeAdminDemo();
       renderMetrics();
-      showToast('后台已放行：奖池 ' + getPool().toLocaleString() + ' STORY');
+      showToast('后台已放行：奖池 ' + getPool().toLocaleString() + ' STORY，可领取');
     }
 
     function filterTag(type) {
@@ -641,6 +938,9 @@
         if (e.target === this) closeAdminDemo();
       });
       renderMetrics();
+      initChartCollapse();
+      renderChart();
+      bindChartControls();
       renderStoryFlow();
       renderUsdcFlow();
       initFilters();
