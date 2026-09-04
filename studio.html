@@ -1715,7 +1715,6 @@
           <div class="mob-more-menu" id="mobMoreMenu">
             <a onclick="toggleMobMore();openClawSheet()"><span id="mobClawIcon">💤</span> Story Claw</a>
             <a onclick="toggleMobMore();openRulesModal()">规则</a>
-            <a onclick="toggleMobMore();openActualOutputModal()">奖池</a>
             <a href="rewards.html">记录</a>
           </div>
         </div>
@@ -1800,7 +1799,6 @@
     <!-- ===== 底部入口 ===== -->
     <div class="studio-links">
       <a onclick="openRulesModal()">规则</a>
-      <a onclick="openActualOutputModal()">奖池</a>
       <a href="rewards.html">记录</a>
     </div>
 
@@ -1936,106 +1934,6 @@
       <!-- 使用 / 购买（按库存切换，购买跳商城） -->
       <button class="modal-btn confirm" id="chargeActionBtn" style="width:100%;margin-bottom:0;" onclick="confirmCharge()">使用</button>
 
-    </div>
-  </div>
-
-  <!-- ===== 片酬与奖池说明弹窗 ===== -->
-  <div class="modal-overlay" id="actualOutputModal">
-    <div class="modal-card" style="max-width:440px;position:relative;">
-      <button style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s;z-index:1;" onclick="closeActualOutputModal()">✕</button>
-      <h2>奖池</h2>
-      <!-- 总奖池 -->
-      <div style="background:var(--bg);border-radius:16px;padding:18px 14px;margin-bottom:14px;text-align:center;">
-        <div style="font-size:0.72rem;color:var(--text-sub);margin-bottom:4px;font-weight:600;">本周总奖池</div>
-        <div style="font-size:2rem;font-weight:800;color:var(--text);line-height:1;" id="actualOutputPoolTotal">2,115,385 STORY</div>
-        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:6px;">周衰减系数 ×0.99572</div>
-      </div>
-      <!-- 奖池分配双卡 -->
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 12px;text-align:center;">
-          <div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:2px;">演出奖池（75%）</div>
-          <div style="font-weight:700;font-size:0.95rem;color:var(--text);" id="actualOutputPoolStaking">1,586,539</div>
-        </div>
-        <div style="flex:1;background:var(--bg);border-radius:12px;padding:10px 12px;text-align:center;">
-          <div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:2px;">邀请奖池（25%）</div>
-          <div style="font-weight:700;font-size:0.95rem;color:var(--text);" id="actualOutputPoolReferral">528,846</div>
-        </div>
-      </div>
-      <!-- 分配规则 -->
-      <div style="margin-bottom:14px;">
-        <div style="font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:10px;">分配规则</div>
-        <div style="font-size:0.82rem;line-height:1.9;color:var(--text-muted);">
-          <div style="margin-bottom:6px;">全网名义产出 ≤ 当周硬顶：用户实得 = 用户名义产出</div>
-          <div style="margin-bottom:6px;">全网名义产出 > 当周硬顶：用户实得 = 用户名义产出 ×（当周硬顶 ÷ 全网名义产出）</div>
-          <div>单地址周封顶：单个地址每周最多领取当周硬顶的 5%</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== 名义产出公式说明弹窗 ===== -->
-  <div class="modal-overlay" id="nominalOutputModal">
-    <div class="modal-card" style="max-width:440px;">
-      <h2>本周名义产出</h2>
-      <div style="background:var(--accent-soft);border-radius:14px;padding:14px;margin-bottom:16px;text-align:center;">
-        <div style="font-size:0.85rem;font-weight:600;color:var(--text);">我的所有角色的周累计名义产出累加</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">单卡公式见下方说明 ↓</div>
-      </div>
-      <p class="modal-sub" style="margin-bottom:12px;">单卡名义产出 = 单卡小时权重 × R_base × 有效演出时长</p>
-      <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
-        <div style="font-size:0.85rem;line-height:1.8;color:var(--text-muted);">
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>单卡小时权重</span>
-            <span style="font-weight:700;color:var(--accent);text-align:right;">= 角色片酬</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>角色片酬</span>
-            <span style="font-weight:700;color:var(--text);text-align:right;">= IP片酬 × 片酬系数 × CP系数</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>R_base</span>
-            <span style="font-weight:700;color:var(--accent);">1 STORY / 单位权重 / 小时</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;">
-            <span>有效演出时长</span>
-            <span style="font-weight:700;color:var(--text);">演出中且体力 > 0 的累计时长</span>
-          </div>
-        </div>
-      </div>
-      <button class="modal-btn cancel" onclick="closeNominalOutputModal()">关闭</button>
-    </div>
-  </div>
-
-  <!-- ===== 本周奖池（周硬顶）说明弹窗 ===== -->
-  <div class="modal-overlay" id="weeklyPoolModal">
-    <div class="modal-card" style="max-width:440px;">
-      <h2>本周奖池</h2>
-      <p class="modal-sub" style="margin-bottom:12px;">即 STORY 的每周硬性发放上限（周硬顶）</p>
-      <div style="background:var(--bg);border-radius:14px;padding:16px;margin-bottom:16px;">
-        <div style="font-size:0.85rem;line-height:2;color:var(--text-muted);">
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>本周总奖池</span>
-            <span style="font-weight:700;color:var(--accent);" id="weeklyPoolTotal">2,115,385 STORY</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>├ 本周演出奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（75%）</span></span>
-            <span style="font-weight:700;color:var(--accent);" id="weeklyPoolStaking">1,586,539 STORY</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>└ 本周邀请奖池 <span style="font-size:0.72rem;color:var(--text-sub);">（25%）</span></span>
-            <span style="font-weight:700;color:var(--accent);" id="weeklyPoolReferral">528,846 STORY</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>周衰减系数</span>
-            <span style="font-weight:700;color:var(--text);">× 0.99572</span>
-          </div>
-          <div style="padding:8px 0 4px;">
-            <div style="font-weight:600;color:var(--text);margin-bottom:4px;">每周实际发放 = min(全网名义产出, 当周硬顶)</div>
-            <div style="font-size:0.78rem;color:var(--text-sub);">未发出的剩余额度不发放、不回流、不补分</div>
-          </div>
-        </div>
-      </div>
-      <button class="modal-btn cancel" onclick="closeWeeklyPoolModal()">关闭</button>
     </div>
   </div>
 
@@ -3494,29 +3392,6 @@
     // ============================================================
     function openRulesModal() { document.getElementById('rulesModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
     function closeRulesModal() { document.getElementById('rulesModal').classList.remove('active'); document.body.style.overflow = ''; }
-
-    function openWeeklyPoolModal() {
-      const weeklyPool = 2115385;
-      document.getElementById('weeklyPoolTotal').textContent = weeklyPool.toLocaleString() + ' STORY';
-      document.getElementById('weeklyPoolStaking').textContent = Math.floor(weeklyPool * 0.75).toLocaleString() + ' STORY';
-      document.getElementById('weeklyPoolReferral').textContent = Math.floor(weeklyPool * 0.25).toLocaleString() + ' STORY';
-      document.getElementById('weeklyPoolModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeWeeklyPoolModal() { document.getElementById('weeklyPoolModal').classList.remove('active'); document.body.style.overflow = ''; }
-
-    function openActualOutputModal() {
-      const weeklyPool = 2115385;
-      document.getElementById('actualOutputPoolTotal').textContent = weeklyPool.toLocaleString() + ' STORY';
-      document.getElementById('actualOutputPoolStaking').textContent = Math.floor(weeklyPool * 0.75).toLocaleString() + ' STORY';
-      document.getElementById('actualOutputPoolReferral').textContent = Math.floor(weeklyPool * 0.25).toLocaleString() + ' STORY';
-      document.getElementById('actualOutputModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeActualOutputModal() { document.getElementById('actualOutputModal').classList.remove('active'); document.body.style.overflow = ''; }
-
-    function openNominalOutputModal() { document.getElementById('nominalOutputModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
-    function closeNominalOutputModal() { document.getElementById('nominalOutputModal').classList.remove('active'); document.body.style.overflow = ''; }
 
     // ============================================================
     //  片酬详情弹窗
